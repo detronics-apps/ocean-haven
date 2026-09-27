@@ -128,14 +128,15 @@ caring for animals". Build in this order, placeholder art:
 2. ✅ Dolphins (open-sea pod, curious about boats) and ghost crabs (beaches)
 3. Every animal matters (rule below): dolphins — one caught in a ghost net; trusted dolphins lead
    you to floating litter. Crabs — one trapped in a plastic bag; crabs dig up buried beach litter
-4. Placement preview goes on the side the ranger faces (left/right/up/down), not only the right
+4. ✅ Placement preview goes on the side the ranger faces (left/right/up/down), not only the right
 5. Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
    count, but swim off into the open ocean
 6. Palm trees (walk around/behind them; can't build on them)
 7. Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
-(turtle rehab mini-game), new regions.
+(turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**
+(the new regions).
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

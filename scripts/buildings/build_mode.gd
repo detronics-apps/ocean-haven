@@ -1,7 +1,8 @@
 class_name BuildMode
 extends Node2D
-## Placing a building. A see-through "ghost" sits next to the ranger (or wherever you
-## tap/click): green where it fits, red where it doesn't. Place with the Place
+## Placing a building. A see-through "ghost" sits next to the ranger, on whichever
+## side they last moved towards (or wherever you tap/click): green where it fits,
+## red where it doesn't. Place with the Place
 ## button / E; cancel with the Cancel button / Esc.
 ## Also adds buildings directly (loading a save).
 
@@ -16,6 +17,9 @@ var _data: BuildingData
 var _free := false
 var _cell: Vector2i
 var _follow_ranger := true
+## Side of the ranger the ghost sits on: the direction they last moved.
+var _facing := Vector2i.RIGHT
+var _last_ranger_pos := Vector2.INF
 var _ghost: Sprite2D
 var _bar: CanvasLayer
 var _label: Label
@@ -126,9 +130,10 @@ func _process(_delta: float) -> void:
 	if Input.get_vector("move_left", "move_right", "move_up", "move_down") != Vector2.ZERO:
 		_follow_ranger = true
 	var ranger := ControlledBody.active(get_tree())
+	if ranger:
+		_update_facing(ranger.global_position)
 	if _follow_ranger and ranger:
-		# Just right of the ranger, bottom row level with their feet.
-		_cell = Terrain.cell_of(ranger.global_position) + Vector2i(1, 1 - _data.size.y)
+		_cell = _cell_beside(Terrain.cell_of(ranger.global_position), _facing, _data.size)
 	_ghost.position = Vector2(_cell * Terrain.TILE) + Vector2(_data.size * Terrain.TILE) / 2.0
 	var fits := can_place(_data, _cell)
 	_ghost.modulate = FITS if fits else BLOCKED
@@ -144,6 +149,30 @@ func _process(_delta: float) -> void:
 		_ghost.visible = false
 	else:
 		_ghost.visible = true
+
+
+func _update_facing(ranger_pos: Vector2) -> void:
+	var moved := ranger_pos - _last_ranger_pos
+	_last_ranger_pos = ranger_pos
+	if moved.length() < 0.5 or moved.length() > 64.0:  # standing still, or a jump
+		return
+	if absf(moved.x) >= absf(moved.y):
+		_facing = Vector2i.RIGHT if moved.x > 0.0 else Vector2i.LEFT
+	else:
+		_facing = Vector2i.DOWN if moved.y > 0.0 else Vector2i.UP
+
+
+## Top-left cell for a footprint of `size` placed right next to `ranger_cell` on
+## the `side` it faces: level with their feet to the left/right, centred above/below.
+static func _cell_beside(ranger_cell: Vector2i, side: Vector2i, size: Vector2i) -> Vector2i:
+	match side:
+		Vector2i.LEFT:
+			return ranger_cell + Vector2i(-size.x, 1 - size.y)
+		Vector2i.UP:
+			return ranger_cell + Vector2i(-size.x / 2, -size.y)
+		Vector2i.DOWN:
+			return ranger_cell + Vector2i(-size.x / 2, 1)
+	return ranger_cell + Vector2i(1, 1 - size.y)
 
 
 func _unhandled_input(event: InputEvent) -> void:
