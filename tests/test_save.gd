@@ -28,7 +28,11 @@ func _initialize() -> void:
 	var debris := world.get_node("Debris1")
 	_save.mark_collected(debris)
 	debris.free()
-	_expect(world.get_node("TurtleSanctuarySite").build(), "built the sanctuary (uses 5 of 7)")
+	var build_mode := world.get_node("BuildMode")
+	build_mode.start(load("res://data/buildings/tent.tres"), true)
+	_expect(build_mode.place_at(Vector2i(-1, -1)), "pitched the tent")
+	build_mode.start(load("res://data/buildings/turtle_protection_area.tres"))
+	_expect(build_mode.place_at(Vector2i(8, -1)), "built the sanctuary (uses 5 of 7)")
 	(world.get_node("Player") as Node2D).global_position = Vector2(-100, 50)
 	(world.get_node("Boat") as Node2D).global_position = Vector2(16, 300)
 	world.get_node("Boat").restore_aboard()
@@ -54,8 +58,11 @@ func _initialize() -> void:
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
-	_expect(world.get_node("TurtleSanctuarySite").is_built, "sanctuary stays built")
-	_expect(_count_animals(world) == 2, "sanctuary's turtle is back")
+	var cells := {}
+	for b in get_nodes_in_group("buildings"):
+		cells[b.data.id] = b.cell
+	_expect(cells == {&"tent": Vector2i(-1, -1), &"turtle_protection_area": Vector2i(8, -1)},
+		"buildings restored where they were placed")
 	_expect((world.get_node("Player") as Node2D).global_position == Vector2(-100, 50), "ranger position restored")
 	_expect((world.get_node("Boat") as Node2D).global_position == Vector2(16, 300), "boat position restored")
 	_expect(world.get_node("Boat").controlled and not world.get_node("Player").visible, "still aboard")
@@ -82,14 +89,6 @@ func _new_world() -> Node:
 	root.add_child(world)
 	return world
 
-
-func _count_animals(world: Node) -> int:
-	var n := 0
-	for child in world.get_children():
-		var script: Script = child.get_script()
-		if script and script.resource_path == "res://scripts/animals/animal.gd":
-			n += 1
-	return n
 
 
 func _expect(ok: bool, what: String) -> void:

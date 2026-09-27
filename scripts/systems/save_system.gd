@@ -29,8 +29,7 @@ func attach(world: Node) -> bool:
 	Journal.observed.connect(func(_a): _dirty = true)
 	Journal.photographed.connect(func(_a, _c): _dirty = true)
 	RangerProfile.look_changed.connect(func(): _dirty = true)
-	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
-		site.built.connect(func(_b): _dirty = true)
+	(world.get_node("BuildMode") as BuildMode).built.connect(func(_b): _dirty = true)
 	return true
 
 
@@ -62,10 +61,9 @@ func save_to(world: Node, path: String) -> bool:
 	_since_save = 0.0
 	var player: Node2D = world.get_node("Player")
 	var boat: Boat = world.get_node("Boat")
-	var built: Array[String] = []
-	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
-		if site.is_built:
-			built.append(String(site.name))
+	var buildings: Array[Dictionary] = []
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y]})
 	var state := {
 		"version": VERSION,
 		"inventory": Inventory.to_dict(),
@@ -73,7 +71,7 @@ func save_to(world: Node, path: String) -> bool:
 		"journal": Journal.details(),
 		"collected_debris": _collected,
 		"freed_animals": _freed,
-		"built": built,
+		"buildings": buildings,
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
 		"aboard": boat.controlled,
@@ -121,9 +119,14 @@ func load_from(world: Node, path: String) -> bool:
 		var debris := world.get_node_or_null(debris_name)
 		if debris:
 			debris.queue_free()
-	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
-		if String(site.name) in state.get("built", []):
-			site.restore_built()
+	var build_mode: BuildMode = world.get_node("BuildMode")
+	for entry: Dictionary in state.get("buildings", []):
+		var data_path := "res://data/buildings/%s.tres" % entry.get("id", "")
+		var cell: Array = entry.get("cell", [])
+		if ResourceLoader.exists(data_path) and cell.size() == 2:
+			build_mode.add_building(load(data_path), Vector2i(int(cell[0]), int(cell[1])))
+	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
+		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	var p: Array = state.get("player", [])
 	if p.size() == 2:
 		(world.get_node("Player") as Node2D).global_position = Vector2(p[0], p[1])

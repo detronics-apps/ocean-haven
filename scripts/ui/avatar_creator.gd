@@ -3,6 +3,8 @@ extends CanvasLayer
 ## Opens on a new game and from the HUD's "Change look" button; pauses the game while open.
 ## Rows come from RangerProfile.CHOICES, so a new kind of choice needs no UI work.
 
+signal closed
+
 const PREVIEW_SCALE := 7.0
 
 var _values: Dictionary[String, Control] = {}
@@ -31,6 +33,7 @@ func close() -> void:
 	visible = false
 	get_tree().paused = false
 	RangerProfile.finish_creation()
+	closed.emit()
 
 
 func _build() -> void:

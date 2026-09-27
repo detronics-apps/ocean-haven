@@ -1,6 +1,6 @@
 extends CanvasLayer
-## On-screen inventory counts, plus a short non-blocking note with a fact when
-## something is collected, discovered or built.
+## On-screen inventory counts, clock, the menu bar (Build / Journal / Look), and a
+## short non-blocking note with a fact when something is collected, discovered or built.
 
 var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
@@ -9,6 +9,11 @@ var _toast_tween: Tween
 @onready var _toast: PanelContainer = %Toast
 @onready var _toast_label: Label = %ToastLabel
 @onready var _clock: Label = %Clock
+@onready var _fade: ColorRect = %Fade
+
+
+func _enter_tree() -> void:
+	add_to_group("hud")
 
 
 func _ready() -> void:
@@ -19,9 +24,21 @@ func _ready() -> void:
 	Journal.observed.connect(_on_observed)
 	Journal.photographed.connect(_on_photographed)
 	Journal.helped.connect(_on_helped)
-	%ChangeLook.pressed.connect(func() -> void: get_tree().call_group("avatar_creator", "open"))
-	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
-		site.built.connect(_on_built)
+	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
+	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
+	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
+	%LookButton.pressed.connect(get_tree().call_group.bind("avatar_creator", "open"))
+	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
+		build_mode.built.connect(_on_built)
+
+
+## Fades to black, sleeps until morning, fades back in.
+func sleep_through_night() -> void:
+	var tween := create_tween()
+	tween.tween_property(_fade, "color:a", 1.0, 0.6)
+	tween.tween_callback(GameClock.sleep_until_morning)
+	tween.tween_interval(0.4)
+	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 
 
 func _process(_delta: float) -> void:
@@ -29,31 +46,31 @@ func _process(_delta: float) -> void:
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
-	_show_toast("%s collected!\n%s" % [item.display_name, item.fact])
+	show_toast("%s collected!\n%s" % [item.display_name, item.fact])
 
 
 func _on_discovered(animal: AnimalData) -> void:
-	_show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+	show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
 
 
 func _on_observed(animal: AnimalData) -> void:
-	_show_toast("You quietly watched the %s.\nHabitat: %s. Diet: %s." % [
+	show_toast("You quietly watched the %s.\nHabitat: %s. Diet: %s." % [
 		animal.display_name, animal.habitat, animal.diet])
 
 
 func _on_photographed(animal: AnimalData, count: int) -> void:
 	if count == 1:
-		_show_toast("Your first photo of a %s!\n%s" % [animal.display_name, animal.photo_fact])
+		show_toast("Your first photo of a %s!\n%s" % [animal.display_name, animal.photo_fact])
 	else:
-		_show_toast("Photo saved! (%d %s photos)" % [count, animal.display_name])
+		show_toast("Photo saved! (%d %s photos)" % [count, animal.display_name])
 
 
 func _on_helped(animal: AnimalData, _count: int) -> void:
-	_show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
+	show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
 
 
-func _on_built(building: BuildingData) -> void:
-	_show_toast("%s built!\n%s" % [building.display_name, building.fact])
+func _on_built(building: Building) -> void:
+	show_toast("%s built!\n%s" % [building.data.display_name, building.data.fact])
 
 
 func _set_row(item: ItemData, count: int) -> void:
@@ -73,7 +90,7 @@ func _set_row(item: ItemData, count: int) -> void:
 	_labels[item.id].get_parent().visible = count > 0
 
 
-func _show_toast(text: String) -> void:
+func show_toast(text: String) -> void:
 	_toast_label.text = text
 	if _toast_tween:
 		_toast_tween.kill()

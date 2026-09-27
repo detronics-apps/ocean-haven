@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_h2gec"]
+
+[resource]
+script = ExtResource("1_h2gec")
+id = &"patrol_boat"
+display_name = "Patrol Boat"
+description = "Patrols an area you choose and collects the litter that washes in."
+order = 4
+terrain = PackedStringArray("water")
+locked = true
+unlock_hint = "needs a dock."

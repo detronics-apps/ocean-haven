@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_v6kfi"]
+[ext_resource type="Texture2D" path="res://assets/buildings/tent.svg" id="2_ifqt6"]
+
+[resource]
+script = ExtResource("1_v6kfi")
+id = &"tent"
+display_name = "Tent"
+description = "Your first home on the island. Sleep here at night."
+texture = ExtResource("2_ifqt6")
+terrain = PackedStringArray("sand", "grass")
+unique = true
+action = &"sleep"
+fact = "Many conservation rangers live at remote field camps, close to the wildlife they protect."

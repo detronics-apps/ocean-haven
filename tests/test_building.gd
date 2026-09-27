@@ -1,0 +1,92 @@
+extends SceneTree
+## Building: the free tent goes anywhere on land; the sanctuary only on the beach,
+## costs 5 litter and doesn't spawn turtles; no overlaps; the Build menu offers
+## what's buildable and shows locked entries; the Journal lists species; sleeping
+## skips to morning.
+## Run: godot --headless --path . --script res://tests/test_building.gd --quit-after 100000
+
+var _failed := false
+
+
+func _initialize() -> void:
+	await process_frame
+	var inventory := root.get_node("Inventory")  # autoloads: looked up at runtime
+	var journal := root.get_node("Journal")
+	var clock := root.get_node("GameClock")
+	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
+	root.add_child(world)
+	var build_mode: Node = world.get_node("BuildMode")
+	var tent: Resource = load("res://data/buildings/tent.tres")
+	var sanctuary: Resource = load("res://data/buildings/turtle_protection_area.tres")
+
+	# --- Tent: free, anywhere on land, not in the sea ---
+	build_mode.start(tent, true)
+	_expect(not build_mode.can_place(tent, Vector2i(-20, 0)), "tent can't go in the sea")
+	_expect(build_mode.place_at(Vector2i(-1, -1)), "free tent placed on the grass")
+	_expect(_count("tent") == 1, "tent exists")
+
+	# --- Sanctuary: beach only, costs litter, no overlaps, no new turtle ---
+	build_mode.start(sanctuary)
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 3)
+	_expect(not build_mode.can_place(sanctuary, Vector2i(8, -1)), "not enough litter (3 of 5)")
+	inventory.add(load("res://data/items/plastic_bag.tres"), 2)
+	_expect(not build_mode.can_place(sanctuary, Vector2i(-3, -3)), "sanctuary can't go on grass")
+	_expect(not build_mode.can_place(sanctuary, Vector2i(-1, -1)), "can't overlap the tent")
+	_expect(build_mode.place_at(Vector2i(8, -1)), "sanctuary placed on the east beach")
+	_expect(inventory.total() == 0, "litter used up")
+	_expect(_count_animals() == 1, "no turtle spawned by the sanctuary")
+
+	# --- Build menu ---
+	var menu: Node = world.get_node("BuildMenu")
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 5)
+	menu.open()
+	_expect(paused, "menu pauses the game")
+	_expect(menu.find_child("Entry_turtle_protection_area", true, false).find_child("Build", true, false) != null,
+		"affordable building offers Build")
+	_expect(menu.find_child("Entry_house", true, false).find_child("Build", true, false) == null,
+		"locked house can't be built yet")
+	_expect(menu.find_child("Entry_tent", true, false).find_child("Build", true, false) == null,
+		"only one tent")
+	menu.close()
+	_expect(not paused, "closing unpauses")
+
+	# --- Journal ---
+	var screen: Node = world.get_node("JournalScreen")
+	screen.open()
+	_expect(_entry_text(screen, "Entry_green_turtle").contains("???"), "undiscovered species shows ???")
+	screen.close()
+	journal.discover(load("res://data/animals/green_turtle.tres"))
+	screen.open()
+	_expect(_entry_text(screen, "Entry_green_turtle").contains("Green Sea Turtle"), "discovered species listed")
+	screen.close()
+
+	# --- Sleep until morning ---
+	clock.day = 1
+	clock.time_of_day = 0.9
+	_expect(clock.is_night(), "late evening is night")
+	clock.sleep_until_morning()
+	_expect(clock.day == 2 and absf(clock.time_of_day - 0.25) < 0.001, "slept until 6am on Day 2")
+
+	if not _failed:
+		print("PASS")
+	quit(1 if _failed else 0)
+
+
+func _count(id: String) -> int:
+	return get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == id).size()
+
+
+func _count_animals() -> int:
+	return get_nodes_in_group("animals").size()
+
+
+func _entry_text(screen: Node, entry_name: String) -> String:
+	var text := ""
+	for label in screen.find_child(entry_name, true, false).find_children("*", "Label", true, false):
+		text += (label as Label).text + "\n"
+	return text
+
+
+func _expect(ok: bool, what: String) -> void:
+	print("%s: %s" % [what, "ok" if ok else "FAILED"])
+	_failed = _failed or not ok

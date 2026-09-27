@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fob0dexxoica"
-path="res://.godot/imported/build_site.svg-f796641ca24e64d22ad10b6289ba74ce.ctex"
+uid="uid://bxm8epr8pff5c"
+path="res://.godot/imported/tent.svg-2e6fca46000973662f1a5580121c316c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buildings/turtle_sanctuary/build_site.svg"
-dest_files=["res://.godot/imported/build_site.svg-f796641ca24e64d22ad10b6289ba74ce.ctex"]
+source_file="res://assets/buildings/tent.svg"
+dest_files=["res://.godot/imported/tent.svg-2e6fca46000973662f1a5580121c316c.ctex"]
 
 [params]
 

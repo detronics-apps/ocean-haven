@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/journal_screen.gd" id="1_c2k6h"]
+
+[node name="JournalScreen" type="CanvasLayer" unique_id=208451075]
+script = ExtResource("1_c2k6h")

@@ -112,11 +112,11 @@ first sanctuary, day/night, save game. (Plus avatar creator.)
 caring for animals". Build in this order, placeholder art:
 
 1. ✅ Kind turtle interaction: calm approach, observe, photograph, free a tangled turtle
-2. Menu bar (HUD): **Build** (what you can build now, and what's coming later), **Journal**
+2. ✅ Menu bar (HUD): **Build** (what you can build now, and what's coming later), **Journal**
    (every species discovered, with what you've learned), **Change look**
-3. Place-anywhere building from the Build menu; the turtle sanctuary moves to a player-chosen beach spot
+3. ✅ Place-anywhere building from the Build menu; the turtle sanctuary moves to a player-chosen beach spot
 4. Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
-5. Home base: start with a placed tent; upgrade to a house. Interact with it at night to
+5. Home base: ✅ start with a placed tent (house upgrade needs funding, step 6). ✅ Interact with it at night to
    **sleep until morning** (Minecraft-style)
 6. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
 7. Litter keeps washing in

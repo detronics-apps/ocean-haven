@@ -1,13 +1,15 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/buildings/turtle_sanctuary/turtle_protection_area.svg" id="1_5jcrs"]
-[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="2_10cu4"]
-[ext_resource type="Texture2D" path="res://assets/buildings/turtle_sanctuary/build_site.svg" id="3_dgj7q"]
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_akafq"]
+[ext_resource type="Texture2D" path="res://assets/buildings/turtle_sanctuary/turtle_protection_area.svg" id="2_5jcrs"]
 
 [resource]
-script = ExtResource("2_10cu4")
+script = ExtResource("1_akafq")
 id = &"turtle_protection_area"
 display_name = "Turtle Protection Area"
-site_texture = ExtResource("3_dgj7q")
-built_texture = ExtResource("1_5jcrs")
+description = "A fenced, quiet spot on the beach where sea turtles can nest safely."
+order = 1
+texture = ExtResource("2_5jcrs")
+terrain = PackedStringArray("sand")
+cost_litter = 5
 fact = "Protecting nesting beaches gives turtle eggs a safer start. The fence posts are made from the plastic you collected!"
