@@ -28,6 +28,8 @@ func attach(world: Node) -> bool:
 	Journal.discovered.connect(func(_a): _dirty = true)
 	Journal.observed.connect(func(_a): _dirty = true)
 	Journal.photographed.connect(func(_a, _c): _dirty = true)
+	Journal.nested.connect(func(_a): _dirty = true)
+	Journal.hatched.connect(func(_a, _c): _dirty = true)
 	RangerProfile.look_changed.connect(func(): _dirty = true)
 	(world.get_node("BuildMode") as BuildMode).built.connect(func(_b): _dirty = true)
 	return true
@@ -64,6 +66,17 @@ func save_to(world: Node, path: String) -> bool:
 	var buildings: Array[Dictionary] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y]})
+	var nests: Array[Dictionary] = []
+	for nest: Nest in get_tree().get_nodes_in_group("nests"):
+		nests.append({"species": nest.species.id, "pos": [nest.position.x, nest.position.y], "laid_at": nest.laid_at})
+	var young: Array[Dictionary] = []
+	var nest_days := {}
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if animal.young:
+			young.append({"species": animal.data.id, "pos": [animal.position.x, animal.position.y],
+				"home": [animal.home().x, animal.home().y]})
+		else:
+			nest_days[animal.name] = animal.last_nest_day
 	var state := {
 		"version": VERSION,
 		"inventory": Inventory.to_dict(),
@@ -71,6 +84,9 @@ func save_to(world: Node, path: String) -> bool:
 		"journal": Journal.details(),
 		"collected_debris": _collected,
 		"freed_animals": _freed,
+		"nests": nests,
+		"young_animals": young,
+		"nest_days": nest_days,
 		"buildings": buildings,
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
@@ -119,6 +135,31 @@ func load_from(world: Node, path: String) -> bool:
 		var debris := world.get_node_or_null(debris_name)
 		if debris:
 			debris.queue_free()
+	for animal_name: String in state.get("nest_days", {}):
+		var animal := world.get_node_or_null(animal_name)
+		if animal:
+			animal.last_nest_day = int(state["nest_days"][animal_name])
+	for entry: Dictionary in state.get("nests", []):
+		var species := _species(entry.get("species", ""))
+		var pos: Array = entry.get("pos", [])
+		if species and pos.size() == 2:
+			var nest: Nest = load(Animal.NEST_SCENE).instantiate()
+			nest.species = species
+			nest.laid_at = float(entry.get("laid_at", 0.0))
+			nest.position = Vector2(pos[0], pos[1])
+			world.add_child(nest)
+			world.move_child(nest, world.get_node("Player").get_index())
+	for entry: Dictionary in state.get("young_animals", []):
+		var species := _species(entry.get("species", ""))
+		var pos: Array = entry.get("pos", [])
+		var home: Array = entry.get("home", pos)
+		if species and pos.size() == 2 and home.size() == 2:
+			var baby: Animal = load(Nest.ANIMAL_SCENE).instantiate()
+			baby.data = species
+			baby.young = true
+			world.add_child(baby)
+			world.move_child(baby, world.get_node("Player").get_index())
+			baby.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
 	var build_mode: BuildMode = world.get_node("BuildMode")
 	for entry: Dictionary in state.get("buildings", []):
 		var data_path := "res://data/buildings/%s.tres" % entry.get("id", "")
@@ -136,3 +177,8 @@ func load_from(world: Node, path: String) -> bool:
 	if state.get("aboard", false):
 		(world.get_node("Boat") as Boat).restore_aboard()
 	return true
+
+
+func _species(id: String) -> AnimalData:
+	var path := "res://data/animals/%s.tres" % id
+	return load(path) if id and ResourceLoader.exists(path) else null

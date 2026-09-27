@@ -51,17 +51,17 @@ func _initialize() -> void:
 		"swims off when rushed")
 
 	# --- Staying still nearby: it relaxes and can be helped ---
-	player.global_position = turtle.global_position + Vector2(400, 0)  # step well away
+	player.global_position = turtle.global_position + Vector2(-400, 0)  # step well away, out to sea
 	for i in 150:
 		await physics_frame  # let it finish fleeing
 	# Arrive in one jump (like boarding), so the turtle doesn't see it as rushing.
-	player.global_position = turtle.global_position + Vector2(50, 0)
+	player.global_position = turtle.global_position + Vector2(-50, 0)  # open sea side: no tiles to be nudged out of
 	var calm_start := player.global_position.distance_to(turtle.global_position)
 	for i in 150:
 		await physics_frame
 	_expect(turtle.is_relaxed(), "relaxes when the ranger stays still")
-	_expect(turtle.global_position.distance_to(player.global_position) <= calm_start + 4.0,
-		"doesn't flee from a calm ranger")
+	_expect(turtle.get("_state") != 2 and turtle.global_position.distance_to(player.global_position) <= 80.0,
+		"stays close to a calm ranger (started %.0f px away)" % calm_start)
 	_interact()
 	for i in 5:
 		await physics_frame

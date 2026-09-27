@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/nest.gd" id="1_8mlkt"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/nest.svg" id="2_5tu8j"]
+
+[node name="Nest" type="Node2D" unique_id=1086844286]
+script = ExtResource("1_8mlkt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=411770258]
+texture = ExtResource("2_5tu8j")

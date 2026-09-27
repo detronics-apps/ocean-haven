@@ -24,6 +24,8 @@ func _ready() -> void:
 	Journal.observed.connect(_on_observed)
 	Journal.photographed.connect(_on_photographed)
 	Journal.helped.connect(_on_helped)
+	Journal.nested.connect(_on_nested)
+	Journal.hatched.connect(_on_hatched)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
@@ -67,6 +69,14 @@ func _on_photographed(animal: AnimalData, count: int) -> void:
 
 func _on_helped(animal: AnimalData, _count: int) -> void:
 	show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
+
+
+func _on_nested(animal: AnimalData) -> void:
+	show_toast("A %s is nesting on your beach!\n%s" % [animal.display_name, animal.nest_fact])
+
+
+func _on_hatched(animal: AnimalData, count: int) -> void:
+	show_toast("%d hatchlings are heading for the sea!\n%s" % [count, animal.hatch_fact])
 
 
 func _on_built(building: Building) -> void:

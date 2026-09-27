@@ -28,6 +28,8 @@ func _entry(animal: AnimalData) -> Control:
 	var progress := "Photos: %d" % Journal.photos(animal.id)
 	if Journal.helped_count(animal.id) > 0:
 		progress += "    Helped: %d" % Journal.helped_count(animal.id)
+	if Journal.nests(animal.id) > 0:
+		progress += "    Nests: %d    Hatchlings: %d" % [Journal.nests(animal.id), Journal.hatched_count(animal.id)]
 	lines.append(progress)
 	var entry := card(animal.sprite, lines)
 	entry.name = "Entry_" + animal.id

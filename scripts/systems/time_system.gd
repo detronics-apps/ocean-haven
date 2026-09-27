@@ -29,6 +29,11 @@ func advance(seconds: float) -> void:
 		new_day.emit(day)
 
 
+## Days since the game began, e.g. 3.5 = noon on Day 3. For measuring durations.
+func now() -> float:
+	return day + time_of_day
+
+
 func is_night() -> bool:
 	var hour := time_of_day * 24.0
 	return hour >= BEDTIME_HOUR or hour < WAKE_HOUR

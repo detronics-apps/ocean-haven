@@ -6,11 +6,15 @@ signal discovered(animal: AnimalData)
 signal observed(animal: AnimalData)
 signal photographed(animal: AnimalData, count: int)
 signal helped(animal: AnimalData, count: int)
+signal nested(animal: AnimalData)
+signal hatched(animal: AnimalData, count: int)
 
 var _found: Dictionary[StringName, AnimalData] = {}
 var _observed: Dictionary[StringName, bool] = {}
 var _photos: Dictionary[StringName, int] = {}
 var _helped: Dictionary[StringName, int] = {}
+var _nests: Dictionary[StringName, int] = {}
+var _hatched: Dictionary[StringName, int] = {}
 
 
 func discover(animal: AnimalData) -> void:
@@ -53,6 +57,24 @@ func helped_count(id: StringName) -> int:
 	return _helped.get(id, 0)
 
 
+func record_nest(animal: AnimalData) -> void:
+	_nests[animal.id] = nests(animal.id) + 1
+	nested.emit(animal)
+
+
+func nests(id: StringName) -> int:
+	return _nests.get(id, 0)
+
+
+func record_hatch(animal: AnimalData, count: int) -> void:
+	_hatched[animal.id] = hatched_count(animal.id) + count
+	hatched.emit(animal, count)
+
+
+func hatched_count(id: StringName) -> int:
+	return _hatched.get(id, 0)
+
+
 ## Discovered species ids, for the save file.
 func ids() -> Array:
 	return _found.keys()
@@ -60,7 +82,8 @@ func ids() -> Array:
 
 ## Observations, photos and help counts, for the save file.
 func details() -> Dictionary:
-	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate()}
+	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate(),
+		"nests": _nests.duplicate(), "hatched": _hatched.duplicate()}
 
 
 ## Replaces discoveries from a save file (no "new discovery" notes).
@@ -78,7 +101,12 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	var photo_counts: Dictionary = saved_details.get("photos", {})
 	for id in photo_counts:
 		_photos[StringName(id)] = int(photo_counts[id])
-	_helped.clear()
-	var help_counts: Dictionary = saved_details.get("helped", {})
-	for id in help_counts:
-		_helped[StringName(id)] = int(help_counts[id])
+	_restore_counts(_helped, saved_details.get("helped", {}))
+	_restore_counts(_nests, saved_details.get("nests", {}))
+	_restore_counts(_hatched, saved_details.get("hatched", {}))
+
+
+func _restore_counts(into: Dictionary[StringName, int], saved: Dictionary) -> void:
+	into.clear()
+	for id in saved:
+		into[StringName(id)] = int(saved[id])

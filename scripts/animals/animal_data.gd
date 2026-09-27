@@ -36,3 +36,17 @@ extends Resource
 @export var interact_distance := 80.0
 ## Seconds of quiet watching (while relaxed) to count as observed.
 @export var observe_time := 4.0
+
+@export_group("Nesting")
+## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).
+@export var nest_building: StringName
+## Days between nests for one animal.
+@export var nest_interval_days := 2
+## In-game days before eggs hatch (they hatch at night). Real green turtle eggs take about two months.
+@export var incubation_days := 1.0
+## Young that hatch from one nest (a game-sized stand-in for the real clutch).
+@export var hatchlings := 3
+## No more hatch once there are this many of the species.
+@export var max_population := 8
+@export_multiline var nest_fact: String
+@export_multiline var hatch_fact: String

@@ -5,14 +5,19 @@ extends CharacterBody2D
 ## it swim off; staying still nearby lets it relax (curious ones come closer).
 ## Once relaxed, the ranger can quietly observe it, photograph it, or free it if
 ## it's tangled in fishing line. Never touching, chasing or feeding.
+## Species that nest (see AnimalData.nest_building) come ashore at night to lay
+## eggs at the right building; hatchlings crawl to the sea and live there.
 ## Species details come from `data` (an AnimalData .tres).
 
-enum State { REST, SWIM, FLEE, CURIOUS }
+enum State { REST, SWIM, FLEE, CURIOUS, CRAWL, LAY }
 
 ## How long a startled animal swims away before settling.
 const FLEE_SECONDS := 2.0
 ## A ranger "moving" further than this in one frame jumped (boarding, loading) — not rushing.
 const JUMP_DISTANCE := 64.0
+const LAY_SECONDS := 6.0
+# ponytail: every species uses the turtle scene; give AnimalData a scene when a second species needs its own.
+const NEST_SCENE := "res://scenes/animals/nest.tscn"
 
 @export var data: AnimalData
 ## How far from its home spot it wanders.
@@ -21,6 +26,10 @@ const JUMP_DISTANCE := 64.0
 @export var tangled := false
 ## Added to the inventory when the ranger frees it (the line is litter too).
 @export var tangle_item: ItemData
+## A hatchling: smaller, and doesn't nest.
+@export var young := false
+## Day this animal last nested (spaces nests out by nest_interval_days).
+var last_nest_day := -99
 
 var _state := State.REST
 var _target: Vector2
@@ -30,6 +39,10 @@ var _flee_left := 0.0
 var _calm := 0.0
 var _watched := 0.0
 var _last_ranger_pos := Vector2.INF
+var _land_mask: int
+var _lay_left := 0.0
+## What to do on reaching the end of a crawl.
+var _crawl_then: Callable
 
 @onready var _home := global_position
 @onready var _sprite: Sprite2D = $Sprite2D
@@ -45,6 +58,9 @@ func _ready() -> void:
 	_sprite.texture = data.sprite
 	_tangle.visible = tangled
 	_rest_left = randf_range(0.0, data.rest_max)
+	_land_mask = collision_mask
+	if young:
+		_sprite.scale = Vector2(0.5, 0.5)
 
 
 func is_relaxed() -> bool:
@@ -57,15 +73,42 @@ func restore_freed() -> void:
 	_tangle.visible = false
 
 
+## Where it lives (for the save file).
+func home() -> Vector2:
+	return _home
+
+
+## Puts a hatchling back where it was (loading a save). If it was still on the
+## beach, it carries on to the sea.
+func restore_young(pos: Vector2, home_spot: Vector2) -> void:
+	global_position = pos
+	_home = home_spot
+	if Terrain.at(get_tree(), pos) in ["sand", "grass"]:
+		crawl_to_sea()
+
+
+## Heads down the beach into the water (hatchlings, and adults after nesting).
+func crawl_to_sea() -> void:
+	var water := Terrain.nearest(get_tree(), global_position, ["water", ""])
+	# A random spot in that water tile, so hatchlings fan out instead of stacking up.
+	var spread := Vector2(randf_range(-12.0, 12.0), randf_range(-12.0, 12.0))
+	_crawl_to(water + spread, true, _settle_in_water)
+
+
 func _physics_process(delta: float) -> void:
+	if _state == State.CRAWL or _state == State.LAY:
+		_nesting(delta)
+		return
 	_react_to_ranger(delta)
+	_maybe_nest()
 
 	var speed := data.swim_speed * (0.5 if tangled else 1.0)
 	match _state:
 		State.REST:
 			velocity = Vector2.ZERO
 			_rest_left -= delta
-			if _rest_left <= 0.0:
+			# A curious animal stays beside a calm ranger rather than wandering off.
+			if _rest_left <= 0.0 and not (data.curious and is_relaxed()):
 				_swim_to(_pick_target(), State.SWIM)
 			return
 		State.FLEE:
@@ -178,3 +221,81 @@ func _is_land(point: Vector2) -> bool:
 		if tile and tile.get_custom_data("walkable"):
 			return true
 	return false
+
+
+func _maybe_nest() -> void:
+	if young or tangled or data.nest_building == &"" or not GameClock.is_night():
+		return
+	if GameClock.day - last_nest_day < data.nest_interval_days:
+		return
+	var site := _nest_site()
+	if not site:
+		return
+	last_nest_day = GameClock.day
+	var beach_spot := site.global_position + Vector2(randf_range(-12.0, 12.0), randf_range(-8.0, 8.0))
+	# Swim to the water nearest the beach, then crawl up it to lay.
+	var shore := Terrain.nearest(get_tree(), beach_spot, ["water", ""])
+	_crawl_to(shore, false, func() -> void: _crawl_to(beach_spot, true, _lay))
+
+
+func _nest_site() -> Node2D:
+	var best: Node2D = null
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == data.nest_building and (not best
+				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
+			best = building
+	return best
+
+
+## Moves to `point`, over land if `over_land`, then calls `then`.
+func _crawl_to(point: Vector2, over_land: bool, then: Callable) -> void:
+	_state = State.CRAWL
+	_target = point
+	_crawl_then = then
+	collision_mask = 0 if over_land else _land_mask
+
+
+func _nesting(delta: float) -> void:
+	var ranger := ControlledBody.active(get_tree())
+	_hint.visible = not young and ranger != null 		and ranger.global_position.distance_to(global_position) <= data.interact_distance
+	_hint.text = "Shh... she's nesting. Give her space."
+	if _state == State.LAY:
+		_lay_left -= delta
+		if _lay_left <= 0.0:
+			_finish_laying()
+		return
+	var to_target := _target - global_position
+	if to_target.length() < 3.0:
+		_crawl_then.call()
+		return
+	velocity = to_target.normalized() * data.swim_speed * 0.6
+	move_and_slide()
+	_sprite.rotation = lerp_angle(_sprite.rotation, velocity.angle(), 0.1)
+	# ponytail: straight-line route; if land is in the way, it crawls over it. Pathfinding when islands get complex.
+	if collision_mask != 0 and get_real_velocity().length() < 1.0:
+		collision_mask = 0
+
+
+func _lay() -> void:
+	_state = State.LAY
+	_lay_left = LAY_SECONDS
+	velocity = Vector2.ZERO
+	Journal.record_nest(data)
+
+
+func _finish_laying() -> void:
+	var nest: Node2D = load(NEST_SCENE).instantiate()
+	nest.set("species", data)
+	nest.set("laid_at", GameClock.now())
+	nest.position = position
+	var world := get_parent()
+	world.add_child(nest)
+	world.move_child(nest, get_index())  # under the turtle
+	crawl_to_sea()
+
+
+func _settle_in_water() -> void:
+	collision_mask = _land_mask
+	if young:
+		_home = global_position
+	_rest(data.rest_min)

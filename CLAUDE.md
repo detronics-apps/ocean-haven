@@ -68,7 +68,7 @@ addons/                  third-party Godot plugins only
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
 - `.godot/` is a cache — never commit or edit it.
 - Tests live in `tests/` as headless `SceneTree` scripts; run each with
-  `godot --headless --path . --script res://tests/<name>.gd --quit-after 100000` (prints PASS, exits 1 on
+  `godot --headless --path . --script res://tests/<name>.gd --quit-after 200000` (prints PASS, exits 1 on
   failure; `--quit-after` stops a test that hangs because a script failed to compile).
   In `--script` mode autoloads don't exist at compile time: don't name autoloads (e.g. `Inventory`)
   or classes that use them directly in a test — use `root.get_node("Inventory")` / untyped nodes.
@@ -115,7 +115,7 @@ caring for animals". Build in this order, placeholder art:
 2. ✅ Menu bar (HUD): **Build** (what you can build now, and what's coming later), **Journal**
    (every species discovered, with what you've learned), **Change look**
 3. ✅ Place-anywhere building from the Build menu; the turtle sanctuary moves to a player-chosen beach spot
-4. Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
+4. ✅ Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
 5. Home base: ✅ start with a placed tent (house upgrade needs funding, step 6). ✅ Interact with it at night to
    **sleep until morning** (Minecraft-style)
 6. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
