@@ -50,7 +50,5 @@ extends Resource
 @export var incubation_days := 1.0
 ## Young that hatch from one nest (a game-sized stand-in for the real clutch).
 @export var hatchlings := 3
-## No more hatch once there are this many of the species.
-@export var max_population := 8
 @export_multiline var nest_fact: String
 @export_multiline var hatch_fact: String

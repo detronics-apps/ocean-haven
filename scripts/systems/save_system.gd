@@ -79,6 +79,8 @@ func save_to(world: Node, path: String) -> bool:
 	var young: Array[Dictionary] = []
 	var nest_days := {}
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if animal.leaving:
+			continue  # already heading out to sea
 		if animal.young:
 			young.append({"species": animal.data.id, "pos": [animal.position.x, animal.position.y],
 				"home": [animal.home().x, animal.home().y]})

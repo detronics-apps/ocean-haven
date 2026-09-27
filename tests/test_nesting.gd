@@ -62,6 +62,25 @@ func _initialize() -> void:
 	var all_in_sea := young.all(func(a: Node2D) -> bool: return _terrain(a.global_position) in ["water", ""])
 	_expect(all_in_sea, "hatchlings reached the sea")
 
+	# --- The area is full (4 turtles): the next hatchlings head out to sea ---
+	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
+	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
+	nest.set("species", turtle_data)
+	nest.position = Vector2(288, 0)
+	world.add_child(nest)
+	nest.hatch()
+	await physics_frame
+	var leavers := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving)
+	_expect(leavers.size() == 3, "no room: all 3 new hatchlings head for the open ocean")
+	_expect(journal.hatched_count(&"green_turtle") == 6, "they still count as hatchlings (6)")
+	for i in 900:
+		await physics_frame
+		clock.time_of_day = 0.85
+		if get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving).is_empty():
+			break
+	var turtles := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data == turtle_data)
+	_expect(turtles.size() == 4, "the area keeps 4 turtles; the rest swam out of the play area (%d left)" % turtles.size())
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

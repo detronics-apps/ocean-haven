@@ -26,6 +26,10 @@ extends Resource
 @export var visitors_per_animal := 0
 ## Only one of these can exist (e.g. your home).
 @export var unique := false
+## At most this many can exist (0 = no limit).
+@export var max_count := 0
+## How many of the animals that nest here it can hold at once (0 = none).
+@export var animal_capacity := 0
 ## Shown in the Build menu but can't be built yet.
 @export var locked := false
 ## Why it's locked / what unlocks it.

@@ -69,7 +69,16 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return false
-	return has_requirement(data) and (_free or can_afford(data))
+	return has_requirement(data) and not at_limit(data) and (_free or can_afford(data))
+
+
+## Whether as many of `data` exist as are allowed.
+func at_limit(data: BuildingData) -> bool:
+	var limit := 1 if data.unique else data.max_count
+	if limit <= 0:
+		return false
+	return get_tree().get_nodes_in_group("buildings").filter(
+		func(b: Building) -> bool: return b.data.id == data.id).size() >= limit
 
 
 ## Whether whatever `data` depends on (e.g. a dock) has been built.

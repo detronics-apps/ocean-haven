@@ -18,6 +18,8 @@ const JUMP_DISTANCE := 64.0
 const LAY_SECONDS := 6.0
 ## Physics layers: sea animals are blocked by land, land animals by water.
 const WATER_LAYER := 1
+## Leaving hatchlings are gone once this far from the middle of the world.
+const OPEN_OCEAN_DISTANCE := 900.0
 const LAND_LAYER := 4
 const NEST_SCENE := "res://scenes/animals/nest.tscn"
 
@@ -30,6 +32,8 @@ const NEST_SCENE := "res://scenes/animals/nest.tscn"
 @export var tangle_item: ItemData
 ## A hatchling: smaller, and doesn't nest.
 @export var young := false
+## A hatchling with no room at home: once in the water it swims off into the open ocean.
+@export var leaving := false
 ## Day this animal last nested (spaces nests out by nest_interval_days).
 var last_nest_day := -99
 
@@ -102,6 +106,9 @@ func crawl_to_sea() -> void:
 func _physics_process(delta: float) -> void:
 	if _state == State.CRAWL or _state == State.LAY:
 		_nesting(delta)
+		return
+	if leaving:
+		_swim_out_to_sea()
 		return
 	_react_to_ranger(delta)
 	_maybe_nest()
@@ -317,8 +324,23 @@ func _finish_laying() -> void:
 	crawl_to_sea()
 
 
+## The hatchling "swimming frenzy": straight out to sea, away from the island,
+## until it's out of the play area.
+func _swim_out_to_sea() -> void:
+	if global_position.length() > OPEN_OCEAN_DISTANCE:
+		queue_free()
+		return
+	collision_mask = 0  # heading away from the island, so nothing's in the way
+	velocity = global_position.normalized() * data.swim_speed * 2.0
+	move_and_slide()
+	_face(velocity)
+
+
 func _settle_in_water() -> void:
 	collision_mask = _land_mask
+	if leaving:
+		_state = State.SWIM
+		return
 	if young:
 		_home = global_position
 	_rest(data.rest_min)

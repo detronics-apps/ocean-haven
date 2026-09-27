@@ -60,16 +60,27 @@ func _initialize() -> void:
 	_expect(build_mode.place_at(Vector2i(8, -1)), "sanctuary placed on the east beach")
 	_expect(inventory.total() == 0, "litter used up")
 	_expect(_count_animals() == animals_before, "no turtle spawned by the sanctuary")
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 20)
+	build_mode.start(sanctuary)
+	_expect(build_mode.place_at(Vector2i(-3, 4)), "second protection area")
+	build_mode.start(sanctuary)
+	_expect(build_mode.place_at(Vector2i(2, 4)), "third protection area")
+	build_mode.start(sanctuary)
+	_expect(not build_mode.can_place(sanctuary, Vector2i(-5, -5)), "no more than 3 protection areas")
+	build_mode.cancel()
+	inventory.take(inventory.total())
 
 	# --- Build menu ---
 	var menu: Node = world.get_node("BuildMenu")
-	inventory.add(load("res://data/items/plastic_bottle.tres"), 5)
+	root.get_node("Funding").restore({"balance": 150})
 	menu.open()
 	_expect(paused, "menu pauses the game")
-	_expect(menu.find_child("Entry_turtle_protection_area", true, false).find_child("Build", true, false) != null,
+	_expect(menu.find_child("Entry_dock", true, false).find_child("Build", true, false) != null,
 		"affordable building offers Build")
+	_expect(_entry_text(menu, "Entry_turtle_protection_area").contains("as many as you can"),
+		"protection areas at their limit say so")
 	_expect(menu.find_child("Entry_house", true, false).find_child("Build", true, false) == null,
-		"locked house can't be built yet")
+		"house can't be built without the litter it needs")
 	_expect(menu.find_child("Entry_tent", true, false).find_child("Build", true, false) == null,
 		"only one tent")
 	menu.close()

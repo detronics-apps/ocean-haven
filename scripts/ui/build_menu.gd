@@ -27,6 +27,8 @@ func _entry(data: BuildingData) -> Control:
 		status = "Coming later: " + data.unlock_hint
 	elif data.unique and _exists(data.id):
 		status = "Already built."
+	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
+		status = "You've built as many as you can (%d)." % data.max_count
 	elif data.requires and not _exists(data.requires):
 		status = "Build a %s first." % data.requires
 	else:

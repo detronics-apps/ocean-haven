@@ -7,11 +7,13 @@
 script = ExtResource("1_akafq")
 id = &"turtle_protection_area"
 display_name = "Turtle Protection Area"
-description = "A fenced, quiet spot on the beach where sea turtles can nest safely."
+description = "A fenced, quiet spot on the beach where sea turtles can nest safely. Each one is home to up to 4 turtles."
 order = 1
 texture = ExtResource("2_5jcrs")
 terrain = PackedStringArray("sand")
 cost_litter = 5
 visitors = 20
 visitors_per_animal = 10
+max_count = 3
+animal_capacity = 4
 fact = "Protecting nesting beaches gives turtle eggs a safer start. The fence posts are made from the plastic you collected!"
