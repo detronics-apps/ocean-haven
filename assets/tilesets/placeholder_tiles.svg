@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="32" viewBox="0 0 96 32" shape-rendering="crispEdges">
+  <!-- Placeholder 32x32 tiles, "damaged ocean" palette: shallow water, sand, grass -->
+  <rect x="0" y="0" width="32" height="32" fill="#46707a"/>
+  <rect x="1" y="1" width="30" height="30" fill="#4f7a80"/>
+  <rect x="32" y="0" width="32" height="32" fill="#a89b7d"/>
+  <rect x="33" y="1" width="30" height="30" fill="#b8ab8c"/>
+  <rect x="64" y="0" width="32" height="32" fill="#5f714c"/>
+  <rect x="65" y="1" width="30" height="30" fill="#6b7f55"/>
+</svg>

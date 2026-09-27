@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/islands/starter_island.tscn" id="1_jdf47"]
+
+[node name="OceanWorld" type="Node2D" unique_id=122976242]
+
+[node name="StarterIsland" type="Node2D" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1454951282]
