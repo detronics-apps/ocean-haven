@@ -38,6 +38,10 @@ extends Resource
 @export var requires: StringName
 ## Added as a child when it's built or loaded (e.g. the patrol buoy's boat).
 @export var spawns: PackedScene
+## A walkway over the water (dock planks): the ranger can walk on it, boats bump into it.
+@export var deck := false
+## Must touch the shore or another deck, so walkways grow out from the land.
+@export var connects_to_shore := false
 ## What interacting with it does: "" (nothing) or "sleep".
 @export var action: StringName
 ## Short, accurate fact shown when it's built.

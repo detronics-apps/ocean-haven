@@ -5,9 +5,14 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rcfvu"]
 texture = ExtResource("1_lfi4b")
 texture_region_size = Vector2i(32, 32)
+0:0/next_alternative_id = 2
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 0:0/0/custom_data_1 = "water"
+0:0/1 = 1
+0:0/1/physics_layer_1/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/1/custom_data_0 = true
+0:0/1/custom_data_1 = "water"
 1:0/0 = 0
 1:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0/custom_data_0 = true

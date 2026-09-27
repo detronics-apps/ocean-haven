@@ -2,7 +2,7 @@ extends SceneTree
 ## Funding: visitors to the turtle area pay each morning (more turtles, more
 ## visitors); one paid research photo per species per day; a one-off grant for the
 ## first hatchlings. The house costs funding + litter and replaces the tent; the
-## dock costs funding and only goes in the shallows.
+## dock (a plank) costs funding and must connect to the shore.
 ## Run: godot --headless --path . --script res://tests/test_funding.gd --quit-after 200000
 
 var _failed := false
@@ -63,9 +63,9 @@ func _initialize() -> void:
 	funding.earn(200, "test")
 	build_mode.start(dock)
 	_expect(not build_mode.can_place(dock, Vector2i(-3, -3)), "dock can't go on grass")
-	_expect(not build_mode.can_place(dock, Vector2i(-30, 0)), "dock can't go in the open ocean")
-	_expect(build_mode.place_at(Vector2i(-1, 6)), "dock built in the shallows")
-	_expect(funding.balance == 60, "dock cost 150 funding (left %d)" % funding.balance)
+	_expect(not build_mode.can_place(dock, Vector2i(-30, 0)), "a dock plank must connect to the shore")
+	_expect(build_mode.place_at(Vector2i(0, 2)), "dock plank built at the lagoon beach")
+	_expect(funding.balance == 190, "a dock plank costs 20 funding (left %d)" % funding.balance)
 	_expect(not funding.spend(1000), "can't overspend")
 
 	if not _failed:

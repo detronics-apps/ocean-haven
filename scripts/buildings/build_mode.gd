@@ -59,6 +59,8 @@ func start_move(building: Building) -> void:
 	_moving = building
 	building.visible = false
 	building.remove_from_group("buildings")  # so it doesn't block its own new spot
+	if building.data.deck:
+		building._lift_deck()  # nor count as the walkway it connects to
 	start(building.data, true)
 	_cancel.visible = true
 
@@ -74,6 +76,8 @@ func cancel() -> void:
 
 
 func _finish_move() -> void:
+	if _moving.data.deck:
+		_moving.move_to(_moving.cell)  # lay its deck again (where it was, if cancelled)
 	_moving.visible = true
 	_moving.add_to_group("buildings")
 	_moving = null
@@ -92,7 +96,24 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return false
+	if data.connects_to_shore and not _touches_walkable(footprint):
+		return false
+	if data.deck:
+		for boat: Node2D in get_tree().get_nodes_in_group("boat"):
+			if footprint.has_point(Terrain.cell_of(boat.global_position)):
+				return false  # a deck would trap the boat
 	return has_requirement(data) and not at_limit(data) and (_free or can_afford(data))
+
+
+## Whether any tile right next to `footprint` (not diagonally) can be walked on.
+func _touches_walkable(footprint: Rect2i) -> bool:
+	for x in range(footprint.position.x, footprint.end.x):
+		for y in range(footprint.position.y, footprint.end.y):
+			for step in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+				var next: Vector2i = Vector2i(x, y) + step
+				if not footprint.has_point(next) and Terrain.walkable(get_tree(), Terrain.centre_of(next)):
+					return true
+	return false
 
 
 ## Whether as many of `data` exist as are allowed.
@@ -150,10 +171,12 @@ func place() -> bool:
 			old.queue_free()
 			old.remove_from_group("buildings")  # gone for saving and overlap checks right away
 	var building := add_building(_data, _cell)
-	_data = null
-	_free = false
-	_show(false)
 	built.emit(building)
+	# Keep going with another of the same (e.g. a row of dock planks) until Cancel.
+	if _free or _data.unique or at_limit(_data) or not can_afford(_data):
+		_data = null
+		_free = false
+		_show(false)
 	return true
 
 

@@ -13,6 +13,23 @@ static func at(tree: SceneTree, point: Vector2) -> String:
 	return ""
 
 
+## Whether the ranger can stand at `point`: land, or a deck built over the water.
+static func walkable(tree: SceneTree, point: Vector2) -> bool:
+	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
+		if tile:
+			return tile.get_custom_data("walkable")
+	return false
+
+
+## The island ground layer covering `point`, or close to it (for building out over the sea).
+static func ground_near(tree: SceneTree, point: Vector2) -> TileMapLayer:
+	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+		if ground.get_used_rect().grow(6).has_point(ground.local_to_map(ground.to_local(point))):
+			return ground
+	return null
+
+
 ## Centre of the nearest tile (searching outwards from `point`) whose terrain is
 ## one of `kinds` ("" = open ocean). Returns `point` if none is close.
 static func nearest(tree: SceneTree, point: Vector2, kinds: Array, max_rings := 12) -> Vector2:

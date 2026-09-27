@@ -10,9 +10,15 @@ extends Node2D
 ## How close the ranger must come to collect waiting donations.
 @export var collect_range := 72.0
 
+## The water tile variant that makes a walkable deck (see the tileset).
+const WATER_TILE := Vector2i(0, 0)
+const DECK_ALTERNATIVE := 1
+
 ## Visitor donations waiting to be collected here.
 var pending_funds := 0
 var _bob := 0.0
+## Decks: the tiles they replaced, to put back if moved. World cell -> [ground, local cell, source, atlas, alt].
+var _deck_tiles: Dictionary = {}
 
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _hint: Label = $Hint
@@ -27,6 +33,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	move_to(cell)
 	_sprite.texture = data.texture
+	if data.deck:
+		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
 	if data.spawns:
 		add_child(data.spawns.instantiate())
 	_coin.visible = false
@@ -34,8 +42,44 @@ func _ready() -> void:
 
 ## Puts it with its top-left footprint tile at `new_cell`.
 func move_to(new_cell: Vector2i) -> void:
+	if data.deck:
+		_lift_deck()
 	cell = new_cell
 	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
+	if data.deck:
+		_lay_deck()
+
+
+func _exit_tree() -> void:
+	if data.deck:
+		_lift_deck()
+
+
+## Turns the water under its footprint into walkable deck (adding a tile out at sea).
+func _lay_deck() -> void:
+	for x in data.size.x:
+		for y in data.size.y:
+			var centre := Terrain.centre_of(cell + Vector2i(x, y))
+			var ground := Terrain.ground_near(get_tree(), centre)
+			if not ground:
+				continue
+			var local := ground.local_to_map(ground.to_local(centre))
+			_deck_tiles[cell + Vector2i(x, y)] = [ground, local, ground.get_cell_source_id(local),
+				ground.get_cell_atlas_coords(local), ground.get_cell_alternative_tile(local)]
+			ground.set_cell(local, 0, WATER_TILE, DECK_ALTERNATIVE)
+
+
+## Puts back the tiles the deck replaced.
+func _lift_deck() -> void:
+	for entry: Array in _deck_tiles.values():
+		var ground: TileMapLayer = entry[0]
+		if not is_instance_valid(ground):
+			continue
+		if entry[2] == -1:
+			ground.erase_cell(entry[1])
+		else:
+			ground.set_cell(entry[1], entry[2], entry[3], entry[4])
+	_deck_tiles.clear()
 
 
 ## What the ranger can do here right now, for the action bar: [{label, do}].

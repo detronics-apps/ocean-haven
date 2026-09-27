@@ -1,17 +1,18 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3]
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_2xdux"]
-[ext_resource type="Texture2D" path="res://assets/buildings/dock.svg" id="2_y8nj1"]
+[ext_resource type="Texture2D" path="res://assets/buildings/dock_plank.svg" id="2_y8nj1"]
 
 [resource]
 script = ExtResource("1_2xdux")
 id = &"dock"
 display_name = "Dock"
-description = "Built in the shallows. Patrol boats set out from here."
+description = "Wooden planks you can walk on. Build a row of them to make a jetty out into the sea; boats moor alongside. Patrol and expedition boats need one."
 order = 3
 texture = ExtResource("2_y8nj1")
-size = Vector2i(2, 1)
-terrain = PackedStringArray("water")
-cost_funding = 150
-unique = true
+size = Vector2i(1, 1)
+terrain = PackedStringArray("water", "")
+cost_funding = 20
+deck = true
+connects_to_shore = true
 fact = "A dock lets boats tie up without dragging anchors across the seabed."
