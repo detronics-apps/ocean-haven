@@ -74,6 +74,7 @@ var _crawl_then: Callable
 
 func _enter_tree() -> void:
 	add_to_group("animals")
+	add_to_group("interactables")
 
 
 func _ready() -> void:
@@ -280,6 +281,14 @@ func _input(event: InputEvent) -> void:
 ## Curious and relaxed, and hasn't had enough of the ranger's company yet.
 func _keeping_company() -> bool:
 	return data.curious and is_relaxed() and _company < CURIOUS_SECONDS
+
+
+## What the ranger can do with it right now, for the action bar: [{label, do}].
+func actions() -> Array:
+	if not can_interact():
+		return []
+	var verb := "Free the %s" % data.display_name if tangled else "Photo: %s" % data.display_name
+	return [{"label": verb, "do": _interact, "helps": tangled}]
 
 
 ## Relaxed and close enough for the ranger to observe, photograph or help it.

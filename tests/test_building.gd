@@ -54,8 +54,8 @@ func _initialize() -> void:
 	player.global_position = tent_node.global_position + Vector2(-40, 20)
 	await process_frame
 	await process_frame
-	var move_button: Button = world.get_node("HUD").get_node("MoveButton")
-	_expect(move_button.visible and move_button.text == "Move Tent", "a 'Move Tent' button appears next to it")
+	var labels: Array = world.get_node("HUD").get_node("ActionBar").get_children().map(func(b: Button) -> String: return b.text)
+	_expect("Move Tent" in labels, "a 'Move Tent' button appears in the action bar (%s)" % [labels])
 	build_mode.start_move(tent_node)
 	_expect(build_mode.place_at(Vector2i(-3, -3)), "tent moved to a new spot")
 	_expect(tent_node.cell == Vector2i(-3, -3) and tent_node.visible and _count("tent") == 1, "it's there, still just one tent")

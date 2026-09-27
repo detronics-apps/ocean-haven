@@ -21,6 +21,7 @@ var _bob := 0.0
 
 func _enter_tree() -> void:
 	add_to_group("buildings")
+	add_to_group("interactables")
 
 
 func _ready() -> void:
@@ -35,6 +36,18 @@ func _ready() -> void:
 func move_to(new_cell: Vector2i) -> void:
 	cell = new_cell
 	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
+
+
+## What the ranger can do here right now, for the action bar: [{label, do}].
+func actions() -> Array:
+	var build_mode: BuildMode = get_tree().get_first_node_in_group("build_mode")
+	if not ranger_is_near() or (build_mode and build_mode.is_active()) or not visible:
+		return []
+	var list := []
+	if data.action == &"sleep" and GameClock.is_night():
+		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
+	list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
+	return list
 
 
 ## Whether the ranger (on foot) is standing next to it.

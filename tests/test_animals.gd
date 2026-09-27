@@ -80,6 +80,12 @@ func _initialize() -> void:
 	for i in 150:
 		await physics_frame
 	var journal_before: int = root.get_node("Journal").photos(&"bottlenose_dolphin")
+	await process_frame
+	var bar: Node = world.get_node("HUD/ActionBar")
+	var labels: Array = bar.get_children().map(func(b: Button) -> String: return b.text)
+	_expect("Free the Bottlenose Dolphin" in labels and "Photo: Bottlenose Dolphin" in labels
+		and labels[0] == "Free the Bottlenose Dolphin",
+		"action bar offers both, helping first: %s" % [labels])
 	var e := InputEventAction.new()
 	e.action = &"interact"
 	e.pressed = true
@@ -88,6 +94,12 @@ func _initialize() -> void:
 		await physics_frame
 	_expect(not caught.tangled, "E frees the tangled dolphin first")
 	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before, "not a photo of the other one")
+	await process_frame
+	await process_frame
+	for button: Button in bar.get_children():
+		if button.text == "Photo: Bottlenose Dolphin":
+			button.pressed.emit()
+	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before + 1, "the Photo button takes a photo")
 
 	# --- A trusting dolphin leads you to litter ---
 	var guide: Node2D = world.get_node("Dolphin1")

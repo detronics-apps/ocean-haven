@@ -12,7 +12,9 @@ var _toast_queue: Array[String] = []
 @onready var _toast_label: Label = %ToastLabel
 @onready var _clock: Label = %Clock
 @onready var _fade: ColorRect = %Fade
-var _move_button: Button
+## Buttons for what the ranger can do nearby (top centre).
+var _action_bar: HBoxContainer
+var _shown_actions: Array[String] = []
 
 
 func _enter_tree() -> void:
@@ -45,21 +47,14 @@ func _ready() -> void:
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
-	_move_button = Button.new()
-	_move_button.name = "MoveButton"
-	_move_button.focus_mode = Control.FOCUS_NONE
-	_move_button.custom_minimum_size = Vector2(140, 48)
-	_move_button.anchor_left = 1.0
-	_move_button.anchor_right = 1.0
-	_move_button.anchor_top = 1.0
-	_move_button.anchor_bottom = 1.0
-	_move_button.offset_left = -156
-	_move_button.offset_right = -16
-	_move_button.offset_top = -64
-	_move_button.offset_bottom = -16
-	_move_button.visible = false
-	_move_button.pressed.connect(_on_move_pressed)
-	add_child(_move_button)
+	_action_bar = HBoxContainer.new()
+	_action_bar.name = "ActionBar"
+	_action_bar.anchor_left = 0.5
+	_action_bar.anchor_right = 0.5
+	_action_bar.offset_top = 12
+	_action_bar.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_action_bar.add_theme_constant_override("separation", 10)
+	add_child(_action_bar)
 
 
 ## Fades out, sails to `region` (the ranger arrives there with their rowboat), fades in.
@@ -81,28 +76,42 @@ func sleep_through_night() -> void:
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 
 
-## The building next to the ranger that could be moved (none while placing something).
-func _movable_building() -> Building:
-	var build_mode: BuildMode = get_tree().get_first_node_in_group("build_mode")
-	if build_mode and build_mode.is_active():
-		return null
-	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.ranger_is_near():
-			return building
-	return null
+## Everything the ranger can do nearby: helping an animal first, at most 4, no repeats.
+func nearby_actions() -> Array:
+	var helps := []
+	var others := []
+	var seen := {}
+	for thing: Node in get_tree().get_nodes_in_group("interactables"):
+		for action: Dictionary in thing.actions():
+			if seen.has(action.label):
+				continue
+			seen[action.label] = true
+			(helps if action.get("helps", false) else others).append(action)
+	return (helps + others).slice(0, 4)
 
 
-func _on_move_pressed() -> void:
-	var building := _movable_building()
-	if building:
-		get_tree().get_first_node_in_group("build_mode").start_move(building)
+func _update_action_bar() -> void:
+	var actions := nearby_actions()
+	var labels: Array[String] = []
+	for action: Dictionary in actions:
+		labels.append(action.label)
+	if labels == _shown_actions:
+		return
+	_shown_actions = labels
+	for button in _action_bar.get_children():
+		button.queue_free()
+	for action: Dictionary in actions:
+		var button := Button.new()
+		button.text = action.label
+		button.focus_mode = Control.FOCUS_NONE
+		button.custom_minimum_size = Vector2(150, 52)
+		button.add_theme_font_size_override("font_size", 18)
+		button.pressed.connect(action.do)
+		_action_bar.add_child(button)
 
 
 func _process(_delta: float) -> void:
-	var movable := _movable_building()
-	_move_button.visible = movable != null
-	if movable:
-		_move_button.text = "Move " + movable.data.display_name
+	_update_action_bar()
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
 
 

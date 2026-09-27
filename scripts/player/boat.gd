@@ -15,6 +15,7 @@ var _warned_far := false
 
 func _ready() -> void:
 	add_to_group("boat")
+	add_to_group("interactables")
 	_player = get_tree().get_first_node_in_group("player")
 	RangerProfile.look_changed.connect(_apply_colour)
 	_apply_colour()
@@ -57,6 +58,15 @@ func _process(_delta: float) -> void:
 	else:
 		_hint.text = "E / tap boat: board"
 		_hint.visible = _player_in_range()
+
+
+## What the ranger can do with the boat right now, for the action bar: [{label, do}].
+func actions() -> Array:
+	if controlled and _shore_spot() != null:
+		return [{"label": "Go ashore", "do": _go_ashore}]
+	if not controlled and _player_in_range():
+		return [{"label": "Board boat", "do": _board}]
+	return []
 
 
 func _toggle() -> bool:
