@@ -39,6 +39,21 @@ func _initialize() -> void:
 	if laid:
 		var nest: Node2D = get_nodes_in_group("nests")[0]
 		_expect(_terrain(nest.global_position) == "sand", "nest is on the beach")
+		# Progress bar: shows when the ranger stands by the nest, hidden when away.
+		var bar: ProgressBar = nest.get("_bar")
+		world.get_node("Player").global_position = nest.global_position + Vector2(-30, 0)
+		await process_frame
+		await process_frame  # the frame signal fires before nodes update
+		_expect(bar.visible and bar.value < 5.0, "egg progress bar shows at the nest (%.0f%%)" % bar.value)
+		clock.time_of_day = 0.35  # next morning: half the incubation gone
+		clock.day = 2
+		await process_frame
+		_expect(bar.value > 40.0 and bar.value < 60.0, "progress goes up with time (%.0f%%)" % bar.value)
+		clock.day = 1
+		clock.time_of_day = 0.85
+		world.get_node("Player").global_position = Vector2(-600, 400)
+		await process_frame
+		_expect(not bar.visible, "bar hidden when the ranger walks away")
 	var back := false
 	for i in 900:
 		await physics_frame
