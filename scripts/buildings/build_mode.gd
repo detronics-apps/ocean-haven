@@ -129,7 +129,12 @@ func place() -> bool:
 	if not _data or not can_place(_data, _cell):
 		return false
 	if _moving:
+		var old_position := _moving.global_position
 		_moving.move_to(_cell)
+		# Eggs laid in a protection area move with it.
+		for nest: Node2D in get_tree().get_nodes_in_group("nests"):
+			if nest.get("area") == _moving:
+				nest.global_position += _moving.global_position - old_position
 		_finish_move()
 		_data = null
 		_free = false

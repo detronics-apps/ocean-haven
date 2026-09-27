@@ -87,6 +87,23 @@ func _initialize() -> void:
 	build_mode.cancel()
 	inventory.take(inventory.total())
 
+	# --- Moving a protection area takes its eggs along ---
+	var east_area: Node2D = get_nodes_in_group("buildings").filter(
+		func(b: Node) -> bool: return b.data.id == &"turtle_protection_area" and b.cell == Vector2i(14, -1))[0]
+	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
+	nest.set("species", load("res://data/animals/green_turtle.tres"))
+	nest.set("laid_at", 1000.0)  # far from hatching
+	nest.set("area", east_area)
+	nest.global_position = east_area.global_position + Vector2(6, 4)
+	world.add_child(nest)
+	build_mode.start_move(east_area)
+	build_mode.place_at(Vector2i(-15, -1))  # the west beach
+	_expect(nest.global_position.distance_to(east_area.global_position + Vector2(6, 4)) < 0.1,
+		"the eggs moved with their protection area")
+	build_mode.start_move(east_area)
+	build_mode.place_at(Vector2i(14, -1))
+	nest.free()
+
 	# --- Build menu ---
 	var menu: Node = world.get_node("BuildMenu")
 	root.get_node("Funding").restore({"balance": 150})
