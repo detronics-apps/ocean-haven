@@ -20,9 +20,9 @@ func _initialize() -> void:
 	funding.earn(1000, "test")
 
 	build_mode.start(patrol)
-	_expect(not build_mode.can_place(patrol, Vector2i(-20, 0)), "needs a dock first")
+	_expect(not build_mode.can_place(patrol, Vector2i(-24, 0)), "needs a dock first")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
-	_expect(build_mode.place_at(Vector2i(-20, 0)), "buoy placed in the open sea")
+	_expect(build_mode.place_at(Vector2i(-24, 0)), "buoy placed in the open sea")
 	var buoy: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"patrol_boat")[0]
 	var boat: Node2D = buoy.get_node("PatrolBoat")
 	var hull: Node2D = boat.get_node("Hull")

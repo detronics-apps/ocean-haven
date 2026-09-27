@@ -13,10 +13,10 @@ func _initialize() -> void:
 	var clock := root.get_node("GameClock")
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
-	world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
+	world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
 	var turtle: Node2D = world.get_node("GreenTurtle")  # untyped: Animal uses autoloads
 	turtle.restore_freed()
-	turtle.global_position = Vector2(400, 16)  # in the water off the east beach
+	turtle.global_position = Vector2(590, 16)  # in the water off the east beach
 	world.get_node("Player").global_position = Vector2(-600, 400)  # far away
 
 	# --- Daytime: no nesting ---
@@ -81,7 +81,7 @@ func _initialize() -> void:
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
 	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
 	nest.set("species", turtle_data)
-	nest.position = Vector2(288, 0)
+	nest.position = Vector2(480, 0)
 	world.add_child(nest)
 	nest.hatch()
 	await physics_frame

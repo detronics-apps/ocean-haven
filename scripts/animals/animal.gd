@@ -322,8 +322,10 @@ func _pick_target() -> Vector2:
 ## instead of into the sea's edge).
 func _flee_spot(danger: Vector2) -> Vector2:
 	var away := danger.direction_to(global_position)
-	for attempt in 12:
-		var spot := global_position + away.rotated(randf_range(-1.2, 1.2)) * randf_range(48.0, 96.0)
+	# Mostly straight away, but on a narrow beach that's the sea: then along the shore.
+	for attempt in 24:
+		var spread := 1.2 if attempt < 8 else 1.7
+		var spot := global_position + away.rotated(randf_range(-spread, spread)) * randf_range(40.0, 112.0)
 		if in_habitat(spot) and spot.distance_to(danger) > global_position.distance_to(danger):
 			return spot
 	return global_position + away * 96.0

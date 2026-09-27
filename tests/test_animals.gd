@@ -16,7 +16,7 @@ func _initialize() -> void:
 	var player: Node2D = world.get_node("Player")
 	var dolphins := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == &"bottlenose_dolphin")
 	var crabs := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == &"ghost_crab")
-	_expect(dolphins.size() == 3 and crabs.size() >= 4, "a dolphin pod and crabs live here")
+	_expect(dolphins.size() == 3 and crabs.size() == 2, "a dolphin pod and two crabs live here")
 	player.global_position = Vector2(-2000, 2000)  # far away while they wander
 	for d in get_nodes_in_group("debris"):
 		d.free()  # no litter about, so dolphins don't go guiding yet
@@ -52,7 +52,7 @@ func _initialize() -> void:
 
 	# --- Rushing at a crab sends it scuttling off ---
 	var crab: Node2D = crabs[0]
-	player.global_position = crab.global_position + Vector2(150, 0)
+	player.global_position = crab.global_position + crab.global_position.direction_to(Vector2.ZERO) * 150.0  # from inland
 	await physics_frame
 	var crab_fled := false
 	for i in 90:

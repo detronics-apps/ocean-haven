@@ -23,7 +23,7 @@ func _initialize() -> void:
 	# --- Visitors ---
 	clock.sleep_until_morning()
 	_expect(funding.balance == 0, "no visitors without a protected beach")
-	var area: Node2D = build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
+	var area: Node2D = build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
 	clock.day = 1
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()

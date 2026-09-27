@@ -3,7 +3,7 @@ extends ControlledBody
 ## The ranger's boat: board it from the shore, sail on water, go ashore next to land.
 ## Board / go ashore with the interact action or by tapping the boat.
 
-@export var board_range := 48.0
+@export var board_range := 64.0
 
 var _player: Player
 var _driver: Node2D

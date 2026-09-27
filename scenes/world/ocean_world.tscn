@@ -45,63 +45,63 @@ colors = SubResource("Gradient_1xntt")
 y_sort_enabled = true
 
 [node name="Debris1" type="Area2D" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
-position = Vector2(-520, -150)
+position = Vector2(-605.9138, -163.62244)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
 [node name="Debris2" type="Area2D" parent="." unique_id=74407063 instance=ExtResource("2_mbqjn")]
-position = Vector2(480, -260)
+position = Vector2(558.4132, -239.2)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
 [node name="Debris3" type="Area2D" parent="." unique_id=148457466 instance=ExtResource("2_mbqjn")]
-position = Vector2(600, 120)
+position = Vector2(605.9138, 163.62244)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("6_elm8k")
 
 [node name="Debris4" type="Area2D" parent="." unique_id=1091758055 instance=ExtResource("2_mbqjn")]
-position = Vector2(-300, 380)
+position = Vector2(-322.4, 414.30655)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
 [node name="Debris5" type="Area2D" parent="." unique_id=764560415 instance=ExtResource("2_mbqjn")]
-position = Vector2(150, 420)
+position = Vector2(-605.9138, 163.62244)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
 [node name="Debris6" type="Area2D" parent="." unique_id=503492549 instance=ExtResource("2_mbqjn")]
-position = Vector2(-650, 250)
+position = Vector2(-220.53459, -449.54895)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
 [node name="Debris7" type="Area2D" parent="." unique_id=1557556454 instance=ExtResource("2_mbqjn")]
-position = Vector2(700, -60)
+position = Vector2(322.4, 414.30655)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("6_elm8k")
 
 [node name="Debris8" type="Area2D" parent="." unique_id=878665859 instance=ExtResource("2_mbqjn")]
-position = Vector2(-150, -420)
+position = Vector2(220.53459, -449.54895)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
 [node name="Debris9" type="Area2D" parent="." unique_id=1024889149 instance=ExtResource("2_mbqjn")]
-position = Vector2(-80, -144)
+position = Vector2(-400, 80)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
@@ -109,7 +109,7 @@ item = ExtResource("4_uhrbv")
 floating = false
 
 [node name="Debris10" type="Area2D" parent="." unique_id=1911925822 instance=ExtResource("2_mbqjn")]
-position = Vector2(144, 144)
+position = Vector2(208, 112)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
@@ -117,7 +117,7 @@ item = ExtResource("5_tch0r")
 floating = false
 
 [node name="Debris11" type="Area2D" parent="." unique_id=147284825 instance=ExtResource("2_mbqjn")]
-position = Vector2(-240, -16)
+position = Vector2(-144, 208)
 collision_layer = 0
 collision_mask = 10
 script = ExtResource("5_6t0eb")
@@ -125,7 +125,7 @@ item = ExtResource("6_elm8k")
 floating = false
 
 [node name="GreenTurtle" type="CharacterBody2D" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
-position = Vector2(-460, 40)
+position = Vector2(-650, 40)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -134,35 +134,8 @@ data = ExtResource("11_t5e65")
 tangled = true
 tangle_item = ExtResource("6_elm8k")
 
-[node name="Crab5" type="CharacterBody2D" parent="." unique_id=1101368445 instance=ExtResource("7_tch0r")]
-position = Vector2(-176, 144)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
-data = ExtResource("12_swpth")
-home_radius = 90.0
-
-[node name="Crab4" type="CharacterBody2D" parent="." unique_id=910862615 instance=ExtResource("7_tch0r")]
-position = Vector2(208, -112)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
-data = ExtResource("12_swpth")
-home_radius = 90.0
-
-[node name="Crab3" type="CharacterBody2D" parent="." unique_id=604341714 instance=ExtResource("7_tch0r")]
-position = Vector2(-272, 16)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
-data = ExtResource("12_swpth")
-home_radius = 90.0
-
 [node name="Crab2" type="CharacterBody2D" parent="." unique_id=1791080907 instance=ExtResource("7_tch0r")]
-position = Vector2(112, 144)
+position = Vector2(400, 208)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -171,7 +144,7 @@ data = ExtResource("12_swpth")
 home_radius = 90.0
 
 [node name="Crab1" type="CharacterBody2D" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
-position = Vector2(-112, -144)
+position = Vector2(-368, -176)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -182,7 +155,7 @@ tangled = true
 tangle_item = ExtResource("5_tch0r")
 
 [node name="Dolphin3" type="CharacterBody2D" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
-position = Vector2(650, -100)
+position = Vector2(790, -100)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -191,7 +164,7 @@ data = ExtResource("13_fas81")
 home_radius = 260.0
 
 [node name="Dolphin2" type="CharacterBody2D" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
-position = Vector2(680, -130)
+position = Vector2(820, -130)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -202,7 +175,7 @@ tangled = true
 tangle_item = ExtResource("14_fas81")
 
 [node name="Dolphin1" type="CharacterBody2D" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
-position = Vector2(640, -160)
+position = Vector2(780, -160)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
@@ -217,7 +190,7 @@ motion_mode = 1
 script = ExtResource("13_swpth")
 
 [node name="Boat" type="CharacterBody2D" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
-position = Vector2(16, 208)
+position = Vector2(16, 112)
 collision_layer = 8
 collision_mask = 4
 motion_mode = 1
