@@ -18,6 +18,18 @@ var _items: Array[Resource] = DataFiles.load_all("res://data/items")
 var _time := 0.0
 
 
+func _enter_tree() -> void:
+	add_to_group("litter_spawner")
+
+
+## A random piece of litter at `spot` (e.g. dug up by a crab), unless there's
+## already enough litter about. Returns it, or null.
+func wash_up_at(spot: Vector2, floating: bool) -> Debris:
+	if get_tree().get_nodes_in_group("debris").size() >= max_litter:
+		return null
+	return spawn_at(_items.pick_random(), spot, floating)
+
+
 func _process(delta: float) -> void:
 	_time += delta
 	if _time >= interval:

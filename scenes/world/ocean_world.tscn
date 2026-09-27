@@ -17,6 +17,7 @@
 [ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="12_swpth"]
 [ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="13_fas81"]
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="13_swpth"]
+[ext_resource type="Resource" path="res://data/items/ghost_net.tres" id="14_fas81"]
 [ext_resource type="Script" path="res://scripts/player/boat.gd" id="15_fas81"]
 [ext_resource type="Script" path="res://scripts/buildings/build_mode.gd" id="16_1sar7"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="18_s6jd1"]
@@ -175,6 +176,8 @@ motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("12_swpth")
 home_radius = 90.0
+tangled = true
+tangle_item = ExtResource("5_tch0r")
 
 [node name="Dolphin3" type="CharacterBody2D" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
 position = Vector2(650, -100)
@@ -193,6 +196,8 @@ motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
 home_radius = 260.0
+tangled = true
+tangle_item = ExtResource("14_fas81")
 
 [node name="Dolphin1" type="CharacterBody2D" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
 position = Vector2(640, -160)

@@ -28,6 +28,7 @@ func _ready() -> void:
 	Journal.helped.connect(_on_helped)
 	Journal.nested.connect(_on_nested)
 	Journal.hatched.connect(_on_hatched)
+	Journal.gifted.connect(_on_gifted)
 	Funding.earned.connect(_on_earned)
 	Funding.donations_waiting.connect(_on_donations_waiting)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
@@ -81,6 +82,10 @@ func _on_photographed(animal: AnimalData, count: int) -> void:
 
 func _on_helped(animal: AnimalData, _count: int) -> void:
 	show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
+
+
+func _on_gifted(animal: AnimalData) -> void:
+	show_toast("A %s %s" % [animal.display_name, animal.gift_text])
 
 
 func _on_nested(animal: AnimalData) -> void:

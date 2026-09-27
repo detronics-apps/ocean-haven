@@ -16,6 +16,8 @@ extends Resource
 @export_multiline var photo_fact: String
 ## Shown after freeing one that was tangled.
 @export_multiline var help_fact: String
+## Note shown when it helps you (finds or digs up litter), e.g. "dug up buried litter!".
+@export_multiline var gift_text: String
 
 @export_group("Behaviour")
 ## Ground it lives on (tile terrain; "" = open ocean). Sea animals: ["", "water"]; crabs: ["sand"].
@@ -40,6 +42,15 @@ extends Resource
 @export var interact_distance := 80.0
 ## Seconds of quiet watching (while relaxed) to count as observed.
 @export var observe_time := 4.0
+
+@export_group("Helping")
+## Once it trusts the ranger, leads them to floating litter within guide_range (dolphins).
+@export var guides_to_litter := false
+@export var guide_range := 400.0
+## Sometimes digs up buried beach litter while the ranger watches (crabs).
+@export var digs_up_litter := false
+## Chance of digging something up each time it finishes a rest.
+@export var dig_chance := 0.2
 
 @export_group("Nesting")
 ## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).

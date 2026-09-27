@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="1_wnslj"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_s3tkw"]
+
+[resource]
+script = ExtResource("2_s3tkw")
+id = &"ghost_net"
+display_name = "Ghost net"
+icon = ExtResource("1_wnslj")
+fact = "Ghost nets are fishing nets lost at sea. They drift for years and keep trapping animals."

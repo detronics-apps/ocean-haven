@@ -9,13 +9,17 @@ extends CharacterBody2D
 ## eggs at the right building; hatchlings crawl to the sea and live there.
 ## Species details come from `data` (an AnimalData .tres).
 
-enum State { REST, SWIM, FLEE, CURIOUS, CRAWL, LAY }
+enum State { REST, SWIM, FLEE, CURIOUS, CRAWL, LAY, GUIDE }
 
 ## How long a startled animal swims away before settling.
 const FLEE_SECONDS := 2.0
 ## A ranger "moving" further than this in one frame jumped (boarding, loading) — not rushing.
 const JUMP_DISTANCE := 64.0
 const LAY_SECONDS := 6.0
+## Crabs only dig up litter when the ranger is close enough to see it happen.
+const DIG_WATCH_RANGE := 250.0
+## Guiding animals show "follow me" to a ranger within this distance.
+const FOLLOW_HINT_RANGE := 250.0
 ## Physics layers: sea animals are blocked by land, land animals by water.
 const WATER_LAYER := 1
 ## Leaving hatchlings are gone once this far from the middle of the world.
@@ -45,6 +49,8 @@ var _flee_left := 0.0
 var _calm := 0.0
 var _watched := 0.0
 var _last_ranger_pos := Vector2.INF
+## Litter this animal is leading the ranger to (trusting dolphins).
+var _guide_to: Node2D
 ## What normally blocks it (switched off while crawling over land to nest).
 var _land_mask: int
 var _lay_left := 0.0
@@ -64,6 +70,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_sprite.texture = data.sprite
 	_tangle.visible = tangled
+	if tangle_item:
+		_tangle.texture = tangle_item.icon  # whatever it's caught in: line, net, bag...
 	_rest_left = randf_range(0.0, data.rest_max)
 	collision_mask = WATER_LAYER if _lives_on_land() else LAND_LAYER
 	_land_mask = collision_mask
@@ -112,6 +120,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_react_to_ranger(delta)
 	_maybe_nest()
+	_maybe_guide()
 
 	var speed := data.swim_speed * (0.5 if tangled else 1.0)
 	match _state:
@@ -120,6 +129,7 @@ func _physics_process(delta: float) -> void:
 			_rest_left -= delta
 			# A curious animal stays beside a calm ranger rather than wandering off.
 			if _rest_left <= 0.0 and not (data.curious and is_relaxed()):
+				_maybe_dig()
 				_swim_to(_pick_target(), State.SWIM)
 			return
 		State.FLEE:
@@ -169,7 +179,7 @@ func _react_to_ranger(delta: float) -> void:
 		_calm += delta
 
 	if is_relaxed() and _state != State.FLEE:
-		if data.curious and distance > 48.0 and _state != State.CURIOUS:
+		if data.curious and distance > 48.0 and _state != State.CURIOUS and not _guide_to:
 			_swim_to(pos + pos.direction_to(global_position) * 36.0, State.CURIOUS)
 		if distance <= data.interact_distance:
 			_watched += delta
@@ -184,6 +194,48 @@ func _react_to_ranger(delta: float) -> void:
 			_hint.text = "E / tap: free the %s" % data.display_name.to_lower()
 		else:
 			_hint.text = "E / tap: take a photo"
+
+
+## Trusting (relaxed) guides lead the ranger to floating litter they've spotted,
+## and keep at it until the litter has been picked up.
+func _maybe_guide() -> void:
+	if not data.guides_to_litter or tangled or young or _state == State.FLEE:
+		return
+	if _guide_to and (not is_instance_valid(_guide_to) or _guide_to.is_queued_for_deletion()):
+		_guide_to = null  # picked up: job done
+	if not _guide_to and is_relaxed():
+		_guide_to = _nearest_floating_litter(data.guide_range)
+		if _guide_to:
+			Journal.record_gift(data)
+	if not _guide_to:
+		return
+	var beside := _guide_to.global_position + _guide_to.global_position.direction_to(global_position) * 20.0
+	if global_position.distance_to(beside) > 4.0:
+		_swim_to(beside, State.GUIDE)
+	var ranger := ControlledBody.active(get_tree())
+	if ranger and ranger.global_position.distance_to(global_position) <= FOLLOW_HINT_RANGE:
+		_hint.visible = true
+		_hint.text = "Follow me - I found some litter!"
+
+
+func _nearest_floating_litter(within: float) -> Node2D:
+	var best: Node2D = null
+	for debris: Debris in get_tree().get_nodes_in_group("debris"):
+		if debris.floating and not debris.is_queued_for_deletion() 				and debris.global_position.distance_to(global_position) <= within 				and (not best or debris.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
+			best = debris
+	return best
+
+
+## Diggers (crabs) sometimes turn up buried litter while the ranger is watching.
+func _maybe_dig() -> void:
+	if not data.digs_up_litter or tangled or young or randf() > data.dig_chance:
+		return
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger or ranger.global_position.distance_to(global_position) > DIG_WATCH_RANGE:
+		return
+	var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
+	if spawner and spawner.wash_up_at(global_position + Vector2(10.0, 4.0), false):
+		Journal.record_gift(data)
 
 
 func _input(event: InputEvent) -> void:

@@ -31,6 +31,7 @@ func attach(world: Node) -> bool:
 	Funding.changed.connect(func(_b): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
 	Journal.hatched.connect(func(_a, _c): _dirty = true)
+	Journal.gifted.connect(func(_a): _dirty = true)
 	RangerProfile.look_changed.connect(func(): _dirty = true)
 	(world.get_node("BuildMode") as BuildMode).built.connect(func(_b): _dirty = true)
 	return true

@@ -8,6 +8,8 @@ signal photographed(animal: AnimalData, count: int)
 signal helped(animal: AnimalData, count: int)
 signal nested(animal: AnimalData)
 signal hatched(animal: AnimalData, count: int)
+## An animal helped the ranger (found or dug up litter).
+signal gifted(animal: AnimalData)
 
 var _found: Dictionary[StringName, AnimalData] = {}
 var _observed: Dictionary[StringName, bool] = {}
@@ -15,6 +17,7 @@ var _photos: Dictionary[StringName, int] = {}
 var _helped: Dictionary[StringName, int] = {}
 var _nests: Dictionary[StringName, int] = {}
 var _hatched: Dictionary[StringName, int] = {}
+var _gifts: Dictionary[StringName, int] = {}
 
 
 func discover(animal: AnimalData) -> void:
@@ -75,6 +78,16 @@ func hatched_count(id: StringName) -> int:
 	return _hatched.get(id, 0)
 
 
+func record_gift(animal: AnimalData) -> void:
+	_gifts[animal.id] = gifts(animal.id) + 1
+	gifted.emit(animal)
+
+
+## How many times this species has found litter for the ranger.
+func gifts(id: StringName) -> int:
+	return _gifts.get(id, 0)
+
+
 ## Discovered species ids, for the save file.
 func ids() -> Array:
 	return _found.keys()
@@ -83,7 +96,7 @@ func ids() -> Array:
 ## Observations, photos and help counts, for the save file.
 func details() -> Dictionary:
 	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate(),
-		"nests": _nests.duplicate(), "hatched": _hatched.duplicate()}
+		"nests": _nests.duplicate(), "hatched": _hatched.duplicate(), "gifts": _gifts.duplicate()}
 
 
 ## Replaces discoveries from a save file (no "new discovery" notes).
@@ -104,6 +117,7 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	_restore_counts(_helped, saved_details.get("helped", {}))
 	_restore_counts(_nests, saved_details.get("nests", {}))
 	_restore_counts(_hatched, saved_details.get("hatched", {}))
+	_restore_counts(_gifts, saved_details.get("gifts", {}))
 
 
 func _restore_counts(into: Dictionary[StringName, int], saved: Dictionary) -> void:
