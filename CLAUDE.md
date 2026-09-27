@@ -78,6 +78,9 @@ addons/                  third-party Godot plugins only
   Any new progress that must survive a restart gets a field in `save_to`/`load_from`, and a check in
   `tests/test_save.gd`. Bump `VERSION` if the format changes incompatibly. Only the real main scene
   auto-saves; tests never touch the player's save.
+  On the web, user:// lives in the browser's IndexedDB and is only copied there when a file is
+  closed after writing — so web saves are written directly (no temp-file rename), and the game
+  warns if the browser won't keep saves (`OS.is_userfs_persistent()`).
 
 ## Testing on a phone (itch.io — preferred)
 

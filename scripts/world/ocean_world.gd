@@ -11,6 +11,9 @@ func _ready() -> void:
 		return
 	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
 		get_window().content_scale_factor = TOUCH_SCALE
+	if OS.has_feature("web") and not OS.is_userfs_persistent():
+		# e.g. a phone browser blocking storage for a game embedded in another site.
+		$HUD.show_warning("This browser won't keep your progress here. Open the game in its own tab or try another browser to save.")
 	# A new game: make your ranger, then pitch your tent (older saves get whichever is missing).
 	if not RangerProfile.created:
 		$AvatarCreator.open()

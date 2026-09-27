@@ -108,15 +108,19 @@ func save_to(world: Node, path: String) -> bool:
 		"avatar": RangerProfile.look,
 		"avatar_created": RangerProfile.created,
 	}
-	# Write a temp file then swap it in, so a crash mid-save can't corrupt the save.
-	var tmp := path + ".tmp"
-	var file := FileAccess.open(tmp, FileAccess.WRITE)
+	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
+	# Web: write the save itself — the browser's storage is only updated when a file is
+	# closed after writing (a rename isn't copied over until the next save, and phones
+	# close pages abruptly).
+	var web := OS.has_feature("web")
+	var target := path if web else path + ".tmp"
+	var file := FileAccess.open(target, FileAccess.WRITE)
 	if not file:
 		push_error("Can't write save: %s" % error_string(FileAccess.get_open_error()))
 		return false
 	file.store_string(JSON.stringify(state, "\t"))
 	file.close()
-	return DirAccess.rename_absolute(tmp, path) == OK
+	return web or DirAccess.rename_absolute(target, path) == OK
 
 
 ## Restores progress into `world`. Returns false if there's no usable save

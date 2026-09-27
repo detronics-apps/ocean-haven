@@ -57,6 +57,25 @@ func _ready() -> void:
 	add_child(_action_bar)
 
 
+## A note that stays on screen (e.g. progress can't be saved in this browser).
+func show_warning(text: String) -> void:
+	var panel := PanelContainer.new()
+	panel.name = "Warning"
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.offset_top = 76
+	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.self_modulate = Color(1.0, 0.55, 0.45)
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(420, 0)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	panel.add_child(label)
+	add_child(panel)
+
+
 ## Fades out, sails to `region` (the ranger arrives there with their rowboat), fades in.
 func voyage(region: RegionData) -> void:
 	var tween := create_tween()
