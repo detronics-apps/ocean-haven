@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2110q1bgqony"
-path="res://.godot/imported/hat.svg-8f1961918e0613fbb778f6e48b6eb16c.ctex"
+uid="uid://r8xvx6fa0q0y"
+path="res://.godot/imported/skin.svg-9a0dc4e90992971802ed608cf142903f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/player/hat.svg"
-dest_files=["res://.godot/imported/hat.svg-8f1961918e0613fbb778f6e48b6eb16c.ctex"]
+source_file="res://assets/characters/player/skin.svg"
+dest_files=["res://.godot/imported/skin.svg-9a0dc4e90992971802ed608cf142903f.ctex"]
 
 [params]
 

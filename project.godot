@@ -21,6 +21,7 @@ Inventory="*res://scripts/systems/inventory.gd"
 Journal="*res://scripts/systems/journal.gd"
 SaveGame="*res://scripts/systems/save_system.gd"
 GameClock="*res://scripts/systems/time_system.gd"
+RangerProfile="*res://scripts/systems/ranger_profile.gd"
 
 [display]
 

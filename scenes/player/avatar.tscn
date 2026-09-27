@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player/avatar.gd" id="1_ll4u2"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/skin.svg" id="2_71opb"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/eyes.svg" id="3_r20a0"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/boots.svg" id="4_kgy11"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/trousers.svg" id="5_dy04y"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/shirt.svg" id="6_ipow3"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/backpack.svg" id="7_8g8pi"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/hair_short.svg" id="8_n3n5a"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/ranger_hat.svg" id="9_pxirw"]
+
+[node name="Avatar" type="Node2D" unique_id=2062247181]
+script = ExtResource("1_ll4u2")
+
+[node name="Skin" type="Sprite2D" parent="." unique_id=178084300]
+texture = ExtResource("2_71opb")
+offset = Vector2(0, -16)
+
+[node name="Eyes" type="Sprite2D" parent="." unique_id=219925791]
+texture = ExtResource("3_r20a0")
+offset = Vector2(0, -16)
+
+[node name="Boots" type="Sprite2D" parent="." unique_id=1769590821]
+texture = ExtResource("4_kgy11")
+offset = Vector2(0, -16)
+
+[node name="Trousers" type="Sprite2D" parent="." unique_id=784735664]
+texture = ExtResource("5_dy04y")
+offset = Vector2(0, -16)
+
+[node name="Shirt" type="Sprite2D" parent="." unique_id=1060956190]
+texture = ExtResource("6_ipow3")
+offset = Vector2(0, -16)
+
+[node name="Backpack" type="Sprite2D" parent="." unique_id=499017725]
+texture = ExtResource("7_8g8pi")
+offset = Vector2(0, -16)
+
+[node name="Hair" type="Sprite2D" parent="." unique_id=1778925243]
+texture = ExtResource("8_n3n5a")
+offset = Vector2(0, -16)
+
+[node name="Hat" type="Sprite2D" parent="." unique_id=182182115]
+texture = ExtResource("9_pxirw")
+offset = Vector2(0, -16)

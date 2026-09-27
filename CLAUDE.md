@@ -68,7 +68,8 @@ addons/                  third-party Godot plugins only
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
 - `.godot/` is a cache — never commit or edit it.
 - Tests live in `tests/` as headless `SceneTree` scripts; run each with
-  `godot --headless --path . --script res://tests/<name>.gd` (prints PASS, exits 1 on failure).
+  `godot --headless --path . --script res://tests/<name>.gd --quit-after 3000` (prints PASS, exits 1 on
+  failure; `--quit-after` stops a test that hangs because a script failed to compile).
   In `--script` mode autoloads don't exist at compile time: don't name autoloads (e.g. `Inventory`)
   or classes that use them directly in a test — use `root.get_node("Inventory")` / untyped nodes.
   Nodes only get `_ready()` once the tree runs: `await process_frame` before using a world in `_initialize`.

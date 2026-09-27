@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" shape-rendering="crispEdges">
+  <!-- Avatar layer: eyes, drawn white so the eye colour can be tinted -->
+  <rect x="9" y="12" width="2" height="2" fill="#ffffff"/>
+  <rect x="13" y="12" width="2" height="2" fill="#ffffff"/>
+</svg>

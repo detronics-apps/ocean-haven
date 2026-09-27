@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" shape-rendering="crispEdges">
+  <!-- Avatar layer: head and arms, drawn white so the skin tone can be tinted -->
+  <rect x="5" y="18" width="3" height="6" fill="#f2f2f2"/>
+  <rect x="16" y="18" width="3" height="6" fill="#f2f2f2"/>
+  <rect x="6" y="7" width="12" height="11" fill="#ffffff"/>
+  <rect x="6" y="17" width="12" height="1" fill="#e2e2e2"/>
+</svg>

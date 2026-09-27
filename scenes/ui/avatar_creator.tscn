@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/avatar_creator.gd" id="1_rbdn1"]
+
+[node name="AvatarCreator" type="CanvasLayer" unique_id=663710540]
+layer = 10
+script = ExtResource("1_rbdn1")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh6gcinaamab6"
-path="res://.godot/imported/body.svg-bef8c504b5e66377104b5b967c96e09c.ctex"
+uid="uid://b6u2ai63h7g3b"
+path="res://.godot/imported/hair_ponytail.svg-da6b93538ca0d17b8d00d08f42869fb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/player/body.svg"
-dest_files=["res://.godot/imported/body.svg-bef8c504b5e66377104b5b967c96e09c.ctex"]
+source_file="res://assets/characters/player/hair_ponytail.svg"
+dest_files=["res://.godot/imported/hair_ponytail.svg-da6b93538ca0d17b8d00d08f42869fb3.ctex"]
 
 [params]
 

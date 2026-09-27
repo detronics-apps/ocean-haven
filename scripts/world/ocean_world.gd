@@ -3,4 +3,5 @@ extends Node2D
 
 
 func _ready() -> void:
-	SaveGame.attach(self)
+	if SaveGame.attach(self) and not RangerProfile.created:
+		$AvatarCreator.open()  # new game (or a save from before avatars): make your ranger first

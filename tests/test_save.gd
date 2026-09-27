@@ -35,6 +35,9 @@ func _initialize() -> void:
 	var clock := root.get_node("GameClock")
 	clock.day = 4
 	clock.time_of_day = 0.8
+	var profile := root.get_node("RangerProfile")
+	profile.set_choice("hair", 3)
+	profile.finish_creation()
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
@@ -43,8 +46,10 @@ func _initialize() -> void:
 	_journal.restore([])
 	clock.day = 1
 	clock.time_of_day = 0.3
+	profile.restore({}, false)
 	world = _new_world()
 	_expect(_save.load_from(world, PATH), "loaded")
+	_expect(profile.look["hair"] == 3 and profile.created, "avatar look restored")
 	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")

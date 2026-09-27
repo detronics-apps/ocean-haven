@@ -16,15 +16,18 @@ var _since_save := 0.0
 
 ## Called by the world when it starts. Only the real game world (the main scene)
 ## is saved: tests and tools that build a world by hand never touch the save.
-func attach(world: Node) -> void:
+## Returns whether this is the real game (and so the save is in use).
+func attach(world: Node) -> bool:
 	if world != get_tree().current_scene:
-		return
+		return false
 	_world = world
 	load_from(world, PATH)
 	Inventory.item_added.connect(func(_i, _c): _dirty = true)
 	Journal.discovered.connect(func(_a): _dirty = true)
+	RangerProfile.look_changed.connect(func(): _dirty = true)
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(func(_b): _dirty = true)
+	return true
 
 
 func mark_collected(debris: Node) -> void:
@@ -65,6 +68,8 @@ func save_to(world: Node, path: String) -> bool:
 		"aboard": boat.controlled,
 		"day": GameClock.day,
 		"time_of_day": GameClock.time_of_day,
+		"avatar": RangerProfile.look,
+		"avatar_created": RangerProfile.created,
 	}
 	# Write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	var tmp := path + ".tmp"
@@ -89,6 +94,7 @@ func load_from(world: Node, path: String) -> bool:
 		DirAccess.rename_absolute(path, path + ".bad")
 		return false
 
+	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	Inventory.restore(state.get("inventory", {}))

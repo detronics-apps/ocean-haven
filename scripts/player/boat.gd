@@ -14,6 +14,12 @@ var _driver: Node2D
 
 func _ready() -> void:
 	_player = get_tree().get_first_node_in_group("player")
+	RangerProfile.look_changed.connect(_apply_colour)
+	_apply_colour()
+
+
+func _apply_colour() -> void:
+	$Look/Hull.modulate = RangerProfile.pick("boat")
 
 
 func _unhandled_input(event: InputEvent) -> void:

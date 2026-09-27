@@ -16,6 +16,7 @@ func _ready() -> void:
 	Inventory.changed.connect(_set_row)
 	Inventory.item_added.connect(_on_item_added)
 	Journal.discovered.connect(_on_discovered)
+	%ChangeLook.pressed.connect(func() -> void: get_tree().call_group("avatar_creator", "open"))
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(_on_built)
 

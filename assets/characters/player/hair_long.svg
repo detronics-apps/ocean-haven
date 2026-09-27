@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" shape-rendering="crispEdges">
+  <!-- Avatar hair: long, over the shoulders. Drawn white so it can be tinted -->
+  <rect x="6" y="5" width="12" height="4" fill="#ffffff"/>
+  <rect x="9" y="9" width="4" height="1" fill="#e0e0e0"/>
+  <rect x="5" y="8" width="3" height="13" fill="#e8e8e8"/>
+  <rect x="16" y="8" width="3" height="13" fill="#e8e8e8"/>
+</svg>

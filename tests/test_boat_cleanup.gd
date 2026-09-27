@@ -4,7 +4,7 @@ extends SceneTree
 
 var _world: Node
 var _player: Player
-var _boat: Boat
+var _boat  # untyped: Boat uses autoloads
 var _frames := 0
 var _step := 0
 var _bottle: ItemData = load("res://data/items/plastic_bottle.tres")
