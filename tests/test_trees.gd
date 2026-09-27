@@ -39,6 +39,13 @@ func _initialize() -> void:
 	_expect(world.y_sort_enabled and world.get_node("StarterIsland").y_sort_enabled, "world sorts by depth")
 	_expect((world.get_node("StarterIsland/Ground") as CanvasItem).z_index < 0, "ground always drawn underneath")
 
+	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---
+	var minimap: Node = world.get_node("HUD/Minimap")
+	var near: Array = minimap.map_point(Vector2(100, 0), Vector2.ZERO)
+	var far: Array = minimap.map_point(Vector2(5000, 0), Vector2.ZERO)
+	_expect(near[1] and not far[1] and far[0].x > near[0].x and far[0].distance_to(Vector2(64, 64)) <= 64.0,
+		"minimap shows nearby things and pins far-away home to the rim")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

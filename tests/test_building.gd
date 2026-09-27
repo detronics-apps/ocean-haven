@@ -49,6 +49,23 @@ func _initialize() -> void:
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "free tent placed on the grass")
 	_expect(_count("tent") == 1, "tent exists")
 
+	# --- Move it: a Move button next to it; placing again is free; cancel puts it back ---
+	var tent_node: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"tent")[0]
+	player.global_position = tent_node.global_position + Vector2(-40, 20)
+	await process_frame
+	await process_frame
+	var move_button: Button = world.get_node("HUD").get_node("MoveButton")
+	_expect(move_button.visible and move_button.text == "Move Tent", "a 'Move Tent' button appears next to it")
+	build_mode.start_move(tent_node)
+	_expect(build_mode.place_at(Vector2i(-3, -3)), "tent moved to a new spot")
+	_expect(tent_node.cell == Vector2i(-3, -3) and tent_node.visible and _count("tent") == 1, "it's there, still just one tent")
+	build_mode.start_move(tent_node)
+	build_mode.cancel()
+	_expect(tent_node.cell == Vector2i(-3, -3) and tent_node.visible and _count("tent") == 1, "cancel leaves it where it was")
+	build_mode.start_move(tent_node)
+	build_mode.place_at(Vector2i(-1, -1))  # back where the rest of the test expects it
+	player.global_position = Vector2.ZERO
+
 	# --- Sanctuary: beach only, costs litter, no overlaps, no new turtle ---
 	var animals_before := _count_animals()
 	build_mode.start(sanctuary)

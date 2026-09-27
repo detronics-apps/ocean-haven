@@ -24,11 +24,22 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
+	move_to(cell)
 	_sprite.texture = data.texture
 	if data.spawns:
 		add_child(data.spawns.instantiate())
 	_coin.visible = false
+
+
+## Puts it with its top-left footprint tile at `new_cell`.
+func move_to(new_cell: Vector2i) -> void:
+	cell = new_cell
+	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
+
+
+## Whether the ranger (on foot) is standing next to it.
+func ranger_is_near() -> bool:
+	return _ranger_in_range(use_range)
 
 
 func add_funds(amount: int) -> void:

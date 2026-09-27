@@ -132,11 +132,11 @@ caring for animals". Build in this order, placeholder art:
 5. ✅ Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
    count, but swim off into the open ocean
 6. ✅ Palm trees (walk around/behind them; can't build on them)
-7. Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
+7. ✅ Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
 8. ✅ Bigger horseshoe island around a sheltered lagoon; fewer crabs (2)
 9. ✅ At a protection area, show its turtles (e.g. "Turtles here: 3 / 4"); turtles belong to the
    area they hatched / nested at
-10. Move anything you've built: interact with it → Move → place it again
+10. ✅ Move anything you've built: interact with it → Move → place it again
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**

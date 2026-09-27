@@ -13,6 +13,8 @@ const FITS := Color(0.6, 1.0, 0.6, 0.75)
 const BLOCKED := Color(1.0, 0.45, 0.45, 0.6)
 
 var _data: BuildingData
+## A building being moved (placing it again costs nothing; cancelling puts it back).
+var _moving: Building
 ## The first tent is free and can't be cancelled.
 var _free := false
 var _cell: Vector2i
@@ -52,11 +54,29 @@ func start(data: BuildingData, free := false) -> void:
 	_show(true)
 
 
+## Picks up a building to place somewhere else.
+func start_move(building: Building) -> void:
+	_moving = building
+	building.visible = false
+	building.remove_from_group("buildings")  # so it doesn't block its own new spot
+	start(building.data, true)
+	_cancel.visible = true
+
+
 func cancel() -> void:
-	if _free:
+	if _free and not _moving:
 		return
+	if _moving:
+		_finish_move()
 	_data = null
+	_free = false
 	_show(false)
+
+
+func _finish_move() -> void:
+	_moving.visible = true
+	_moving.add_to_group("buildings")
+	_moving = null
 
 
 ## Whether `data` fits with its top-left tile at `cell` (and can be paid for).
@@ -108,6 +128,13 @@ func place_at(cell: Vector2i) -> bool:
 func place() -> bool:
 	if not _data or not can_place(_data, _cell):
 		return false
+	if _moving:
+		_moving.move_to(_cell)
+		_finish_move()
+		_data = null
+		_free = false
+		_show(false)
+		return true
 	if not _free:
 		if not can_afford(_data):
 			return false
@@ -152,7 +179,8 @@ func _process(_delta: float) -> void:
 	_place.disabled = not fits
 	var where: String = {"sand": "on the beach", "water": "in the shallows"}.get(
 		_data.terrain[0] if _data.terrain.size() == 1 else "", "on the island")
-	_label.text = "Place your %s %s: walk, or tap a spot." % [_data.display_name.to_lower(), where]
+	_label.text = "%s your %s %s: walk, or tap a spot." % [
+		"Move" if _moving else "Place", _data.display_name.to_lower(), where]
 	if not _free and not can_afford(_data):
 		_label.text = "You need %d litter and %d funding to build this." % [_data.cost_litter, _data.cost_funding]
 	if not ranger is Player:

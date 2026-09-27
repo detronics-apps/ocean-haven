@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_0mwgc"]
+[ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="2_hqnrr"]
 
 [node name="HUD" type="CanvasLayer" unique_id=466484113]
 script = ExtResource("1_0mwgc")
@@ -89,6 +90,18 @@ custom_minimum_size = Vector2(80, 44)
 layout_mode = 2
 focus_mode = 0
 text = "Look"
+
+[node name="Minimap" type="Control" parent="." unique_id=1481896938]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -144.0
+offset_right = 144.0
+offset_bottom = -16.0
+mouse_filter = 2
+script = ExtResource("2_hqnrr")
 
 [node name="Fade" type="ColorRect" parent="." unique_id=1883735997]
 unique_name_in_owner = true

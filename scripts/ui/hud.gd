@@ -12,6 +12,7 @@ var _toast_queue: Array[String] = []
 @onready var _toast_label: Label = %ToastLabel
 @onready var _clock: Label = %Clock
 @onready var _fade: ColorRect = %Fade
+var _move_button: Button
 
 
 func _enter_tree() -> void:
@@ -37,6 +38,21 @@ func _ready() -> void:
 	%LookButton.pressed.connect(get_tree().call_group.bind("avatar_creator", "open"))
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
+	_move_button = Button.new()
+	_move_button.name = "MoveButton"
+	_move_button.focus_mode = Control.FOCUS_NONE
+	_move_button.custom_minimum_size = Vector2(140, 48)
+	_move_button.anchor_left = 1.0
+	_move_button.anchor_right = 1.0
+	_move_button.anchor_top = 1.0
+	_move_button.anchor_bottom = 1.0
+	_move_button.offset_left = -156
+	_move_button.offset_right = -16
+	_move_button.offset_top = -64
+	_move_button.offset_bottom = -16
+	_move_button.visible = false
+	_move_button.pressed.connect(_on_move_pressed)
+	add_child(_move_button)
 
 
 ## Fades to black, sleeps until morning, fades back in.
@@ -48,7 +64,28 @@ func sleep_through_night() -> void:
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 
 
+## The building next to the ranger that could be moved (none while placing something).
+func _movable_building() -> Building:
+	var build_mode: BuildMode = get_tree().get_first_node_in_group("build_mode")
+	if build_mode and build_mode.is_active():
+		return null
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.ranger_is_near():
+			return building
+	return null
+
+
+func _on_move_pressed() -> void:
+	var building := _movable_building()
+	if building:
+		get_tree().get_first_node_in_group("build_mode").start_move(building)
+
+
 func _process(_delta: float) -> void:
+	var movable := _movable_building()
+	_move_button.visible = movable != null
+	if movable:
+		_move_button.text = "Move " + movable.data.display_name
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
 
 
