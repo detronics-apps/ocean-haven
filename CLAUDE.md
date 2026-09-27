@@ -87,6 +87,9 @@ This PC's firewall can't accept connections from the phone, so phone builds go t
 2. Zip the *contents* of `build/web` (index.html at the zip root) to `build/bluehaven-web.zip`.
 3. Upload on itch.io: project → Edit → Uploads → replace the zip → Save.
 
+**When:** not after every step — only once a batch of big, playable changes has landed (e.g. a
+milestone or a major feature). Then rebuild the zip and tell the user it's ready to upload.
+
 ## Testing on a phone (web build over home Wi-Fi — needs firewall access)
 
 Godot web builds need a secure context (HTTPS or localhost), so the phone gets HTTPS with a
