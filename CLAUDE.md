@@ -103,18 +103,20 @@ self-signed certificate. Everything goes in `build/` (git-ignored).
 3. Serve: `python tools/serve_web.py`, then on the phone (same Wi-Fi) open `https://<pc-ip>:8443` and
    tap through the certificate warning. Allow Python through the Windows firewall (Private networks) if asked.
 
-## Current milestone: MVP 0.1
+## Milestones
 
-Build in this order, with placeholder art:
+**MVP 0.1 ✅** — ocean + island, walking + camera, boat, litter cleanup, inventory, one turtle,
+first sanctuary, day/night, save game. (Plus avatar creator.)
 
-1. ✅ Ocean + small starter island
-2. ✅ Player walking + following camera
-3. ✅ Simple boat (board at shore, sail)
-4. ✅ Plastic cleanup (collectable floating debris)
-5. ✅ Basic inventory
-6. ✅ One turtle (swim → rest behaviour)
-7. ✅ First sanctuary (built with collected items)
-8. ✅ Day/night cycle
-9. ✅ Save game
+**MVP 0.2 — "Home & habitat" (current).** Design: `docs/GAME_DESIGN.md` → "Home base, automation &
+caring for animals". Build in this order, placeholder art:
 
-Anything outside this list waits until MVP 0.1 is playable.
+1. Kind turtle interaction: calm approach, observe, photograph, free a tangled turtle
+2. Place-anywhere building (build mode); the turtle sanctuary moves to a player-chosen beach spot
+3. Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
+4. Home base: start with a placed tent; upgrade to a house
+5. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
+6. Litter keeps washing in
+7. Dock + a patrol boat that auto-collects litter in an area you choose
+
+Later: net boats, sanctuary interiors (turtle rehab mini-game), new regions.

@@ -312,6 +312,31 @@ Potentially partner with real organizations ("This month's Ocean Project"), and 
 - **Rescue & care:** care meters (health, hunger, injury, happiness) are fine, but animals only get better — they never die or decline.
 - **Avatar creator:** skin tone, face, hair style & colour, eye colour, outfit, gear, accessories.
 
+## Home base, automation & caring for animals (owner's direction, Sep 2026)
+
+### Home base grows from a tent
+- You start with a **tent** that you **place wherever you like** on the island.
+- Collected materials + **funding** (visitor donations, grants) upgrade it: tent → **house**, then a **dock** for boats.
+- **All buildings are placed by the player** in valid spots (e.g. the sanctuary on any beach) — no fixed build sites.
+
+### Automating the cleanup
+- Litter keeps **washing in** over time, so cleaning is ongoing.
+- **Patrol boats** (built at the dock): you draw/choose an **area**; the boat patrols it and collects any litter that appears there.
+- Later: **net boats** — two boats with a net between them sweeping back and forth.
+- Goal per island: automate its cleanup "to a certain degree" → then set out to the next region.
+
+### Regions, each with its own mechanic
+Order: Starting Island → **Tropical Waters** (save more fish) → **Mangrove Coast** → **Deep Sea Zone** → **Coral Kingdom** → **Arctic Ocean**. Each region has different ways of saving that area.
+
+### Sanctuaries are places, not props
+- The turtle sanctuary is **not** a turtle spawner. The **existing turtle comes to the protected beach and lays eggs**; the eggs hatch and hatchlings reach the sea → more turtles.
+- Later you can **go inside sanctuaries** for mini-games, e.g. caring for and **rehabilitating** injured sea turtles, then releasing them.
+
+### Interacting with wild animals — kindly
+- Animals shouldn't simply flee. Approaching **slowly and calmly** keeps them relaxed (and curious ones come closer); rushing at them makes them swim off.
+- Kind interactions: **observe** quietly (fills in Journal details), **photograph** them (research funding), and **help** when needed — e.g. **free a turtle tangled** in fishing line, or bring an injured one to the sanctuary.
+- Never touching, chasing, riding or feeding wild animals — which also teaches the real-world rule: *watch wildlife from a respectful distance and let trained rescuers handle injured animals.*
+
 ## Ultimate goal
 
 Not "complete all missions" but **🌊 Make the Ocean Thrive.** Start: "There's a lot of work to do." End: "Look at what you've helped create." The player can continue indefinitely.
