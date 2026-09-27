@@ -63,6 +63,8 @@ func save_to(world: Node, path: String) -> bool:
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
 		"aboard": boat.controlled,
+		"day": GameClock.day,
+		"time_of_day": GameClock.time_of_day,
 	}
 	# Write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	var tmp := path + ".tmp"
@@ -87,6 +89,8 @@ func load_from(world: Node, path: String) -> bool:
 		DirAccess.rename_absolute(path, path + ".bad")
 		return false
 
+	GameClock.day = int(state.get("day", 1))
+	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	Inventory.restore(state.get("inventory", {}))
 	Journal.restore(state.get("discovered", []))
 	for debris_name: String in state.get("collected_debris", []):

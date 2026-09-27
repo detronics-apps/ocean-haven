@@ -110,7 +110,7 @@ Build in this order, with placeholder art:
 5. ✅ Basic inventory
 6. ✅ One turtle (swim → rest behaviour)
 7. ✅ First sanctuary (built with collected items)
-8. Day/night cycle
+8. ✅ Day/night cycle
 9. ✅ Save game
 
 Anything outside this list waits until MVP 0.1 is playable.

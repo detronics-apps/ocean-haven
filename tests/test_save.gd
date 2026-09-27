@@ -32,14 +32,20 @@ func _initialize() -> void:
 	(world.get_node("Player") as Node2D).global_position = Vector2(-100, 50)
 	(world.get_node("Boat") as Node2D).global_position = Vector2(16, 300)
 	world.get_node("Boat").restore_aboard()
+	var clock := root.get_node("GameClock")
+	clock.day = 4
+	clock.time_of_day = 0.8
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
 	# --- "Restart": empty state, fresh world, load ---
 	_inventory.restore({})
 	_journal.restore([])
+	clock.day = 1
+	clock.time_of_day = 0.3
 	world = _new_world()
 	_expect(_save.load_from(world, PATH), "loaded")
+	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")

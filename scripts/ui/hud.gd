@@ -8,6 +8,7 @@ var _toast_tween: Tween
 @onready var _rows: VBoxContainer = %Rows
 @onready var _toast: PanelContainer = %Toast
 @onready var _toast_label: Label = %ToastLabel
+@onready var _clock: Label = %Clock
 
 
 func _ready() -> void:
@@ -17,6 +18,10 @@ func _ready() -> void:
 	Journal.discovered.connect(_on_discovered)
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(_on_built)
+
+
+func _process(_delta: float) -> void:
+	_clock.text = "Day %d · %s" % [GameClock.day, GameClock.period()]
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
