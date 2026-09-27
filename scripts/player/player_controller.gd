@@ -7,6 +7,7 @@ extends ControlledBody
 
 func set_aboard(aboard: bool) -> void:
 	stop()
+	controlled = not aboard
 	visible = not aboard
 	process_mode = PROCESS_MODE_DISABLED if aboard else PROCESS_MODE_INHERIT
 	if not aboard:

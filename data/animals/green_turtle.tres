@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_6nm75"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_5ypsb"]
+
+[resource]
+script = ExtResource("1_6nm75")
+id = &"green_turtle"
+display_name = "Green Sea Turtle"
+sprite = ExtResource("2_5ypsb")
+habitat = "Tropical and subtropical oceans"
+diet = "Seagrass and algae"
+fact = "Sea turtles can travel thousands of kilometres during their lives."

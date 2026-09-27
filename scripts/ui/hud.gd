@@ -1,5 +1,6 @@
 extends CanvasLayer
-## On-screen inventory counts, plus a short non-blocking "collected!" note with a fact.
+## On-screen inventory counts, plus a short non-blocking note with a fact when
+## something is collected or discovered.
 
 var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
@@ -12,6 +13,7 @@ var _toast_tween: Tween
 func _ready() -> void:
 	_toast.modulate.a = 0.0
 	Inventory.item_added.connect(_on_item_added)
+	Journal.discovered.connect(_on_discovered)
 
 
 func _on_item_added(item: ItemData, count: int) -> void:
@@ -28,8 +30,15 @@ func _on_item_added(item: ItemData, count: int) -> void:
 		_rows.add_child(row)
 		_labels[item.id] = label
 	_labels[item.id].text = "%s  x%d" % [item.display_name, count]
+	_show_toast("%s collected!\n%s" % [item.display_name, item.fact])
 
-	_toast_label.text = "%s collected!\n%s" % [item.display_name, item.fact]
+
+func _on_discovered(animal: AnimalData) -> void:
+	_show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+
+
+func _show_toast(text: String) -> void:
+	_toast_label.text = text
 	if _toast_tween:
 		_toast_tween.kill()
 	_toast.modulate.a = 1.0

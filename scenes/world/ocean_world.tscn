@@ -8,6 +8,9 @@
 [ext_resource type="Resource" path="res://data/items/plastic_bottle.tres" id="4_uhrbv"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
+[ext_resource type="PackedScene" path="res://scenes/animals/turtle.tscn" id="7_tch0r"]
+[ext_resource type="Script" path="res://scripts/animals/animal.gd" id="8_elm8k"]
+[ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="9_5ny6f"]
 [ext_resource type="PackedScene" path="res://scenes/player/boat.tscn" id="9_jy21m"]
 [ext_resource type="Script" path="res://scripts/player/boat.gd" id="10_5ny6f"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="11_0ob8n"]
@@ -96,6 +99,14 @@ collision_mask = 10
 script = ExtResource("3_bqhnb")
 item = ExtResource("6_elm8k")
 floating = false
+
+[node name="GreenTurtle" type="CharacterBody2D" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
+position = Vector2(-460, 40)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("8_elm8k")
+data = ExtResource("9_5ny6f")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 groups=["player"] instance=ExtResource("2_b6ysu")]
 collision_layer = 2

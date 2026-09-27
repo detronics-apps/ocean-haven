@@ -13,6 +13,18 @@ var _has_target := false
 @onready var _look: Node2D = get_node_or_null("Look")
 
 
+## The body the player is steering right now (the ranger or the boat), or null.
+static func active(tree: SceneTree) -> ControlledBody:
+	for body: ControlledBody in tree.get_nodes_in_group("controllable"):
+		if body.controlled:
+			return body
+	return null
+
+
+func _enter_tree() -> void:
+	add_to_group("controllable")
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	# Touch taps arrive as mouse clicks (emulate_mouse_from_touch is on by default).
 	if controlled and _is_tap(event):
