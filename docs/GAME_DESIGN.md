@@ -1,4 +1,4 @@
-# Ocean Haven — Game Design
+# BlueHaven — Game Design
 
 ## Core fantasy
 
