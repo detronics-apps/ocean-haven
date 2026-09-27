@@ -78,7 +78,16 @@ addons/                  third-party Godot plugins only
   `tests/test_save.gd`. Bump `VERSION` if the format changes incompatibly. Only the real main scene
   auto-saves; tests never touch the player's save.
 
-## Testing on a phone (web build over home Wi-Fi)
+## Testing on a phone (itch.io — preferred)
+
+This PC's firewall can't accept connections from the phone, so phone builds go to itch.io
+(restricted page, HTTPS, works on Wi-Fi or mobile data).
+
+1. Export the "Web" preset (step 1 below). `build/.gdignore` must exist so Godot doesn't import the build.
+2. Zip the *contents* of `build/web` (index.html at the zip root) to `build/bluehaven-web.zip`.
+3. Upload on itch.io: project → Edit → Uploads → replace the zip → Save.
+
+## Testing on a phone (web build over home Wi-Fi — needs firewall access)
 
 Godot web builds need a secure context (HTTPS or localhost), so the phone gets HTTPS with a
 self-signed certificate. Everything goes in `build/` (git-ignored).
