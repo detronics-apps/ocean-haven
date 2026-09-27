@@ -45,14 +45,24 @@ func _unhandled_input(event: InputEvent) -> void:
 func build() -> bool:
 	if is_built or not Inventory.take(building.cost_litter):
 		return false
+	_finish()
+	built.emit(building)
+	return true
+
+
+## Shows it as already built, free and without the "built!" note (loading a save).
+func restore_built() -> void:
+	if not is_built:
+		_finish()
+
+
+func _finish() -> void:
 	is_built = true
 	_sprite.texture = building.built_texture
 	if reward_animal:
 		var animal: Node2D = reward_animal.instantiate()
 		animal.position = position + reward_offset
 		get_parent().add_child(animal)
-	built.emit(building)
-	return true
 
 
 func _ranger_in_range() -> bool:

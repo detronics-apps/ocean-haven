@@ -37,8 +37,14 @@ func _toggle() -> bool:
 	return _go_ashore() if controlled else _board()
 
 
-func _board() -> bool:
-	if not _player_in_range():
+## Puts the ranger in the boat without the range check (loading a save).
+func restore_aboard() -> void:
+	if not controlled:
+		_board(false)
+
+
+func _board(check_range := true) -> bool:
+	if check_range and not _player_in_range():
 		return false
 	_player.set_aboard(true)
 	# Show the ranger (with their current look) sitting in the boat, behind the hull.

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Inventory="*res://scripts/systems/inventory.gd"
 Journal="*res://scripts/systems/journal.gd"
+SaveGame="*res://scripts/systems/save_system.gd"
 
 [display]
 

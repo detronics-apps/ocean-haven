@@ -24,4 +24,5 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(_body: Node2D) -> void:
 	Inventory.add(item)
+	SaveGame.mark_collected(self)
 	queue_free()

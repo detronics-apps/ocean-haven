@@ -12,15 +12,14 @@ var _toast_tween: Tween
 
 func _ready() -> void:
 	_toast.modulate.a = 0.0
+	Inventory.changed.connect(_set_row)
 	Inventory.item_added.connect(_on_item_added)
-	Inventory.item_removed.connect(_set_row)
 	Journal.discovered.connect(_on_discovered)
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(_on_built)
 
 
-func _on_item_added(item: ItemData, count: int) -> void:
-	_set_row(item, count)
+func _on_item_added(item: ItemData, _count: int) -> void:
 	_show_toast("%s collected!\n%s" % [item.display_name, item.fact])
 
 

@@ -71,19 +71,25 @@ addons/                  third-party Godot plugins only
   `godot --headless --path . --script res://tests/<name>.gd` (prints PASS, exits 1 on failure).
   In `--script` mode autoloads don't exist at compile time: don't name autoloads (e.g. `Inventory`)
   or classes that use them directly in a test — use `root.get_node("Inventory")` / untyped nodes.
+  Nodes only get `_ready()` once the tree runs: `await process_frame` before using a world in `_initialize`.
+- **Save game:** `SaveGame` autoload (`scripts/systems/save_system.gd`) writes `user://save.json`
+  (on Windows `%APPDATA%\Godot\app_userdata\BlueHaven\save.json` — delete it to start fresh).
+  Any new progress that must survive a restart gets a field in `save_to`/`load_from`, and a check in
+  `tests/test_save.gd`. Bump `VERSION` if the format changes incompatibly. Only the real main scene
+  auto-saves; tests never touch the player's save.
 
 ## Current milestone: MVP 0.1
 
 Build in this order, with placeholder art:
 
-1. Ocean + small starter island
-2. Player walking + following camera
-3. Simple boat (board at shore, sail)
-4. Plastic cleanup (collectable floating debris)
-5. Basic inventory
-6. One turtle (swim → rest behaviour)
-7. First sanctuary (built with collected items)
+1. ✅ Ocean + small starter island
+2. ✅ Player walking + following camera
+3. ✅ Simple boat (board at shore, sail)
+4. ✅ Plastic cleanup (collectable floating debris)
+5. ✅ Basic inventory
+6. ✅ One turtle (swim → rest behaviour)
+7. ✅ First sanctuary (built with collected items)
 8. Day/night cycle
-9. Save game
+9. ✅ Save game
 
 Anything outside this list waits until MVP 0.1 is playable.

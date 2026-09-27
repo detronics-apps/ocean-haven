@@ -1,16 +1,17 @@
 extends Node
 ## Autoload "Inventory": what the ranger is carrying, counted per item id.
 
+## Any count changed (HUD rows).
+signal changed(item: ItemData, count: int)
+## Something was picked up (HUD "collected!" note).
 signal item_added(item: ItemData, count: int)
-signal item_removed(item: ItemData, count: int)
 
 var _counts: Dictionary[StringName, int] = {}
 var _items: Dictionary[StringName, ItemData] = {}
 
 
 func add(item: ItemData, amount := 1) -> void:
-	_items[item.id] = item
-	_counts[item.id] = _counts.get(item.id, 0) + amount
+	_set_count(item, count(item.id) + amount)
 	item_added.emit(item, _counts[item.id])
 
 
@@ -34,7 +35,27 @@ func take(amount: int) -> bool:
 	while amount > 0:
 		var id: StringName = _counts.keys().reduce(func(a, b): return a if _counts[a] >= _counts[b] else b)
 		var n := mini(amount, _counts[id])
-		_counts[id] -= n
+		_set_count(_items[id], _counts[id] - n)
 		amount -= n
-		item_removed.emit(_items[id], _counts[id])
 	return true
+
+
+## Item id -> count, for the save file.
+func to_dict() -> Dictionary:
+	return _counts.duplicate()
+
+
+## Replaces the contents from a save file. Items are looked up as data/items/<id>.tres.
+func restore(counts: Dictionary) -> void:
+	for id in _counts.keys():
+		_set_count(_items[id], 0)
+	for id in counts:
+		var path := "res://data/items/%s.tres" % id
+		if ResourceLoader.exists(path):
+			_set_count(load(path), int(counts[id]))
+
+
+func _set_count(item: ItemData, n: int) -> void:
+	_items[item.id] = item
+	_counts[item.id] = n
+	changed.emit(item, n)
