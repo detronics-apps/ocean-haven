@@ -3,8 +3,8 @@ extends Node2D
 ## Eggs buried in a protected beach. Once incubated they hatch at night; the
 ## hatchlings crawl to the sea and join the population (up to its maximum).
 
-# ponytail: all species share the turtle scene, like Animal.NEST_SCENE.
-const ANIMAL_SCENE := "res://scenes/animals/turtle.tscn"
+# ponytail: all species share one animal scene; give AnimalData a scene when one needs its own.
+const ANIMAL_SCENE := "res://scenes/animals/animal.tscn"
 
 @export var species: AnimalData
 ## GameClock.now() when it was laid.

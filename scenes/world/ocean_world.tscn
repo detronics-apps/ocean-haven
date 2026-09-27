@@ -9,11 +9,13 @@
 [ext_resource type="Script" path="res://scripts/world/debris.gd" id="5_6t0eb"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
-[ext_resource type="PackedScene" path="res://scenes/animals/turtle.tscn" id="7_tch0r"]
+[ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="7_tch0r"]
 [ext_resource type="PackedScene" path="res://scenes/player/boat.tscn" id="9_jy21m"]
 [ext_resource type="Script" path="res://scripts/animals/animal.gd" id="10_3w6ph"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="11_0ob8n"]
 [ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="11_t5e65"]
+[ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="12_swpth"]
+[ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="13_fas81"]
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="13_swpth"]
 [ext_resource type="Script" path="res://scripts/player/boat.gd" id="15_fas81"]
 [ext_resource type="Script" path="res://scripts/buildings/build_mode.gd" id="16_1sar7"]
@@ -128,6 +130,78 @@ script = ExtResource("10_3w6ph")
 data = ExtResource("11_t5e65")
 tangled = true
 tangle_item = ExtResource("6_elm8k")
+
+[node name="Crab5" type="CharacterBody2D" parent="." unique_id=1101368445 instance=ExtResource("7_tch0r")]
+position = Vector2(-176, 144)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("12_swpth")
+home_radius = 90.0
+
+[node name="Crab4" type="CharacterBody2D" parent="." unique_id=910862615 instance=ExtResource("7_tch0r")]
+position = Vector2(208, -112)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("12_swpth")
+home_radius = 90.0
+
+[node name="Crab3" type="CharacterBody2D" parent="." unique_id=604341714 instance=ExtResource("7_tch0r")]
+position = Vector2(-272, 16)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("12_swpth")
+home_radius = 90.0
+
+[node name="Crab2" type="CharacterBody2D" parent="." unique_id=1791080907 instance=ExtResource("7_tch0r")]
+position = Vector2(112, 144)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("12_swpth")
+home_radius = 90.0
+
+[node name="Crab1" type="CharacterBody2D" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
+position = Vector2(-112, -144)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("12_swpth")
+home_radius = 90.0
+
+[node name="Dolphin3" type="CharacterBody2D" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
+position = Vector2(650, -100)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("13_fas81")
+home_radius = 260.0
+
+[node name="Dolphin2" type="CharacterBody2D" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
+position = Vector2(680, -130)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("13_fas81")
+home_radius = 260.0
+
+[node name="Dolphin1" type="CharacterBody2D" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
+position = Vector2(640, -160)
+collision_layer = 0
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("10_3w6ph")
+data = ExtResource("13_fas81")
+home_radius = 260.0
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 groups=["player"] instance=ExtResource("2_b6ysu")]
 collision_layer = 2

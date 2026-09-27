@@ -39,6 +39,7 @@ func _initialize() -> void:
 	_expect(_count("tent") == 1, "tent exists")
 
 	# --- Sanctuary: beach only, costs litter, no overlaps, no new turtle ---
+	var animals_before := _count_animals()
 	build_mode.start(sanctuary)
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 3)
 	_expect(not build_mode.can_place(sanctuary, Vector2i(8, -1)), "not enough litter (3 of 5)")
@@ -47,7 +48,7 @@ func _initialize() -> void:
 	_expect(not build_mode.can_place(sanctuary, Vector2i(-1, -1)), "can't overlap the tent")
 	_expect(build_mode.place_at(Vector2i(8, -1)), "sanctuary placed on the east beach")
 	_expect(inventory.total() == 0, "litter used up")
-	_expect(_count_animals() == 1, "no turtle spawned by the sanctuary")
+	_expect(_count_animals() == animals_before, "no turtle spawned by the sanctuary")
 
 	# --- Build menu ---
 	var menu: Node = world.get_node("BuildMenu")

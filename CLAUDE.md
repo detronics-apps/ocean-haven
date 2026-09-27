@@ -49,7 +49,7 @@ addons/                  third-party Godot plugins only
 ```
 
 - Files and folders: `snake_case` (`turtle_sanctuary.tscn`, `player_controller.gd`).
-- A scene and its main script share a name: `scenes/animals/turtle.tscn` ↔ `scripts/animals/turtle.gd`.
+- A scene and its main script share a name: `scenes/animals/animal.tscn` ↔ `scripts/animals/turtle.gd`.
 - Game-wide systems (save, money, quests, time, journal) live in `scripts/systems/` and are registered as autoloads.
 
 ## Code style
@@ -122,4 +122,21 @@ caring for animals". Build in this order, placeholder art:
 7. ✅ Litter keeps washing in
 8. ✅ Dock + a patrol boat that auto-collects litter in an area you choose
 
-Later: net boats, sanctuary interiors (turtle rehab mini-game), new regions.
+**MVP 0.3 — "A living island" (current).**
+
+1. ✅ Visitor donations wait at the building (coin) until the ranger collects them
+2. ✅ Dolphins (open-sea pod, curious about boats) and ghost crabs (beaches)
+3. Every animal matters (rule below): dolphins — one caught in a ghost net; trusted dolphins lead
+   you to floating litter. Crabs — one trapped in a plastic bag; crabs dig up buried beach litter
+4. Placement preview goes on the side the ranger faces (left/right/up/down), not only the right
+5. Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
+   count, but swim off into the open ocean
+6. Palm trees (walk around/behind them; can't build on them)
+7. Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
+
+Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
+(turtle rehab mini-game), new regions.
+
+**Every animal matters.** No background animals: each species either needs the ranger's help
+(tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
+or both. Design each new species' role before adding it.

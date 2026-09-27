@@ -23,7 +23,7 @@ func _initialize() -> void:
 	var moved := false
 	for i in 600:
 		await physics_frame
-		if turtle.call("_is_land", turtle.global_position):
+		if not turtle.in_habitat(turtle.global_position):
 			_expect(false, "stayed in the water (was on land at %s)" % turtle.global_position)
 			break
 		if turtle.global_position.distance_to(home) > 140.0 + 70.0:

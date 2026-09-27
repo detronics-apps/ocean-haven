@@ -40,7 +40,7 @@ func _initialize() -> void:
 	nest.set("laid_at", 3.9)
 	nest.position = Vector2(300, 0)
 	world.add_child(nest)
-	var baby: Node2D = load("res://scenes/animals/turtle.tscn").instantiate()
+	var baby: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 	baby.set("data", turtle_data)
 	baby.set("young", true)
 	baby.position = Vector2(-500, 100)

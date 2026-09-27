@@ -16,7 +16,9 @@ const FLEE_SECONDS := 2.0
 ## A ranger "moving" further than this in one frame jumped (boarding, loading) — not rushing.
 const JUMP_DISTANCE := 64.0
 const LAY_SECONDS := 6.0
-# ponytail: every species uses the turtle scene; give AnimalData a scene when a second species needs its own.
+## Physics layers: sea animals are blocked by land, land animals by water.
+const WATER_LAYER := 1
+const LAND_LAYER := 4
 const NEST_SCENE := "res://scenes/animals/nest.tscn"
 
 @export var data: AnimalData
@@ -39,6 +41,7 @@ var _flee_left := 0.0
 var _calm := 0.0
 var _watched := 0.0
 var _last_ranger_pos := Vector2.INF
+## What normally blocks it (switched off while crawling over land to nest).
 var _land_mask: int
 var _lay_left := 0.0
 ## What to do on reaching the end of a crawl.
@@ -58,6 +61,7 @@ func _ready() -> void:
 	_sprite.texture = data.sprite
 	_tangle.visible = tangled
 	_rest_left = randf_range(0.0, data.rest_max)
+	collision_mask = WATER_LAYER if _lives_on_land() else LAND_LAYER
 	_land_mask = collision_mask
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
@@ -126,7 +130,7 @@ func _physics_process(delta: float) -> void:
 		return
 	velocity = to_target.normalized() * speed
 	move_and_slide()
-	_sprite.rotation = lerp_angle(_sprite.rotation, velocity.angle(), 0.1)
+	_face(velocity)
 	# Blocked by land (e.g. fled towards the beach): rest, then pick somewhere else.
 	if get_real_velocity().length() < 1.0:
 		_rest(data.rest_min)
@@ -153,7 +157,7 @@ func _react_to_ranger(delta: float) -> void:
 		if distance < data.shy_distance and _state != State.FLEE:
 			_state = State.FLEE
 			_flee_left = FLEE_SECONDS
-			_target = global_position + pos.direction_to(global_position) * 96.0
+			_target = _flee_spot(pos)
 	else:
 		_calm += delta
 
@@ -206,21 +210,40 @@ func _rest(seconds: float) -> void:
 	_rest_left = seconds
 
 
-## A random spot in the water within home_radius of home.
+## A random spot in its habitat (e.g. the sea, or the beach) within home_radius of home.
 func _pick_target() -> Vector2:
 	for attempt in 20:
 		var spot := _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius
-		if not _is_land(spot):
+		if in_habitat(spot):
 			return spot
 	return _home
 
 
-func _is_land(point: Vector2) -> bool:
-	for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
-		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
-		if tile and tile.get_custom_data("walkable"):
-			return true
-	return false
+## Somewhere in its habitat, further from `danger` (so a crab runs along the beach
+## instead of into the sea's edge).
+func _flee_spot(danger: Vector2) -> Vector2:
+	var away := danger.direction_to(global_position)
+	for attempt in 12:
+		var spot := global_position + away.rotated(randf_range(-1.2, 1.2)) * randf_range(48.0, 96.0)
+		if in_habitat(spot) and spot.distance_to(danger) > global_position.distance_to(danger):
+			return spot
+	return global_position + away * 96.0
+
+
+func in_habitat(point: Vector2) -> bool:
+	return Terrain.at(get_tree(), point) in data.habitat_terrain
+
+
+func _lives_on_land() -> bool:
+	return not data.habitat_terrain.has("")
+
+
+## Turns to swim the way it's going, or (crabs) just flips left/right.
+func _face(motion: Vector2) -> void:
+	if data.faces_movement:
+		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle(), 0.1)
+	elif motion.x != 0.0:
+		_sprite.flip_h = motion.x < 0.0
 
 
 func _maybe_nest() -> void:
@@ -270,7 +293,7 @@ func _nesting(delta: float) -> void:
 		return
 	velocity = to_target.normalized() * data.swim_speed * 0.6
 	move_and_slide()
-	_sprite.rotation = lerp_angle(_sprite.rotation, velocity.angle(), 0.1)
+	_face(velocity)
 	# ponytail: straight-line route; if land is in the way, it crawls over it. Pathfinding when islands get complex.
 	if collision_mask != 0 and get_real_velocity().length() < 1.0:
 		collision_mask = 0

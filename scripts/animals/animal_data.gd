@@ -18,6 +18,10 @@ extends Resource
 @export_multiline var help_fact: String
 
 @export_group("Behaviour")
+## Ground it lives on (tile terrain; "" = open ocean). Sea animals: ["", "water"]; crabs: ["sand"].
+@export var habitat_terrain: PackedStringArray = ["", "water"]
+## Swimmers turn to face where they're going; crabs scuttle sideways (just flip).
+@export var faces_movement := true
 @export var swim_speed := 40.0
 ## Seconds spent resting between swims (random in this range).
 @export var rest_min := 2.0
