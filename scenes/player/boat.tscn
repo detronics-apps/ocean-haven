@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player/boat.gd" id="1_webh6"]
+[ext_resource type="Texture2D" path="res://assets/boats/rowboat.svg" id="2_km2v0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5utrm"]
+radius = 7.0
+height = 26.0
+
+[node name="Boat" type="CharacterBody2D" unique_id=235501150]
+collision_layer = 8
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_webh6")
+speed = 160.0
+controlled = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=719216226]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_5utrm")
+
+[node name="Look" type="Node2D" parent="." unique_id=874476566]
+
+[node name="Hull" type="Sprite2D" parent="Look" unique_id=1868511368]
+texture = ExtResource("2_km2v0")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=818027180]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="Hint" type="Label" parent="." unique_id=1144599668]
+visible = false
+offset_left = -60.0
+offset_top = -28.0
+offset_right = 180.0
+offset_bottom = -4.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+horizontal_alignment = 1

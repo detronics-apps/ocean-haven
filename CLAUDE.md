@@ -63,6 +63,10 @@ addons/                  third-party Godot plugins only
 - Commit after every working step with a clear message; never commit a broken project.
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
 - `.godot/` is a cache — never commit or edit it.
+- Tests live in `tests/` as headless `SceneTree` scripts; run each with
+  `godot --headless --path . --script res://tests/<name>.gd` (prints PASS, exits 1 on failure).
+  In `--script` mode autoloads don't exist at compile time: don't name autoloads (e.g. `Inventory`)
+  or classes that use them directly in a test — use `root.get_node("Inventory")` / untyped nodes.
 
 ## Current milestone: MVP 0.1
 

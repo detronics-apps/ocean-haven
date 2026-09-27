@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="1_cki5n"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_7h6d4"]
+
+[resource]
+script = ExtResource("2_7h6d4")
+id = &"plastic_bag"
+display_name = "Plastic bag"
+icon = ExtResource("1_cki5n")
+fact = "Sea turtles can mistake floating plastic bags for jellyfish, one of their foods."

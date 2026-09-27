@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bottle.svg" id="1_bihun"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_oph8m"]
+
+[resource]
+script = ExtResource("2_oph8m")
+id = &"plastic_bottle"
+display_name = "Plastic bottle"
+icon = ExtResource("1_bihun")
+fact = "Plastic bottles can take hundreds of years to break down in the ocean."

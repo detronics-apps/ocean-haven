@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Placeholder: plastic bag -->
+  <rect x="3" y="2" width="3" height="3" fill="#bdbdbd"/>
+  <rect x="10" y="2" width="3" height="3" fill="#bdbdbd"/>
+  <rect x="3" y="5" width="10" height="9" fill="#bdbdbd"/>
+  <rect x="4" y="5" width="8" height="8" fill="#f2f2f2"/>
+  <rect x="4" y="11" width="8" height="2" fill="#d6d6d6"/>
+</svg>

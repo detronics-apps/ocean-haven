@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" viewBox="0 0 32 20" shape-rendering="crispEdges">
+  <!-- Placeholder rowboat, bow pointing right -->
+  <polygon points="2,6 24,6 31,11 24,17 4,17" fill="#5a3a22"/>
+  <polygon points="3,7 23,7 29,11 23,16 5,16" fill="#8a5a36"/>
+  <polygon points="5,9 22,9 25,11 22,14 6,14" fill="#c49a6c"/>
+  <rect x="3" y="7" width="20" height="1" fill="#e8e2d0"/>
+  <rect x="14" y="9" width="2" height="5" fill="#6b4428"/>
+</svg>

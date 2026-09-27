@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/fishing_line.svg" id="1_0gfkp"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_g72ho"]
+
+[resource]
+script = ExtResource("2_g72ho")
+id = &"fishing_line"
+display_name = "Fishing line"
+icon = ExtResource("1_0gfkp")
+fact = "Lost fishing line can tangle seabirds, seals and turtles."
