@@ -11,7 +11,10 @@ A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean 
 
 ## Game rules (non-negotiable)
 
-- **No combat.** No weapons, enemies, killing, health bars, boss fights or combat stats.
+- **No combat.** No weapons, enemies, killing, boss fights or combat stats.
+- **Animals never die.** Rescued animals may show gentle care meters (health, hunger, injury) in the care mini-game, but they only ever get better, never die or get worse from neglect.
+- **No levels or XP.** Progress is Ocean Impact (per-area restoration); new regions unlock through restoration progress, not player level.
+- **One currency: conservation funding.** No gems or other premium currency, no in-game purchases or donate buttons (kids' game). Real-world impact is a "Real Impact" page with links for parents.
 - **No failure states.** Never "you failed"; say what needs more help ("The beach needs more protection") and let the player retry.
 - **Conservation is positive.** Animals are cute but biologically recognisable; facts must be accurate.
 - **Education never interrupts play.** Facts go in the Ocean Journal / Discovery Cards, not blocking popups. No mandatory quizzes.
@@ -19,7 +22,7 @@ A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean 
 - **Progress is visible.** Restored areas change colour, sound and animal count — muted (dark blue, grey, brown) when damaged, vibrant (turquoise, coral pink, tropical green) when healthy.
 - **The player is a conservation ranger**, not a superhero: no stats.
 - **Avatar creation.** The player creates and customises their avatar (skin tone, face, hair style and colour, eye colour, outfit, gear, accessories, boat appearance). Build the player sprite as swappable layers from the start, so customisation never requires redrawing the character.
-- **Multiple islands and regions.** The world grows: home island first, then new islands and regions (reef, mangrove, kelp, open ocean, polar sea) unlock through exploration and conservation progress. Each island is its own scene in `scenes/islands/`, placed into the world — never hard-code the world as one island.
+- **Multiple islands and regions.** The world grows: home island first, then new regions (Tropical Waters, Mangrove Coast, Kelp Forest, Coral Kingdom, Open Ocean / Deep Sea, Arctic Ocean — see `docs/GAME_DESIGN.md`) unlock through exploration and conservation progress. Each island is its own scene in `scenes/islands/`, placed into the world — never hard-code the world as one island.
 - Playable by a 7-year-old; depth for adults comes from choices, not complex controls.
 
 ## Art

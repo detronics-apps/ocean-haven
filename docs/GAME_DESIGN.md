@@ -107,19 +107,17 @@ Initially a dull/brown reef. The player:
 
 ## World map
 
-Progressively unlocked.
+Progressively unlocked by Ocean Impact (restoration progress) — not by player level.
 
-```
-             🧊 POLAR SEA
-                  │
-        🐧 ───────┤
-                  │
-🌴 MANGROVE ─ 🪸 REEF ─ 🐋 OPEN OCEAN
-                  │
-              🏝️ HOME
-                  │
-             🌿 KELP
-```
+| Region | Ecosystem |
+|---|---|
+| 🏝️ Starting Island | Beaches, turtle nesting |
+| 🌴 Tropical Waters | Shallow reef, seagrass |
+| 🌿 Mangrove Coast | Mangroves |
+| 🌊 Kelp Forest | Kelp |
+| 🪸 Coral Kingdom | Large coral reefs |
+| 🐋 Open Ocean / Deep Sea | Whales, sharks, deep-sea life |
+| 🧊 Arctic Ocean | Penguins, seals, cold-water whales |
 
 Each region introduces: **one new ecosystem + several animals + one major environmental problem + one new gameplay mechanic.**
 
@@ -302,6 +300,17 @@ No guns, enemies, killing, boss fights, or combat stats. Challenge comes from ex
 ## Real-world conservation
 
 Potentially partner with real organizations ("This month's Ocean Project"), and part of revenue could support real ocean conservation — transparent and optional, not a marketing gimmick.
+
+## Decisions (from the feature concept art)
+
+`docs/feature_reference.jpg` adds: avatar creator, turtle rescue → care → release, build & upgrade, region unlocks, Real Impact page. Adopted with these changes:
+
+- **Art stays pixel art** (`docs/art_reference.webp`); the concept image is for features, not style.
+- **No player levels / XP.** Regions unlock through Ocean Impact.
+- **No gems or premium currency.** One currency: conservation funding.
+- **No in-game donate button.** A "Real Impact" page with links for parents instead.
+- **Rescue & care:** care meters (health, hunger, injury, happiness) are fine, but animals only get better — they never die or decline.
+- **Avatar creator:** skin tone, face, hair style & colour, eye colour, outfit, gear, accessories.
 
 ## Ultimate goal
 
