@@ -116,10 +116,17 @@ func _process(_delta: float) -> void:
 	_label.text = "Place your %s %s: walk, or tap a spot." % [_data.display_name.to_lower(), where]
 	if not fits and not _free and Inventory.total() < _data.cost_litter:
 		_label.text = "You need %d litter to build this." % _data.cost_litter
+	if not ranger is Player:
+		_label.text = "Go ashore to place your %s." % _data.display_name.to_lower()
+		_place.disabled = true
+		_ghost.visible = false
+	else:
+		_ghost.visible = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _data:
+	# In the boat, E and taps belong to the boat (go ashore, sail): placing waits until you're on land.
+	if not _data or not ControlledBody.active(get_tree()) is Player:
 		return
 	if ControlledBody.is_tap(event):
 		_cell = Terrain.cell_of(get_global_mouse_position()) - _data.size / 2

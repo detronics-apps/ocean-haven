@@ -19,8 +19,21 @@ func _initialize() -> void:
 	var tent: Resource = load("res://data/buildings/tent.tres")
 	var sanctuary: Resource = load("res://data/buildings/turtle_protection_area.tres")
 
-	# --- Tent: free, anywhere on land, not in the sea ---
+	# --- Asked to place the tent while in the boat: can still go ashore first ---
+	var boat: Node2D = world.get_node("Boat")  # untyped: Boat uses autoloads
+	boat.restore_aboard()
 	build_mode.start(tent, true)
+	await physics_frame
+	var e := InputEventAction.new()
+	e.action = &"interact"
+	e.pressed = true
+	root.push_input(e)  # delivered straight to the game (parse_input_event isn't flushed here)
+	for i in 5:
+		await physics_frame
+	_expect(not boat.controlled and world.get_node("Player").visible, "can go ashore while the tent waits")
+	_expect(build_mode.is_active(), "tent placement still waiting")
+
+	# --- Tent: free, anywhere on land, not in the sea ---
 	_expect(not build_mode.can_place(tent, Vector2i(-20, 0)), "tent can't go in the sea")
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "free tent placed on the grass")
 	_expect(_count("tent") == 1, "tent exists")
