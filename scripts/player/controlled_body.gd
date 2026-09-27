@@ -27,7 +27,7 @@ func _enter_tree() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Touch taps arrive as mouse clicks (emulate_mouse_from_touch is on by default).
-	if controlled and _is_tap(event):
+	if controlled and is_tap(event):
 		_target = get_global_mouse_position()
 		_has_target = true
 
@@ -60,5 +60,5 @@ func stop() -> void:
 	velocity = Vector2.ZERO
 
 
-static func _is_tap(event: InputEvent) -> bool:
+static func is_tap(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT

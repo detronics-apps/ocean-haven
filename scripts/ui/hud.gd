@@ -1,6 +1,6 @@
 extends CanvasLayer
 ## On-screen inventory counts, plus a short non-blocking note with a fact when
-## something is collected or discovered.
+## something is collected, discovered or built.
 
 var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
@@ -13,10 +13,26 @@ var _toast_tween: Tween
 func _ready() -> void:
 	_toast.modulate.a = 0.0
 	Inventory.item_added.connect(_on_item_added)
+	Inventory.item_removed.connect(_set_row)
 	Journal.discovered.connect(_on_discovered)
+	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
+		site.built.connect(_on_built)
 
 
 func _on_item_added(item: ItemData, count: int) -> void:
+	_set_row(item, count)
+	_show_toast("%s collected!\n%s" % [item.display_name, item.fact])
+
+
+func _on_discovered(animal: AnimalData) -> void:
+	_show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+
+
+func _on_built(building: BuildingData) -> void:
+	_show_toast("%s built!\n%s" % [building.display_name, building.fact])
+
+
+func _set_row(item: ItemData, count: int) -> void:
 	if not _labels.has(item.id):
 		var row := HBoxContainer.new()
 		var icon := TextureRect.new()
@@ -30,11 +46,7 @@ func _on_item_added(item: ItemData, count: int) -> void:
 		_rows.add_child(row)
 		_labels[item.id] = label
 	_labels[item.id].text = "%s  x%d" % [item.display_name, count]
-	_show_toast("%s collected!\n%s" % [item.display_name, item.fact])
-
-
-func _on_discovered(animal: AnimalData) -> void:
-	_show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+	_labels[item.id].get_parent().visible = count > 0
 
 
 func _show_toast(text: String) -> void:

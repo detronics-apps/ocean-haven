@@ -17,7 +17,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	var tapped_boat := _is_tap(event) and get_global_mouse_position().distance_to(global_position) < 20.0
+	var tapped_boat := is_tap(event) and get_global_mouse_position().distance_to(global_position) < 20.0
 	if (tapped_boat or event.is_action_pressed("interact")) and _toggle():
 		get_viewport().set_input_as_handled()
 		return
