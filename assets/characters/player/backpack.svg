@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" shape-rendering="crispEdges">
+  <!-- Placeholder backpack layer (straps from the front), drawn white so it can be tinted -->
+  <rect x="8" y="17" width="2" height="7" fill="#ffffff"/>
+  <rect x="14" y="17" width="2" height="7" fill="#ffffff"/>
+  <rect x="19" y="17" width="2" height="6" fill="#d0d0d0"/>
+</svg>

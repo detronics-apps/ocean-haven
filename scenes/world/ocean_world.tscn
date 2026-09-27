@@ -1,9 +1,14 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/islands/starter_island.tscn" id="1_jdf47"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_b6ysu"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="3_if4lt"]
 
 [node name="OceanWorld" type="Node2D" unique_id=122976242]
 
 [node name="StarterIsland" type="Node2D" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1454951282]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 instance=ExtResource("2_b6ysu")]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("3_if4lt")

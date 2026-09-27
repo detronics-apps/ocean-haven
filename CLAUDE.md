@@ -24,7 +24,9 @@ A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean 
 
 ## Art
 
+- Style reference: `docs/art_reference.webp` (the target look for a healthy ocean).
 - 16-bit / modern cozy pixel art (SNES-inspired, not NES-retro), 32×32 tiles, larger character sprites.
+- **¾ top-down view** (Stardew-style) on a square grid — not isometric. Chibi characters: big head, small body.
 - Pixel-perfect: import textures with filter **Nearest**; no smoothing.
 - Until real art exists, use placeholder shapes/colours. Code must not depend on final art dimensions beyond the 32×32 grid.
 
