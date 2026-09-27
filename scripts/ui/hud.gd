@@ -16,6 +16,9 @@ func _ready() -> void:
 	Inventory.changed.connect(_set_row)
 	Inventory.item_added.connect(_on_item_added)
 	Journal.discovered.connect(_on_discovered)
+	Journal.observed.connect(_on_observed)
+	Journal.photographed.connect(_on_photographed)
+	Journal.helped.connect(_on_helped)
 	%ChangeLook.pressed.connect(func() -> void: get_tree().call_group("avatar_creator", "open"))
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(_on_built)
@@ -31,6 +34,22 @@ func _on_item_added(item: ItemData, _count: int) -> void:
 
 func _on_discovered(animal: AnimalData) -> void:
 	_show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+
+
+func _on_observed(animal: AnimalData) -> void:
+	_show_toast("You quietly watched the %s.\nHabitat: %s. Diet: %s." % [
+		animal.display_name, animal.habitat, animal.diet])
+
+
+func _on_photographed(animal: AnimalData, count: int) -> void:
+	if count == 1:
+		_show_toast("Your first photo of a %s!\n%s" % [animal.display_name, animal.photo_fact])
+	else:
+		_show_toast("Photo saved! (%d %s photos)" % [count, animal.display_name])
+
+
+func _on_helped(animal: AnimalData, _count: int) -> void:
+	_show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
 
 
 func _on_built(building: BuildingData) -> void:

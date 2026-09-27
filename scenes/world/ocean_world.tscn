@@ -1,27 +1,19 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bjdphytt63ivi"]
 
-[ext_resource type="Script" path="res://scripts/world/ocean_world.gd" id="1_0ob8n"]
+[ext_resource type="Script" uid="uid://ngpubkh46nc1" path="res://scripts/world/ocean_world.gd" id="1_0ob8n"]
 [ext_resource type="PackedScene" path="res://scenes/islands/starter_island.tscn" id="1_jdf47"]
-[ext_resource type="Script" path="res://scripts/world/day_night.gd" id="2_4aha6"]
+[ext_resource type="Script" uid="uid://dqic2hnkklr8a" path="res://scripts/world/day_night.gd" id="2_4aha6"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_b6ysu"]
 [ext_resource type="PackedScene" path="res://scenes/world/debris.tscn" id="2_mbqjn"]
-[ext_resource type="Script" path="res://scripts/world/debris.gd" id="3_bqhnb"]
-[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="3_if4lt"]
 [ext_resource type="Resource" path="res://data/items/plastic_bottle.tres" id="4_uhrbv"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
 [ext_resource type="PackedScene" path="res://scenes/buildings/build_site.tscn" id="7_5ny6f"]
 [ext_resource type="PackedScene" path="res://scenes/animals/turtle.tscn" id="7_tch0r"]
-[ext_resource type="Script" path="res://scripts/buildings/build_site.gd" id="8_0ob8n"]
-[ext_resource type="Script" path="res://scripts/animals/animal.gd" id="8_elm8k"]
 [ext_resource type="Resource" path="res://data/buildings/turtle_protection_area.tres" id="9_4aha6"]
-[ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="9_5ny6f"]
 [ext_resource type="PackedScene" path="res://scenes/player/boat.tscn" id="9_jy21m"]
-[ext_resource type="Script" path="res://scripts/player/boat.gd" id="10_5ny6f"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="11_0ob8n"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="12_4aha6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/avatar_creator.tscn" id="21_3b068"]
-[ext_resource type="Script" path="res://scripts/ui/avatar_creator.gd" id="22_2xbwg"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -34,119 +26,71 @@ script = ExtResource("1_0ob8n")
 script = ExtResource("2_4aha6")
 colors = SubResource("Gradient_1xntt")
 
-[node name="StarterIsland" type="Node2D" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
+[node name="StarterIsland" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
+position = Vector2(21, 9)
 
-[node name="Debris1" type="Area2D" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
+[node name="Debris1" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
 position = Vector2(-520, -150)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris2" type="Area2D" parent="." unique_id=74407063 instance=ExtResource("2_mbqjn")]
+[node name="Debris2" parent="." unique_id=74407063 instance=ExtResource("2_mbqjn")]
 position = Vector2(480, -260)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris3" type="Area2D" parent="." unique_id=148457466 instance=ExtResource("2_mbqjn")]
+[node name="Debris3" parent="." unique_id=148457466 instance=ExtResource("2_mbqjn")]
 position = Vector2(600, 120)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("6_elm8k")
 
-[node name="Debris4" type="Area2D" parent="." unique_id=1091758055 instance=ExtResource("2_mbqjn")]
+[node name="Debris4" parent="." unique_id=1091758055 instance=ExtResource("2_mbqjn")]
 position = Vector2(-300, 380)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris5" type="Area2D" parent="." unique_id=764560415 instance=ExtResource("2_mbqjn")]
+[node name="Debris5" parent="." unique_id=764560415 instance=ExtResource("2_mbqjn")]
 position = Vector2(150, 420)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris6" type="Area2D" parent="." unique_id=503492549 instance=ExtResource("2_mbqjn")]
+[node name="Debris6" parent="." unique_id=503492549 instance=ExtResource("2_mbqjn")]
 position = Vector2(-650, 250)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris7" type="Area2D" parent="." unique_id=1557556454 instance=ExtResource("2_mbqjn")]
+[node name="Debris7" parent="." unique_id=1557556454 instance=ExtResource("2_mbqjn")]
 position = Vector2(700, -60)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("6_elm8k")
 
-[node name="Debris8" type="Area2D" parent="." unique_id=878665859 instance=ExtResource("2_mbqjn")]
+[node name="Debris8" parent="." unique_id=878665859 instance=ExtResource("2_mbqjn")]
 position = Vector2(-150, -420)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris9" type="Area2D" parent="." unique_id=1024889149 instance=ExtResource("2_mbqjn")]
+[node name="Debris9" parent="." unique_id=1024889149 instance=ExtResource("2_mbqjn")]
 position = Vector2(-80, -144)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("4_uhrbv")
 floating = false
 
-[node name="Debris10" type="Area2D" parent="." unique_id=1911925822 instance=ExtResource("2_mbqjn")]
+[node name="Debris10" parent="." unique_id=1911925822 instance=ExtResource("2_mbqjn")]
 position = Vector2(144, 144)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("5_tch0r")
 floating = false
 
-[node name="Debris11" type="Area2D" parent="." unique_id=147284825 instance=ExtResource("2_mbqjn")]
+[node name="Debris11" parent="." unique_id=147284825 instance=ExtResource("2_mbqjn")]
 position = Vector2(-240, -16)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("3_bqhnb")
 item = ExtResource("6_elm8k")
 floating = false
 
-[node name="TurtleSanctuarySite" type="Node2D" parent="." unique_id=333766902 instance=ExtResource("7_5ny6f")]
+[node name="TurtleSanctuarySite" parent="." unique_id=333766902 instance=ExtResource("7_5ny6f")]
 position = Vector2(288, 0)
-script = ExtResource("8_0ob8n")
 building = ExtResource("9_4aha6")
 reward_animal = ExtResource("7_tch0r")
 
-[node name="GreenTurtle" type="CharacterBody2D" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
+[node name="GreenTurtle" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
 position = Vector2(-460, 40)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("8_elm8k")
-data = ExtResource("9_5ny6f")
+tangled = true
+tangle_item = ExtResource("6_elm8k")
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 groups=["player"] instance=ExtResource("2_b6ysu")]
-collision_layer = 2
-motion_mode = 1
-script = ExtResource("3_if4lt")
+[node name="Player" parent="." unique_id=1682992877 instance=ExtResource("2_b6ysu")]
 
-[node name="Boat" type="CharacterBody2D" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
+[node name="Boat" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
 position = Vector2(16, 208)
-collision_layer = 8
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_5ny6f")
-speed = 160.0
-controlled = false
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=466484113 instance=ExtResource("11_0ob8n")]
-script = ExtResource("12_4aha6")
+[node name="HUD" parent="." unique_id=466484113 instance=ExtResource("11_0ob8n")]
 
-[node name="AvatarCreator" type="CanvasLayer" parent="." unique_id=1323067438 instance=ExtResource("21_3b068")]
-layer = 10
-script = ExtResource("22_2xbwg")
+[node name="AvatarCreator" parent="." unique_id=1323067438 instance=ExtResource("21_3b068")]

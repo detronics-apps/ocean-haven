@@ -9,6 +9,8 @@ const AUTOSAVE_SECONDS := 10.0
 
 ## World debris picked up so far (node names), so it doesn't come back.
 var _collected: Array[String] = []
+## World animals freed from fishing line (node names), so they stay free.
+var _freed: Array[String] = []
 var _world: Node
 var _dirty := false
 var _since_save := 0.0
@@ -24,6 +26,8 @@ func attach(world: Node) -> bool:
 	load_from(world, PATH)
 	Inventory.item_added.connect(func(_i, _c): _dirty = true)
 	Journal.discovered.connect(func(_a): _dirty = true)
+	Journal.observed.connect(func(_a): _dirty = true)
+	Journal.photographed.connect(func(_a, _c): _dirty = true)
 	RangerProfile.look_changed.connect(func(): _dirty = true)
 	for site: BuildSite in get_tree().get_nodes_in_group("build_sites"):
 		site.built.connect(func(_b): _dirty = true)
@@ -32,6 +36,11 @@ func attach(world: Node) -> bool:
 
 func mark_collected(debris: Node) -> void:
 	_collected.append(String(debris.name))
+
+
+func mark_freed(animal: Node) -> void:
+	_freed.append(String(animal.name))
+	_dirty = true
 
 
 func _process(delta: float) -> void:
@@ -61,7 +70,9 @@ func save_to(world: Node, path: String) -> bool:
 		"version": VERSION,
 		"inventory": Inventory.to_dict(),
 		"discovered": Journal.ids(),
+		"journal": Journal.details(),
 		"collected_debris": _collected,
+		"freed_animals": _freed,
 		"built": built,
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
@@ -86,6 +97,7 @@ func save_to(world: Node, path: String) -> bool:
 ## (a damaged one is kept as <path>.bad rather than overwritten).
 func load_from(world: Node, path: String) -> bool:
 	_collected.clear()
+	_freed.clear()
 	if not FileAccess.file_exists(path):
 		return false
 	var state: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -98,7 +110,12 @@ func load_from(world: Node, path: String) -> bool:
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	Inventory.restore(state.get("inventory", {}))
-	Journal.restore(state.get("discovered", []))
+	Journal.restore(state.get("discovered", []), state.get("journal", {}))
+	for animal_name: String in state.get("freed_animals", []):
+		_freed.append(animal_name)
+		var animal := world.get_node_or_null(animal_name)
+		if animal:
+			animal.restore_freed()
 	for debris_name: String in state.get("collected_debris", []):
 		_collected.append(debris_name)
 		var debris := world.get_node_or_null(debris_name)

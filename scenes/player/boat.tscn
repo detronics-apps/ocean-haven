@@ -31,6 +31,7 @@ position_smoothing_speed = 8.0
 
 [node name="Hint" type="Label" parent="." unique_id=1144599668]
 visible = false
+z_index = 100
 offset_left = -60.0
 offset_top = -28.0
 offset_right = 180.0

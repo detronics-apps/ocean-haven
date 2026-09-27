@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/animals/animal.gd" id="1_m1ir8"]
 [ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="2_raxab"]
+[ext_resource type="Texture2D" path="res://assets/items/fishing_line.svg" id="3_raxab"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_llxdu"]
 radius = 7.0
@@ -17,3 +18,20 @@ data = ExtResource("2_raxab")
 shape = SubResource("CircleShape2D_llxdu")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1750829721]
+
+[node name="Tangle" type="Sprite2D" parent="Sprite2D" unique_id=1127671974]
+visible = false
+texture = ExtResource("3_raxab")
+
+[node name="Hint" type="Label" parent="." unique_id=680783170]
+visible = false
+z_index = 100
+offset_left = -120.0
+offset_top = -28.0
+offset_right = 360.0
+offset_bottom = -4.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+horizontal_alignment = 1

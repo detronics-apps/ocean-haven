@@ -11,3 +11,5 @@ sprite = ExtResource("2_5ypsb")
 habitat = "Tropical and subtropical oceans"
 diet = "Seagrass and algae"
 fact = "Sea turtles can travel thousands of kilometres during their lives."
+photo_fact = "Scientists can recognise individual sea turtles from the unique pattern of scales on their faces."
+help_fact = "Lost fishing line can trap turtles. Rangers are trained to free them safely - if you ever see a tangled animal, tell a lifeguard or a wildlife rescue team."

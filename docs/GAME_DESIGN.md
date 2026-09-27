@@ -318,6 +318,8 @@ Potentially partner with real organizations ("This month's Ocean Project"), and 
 - You start with a **tent** that you **place wherever you like** on the island.
 - Collected materials + **funding** (visitor donations, grants) upgrade it: tent → **house**, then a **dock** for boats.
 - **All buildings are placed by the player** in valid spots (e.g. the sanctuary on any beach) — no fixed build sites.
+- **Sleep:** interact with your tent/house at night to sleep until morning (Minecraft-style).
+- **Menu bar:** a **Build** menu (what you can build now, and what unlocks later), a **Journal** collecting every animal you've discovered and what you've learned about it, and **Change look**.
 
 ### Automating the cleanup
 - Litter keeps **washing in** over time, so cleaning is ongoing.

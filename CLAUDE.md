@@ -68,7 +68,7 @@ addons/                  third-party Godot plugins only
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
 - `.godot/` is a cache — never commit or edit it.
 - Tests live in `tests/` as headless `SceneTree` scripts; run each with
-  `godot --headless --path . --script res://tests/<name>.gd --quit-after 3000` (prints PASS, exits 1 on
+  `godot --headless --path . --script res://tests/<name>.gd --quit-after 100000` (prints PASS, exits 1 on
   failure; `--quit-after` stops a test that hangs because a script failed to compile).
   In `--script` mode autoloads don't exist at compile time: don't name autoloads (e.g. `Inventory`)
   or classes that use them directly in a test — use `root.get_node("Inventory")` / untyped nodes.
@@ -111,12 +111,15 @@ first sanctuary, day/night, save game. (Plus avatar creator.)
 **MVP 0.2 — "Home & habitat" (current).** Design: `docs/GAME_DESIGN.md` → "Home base, automation &
 caring for animals". Build in this order, placeholder art:
 
-1. Kind turtle interaction: calm approach, observe, photograph, free a tangled turtle
-2. Place-anywhere building (build mode); the turtle sanctuary moves to a player-chosen beach spot
-3. Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
-4. Home base: start with a placed tent; upgrade to a house
-5. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
-6. Litter keeps washing in
-7. Dock + a patrol boat that auto-collects litter in an area you choose
+1. ✅ Kind turtle interaction: calm approach, observe, photograph, free a tangled turtle
+2. Menu bar (HUD): **Build** (what you can build now, and what's coming later), **Journal**
+   (every species discovered, with what you've learned), **Change look**
+3. Place-anywhere building from the Build menu; the turtle sanctuary moves to a player-chosen beach spot
+4. Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
+5. Home base: start with a placed tent; upgrade to a house. Interact with it at night to
+   **sleep until morning** (Minecraft-style)
+6. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
+7. Litter keeps washing in
+8. Dock + a patrol boat that auto-collects litter in an area you choose
 
 Later: net boats, sanctuary interiors (turtle rehab mini-game), new regions.

@@ -9,6 +9,7 @@ script = ExtResource("1_caoh1")
 
 [node name="Hint" type="Label" parent="." unique_id=680804498]
 visible = false
+z_index = 100
 offset_left = -120.0
 offset_top = -46.0
 offset_right = 360.0
