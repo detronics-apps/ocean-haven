@@ -66,6 +66,9 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 			if Terrain.at(get_tree(), Terrain.centre_of(cell + Vector2i(x, y))) not in data.terrain:
 				return false
 	var footprint := Rect2i(cell, data.size)
+	for plant: Node2D in get_tree().get_nodes_in_group("plants"):
+		if footprint.has_point(Terrain.cell_of(plant.global_position)):
+			return false  # trees are in the way
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return false

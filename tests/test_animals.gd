@@ -61,6 +61,25 @@ func _initialize() -> void:
 		crab_fled = crab_fled or crab.get("_state") == 2
 	_expect(crab_fled, "crab dashes off when rushed")
 
+	# --- Two dolphins in reach, one tangled: E helps the tangled one ---
+	var healthy: Node2D = world.get_node("Dolphin1")
+	var caught: Node2D = world.get_node("Dolphin2")
+	caught.global_position = healthy.global_position + Vector2(30, 0)
+	player.global_position = healthy.global_position + Vector2(-2000, 0)
+	await physics_frame
+	player.global_position = healthy.global_position + Vector2(-20, 40)  # one jump, then stay still
+	for i in 150:
+		await physics_frame
+	var journal_before: int = root.get_node("Journal").photos(&"bottlenose_dolphin")
+	var e := InputEventAction.new()
+	e.action = &"interact"
+	e.pressed = true
+	root.push_input(e)
+	for i in 3:
+		await physics_frame
+	_expect(not caught.tangled, "E frees the tangled dolphin first")
+	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before, "not a photo of the other one")
+
 	# --- A trusting dolphin leads you to litter ---
 	var guide: Node2D = world.get_node("Dolphin1")
 	player.global_position = guide.global_position + Vector2(90, 0)  # arrive (a jump), then stay calm

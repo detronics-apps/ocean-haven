@@ -20,6 +20,8 @@ const LAY_SECONDS := 6.0
 const DIG_WATCH_RANGE := 250.0
 ## Guiding animals show "follow me" to a ranger within this distance.
 const FOLLOW_HINT_RANGE := 250.0
+## A curious animal keeps the ranger company this long, then gets on with its day.
+const CURIOUS_SECONDS := 20.0
 ## Physics layers: sea animals are blocked by land, land animals by water.
 const WATER_LAYER := 1
 ## Leaving hatchlings are gone once this far from the middle of the world.
@@ -48,6 +50,8 @@ var _flee_left := 0.0
 ## Seconds the ranger has stayed calm nearby, and has watched it while relaxed.
 var _calm := 0.0
 var _watched := 0.0
+## Seconds spent keeping a calm ranger company (see CURIOUS_SECONDS).
+var _company := 0.0
 var _last_ranger_pos := Vector2.INF
 ## Litter this animal is leading the ranger to (trusting dolphins).
 var _guide_to: Node2D
@@ -128,7 +132,7 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector2.ZERO
 			_rest_left -= delta
 			# A curious animal stays beside a calm ranger rather than wandering off.
-			if _rest_left <= 0.0 and not (data.curious and is_relaxed()):
+			if _rest_left <= 0.0 and not _keeping_company():
 				_maybe_dig()
 				_swim_to(_pick_target(), State.SWIM)
 			return
@@ -166,6 +170,7 @@ func _react_to_ranger(delta: float) -> void:
 	if distance > data.discover_distance:
 		_calm = 0.0
 		_watched = 0.0
+		_company = 0.0
 		return
 	Journal.discover(data)
 
@@ -179,7 +184,9 @@ func _react_to_ranger(delta: float) -> void:
 		_calm += delta
 
 	if is_relaxed() and _state != State.FLEE:
-		if data.curious and distance > 48.0 and _state != State.CURIOUS and not _guide_to:
+		if _keeping_company():
+			_company += delta
+		if _keeping_company() and distance > 48.0 and _state != State.CURIOUS and not _guide_to:
 			_swim_to(pos + pos.direction_to(global_position) * 36.0, State.CURIOUS)
 		if distance <= data.interact_distance:
 			_watched += delta
@@ -191,9 +198,9 @@ func _react_to_ranger(delta: float) -> void:
 		if not is_relaxed():
 			_hint.text = "Stay still so it can relax..."
 		elif tangled:
-			_hint.text = "E / tap: free the %s" % data.display_name.to_lower()
+			_hint.text = "%s: free the %s" % [_key_hint(), data.display_name.to_lower()]
 		else:
-			_hint.text = "E / tap: take a photo"
+			_hint.text = "%s: take a photo" % _key_hint()
 
 
 ## Trusting (relaxed) guides lead the ranger to floating litter they've spotted,
@@ -240,12 +247,45 @@ func _maybe_dig() -> void:
 
 func _input(event: InputEvent) -> void:
 	# _input (not _unhandled_input) so helping an animal wins over boarding/walking.
-	if not (_hint.visible and is_relaxed()):
+	if not can_interact():
 		return
+	# A tap picks this exact animal; E goes to one animal only: see _is_first_choice().
 	var tapped := ControlledBody.is_tap(event) and get_global_mouse_position().distance_to(global_position) < 24.0
-	if tapped or event.is_action_pressed("interact"):
+	if tapped or (event.is_action_pressed("interact") and _is_first_choice()):
 		get_viewport().set_input_as_handled()
 		_interact()
+
+
+## Curious and relaxed, and hasn't had enough of the ranger's company yet.
+func _keeping_company() -> bool:
+	return data.curious and is_relaxed() and _company < CURIOUS_SECONDS
+
+
+## Relaxed and close enough for the ranger to observe, photograph or help it.
+func can_interact() -> bool:
+	return _hint.visible and is_relaxed() and _state != State.GUIDE
+
+
+## With several animals in reach, E goes to one: an animal that needs help first,
+## then the one nearest the ranger.
+func _is_first_choice() -> bool:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return false
+	var best: Animal = null
+	for other: Animal in get_tree().get_nodes_in_group("animals"):
+		if not other.can_interact():
+			continue
+		if not best or (other.tangled and not best.tangled) or (other.tangled == best.tangled
+				and other.global_position.distance_to(ranger.global_position)
+				< best.global_position.distance_to(ranger.global_position)):
+			best = other
+	return best == self
+
+
+## "E / tap" on the animal E will act on; just "Tap" on the others.
+func _key_hint() -> String:
+	return "E / tap" if _is_first_choice() else "Tap"
 
 
 func _interact() -> void:

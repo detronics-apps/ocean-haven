@@ -131,7 +131,7 @@ caring for animals". Build in this order, placeholder art:
 4. ✅ Placement preview goes on the side the ranger faces (left/right/up/down), not only the right
 5. ✅ Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
    count, but swim off into the open ocean
-6. Palm trees (walk around/behind them; can't build on them)
+6. ✅ Palm trees (walk around/behind them; can't build on them)
 7. Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
