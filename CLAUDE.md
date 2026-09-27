@@ -116,9 +116,9 @@ caring for animals". Build in this order, placeholder art:
    (every species discovered, with what you've learned), **Change look**
 3. ✅ Place-anywhere building from the Build menu; the turtle sanctuary moves to a player-chosen beach spot
 4. ✅ Turtle nesting: the existing turtle lays eggs at the sanctuary → hatchlings → more turtles
-5. Home base: ✅ start with a placed tent (house upgrade needs funding, step 6). ✅ Interact with it at night to
+5. ✅ Home base: start with a placed tent; upgrade to the house (funding). Interact with it at night to
    **sleep until morning** (Minecraft-style)
-6. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
+6. ✅ Funding: visitor donations / photo research money; buildings cost funding + recycled litter
 7. ✅ Litter keeps washing in
 8. Dock + a patrol boat that auto-collects litter in an area you choose
 

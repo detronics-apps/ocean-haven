@@ -16,6 +16,14 @@ extends Resource
 @export var terrain: PackedStringArray = ["sand", "grass"]
 ## Pieces of collected litter needed; they're recycled into building materials.
 @export var cost_litter := 0
+## Conservation funding needed.
+@export var cost_funding := 0
+## Building id this one replaces when placed (the house replaces the tent).
+@export var replaces: StringName
+## Funding visitors donate each morning (0 = attracts no visitors) ...
+@export var visitors := 0
+## ... plus this much for each animal that nests here.
+@export var visitors_per_animal := 0
 ## Only one of these can exist (e.g. your home).
 @export var unique := false
 ## Shown in the Build menu but can't be built yet.

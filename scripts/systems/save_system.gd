@@ -28,6 +28,7 @@ func attach(world: Node) -> bool:
 	Journal.discovered.connect(func(_a): _dirty = true)
 	Journal.observed.connect(func(_a): _dirty = true)
 	Journal.photographed.connect(func(_a, _c): _dirty = true)
+	Funding.changed.connect(func(_b): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
 	Journal.hatched.connect(func(_a, _c): _dirty = true)
 	RangerProfile.look_changed.connect(func(): _dirty = true)
@@ -90,6 +91,7 @@ func save_to(world: Node, path: String) -> bool:
 		"collected_debris": _collected,
 		"freed_animals": _freed,
 		"washed_in_litter": litter,
+		"funding": Funding.to_dict(),
 		"nests": nests,
 		"young_animals": young,
 		"nest_days": nest_days,
@@ -130,6 +132,7 @@ func load_from(world: Node, path: String) -> bool:
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	Inventory.restore(state.get("inventory", {}))
+	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	for animal_name: String in state.get("freed_animals", []):
 		_freed.append(animal_name)

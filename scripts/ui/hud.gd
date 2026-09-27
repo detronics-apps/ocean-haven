@@ -4,6 +4,8 @@ extends CanvasLayer
 
 var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
+## Notes waiting for the current one to fade (so they don't overwrite each other).
+var _toast_queue: Array[String] = []
 
 @onready var _rows: VBoxContainer = %Rows
 @onready var _toast: PanelContainer = %Toast
@@ -26,6 +28,7 @@ func _ready() -> void:
 	Journal.helped.connect(_on_helped)
 	Journal.nested.connect(_on_nested)
 	Journal.hatched.connect(_on_hatched)
+	Funding.earned.connect(_on_earned)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
@@ -44,7 +47,11 @@ func sleep_through_night() -> void:
 
 
 func _process(_delta: float) -> void:
-	_clock.text = "Day %d · %s" % [GameClock.day, GameClock.period()]
+	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
+
+
+func _on_earned(amount: int, reason: String) -> void:
+	show_toast("+%d funding\n%s" % [amount, reason])
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
@@ -101,10 +108,19 @@ func _set_row(item: ItemData, count: int) -> void:
 
 
 func show_toast(text: String) -> void:
+	if _toast_tween and _toast_tween.is_running():
+		_toast_queue.append(text)
+		if _toast_queue.size() > 2:
+			_toast_queue.pop_front()  # keep it short: drop the oldest waiting note
+		return
 	_toast_label.text = text
-	if _toast_tween:
-		_toast_tween.kill()
 	_toast.modulate.a = 1.0
 	_toast_tween = create_tween()
 	_toast_tween.tween_interval(3.0)
 	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.6)
+	_toast_tween.finished.connect(_show_next_toast)
+
+
+func _show_next_toast() -> void:
+	if not _toast_queue.is_empty():
+		show_toast(_toast_queue.pop_front())

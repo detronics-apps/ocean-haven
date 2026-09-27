@@ -12,4 +12,6 @@ order = 1
 texture = ExtResource("2_5jcrs")
 terrain = PackedStringArray("sand")
 cost_litter = 5
+visitors = 20
+visitors_per_animal = 10
 fact = "Protecting nesting beaches gives turtle eggs a safer start. The fence posts are made from the plastic you collected!"

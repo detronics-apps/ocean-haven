@@ -44,6 +44,7 @@ func _initialize() -> void:
 	baby.set("young", true)
 	baby.position = Vector2(-500, 100)
 	world.add_child(baby)
+	root.get_node("Funding").restore({"balance": 77})
 	world.get_node("LitterSpawner").spawn_at(load("res://data/items/plastic_bag.tres"), Vector2(-700, -300), true)
 	(world.get_node("Player") as Node2D).global_position = Vector2(-100, 50)
 	(world.get_node("Boat") as Node2D).global_position = Vector2(16, 300)
@@ -63,9 +64,11 @@ func _initialize() -> void:
 	clock.day = 1
 	clock.time_of_day = 0.3
 	profile.restore({}, false)
+	root.get_node("Funding").restore({})
 	world = _new_world()
 	_expect(_save.load_from(world, PATH), "loaded")
 	_expect(profile.look["hair"] == 3 and profile.created, "avatar look restored")
+	_expect(root.get_node("Funding").balance == 77, "funding restored")
 	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")

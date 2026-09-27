@@ -63,9 +63,13 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 				return false
 	var footprint := Rect2i(cell, data.size)
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
-		if other.rect().intersects(footprint):
+		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return false
-	return _free or Inventory.total() >= data.cost_litter
+	return _free or can_afford(data)
+
+
+func can_afford(data: BuildingData) -> bool:
+	return Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
 
 
 ## Moves the ghost to `cell` and places it there.
@@ -78,8 +82,15 @@ func place_at(cell: Vector2i) -> bool:
 func place() -> bool:
 	if not _data or not can_place(_data, _cell):
 		return false
-	if not _free and not Inventory.take(_data.cost_litter):
-		return false
+	if not _free:
+		if not can_afford(_data):
+			return false
+		Funding.spend(_data.cost_funding)
+		Inventory.take(_data.cost_litter)
+	for old: Building in get_tree().get_nodes_in_group("buildings"):
+		if old.data.id == _data.replaces:
+			old.queue_free()
+			old.remove_from_group("buildings")  # gone for saving and overlap checks right away
 	var building := add_building(_data, _cell)
 	_data = null
 	_free = false
@@ -112,10 +123,11 @@ func _process(_delta: float) -> void:
 	var fits := can_place(_data, _cell)
 	_ghost.modulate = FITS if fits else BLOCKED
 	_place.disabled = not fits
-	var where := "on the beach" if _data.terrain == PackedStringArray(["sand"]) else "on the island"
+	var where: String = {"sand": "on the beach", "water": "in the shallows"}.get(
+		_data.terrain[0] if _data.terrain.size() == 1 else "", "on the island")
 	_label.text = "Place your %s %s: walk, or tap a spot." % [_data.display_name.to_lower(), where]
-	if not fits and not _free and Inventory.total() < _data.cost_litter:
-		_label.text = "You need %d litter to build this." % _data.cost_litter
+	if not _free and not can_afford(_data):
+		_label.text = "You need %d litter and %d funding to build this." % [_data.cost_litter, _data.cost_funding]
 	if not ranger is Player:
 		_label.text = "Go ashore to place your %s." % _data.display_name.to_lower()
 		_place.disabled = true

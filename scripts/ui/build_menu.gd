@@ -13,6 +13,7 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	_title.text = "Build    (Funding: %d)" % Funding.balance
 	var all := DataFiles.load_all("res://data/buildings")
 	all.sort_custom(func(a: BuildingData, b: BuildingData) -> bool: return a.order < b.order)
 	for data: BuildingData in all:
@@ -26,11 +27,12 @@ func _entry(data: BuildingData) -> Control:
 		status = "Coming later: " + data.unlock_hint
 	elif data.unique and _exists(data.id):
 		status = "Already built."
-	elif Inventory.total() < data.cost_litter:
-		status = "Needs %d recycled litter (you have %d)." % [data.cost_litter, Inventory.total()]
 	else:
-		status = "Needs %d recycled litter." % data.cost_litter if data.cost_litter > 0 else "Free to build."
-		can_build = true
+		can_build = Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
+		status = _cost_text(data) + ("" if can_build else "  (you have %d litter, %d funding)" % [
+			Inventory.total(), Funding.balance])
+	if data.replaces and not data.locked:
+		status += "  Replaces your %s." % data.replaces
 	var entry := card(data.texture, [data.display_name, data.description, status], data.locked)
 	entry.name = "Entry_" + data.id
 	if can_build:
@@ -42,6 +44,15 @@ func _entry(data: BuildingData) -> Control:
 		build.pressed.connect(_choose.bind(data))
 		entry.get_child(0).add_child(build)
 	return entry
+
+
+static func _cost_text(data: BuildingData) -> String:
+	var parts: Array[String] = []
+	if data.cost_funding > 0:
+		parts.append("%d funding" % data.cost_funding)
+	if data.cost_litter > 0:
+		parts.append("%d recycled litter" % data.cost_litter)
+	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."
 
 
 func _choose(data: BuildingData) -> void:
