@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_b6ysu"]
 [ext_resource type="PackedScene" path="res://scenes/world/debris.tscn" id="2_mbqjn"]
 [ext_resource type="Resource" path="res://data/items/plastic_bottle.tres" id="4_uhrbv"]
+[ext_resource type="PackedScene" path="res://scenes/islands/tropical_island.tscn" id="4_vk2ck"]
 [ext_resource type="Script" path="res://scripts/world/debris.gd" id="5_6t0eb"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
@@ -28,6 +29,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/journal_screen.tscn" id="23_t36bi"]
 [ext_resource type="Script" path="res://scripts/ui/journal_screen.gd" id="24_t5e65"]
 [ext_resource type="Script" path="res://scripts/world/litter_spawner.gd" id="25_swpth"]
+[ext_resource type="PackedScene" path="res://scenes/ui/voyage_map.tscn" id="30_j1yad"]
+[ext_resource type="Script" path="res://scripts/ui/voyage_map.gd" id="31_kcxw8"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -43,6 +46,10 @@ colors = SubResource("Gradient_1xntt")
 
 [node name="StarterIsland" type="Node2D" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
 y_sort_enabled = true
+
+[node name="TropicalIsland" type="Node2D" parent="." unique_id=1935725137 instance=ExtResource("4_vk2ck")]
+y_sort_enabled = true
+position = Vector2(5120, 0)
 
 [node name="Debris1" type="Area2D" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
 position = Vector2(-605.9138, -163.62244)
@@ -155,33 +162,33 @@ tangled = true
 tangle_item = ExtResource("5_tch0r")
 
 [node name="Dolphin3" type="CharacterBody2D" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
-position = Vector2(790, -100)
+position = Vector2(-360, -512.687)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
-home_radius = 260.0
+home_radius = 220.0
 
 [node name="Dolphin2" type="CharacterBody2D" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
-position = Vector2(820, -130)
+position = Vector2(-360, 512.687)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
-home_radius = 260.0
+home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("14_fas81")
 
 [node name="Dolphin1" type="CharacterBody2D" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
-position = Vector2(780, -160)
+position = Vector2(720, 0)
 collision_layer = 0
 collision_mask = 4
 motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
-home_radius = 260.0
+home_radius = 220.0
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 groups=["player"] instance=ExtResource("2_b6ysu")]
 collision_layer = 2
@@ -216,3 +223,12 @@ script = ExtResource("24_t5e65")
 
 [node name="LitterSpawner" type="Node" parent="." unique_id=621590369]
 script = ExtResource("25_swpth")
+area = Rect2(-1100, -800, 2200, 1600)
+
+[node name="TropicalLitter" type="Node" parent="." unique_id=158994949]
+script = ExtResource("25_swpth")
+max_litter = 10
+area = Rect2(4420, -500, 1400, 1000)
+
+[node name="VoyageMap" type="CanvasLayer" parent="." unique_id=231089713 instance=ExtResource("30_j1yad")]
+script = ExtResource("31_kcxw8")

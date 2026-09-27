@@ -25,7 +25,7 @@ func _enter_tree() -> void:
 ## A random piece of litter at `spot` (e.g. dug up by a crab), unless there's
 ## already enough litter about. Returns it, or null.
 func wash_up_at(spot: Vector2, floating: bool) -> Debris:
-	if get_tree().get_nodes_in_group("debris").size() >= max_litter:
+	if _litter_in_area() >= max_litter:
 		return null
 	return spawn_at(_items.pick_random(), spot, floating)
 
@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 ## Adds one piece of litter somewhere suitable. Returns it, or null if there's
 ## already enough litter or no spot was found.
 func spawn_one() -> Debris:
-	if get_tree().get_nodes_in_group("debris").size() >= max_litter:
+	if _litter_in_area() >= max_litter:
 		return null
 	var at_sea := randf() < at_sea_chance
 	var ranger := ControlledBody.active(get_tree())
@@ -61,14 +61,21 @@ func spawn_one() -> Debris:
 	return null
 
 
+## Litter inside this spawner's area (each island's waters have their own limit).
+func _litter_in_area() -> int:
+	return get_tree().get_nodes_in_group("debris").filter(
+		func(d: Node2D) -> bool: return area.has_point(d.global_position)).size()
+
+
 ## Centres of every beach (sand) tile on the islands — beaches are too small a
 ## share of the sea to find by random guessing.
 func _sand_spots() -> Array[Vector2]:
 	var spots: Array[Vector2] = []
 	for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
 		for cell in ground.get_used_cells():
-			if ground.get_cell_tile_data(cell).get_custom_data("terrain") == "sand":
-				spots.append(ground.to_global(ground.map_to_local(cell)))
+			var spot := ground.to_global(ground.map_to_local(cell))
+			if area.has_point(spot) and ground.get_cell_tile_data(cell).get_custom_data("terrain") == "sand":
+				spots.append(spot)
 	return spots
 
 

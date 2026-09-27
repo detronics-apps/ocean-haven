@@ -54,6 +54,9 @@ var _calm := 0.0
 var _watched := 0.0
 ## Seconds spent keeping a calm ranger company (see CURIOUS_SECONDS).
 var _company := 0.0
+## Divers: under the water right now, and seconds until they surface / dive again.
+var underwater := false
+var _breath_left := 0.0
 var _last_ranger_pos := Vector2.INF
 ## Litter this animal is leading the ranger to (trusting dolphins).
 var _guide_to: Node2D
@@ -115,6 +118,22 @@ func crawl_to_sea() -> void:
 	# A random spot in that water tile, so hatchlings fan out instead of stacking up.
 	var spread := Vector2(randf_range(-12.0, 12.0), randf_range(-12.0, 12.0))
 	_crawl_to(water + spread, true, _settle_in_water)
+
+
+func _process(delta: float) -> void:
+	if data.dives:
+		_breathe(delta)
+
+
+## Divers come up for air, then dive and fade to a faint shadow under the water.
+func _breathe(delta: float) -> void:
+	_breath_left -= delta
+	if _breath_left <= 0.0:
+		underwater = not underwater
+		var seconds := data.dive_seconds if underwater else data.surface_seconds
+		_breath_left = randf_range(seconds.x, seconds.y)
+	var target_alpha := 0.18 if underwater else 1.0
+	_sprite.modulate.a = move_toward(_sprite.modulate.a, target_alpha, delta * 1.5)
 
 
 func _physics_process(delta: float) -> void:

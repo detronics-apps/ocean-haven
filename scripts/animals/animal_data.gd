@@ -43,6 +43,12 @@ extends Resource
 ## Seconds of quiet watching (while relaxed) to count as observed.
 @export var observe_time := 4.0
 
+## Surfaces to breathe, then dives (fades to a shadow underwater) — dolphins.
+@export var dives := false
+## Seconds at the surface, then underwater (random in each range).
+@export var surface_seconds := Vector2(3.0, 5.0)
+@export var dive_seconds := Vector2(4.0, 8.0)
+
 @export_group("Helping")
 ## Once it trusts the ranger, leads them to floating litter within guide_range (dolphins).
 @export var guides_to_litter := false

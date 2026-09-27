@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RegionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_4kmir"]
+
+[resource]
+script = ExtResource("1_4kmir")
+id = &"tropical_waters"
+display_name = "Tropical Waters"
+description = "Warm, clear shallows around a small island, and a coral reef in trouble. The reef fish need your help. (Reef restoration coming soon.)"
+order = 1
+center = Vector2(5120, 0)
+waters_radius = 1000.0
+arrival = Vector2(4848, 16)
+boat_mooring = Vector2(4816, 16)
+requires_building = &"patrol_boat"
+unlock_hint = "Automate your home island first: build a Patrol Boat."

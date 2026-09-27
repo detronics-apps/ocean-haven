@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RegionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_qw2mg"]
+
+[resource]
+script = ExtResource("1_qw2mg")
+id = &"kelp_forest"
+display_name = "Kelp Forest"
+description = "Tall underwater forests of kelp, home to sea otters and seals."
+order = 3
+center = Vector2(0, 60000)
+waters_radius = 1000.0
+locked = true
+unlock_hint = "keep restoring the ocean to reach it."

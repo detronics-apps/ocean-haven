@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RegionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_2asjv"]
+
+[resource]
+script = ExtResource("1_2asjv")
+id = &"arctic_ocean"
+display_name = "Arctic Ocean"
+description = "Icy waters with penguins, seals and whales."
+order = 6
+center = Vector2(0, 90000)
+waters_radius = 1000.0
+locked = true
+unlock_hint = "keep restoring the ocean to reach it."

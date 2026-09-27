@@ -27,13 +27,22 @@ func _initialize() -> void:
 	# --- 10 s of wandering: each stays in its habitat ---
 	var dolphins_at_sea := true
 	var crabs_ashore := true
-	for i in 600:
+	var dived := false
+	var surfaced := false
+	for i in 900:
 		await physics_frame
 		for d in dolphins:
 			dolphins_at_sea = dolphins_at_sea and _terrain(d.global_position) in ["", "water"]
+			var alpha: float = d.get_node("Sprite2D").modulate.a
+			dived = dived or alpha < 0.3
+			surfaced = surfaced or (dived and alpha > 0.95)
 		for c in crabs:
 			crabs_ashore = crabs_ashore and not _terrain(c.global_position) in ["", "water"]
 	_expect(dolphins_at_sea, "dolphins stay at sea")
+	_expect(dived and surfaced, "dolphins dive (fade to a shadow) and come back up for air")
+	var angles := dolphins.map(func(d: Node2D) -> float: return rad_to_deg(d.get("_home").angle()))
+	angles.sort()
+	_expect(angles[1] - angles[0] > 90.0 and angles[2] - angles[1] > 90.0, "dolphins live spread around the island %s" % [angles])
 	_expect(crabs_ashore, "crabs never go into the water")
 	_expect(crabs.all(func(c: Node2D) -> bool: return c.get_node("Sprite2D").rotation == 0.0),
 		"crabs scuttle sideways (no turning)")

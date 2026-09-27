@@ -7,6 +7,7 @@ extends ControlledBody
 
 var _player: Player
 var _driver: Node2D
+var _warned_far := false
 
 @onready var _camera: Camera2D = $Camera2D
 @onready var _hint: Label = $Hint
@@ -29,6 +30,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	super(event)
+
+
+## The rowboat is a small coastal boat: past its region's waters it turns back.
+func _physics_process(delta: float) -> void:
+	super(delta)
+	if not controlled:
+		return
+	var region := Regions.nearest(global_position)
+	var from_centre := global_position - region.center
+	if from_centre.length() > region.waters_radius:
+		global_position = region.center + from_centre.limit_length(region.waters_radius)
+		stop()
+		if not _warned_far:
+			_warned_far = true
+			get_tree().call_group("hud", "show_toast",
+				"This little boat can't go that far.\nBuild an Expedition Boat at your dock to sail to other islands.")
+	elif from_centre.length() < region.waters_radius - 150.0:
+		_warned_far = false
 
 
 func _process(_delta: float) -> void:
@@ -68,12 +87,19 @@ func _go_ashore() -> bool:
 	var spot: Variant = _shore_spot()
 	if spot == null:
 		return false
+	restore_ashore()
+	_player.global_position = spot
+	return true
+
+
+## Takes the ranger out of the boat right where it is (e.g. setting off on a voyage).
+func restore_ashore() -> void:
+	if not controlled:
+		return
 	stop()
 	controlled = false
 	_driver.queue_free()
-	_player.global_position = spot
 	_player.set_aboard(false)
-	return true
 
 
 func _player_in_range() -> bool:

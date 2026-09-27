@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RegionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_opv3m"]
+
+[resource]
+script = ExtResource("1_opv3m")
+id = &"coral_kingdom"
+display_name = "Coral Kingdom"
+description = "Huge coral reefs full of colour and life."
+order = 4
+center = Vector2(0, 70000)
+waters_radius = 1000.0
+locked = true
+unlock_hint = "keep restoring the ocean to reach it."
