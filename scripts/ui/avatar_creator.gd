@@ -45,7 +45,7 @@ func _build() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 24)
+		margin.add_theme_constant_override("margin_" + side, 12)
 	add_child(margin)
 	var layout := HBoxContainer.new()
 	layout.add_theme_constant_override("separation", 32)
@@ -62,11 +62,11 @@ func _build() -> void:
 	title.add_theme_font_size_override("font_size", 28)
 	left.add_child(title)
 	var preview_box := Control.new()
-	preview_box.custom_minimum_size = Vector2(300, 260)
+	preview_box.custom_minimum_size = Vector2(300, 220)
 	left.add_child(preview_box)
 	var preview: Node2D = load("res://scenes/player/avatar.tscn").instantiate()
 	preview.scale = Vector2.ONE * PREVIEW_SCALE
-	preview.position = Vector2(150, 250)  # feet at the bottom centre of the box
+	preview.position = Vector2(150, 215)  # feet at the bottom centre of the box
 	preview_box.add_child(preview)
 	left.add_child(_button("Surprise me!", RangerProfile.randomize_look))
 	_done = _button("Let's go!", close)
@@ -78,7 +78,7 @@ func _build() -> void:
 	grid.columns = 2
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 24)
-	grid.add_theme_constant_override("v_separation", 12)
+	grid.add_theme_constant_override("v_separation", 4)
 	layout.add_child(grid)
 	for key: String in RangerProfile.CHOICES:
 		grid.add_child(_row(key))

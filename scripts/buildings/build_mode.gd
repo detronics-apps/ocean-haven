@@ -150,25 +150,45 @@ func _build_bar() -> void:
 	_bar = CanvasLayer.new()
 	_bar.layer = 5
 	add_child(_bar)
+	# Bottom centre, big buttons: easy to reach with a thumb on a phone.
 	var panel := PanelContainer.new()
 	panel.anchor_left = 0.5
 	panel.anchor_right = 0.5
-	panel.offset_top = 12
+	panel.anchor_top = 1.0
+	panel.anchor_bottom = 1.0
+	panel.offset_top = -16
+	panel.offset_bottom = -16
 	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_bar.add_child(panel)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
-	panel.add_child(row)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 8)
+	panel.add_child(column)
 	_label = Label.new()
-	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	row.add_child(_label)
-	_place = Button.new()
-	_place.text = "Place"
-	_place.custom_minimum_size = Vector2(96, 48)
+	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label.add_theme_font_size_override("font_size", 20)
+	column.add_child(_label)
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 16)
+	column.add_child(row)
+	_place = _big_button("Place", Color("3f8a4a"))
 	_place.pressed.connect(place)
 	row.add_child(_place)
-	_cancel = Button.new()
-	_cancel.text = "Cancel"
-	_cancel.custom_minimum_size = Vector2(96, 48)
+	_cancel = _big_button("Cancel", Color("5a6470"))
 	_cancel.pressed.connect(cancel)
 	row.add_child(_cancel)
+
+
+static func _big_button(text: String, colour: Color) -> Button:
+	var b := Button.new()
+	b.text = text
+	b.custom_minimum_size = Vector2(160, 64)
+	b.add_theme_font_size_override("font_size", 24)
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		var box := StyleBoxFlat.new()
+		box.set_corner_radius_all(10)
+		box.bg_color = {"normal": colour, "hover": colour.lightened(0.15),
+			"pressed": colour.darkened(0.15), "disabled": Color(0.3, 0.3, 0.3, 0.6)}[state]
+		b.add_theme_stylebox_override(state, box)
+	return b

@@ -2,11 +2,15 @@ extends Node2D
 ## The world: the home island, the sea around it, the ranger and their boat.
 
 const TENT_PATH := "res://data/buildings/tent.tres"
+## Phones and tablets shrink the PC-sized layout a lot; scale everything back up there.
+const TOUCH_SCALE := 1.5
 
 
 func _ready() -> void:
 	if not SaveGame.attach(self):
 		return
+	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
+		get_window().content_scale_factor = TOUCH_SCALE
 	# A new game: make your ranger, then pitch your tent (older saves get whichever is missing).
 	if not RangerProfile.created:
 		$AvatarCreator.open()
