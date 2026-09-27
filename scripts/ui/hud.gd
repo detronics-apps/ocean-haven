@@ -29,6 +29,7 @@ func _ready() -> void:
 	Journal.nested.connect(_on_nested)
 	Journal.hatched.connect(_on_hatched)
 	Funding.earned.connect(_on_earned)
+	Funding.donations_waiting.connect(_on_donations_waiting)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
@@ -52,6 +53,10 @@ func _process(_delta: float) -> void:
 
 func _on_earned(amount: int, reason: String) -> void:
 	show_toast("+%d funding\n%s" % [amount, reason])
+
+
+func _on_donations_waiting(building: Building, amount: int) -> void:
+	show_toast("Visitors left %d funding at your %s.\nGo and collect it!" % [amount, building.data.display_name])
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:

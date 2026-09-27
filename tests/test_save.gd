@@ -33,6 +33,7 @@ func _initialize() -> void:
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "pitched the tent")
 	build_mode.start(load("res://data/buildings/turtle_protection_area.tres"))
 	_expect(build_mode.place_at(Vector2i(8, -1)), "built the sanctuary (uses 5 of 7)")
+	get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0].add_funds(25)
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
 	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
 	nest.set("species", turtle_data)
@@ -78,6 +79,8 @@ func _initialize() -> void:
 		cells[b.data.id] = b.cell
 	_expect(cells == {&"tent": Vector2i(-1, -1), &"turtle_protection_area": Vector2i(8, -1)},
 		"buildings restored where they were placed")
+	_expect(get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0].pending_funds == 25,
+		"uncollected donations restored")
 	var nests := get_nodes_in_group("nests")
 	_expect(nests.size() == 1 and nests[0].position == Vector2(300, 0) and is_equal_approx(nests[0].laid_at, 3.9),
 		"nest restored")

@@ -5,6 +5,8 @@ extends Node
 
 signal changed(balance: int)
 signal earned(amount: int, reason: String)
+## Visitors left donations at a building; the ranger has to go and collect them.
+signal donations_waiting(building: Building, amount: int)
 
 ## Researchers buy the first photo of each species each day.
 const PHOTO_RESEARCH := 10
@@ -43,14 +45,16 @@ func spend(amount: int) -> bool:
 
 ## Morning donations from visitors to each building that attracts them: a base
 ## amount, plus more for every animal that nests there (more turtles, more visitors).
+## They wait at the building until the ranger collects them.
 func _on_new_day(_day: int) -> void:
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.visitors <= 0:
 			continue
 		var animals := get_tree().get_nodes_in_group("animals").filter(
 			func(a: Node) -> bool: return a.data.nest_building == building.data.id).size()
-		earn(building.data.visitors + building.data.visitors_per_animal * animals,
-			"Visitors came to see your %s!" % building.data.display_name)
+		var amount: int = building.data.visitors + building.data.visitors_per_animal * animals
+		building.add_funds(amount)
+		donations_waiting.emit(building, amount)
 
 
 func _on_photographed(animal: AnimalData, _count: int) -> void:

@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/buildings/building.gd" id="1_a3sb6"]
+[ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="2_64dnl"]
 
 [node name="Building" type="Node2D" unique_id=953658431]
 script = ExtResource("1_a3sb6")
@@ -19,3 +20,7 @@ theme_override_font_sizes/font_size = 16
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 horizontal_alignment = 1
+
+[node name="Coin" type="Sprite2D" parent="." unique_id=511564673]
+z_index = 60
+texture = ExtResource("2_64dnl")

@@ -23,11 +23,18 @@ func _initialize() -> void:
 	# --- Visitors ---
 	clock.sleep_until_morning()
 	_expect(funding.balance == 0, "no visitors without a protected beach")
-	build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
+	var area: Node2D = build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	clock.day = 1
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()
-	_expect(funding.balance == 30, "visitors pay 20 + 10 per turtle (got %d)" % funding.balance)
+	_expect(funding.balance == 0 and area.pending_funds == 30,
+		"visitors leave 20 + 10 per turtle at the area (waiting: %d)" % area.pending_funds)
+	var player: Node2D = world.get_node("Player")
+	player.global_position = area.global_position + Vector2(-50, 10)
+	for i in 3:
+		await process_frame
+	_expect(funding.balance == 30 and area.pending_funds == 0, "collected by walking up to it (got %d)" % funding.balance)
+	player.global_position = Vector2.ZERO
 
 	# --- Research photos: once per species per day ---
 	journal.photograph(turtle)

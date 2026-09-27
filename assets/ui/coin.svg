@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Coin marking funding waiting to be collected -->
+  <rect x="4" y="1" width="8" height="14" fill="#b8860b"/>
+  <rect x="2" y="3" width="12" height="10" fill="#b8860b"/>
+  <rect x="5" y="2" width="6" height="12" fill="#f2c94c"/>
+  <rect x="3" y="4" width="10" height="8" fill="#f2c94c"/>
+  <rect x="7" y="4" width="2" height="8" fill="#d4a017"/>
+  <rect x="5" y="3" width="2" height="2" fill="#fff3b0"/>
+</svg>
