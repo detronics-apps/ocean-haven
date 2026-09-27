@@ -18,6 +18,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
 	_sprite.texture = data.texture
+	if data.spawns:
+		add_child(data.spawns.instantiate())
 
 
 ## The footprint in tiles.

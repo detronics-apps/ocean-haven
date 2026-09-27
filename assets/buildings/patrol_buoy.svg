@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Placeholder patrol-area buoy: red and white, with a small light -->
+  <ellipse cx="16" cy="25" rx="10" ry="3" fill="#ffffff" fill-opacity="0.25"/>
+  <rect x="11" y="12" width="10" height="12" fill="#c94a3a"/>
+  <rect x="11" y="16" width="10" height="3" fill="#f2f2ee"/>
+  <rect x="13" y="6" width="6" height="6" fill="#f2f2ee"/>
+  <rect x="15" y="3" width="2" height="3" fill="#e8c050"/>
+</svg>

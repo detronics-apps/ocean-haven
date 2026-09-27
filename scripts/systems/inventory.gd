@@ -10,9 +10,10 @@ var _counts: Dictionary[StringName, int] = {}
 var _items: Dictionary[StringName, ItemData] = {}
 
 
-func add(item: ItemData, amount := 1) -> void:
+func add(item: ItemData, amount := 1, announce := true) -> void:
 	_set_count(item, count(item.id) + amount)
-	item_added.emit(item, _counts[item.id])
+	if announce:
+		item_added.emit(item, _counts[item.id])
 
 
 func count(id: StringName) -> int:

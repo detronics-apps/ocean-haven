@@ -30,6 +30,10 @@ extends Resource
 @export var locked := false
 ## Why it's locked / what unlocks it.
 @export var unlock_hint: String
+## Building id that must already exist before this can be built (e.g. "dock").
+@export var requires: StringName
+## Added as a child when it's built or loaded (e.g. the patrol buoy's boat).
+@export var spawns: PackedScene
 ## What interacting with it does: "" (nothing) or "sleep".
 @export var action: StringName
 ## Short, accurate fact shown when it's built.

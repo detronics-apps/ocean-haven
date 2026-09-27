@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="16" viewBox="0 0 28 16" shape-rendering="crispEdges">
+  <!-- Placeholder patrol boat, bow pointing right: white hull, blue stripe, cabin -->
+  <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#2f4a7a"/>
+  <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#f2f2ee"/>
+  <rect x="3" y="10" width="18" height="2" fill="#3f7fbf"/>
+  <rect x="8" y="2" width="8" height="5" fill="#d8dde2"/>
+  <rect x="12" y="3" width="3" height="2" fill="#9fd3e6"/>
+  <rect x="9" y="1" width="1" height="2" fill="#b04a3a"/>
+</svg>

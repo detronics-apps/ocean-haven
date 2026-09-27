@@ -27,6 +27,8 @@ func _entry(data: BuildingData) -> Control:
 		status = "Coming later: " + data.unlock_hint
 	elif data.unique and _exists(data.id):
 		status = "Already built."
+	elif data.requires and not _exists(data.requires):
+		status = "Build a %s first." % data.requires
 	else:
 		can_build = Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
 		status = _cost_text(data) + ("" if can_build else "  (you have %d litter, %d funding)" % [

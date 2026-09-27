@@ -24,7 +24,7 @@ func attach(world: Node) -> bool:
 		return false
 	_world = world
 	load_from(world, PATH)
-	Inventory.item_added.connect(func(_i, _c): _dirty = true)
+	Inventory.changed.connect(func(_i, _c): _dirty = true)
 	Journal.discovered.connect(func(_a): _dirty = true)
 	Journal.observed.connect(func(_a): _dirty = true)
 	Journal.photographed.connect(func(_a, _c): _dirty = true)

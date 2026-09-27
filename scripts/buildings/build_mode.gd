@@ -65,7 +65,17 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return false
-	return _free or can_afford(data)
+	return has_requirement(data) and (_free or can_afford(data))
+
+
+## Whether whatever `data` depends on (e.g. a dock) has been built.
+func has_requirement(data: BuildingData) -> bool:
+	if data.requires == &"":
+		return true
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == data.requires:
+			return true
+	return false
 
 
 func can_afford(data: BuildingData) -> bool:

@@ -120,6 +120,6 @@ caring for animals". Build in this order, placeholder art:
    **sleep until morning** (Minecraft-style)
 6. ✅ Funding: visitor donations / photo research money; buildings cost funding + recycled litter
 7. ✅ Litter keeps washing in
-8. Dock + a patrol boat that auto-collects litter in an area you choose
+8. ✅ Dock + a patrol boat that auto-collects litter in an area you choose
 
 Later: net boats, sanctuary interiors (turtle rehab mini-game), new regions.

@@ -32,7 +32,13 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(_body: Node2D) -> void:
-	Inventory.add(item)
+	collect()
+
+
+## Picks it up into the inventory. `announce` = false for quiet automatic
+## collection (patrol boats), so there's no note for every piece.
+func collect(announce := true) -> void:
+	Inventory.add(item, 1, announce)
 	if not spawned:
 		SaveGame.mark_collected(self)  # scene litter stays gone; washed-in litter just isn't saved any more
 	queue_free()
