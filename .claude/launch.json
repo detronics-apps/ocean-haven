@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web-build",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["tools/serve_web.py"],
+      "port": 8443,
+      "url": "https://localhost:8443"
+    }
+  ]
+}

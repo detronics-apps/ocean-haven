@@ -78,6 +78,18 @@ addons/                  third-party Godot plugins only
   `tests/test_save.gd`. Bump `VERSION` if the format changes incompatibly. Only the real main scene
   auto-saves; tests never touch the player's save.
 
+## Testing on a phone (web build over home Wi-Fi)
+
+Godot web builds need a secure context (HTTPS or localhost), so the phone gets HTTPS with a
+self-signed certificate. Everything goes in `build/` (git-ignored).
+
+1. Export (needs the "Web Single-Threaded" export template):
+   `godot --headless --path . --export-release "Web" build/web/index.html`
+2. Once per PC IP address, make the certificate (Git Bash; replace the IP with the PC's `ipconfig` IPv4):
+   `MSYS_NO_PATHCONV=1 openssl req -x509 -newkey rsa:2048 -nodes -keyout build/cert/key.pem -out build/cert/cert.pem -days 825 -subj "/CN=BlueHaven dev" -addext "subjectAltName=IP:192.168.0.111,DNS:localhost"`
+3. Serve: `python tools/serve_web.py`, then on the phone (same Wi-Fi) open `https://<pc-ip>:8443` and
+   tap through the certificate warning. Allow Python through the Windows firewall (Private networks) if asked.
+
 ## Current milestone: MVP 0.1
 
 Build in this order, with placeholder art:
