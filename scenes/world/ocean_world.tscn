@@ -21,9 +21,10 @@
 [ext_resource type="Script" path="res://scripts/ui/avatar_creator.gd" id="20_vk2ck"]
 [ext_resource type="PackedScene" path="res://scenes/ui/avatar_creator.tscn" id="21_3b068"]
 [ext_resource type="PackedScene" path="res://scenes/ui/build_menu.tscn" id="21_j1yad"]
-[ext_resource type="Script" path="res://scripts/ui/build_menu.gd" id="22_kcxw8"]
+[ext_resource type="Script" path="res://scripts/ui/build_menu.gd" id="22_3w6ph"]
 [ext_resource type="PackedScene" path="res://scenes/ui/journal_screen.tscn" id="23_t36bi"]
-[ext_resource type="Script" path="res://scripts/ui/journal_screen.gd" id="24_7u8cy"]
+[ext_resource type="Script" path="res://scripts/ui/journal_screen.gd" id="24_t5e65"]
+[ext_resource type="Script" path="res://scripts/world/litter_spawner.gd" id="25_swpth"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -153,7 +154,10 @@ layer = 10
 script = ExtResource("20_vk2ck")
 
 [node name="BuildMenu" type="CanvasLayer" parent="." unique_id=2057624750 instance=ExtResource("21_j1yad")]
-script = ExtResource("22_kcxw8")
+script = ExtResource("22_3w6ph")
 
 [node name="JournalScreen" type="CanvasLayer" parent="." unique_id=208451075 instance=ExtResource("23_t36bi")]
-script = ExtResource("24_7u8cy")
+script = ExtResource("24_t5e65")
+
+[node name="LitterSpawner" type="Node" parent="." unique_id=621590369]
+script = ExtResource("25_swpth")

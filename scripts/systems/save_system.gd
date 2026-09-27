@@ -66,6 +66,11 @@ func save_to(world: Node, path: String) -> bool:
 	var buildings: Array[Dictionary] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y]})
+	var litter: Array[Dictionary] = []
+	for debris: Debris in get_tree().get_nodes_in_group("debris"):
+		if debris.spawned and not debris.is_queued_for_deletion():
+			litter.append({"item": debris.item.id, "pos": [debris.position.x, debris.position.y],
+				"floating": debris.floating})
 	var nests: Array[Dictionary] = []
 	for nest: Nest in get_tree().get_nodes_in_group("nests"):
 		nests.append({"species": nest.species.id, "pos": [nest.position.x, nest.position.y], "laid_at": nest.laid_at})
@@ -84,6 +89,7 @@ func save_to(world: Node, path: String) -> bool:
 		"journal": Journal.details(),
 		"collected_debris": _collected,
 		"freed_animals": _freed,
+		"washed_in_litter": litter,
 		"nests": nests,
 		"young_animals": young,
 		"nest_days": nest_days,
@@ -135,6 +141,12 @@ func load_from(world: Node, path: String) -> bool:
 		var debris := world.get_node_or_null(debris_name)
 		if debris:
 			debris.queue_free()
+	var spawner: LitterSpawner = world.get_node("LitterSpawner")
+	for entry: Dictionary in state.get("washed_in_litter", []):
+		var item_path := "res://data/items/%s.tres" % entry.get("item", "")
+		var pos: Array = entry.get("pos", [])
+		if ResourceLoader.exists(item_path) and pos.size() == 2:
+			spawner.spawn_at(load(item_path), Vector2(pos[0], pos[1]), bool(entry.get("floating", true)))
 	for animal_name: String in state.get("nest_days", {}):
 		var animal := world.get_node_or_null(animal_name)
 		if animal:

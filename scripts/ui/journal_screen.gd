@@ -8,7 +8,7 @@ func _enter_tree() -> void:
 
 
 func _fill() -> void:
-	var species := load_all("res://data/animals")
+	var species := DataFiles.load_all("res://data/animals")
 	var found := species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
 	for animal: AnimalData in species:

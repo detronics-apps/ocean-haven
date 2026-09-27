@@ -119,7 +119,7 @@ caring for animals". Build in this order, placeholder art:
 5. Home base: ✅ start with a placed tent (house upgrade needs funding, step 6). ✅ Interact with it at night to
    **sleep until morning** (Minecraft-style)
 6. Funding: visitor donations / photo research money; buildings cost funding + recycled litter
-7. Litter keeps washing in
+7. ✅ Litter keeps washing in
 8. Dock + a patrol boat that auto-collects litter in an area you choose
 
 Later: net boats, sanctuary interiors (turtle rehab mini-game), new regions.

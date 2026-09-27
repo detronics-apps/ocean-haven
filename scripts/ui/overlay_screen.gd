@@ -69,15 +69,6 @@ func _fill() -> void:
 	pass
 
 
-## Every .tres resource in a data folder (works in exported builds too).
-static func load_all(dir: String) -> Array[Resource]:
-	var found: Array[Resource] = []
-	for file in ResourceLoader.list_directory(dir):
-		if file.ends_with(".tres"):
-			found.append(load(dir.path_join(file)))
-	return found
-
-
 ## A rounded card row: optional picture on the left, text on the right.
 static func card(picture: Texture2D, lines: Array[String], dim := false) -> PanelContainer:
 	var panel := PanelContainer.new()

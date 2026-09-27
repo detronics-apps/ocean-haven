@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _fill() -> void:
-	var all := load_all("res://data/buildings")
+	var all := DataFiles.load_all("res://data/buildings")
 	all.sort_custom(func(a: BuildingData, b: BuildingData) -> bool: return a.order < b.order)
 	for data: BuildingData in all:
 		_content.add_child(_entry(data))
