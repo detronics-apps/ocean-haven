@@ -76,6 +76,14 @@ func _initialize() -> void:
 		clock.time_of_day = 0.85
 	var all_in_sea := young.all(func(a: Node2D) -> bool: return _terrain(a.global_position) in ["water", ""])
 	_expect(all_in_sea, "hatchlings reached the sea")
+	var area: Node2D = get_nodes_in_group("buildings")[0]
+	_expect(area.animals_here() == 4, "mother + 3 hatchlings belong to this area (%d)" % area.animals_here())
+	world.get_node("Player").global_position = area.global_position + Vector2(-40, 20)
+	await process_frame
+	await process_frame
+	_expect(area.get_node("Hint").visible and area.get_node("Hint").text.begins_with("Turtles here: 4 / 4"),
+		"the area shows 'Turtles here: 4 / 4' (%s)" % area.get_node("Hint").text)
+	world.get_node("Player").global_position = Vector2(-600, 400)
 
 	# --- The area is full (4 turtles): the next hatchlings head out to sea ---
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")

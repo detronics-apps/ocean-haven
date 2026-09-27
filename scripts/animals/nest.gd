@@ -1,9 +1,9 @@
 class_name Nest
 extends Node2D
 ## Eggs buried in a protected beach. Once incubated they hatch at night and the
-## hatchlings crawl to the sea. As many stay as the protected areas have room for
-## (BuildingData.animal_capacity); the rest swim off into the open ocean. Every
-## hatchling counts in the Journal either way.
+## hatchlings crawl to the sea. As many stay as its protection area has room for
+## (BuildingData.animal_capacity) and belong to that area; the rest swim off into
+## the open ocean. Every hatchling counts in the Journal either way.
 
 # ponytail: all species share one animal scene; give AnimalData a scene when one needs its own.
 const ANIMAL_SCENE := "res://scenes/animals/animal.tscn"
@@ -14,6 +14,8 @@ const SHOW_RANGE := 72.0
 @export var species: AnimalData
 ## GameClock.now() when it was laid.
 @export var laid_at := 0.0
+## The protection area it's in (found automatically if not set).
+var area: Node2D
 
 var _bar: ProgressBar
 var _caption: Label
@@ -24,6 +26,8 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	if not area:
+		area = _nearest_area()
 	# Built at 2x size and halved, so text is pixel-crisp under the 2x camera.
 	_caption = Label.new()
 	_caption.add_theme_font_size_override("font_size", 16)
@@ -68,30 +72,29 @@ func _process(_delta: float) -> void:
 
 
 func hatch() -> void:
-	var room := capacity(get_tree(), species) - population(get_tree(), species)
+	if is_queued_for_deletion():
+		return  # already hatched this frame
+	var room: int = area.room_for_animals() if area else 0
 	var world := get_parent()
 	for i in species.hatchlings:
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
 		baby.set("young", true)
-		baby.set("leaving", i >= room)
+		var stays := i < room
+		baby.set("leaving", not stays)
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))
 		world.add_child(baby)
+		if stays:
+			baby.set("home_area", area)
 		baby.call("crawl_to_sea")
 	Journal.record_hatch(species, species.hatchlings)
 	queue_free()
 
 
-## How many of `species` the protected areas it nests in can hold.
-static func capacity(tree: SceneTree, species: AnimalData) -> int:
-	var total := 0
-	for building: Building in tree.get_nodes_in_group("buildings"):
-		if building.data.id == species.nest_building:
-			total += building.data.animal_capacity
-	return total
-
-
-## How many of `species` live here now (not counting ones heading out to sea).
-static func population(tree: SceneTree, species: AnimalData) -> int:
-	return tree.get_nodes_in_group("animals").filter(
-		func(a: Node) -> bool: return a.get("data") == species and not a.get("leaving")).size()
+func _nearest_area() -> Node2D:
+	var best: Node2D = null
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == species.nest_building and (not best
+				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
+			best = building
+	return best

@@ -134,7 +134,7 @@ caring for animals". Build in this order, placeholder art:
 6. ✅ Palm trees (walk around/behind them; can't build on them)
 7. Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
 8. ✅ Bigger horseshoe island around a sheltered lagoon; fewer crabs (2)
-9. At a protection area, show its turtles (e.g. "Turtles here: 3 / 4"); turtles belong to the
+9. ✅ At a protection area, show its turtles (e.g. "Turtles here: 3 / 4"); turtles belong to the
    area they hatched / nested at
 10. Move anything you've built: interact with it → Move → place it again
 

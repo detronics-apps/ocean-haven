@@ -27,24 +27,24 @@ func _initialize() -> void:
 	clock.day = 1
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()
-	_expect(funding.balance == 0 and area.pending_funds == 30,
-		"visitors leave 20 + 10 per turtle at the area (waiting: %d)" % area.pending_funds)
+	_expect(funding.balance == 0 and area.pending_funds == 20,
+		"visitors leave 20 (+10 per turtle belonging here: none yet) (waiting: %d)" % area.pending_funds)
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(-50, 10)
 	for i in 3:
 		await process_frame
-	_expect(funding.balance == 30 and area.pending_funds == 0, "collected by walking up to it (got %d)" % funding.balance)
+	_expect(funding.balance == 20 and area.pending_funds == 0, "collected by walking up to it (got %d)" % funding.balance)
 	player.global_position = Vector2.ZERO
 
 	# --- Research photos: once per species per day ---
 	journal.photograph(turtle)
 	journal.photograph(turtle)
-	_expect(funding.balance == 40, "one paid photo per day (got %d)" % funding.balance)
+	_expect(funding.balance == 30, "one paid photo per day (got %d)" % funding.balance)
 
 	# --- Grant for the first hatchlings, once ---
 	journal.record_hatch(turtle, 3)
 	journal.record_hatch(turtle, 3)
-	_expect(funding.balance == 140, "one-off hatchling grant (got %d)" % funding.balance)
+	_expect(funding.balance == 130, "one-off hatchling grant (got %d)" % funding.balance)
 
 	# --- House replaces the tent ---
 	build_mode.add_building(load("res://data/buildings/tent.tres"), Vector2i(-1, -1))
@@ -56,7 +56,7 @@ func _initialize() -> void:
 	await process_frame
 	var ids := get_nodes_in_group("buildings").map(func(b: Node) -> StringName: return b.data.id)
 	_expect(&"house" in ids and not &"tent" in ids, "tent replaced by the house")
-	_expect(funding.balance == 20 and inventory.total() == 0, "house cost 120 funding + 10 litter")
+	_expect(funding.balance == 10 and inventory.total() == 0, "house cost 120 funding + 10 litter")
 
 	# --- Dock: shallows only, costs funding ---
 	var dock: Resource = load("res://data/buildings/dock.tres")
@@ -65,7 +65,7 @@ func _initialize() -> void:
 	_expect(not build_mode.can_place(dock, Vector2i(-3, -3)), "dock can't go on grass")
 	_expect(not build_mode.can_place(dock, Vector2i(-30, 0)), "dock can't go in the open ocean")
 	_expect(build_mode.place_at(Vector2i(-1, 6)), "dock built in the shallows")
-	_expect(funding.balance == 70, "dock cost 150 funding (left %d)" % funding.balance)
+	_expect(funding.balance == 60, "dock cost 150 funding (left %d)" % funding.balance)
 	_expect(not funding.spend(1000), "can't overspend")
 
 	if not _failed:

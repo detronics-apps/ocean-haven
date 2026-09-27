@@ -196,6 +196,10 @@ func load_from(world: Node, path: String) -> bool:
 		(world.get_node("Boat") as Node2D).global_position = Vector2(b[0], b[1])
 	if state.get("aboard", false):
 		(world.get_node("Boat") as Boat).restore_aboard()
+	# Turtles belong to a protection area; relink hatchlings and mothers to the nearest one.
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if (animal.young or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
+			animal.link_to_nearest_area()
 	return true
 
 

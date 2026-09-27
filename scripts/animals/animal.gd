@@ -42,6 +42,8 @@ const NEST_SCENE := "res://scenes/animals/nest.tscn"
 @export var leaving := false
 ## Day this animal last nested (spaces nests out by nest_interval_days).
 var last_nest_day := -99
+## The protection area this animal belongs to (where it hatched or nests), or null.
+var home_area: Node2D
 
 var _state := State.REST
 var _target: Vector2
@@ -356,10 +358,17 @@ func _maybe_nest() -> void:
 	if not site:
 		return
 	last_nest_day = GameClock.day
+	if not home_area:
+		home_area = site  # she belongs to the area where she nests
 	var beach_spot := site.global_position + Vector2(randf_range(-12.0, 12.0), randf_range(-8.0, 8.0))
 	# Swim to the water nearest the beach, then crawl up it to lay.
 	var shore := Terrain.nearest(get_tree(), beach_spot, ["water", ""])
 	_crawl_to(shore, false, func() -> void: _crawl_to(beach_spot, true, _lay))
+
+
+## Links it to the nearest protection area its species nests in (loading a save).
+func link_to_nearest_area() -> void:
+	home_area = _nest_site()
 
 
 func _nest_site() -> Node2D:
@@ -410,6 +419,7 @@ func _lay() -> void:
 func _finish_laying() -> void:
 	var nest: Node2D = load(NEST_SCENE).instantiate()
 	nest.set("species", data)
+	nest.set("area", home_area)
 	nest.set("laid_at", GameClock.now())
 	nest.position = position
 	var world := get_parent()

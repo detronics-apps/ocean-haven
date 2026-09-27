@@ -36,6 +36,17 @@ func add_funds(amount: int) -> void:
 	_coin.visible = pending_funds > 0
 
 
+## Animals that belong here (not counting hatchlings heading out to sea).
+func animals_here() -> int:
+	return get_tree().get_nodes_in_group("animals").filter(
+		func(a: Node) -> bool: return a.get("home_area") == self and not a.get("leaving")).size()
+
+
+## How many more animals can join this area.
+func room_for_animals() -> int:
+	return maxi(data.animal_capacity - animals_here(), 0)
+
+
 ## The footprint in tiles.
 func rect() -> Rect2i:
 	return Rect2i(cell, data.size)
@@ -49,9 +60,14 @@ func _process(delta: float) -> void:
 			Funding.earn(pending_funds, "You collected the visitors' donations at your %s!" % data.display_name)
 			pending_funds = 0
 			_coin.visible = false
-	_hint.visible = data.action != &"" and _ranger_in_range(use_range)
+	var near := _ranger_in_range(use_range)
+	_hint.visible = near and (data.action != &"" or data.animal_capacity > 0)
 	if _hint.visible and data.action == &"sleep":
 		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
+	elif _hint.visible:
+		var here := animals_here()
+		_hint.text = "Turtles here: %d / %d%s" % [here, data.animal_capacity,
+			"  (full: new hatchlings swim out to sea)" if here >= data.animal_capacity else ""]
 
 
 func _unhandled_input(event: InputEvent) -> void:

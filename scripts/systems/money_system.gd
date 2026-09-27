@@ -44,15 +44,13 @@ func spend(amount: int) -> bool:
 
 
 ## Morning donations from visitors to each building that attracts them: a base
-## amount, plus more for every animal that nests there (more turtles, more visitors).
+## amount, plus more for every animal that belongs there (more turtles, more visitors).
 ## They wait at the building until the ranger collects them.
 func _on_new_day(_day: int) -> void:
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.visitors <= 0:
 			continue
-		var animals := get_tree().get_nodes_in_group("animals").filter(
-			func(a: Node) -> bool: return a.data.nest_building == building.data.id).size()
-		var amount: int = building.data.visitors + building.data.visitors_per_animal * animals
+		var amount: int = building.data.visitors + building.data.visitors_per_animal * building.animals_here()
 		building.add_funds(amount)
 		donations_waiting.emit(building, amount)
 
