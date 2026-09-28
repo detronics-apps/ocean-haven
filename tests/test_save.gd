@@ -98,6 +98,13 @@ func _initialize() -> void:
 	_expect(world.get_node("Boat").controlled and not world.get_node("Player").visible, "still aboard")
 	world.free()
 
+	# --- A save code round-trips, even with line breaks pasted in; junk is refused ---
+	var text := FileAccess.get_file_as_string(PATH)
+	var code: String = _save.encode(text)
+	_expect(code.begins_with("BH1:") and code.length() < text.length(), "save code is compact")
+	_expect(_save.decode(code.insert(20, "\n ")) == text, "save code decodes to the save")
+	_expect(_save.decode("BH1:hello") == "" and _save.decode("hello") == "", "junk code refused")
+
 	# --- A damaged save is kept aside, not overwritten ---
 	var file := FileAccess.open(PATH, FileAccess.WRITE)
 	file.store_string("{ not json")

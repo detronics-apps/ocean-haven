@@ -11,6 +11,7 @@ signal saved
 const PATH := "user://save.json"
 const VERSION := 1
 const AUTOSAVE_SECONDS := 10.0
+const CODE_PREFIX := "BH1:"
 
 ## World debris picked up so far (node names), so it doesn't come back.
 var _collected: Array[String] = []
@@ -138,8 +139,13 @@ func save_to(world: Node, path: String) -> bool:
 	# Web: write the save itself — the browser's storage is only updated when a file is
 	# closed after writing (a rename isn't copied over until the next save, and phones
 	# close pages abruptly).
+	var ok := _write(path, JSON.stringify(state, "\t"))
+	saved.emit()
+	return ok
+
+
+func _write(path: String, text: String) -> bool:
 	var web := OS.has_feature("web")
-	var text := JSON.stringify(state, "\t")
 	if web:
 		_web_backup_write(path, text)
 	var target := path if web else path + ".tmp"
@@ -149,9 +155,45 @@ func save_to(world: Node, path: String) -> bool:
 		return web  # the localStorage copy still counts
 	file.store_string(text)
 	file.close()
-	var ok := web or DirAccess.rename_absolute(target, path) == OK
-	saved.emit()
-	return ok
+	return web or DirAccess.rename_absolute(target, path) == OK
+
+
+## The progress as a text code the player can keep somewhere safe (a notes app, an email)
+## and paste back later: after the browser cleared its storage, or on another device.
+func export_code() -> String:
+	if _world:
+		save_to(_world, PATH)
+	return encode(_newest_save_text(PATH))
+
+
+static func encode(text: String) -> String:
+	return CODE_PREFIX + Marshalls.raw_to_base64(text.to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+
+
+## Replaces the save with a code from export_code() and restarts the world from it.
+## Returns false, changing nothing, if the code isn't a readable save.
+func import_code(code: String) -> bool:
+	var text := decode(code)
+	if text == "":
+		return false
+	_write(PATH, text)
+	_world = null  # so the old world isn't autosaved over it
+	get_tree().paused = false
+	get_tree().reload_current_scene.call_deferred()
+	return true
+
+
+## The save text inside a code, or "" if it isn't one.
+static func decode(code: String) -> String:
+	code = code.strip_edges().replace("\n", "").replace("\r", "").replace(" ", "")
+	if not code.begins_with(CODE_PREFIX):
+		return ""
+	var packed := Marshalls.base64_to_raw(code.trim_prefix(CODE_PREFIX))
+	if packed.is_empty():
+		return ""
+	var text := packed.decompress_dynamic(16_000_000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
+	var state: Variant = JSON.parse_string(text) if text else null
+	return text if state is Dictionary and state.get("version") == VERSION else ""
 
 
 ## Web: the same save text in localStorage (synchronous, survives abrupt closes).
