@@ -261,33 +261,29 @@ func _process(delta: float) -> void:
 			Funding.earn(pending_funds, "You collected the visitors' donations at your %s!" % data.display_name)
 			pending_funds = 0
 			_coin.visible = false
-	var near := _ranger_in_range(use_range)
-	_hint.visible = near and (data.action != &"" or capacity() > 0 or data.watches != &"")
-	if _hint.visible and data.action == &"sleep":
-		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
-		if storage() > 0:
-			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
-				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
-	elif _hint.visible and data.watches != &"":
-		var seen := animals_in_view()
+	# Just the numbers above it (what to do is on the action buttons).
+	_hint.text = stats() if _ranger_in_range(use_range) else ""
+	_hint.visible = _hint.text != ""
+
+
+## Short stats shown above it when the ranger is close ("" = nothing to show).
+func stats() -> String:
+	if data.action == &"sleep":
+		return "  ".join(storable_items().map(func(item: ItemData) -> String:
+			return "%s %d/%d" % [item.display_name, Inventory.stored(item.id), storage_space(get_tree())])) \
+			if storage() > 0 else ""
+	if data.watches != &"":
 		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
-		_hint.text = "%ss in view: %d (visitors love them)" % [kind, seen] if seen > 0 \
-			else "No %ss in view right now" % kind.to_lower()
-	elif _hint.visible and data.action == &"missions":
-		_hint.text = "%s is out: back at %s" % [Missions.active.display_name, Missions.back_time()] \
-			if Missions.active else "Send a mission"
-	elif _hint.visible and data.action == &"explore":
-		_hint.text = "Exploration Ship: equipment level %d" % Fleet.level()
-	elif _hint.visible:
-		var here := animals_here()
-		var note := ""
-		if here >= capacity():
-			note = "  (full: new hatchlings join your other areas)" if _other_areas_have_room() \
-				else "  (all areas full: new hatchlings swim out to sea)"
-		_hint.text = "Turtles here: %d / %d%s" % [here, capacity(), note]
+		return "%ss: %d" % [kind.get_slice(" ", kind.get_slice_count(" ") - 1), animals_in_view()]
+	if data.action == &"missions":
+		return "Back at %s" % Missions.back_time() if Missions.active else ""
+	if data.action == &"explore":
+		return "Level %d" % Fleet.level()
+	if capacity() > 0:
+		var text := "Turtles %d/%d" % [animals_here(), capacity()]
 		var busy := too_busy()
-		if busy:
-			_hint.text += "\nToo busy to nest: move your %s further away" % busy.data.display_name.to_lower()
+		return text + ("\nToo busy: %s nearby" % busy.data.display_name if busy else "")
+	return ""
 
 
 static var _storable: Array = []
@@ -308,15 +304,8 @@ static func storage_space(tree: SceneTree) -> int:
 	return space
 
 
-func _other_areas_have_room() -> bool:
-	for other: Building in get_tree().get_nodes_in_group("buildings"):
-		if other != self and other.data.id == data.id and other.room_for_animals() > 0:
-			return true
-	return false
-
-
 func _unhandled_input(event: InputEvent) -> void:
-	if not _hint.visible:
+	if not _ranger_in_range(use_range):
 		return
 	var tapped := ControlledBody.is_tap(event) and get_global_mouse_position().distance_to(global_position) < 32.0
 	if (tapped or event.is_action_pressed("interact")) and data.action == &"sleep" and GameClock.is_night():
