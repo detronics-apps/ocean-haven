@@ -133,7 +133,9 @@ caring for animals". Build in this order, placeholder art:
 1. ✅ Visitor donations wait at the building (coin) until the ranger collects them
 2. ✅ Dolphins (open-sea pod, curious about boats) and ghost crabs (beaches)
 3. ✅ Every animal matters (rule below): dolphins — one caught in a ghost net; trusted dolphins lead
-   you to floating litter. Crabs — one trapped in a plastic bag; crabs dig up buried beach litter
+   you to floating litter after you play with them (again after each find). Crabs — one trapped in a
+   plastic bag; crabs roam the beach and dig up buried litter at random spots (max 2 a day in total).
+   One photo per animal per day.
 4. ✅ Placement preview goes on the side the ranger faces (left/right/up/down), not only the right
 5. ✅ Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
    count, but swim off into the open ocean

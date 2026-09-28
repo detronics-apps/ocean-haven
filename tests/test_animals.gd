@@ -52,10 +52,13 @@ func _initialize() -> void:
 	player.global_position = dolphin.global_position + Vector2(250, 0)  # from the open sea, like a boat
 	await physics_frame
 	var fled := false
-	for i in 150:
-		player.global_position = player.global_position.move_toward(dolphin.global_position, 2.5)  # 150 px/s
+	for i in 600:  # until it relaxes (it may swim off a little first)
+		if player.global_position.distance_to(dolphin.global_position) > 60.0:
+			player.global_position = player.global_position.move_toward(dolphin.global_position, 2.5)  # 150 px/s
 		await physics_frame
 		fled = fled or dolphin.get("_state") == 2
+		if dolphin.is_relaxed():
+			break
 	_expect(not fled, "dolphins don't flee from a cruising boat")
 	_expect(dolphin.is_relaxed(), "dolphin relaxed and curious")
 
@@ -78,6 +81,9 @@ func _initialize() -> void:
 	await physics_frame
 	player.global_position = healthy.global_position + Vector2(-20, 40)  # one jump, then stay still
 	for i in 150:
+		# Held in reach: this is about which button comes first, not where they swim.
+		healthy.global_position = player.global_position + Vector2(20, -40)
+		caught.global_position = player.global_position + Vector2(50, -40)
 		await physics_frame
 	var journal_before: int = root.get_node("Journal").photos(&"bottlenose_dolphin")
 	await process_frame
@@ -132,13 +138,25 @@ func _initialize() -> void:
 	digger.data.dig_chance = 1.0
 	player.global_position = digger.global_position + Vector2(0, -60)
 	var before_gifts: int = journal.gifts(&"ghost_crab")
-	for i in 600:
+	for i in 900:
 		await physics_frame
+		if player.global_position.distance_to(digger.global_position) > 150.0:
+			player.global_position = digger.global_position + Vector2(0, -60)  # keep watching as it roams
 		if journal.gifts(&"ghost_crab") > before_gifts:
 			break
 	var dug := get_nodes_in_group("debris").filter(func(d: Node) -> bool: return not d.floating)
 	_expect(journal.gifts(&"ghost_crab") > before_gifts and dug.size() >= 1, "a crab dug up beach litter")
-	digger.data.dig_chance = 0.2
+	for i in 20:  # keep trying all day: only 2 finds a day for all crabs together
+		player.global_position = digger.global_position + Vector2(0, -60)
+		digger._maybe_dig()
+	_expect(journal.gifts(&"ghost_crab") == before_gifts + 2, "crabs dig up at most 2 a day (%d)" % (journal.gifts(&"ghost_crab") - before_gifts))
+	dug = get_nodes_in_group("debris").filter(func(d: Node) -> bool: return not d.floating)
+	_expect(dug.size() < 2 or dug[0].global_position != dug[1].global_position, "dug up in different spots")
+	root.get_node("GameClock").day += 1
+	player.global_position = digger.global_position + Vector2(0, -60)
+	digger._maybe_dig()
+	_expect(journal.gifts(&"ghost_crab") == before_gifts + 3, "and more the next day")
+	digger.data.dig_chance = 0.08
 
 	# --- Journal knows every species ---
 	var screen: Node = world.get_node("JournalScreen")

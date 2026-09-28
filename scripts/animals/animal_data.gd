@@ -56,7 +56,9 @@ extends Resource
 ## Sometimes digs up buried beach litter while the ranger watches (crabs).
 @export var digs_up_litter := false
 ## Chance of digging something up each time it finishes a rest.
-@export var dig_chance := 0.2
+@export var dig_chance := 0.08
+## Most litter all animals of this kind dig up in one day, together.
+@export var digs_per_day := 2
 
 @export_group("Nesting")
 ## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).

@@ -62,6 +62,12 @@ var _last_ranger_pos := Vector2.INF
 var _guide_to: Node2D
 ## Guides: the ranger has played with it, so it'll show them the next litter it finds.
 var played := false
+## Day the ranger last photographed this animal: one photo per animal per day.
+## ponytail: not saved, so reloading allows another photo that day.
+var photo_day := -1
+## Diggers: litter dug up today by each species (all of them together): id -> [day, count].
+## ponytail: not saved, so reloading resets today's count.
+static var _digs := {}
 ## What normally blocks it (switched off while crawling over land to nest).
 var _land_mask: int
 var _lay_left := 0.0
@@ -223,6 +229,8 @@ func _react_to_ranger(delta: float) -> void:
 			_hint.text = "Stay still so it can relax..."
 		elif tangled:
 			_hint.text = "%s: free the %s" % [_key_hint(), data.display_name.to_lower()]
+		elif photographed_today():
+			_hint.text = "Photographed today - see you tomorrow"
 		else:
 			_hint.text = "%s: take a photo" % _key_hint()
 
@@ -262,12 +270,28 @@ func _nearest_floating_litter(within: float) -> Node2D:
 func _maybe_dig() -> void:
 	if not data.digs_up_litter or tangled or young or randf() > data.dig_chance:
 		return
+	var today: Array = _digs.get(data.id, [-1, 0])
+	if today[0] != GameClock.day:
+		today = [GameClock.day, 0]
+	if today[1] >= data.digs_per_day:
+		return
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger or ranger.global_position.distance_to(global_position) > DIG_WATCH_RANGE:
 		return
 	var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
-	if spawner and spawner.wash_up_at(global_position + Vector2(10.0, 4.0), false):
+	if spawner and spawner.wash_up_at(_dig_spot(), false):
+		today[1] += 1
 		Journal.record_gift(data)
+	_digs[data.id] = today
+
+
+## A random bit of its habitat right beside it.
+func _dig_spot() -> Vector2:
+	for attempt in 10:
+		var spot := global_position + Vector2.from_angle(randf() * TAU) * randf_range(12.0, 40.0)
+		if in_habitat(spot):
+			return spot
+	return global_position + Vector2(randf_range(-8.0, 8.0), randf_range(-8.0, 8.0))
 
 
 func _input(event: InputEvent) -> void:
@@ -290,8 +314,11 @@ func _keeping_company() -> bool:
 func actions() -> Array:
 	if not can_interact():
 		return []
-	var verb := "Free the %s" % data.display_name if tangled else "Photo: %s" % data.display_name
-	var list := [{"label": verb, "do": _interact, "helps": tangled}]
+	var list := []
+	if tangled:
+		list.append({"label": "Free the %s" % data.display_name, "do": _interact, "helps": true})
+	elif not photographed_today():
+		list.append({"label": "Photo: %s" % data.display_name, "do": _interact, "helps": false})
 	if data.guides_to_litter and not tangled and not young and not played:
 		list.append({"label": "Play with the %s" % data.display_name, "do": play})
 	return list
@@ -343,8 +370,13 @@ func _interact() -> void:
 			Inventory.add(tangle_item)
 		SaveGame.mark_freed(self)
 		Journal.help(data)
-	else:
+	elif not photographed_today():
+		photo_day = GameClock.day
 		Journal.photograph(data)
+
+
+func photographed_today() -> bool:
+	return photo_day == GameClock.day
 
 
 func _swim_to(target: Vector2, state: State) -> void:
@@ -359,11 +391,15 @@ func _rest(seconds: float) -> void:
 
 ## A random spot in its habitat (e.g. the sea, or the beach) within home_radius of home.
 func _pick_target() -> Vector2:
+	var spot := _home
 	for attempt in 20:
-		var spot := _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius
+		spot = _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius
 		if in_habitat(spot):
 			return spot
-	return _home
+	# Not much habitat around (a narrow beach): the nearest bit to a random spot,
+	# rather than always heading back to exactly the same place.
+	spot = Terrain.nearest(get_tree(), spot, Array(data.habitat_terrain), 4)
+	return spot if in_habitat(spot) else _home
 
 
 ## Somewhere in its habitat, further from `danger` (so a crab runs along the beach

@@ -149,7 +149,7 @@ collision_mask = 4
 motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("12_swpth")
-home_radius = 90.0
+home_radius = 220.0
 
 [node name="Crab1" type="CharacterBody2D" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
 position = Vector2(-368, -176)
@@ -158,7 +158,7 @@ collision_mask = 4
 motion_mode = 1
 script = ExtResource("10_3w6ph")
 data = ExtResource("12_swpth")
-home_radius = 90.0
+home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("5_tch0r")
 
