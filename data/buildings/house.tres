@@ -19,3 +19,6 @@ fact = "Solar panels let remote ranger stations run without noisy, polluting gen
 cost_items = Dictionary[StringName, int]({&"wood": 3})
 storage = 10
 max_count = 2
+max_tier = 3
+upgrade_funding = 80
+upgrade_items = Dictionary[StringName, int]({&"wood": 3})

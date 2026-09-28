@@ -92,7 +92,7 @@ func save_to(world: Node, path: String) -> bool:
 	var buildings: Array[Dictionary] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y],
-			"funds": building.pending_funds})
+			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day})
 	var litter: Array[Dictionary] = []
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
 		if debris.spawned and not debris.is_queued_for_deletion():
@@ -308,6 +308,8 @@ func load_from(world: Node, path: String) -> bool:
 		if ResourceLoader.exists(data_path) and cell.size() == 2:
 			var building := build_mode.add_building(load(data_path), Vector2i(int(cell[0]), int(cell[1])))
 			building.add_funds(int(entry.get("funds", 0)))
+			building.tier = int(entry.get("tier", 1))
+			building.built_day = int(entry.get("built_day", -100))  # older saves: palms fully grown
 	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
 		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	var p: Array = state.get("player", [])

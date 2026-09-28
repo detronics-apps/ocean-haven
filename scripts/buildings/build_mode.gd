@@ -179,10 +179,23 @@ func has_requirement(data: BuildingData) -> bool:
 
 
 func can_afford(data: BuildingData) -> bool:
-	for item_id in data.cost_items:
-		if Inventory.available(item_id) < data.cost_items[item_id]:
+	return has_enough(data.cost_funding, data.cost_litter, data.cost_items)
+
+
+## Whether the ranger has this much funding, litter and items (carried or stored).
+static func has_enough(funding: int, litter: int, items: Dictionary) -> bool:
+	for item_id in items:
+		if Inventory.available(item_id) < items[item_id]:
 			return false
-	return Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
+	return Inventory.total() >= litter and Funding.balance >= funding
+
+
+## Spends it (check has_enough first).
+static func pay(funding: int, litter: int, items: Dictionary) -> void:
+	Funding.spend(funding)
+	Inventory.take(litter)
+	for item_id in items:
+		Inventory.use(item_id, items[item_id])
 
 
 ## Moves the ghost to `cell` and places it there.
@@ -210,10 +223,7 @@ func place() -> bool:
 	if not _free:
 		if not can_afford(_data):
 			return false
-		Funding.spend(_data.cost_funding)
-		Inventory.take(_data.cost_litter)
-		for item_id in _data.cost_items:
-			Inventory.use(item_id, _data.cost_items[item_id])
+		pay(_data.cost_funding, _data.cost_litter, _data.cost_items)
 	for old: Building in get_tree().get_nodes_in_group("buildings"):
 		if old.data.id == _data.replaces:
 			old.queue_free()

@@ -16,6 +16,10 @@ const DECK_ALTERNATIVE := 1
 
 ## Visitor donations waiting to be collected here.
 var pending_funds := 0
+## Upgrade tier, 1 to data.max_tier.
+var tier := 1
+## The day it was built (palms grow from it).
+var built_day := -1
 var _bob := 0.0
 ## Drawbridges: raised right now (boats pass, the ranger can't cross).
 var is_open := false
@@ -35,6 +39,8 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	if built_day < 0:
+		built_day = GameClock.day
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
 	if data.deck:
@@ -94,10 +100,12 @@ func actions() -> Array:
 	var list := []
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
-	if data.recycle_value > 0 and Inventory.total() > 0:
-		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * data.recycle_value],
+	if recycle_value() > 0 and Inventory.total() > 0:
+		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
 			"do": recycle})
-	if data.storage > 0:
+	if tier < data.max_tier:
+		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
+	if storage() > 0:
 		for item: ItemData in storable_items():
 			var name := item.display_name.to_lower()
 			var give := mini(Inventory.count(item.id), storage_space(get_tree()) - Inventory.stored(item.id))
@@ -133,7 +141,7 @@ func recycle() -> void:
 	var pieces := Inventory.total()
 	if pieces <= 0 or not Inventory.take(pieces):
 		return
-	Funding.earn(pieces * data.recycle_value, "You recycled %d pieces of litter at your %s." % [pieces, data.display_name])
+	Funding.earn(pieces * recycle_value(), "You recycled %d pieces of litter at your %s." % [pieces, data.display_name])
 
 
 ## Whether the ranger (on foot) is standing next to it.
@@ -154,7 +162,43 @@ func animals_here() -> int:
 
 ## How many more animals can join this area.
 func room_for_animals() -> int:
-	return maxi(data.animal_capacity - animals_here(), 0)
+	return maxi(capacity() - animals_here(), 0)
+
+
+## Upgrades add 1 per tier to whatever it does.
+func capacity() -> int:
+	return _upgraded(data.animal_capacity)
+
+
+func storage() -> int:
+	return _upgraded(data.storage)
+
+
+func recycle_value() -> int:
+	return _upgraded(data.recycle_value)
+
+
+func _upgraded(base: int) -> int:
+	return base + tier - 1 if base > 0 else 0
+
+
+## Next tier, if the ranger has what it costs (otherwise says what's needed).
+func upgrade() -> void:
+	if tier >= data.max_tier:
+		return
+	if not BuildMode.has_enough(data.upgrade_funding, 0, data.upgrade_items):
+		get_tree().call_group("hud", "show_toast", "To upgrade your %s: %s" % [
+			data.display_name, data.upgrade_cost_text()])
+		return
+	BuildMode.pay(data.upgrade_funding, 0, data.upgrade_items)
+	tier += 1
+	var better := "pays %d funding per piece" % recycle_value()
+	if data.animal_capacity > 0:
+		better = "holds %d turtles" % capacity()
+	elif data.storage > 0:
+		better = "stores %d of each" % storage()
+	get_tree().call_group("hud", "show_toast", "%s upgraded (%d/%d): it %s now." % [
+		data.display_name, tier, data.max_tier, better])
 
 
 ## The footprint in tiles.
@@ -173,19 +217,19 @@ func _process(delta: float) -> void:
 			pending_funds = 0
 			_coin.visible = false
 	var near := _ranger_in_range(use_range)
-	_hint.visible = near and (data.action != &"" or data.animal_capacity > 0)
+	_hint.visible = near and (data.action != &"" or capacity() > 0)
 	if _hint.visible and data.action == &"sleep":
 		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
-		if data.storage > 0:
+		if storage() > 0:
 			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
 				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
 	elif _hint.visible:
 		var here := animals_here()
 		var note := ""
-		if here >= data.animal_capacity:
+		if here >= capacity():
 			note = "  (full: new hatchlings join your other areas)" if _other_areas_have_room() \
 				else "  (all areas full: new hatchlings swim out to sea)"
-		_hint.text = "Turtles here: %d / %d%s" % [here, data.animal_capacity, note]
+		_hint.text = "Turtles here: %d / %d%s" % [here, capacity(), note]
 
 
 static var _storable: Array = []
@@ -202,7 +246,7 @@ static func storable_items() -> Array:
 static func storage_space(tree: SceneTree) -> int:
 	var space := 0
 	for building: Building in tree.get_nodes_in_group("buildings"):
-		space += building.data.storage
+		space += building.storage()
 	return space
 
 

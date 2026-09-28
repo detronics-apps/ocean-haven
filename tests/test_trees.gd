@@ -49,8 +49,8 @@ func _initialize() -> void:
 	await process_frame
 	_expect(get_nodes_in_group("plants").size() == count_before - 1, "the tree is gone")
 	var inventory := root.get_node("Inventory")
-	_expect(inventory.count(&"wood") == 1 and inventory.count(&"sapling") in [1, 2],
-		"cutting gives 1 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
+	_expect(inventory.count(&"wood") in [1, 2] and inventory.count(&"sapling") in [1, 2],
+		"a full-grown island palm gives 1-2 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
 	inventory.add(load("res://data/items/wood.tres"), 2)
 	player.global_position = get_nodes_in_group("plants")[0].global_position + Vector2(-30, 10)
 	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full of wood", "can't cut with 3 wood in your arms")
@@ -64,9 +64,33 @@ func _initialize() -> void:
 	var planted: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"palm_tree")[0]
 	var trunk: Node2D = planted.get_child(planted.get_child_count() - 1)
 	player.global_position = trunk.global_position + Vector2(-30, 0)
+	var clock := root.get_node("GameClock")
+	_expect(trunk.stage() == 0 and trunk.actions()[0].label == "Dig up sapling", "a new palm is small: dig it up")
+	clock.day += 1
+	_expect(trunk.stage() == 1, "a day later it's medium")
+	clock.day += 1
+	await process_frame
+	_expect(trunk.stage() == 2 and trunk.get_node("Sprite2D").scale == Vector2.ONE, "another day: full grown")
+	var saplings: int = inventory.count(&"sapling")
 	trunk.actions()[0].do.call()
 	await process_frame
 	_expect(not is_instance_valid(planted) or planted.is_queued_for_deletion(), "a planted palm can be cut down too")
+	_expect(inventory.count(&"wood") in [1, 2] and inventory.count(&"sapling") - saplings in [1, 2],
+		"a full-grown palm gives 1-2 wood and 1-2 saplings")
+
+	# --- Small gives the sapling back; medium 1 wood + 1 sapling ---
+	inventory.take_item(&"wood", inventory.count(&"wood"))
+	for grown_days: int in [0, 1]:
+		build_mode.start(palm)
+		build_mode.place_at(Vector2i(-12, -3))
+		build_mode.cancel()
+		var young: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"palm_tree")[0]
+		young.built_day = clock.day - grown_days
+		saplings = inventory.count(&"sapling")
+		young.get_child(young.get_child_count() - 1).cut_down()
+		await process_frame
+		_expect(inventory.count(&"sapling") == saplings + 1 and inventory.count(&"wood") == grown_days,
+			"%s palm gives %d wood and its sapling back" % ["small" if grown_days == 0 else "medium", grown_days])
 
 	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---
 	var minimap: Node = world.get_node("HUD/Minimap")

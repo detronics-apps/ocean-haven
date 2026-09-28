@@ -16,3 +16,6 @@ recycle_value = 3
 fact = "Recycling keeps plastic out of the sea and saves energy - and using less plastic in the first place is even better."
 cost_items = Dictionary[StringName, int]({&"wood": 2})
 max_count = 3
+max_tier = 3
+upgrade_funding = 80
+upgrade_items = Dictionary[StringName, int]({&"wood": 2})

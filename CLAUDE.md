@@ -158,10 +158,10 @@ caring for animals". Build in this order, placeholder art:
 19. ✅ Wood: cutting a palm gives 1 wood + 1-2 saplings (planting needs a sapling); buildings cost
     wood + litter + funding; carry 3 wood / 1 sand; Ranger Houses (up to 2) store 10 each; up to 3
     recycling centres; sand on deep water makes shallows (2 sand to make beach)
-20. Building upgrades, 3 tiers each (buildings, not the player — no player levels): protection area
+20. ✅ Building upgrades, 3 tiers each (buildings, not the player — no player levels): protection area
     +1 turtle per tier, Ranger House +1 storage per tier, recycling centre +1 funding per piece per tier
-21. Build 2-3 boats, not just 1
-22. Growing palms: a planted sapling grows small -> medium (after 1 day) -> full grown (after
+21. ✅ Up to 3 expedition boats (patrol boats were already unlimited)
+22. ✅ Growing palms: a planted sapling grows small -> medium (after 1 day) -> full grown (after
     another day). Cutting it down gives: small = the sapling back; medium = 1 wood + 1 sapling;
     full grown = 1-2 wood + 1-2 saplings (the island's own palms are full grown)
 23. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")

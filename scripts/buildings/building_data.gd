@@ -23,6 +23,12 @@ extends Resource
 @export var cost_items: Dictionary[StringName, int] = {}
 ## How much of each storable item (wood, sand) it can keep (0 = not a store).
 @export var storage := 0
+## Upgrades: how many tiers it has (1 = can't be upgraded). Each tier adds 1 to what
+## it does: +1 turtle (animal_capacity), +1 storage, or +1 funding per recycled piece.
+@export var max_tier := 1
+## What each upgrade costs.
+@export var upgrade_funding := 0
+@export var upgrade_items: Dictionary[StringName, int] = {}
 ## Building id this one replaces when placed (the house replaces the tent).
 @export var replaces: StringName
 ## Funding visitors donate each morning (0 = attracts no visitors) ...
@@ -69,12 +75,20 @@ extends Resource
 
 ## "Needs 20 funding + 5 recycled litter + 2 wood." for menus and hints.
 func cost_text() -> String:
+	return describe_cost(cost_funding, cost_litter, cost_items)
+
+
+func upgrade_cost_text() -> String:
+	return describe_cost(upgrade_funding, 0, upgrade_items)
+
+
+static func describe_cost(funding: int, litter: int, items: Dictionary) -> String:
 	var parts: Array[String] = []
-	if cost_funding > 0:
-		parts.append("%d funding" % cost_funding)
-	if cost_litter > 0:
-		parts.append("%d recycled litter" % cost_litter)
-	for item_id in cost_items:
+	if funding > 0:
+		parts.append("%d funding" % funding)
+	if litter > 0:
+		parts.append("%d recycled litter" % litter)
+	for item_id in items:
 		var item: ItemData = load("res://data/items/%s.tres" % item_id)
-		parts.append("%d %s" % [cost_items[item_id], item.display_name.to_lower()])
+		parts.append("%d %s" % [items[item_id], item.display_name.to_lower()])
 	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."

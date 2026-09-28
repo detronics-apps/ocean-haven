@@ -104,6 +104,22 @@ func _initialize() -> void:
 	actions[0].do.call()
 	_expect(funding.balance == before + 21 and inventory.total() == 0, "7 litter recycled into 21 funding")
 
+	# --- Upgrades: 3 tiers, each +1 funding per piece; they cost funding + wood ---
+	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Upgrade (2/3)" in labels, "offers an upgrade (%s)" % [labels])
+	inventory.take_item(&"wood", inventory.available(&"wood"))
+	funding.restore({"balance": 500})
+	building.upgrade()
+	_expect(building.tier == 1 and funding.balance == 500, "no upgrade without the wood it needs")
+	inventory.add(load("res://data/items/wood.tres"), 3)
+	building.upgrade()
+	_expect(building.tier == 2 and funding.balance == 420 and inventory.count(&"wood") == 1, "upgraded for 80 funding + 2 wood")
+	inventory.add(load("res://data/items/wood.tres"), 1)
+	building.upgrade()
+	_expect(building.tier == 3 and building.recycle_value() == 5, "top tier recycles for 5 per piece")
+	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(not labels.any(func(l: String) -> bool: return l.begins_with("Upgrade")), "no upgrade past 3/3")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
