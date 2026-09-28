@@ -16,8 +16,12 @@ const DECK_ALTERNATIVE := 1
 
 ## Visitor donations waiting to be collected here.
 var pending_funds := 0
-## Upgrade tier, 1 to data.max_tier.
-var tier := 1
+## Upgrade tier, 1 to data.max_tier. Each tier can have its own picture.
+var tier := 1:
+	set(value):
+		tier = value
+		if is_node_ready():
+			_show_tier()
 ## The day it was built (palms grow from it).
 var built_day := -1
 var _bob := 0.0
@@ -43,6 +47,7 @@ func _ready() -> void:
 		built_day = GameClock.day
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
+	_show_tier()
 	if not data.fleet_textures.is_empty():
 		_show_fleet_level()
 		Fleet.upgraded.connect(_show_fleet_level.unbind(2))
@@ -51,6 +56,11 @@ func _ready() -> void:
 	if data.spawns:
 		add_child(data.spawns.instantiate())
 	_coin.visible = false
+
+
+func _show_tier() -> void:
+	if not data.tier_textures.is_empty() and data.draw_texture:
+		_sprite.texture = data.tier_textures[clampi(tier, 1, data.tier_textures.size()) - 1]
 
 
 ## Exploration Ships look the part of the fleet's equipment level.

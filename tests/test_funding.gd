@@ -144,6 +144,7 @@ func _initialize() -> void:
 	inventory.add(load("res://data/items/wood.tres"), 1)
 	building.upgrade()
 	_expect(building.tier == 3 and building.recycle_value() == 5, "top tier recycles for 5 per piece")
+	_expect(building.get_node("Sprite2D").texture == building.data.tier_textures[2], "each tier has its own picture")
 	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
 	_expect(not labels.any(func(l: String) -> bool: return l.begins_with("Upgrade")), "no upgrade past 3/3")
 

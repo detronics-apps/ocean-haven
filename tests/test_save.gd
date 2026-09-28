@@ -130,6 +130,7 @@ func _initialize() -> void:
 	var restored_area: Node = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0]
 	_expect(restored_area.tier == 2 and restored_area.capacity() == 5 and restored_area.built_day == 3,
 		"upgrade tier and build day restored")
+	_expect(restored_area.get_node("Sprite2D").texture == restored_area.data.tier_textures[1], "and its tier's picture")
 	_expect(restored_area.pending_funds == 25,
 		"uncollected donations restored")
 	var nests := get_nodes_in_group("nests")

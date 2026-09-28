@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_gjtea"]
 [ext_resource type="Texture2D" path="res://assets/buildings/house.svg" id="2_22yc1"]
+[ext_resource type="Texture2D" path="res://assets/buildings/house_2.svg" id="9_h2"]
+[ext_resource type="Texture2D" path="res://assets/buildings/house_3.svg" id="9_h3"]
 
 [resource]
 script = ExtResource("1_gjtea")
@@ -22,3 +24,4 @@ max_count = 2
 max_tier = 3
 upgrade_funding = 80
 upgrade_items = Dictionary[StringName, int]({&"wood": 3})
+tier_textures = Array[Texture2D]([ExtResource("2_22yc1"), ExtResource("9_h2"), ExtResource("9_h3")])

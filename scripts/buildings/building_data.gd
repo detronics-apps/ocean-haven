@@ -30,6 +30,8 @@ extends Resource
 ## Upgrades: how many tiers it has (1 = can't be upgraded). Each tier adds 1 to what
 ## it does: +1 turtle (animal_capacity), +1 storage, or +1 funding per recycled piece.
 @export var max_tier := 1
+## Its picture at each upgrade tier (tier 1 first; empty = `texture` at every tier).
+@export var tier_textures: Array[Texture2D] = []
 ## What each upgrade costs.
 @export var upgrade_funding := 0
 @export var upgrade_items: Dictionary[StringName, int] = {}

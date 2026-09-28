@@ -224,7 +224,8 @@ Step 2. Build in this order:
    (ArrivalData.needs_trees: 5 / 10 / 14 full-grown palms), fly off while there are too few and
    come back when palms regrow (never while tangled); circle over floating litter near home; can
    be caught in litter; a health factor
-6. Upgrade art (a texture per building tier)
+6. ✅ Upgrade art: BuildingData.tier_textures (a picture per tier: Ranger House, recycling centre,
+   Turtle Protection Area; placeholders)
 7. The wreck → Salvaged Sonar Core (replaces the stand-in objective)
 8. Coastal Storm, the first rare event (MASTER_PLAN "Rare events": each island's event tests its
    main mechanic; at most once per 30 days, 1–2 per 120-day year; damages habitat /
