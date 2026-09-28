@@ -5,7 +5,7 @@ extends Node
 ## shallow water that can be filled. Tap one to select it; the action bar then
 ## offers "Pick up sand" or "Place sand" for exactly that tile. The ranger carries
 ## one sand at a time. Sand on deep water makes it shallow, so filling deep water takes 2.
-## Done puts the shovel away. Every changed tile is saved.
+## "Put shovel away" (an action button) ends it. Every changed tile is saved.
 
 const SAND_TILE := Vector2i(1, 0)
 const SHALLOW_TILE := Vector2i(0, 0)
@@ -57,7 +57,7 @@ func _process(_delta: float) -> void:
 	if selected != null and selected not in around:
 		selected = null  # walked away from it
 	if _label:
-		_label.text = "Shovel: tap a tile next to you. Carrying %d / %d sand." % [Inventory.count(_sand.id), _sand.carry_limit]
+		_label.text = "Shovel: tap a tile next to you · Sand %d/%d" % [Inventory.count(_sand.id), _sand.carry_limit]
 	_outlines.queue_redraw()
 
 
@@ -98,17 +98,18 @@ func what_can_be_done(cell: Vector2i) -> String:
 	return ""
 
 
-## For the action bar: what can be done with the selected tile.
+## For the action buttons: what can be done with the selected tile, and putting it away.
 func actions() -> Array:
-	if not active or selected == null:
+	if not active:
 		return []
-	match what_can_be_done(selected):
+	var list := [{"label": "Put shovel away", "do": stop}]
+	match what_can_be_done(selected) if selected != null else "":
 		"pick_up":
-			return [{"label": "Pick up sand", "do": pick_up.bind(selected)}]
+			list.push_front({"label": "Pick up sand", "do": pick_up.bind(selected)})
 		"place":
 			var deep := Terrain.at(get_tree(), Terrain.centre_of(selected)) == ""
-			return [{"label": "Place sand (makes it shallow)" if deep else "Place sand", "do": place.bind(selected)}]
-	return []
+			list.push_front({"label": "Place sand (makes it shallow)" if deep else "Place sand", "do": place.bind(selected)})
+	return list
 
 
 ## Beach -> shallow water; the ranger carries the sand.
@@ -170,6 +171,7 @@ func _draw_outlines() -> void:
 			_outlines.draw_rect(rect, Color(colour, 0.25), true)
 
 
+## A short instruction at the top of the screen while the shovel is out.
 func _build_bar() -> void:
 	_bar = CanvasLayer.new()
 	_bar.layer = 5
@@ -177,20 +179,10 @@ func _build_bar() -> void:
 	var panel := PanelContainer.new()
 	panel.anchor_left = 0.5
 	panel.anchor_right = 0.5
-	panel.anchor_top = 1.0
-	panel.anchor_bottom = 1.0
-	panel.offset_top = -16
-	panel.offset_bottom = -16
+	panel.offset_top = 104  # below the clock and menu buttons (taller on phones)
 	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_bar.add_child(panel)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 16)
-	panel.add_child(row)
 	_label = Label.new()
-	_label.add_theme_font_size_override("font_size", 20)
-	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	row.add_child(_label)
-	var done := BuildMode._big_button("Done", Color("3f8a4a"))
-	done.pressed.connect(stop)
-	row.add_child(done)
+	_label.add_theme_font_size_override("font_size", 16)
+	panel.add_child(_label)

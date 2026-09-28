@@ -12,8 +12,8 @@ var _toast_queue: Array[String] = []
 @onready var _toast_label: Label = %ToastLabel
 @onready var _clock: Label = %Clock
 @onready var _fade: ColorRect = %Fade
-## Buttons for what the ranger can do nearby (top centre).
-var _action_bar: HBoxContainer
+## Buttons for what the ranger can do nearby (bottom right, stacked).
+var _action_bar: VBoxContainer
 var _shown_actions: Array[String] = []
 var _saved_note: Label
 
@@ -49,13 +49,18 @@ func _ready() -> void:
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
-	_action_bar = HBoxContainer.new()
+	# Bottom right, stacked upwards: easy to reach with a thumb.
+	_action_bar = VBoxContainer.new()
 	_action_bar.name = "ActionBar"
-	_action_bar.anchor_left = 0.5
-	_action_bar.anchor_right = 0.5
-	_action_bar.offset_top = 12
-	_action_bar.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_action_bar.add_theme_constant_override("separation", 10)
+	_action_bar.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	_action_bar.offset_left = -16
+	_action_bar.offset_right = -16
+	_action_bar.offset_top = -16
+	_action_bar.offset_bottom = -16
+	_action_bar.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_action_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_action_bar.alignment = BoxContainer.ALIGNMENT_END
+	_action_bar.add_theme_constant_override("separation", 8)
 	add_child(_action_bar)
 
 

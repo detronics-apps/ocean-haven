@@ -57,7 +57,7 @@ func _entry(data: BuildingData) -> Control:
 	var status: String
 	var can_build := false
 	if data.tool:
-		status = "A tool: pick it up to use it, then tap Done."
+		status = "A tool: pick it up to use it, then tap Put shovel away."
 		can_build = true
 	elif data.locked:
 		status = "Coming later: " + data.unlock_hint
