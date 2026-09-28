@@ -15,7 +15,13 @@ var _target := Vector2.ZERO
 # ponytail: starts at its buoy rather than sailing out from the dock — that needs
 # route-finding around islands, which isn't worth it yet.
 func _ready() -> void:
+	add_to_group("busy_boats")  # shy animals (dolphins) keep away from its waters
 	_target = _pick_spot()
+
+
+## Where the boat is right now.
+func hull_position() -> Vector2:
+	return _hull.global_position
 
 
 func _process(delta: float) -> void:

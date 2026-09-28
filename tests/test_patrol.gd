@@ -51,6 +51,21 @@ func _initialize() -> void:
 	_expect(is_instance_valid(outside), "left litter outside its area alone")
 	_expect(not on_land, "stayed on the water")
 
+	# --- Dolphins keep away from busy boats ---
+	var dolphin: Node2D = world.get_node("Dolphin3")
+	dolphin.global_position = hull.global_position + Vector2(80, 0)
+	dolphin.set("_home", hull.global_position + Vector2(180, 0))
+	for i in 3:
+		await physics_frame
+	_expect(dolphin.get("_state") == 2, "a dolphin swims off from a patrol boat nearby")  # State.FLEE
+	var near := 0
+	for i in 40:
+		if dolphin.call("_pick_target").distance_to(hull.global_position) < 200.0:
+			near += 1
+	_expect(near < 6, "and mostly doesn't settle near it (%d of 40 spots)" % near)
+	var turtle: Node2D = world.get_node("GreenTurtle")
+	_expect(turtle.data.boat_shy_distance == 0.0, "turtles don't mind boats")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

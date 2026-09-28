@@ -211,7 +211,11 @@ Step 2. Build in this order:
    Island): sends missions (data/missions/, MissionData; `Missions` autoload, one at a time, saved)
    for funding — rescue boat (animals in distress), pollution survey, turtle monitoring, dolphin
    tracking. Back after a few hours; what it found is marked on the minimap until the next morning.
-4. Pollution types (fishing debris, oil, boat disturbance, beach use)
+4. ✅ Pollution types: entangling litter (ItemData.entangles) left near animals that can get caught
+   (AnimalData.can_tangle) catches one each morning; oil patches (ItemData.ranger_cleans: only the
+   ranger's boat cleans them; a "clean" health factor with a target); dolphins keep away from patrol
+   boats (AnimalData.boat_shy_distance); turtles won't nest at a protection area with another
+   building within 2 tiles (BuildingData.needs_quiet; docks and trees are fine)
 5. Seabirds (nest in grown palms; tangled chicks; flocks show litter)
 6. Upgrade art (a texture per building tier)
 7. The wreck → Salvaged Sonar Core (replaces the stand-in objective)

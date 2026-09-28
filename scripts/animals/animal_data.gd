@@ -60,6 +60,9 @@ extends Resource
 ## Most litter all animals of this kind dig up in one day, together.
 @export var digs_per_day := 2
 
+## Keeps this far from busy boats (patrol boats): swims off, and won't settle near their
+## waters (0 = doesn't mind). Keep patrol areas away from the dolphins' waters.
+@export var boat_shy_distance := 0.0
 ## Can get caught in litter left about (items that entangle): the ranger frees it again.
 @export var can_tangle := false
 

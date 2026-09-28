@@ -174,6 +174,18 @@ func animals_here() -> int:
 		func(a: Node) -> bool: return a.get("home_area") == self and not a.get("leaving")).size()
 
 
+## The building that makes this nesting area too busy to nest in (null = it's quiet).
+func too_busy() -> Building:
+	if data.needs_quiet <= 0:
+		return null
+	var around := rect().grow(data.needs_quiet)
+	for other: Building in get_tree().get_nodes_in_group("buildings"):
+		if other != self and other.visible and not other.data.deck and other.data.build_verb != "Plant" \
+				and other.data.id != data.id and around.intersects(other.rect()):
+			return other
+	return null
+
+
 ## Animals of the `watches` species in view (e.g. dolphins from a viewing area).
 func animals_in_view() -> int:
 	if data.watches == &"":
@@ -273,6 +285,9 @@ func _process(delta: float) -> void:
 			note = "  (full: new hatchlings join your other areas)" if _other_areas_have_room() \
 				else "  (all areas full: new hatchlings swim out to sea)"
 		_hint.text = "Turtles here: %d / %d%s" % [here, capacity(), note]
+		var busy := too_busy()
+		if busy:
+			_hint.text += "\nToo busy to nest: move your %s further away" % busy.data.display_name.to_lower()
 
 
 static var _storable: Array = []

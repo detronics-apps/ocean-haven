@@ -61,6 +61,9 @@ extends Resource
 @export var fleet_textures: Array[Texture2D] = []
 ## At most this many can exist (0 = no limit).
 @export var max_count := 0
+## Nesting beaches need quiet: another building within this many tiles (not docks, not
+## planted trees) makes it too busy for animals to nest here (0 = doesn't mind).
+@export var needs_quiet := 0
 ## How many of the animals that nest here it can hold at once (0 = none).
 @export var animal_capacity := 0
 ## Shown in the Build menu but can't be built yet.

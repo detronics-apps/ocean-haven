@@ -1,7 +1,7 @@
 extends SceneTree
 ## Nesting: no nesting by day; at night the freed turtle comes ashore at the
 ## Turtle Protection Area, lays a nest and returns to the sea; the next night the
-## nest hatches and the hatchlings crawl into the water.
+## nest hatches and the hatchlings crawl into the water. Not next to other buildings.
 ## Run: godot --headless --path . --script res://tests/test_nesting.gd --quit-after 100000
 
 var _failed := false
@@ -18,6 +18,17 @@ func _initialize() -> void:
 	turtle.restore_freed()
 	turtle.global_position = Vector2(590, 16)  # in the water off the east beach
 	world.get_node("Player").global_position = Vector2(-600, 400)  # far away
+
+	# --- A busy beach: no nesting next to other buildings (docks and trees are fine) ---
+	var nest_area: Node = get_nodes_in_group("buildings")[0]
+	var build_mode: Node = world.get_node("BuildMode")
+	var dock: Node = build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(16, 1))
+	_expect(nest_area.too_busy() == null and turtle.call("_nest_site") == nest_area, "a dock beside it is fine")
+	dock.free()
+	var centre: Node = build_mode.add_building(load("res://data/buildings/recycling_centre.tres"), Vector2i(17, -1))
+	_expect(nest_area.too_busy() == centre and turtle.call("_nest_site") == null, "a recycling centre next to it: too busy to nest")
+	centre.free()
+	_expect(nest_area.too_busy() == null and turtle.call("_nest_site") == nest_area, "moved away: quiet again")
 
 	# --- Daytime: no nesting ---
 	clock.day = 1

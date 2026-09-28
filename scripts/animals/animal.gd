@@ -165,6 +165,7 @@ func _physics_process(delta: float) -> void:
 		_swim_out_to_sea()
 		return
 	_react_to_ranger(delta)
+	_avoid_busy_boats()
 	_maybe_nest()
 	_maybe_guide()
 
@@ -197,6 +198,31 @@ func _physics_process(delta: float) -> void:
 	# Blocked by land (e.g. fled towards the beach): rest, then pick somewhere else.
 	if get_real_velocity().length() < 1.0:
 		_rest(data.rest_min)
+
+
+## Boat-shy animals swim off from a patrol boat that comes close.
+func _avoid_busy_boats() -> void:
+	if data.boat_shy_distance <= 0.0 or _state == State.FLEE or tangled:
+		return
+	var boat := _nearest_busy_boat(global_position)
+	if boat != Vector2.INF and boat.distance_to(global_position) < data.boat_shy_distance:
+		_state = State.FLEE
+		_flee_left = FLEE_SECONDS
+		_target = _flee_spot(boat)
+
+
+## The nearest patrol boat's position (INF if none).
+func _nearest_busy_boat(point: Vector2) -> Vector2:
+	var best := Vector2.INF
+	for boat: Node in get_tree().get_nodes_in_group("busy_boats"):
+		var at: Vector2 = boat.hull_position()
+		if at.distance_to(point) < best.distance_to(point):
+			best = at
+	return best
+
+
+func _near_busy_boat(point: Vector2) -> bool:
+	return data.boat_shy_distance > 0.0 and _nearest_busy_boat(point).distance_to(point) < data.boat_shy_distance
 
 
 func _react_to_ranger(delta: float) -> void:
@@ -402,7 +428,7 @@ func _pick_target() -> Vector2:
 	var spot := _home
 	for attempt in 20:
 		spot = _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius
-		if in_habitat(spot):
+		if in_habitat(spot) and (attempt >= 15 or not _near_busy_boat(spot)):
 			return spot
 	# Not much habitat around (a narrow beach): the nearest bit to a random spot,
 	# rather than always heading back to exactly the same place.
@@ -474,7 +500,7 @@ func link_to_nearest_area() -> void:
 func _nest_site() -> Node2D:
 	var best: Node2D = null
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == data.nest_building and (not best
+		if building.data.id == data.nest_building and not building.too_busy() and (not best
 				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
 			best = building
 	return best

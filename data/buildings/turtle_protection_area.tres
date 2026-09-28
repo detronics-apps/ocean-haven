@@ -23,3 +23,4 @@ max_tier = 3
 upgrade_funding = 60
 upgrade_items = Dictionary[StringName, int]({&"wood": 2})
 facility = &"funding"
+needs_quiet = 2
