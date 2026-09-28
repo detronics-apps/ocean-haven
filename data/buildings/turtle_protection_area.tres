@@ -16,4 +16,5 @@ visitors = 20
 visitors_per_animal = 10
 max_count = 3
 animal_capacity = 4
+placement_hint = "on the beach"
 fact = "Protecting nesting beaches gives turtle eggs a safer start. The fence posts are made from the plastic you collected!"

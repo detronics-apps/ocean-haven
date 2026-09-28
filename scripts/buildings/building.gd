@@ -169,8 +169,18 @@ func _process(delta: float) -> void:
 		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
 	elif _hint.visible:
 		var here := animals_here()
-		_hint.text = "Turtles here: %d / %d%s" % [here, data.animal_capacity,
-			"  (full: new hatchlings swim out to sea)" if here >= data.animal_capacity else ""]
+		var note := ""
+		if here >= data.animal_capacity:
+			note = "  (full: new hatchlings join your other areas)" if _other_areas_have_room() \
+				else "  (all areas full: new hatchlings swim out to sea)"
+		_hint.text = "Turtles here: %d / %d%s" % [here, data.animal_capacity, note]
+
+
+func _other_areas_have_room() -> bool:
+	for other: Building in get_tree().get_nodes_in_group("buildings"):
+		if other != self and other.data.id == data.id and other.room_for_animals() > 0:
+			return true
+	return false
 
 
 func _unhandled_input(event: InputEvent) -> void:

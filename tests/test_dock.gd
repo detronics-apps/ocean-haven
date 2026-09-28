@@ -17,6 +17,12 @@ func _initialize() -> void:
 	var dock: Resource = load("res://data/buildings/dock.tres")
 	funding.earn(1000, "test")
 
+	# --- The placement bar says the water buildings go in the water ---
+	var bm_script: Script = load("res://scripts/buildings/build_mode.gd")
+	for id in ["dock", "expedition_boat", "patrol_boat"]:
+		var where: String = bm_script.where_it_goes(load("res://data/buildings/%s.tres" % id))
+		_expect(where.contains("water"), "%s goes '%s'" % [id, where])
+
 	# --- A jetty into the lagoon (not on top of the moored boat) ---
 	build_mode.start(dock)
 	var boat: Node2D = world.get_node("Boat")

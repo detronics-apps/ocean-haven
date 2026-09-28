@@ -44,7 +44,9 @@ func _initialize() -> void:
 	_expect(not build_mode.can_place(expedition, Vector2i(-3, 7)), "expedition boat needs a dock first")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
 	_expect(not build_mode.can_place(expedition, Vector2i(-4, 8)), "expedition boat must moor next to a dock")
-	_expect(build_mode.place_at(Vector2i(-3, 6)), "expedition boat moored beside the dock")
+	_expect(not build_mode.can_place(expedition, Vector2i(-3, 6)), "one dock plank beside it isn't enough")
+	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
+	_expect(build_mode.place_at(Vector2i(-3, 6)), "expedition boat moored beside 2 dock planks")
 	build_mode.add_building(load("res://data/buildings/patrol_boat.tres"), Vector2i(-24, 0))
 
 	# --- Set sail ---

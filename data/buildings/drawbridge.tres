@@ -17,4 +17,5 @@ cost_funding = 40
 deck = true
 open_texture = ExtResource("1_88l0l")
 connects_to_shore = true
+placement_hint = "in the water, touching the beach or a dock plank"
 fact = "Drawbridges let people walk across and boats sail through the same stretch of water."

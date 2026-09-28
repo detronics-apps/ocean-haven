@@ -100,7 +100,7 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 			return false
 	if data.connects_to_shore and not _touches_walkable(footprint):
 		return false
-	if data.must_touch != &"" and not _touches_building(footprint, data.must_touch):
+	if data.must_touch != &"" and not _touches_building(footprint, data.must_touch, data.must_touch_count):
 		return false
 	if data.deck:
 		for boat: Node2D in get_tree().get_nodes_in_group("boat"):
@@ -109,14 +109,17 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 	return has_requirement(data) and not at_limit(data) and (_free or can_afford(data))
 
 
-## Whether a building of kind `id` is right next to `footprint` (not diagonally).
-func _touches_building(footprint: Rect2i, id: StringName) -> bool:
+## Whether buildings of kind `id` fill at least `count` of the tiles right next to
+## `footprint` (not diagonally).
+func _touches_building(footprint: Rect2i, id: StringName, count := 1) -> bool:
 	var kind := get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool: return b.data.id == id)
+	var touching := 0
 	for next in _cells_beside(footprint):
 		for building: Building in kind:
 			if building.rect().has_point(next):
-				return true
-	return false
+				touching += 1
+				break
+	return touching >= count
 
 
 ## The tiles right next to `footprint` (left, right, above, below; not diagonally).
@@ -245,10 +248,8 @@ func _process(_delta: float) -> void:
 	var fits := can_place(_data, _cell)
 	_ghost.modulate = FITS if fits else BLOCKED
 	_place.disabled = not fits
-	var where: String = {"sand": "on the beach", "water": "in the shallows"}.get(
-		_data.terrain[0] if _data.terrain.size() == 1 else "", "on the island")
 	_label.text = "%s your %s %s: walk, or tap a spot." % [
-		"Move" if _moving else "Place", _data.display_name.to_lower(), where]
+		"Move" if _moving else "Place", _data.display_name.to_lower(), where_it_goes(_data)]
 	if not _free and not can_afford(_data):
 		_label.text = "You need %d litter and %d funding to build this." % [_data.cost_litter, _data.cost_funding]
 	if not ranger is Player:
@@ -257,6 +258,19 @@ func _process(_delta: float) -> void:
 		_ghost.visible = false
 	else:
 		_ghost.visible = true
+
+
+## Where a building goes, in words: its own hint, or worked out from its ground.
+static func where_it_goes(data: BuildingData) -> String:
+	if data.placement_hint:
+		return data.placement_hint
+	var land := data.terrain.has("sand") or data.terrain.has("grass")
+	var water := data.terrain.has("water") or data.terrain.has("")
+	if water and not land:
+		return "in the water"
+	if data.terrain == PackedStringArray(["sand"]):
+		return "on the beach"
+	return "on the island"
 
 
 func _update_facing(ranger_pos: Vector2) -> void:

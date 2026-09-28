@@ -15,4 +15,5 @@ terrain = PackedStringArray("water", "")
 cost_funding = 20
 deck = true
 connects_to_shore = true
+placement_hint = "in the water, touching the beach or another plank"
 fact = "A dock lets boats tie up without dragging anchors across the seabed."
