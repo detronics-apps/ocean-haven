@@ -14,6 +14,7 @@ var _toast_queue: Array[String] = []
 @onready var _fade: ColorRect = %Fade
 ## Buttons for what the ranger can do nearby (bottom right, stacked).
 var _action_bar: VBoxContainer
+var _info: Label
 var _shown_actions: Array[String] = []
 var _saved_note: Label
 
@@ -77,6 +78,16 @@ func _ready() -> void:
 	_action_bar.alignment = BoxContainer.ALIGNMENT_END
 	_action_bar.add_theme_constant_override("separation", 8)
 	add_child(_action_bar)
+	# One line about the nearest animal (instead of a label over every animal), above the buttons.
+	_info = Label.new()
+	_info.name = "Info"
+	_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_info.custom_minimum_size.x = 260
+	_info.add_theme_font_size_override("font_size", 16)
+	_info.add_theme_constant_override("outline_size", 5)
+	_info.add_theme_color_override("font_outline_color", Color.BLACK)
+	_action_bar.add_child(_info)
 
 
 ## A small "Saved" that fades in and out after every save, so you know progress is kept.
@@ -142,6 +153,19 @@ func sleep_through_night() -> void:
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 
 
+## What the nearest animal with something to say is up to ("" if none).
+func nearest_animal_info() -> String:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return ""
+	var best: Node2D = null
+	for animal: Node2D in get_tree().get_nodes_in_group("animals"):
+		if animal.get("info") and (not best or animal.global_position.distance_to(ranger.global_position)
+				< best.global_position.distance_to(ranger.global_position)):
+			best = animal
+	return best.info if best else ""
+
+
 ## Everything the ranger can do nearby: helping an animal first, at most 4, no repeats.
 func nearby_actions() -> Array:
 	var helps := []
@@ -165,7 +189,8 @@ func _update_action_bar() -> void:
 		return
 	_shown_actions = labels
 	for button in _action_bar.get_children():
-		button.queue_free()
+		if button is Button:
+			button.queue_free()
 	for action: Dictionary in actions:
 		var button := Button.new()
 		button.text = action.label
@@ -178,6 +203,8 @@ func _update_action_bar() -> void:
 
 func _process(_delta: float) -> void:
 	_update_action_bar()
+	_info.text = nearest_animal_info()
+	_info.visible = _info.text != ""
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
 
 

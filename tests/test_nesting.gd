@@ -117,6 +117,18 @@ func _initialize() -> void:
 	_expect(second.animals_here() == 3 and leaving_now == 0,
 		"hatchlings fill the empty second area first (%d there, %d leaving)" % [second.animals_here(), leaving_now])
 
+	# --- Loading a save re-links turtles to areas with room, not all to the nearest one ---
+	var areas := get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")
+	var first: Node2D = areas.filter(func(b: Node) -> bool: return b != second)[0]
+	var linked := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data == turtle_data and not a.leaving)
+	for t in linked:
+		t.home_area = null
+		t.global_position = first.global_position + Vector2(0, 40)  # all right by the first area
+	for t in linked:
+		t.link_to_nearest_area()
+	_expect(first.animals_here() <= 4 and second.animals_here() <= 4 and first.animals_here() + second.animals_here() == linked.size(),
+		"after loading, no area is over full (%d/4 and %d/4)" % [first.animals_here(), second.animals_here()])
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

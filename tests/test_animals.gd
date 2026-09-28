@@ -97,7 +97,9 @@ func _initialize() -> void:
 	var journal_before: int = root.get_node("Journal").photos(&"bottlenose_dolphin")
 	await process_frame
 	var bar: Node = world.get_node("HUD/ActionBar")
-	var labels: Array = bar.get_children().map(func(b: Button) -> String: return b.text)
+	var labels: Array = bar.get_children().filter(func(b: Node) -> bool: return b is Button).map(func(b: Button) -> String: return b.text)
+	var info: Label = bar.get_node("Info")
+	_expect(info.visible and info.text.begins_with("Bottlenose Dolphin:"), "one info line about the nearest animal (%s)" % info.text)
 	_expect("Free the Bottlenose Dolphin" in labels and "Photo: Bottlenose Dolphin" in labels
 		and labels[0] == "Free the Bottlenose Dolphin",
 		"action bar offers both, helping first: %s" % [labels])
@@ -111,8 +113,8 @@ func _initialize() -> void:
 	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before, "not a photo of the other one")
 	await process_frame
 	await process_frame
-	for button: Button in bar.get_children():
-		if button.text == "Photo: Bottlenose Dolphin":
+	for button: Node in bar.get_children():
+		if button is Button and button.text == "Photo: Bottlenose Dolphin":
 			button.pressed.emit()
 	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before + 1, "the Photo button takes a photo")
 

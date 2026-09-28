@@ -192,6 +192,28 @@ Chain: sea ice → penguin colonies → fish/krill → predators → ocean healt
 
 ---
 
+## Rare events
+
+Occasional events, different per island type, that call for **preparation** (warned in advance)
+or **immediate action** (sudden) — otherwise wildlife numbers dip. Per the rules, animals never
+die: a dip means animals leave, fewer arrive, nests are lost to the sea or colonies move, and it
+always recovers when the player responds. Never a "you failed"; say what needs help.
+
+| Event | Where | Warning? | Prepare / respond |
+|---|---|---|---|
+| 🌀 Storm | Tropical islands (Starting, Mangrove, Reef) | Yes — forecast a day ahead | Secure nests above the tide line, moor boats, protect young plants; afterwards clear the storm litter and check buildings and reef damage |
+| 🛢️ Oil spill | Any, near shipping (Starting, Kelp, Reef) | No — sudden | Boom it off fast, clean oiled beaches and water, care for oiled animals (rescue → care → release) |
+| 🌡️ Marine heatwave / coral bleaching | Tropical Reef | Yes — water warming | Shade and cool priority coral, cut other stress (runoff, anchors), watch recovery |
+| 🦔 Urchin boom | Kelp Forest | Builds up slowly | Read the food web: support the otters rather than removing urchins |
+| ⭐ Crown-of-thorns outbreak | Tropical Reef | Detectable early | Detect → map → prioritise → non-lethal intervention → monitor |
+| 🌊 King tide / flood | Mangrove Coast, Starting | Yes — tide tables | Keep channels open, move nests, protect nursery pools |
+| 🥅 Ghost-net drift | Deep Sea, Kelp | Found by research / animals | Track and recover the lost gear before it entangles wildlife |
+| 🧊 Early ice break-up | Polar Ocean | Yes — seasonal signs | Relocate protected zones, keep colonies' route to the sea open |
+
+Preparation is rewarded: a well-prepared island shrugs a storm off; an unprepared one needs a
+cleanup. Events also connect islands (a spill's slick drifts; a storm scatters litter to the
+next island).
+
 ## Changes that travel between islands
 
 Effects must be **seen in the world**, not only in statistics.
@@ -248,5 +270,8 @@ Each step ends with a playable build. ✅ = done.
   objective → ice-navigation.
 - **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
   gradually from Step 3 on: each new island links to the ones before it).
+- **Step 8b — Rare events.** Storms, oil spills, heatwaves and the island-specific events above:
+  forecasts / warnings, preparation, immediate response, visible dips and recovery. Start with a
+  storm and an oil spill on the Starting Island, then add each island's own event with its step.
 - **Step 9 — Global research network.** Late game: every ship visible across the ocean, the whole
   fleet at its highest level, the full picture of how the islands depend on each other.

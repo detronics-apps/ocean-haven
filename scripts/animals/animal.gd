@@ -77,7 +77,11 @@ var _crawl_then: Callable
 @onready var _home := global_position
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _tangle: Sprite2D = $Sprite2D/Tangle
-@onready var _hint: Label = $Hint
+## What to tell the ranger about it right now ("" = nothing). The HUD shows just the
+## nearest animal's, in one place (not a label over every animal).
+var info := ""
+## Close enough for the ranger to observe, photograph or help it.
+var _in_reach := false
 
 
 func _enter_tree() -> void:
@@ -188,7 +192,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _react_to_ranger(delta: float) -> void:
-	_hint.visible = false
+	_in_reach = false
+	info = ""
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger:
 		return
@@ -224,15 +229,16 @@ func _react_to_ranger(delta: float) -> void:
 				Journal.observe(data)
 
 	if distance <= data.interact_distance:
-		_hint.visible = true
+		_in_reach = true
+		var name := data.display_name
 		if not is_relaxed():
-			_hint.text = "Stay still so it can relax..."
+			info = "%s: stay still so it can relax..." % name
 		elif tangled:
-			_hint.text = "%s: free the %s" % [_key_hint(), data.display_name.to_lower()]
+			info = "%s: it's caught - free it!" % name
 		elif photographed_today():
-			_hint.text = "Photographed today - see you tomorrow"
+			info = "%s: photographed today - see you tomorrow." % name
 		else:
-			_hint.text = "%s: take a photo" % _key_hint()
+			info = "%s: relaxed. Take a photo!" % name
 
 
 ## Trusting (relaxed) guides the ranger has played with lead them to floating
@@ -254,8 +260,7 @@ func _maybe_guide() -> void:
 		_swim_to(beside, State.GUIDE)
 	var ranger := ControlledBody.active(get_tree())
 	if ranger and ranger.global_position.distance_to(global_position) <= FOLLOW_HINT_RANGE:
-		_hint.visible = true
-		_hint.text = "Follow me - I found some litter!"
+		info = "The %s found some litter - follow it!" % data.display_name.to_lower()
 
 
 func _nearest_floating_litter(within: float) -> Node2D:
@@ -338,7 +343,7 @@ func play() -> void:
 
 ## Relaxed and close enough for the ranger to observe, photograph or help it.
 func can_interact() -> bool:
-	return _hint.visible and is_relaxed() and _state != State.GUIDE
+	return _in_reach and is_relaxed() and _state != State.GUIDE
 
 
 ## With several animals in reach, E goes to one: an animal that needs help first,
@@ -356,11 +361,6 @@ func _is_first_choice() -> bool:
 				< best.global_position.distance_to(ranger.global_position)):
 			best = other
 	return best == self
-
-
-## "E / tap" on the animal E will act on; just "Tap" on the others.
-func _key_hint() -> String:
-	return "E / tap" if _is_first_choice() else "Tap"
 
 
 func _interact() -> void:
@@ -448,9 +448,19 @@ func _maybe_nest() -> void:
 	_crawl_to(shore, false, func() -> void: _crawl_to(beach_spot, true, _lay))
 
 
-## Links it to the nearest protection area its species nests in (loading a save).
+## Links it to the nearest protection area its species nests in that still has room
+## (loading a save), so a reload spreads turtles out as they were, not all into one area.
 func link_to_nearest_area() -> void:
-	home_area = _nest_site()
+	home_area = null  # don't count itself while looking for room
+	var sites := get_tree().get_nodes_in_group("buildings").filter(
+		func(b: Building) -> bool: return b.data.id == data.nest_building)
+	sites.sort_custom(func(a: Node2D, b: Node2D) -> bool:
+		return a.global_position.distance_to(global_position) < b.global_position.distance_to(global_position))
+	for site: Building in sites:
+		if site.room_for_animals() > 0:
+			home_area = site
+			return
+	home_area = sites[0] if sites else null
 
 
 func _nest_site() -> Node2D:
@@ -472,8 +482,8 @@ func _crawl_to(point: Vector2, over_land: bool, then: Callable) -> void:
 
 func _nesting(delta: float) -> void:
 	var ranger := ControlledBody.active(get_tree())
-	_hint.visible = not young and ranger != null 		and ranger.global_position.distance_to(global_position) <= data.interact_distance
-	_hint.text = "Shh... she's nesting. Give her space."
+	var near := not young and ranger != null and ranger.global_position.distance_to(global_position) <= data.interact_distance
+	info = "Shh... she's nesting. Give her space." if near else ""
 	if _state == State.LAY:
 		_lay_left -= delta
 		if _lay_left <= 0.0:
