@@ -90,19 +90,12 @@ addons/                  third-party Godot plugins only
 `build/site/play/`, adds the home page from `web/` (Godot ignores it), and pushes the site to the
 `gh-pages` branch (checked out as a worktree at `build/gh-pages`). Served at
 https://detronics-apps.github.io/ocean-haven/. It's first-party storage, so saves survive,
-unlike itch.io's iframe on iOS. Publish it whenever the itch zip is rebuilt.
-
-## Testing on a phone (itch.io)
-
-This PC's firewall can't accept connections from the phone, so phone builds go to itch.io
-(restricted page, HTTPS, works on Wi-Fi or mobile data).
-
-1. Export the "Web" preset (step 1 below). `build/.gdignore` must exist so Godot doesn't import the build.
-2. Zip the *contents* of `build/web` (index.html at the zip root) to `build/bluehaven-web.zip`.
-3. Upload on itch.io: project → Edit → Uploads → replace the zip → Save.
+unlike itch.io's iframe on iOS. The user plays it from their iPhone home screen.
 
 **When:** not after every step — only once a batch of big, playable changes has landed (e.g. a
-milestone or a major feature). Then rebuild the zip and tell the user it's ready to upload.
+milestone or a major feature). Then publish and tell the user it's live.
+
+itch.io is no longer kept up to date — don't rebuild the itch zip.
 
 ## Testing on a phone (web build over home Wi-Fi — needs firewall access)
 
@@ -168,7 +161,10 @@ caring for animals". Build in this order, placeholder art:
 20. Building upgrades, 3 tiers each (buildings, not the player — no player levels): protection area
     +1 turtle per tier, Ranger House +1 storage per tier, recycling centre +1 funding per piece per tier
 21. Build 2-3 boats, not just 1
-22. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+22. Growing palms: a planted sapling grows small -> medium (after 1 day) -> full grown (after
+    another day). Cutting it down gives: small = the sapling back; medium = 1 wood + 1 sapling;
+    full grown = 1-2 wood + 1-2 saplings (the island's own palms are full grown)
+23. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**
