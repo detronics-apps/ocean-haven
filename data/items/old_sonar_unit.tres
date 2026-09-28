@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/old_sonar_unit.svg" id="1_son"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_son"]
+
+[resource]
+script = ExtResource("2_son")
+id = &"old_sonar_unit"
+display_name = "Old sonar unit"
+icon = ExtResource("1_son")
+is_litter = false
+ranger_cleans = true
+flag = &"sonar_recovered"
+pickup_note = "You recovered the old sonar unit from the wreck!"
+fact = "Sonar sends pulses of sound through the water and listens for the echoes."

@@ -54,7 +54,10 @@ func attach(world: Node) -> bool:
 
 
 func mark_collected(debris: Node) -> void:
-	_collected.append(String(debris.name))
+	# World litter by name; litter that belongs to something (the wreck) by "<it>/<name>".
+	var parent := debris.get_parent()
+	_collected.append(String(debris.name) if not parent.is_in_group("wreck_sites")
+		else "%s/%s" % [parent.name, debris.name])
 
 
 func record_tile(ground: TileMapLayer, local_cell: Vector2i, atlas: Vector2i) -> void:

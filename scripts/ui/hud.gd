@@ -266,7 +266,8 @@ func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> vo
 
 
 func _on_mission_returned(mission: MissionData, found: int) -> void:
-	show_toast("%s is back!\n%s" % [mission.display_name, mission.report % found if found > 0 else mission.report_none])
+	var report := mission.report if found > 0 else mission.report_none
+	show_toast("%s is back!\n%s" % [mission.display_name, report % found if "%d" in report else report])
 
 
 func _on_built(building: Building) -> void:

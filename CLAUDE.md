@@ -193,8 +193,8 @@ caring for animals". Build in this order, placeholder art:
     can be built (BuildingData.needs_objective), and finds its discovery (data/discoveries/). The
     `Fleet` autoload keeps objectives done, discoveries found / installed; installing one at any ship
     upgrades every ship (equipment level = installed; BuildingData.fleet_textures). Exploring needs
-    the next island's RegionData.requires installed. Starting Island stand-in: 30 litter + free the
-    turtle, dolphin and crab → Salvaged Sonar Core. Islands with no objective yet: no ship. Shown in
+    the next island's RegionData.requires installed. Starting Island: the wreck (MVP 0.4 item 7)
+    → Salvaged Sonar Core. Islands with no objective yet: no ship. Shown in
     the Journal and the Build menu. Loading removes ships whose objective isn't done (funding
     returned) and re-locks islands found without the upgrade they need.
 
@@ -226,7 +226,10 @@ Step 2. Build in this order:
    be caught in litter; a health factor
 6. ✅ Upgrade art: BuildingData.tier_textures (a picture per tier: Ranger House, recycling centre,
    Turtle Protection Area; placeholders)
-7. The wreck → Salvaged Sonar Core (replaces the stand-in objective)
+7. ✅ The wreck (WreckSite, off the west coast): hidden until the station's coastal survey finds
+   it; its 8 pieces of litter are cleared from the boat; then its old sonar unit is lifted into
+   the boat. The Starting Island's objective is now these three flags (ObjectiveGoal "flag",
+   Fleet.mark) → Salvaged Sonar Core
 8. Coastal Storm, the first rare event (MASTER_PLAN "Rare events": each island's event tests its
    main mechanic; at most once per 30 days, 1–2 per 120-day year; damages habitat /
    infrastructure / access, never animal numbers)

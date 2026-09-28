@@ -11,6 +11,10 @@ extends Resource
 @export var entangles := false
 ## Pollution only the ranger's own boat cleans up (oil): not carried, patrol boats leave it.
 @export var ranger_cleans := false
+## Picking it up marks this progress flag (Fleet.mark), e.g. the wreck's old sonar unit.
+@export var flag: StringName
+## Said when it's picked up, instead of "... cleaned up!".
+@export_multiline var pickup_note: String
 ## Most the ranger can carry at once (0 = no limit). Items with a limit (wood, sand)
 ## can be kept in a Ranger House.
 @export var carry_limit := 0

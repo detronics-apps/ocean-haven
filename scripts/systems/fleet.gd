@@ -12,6 +12,8 @@ signal upgraded(discovery: DiscoveryData, level: int)
 var _completed := {}
 var _obtained := {}
 var _installed := {}
+## Progress flags (e.g. "wreck_found", "sonar_recovered"): island objectives check them.
+var _flags := {}
 
 
 func _ready() -> void:
@@ -60,6 +62,8 @@ func progress(goal: ObjectiveGoal) -> int:
 			return Journal.helped_count(goal.target)
 		&"litter":
 			return Inventory.litter_collected
+		&"flag":
+			return 1 if _flags.has(goal.target) else 0
 	return 0
 
 
@@ -74,6 +78,18 @@ func goal_line(region: RegionData, goal: ObjectiveGoal) -> String:
 	if goal.amount > 1:
 		return "%s: %d / %d" % [goal.text, progress(goal), goal.amount]
 	return goal.text
+
+
+## Marks a progress flag and checks the objectives.
+func mark(flag: StringName) -> void:
+	if _flags.has(flag):
+		return
+	_flags[flag] = true
+	check()
+
+
+func has_flag(flag: StringName) -> bool:
+	return _flags.has(flag)
 
 
 static func discovery(id: StringName) -> DiscoveryData:
@@ -130,12 +146,15 @@ func missing_for(region: RegionData) -> DiscoveryData:
 
 ## For the save file.
 func to_dict() -> Dictionary:
-	return {"completed": _completed.keys(), "found": _obtained.keys(), "installed": _installed.keys()}
+	return {"completed": _completed.keys(), "found": _obtained.keys(), "installed": _installed.keys(),
+		"flags": _flags.keys()}
 
 
 func restore(saved: Dictionary) -> void:
-	for into: Dictionary in [_completed, _obtained, _installed]:
+	for into: Dictionary in [_completed, _obtained, _installed, _flags]:
 		into.clear()
+	for flag in saved.get("flags", []):
+		_flags[StringName(flag)] = true
 	for id in saved.get("completed", []):
 		_completed[StringName(id)] = true
 	for id in saved.get("found", []):

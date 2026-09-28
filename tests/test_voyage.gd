@@ -55,26 +55,25 @@ func _initialize() -> void:
 
 	# --- The island's objective comes first: then the ship can be built ---
 	funding.earn(1000, "test")
-	root.get_node("Inventory").restore({}, {"wood": 99})  # building materials
+	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
 	var home: Resource = region.call("home_island")
 	var ship: Resource = load("res://data/buildings/expedition_boat.tres")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
 	build_mode.start(ship)
-	_expect(build_mode.placement_problem(ship, Vector2i(-3, 6)).begins_with("First: clean up"),
+	_expect(build_mode.placement_problem(ship, Vector2i(-3, 6)).begins_with("First: find and clear"),
 		"no ship before the island's objective (%s)" % build_mode.placement_problem(ship, Vector2i(-3, 6)))
 	build_mode.cancel()
 	var journal_screen: Node = world.get_node("JournalScreen")
 	journal_screen.open()
 	var objective_text := _texts(journal_screen.find_child("Objective_home_island", true, false))
-	_expect(objective_text.contains("Clean up litter: 0 / 30") and objective_text.contains("Free the turtle"),
+	_expect(objective_text.contains("Find what's hidden off the coast") and objective_text.contains("old sonar unit"),
 		"the Journal shows the objective's goals")
 	journal_screen.close()
-	root.get_node("Inventory").add(load("res://data/items/plastic_bottle.tres"), 99, false)
-	for id in ["green_turtle", "bottlenose_dolphin"]:
-		journal.help(load("res://data/animals/%s.tres" % id))
-	_expect(not fleet.objective_done(home), "not done while a goal is left (the crab)")
-	journal.help(load("res://data/animals/ghost_crab.tres"))
+	fleet.mark(&"wreck_found")
+	fleet.mark(&"wreck_cleared")
+	_expect(not fleet.objective_done(home), "not done while a goal is left (the sonar unit)")
+	fleet.mark(&"sonar_recovered")
 	_expect(fleet.objective_done(home) and fleet.has_found(&"salvaged_sonar_core"),
 		"objective done: the Salvaged Sonar Core is found")
 	_expect(fleet.level() == 0, "found, but not installed yet")

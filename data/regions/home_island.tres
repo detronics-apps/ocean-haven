@@ -150,29 +150,23 @@ kind = &"help"
 target = &"ghost_crab"
 text = "Crab freed from the plastic bag"
 
-[sub_resource type="Resource" id="Goal_litter"]
+[sub_resource type="Resource" id="Goal_found"]
 script = ExtResource("2_goal")
-kind = &"litter"
-amount = 30
-text = "Clean up litter"
+kind = &"flag"
+target = &"wreck_found"
+text = "Find what's hidden off the coast (a coastal survey from your Marine Rescue & Research Station)"
 
-[sub_resource type="Resource" id="Goal_turtle"]
+[sub_resource type="Resource" id="Goal_cleared"]
 script = ExtResource("2_goal")
-kind = &"help"
-target = &"green_turtle"
-text = "Free the turtle tangled in fishing line"
+kind = &"flag"
+target = &"wreck_cleared"
+text = "Clear the litter caught around the old wreck"
 
-[sub_resource type="Resource" id="Goal_dolphin"]
+[sub_resource type="Resource" id="Goal_recovered"]
 script = ExtResource("2_goal")
-kind = &"help"
-target = &"bottlenose_dolphin"
-text = "Free the dolphin caught in a ghost net"
-
-[sub_resource type="Resource" id="Goal_crab"]
-script = ExtResource("2_goal")
-kind = &"help"
-target = &"ghost_crab"
-text = "Free the crab trapped in a plastic bag"
+kind = &"flag"
+target = &"sonar_recovered"
+text = "Recover the wreck's old sonar unit"
 
 [resource]
 script = ExtResource("1_t5gy4")
@@ -185,8 +179,8 @@ arrival = Vector2(0, 40)
 boat_mooring = Vector2(16, 112)
 map_icon = ExtResource("1_ovoyb")
 discovery = &"salvaged_sonar_core"
-objective = "Clean up the island and help its wildlife"
-goals = Array[ExtResource("2_goal")]([SubResource("Goal_litter"), SubResource("Goal_turtle"), SubResource("Goal_dolphin"), SubResource("Goal_crab")])
-discovery_text = "Under the last of the litter you cleaned up, you found an old sonar unit. Cleaned and working again, it's the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
+objective = "Find and clear the old wreck off the coast"
+goals = Array[ExtResource("2_goal")]([SubResource("Goal_found"), SubResource("Goal_cleared"), SubResource("Goal_recovered")])
+discovery_text = "Cleaned and working again, the old sonar unit is the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
 arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Noddy1"), SubResource("Arrival_Noddy2"), SubResource("Arrival_Noddy3")])

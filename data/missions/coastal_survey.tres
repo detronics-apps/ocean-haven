@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"coastal_survey"
+display_name = "Coastal survey"
+description = "Researchers map the sea floor around the island with sonar, looking for anything hidden under the water."
+order = 5
+facility = &"marine_rescue_station"
+cost = 30
+hours = 3.0
+finds_group = &"wreck_sites"
+finds_species = &""
+finds_tangled = false
+marker_colour = Color(0.8, 0.6, 1, 1)
+report = "The coastal survey found an old shipwreck, with litter caught all around it! It's marked in purple on your minimap: sail out and clear it."
+report_none = "The coastal survey mapped the sea floor. Nothing new down there."

@@ -73,6 +73,8 @@ func _finish() -> void:
 		if mission.finds_tangled and not node.get("tangled"):
 			continue
 		_marked.append(node)
+		if node.has_method("reveal"):
+			node.reveal()  # found by the mission (e.g. the wreck)
 	_marks_from = mission
 	returned.emit(mission, _marked.size())
 

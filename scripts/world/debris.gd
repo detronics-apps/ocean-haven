@@ -41,9 +41,12 @@ func _on_body_entered(body: Node2D) -> void:
 ## collection (patrol boats), so there's no note for every piece.
 func collect(announce := true) -> void:
 	if item.ranger_cleans:
-		get_tree().call_group("hud", "show_toast", "%s cleaned up!\n%s" % [item.display_name, item.fact])
+		get_tree().call_group("hud", "show_toast", item.pickup_note if item.pickup_note
+			else "%s cleaned up!\n%s" % [item.display_name, item.fact])
 	else:
 		Inventory.add(item, 1, announce)
+	if item.flag != &"":
+		Fleet.mark(item.flag)
 	remove()
 
 

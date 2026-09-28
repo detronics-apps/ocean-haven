@@ -450,8 +450,7 @@ Each step ends with a playable build. ✅ = done.
   items (data/discoveries/); ship equipment level (one level for the whole fleet = discoveries
   installed) with the upgrade screen at the ship; each direction's next island requires the right
   discovery (RegionData.requires); ship sprites per level. (The Map keeps just grey / normal / 🧭.)
-  Stand-ins until each island's own step: the Starting Island's objective is "collect 30 litter +
-  free the tangled turtle, dolphin and crab" (Step 2 replaces it with the wreck). No ship can be
+  The Starting Island's objective is the wreck (Step 2). No ship can be
   built until its island's discovery is found, so islands with no objective yet have none. Older
   saves: ships whose island objective isn't done are removed (funding returned), and islands found
   without the upgrade they need are locked again.
