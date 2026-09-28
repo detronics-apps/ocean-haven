@@ -6,9 +6,18 @@ extends CanvasLayer
 signal closed
 
 const PREVIEW_SCALE := 7.0
+const MARGIN := 12
+## Width of one choice row: < value >.
+const CHOICE_WIDTH := 232.0
 
 var _values: Dictionary[String, Control] = {}
 var _done: Button
+var _layout: BoxContainer
+var _left: VBoxContainer
+var _title: Label
+var _preview_box: Control
+var _preview: Node2D
+var _grid: GridContainer
 
 
 func _enter_tree() -> void:
@@ -45,43 +54,67 @@ func _build() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 12)
+		margin.add_theme_constant_override("margin_" + side, MARGIN)
 	add_child(margin)
-	var layout := HBoxContainer.new()
-	layout.add_theme_constant_override("separation", 32)
-	margin.add_child(layout)
+	_layout = BoxContainer.new()
+	_layout.add_theme_constant_override("separation", 16)
+	margin.add_child(_layout)
 
-	# Left: title, preview, buttons.
-	var left := VBoxContainer.new()
-	left.custom_minimum_size.x = 300
-	left.alignment = BoxContainer.ALIGNMENT_CENTER
-	layout.add_child(left)
-	var title := Label.new()
-	title.text = "Create your ranger"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 28)
-	left.add_child(title)
-	var preview_box := Control.new()
-	preview_box.custom_minimum_size = Vector2(300, 220)
-	left.add_child(preview_box)
-	var preview: Node2D = load("res://scenes/player/avatar.tscn").instantiate()
-	preview.scale = Vector2.ONE * PREVIEW_SCALE
-	preview.position = Vector2(150, 215)  # feet at the bottom centre of the box
-	preview_box.add_child(preview)
-	left.add_child(_button("Surprise me!", RangerProfile.randomize_look))
+	# Preview side: title, preview, buttons (always on screen).
+	_left = VBoxContainer.new()
+	_left.alignment = BoxContainer.ALIGNMENT_CENTER
+	_layout.add_child(_left)
+	_title = Label.new()
+	_title.text = "Create your ranger"
+	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_left.add_child(_title)
+	_preview_box = Control.new()
+	_left.add_child(_preview_box)
+	_preview = load("res://scenes/player/avatar.tscn").instantiate()
+	_preview_box.add_child(_preview)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 8)
+	_left.add_child(buttons)
+	var surprise := _button("Surprise me!", RangerProfile.randomize_look)
+	surprise.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	buttons.add_child(surprise)
 	_done = _button("Let's go!", close)
 	_done.name = "Done"
-	left.add_child(_done)
+	_done.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	buttons.add_child(_done)
 
-	# Right: two columns of choices.
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	grid.add_theme_constant_override("h_separation", 24)
-	grid.add_theme_constant_override("v_separation", 4)
-	layout.add_child(grid)
+	# Choices: as many columns as fit, scrolling if they don't all fit.
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_layout.add_child(scroll)
+	_grid = GridContainer.new()
+	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_grid.add_theme_constant_override("h_separation", 24)
+	_grid.add_theme_constant_override("v_separation", 4)
+	scroll.add_child(_grid)
 	for key: String in RangerProfile.CHOICES:
-		grid.add_child(_row(key))
+		_grid.add_child(_row(key))
+	get_viewport().size_changed.connect(_fit)
+	_fit()
+
+
+## Fits the screen: side by side when wide, preview on top when tall; a smaller
+## preview on small screens (phones).
+func _fit() -> void:
+	var screen := get_viewport().get_visible_rect().size - Vector2.ONE * MARGIN * 2
+	_layout.vertical = screen.y > screen.x
+	var small := minf(screen.x, screen.y) < 480
+	var preview_scale := PREVIEW_SCALE * (0.55 if small else 1.0)
+	var width := minf(300.0, screen.x)
+	_left.custom_minimum_size.x = width
+	_preview_box.custom_minimum_size = Vector2(width, 31.0 * preview_scale)
+	_preview.scale = Vector2.ONE * preview_scale
+	_preview.position = Vector2(width / 2.0, 30.5 * preview_scale)  # feet at the bottom centre
+	_title.add_theme_font_size_override("font_size", 20 if small else 28)
+	var grid_width := screen.x - (0.0 if _layout.vertical else width + 16.0)
+	_grid.columns = clampi(int(grid_width / (CHOICE_WIDTH + 24.0)), 1, 2)
 
 
 func _row(key: String) -> Control:
