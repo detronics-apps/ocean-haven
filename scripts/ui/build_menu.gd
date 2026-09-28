@@ -10,6 +10,13 @@ func _enter_tree() -> void:
 ## Tabs: label -> BuildingData.category ("" = everything).
 const TABS := {"All": &"", "Buildings": &"buildings", "Land": &"land", "Sea": &"sea"}
 
+## Island facilities stand out: funding facilities earn, the signature facility spends.
+const FACILITY_LINES := {
+	&"funding": "Funding facility: visitors donate every morning (more with a healthier island).",
+	&"signature": "Signature facility: the island's one special building. Spend funding here to make progress.",
+}
+const FACILITY_COLOURS := {&"funding": Color("f2c94c"), &"signature": Color("c9a4ff")}
+
 var _tab: StringName = &""
 ## "You have: ..." next to the tabs.
 var _have: Label
@@ -77,8 +84,14 @@ func _entry(data: BuildingData) -> Control:
 		status = data.cost_text()
 	if data.replaces and not data.locked:
 		status += "  Replaces your %s." % data.replaces
-	var entry := card(data.texture, [data.display_name, data.description, status], data.locked)
+	var lines: Array[String] = [data.display_name, data.description, status]
+	if FACILITY_LINES.has(data.facility):
+		lines.insert(1, FACILITY_LINES[data.facility])
+	var entry := card(data.texture, lines, data.locked)
 	entry.name = "Entry_" + data.id
+	if FACILITY_COLOURS.has(data.facility):
+		var line: Label = entry.get_child(0).get_child(1).get_child(1)
+		line.add_theme_color_override("font_color", FACILITY_COLOURS[data.facility])
 	if can_build:
 		var build := Button.new()
 		build.name = "Build"

@@ -35,10 +35,18 @@ extends Resource
 @export var upgrade_items: Dictionary[StringName, int] = {}
 ## Building id this one replaces when placed (the house replaces the tent).
 @export var replaces: StringName
+## Island building kind: "funding" (a funding facility: earns funding each morning from
+## visitors), "signature" (the island's one special facility) or "" (shared infrastructure).
+@export var facility: StringName
 ## Funding visitors donate each morning (0 = attracts no visitors) ...
 @export var visitors := 0
-## ... plus this much for each animal that nests here.
+## ... plus this much for each animal that nests here (or is in view: `watches`) ...
 @export var visitors_per_animal := 0
+## ... all times (1 + island health x this): a healthier island draws more visitors.
+@export var health_bonus := 1.0
+## Species visitors come to watch (counted within `watch_range`), e.g. dolphins.
+@export var watches: StringName
+@export var watch_range := 480.0
 ## Offers "Move" (palm trees don't: cut them down and plant a sapling instead).
 @export var movable := true
 ## Only one of these can exist (e.g. your home).

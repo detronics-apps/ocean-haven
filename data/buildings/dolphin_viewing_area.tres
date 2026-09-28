@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_dva"]
+[ext_resource type="Texture2D" path="res://assets/buildings/dolphin_viewing_area.svg" id="2_dva"]
+
+[resource]
+script = ExtResource("1_dva")
+id = &"dolphin_viewing_area"
+display_name = "Dolphin Viewing Area"
+description = "A shady deck on the shore where visitors watch the dolphins from a respectful distance. More dolphins in view, more visitors."
+order = 2
+texture = ExtResource("2_dva")
+terrain = PackedStringArray("sand")
+cost_litter = 5
+cost_funding = 60
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+facility = &"funding"
+visitors = 15
+visitors_per_animal = 10
+watches = &"bottlenose_dolphin"
+watch_range = 480.0
+max_count = 1
+placement_hint = "on the beach, facing the dolphins' waters"
+fact = "Watching dolphins from the shore or from a slow, distant boat keeps them safe: chasing or crowding them disturbs their feeding and resting."

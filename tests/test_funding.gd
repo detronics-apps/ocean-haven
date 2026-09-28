@@ -1,6 +1,6 @@
 extends SceneTree
-## Funding: visitors to the turtle area pay each morning (more turtles, more
-## visitors); one paid research photo per species per day; a one-off grant for the
+## Funding: visitors to the turtle area pay each morning (more turtles and a healthier
+## island, more visitors); the Dolphin Viewing Area earns more with dolphins in view; one paid research photo per species per day; a one-off grant for the
 ## first hatchlings. The house costs funding + litter and replaces the tent; the
 ## dock (a plank) costs funding and must connect to the shore.
 ## Run: godot --headless --path . --script res://tests/test_funding.gd --quit-after 200000
@@ -27,14 +27,39 @@ func _initialize() -> void:
 	clock.day = 1
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()
-	_expect(funding.balance == 0 and area.pending_funds == 20,
-		"visitors leave 20 (+10 per turtle belonging here: none yet) (waiting: %d)" % area.pending_funds)
+	var paid: int = area.pending_funds
+	_expect(funding.balance == 0 and paid >= 20 and paid < 25,
+		"visitors leave 20 (+10 per turtle belonging here: none yet), a little more for island health (waiting: %d)" % paid)
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(-50, 10)
 	for i in 3:
 		await process_frame
-	_expect(funding.balance == 20 and area.pending_funds == 0, "collected by walking up to it (got %d)" % funding.balance)
+	_expect(funding.balance == paid and area.pending_funds == 0, "collected by walking up to it (got %d)" % funding.balance)
 	player.global_position = Vector2.ZERO
+	# A healthier island (its litter cleaned up) draws more visitors.
+	for debris: Node in get_nodes_in_group("debris"):
+		debris.free()
+	_expect(area.visitors_today() > paid, "a cleaner island, more visitors (%d)" % area.visitors_today())
+	funding.restore({"balance": 20})
+
+	# --- Dolphin Viewing Area: more visitors with dolphins in view ---
+	var viewing: Resource = load("res://data/buildings/dolphin_viewing_area.tres")
+	_expect(viewing.facility == &"funding" and area.data.facility == &"funding", "both are funding facilities")
+	var deck: Node2D = build_mode.add_building(viewing, Vector2i(14, 3))
+	for id in ["Dolphin1", "Dolphin2", "Dolphin3"]:
+		(world.get_node(id) as Node2D).global_position = Vector2(-3000, 0)
+	var dolphin: Node2D = world.get_node("Dolphin1")
+	var none_in_view: int = deck.animals_in_view()
+	dolphin.global_position = deck.global_position + Vector2(200, 0)
+	_expect(none_in_view == 0 and deck.animals_in_view() == 1, "counts the dolphins in view")
+	var with_dolphins: int = deck.visitors_today()
+	dolphin.global_position = deck.global_position + Vector2(2000, 0)
+	_expect(deck.visitors_today() < with_dolphins, "fewer dolphins in view, fewer visitors")
+	build_mode.start(viewing)
+	_expect(build_mode.at_limit(viewing), "one Dolphin Viewing Area")
+	build_mode.cancel()
+	deck.queue_free()
+	await process_frame
 
 	# --- Research photos: once per species per day ---
 	journal.photograph(turtle)

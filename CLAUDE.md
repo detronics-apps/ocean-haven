@@ -204,8 +204,9 @@ Step 2. Build in this order:
 1. ✅ Island health (`IslandHealth`, 0..1 per island): weighted RegionData.health factors
    (HealthFactor "clean" = litter about its waters, "help" = species freed, "animals" = living
    there). Ground colours go from muted to full with it (checked every 2 s); shown in the Journal.
-2. Wildlife Conservation Parks (funding facilities): up to 3 Turtle Protection Areas + a Dolphin
-   Viewing Area; morning funding grows with island health
+2. ✅ Wildlife Conservation Parks (funding facilities, BuildingData.facility = "funding", shown in
+   gold in the Build menu): up to 3 Turtle Protection Areas + 1 Dolphin Viewing Area (visitors per
+   dolphin in view: `watches`). Morning funding (Building.visitors_today) × (1 + island health).
 3. Marine Rescue & Research Station (signature, 1): funded missions
 4. Pollution types (fishing debris, oil, boat disturbance, beach use)
 5. Seabirds (nest in grown palms; tangled chicks; flocks show litter)

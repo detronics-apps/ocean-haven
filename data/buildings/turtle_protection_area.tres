@@ -22,3 +22,4 @@ cost_items = Dictionary[StringName, int]({&"wood": 2})
 max_tier = 3
 upgrade_funding = 60
 upgrade_items = Dictionary[StringName, int]({&"wood": 2})
+facility = &"funding"

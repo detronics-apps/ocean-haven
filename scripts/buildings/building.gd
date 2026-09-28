@@ -172,6 +172,25 @@ func animals_here() -> int:
 		func(a: Node) -> bool: return a.get("home_area") == self and not a.get("leaving")).size()
 
 
+## Animals of the `watches` species in view (e.g. dolphins from a viewing area).
+func animals_in_view() -> int:
+	if data.watches == &"":
+		return 0
+	return get_tree().get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
+		return (a.data.id == data.watches and not a.leaving
+			and a.global_position.distance_to(global_position) <= data.watch_range)).size()
+
+
+## What visitors donate this morning: a base amount, more for every animal that lives here
+## or is in view, and more again the healthier the island is.
+func visitors_today() -> int:
+	if data.visitors <= 0:
+		return 0
+	var base := data.visitors + data.visitors_per_animal * (animals_here() + animals_in_view())
+	var health := maxf(IslandHealth.of(get_tree(), Regions.nearest(global_position)), 0.0)
+	return roundi(base * (1.0 + health * data.health_bonus))
+
+
 ## How many more animals can join this area.
 func room_for_animals() -> int:
 	return maxi(capacity() - animals_here(), 0)
@@ -229,12 +248,17 @@ func _process(delta: float) -> void:
 			pending_funds = 0
 			_coin.visible = false
 	var near := _ranger_in_range(use_range)
-	_hint.visible = near and (data.action != &"" or capacity() > 0)
+	_hint.visible = near and (data.action != &"" or capacity() > 0 or data.watches != &"")
 	if _hint.visible and data.action == &"sleep":
 		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
 		if storage() > 0:
 			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
 				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
+	elif _hint.visible and data.watches != &"":
+		var seen := animals_in_view()
+		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
+		_hint.text = "%ss in view: %d (visitors love them)" % [kind, seen] if seen > 0 \
+			else "No %ss in view right now" % kind.to_lower()
 	elif _hint.visible and data.action == &"explore":
 		_hint.text = "Exploration Ship: equipment level %d" % Fleet.level()
 	elif _hint.visible:
