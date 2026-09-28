@@ -121,6 +121,11 @@ func _initialize() -> void:
 		"house can't be built without the litter it needs")
 	_expect(menu.find_child("Entry_tent", true, false).find_child("Build", true, false) == null,
 		"only one tent")
+	(menu.find_child("TabLand", true, false) as Button).pressed.emit()
+	var shown: Array = menu.find_children("Entry_*", "", true, false).map(func(e: Node) -> String: return e.name)
+	shown.sort()
+	_expect(shown == ["Entry_palm_tree", "Entry_shovel"], "Land tab: trees and the shovel (%s)" % [shown])
+	(menu.find_child("TabAll", true, false) as Button).pressed.emit()
 	menu.close()
 	_expect(not paused, "closing unpauses")
 

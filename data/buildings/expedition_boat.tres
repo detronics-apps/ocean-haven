@@ -21,3 +21,4 @@ placement_hint = "in the water, right next to 2 dock planks"
 fact = "Research vessels carry rangers and scientists far out to sea to study and protect the open ocean."
 cost_items = Dictionary[StringName, int]({&"wood": 3})
 cost_litter = 10
+category = &"sea"

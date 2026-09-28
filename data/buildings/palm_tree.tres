@@ -17,3 +17,5 @@ spawns = ExtResource("2_kh4ij")
 draw_texture = false
 fact = "Trees along the coast hold the sand together with their roots and give shade to people and wildlife."
 cost_items = Dictionary[StringName, int]({&"sapling": 1})
+category = &"land"
+movable = false

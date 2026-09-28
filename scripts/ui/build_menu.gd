@@ -7,17 +7,50 @@ func _enter_tree() -> void:
 	add_to_group("build_menu")
 
 
+## Tabs: label -> BuildingData.category ("" = everything).
+const TABS := {"All": &"", "Buildings": &"buildings", "Land": &"land", "Sea": &"sea"}
+
+var _tab: StringName = &""
+## "You have: ..." next to the tabs.
+var _have: Label
+
+
 func _ready() -> void:
 	super()
 	_title.text = "Build"
+	var tabs := HBoxContainer.new()
+	tabs.add_theme_constant_override("separation", 8)
+	var group := ButtonGroup.new()
+	for label: String in TABS:
+		var tab := Button.new()
+		tab.name = "Tab" + label
+		tab.text = label
+		tab.toggle_mode = true
+		tab.button_group = group
+		tab.button_pressed = TABS[label] == _tab
+		tab.custom_minimum_size = Vector2(96, 44)
+		tab.pressed.connect(func() -> void:
+			_tab = TABS[label]
+			refresh())
+		tabs.add_child(tab)
+	_have = Label.new()
+	_have.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_have.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_have.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tabs.add_child(_have)
+	_page.add_child(tabs)
+	_page.move_child(tabs, 1)  # under the title
 
 
 func _fill() -> void:
-	_title.text = "Build    (Funding: %d)" % Funding.balance
+	# What you have, once, at the top (wood and saplings include what's stored).
+	_have.text = "You have: %d funding, %d litter, %d wood, %d saplings" % [
+		Funding.balance, Inventory.total(), Inventory.available(&"wood"), Inventory.available(&"sapling")]
 	var all := DataFiles.load_all("res://data/buildings")
 	all.sort_custom(func(a: BuildingData, b: BuildingData) -> bool: return a.order < b.order)
 	for data: BuildingData in all:
-		_content.add_child(_entry(data))
+		if _tab == &"" or data.category == _tab:
+			_content.add_child(_entry(data))
 
 
 func _entry(data: BuildingData) -> Control:
@@ -36,8 +69,7 @@ func _entry(data: BuildingData) -> Control:
 		status = "Build a %s first." % data.requires
 	else:
 		can_build = get_tree().get_first_node_in_group("build_mode").can_afford(data)
-		status = data.cost_text() + ("" if can_build else "  (you have %d litter, %d funding, %d wood, %d saplings)" % [
-			Inventory.total(), Funding.balance, Inventory.available(&"wood"), Inventory.available(&"sapling")])
+		status = data.cost_text()
 	if data.replaces and not data.locked:
 		status += "  Replaces your %s." % data.replaces
 	var entry := card(data.texture, [data.display_name, data.description, status], data.locked)

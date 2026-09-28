@@ -20,3 +20,4 @@ placement_hint = "out in the water (its patrol area)"
 fact = "Stopping litter before it breaks into tiny pieces is far easier than cleaning up microplastics later."
 cost_items = Dictionary[StringName, int]({&"wood": 2})
 cost_litter = 5
+category = &"sea"

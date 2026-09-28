@@ -8,6 +8,8 @@ extends Resource
 @export_multiline var description: String
 ## Position in the Build menu.
 @export var order := 0
+## Build menu tab: buildings, land (trees, sand) or sea (docks, bridges, boats).
+@export var category: StringName = &"buildings"
 ## Null for buildings that aren't drawn yet ("coming later").
 @export var texture: Texture2D
 ## Footprint in 32x32 tiles.
@@ -35,6 +37,8 @@ extends Resource
 @export var visitors := 0
 ## ... plus this much for each animal that nests here.
 @export var visitors_per_animal := 0
+## Offers "Move" (palm trees don't: cut them down and plant a sapling instead).
+@export var movable := true
 ## Only one of these can exist (e.g. your home).
 @export var unique := false
 ## At most this many can exist (0 = no limit).

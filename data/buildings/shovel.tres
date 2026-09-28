@@ -12,3 +12,4 @@ order = 7
 texture = ExtResource("2_okw24")
 terrain = PackedStringArray("sand", "grass")
 tool = &"shovel"
+category = &"land"

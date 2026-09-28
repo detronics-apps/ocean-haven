@@ -64,6 +64,9 @@ func _initialize() -> void:
 	var planted: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"palm_tree")[0]
 	var trunk: Node2D = planted.get_child(planted.get_child_count() - 1)
 	player.global_position = trunk.global_position + Vector2(-30, 0)
+	await process_frame
+	var palm_labels: Array = planted.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(not "Move Palm Tree" in palm_labels, "palms can't be moved: cut down and replant (%s)" % [palm_labels])
 	var clock := root.get_node("GameClock")
 	_expect(trunk.stage() == 0 and trunk.actions()[0].label == "Dig up sapling", "a new palm is small: dig it up")
 	clock.day += 1

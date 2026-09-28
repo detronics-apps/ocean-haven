@@ -4,6 +4,8 @@ extends CanvasLayer
 ## Pauses the game while open. Subclasses fill `_content` in `_fill()`, called on every open.
 
 var _title: Label
+## Title row, then the scrolling content (subclasses may add rows in between).
+var _page: VBoxContainer
 var _content: VBoxContainer
 var _close: Button
 
@@ -21,11 +23,11 @@ func _ready() -> void:
 	for side in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 24)
 	add_child(margin)
-	var page := VBoxContainer.new()
-	page.add_theme_constant_override("separation", 12)
-	margin.add_child(page)
+	_page = VBoxContainer.new()
+	_page.add_theme_constant_override("separation", 12)
+	margin.add_child(_page)
 	var header := HBoxContainer.new()
-	page.add_child(header)
+	_page.add_child(header)
 	_title = Label.new()
 	_title.add_theme_font_size_override("font_size", 28)
 	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -38,7 +40,7 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	page.add_child(scroll)
+	_page.add_child(scroll)
 	_content = VBoxContainer.new()
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_content.add_theme_constant_override("separation", 12)
@@ -46,12 +48,17 @@ func _ready() -> void:
 
 
 func open() -> void:
-	for child in _content.get_children():
-		child.free()
-	_fill()
+	refresh()
 	visible = true
 	get_tree().paused = true
 	_close.grab_focus()
+
+
+## Rebuilds the content.
+func refresh() -> void:
+	for child in _content.get_children():
+		child.free()
+	_fill()
 
 
 func close() -> void:

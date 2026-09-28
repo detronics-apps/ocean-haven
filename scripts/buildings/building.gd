@@ -114,7 +114,8 @@ func actions() -> Array:
 			var take := mini(Inventory.stored(item.id), Inventory.room_for(item))
 			if take > 0:
 				list.append({"label": "Take %d %s" % [take, name], "do": Inventory.take_out.bind(item, take)})
-	list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
+	if data.movable:
+		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	return list
 
 
