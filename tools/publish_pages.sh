@@ -20,7 +20,9 @@ rm -f "$SITE"/play/*.import
 # once silently reset every building's terrain; see tools/dump_data.gd).
 dump() { "$GODOT" --headless "$@" 2>/dev/null | grep "^DATA" | sed 's/#-\?[0-9]*>/>/g' | sort; }
 dump --path . --script res://tools/dump_data.gd > build/data_project.txt
-dump --main-pack "$SITE/play/index.pck" --script "$(cygpath -m "$PWD")/tools/dump_data.gd" > build/data_export.txt
+HERE="$PWD"
+command -v cygpath >/dev/null && HERE="$(cygpath -m "$PWD")"  # Git Bash on Windows
+dump --main-pack "$SITE/play/index.pck" --script "$HERE/tools/dump_data.gd" > build/data_export.txt
 if [ ! -s build/data_project.txt ] || ! diff -q build/data_project.txt build/data_export.txt >/dev/null; then
   echo "The exported game's data differs from the project (see build/data_*.txt) - not publishing." >&2
   exit 1
