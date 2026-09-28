@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_dvrnw"]
+[ext_resource type="PackedScene" path="res://scenes/world/palm_tree.tscn" id="2_kh4ij"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.svg" id="3_islgd"]
+
+[resource]
+script = ExtResource("1_dvrnw")
+id = &"palm_tree"
+display_name = "Palm Tree"
+description = "Plant a young palm tree on sand or grass. Cut trees down from the action bar."
+order = 6
+texture = ExtResource("3_islgd")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("sand", "grass")
+spawns = ExtResource("2_kh4ij")
+draw_texture = false
+fact = "Trees along the coast hold the sand together with their roots and give shade to people and wildlife."

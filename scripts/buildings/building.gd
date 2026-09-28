@@ -32,7 +32,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	move_to(cell)
-	_sprite.texture = data.texture
+	_sprite.texture = data.texture if data.draw_texture else null
 	if data.deck:
 		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
 	if data.spawns:

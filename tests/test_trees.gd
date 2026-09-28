@@ -39,6 +39,28 @@ func _initialize() -> void:
 	_expect(world.y_sort_enabled and world.get_node("StarterIsland").y_sort_enabled, "world sorts by depth")
 	_expect((world.get_node("StarterIsland/Ground") as CanvasItem).z_index < 0, "ground always drawn underneath")
 
+	# --- Cut a tree down; plant a new one; cut that too ---
+	var first: Node2D = get_nodes_in_group("plants")[0]
+	player.global_position = first.global_position + Vector2(-30, 10)
+	var labels: Array = first.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Cut down palm tree" in labels, "a tree next to you can be cut down")
+	var count_before := get_nodes_in_group("plants").size()
+	first.actions()[0].do.call()
+	await process_frame
+	_expect(get_nodes_in_group("plants").size() == count_before - 1, "the tree is gone")
+	var palm: Resource = load("res://data/buildings/palm_tree.tres")
+	build_mode.start(palm)
+	_expect(build_mode.place_at(Vector2i(-12, -3)), "planted a new palm")
+	build_mode.cancel()
+	await process_frame
+	_expect(get_nodes_in_group("plants").size() == count_before, "the new palm grows there")
+	var planted: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"palm_tree")[0]
+	var trunk: Node2D = planted.get_child(planted.get_child_count() - 1)
+	player.global_position = trunk.global_position + Vector2(-30, 0)
+	trunk.actions()[0].do.call()
+	await process_frame
+	_expect(not is_instance_valid(planted) or planted.is_queued_for_deletion(), "a planted palm can be cut down too")
+
 	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---
 	var minimap: Node = world.get_node("HUD/Minimap")
 	var near: Array = minimap.map_point(Vector2(100, 0), Vector2.ZERO)

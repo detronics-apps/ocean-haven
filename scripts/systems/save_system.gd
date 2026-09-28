@@ -16,6 +16,8 @@ const AUTOSAVE_SECONDS := 10.0
 var _collected: Array[String] = []
 ## World animals freed from fishing line (node names), so they stay free.
 var _freed: Array[String] = []
+## Island trees the ranger cut down (paths from the world), so they stay gone.
+var _cut_trees: Array[String] = []
 var _world: Node
 var _dirty := false
 var _since_save := 0.0
@@ -44,6 +46,12 @@ func attach(world: Node) -> bool:
 
 func mark_collected(debris: Node) -> void:
 	_collected.append(String(debris.name))
+
+
+## Island trees are recorded as "<island>/<tree>" (e.g. "StarterIsland/Palm3").
+func mark_cut(tree: Node) -> void:
+	_cut_trees.append("%s/%s" % [tree.get_parent().name, tree.name])
+	_dirty = true
 
 
 func mark_freed(animal: Node) -> void:
@@ -100,6 +108,7 @@ func save_to(world: Node, path: String) -> bool:
 		"journal": Journal.details(),
 		"collected_debris": _collected,
 		"freed_animals": _freed,
+		"cut_trees": _cut_trees,
 		"washed_in_litter": litter,
 		"funding": Funding.to_dict(),
 		"nests": nests,
@@ -166,6 +175,7 @@ static func _saved_at(text: String) -> float:
 func load_from(world: Node, path: String) -> bool:
 	_collected.clear()
 	_freed.clear()
+	_cut_trees.clear()
 	var text := _newest_save_text(path)
 	if text == "":
 		return false
@@ -191,6 +201,11 @@ func load_from(world: Node, path: String) -> bool:
 		var debris := world.get_node_or_null(debris_name)
 		if debris:
 			debris.queue_free()
+	for tree_path: String in state.get("cut_trees", []):
+		_cut_trees.append(tree_path)
+		var tree := world.get_node_or_null(tree_path)
+		if tree:
+			tree.queue_free()
 	var spawner: LitterSpawner = world.get_node("LitterSpawner")
 	for entry: Dictionary in state.get("washed_in_litter", []):
 		var item_path := "res://data/items/%s.tres" % entry.get("item", "")
