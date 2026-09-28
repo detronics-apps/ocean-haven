@@ -97,6 +97,10 @@ func _initialize() -> void:
 	_expect("Store 3 wood" in labels, "offers to store wood (%s)" % [labels])
 	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Store 3 wood")[0].do.call()
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "wood stored in the house")
+	_expect(home.storage() == 10, "a house stores 10 of each")
+	home.tier = 3
+	_expect(home.storage() == 30 and home.stats().begins_with("Lv 3/3"), "at level 3 it stores 30 (and shows its level)")
+	home.tier = 1
 	inventory.add(load("res://data/items/wood.tres"), 1)
 	_expect(inventory.use(&"wood", 2) and inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 2,
 		"building uses carried wood first, then stored")

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_boo"]
+[ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby.svg" id="2_boo"]
+
+[resource]
+script = ExtResource("1_boo")
+id = &"red_footed_booby"
+display_name = "Red-footed Booby"
+sprite = ExtResource("2_boo")
+habitat = "Tropical islands and open ocean; nests in trees and bushes"
+diet = "Flying fish and squid, caught by diving into the sea"
+fact = "Red-footed boobies are the smallest boobies, and they build their nests of twigs in trees and bushes, so they need the island's trees."
+photo_fact = "Their name may come from the Spanish word 'bobo', meaning silly, because they were so tame around sailors."
+help_fact = "Seabirds can get caught in lost fishing line. Picking up line from the beach and the water keeps them safe."
+habitat_terrain = PackedStringArray("", "water", "sand", "grass")
+swim_speed = 60.0
+rest_min = 0.5
+rest_max = 1.5
+shy_distance = 48.0
+discover_distance = 140.0
+calm_speed = 40.0
+curious = false
+interact_distance = 80.0
+flies = true
+circles_litter = true
+can_tangle = true

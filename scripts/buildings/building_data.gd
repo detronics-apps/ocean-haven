@@ -28,7 +28,8 @@ extends Resource
 ## How much of each storable item (wood, sand) it can keep (0 = not a store).
 @export var storage := 0
 ## Upgrades: how many tiers it has (1 = can't be upgraded). Each tier adds 1 to what
-## it does: +1 turtle (animal_capacity), +1 storage, or +1 funding per recycled piece.
+## it does: +1 turtle (animal_capacity), +1 funding per recycled piece, or the full `storage`
+## again (a Ranger House stores 10 / 20 / 30).
 @export var max_tier := 1
 ## Its picture at each upgrade tier (tier 1 first; empty = `texture` at every tier).
 @export var tier_textures: Array[Texture2D] = []
@@ -82,6 +83,11 @@ extends Resource
 @export var draw_texture := true
 ## Not placed: choosing it in the Build menu picks up a tool instead ("shovel").
 @export var tool: StringName
+## Item id spare ones can be given here to a conservation project (e.g. "sapling" at the
+## Research Station: coastal replanting), for a grant of the item's grant_value each.
+@export var accepts: StringName
+## What the project is, for the action and the grant ("coastal replanting").
+@export var accepts_for: String
 ## Funding paid for each piece of litter recycled here (0 = not a recycling centre).
 @export var recycle_value := 0
 ## A walkway over the water (dock planks): the ranger can walk on it, boats bump into it.

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wrlc3pfqboo8"
-path="res://.godot/imported/brown_noddy.svg-ab1ce2235eddc429e342d572ee104ad0.ctex"
+uid="uid://x1wdgsylpo8u"
+path="res://.godot/imported/red_footed_booby.svg-60e89feec72dec318a5e616310df51ee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/animals/seabird/brown_noddy.svg"
-dest_files=["res://.godot/imported/brown_noddy.svg-ab1ce2235eddc429e342d572ee104ad0.ctex"]
+source_file="res://assets/animals/seabird/red_footed_booby.svg"
+dest_files=["res://.godot/imported/red_footed_booby.svg-60e89feec72dec318a5e616310df51ee.ctex"]
 
 [params]
 

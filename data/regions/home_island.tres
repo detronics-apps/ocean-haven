@@ -7,37 +7,37 @@
 [ext_resource type="Script" path="res://scripts/animals/arrival_data.gd" id="4_arr"]
 [ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="5_crab"]
 [ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="6_dolphin"]
-[ext_resource type="Resource" path="res://data/animals/brown_noddy.tres" id="7_noddy"]
+[ext_resource type="Resource" path="res://data/animals/red_footed_booby.tres" id="7_noddy"]
 
-[sub_resource type="Resource" id="Arrival_Noddy1"]
+[sub_resource type="Resource" id="Arrival_Seabird1"]
 script = ExtResource("4_arr")
 species = ExtResource("7_noddy")
-node_name = "Noddy1"
+node_name = "Seabird1"
 position = Vector2(-200, -80)
 home_radius = 420.0
 island_health = 0.0
 needs_trees = 5
-note = "Brown noddies have come to nest in your palm trees! They circle over floating litter, showing you where it is."
+note = "Red-footed boobies have come to nest in your palm trees! They circle over floating litter, showing you where it is."
 
-[sub_resource type="Resource" id="Arrival_Noddy2"]
+[sub_resource type="Resource" id="Arrival_Seabird2"]
 script = ExtResource("4_arr")
 species = ExtResource("7_noddy")
-node_name = "Noddy2"
+node_name = "Seabird2"
 position = Vector2(150, -150)
 home_radius = 420.0
 island_health = 0.3
 needs_trees = 10
-note = "Another brown noddy is nesting in your palms."
+note = "Another red-footed booby is nesting in your palms."
 
-[sub_resource type="Resource" id="Arrival_Noddy3"]
+[sub_resource type="Resource" id="Arrival_Seabird3"]
 script = ExtResource("4_arr")
 species = ExtResource("7_noddy")
-node_name = "Noddy3"
+node_name = "Seabird3"
 position = Vector2(-80, 150)
 home_radius = 420.0
 island_health = 0.5
 needs_trees = 14
-note = "A third brown noddy has joined them: your palms make a fine seabird colony."
+note = "A third red-footed booby has joined them: your palms make a fine seabird colony."
 
 [sub_resource type="Resource" id="Arrival_Crab2"]
 script = ExtResource("4_arr")
@@ -120,7 +120,7 @@ text = "Oil patches on the water"
 [sub_resource type="Resource" id="Health_seabirds"]
 script = ExtResource("3_health")
 kind = &"animals"
-target = &"brown_noddy"
+target = &"red_footed_booby"
 amount = 3
 text = "Seabirds nesting in the palms"
 
@@ -183,4 +183,4 @@ objective = "Find and clear the old wreck off the coast"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_found"), SubResource("Goal_cleared"), SubResource("Goal_recovered")])
 discovery_text = "Cleaned and working again, the old sonar unit is the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
-arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Noddy1"), SubResource("Arrival_Noddy2"), SubResource("Arrival_Noddy3")])
+arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Seabird1"), SubResource("Arrival_Seabird2"), SubResource("Arrival_Seabird3")])

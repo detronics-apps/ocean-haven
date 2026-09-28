@@ -220,7 +220,7 @@ Step 2. Build in this order:
    ranger's boat cleans them; a "clean" health factor with a target); dolphins keep away from patrol
    boats (AnimalData.boat_shy_distance); turtles won't nest at a protection area with another
    building within 2 tiles (BuildingData.needs_quiet; docks and trees are fine)
-5. ✅ Seabirds (brown noddies; AnimalData.flies / circles_litter): arrive by trees
+5. ✅ Seabirds (red-footed boobies; AnimalData.flies / circles_litter): arrive by trees
    (ArrivalData.needs_trees: 5 / 10 / 14 full-grown palms), fly off while there are too few and
    come back when palms regrow (never while tangled); circle over floating litter near home; can
    be caught in litter; a health factor
@@ -235,6 +235,11 @@ Step 2. Build in this order:
    ahead (HUD banner); "Secure for the storm" on buildings (not storm_proof ones); unsecured ones
    may be damaged (no visitors / nesting / missions / recycling) until repaired with 1 wood; litter
    washes up. Never harms animals (MASTER_PLAN "Rare events")
+
+Tweaks after 0.4: upgradable buildings show "Lv N/3"; a Ranger House stores 10 of each per level
+(30 at level 3); saplings: carry 5, storable, spare ones given to coastal replanting at the Research
+Station (BuildingData.accepts, ItemData.grant_value: 5 funding each); Research Station 400 funding
++ 20 litter + 10 wood, Exploration Ship 600 + 20 litter + 8 wood (exploring itself stays free).
 
 Next: MVP 0.5 Kelp Forest (Step 3), then MVP 0.6 Mangrove Coast (Step 4).
 

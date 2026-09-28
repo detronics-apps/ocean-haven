@@ -32,6 +32,14 @@ func _initialize() -> void:
 	_expect(build_mode.placement_problem(station, Vector2i(-10, -4)).contains("already has"), "one per island")
 	var building: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"marine_rescue_station")[0]
 
+	# --- Spare saplings go to coastal replanting, for a grant ---
+	var inventory := root.get_node("Inventory")
+	inventory.add(load("res://data/items/sapling.tres"), 9)
+	_expect(inventory.count(&"sapling") == 5, "you can carry 5 saplings")
+	var funds_before: int = funding.balance
+	building.give_away()
+	_expect(inventory.available(&"sapling") == 0 and funding.balance == funds_before + 25, "5 saplings given away for 25 funding")
+
 	# --- The mission screen ---
 	var player: Node2D = world.get_node("Player")
 	player.global_position = building.global_position + Vector2(0, 50)

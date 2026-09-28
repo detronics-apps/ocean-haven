@@ -138,6 +138,11 @@ func actions() -> Array:
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
+	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:
+		var item: ItemData = load("res://data/items/%s.tres" % data.accepts)
+		var n := Inventory.available(data.accepts)
+		list.append({"label": "Give %d %s to %s (+%d funding)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
+			data.accepts_for, n * item.grant_value], "do": give_away})
 	if recycle_value() > 0 and Inventory.total() > 0 and not damaged:
 		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
 			"do": recycle})
@@ -173,6 +178,16 @@ func _update_drawbridge() -> void:
 	else:
 		_lay_deck()
 	_sprite.texture = data.open_texture if is_open else data.texture
+
+
+## Gives every spare `accepts` item (carried and stored) to its project, for a grant.
+func give_away() -> void:
+	var item: ItemData = load("res://data/items/%s.tres" % data.accepts)
+	var n := Inventory.available(item.id)
+	if n <= 0 or not Inventory.use(item.id, n):
+		return
+	Funding.earn(n * item.grant_value, "A grant for the %d %s you gave to %s." % [
+		n, item.display_name.to_lower() + ("s" if n != 1 else ""), data.accepts_for])
 
 
 ## Recycles everything the ranger is carrying into conservation funding.
@@ -235,13 +250,14 @@ func room_for_animals() -> int:
 	return maxi(capacity() - animals_here(), 0)
 
 
-## Upgrades add 1 per tier to whatever it does.
+## Upgrades add 1 per tier to what it does (storage: see storage()).
 func capacity() -> int:
 	return _upgraded(data.animal_capacity)
 
 
+## Each tier stores the full amount again (a Ranger House: 10, 20, 30 of each).
 func storage() -> int:
-	return _upgraded(data.storage)
+	return data.storage * tier
 
 
 func recycle_value() -> int:
@@ -310,9 +326,15 @@ func _process(delta: float) -> void:
 func stats() -> String:
 	if damaged:
 		return "Damaged"
-	var note := "Secured" if secured and RareEvents.is_coming() else ""
+	var lines: Array[String] = []
+	if data.max_tier > 1:
+		lines.append("Lv %d/%d" % [tier, data.max_tier])
 	var numbers := _numbers()
-	return numbers + ("\n" if numbers and note else "") + note
+	if numbers:
+		lines.append(numbers)
+	if secured and RareEvents.is_coming():
+		lines.append("Secured")
+	return "\n".join(lines)
 
 
 func _numbers() -> String:

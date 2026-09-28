@@ -9,7 +9,7 @@
 script = ExtResource("1_gjtea")
 id = &"house"
 display_name = "Ranger House"
-description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night. Stores up to 10 wood and 10 sand. You can build 2."
+description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night. Stores 10 wood, 10 sand and 10 saplings, and 10 more of each for every upgrade (30 at level 3). You can build 2."
 order = 2
 texture = ExtResource("2_22yc1")
 terrain = PackedStringArray("sand", "grass")

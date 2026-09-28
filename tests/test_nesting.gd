@@ -92,7 +92,7 @@ func _initialize() -> void:
 	world.get_node("Player").global_position = area.global_position + Vector2(-40, 20)
 	await process_frame
 	await process_frame
-	_expect(area.get_node("Hint").visible and area.get_node("Hint").text.begins_with("Turtles 4/4"),
+	_expect(area.get_node("Hint").visible and area.get_node("Hint").text.contains("Turtles 4/4") and area.get_node("Hint").text.begins_with("Lv 1/3"),
 		"the area shows 'Turtles 4/4' (%s)" % area.get_node("Hint").text)
 	world.get_node("Player").global_position = Vector2(-600, 400)
 

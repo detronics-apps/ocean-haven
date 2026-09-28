@@ -510,7 +510,7 @@ tested commit. Placeholder art throughout.
    the rescue boat finds them); oil / chemicals → water quality (dark patches on the water, cleaned
    with the boat, lowering health while there); boat disturbance → dolphins avoid busy water near
    patrol routes; beach use → turtles won't nest next to buildings (keep nesting beaches clear).
-5. **Seabirds** (e.g. brown noddy or white tern). Nest in grown palms — a reason not to cut every
+5. **Seabirds** (red-footed boobies). Nest in grown palms — a reason not to cut every
    tree. Need help: chicks caught in fishing line. Give: flocks circle over floating litter and
    fish, showing where to go.
 6. **Upgrade art.** Each building upgrade tier changes its picture (a texture per tier in

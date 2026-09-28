@@ -10,3 +10,5 @@ display_name = "Palm Sapling"
 icon = ExtResource("1_sapl")
 is_litter = false
 fact = "Coconut palms can grow from a coconut that floated across the sea: it can drift for months and still sprout."
+carry_limit = 5
+grant_value = 5
