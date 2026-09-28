@@ -12,6 +12,14 @@ amount = 12
 weight = 3.0
 text = "Litter in the water and on the beaches"
 
+[sub_resource type="Resource" id="Health_oil"]
+script = ExtResource("3_health")
+kind = &"clean"
+target = &"oil_patch"
+amount = 2
+weight = 2.0
+text = "Oil patches on the water"
+
 [sub_resource type="Resource" id="Health_turtles"]
 script = ExtResource("3_health")
 kind = &"animals"
@@ -76,4 +84,4 @@ discovery = &"salvaged_sonar_core"
 objective = "Clean up the island and help its wildlife"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_litter"), SubResource("Goal_turtle"), SubResource("Goal_dolphin"), SubResource("Goal_crab")])
 discovery_text = "Under the last of the litter you cleaned up, you found an old sonar unit. Cleaned and working again, it's the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
-health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_turtles"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])

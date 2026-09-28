@@ -10,6 +10,11 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 @export var max_litter := 15
 ## Chance that a new piece floats at sea (the rest wash up on beaches).
 @export var at_sea_chance := 0.75
+## Chance that what drifts in at sea is an oil patch (from passing ships) instead of litter ...
+@export var oil_chance := 0.08
+## ... while there are fewer than this many oil patches in the area.
+@export var max_oil := 2
+const OIL := preload("res://data/items/oil_patch.tres")
 ## Area searched for spots (the waters around the home island).
 @export var area := Rect2(-900, -600, 1800, 1200)
 @export var min_distance_from_ranger := 320.0
@@ -97,14 +102,19 @@ func spawn_one() -> Debris:
 			spot = beach.pick_random()
 		if ranger and spot.distance_to(ranger.global_position) < min_distance_from_ranger:
 			continue
-		return spawn_at(_items.pick_random(), spot, at_sea)
+		var oil := at_sea and randf() < oil_chance and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
+		return spawn_at(OIL if oil else _items.pick_random(), spot, at_sea)
 	return null
 
 
 ## Litter inside this spawner's area (each island's waters have their own limit).
 func _litter_in_area() -> int:
+	return _in_area(func(_d: Debris) -> bool: return true)
+
+
+func _in_area(which: Callable) -> int:
 	return get_tree().get_nodes_in_group("debris").filter(
-		func(d: Node2D) -> bool: return area.has_point(d.global_position)).size()
+		func(d: Debris) -> bool: return area.has_point(d.global_position) and which.call(d)).size()
 
 
 ## Centres of every beach (sand) tile on the islands — beaches are too small a

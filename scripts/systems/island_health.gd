@@ -36,7 +36,8 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	match factor.kind:
 		&"clean":
 			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
-				return not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region).size()
+				return (not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region
+					and (d.item.id == factor.target if factor.target != &"" else d.item.is_litter))).size()
 		&"help":
 			return Journal.helped_count(factor.target)
 		&"animals":
@@ -45,11 +46,11 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	return 0
 
 
-## "Litter in the water: 4 pieces" / "Turtles living here: 3 / 8" for the Journal.
+## "Litter in the water: 4" / "Turtles living here: 3 / 8" for the Journal.
 static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) -> String:
 	var n := count(tree, region, factor)
 	if factor.kind == &"clean":
-		return "%s: %s" % [factor.text, "none" if n == 0 else "%d piece%s" % [n, "" if n == 1 else "s"]]
+		return "%s: %s" % [factor.text, "none" if n == 0 else str(n)]
 	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]
 
 

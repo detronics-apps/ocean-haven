@@ -41,7 +41,7 @@ func _draw() -> void:
 func _nearest_litter() -> Debris:
 	var best: Debris = null
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
-		if not debris.floating or debris.is_queued_for_deletion():
+		if not debris.floating or debris.is_queued_for_deletion() or debris.item.ranger_cleans:
 			continue
 		if debris.global_position.distance_to(global_position) > radius:
 			continue

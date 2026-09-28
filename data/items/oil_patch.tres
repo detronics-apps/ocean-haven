@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/oil_patch.svg" id="1_oil"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_oil"]
+
+[resource]
+script = ExtResource("2_oil")
+id = &"oil_patch"
+display_name = "Oil patch"
+icon = ExtResource("1_oil")
+is_litter = false
+ranger_cleans = true
+fact = "Spilled oil spreads into a thin layer on the water. It sticks to birds' feathers and animals' fur, so they can't stay warm or waterproof."

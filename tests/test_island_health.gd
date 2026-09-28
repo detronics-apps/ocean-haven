@@ -48,13 +48,44 @@ func _initialize() -> void:
 	_expect(ground.modulate.r < 1.0 and ground.modulate.b > ground.modulate.r, "litter back: muted colours again")
 	_expect(world.get_node("KelpIsland/Ground").modulate == Color.WHITE, "islands without health keep their colours")
 
+	# Oil on the water: only the ranger's own boat cleans it up, and it's never carried.
+	for debris: Node in get_nodes_in_group("debris"):
+		debris.free()
+	var spawner: Node = world.get_node("LitterSpawner")
+	var clean: float = health.of(self, home)
+	var oil: Node = spawner.spawn_at(load("res://data/items/oil_patch.tres"), Vector2(-700, -300), true)
+	_expect(health.of(self, home) < clean, "oil on the water lowers the island's health")
+	oil._on_body_entered(world.get_node("Player"))
+	var patrol := CharacterBody2D.new()
+	oil._on_body_entered(patrol)
+	patrol.free()
+	_expect(not oil.is_queued_for_deletion(), "walking or other boats don't clean oil")
+	var inventory := root.get_node("Inventory")
+	var carried: int = inventory.total()
+	oil._on_body_entered(world.get_node("Boat"))
+	_expect(oil.is_queued_for_deletion() and inventory.total() == carried and inventory.count(&"oil_patch") == 0,
+		"sailing the boat through it cleans it up (nothing to carry)")
+	await process_frame
+	_expect(is_equal_approx(health.of(self, home), clean), "health back up")
+	spawner.at_sea_chance = 1.0
+	spawner.oil_chance = 1.0
+	var patches := 0
+	for i in 6:
+		var piece: Node = spawner.spawn_one()
+		if piece and piece.item.id == &"oil_patch":
+			patches += 1
+	_expect(patches == spawner.max_oil, "oil drifts in now and then, at most %d patches at once (%d)" % [spawner.max_oil, patches])
+	for i in 11:
+		spawner.spawn_at(load("res://data/items/plastic_bag.tres"), Vector2(-600 + i * 30, -300), true)
+	spawner.spawn_at(load("res://data/items/plastic_bottle.tres"), Vector2(-700, -330), true)
+
 	# The Journal shows it.
 	var journal_screen: Node = world.get_node("JournalScreen")
 	journal_screen.open()
 	var text := ""
 	for label in journal_screen.find_child("Health_home_island", true, false).find_children("*", "Label", true, false):
 		text += (label as Label).text + "\n"
-	_expect(text.contains("island health") and text.contains("12 pieces") and text.contains("Turtles living here: 6 / 6"),
+	_expect(text.contains("island health") and text.contains("Oil patches on the water: 2") and text.contains("Turtles living here: 6 / 6"),
 		"the Journal shows island health and what goes into it")
 	journal_screen.close()
 

@@ -31,14 +31,19 @@ func _process(delta: float) -> void:
 	_sprite.position.y = roundf(sin(_time * 2.0) * 1.5)
 
 
-func _on_body_entered(_body: Node2D) -> void:
+func _on_body_entered(body: Node2D) -> void:
+	if item.ranger_cleans and not body is Boat:
+		return  # oil: sail the boat through it
 	collect()
 
 
 ## Picks it up into the inventory. `announce` = false for quiet automatic
 ## collection (patrol boats), so there's no note for every piece.
 func collect(announce := true) -> void:
-	Inventory.add(item, 1, announce)
+	if item.ranger_cleans:
+		get_tree().call_group("hud", "show_toast", "%s cleaned up!\n%s" % [item.display_name, item.fact])
+	else:
+		Inventory.add(item, 1, announce)
 	remove()
 
 
