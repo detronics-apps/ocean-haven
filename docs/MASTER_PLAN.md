@@ -61,12 +61,12 @@ make the next region reachable:
 | 🌿 Kelp Forest | Kelp Fibre | Restore the otter → urchin → kelp balance; once the kelp is dense, gather a little naturally shed / overgrown kelp from set areas | Underwater durability | Deeper water → Deep Sea |
 | 🌱 Mangrove Coast | Mangrove Resin | Restore the damaged channels and protect mature mangroves; collect resin from naturally fallen branches on the mud banks | Water & environment sensors | Complex coastal waterways → Tropical Reef |
 | 🪸 Tropical Reef | Reef Limestone | Restore coral and seagrass and clean damaged reef zones; collect dead coral rubble from the seabed — never break living coral | Detailed habitat mapping | (reef tools; part of the full set) |
-| 🌊 Deep Sea | Deep-Sea Mineral Sample | Use the deep-sea research equipment to locate a rare mineral deposit; send the research sub for a small scientific sample (research, not mining) | Extreme-depth exploration | Extreme depths → Polar Ocean |
+| 🌊 Deep Sea | Cargo Module | Use the deep-sea research system (sonar, cameras, the research sub) to locate and recover an abandoned cargo module lost on the seabed — cleanup and discovery in one | **Cargo storage** — the ship can carry resources between islands | Polar Ocean (carry wood there) — and a world-wide change: supplies can move between islands |
 | ❄️ Polar Ocean | Ice Core | Establish a safe research site and drill a small scientific core from ancient ice (climate history), stored aboard | Extreme-cold navigation | (polar field work; part of the full set) |
 
 The gathering grows more sophisticated island by island: 🧹 clean → discover · ⚖️ restore balance →
 harvest sustainably · 💧 restore waterways → collect natural material · 🪸 restore habitat → collect
-non-living material · 🔬 research → locate → sample · 🧊 research → set up a station → take a
+non-living material · 🔬 research → locate → recover · 🧊 research → set up a station → take a
 scientific sample.
 
 **The full set — Ocean Research Vessel & Global Ocean Observatory.** Because the world branches,
@@ -194,7 +194,8 @@ Findings (species, habitats, fishing impacts, migration routes) are useful on la
 | 🐟 Anglerfish | Bioluminescence helps identify animals and navigate the dark |
 | 🦈 Deep-sea shark | Encounters reveal lost fishing gear to investigate and clean up |
 
-**Discovery:** locate a mineral deposit and send the sub for a sample → **Deep-Sea Mineral Sample**.
+**Discovery:** locate and recover an abandoned module from the seabed → **Cargo Module** (the ship
+can now carry resources — the answer to "the Polar Ocean has no trees: how will I build there?").
 
 ### 6. ❄️ Polar Ocean — Global connectivity
 Seasons change the island: ice forms → breeding habitat appears → food arrives → animals feed →
@@ -208,9 +209,38 @@ Chain: sea ice → penguin colonies → fish/krill → predators → ocean healt
 | 🐻‍❄️ Polar Bear | Needs connected ice corridors between feeding and resting areas |
 | 🐦 Skua / Arctic seabird | Early warning: responds fast to changes in fish and colonies |
 
-**Discovery:** set up a research site and drill → **Ice Core** (with all six: the Ocean Research Vessel).
+No trees and no wood: everything built here uses wood brought in the ship's cargo.
+**Discovery:** set up a research site (with the wood you brought) and drill → **Ice Core** (with all
+six: the Ocean Research Vessel).
 
 ---
+
+## Wood & cargo
+
+Wood comes from each island's own land trees (cut down, plant saplings; growth stages as on the
+Starting Island). Kelp, coral and seagrass are sea plants — never wood.
+
+| Island | Wood source |
+|---|---|
+| 🏝️ Starting Island | 🌴 Palm trees (✅) |
+| 🌿 Kelp Forest | 🌳 Coastal trees |
+| 🌱 Mangrove Coast | 🌱 Mangrove trees |
+| 🪸 Tropical Reef | 🌴 Coconut palms |
+| 🌊 Deep Sea | 🌲 Coastal (conifer) trees |
+| ❄️ Polar Ocean | ❌ No trees, no wood — bring it with you |
+
+**Polar has no wood. Bring it with you.** No special Arctic plant, no "ice wood", no conversions.
+With the Deep Sea's Cargo Module the Exploration Ship gets a cargo hold: gather wood on another
+island, load it at the ship, sail, unload at the Polar Ocean, build (and eventually establish the
+Polar Exploration Ship). Before sailing somewhere without wood, the ship warns:
+
+```
+🚢 Cargo: Wood 0 / XX
+⚠️ Polar Ocean has no wood. Load wood before departure.
+```
+
+The cargo hold also allows, occasionally, other supplies that are hard or impossible to get on
+some islands — a reason to plan what to take, without turning BlueHaven into inventory management.
 
 ## Rare events
 
@@ -284,9 +314,9 @@ Each step ends with a playable build. ✅ = done.
   parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; coral rubble → Reef Limestone.
 - **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
   information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
-  elsewhere; the research sub's sample → Deep-Sea Mineral Sample.
+  elsewhere; recovering the lost module → Cargo Module (ship cargo storage).
 - **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
-  research site and drilling → Ice Core.
+  no trees — build with wood brought as cargo; research site and drilling → Ice Core.
 - **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
   gradually from Step 3 on: each new island links to the ones before it).
 - **Step 8b — Rare events.** Storms, oil spills, heatwaves and the island-specific events above:
