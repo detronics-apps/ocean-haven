@@ -242,6 +242,81 @@ Polar Exploration Ship). Before sailing somewhere without wood, the ship warns:
 The cargo hold also allows, occasionally, other supplies that are hard or impossible to get on
 some islands — a reason to plan what to take, without turning BlueHaven into inventory management.
 
+## Buildings: signature & funding facilities
+
+Every island has two kinds of island-specific building, and they're different both to look at and
+in what they do:
+
+- ⭐ **Signature Facility — exactly 1 per island.** The island's special machine: its research
+  or restoration mechanism. **Spends** funding to operate: fund an operation → perform an action →
+  discover / restore / learn → unlock progress. It's where the island's signature mechanic lives,
+  and what drives its objective and discovery.
+- 💰 **Funding Facility — a few per island (2–3).** The island's sustainable income. Simple:
+  build it → visitors enjoy the ecosystem → funding each morning. A healthier ecosystem means a
+  better experience and more funding. Money only ever comes from a healthy ocean, never from
+  rescuing an animal.
+
+**The loop:** build funding facilities → earn funding → spend it at the signature facility → use
+the signature facility to restore the island → a healthier island makes the funding facilities
+worth more. Income pays for conservation and research, and conservation and research make the
+income grow.
+
+| Island | ⭐ Signature facility (1) | What it does | 💰 Funding facility | Max |
+|---|---|---|---|---|
+| 🏝️ Starting Island | Marine Rescue & Research Station | Funds rescue-boat missions, finding wildlife in distress and coastal surveys | Wildlife Conservation Park | 3 |
+| 🌿 Kelp Forest | Kelp Research Platform | Sends divers / submersibles into the kelp forest to check its health and food-web balance | Kelp Discovery Centre | 2 |
+| 🌱 Mangrove Coast | Mangrove Waterworks Station | Runs gates and pumps to manage freshwater flow through the mangroves | Mangrove Eco-Lodge | 3 |
+| 🪸 Tropical Reef | Coral Restoration Laboratory | Grows and prepares coral and deploys restoration projects | Reef Diving Centre | 3 |
+| 🌊 Deep Sea | Deep-Ocean Outpost | Launches submarines for deep-sea exploration and research | Deep-Sea Discovery Centre | 2 |
+| ❄️ Polar Ocean | Polar Research Station | Drills and analyses ice cores; polar research | Polar Research Centre | 2 |
+
+Shared infrastructure on any island, in neither category: Ranger Houses (storage), recycling
+centres, docks, the workshop, the Exploration Ship.
+
+### 🏝️ Starting Island
+- ⭐ **Marine Rescue & Research Station** — the first signature facility, which introduces the
+  idea. Spend funding to send out missions: wildlife rescue boat, coastal survey equipment,
+  dolphin tracking, turtle monitoring, pollution surveys.
+- 💰 **Wildlife Conservation Park** (up to 3) — visitor / protection areas: Turtle Protection Area
+  (✅ exists), Dolphin Viewing Area, Coastal Wildlife Area. Each earns funding every morning. Start
+  with one (enough to run basic rescue missions), then grow to 2–3 as the island improves.
+
+### 🌿 Kelp Forest
+- ⭐ **Kelp Research Platform** — home of the food-web mechanic. Fund research / diving missions to
+  different parts of the forest to reveal urchin density, kelp health, otter activity and fish
+  habitat.
+- 💰 **Kelp Discovery Centre** (2) — guided dives / submersible trips. Healthier kelp → better
+  experience → more funding each day.
+
+### 🌱 Mangrove Coast
+- ⭐ **Mangrove Waterworks Station** — an interactive mechanism: funding powers water gates, pumps
+  and monitoring equipment; the player adjusts water flow through the mangrove network.
+- 💰 **Mangrove Eco-Lodge** (3) — visitors explore the mangroves along controlled routes. Healthier
+  mangroves + better access → more funding.
+
+### 🪸 Tropical Reef
+- ⭐ **Coral Restoration Laboratory** — the main reef-restoration mechanism: grow coral, keep coral
+  nurseries, deploy coral, monitor the reef's recovery.
+- 💰 **Reef Diving Centre** (3) — snorkelling, diving, watching wildlife, visiting restored reef.
+  Sensitive reef areas are closed to visitors. Healthier reef → better diving → more funding.
+
+### 🌊 Deep Sea
+- ⭐ **Deep-Ocean Outpost** — an oil-rig-style platform. Spend funding to launch submarines; the
+  player chooses where to send them, to investigate deep-sea animals, lost fishing gear, geological
+  features, unknown habitats and pollution.
+- 💰 **Deep-Sea Discovery Centre** (2) — visitors don't go down themselves: live submarine feeds,
+  deep-sea specimens and data, interactive displays, and the outpost's discoveries. The funding
+  pays for more submarine expeditions.
+
+### ❄️ Polar Ocean
+- ⭐ **Polar Research Station** — the ice-core mechanism: funding runs the core drill, analysis
+  equipment and research teams; the player chooses where to drill and what to investigate.
+- 💰 **Polar Research Centre** (2) — penguin colonies, ice-core displays, research data, wildlife
+  monitoring. Its funding supports the research station.
+
+The signature facility is also how each island's discovery is gathered (e.g. the Deep-Ocean
+Outpost's submarines locate the Cargo Module; the Polar Research Station drills the Ice Core).
+
 ## Rare events
 
 Occasional events, different per island type, that call for **preparation** (warned in advance)
@@ -305,18 +380,24 @@ Each step ends with a playable build. ✅ = done.
 - **Step 2 — Starting Island complete.** Pollution types (plastic, oil/chemicals, fishing debris,
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
   reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris
-  field → Salvaged Sonar Core.
+  field → Salvaged Sonar Core. Buildings: ⭐ Marine Rescue & Research Station
+  (funded missions) and 💰 Wildlife Conservation Parks (up to 3; the Turtle Protection Area becomes
+  one kind).
 - **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, seals, kelp fish; the food-web
-  simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre.
+  simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre. ⭐ Kelp Research Platform, 💰 Kelp Discovery Centre (2).
 - **Step 4 — Mangrove Coast.** Mangroves as plants; water flow, channels, mud flats, nursery;
-  mangrove crab, juvenile fish, flamingo, crocodile zones; fallen branches → Mangrove Resin.
+  mangrove crab, juvenile fish, flamingo, crocodile zones; fallen branches → Mangrove Resin. ⭐ Mangrove Waterworks Station, 💰 Mangrove
+  Eco-Lodge (3).
 - **Step 5 — Tropical Reef.** Coral and seagrass plants; reef stages from bare rock to diverse reef;
-  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; coral rubble → Reef Limestone.
+  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; coral rubble → Reef Limestone. ⭐ Coral Restoration Laboratory, 💰 Reef Diving
+  Centre (3).
 - **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
   information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
-  elsewhere; recovering the lost module → Cargo Module (ship cargo storage).
+  elsewhere; recovering the lost module → Cargo Module (ship cargo storage). ⭐ Deep-Ocean Outpost, 💰 Deep-Sea Discovery
+  Centre (2).
 - **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
-  no trees — build with wood brought as cargo; research site and drilling → Ice Core.
+  no trees — build with wood brought as cargo; research site and drilling → Ice Core. ⭐ Polar Research Station, 💰 Polar
+  Research Centre (2).
 - **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
   gradually from Step 3 on: each new island links to the ones before it).
 - **Step 8b — Rare events.** Storms, oil spills, heatwaves and the island-specific events above:
