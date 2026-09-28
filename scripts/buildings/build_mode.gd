@@ -94,8 +94,8 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	var name := data.display_name.to_lower()
 	var island := Regions.nearest(Terrain.centre_of(cell))
-	if data.needs_objective and not Fleet.objective_done(island):
-		return "First: %s (see the Journal)." % island.objective.to_lower()
+	if data.needs_objective and Fleet.ship_problem(island) != "":
+		return Fleet.ship_problem(island)
 	if data.one_per_island:
 		for other: Building in get_tree().get_nodes_in_group("buildings"):
 			if other.data.id == data.id and Regions.nearest(other.global_position) == island:

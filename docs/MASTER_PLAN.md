@@ -379,9 +379,10 @@ Each step ends with a playable build. ✅ = done.
   installed) with the upgrade screen at the ship; each direction's next island requires the right
   discovery (RegionData.requires); ship sprites per level. (The Map keeps just grey / normal / 🧭.)
   Stand-ins until each island's own step: the Starting Island's objective is "collect 30 litter +
-  free the tangled turtle, dolphin and crab" (Step 2 replaces it with the wreck); islands with no
-  objective yet let their ship be built but give no discovery. Older saves: an island that already
-  has a ship counts its objective as done.
+  free the tangled turtle, dolphin and crab" (Step 2 replaces it with the wreck). No ship can be
+  built until its island's discovery is found, so islands with no objective yet have none. Older
+  saves: ships whose island objective isn't done are removed (funding returned), and islands found
+  without the upgrade they need are locked again.
 - **Step 2 — Starting Island complete.** Pollution types (plastic, oil/chemicals, fishing debris,
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
   reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris

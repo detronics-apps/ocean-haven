@@ -74,8 +74,13 @@ func _initialize() -> void:
 	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
 	regions.discover(kelp)
 	var fleet := root.get_node("Fleet")
+	var home: Resource = load("res://data/regions/home_island.tres")
+	fleet.complete(home)
+	fleet.install(&"salvaged_sonar_core")
 	fleet.complete(kelp)
 	fleet.install(&"kelp_fibre")
+	var arctic: Resource = load("res://data/regions/arctic_ocean.tres")
+	regions.discover(arctic)  # without the Cargo Module: locked again on loading
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
@@ -102,10 +107,8 @@ func _initialize() -> void:
 		"discovered islands restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
 	_expect(_inventory.litter_collected == 7, "litter collected ever restored (%d)" % _inventory.litter_collected)
-	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 1, "fleet upgrades restored")
-	var home: Resource = load("res://data/regions/home_island.tres")
-	_expect(fleet.objective_done(home) and fleet.has_found(&"salvaged_sonar_core") and not fleet.is_installed(&"salvaged_sonar_core"),
-		"a ship built before objectives existed counts its island's objective as done")
+	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")
+	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
 		if b.data.id in [&"tent", &"turtle_protection_area"]:
@@ -138,6 +141,32 @@ func _initialize() -> void:
 	_expect(code.begins_with("BH1:") and code.length() < text.length(), "save code is compact")
 	_expect(_save.decode(code.insert(20, "\n ")) == text, "save code decodes to the save")
 	_expect(_save.decode("BH1:hello") == "" and _save.decode("hello") == "", "junk code refused")
+
+	# --- An older save: a ship built before its island's objective was done is removed (its
+	# funding returned), and islands it found are locked again; the ranger goes home ---
+	fleet.restore({})
+	regions.restore([])
+	root.get_node("Funding").restore({"balance": 0})
+	world = _new_world()
+	build_mode = world.get_node("BuildMode")
+	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
+	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
+	build_mode.add_building(ship, Vector2i(-3, 6))
+	regions.discover(kelp)
+	world.get_node("Boat").restore_ashore()
+	(world.get_node("Player") as Node2D).global_position = kelp.arrival
+	_expect(_save.save_to(world, PATH), "saved an older-style game")
+	world.free()
+	regions.restore([])
+	root.get_node("Funding").restore({"balance": 0})
+	world = _new_world()
+	_expect(_save.load_from(world, PATH), "loaded it")
+	ships = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"expedition_boat")
+	_expect(ships.is_empty() and root.get_node("Funding").balance == ship.cost_funding,
+		"the unearned ship is gone and its funding returned (%d)" % root.get_node("Funding").balance)
+	_expect(not regions.is_discovered(kelp), "the Kelp Forest must be explored again")
+	_expect((world.get_node("Player") as Node2D).global_position == home.arrival, "the ranger is back home")
+	world.free()
 
 	# --- A damaged save is kept aside, not overwritten ---
 	var file := FileAccess.open(PATH, FileAccess.WRITE)

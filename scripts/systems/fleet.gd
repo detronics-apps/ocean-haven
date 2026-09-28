@@ -1,7 +1,7 @@
 extends Node
 ## Autoload "Fleet": island objectives and the Exploration Ships' shared equipment.
-## Completing an island's objective (RegionData.goals) lets its Exploration Ship be built
-## and finds the island's discovery. Installing a discovery at any Exploration Ship
+## Completing an island's objective (RegionData.goals) finds the island's discovery, and
+## only then can its Exploration Ship be built (islands with no objective yet: not at all). Installing a discovery at any Exploration Ship
 ## upgrades every ship: the equipment level is the number installed. Exploring can only
 ## find an island once the upgrade it needs (RegionData.requires) is installed.
 
@@ -22,18 +22,26 @@ func _ready() -> void:
 ## Completes every discovered island's objective whose goals are all met.
 func check() -> void:
 	for region: RegionData in Regions.all():
-		if not objective_done(region) and Regions.is_discovered(region) \
+		if not objective_done(region) and Regions.is_discovered(region) and not region.goals.is_empty() \
 				and region.goals.all(func(goal: ObjectiveGoal) -> bool: return goal_met(goal)):
 			complete(region)
 
 
-## Done, or nothing asked yet (no goals).
+## Done (its discovery found). Never for an island whose objective isn't made yet (no goals).
 func objective_done(region: RegionData) -> bool:
-	return region.goals.is_empty() or _completed.has(region.id)
+	return _completed.has(region.id)
 
 
-## Marks `region`'s objective done and finds its discovery. `announce`: say so (not when
-## an older save's ship counts it as done).
+## Why its Exploration Ship can't be built yet ("" = it can).
+func ship_problem(region: RegionData) -> String:
+	if objective_done(region):
+		return ""
+	if region.goals.is_empty():
+		return "%s's objective is coming soon: no Exploration Ship here yet." % region.display_name
+	return "First: %s (see the Journal)." % region.objective.to_lower()
+
+
+## Marks `region`'s objective done and finds its discovery. `announce`: say so.
 func complete(region: RegionData, announce := true) -> void:
 	if _completed.has(region.id):
 		return

@@ -323,10 +323,25 @@ func load_from(world: Node, path: String) -> bool:
 		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):
 			building.remove_from_group("buildings")
 			building.queue_free()
-	# Exploration Ships built before island objectives: their islands' objectives count as done.
+	Fleet.check()  # goals already met (e.g. before objectives existed)
+	# Exploration Ships built before island objectives, where the objective isn't done yet:
+	# removed, and their funding returned.
+	var refund := 0
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.needs_objective and not building.is_queued_for_deletion():
-			Fleet.complete(Regions.nearest(building.global_position), false)
+		if building.data.needs_objective and Fleet.ship_problem(Regions.nearest(building.global_position)) != "":
+			refund += building.data.cost_funding
+			building.remove_from_group("buildings")
+			building.queue_free()
+	if refund > 0:
+		Funding.earn(refund, "Exploration Ships now need their island's objective done first (see the Journal). Your ships' funding was returned.")
+	# Islands found before the fleet had the upgrade they need: to be explored again.
+	var relocked := false
+	for region: RegionData in Regions.all():
+		if Regions.is_discovered(region) and Fleet.missing_for(region):
+			Regions.forget(region)
+			relocked = true
+	if relocked:
+		get_tree().call_group("hud", "show_toast", "Some islands need your fleet's upgrades first. Explore them again once your fleet is ready!")
 	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
 		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	var p: Array = state.get("player", [])
@@ -341,7 +356,11 @@ func load_from(world: Node, path: String) -> bool:
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if (animal.young or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
 			animal.link_to_nearest_area()
-	Fleet.check()  # goals met before objectives existed (older saves)
+	# On an island that isn't discovered any more: back home.
+	var ranger := ControlledBody.active(get_tree())
+	var here := Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
+	if not Regions.is_discovered(here):
+		VoyageMap.arrive(get_tree(), Regions.all()[0])
 	return true
 
 

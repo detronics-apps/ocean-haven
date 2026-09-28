@@ -34,6 +34,11 @@ static func discover(region: RegionData) -> void:
 	_discovered[region.id] = true
 
 
+## Undiscovers `region` (found before the fleet had the upgrade it needs).
+static func forget(region: RegionData) -> void:
+	_discovered.erase(region.id)
+
+
 ## The next undiscovered island that way, or null if that way is all explored.
 static func next_undiscovered(direction: StringName) -> RegionData:
 	for region: RegionData in all():  # sorted by order

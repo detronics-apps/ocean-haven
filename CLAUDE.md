@@ -194,7 +194,9 @@ caring for animals". Build in this order, placeholder art:
     `Fleet` autoload keeps objectives done, discoveries found / installed; installing one at any ship
     upgrades every ship (equipment level = installed; BuildingData.fleet_textures). Exploring needs
     the next island's RegionData.requires installed. Starting Island stand-in: 30 litter + free the
-    turtle, dolphin and crab → Salvaged Sonar Core. Shown in the Journal and the Build menu.
+    turtle, dolphin and crab → Salvaged Sonar Core. Islands with no objective yet: no ship. Shown in
+    the Journal and the Build menu. Loading removes ships whose objective isn't done (funding
+    returned) and re-locks islands found without the upgrade they need.
 26. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
 27. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")

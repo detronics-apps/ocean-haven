@@ -116,8 +116,10 @@ func _initialize() -> void:
 		"the Map shows a compass only on islands with an Exploration Ship")
 	map.close()
 	_expect(build_mode.placement_problem(ship, Vector2i(-3, 8)).contains("already has"), "one Exploration Ship per island")
-	# Establish a ship at the Kelp Forest (in the water by the landing spot; no objective there yet).
+	# Establish a ship at the Kelp Forest (in the water by the landing spot) once its objective is done.
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
+	_expect(build_mode.placement_problem(ship, kelp_cell).contains("coming soon"),
+		"no ship on an island whose objective isn't made yet")
 	build_mode.add_building(ship, kelp_cell)
 	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")
 

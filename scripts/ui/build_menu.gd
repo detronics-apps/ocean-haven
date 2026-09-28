@@ -65,10 +65,11 @@ func _entry(data: BuildingData) -> Control:
 		status = "Already built."
 	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
 		status = "You've built as many as you can (%d)." % data.max_count
-	elif data.needs_objective and not Fleet.objective_done(_island()):
+	elif data.needs_objective and Fleet.ship_problem(_island()) != "":
 		var island := _island()
-		status = "First, on this island: %s.\n%s" % [island.objective.to_lower(), "\n".join(
-			island.goals.map(func(goal: ObjectiveGoal) -> String: return "  - " + Fleet.goal_line(island, goal)))]
+		status = Fleet.ship_problem(island)
+		for goal: ObjectiveGoal in island.goals:
+			status += "\n  - " + Fleet.goal_line(island, goal)
 	elif data.requires and not _exists(data.requires):
 		status = "Build a %s first." % data.requires
 	else:
