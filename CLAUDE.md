@@ -187,12 +187,17 @@ caring for animals". Build in this order, placeholder art:
     offers Explore warmer / colder → the next undiscovered island that way (`Regions.next_undiscovered`,
     RegionData.direction + order), which is then discovered for good (saved) and reachable from the
     Map. The Map only sails to discovered islands; undiscovered ones are greyed out; a 🧭 marks islands
-    with an Exploration Ship. One ship per island (built by the player; `one_per_island`); the
-    Exploration Level shown at the ship = islands with a ship. Next: MASTER_PLAN Step 1 (island
-    objectives gate the ship; island technology upgrades the fleet).
-25. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
+    with an Exploration Ship. One ship per island (built by the player; `one_per_island`).
+25. ✅ Island objectives & the fleet (MASTER_PLAN Step 1): each island's objective (RegionData.goals:
+    ObjectiveGoal "help" a species / "litter" collected ever) must be done before its Exploration Ship
+    can be built (BuildingData.needs_objective), and finds its discovery (data/discoveries/). The
+    `Fleet` autoload keeps objectives done, discoveries found / installed; installing one at any ship
+    upgrades every ship (equipment level = installed; BuildingData.fleet_textures). Exploring needs
+    the next island's RegionData.requires installed. Starting Island stand-in: 30 litter + free the
+    turtle, dolphin and crab → Salvaged Sonar Core. Shown in the Journal and the Build menu.
+26. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
-26. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")
+27. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

@@ -65,6 +65,10 @@ func _entry(data: BuildingData) -> Control:
 		status = "Already built."
 	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
 		status = "You've built as many as you can (%d)." % data.max_count
+	elif data.needs_objective and not Fleet.objective_done(_island()):
+		var island := _island()
+		status = "First, on this island: %s.\n%s" % [island.objective.to_lower(), "\n".join(
+			island.goals.map(func(goal: ObjectiveGoal) -> String: return "  - " + Fleet.goal_line(island, goal)))]
 	elif data.requires and not _exists(data.requires):
 		status = "Build a %s first." % data.requires
 	else:
@@ -91,6 +95,12 @@ func _choose(data: BuildingData) -> void:
 		get_tree().call_group("sand_shovel", "start")
 	else:
 		get_tree().call_group("build_mode", "start", data)
+
+
+## The island the ranger is on.
+func _island() -> RegionData:
+	var ranger := ControlledBody.active(get_tree())
+	return Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
 
 
 func _exists(id: StringName) -> bool:

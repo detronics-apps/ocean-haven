@@ -50,11 +50,6 @@ static func exploration_ready(tree: SceneTree, region: RegionData) -> bool:
 	return false
 
 
-## One level per island with an Exploration Ship: the whole network gets more capable.
-static func exploration_level(tree: SceneTree) -> int:
-	return all().filter(func(region: RegionData) -> bool: return exploration_ready(tree, region)).size()
-
-
 ## For the save file.
 static func discovered_ids() -> Array:
 	return _discovered.keys()

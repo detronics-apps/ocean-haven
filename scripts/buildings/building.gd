@@ -43,11 +43,20 @@ func _ready() -> void:
 		built_day = GameClock.day
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
+	if not data.fleet_textures.is_empty():
+		_show_fleet_level()
+		Fleet.upgraded.connect(_show_fleet_level.unbind(2))
 	if data.deck:
 		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
 	if data.spawns:
 		add_child(data.spawns.instantiate())
 	_coin.visible = false
+
+
+## Exploration Ships look the part of the fleet's equipment level.
+func _show_fleet_level() -> void:
+	var level := mini(Fleet.level(), data.fleet_textures.size())
+	_sprite.texture = data.fleet_textures[level - 1] if level > 0 else data.texture
 
 
 ## Puts it with its top-left footprint tile at `new_cell`.
@@ -227,7 +236,7 @@ func _process(delta: float) -> void:
 			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
 				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
 	elif _hint.visible and data.action == &"explore":
-		_hint.text = "Explore to discover new islands"
+		_hint.text = "Exploration Ship: equipment level %d" % Fleet.level()
 	elif _hint.visible:
 		var here := animals_here()
 		var note := ""

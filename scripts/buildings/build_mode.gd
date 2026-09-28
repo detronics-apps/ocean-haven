@@ -93,8 +93,10 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 ## Why `data` doesn't fit at `cell`, in words for the placement bar ("" = it fits).
 func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	var name := data.display_name.to_lower()
+	var island := Regions.nearest(Terrain.centre_of(cell))
+	if data.needs_objective and not Fleet.objective_done(island):
+		return "First: %s (see the Journal)." % island.objective.to_lower()
 	if data.one_per_island:
-		var island := Regions.nearest(Terrain.centre_of(cell))
 		for other: Building in get_tree().get_nodes_in_group("buildings"):
 			if other.data.id == data.id and Regions.nearest(other.global_position) == island:
 				return "This island already has its %s." % name

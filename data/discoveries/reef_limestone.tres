@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"reef_limestone"
+display_name = "Reef Limestone"
+order = 4
+description = "Rubble from long-dead coral, gathered from the seabed. Living coral is never broken."
+upgrade_name = "Habitat Mapping"
+capability = "map reef habitats in detail"
+fact = "Coral reefs are built from limestone that tiny coral animals, called polyps, make over hundreds and thousands of years."

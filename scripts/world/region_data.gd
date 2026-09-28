@@ -24,3 +24,15 @@ extends Resource
 @export var boat_mooring := Vector2.ZERO
 ## A little picture of the island for the Map (made by tools/generate_islands.gd).
 @export var map_icon: Texture2D
+## Fleet upgrade (discovery id) needed before exploring can find this island ("" = none).
+@export var requires: StringName
+
+@export_group("Objective")
+## The island's objective: done once every goal is met; then its Exploration Ship can be
+## built and `discovery` is found. No goals = nothing asked yet (the ship can be built).
+@export var objective: String
+@export var goals: Array[ObjectiveGoal] = []
+## Discovery id found when the objective is done.
+@export var discovery: StringName
+## How it was found, shown when the objective is done.
+@export_multiline var discovery_text: String

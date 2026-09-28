@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" viewBox="0 0 64 32" shape-rendering="crispEdges">
+  <!-- Placeholder Exploration Ship, fleet equipment level 2: reinforced hull (rivets), yellow diving sensor at the stern -->
+  <polygon points="2,14 50,14 62,20 50,28 6,28" fill="#1e2f4a"/>
+  <polygon points="4,15 49,15 59,20 49,27 7,27" fill="#35527f"/>
+  <rect x="4" y="22" width="48" height="2" fill="#f2f2ee"/>
+  <rect x="14" y="7" width="22" height="8" fill="#e8ecef"/>
+  <rect x="16" y="9" width="4" height="3" fill="#9fd3e6"/>
+  <rect x="23" y="9" width="4" height="3" fill="#9fd3e6"/>
+  <rect x="30" y="9" width="4" height="3" fill="#9fd3e6"/>
+  <rect x="40" y="1" width="2" height="14" fill="#6b4428"/>
+  <rect x="42" y="2" width="7" height="4" fill="#3f8a4a"/>
+  <rect x="8" y="12" width="4" height="3" fill="#f2c94c"/>
+  <rect x="10" y="17" width="2" height="2" fill="#8aa0b8"/>
+  <rect x="20" y="17" width="2" height="2" fill="#8aa0b8"/>
+  <rect x="30" y="17" width="2" height="2" fill="#8aa0b8"/>
+  <rect x="40" y="17" width="2" height="2" fill="#8aa0b8"/>
+  <rect x="2" y="25" width="5" height="5" fill="#f2c94c"/>
+  <rect x="3" y="26" width="3" height="3" fill="#2b2b2b"/>
+</svg>

@@ -10,6 +10,8 @@ var _counts: Dictionary[StringName, int] = {}
 var _items: Dictionary[StringName, ItemData] = {}
 ## Kept in Ranger Houses (wood, sand): usable for building from anywhere.
 var _stored: Dictionary[StringName, int] = {}
+## Pieces of litter ever collected (island objectives), not what's carried now. Saved.
+var litter_collected := 0
 
 
 ## Adds as much of `amount` as the ranger can carry (see ItemData.carry_limit).
@@ -17,6 +19,8 @@ func add(item: ItemData, amount := 1, announce := true) -> void:
 	amount = mini(amount, room_for(item))
 	if amount <= 0:
 		return
+	if item.is_litter:
+		litter_collected += amount
 	_set_count(item, count(item.id) + amount)
 	if announce:
 		item_added.emit(item, _counts[item.id])

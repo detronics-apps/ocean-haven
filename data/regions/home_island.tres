@@ -2,6 +2,31 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/maps/starter_island.png" id="1_ovoyb"]
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_t5gy4"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="2_goal"]
+
+[sub_resource type="Resource" id="Goal_litter"]
+script = ExtResource("2_goal")
+kind = &"litter"
+amount = 30
+text = "Clean up litter"
+
+[sub_resource type="Resource" id="Goal_turtle"]
+script = ExtResource("2_goal")
+kind = &"help"
+target = &"green_turtle"
+text = "Free the turtle tangled in fishing line"
+
+[sub_resource type="Resource" id="Goal_dolphin"]
+script = ExtResource("2_goal")
+kind = &"help"
+target = &"bottlenose_dolphin"
+text = "Free the dolphin caught in a ghost net"
+
+[sub_resource type="Resource" id="Goal_crab"]
+script = ExtResource("2_goal")
+kind = &"help"
+target = &"ghost_crab"
+text = "Free the crab trapped in a plastic bag"
 
 [resource]
 script = ExtResource("1_t5gy4")
@@ -13,3 +38,7 @@ theme = "Human impact"
 arrival = Vector2(0, 40)
 boat_mooring = Vector2(16, 112)
 map_icon = ExtResource("1_ovoyb")
+discovery = &"salvaged_sonar_core"
+objective = "Clean up the island and help its wildlife"
+goals = Array[ExtResource("2_goal")]([SubResource("Goal_litter"), SubResource("Goal_turtle"), SubResource("Goal_dolphin"), SubResource("Goal_crab")])
+discovery_text = "Under the last of the litter you cleaned up, you found an old sonar unit. Cleaned and working again, it's the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."

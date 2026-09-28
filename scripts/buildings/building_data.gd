@@ -45,6 +45,10 @@ extends Resource
 @export var unique := false
 ## At most one on each island (the Exploration Ship: one per island makes it Exploration Ready).
 @export var one_per_island := false
+## Only once the island's objective is done (RegionData.goals; the Exploration Ship).
+@export var needs_objective := false
+## Pictures by fleet equipment level (Fleet.level(): 1 = first entry); `texture` below level 1.
+@export var fleet_textures: Array[Texture2D] = []
 ## At most this many can exist (0 = no limit).
 @export var max_count := 0
 ## How many of the animals that nest here it can hold at once (0 = none).

@@ -4,7 +4,9 @@ extends SceneTree
 ## warmer or colder with the Exploration Ship, which finds the next undiscovered
 ## island that way (Colder: Kelp Forest, Deep Sea, Polar Ocean. Warmer: Mangrove
 ## Coast, Tropical Reef) and brings you ashore. An island is Exploration Ready once it has
-## its own Exploration Ship (one per island); each ship raises the Exploration Level.
+## its own Exploration Ship (one per island), which can only be built once the island's
+## objective is done. The objective finds the island's discovery; installed at a ship it
+## upgrades the whole fleet, and each direction's next island needs the right upgrade.
 ## Run: godot --headless --path . --script res://tests/test_voyage.gd --quit-after 300000
 
 var _failed := false
@@ -13,6 +15,8 @@ var _failed := false
 func _initialize() -> void:
 	await process_frame
 	var funding := root.get_node("Funding")  # autoloads: looked up at runtime
+	var fleet := root.get_node("Fleet")
+	var journal := root.get_node("Journal")
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
 	await process_frame  # the HUD adds the Explore menu
@@ -49,15 +53,35 @@ func _initialize() -> void:
 	_expect(map.find_children("Explore*", "Button", true, false).is_empty(), "exploring isn't on the Map")
 	map.close()
 
-	# --- Build an Exploration Ship (next to 2 dock planks) and explore colder ---
+	# --- The island's objective comes first: then the ship can be built ---
 	funding.earn(1000, "test")
-	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
+	root.get_node("Inventory").restore({}, {"wood": 99})  # building materials
+	var home: Resource = region.call("home_island")
 	var ship: Resource = load("res://data/buildings/expedition_boat.tres")
-	build_mode.start(ship)
-	_expect(not build_mode.can_place(ship, Vector2i(-3, 7)), "the ship needs a dock first")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
-	_expect(not build_mode.can_place(ship, Vector2i(-3, 6)), "one dock plank beside it isn't enough")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
+	build_mode.start(ship)
+	_expect(build_mode.placement_problem(ship, Vector2i(-3, 6)).begins_with("First: clean up"),
+		"no ship before the island's objective (%s)" % build_mode.placement_problem(ship, Vector2i(-3, 6)))
+	build_mode.cancel()
+	var journal_screen: Node = world.get_node("JournalScreen")
+	journal_screen.open()
+	var objective_text := _texts(journal_screen.find_child("Objective_home_island", true, false))
+	_expect(objective_text.contains("Clean up litter: 0 / 30") and objective_text.contains("Free the turtle"),
+		"the Journal shows the objective's goals")
+	journal_screen.close()
+	root.get_node("Inventory").add(load("res://data/items/plastic_bottle.tres"), 99, false)
+	for id in ["green_turtle", "bottlenose_dolphin"]:
+		journal.help(load("res://data/animals/%s.tres" % id))
+	_expect(not fleet.objective_done(home), "not done while a goal is left (the crab)")
+	journal.help(load("res://data/animals/ghost_crab.tres"))
+	_expect(fleet.objective_done(home) and fleet.has_found(&"salvaged_sonar_core"),
+		"objective done: the Salvaged Sonar Core is found")
+	_expect(fleet.level() == 0, "found, but not installed yet")
+
+	# --- Build an Exploration Ship (next to 2 dock planks) and explore colder ---
+	build_mode.start(ship)
+	_expect(not build_mode.can_place(ship, Vector2i(-3, 7)), "one dock plank beside it isn't enough")
 	_expect(build_mode.place_at(Vector2i(-3, 6)), "ship moored beside 2 dock planks")
 	build_mode.cancel()  # done building (placing keeps going for another)
 	var home_ship: Node2D = _ships()[0]
@@ -66,7 +90,15 @@ func _initialize() -> void:
 	_expect("Explore" in labels, "walk up to the ship to explore (%s)" % [labels])
 	home_ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Explore")[0].do.call()
 	var explore: Node = world.get_node("ExploreMenu")
-	_expect(explore.visible and not explore.find_child("ExploreWarmer", true, false).disabled
+	_expect(explore.visible and explore.find_child("ExploreWarmer", true, false).disabled
+		and explore.find_child("ExploreColder", true, false).disabled, "can't find the way before the Sonar Core is installed")
+	_expect(_texts(explore).contains("Current equipment: Level 0") and _texts(explore).contains("Salvaged Sonar Core - found"),
+		"the ship shows the next upgrade and what it needs")
+	explore.find_child("Upgrade", true, false).pressed.emit()
+	await process_frame  # the screen refreshes
+	_expect(fleet.level() == 1 and fleet.is_installed(&"salvaged_sonar_core"), "upgraded: fleet Level 1")
+	_expect(home_ship.get_node("Sprite2D").texture == ship.fleet_textures[0], "the ship looks its level")
+	_expect(not explore.find_child("ExploreWarmer", true, false).disabled
 		and not explore.find_child("ExploreColder", true, false).disabled, "explore warmer or colder")
 	_expect(regions.next_undiscovered(&"colder") == region.call("kelp_forest")
 		and regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "colder finds Kelp Forest, warmer Mangrove Coast")
@@ -78,22 +110,30 @@ func _initialize() -> void:
 	_expect(regions.is_discovered(kelp), "the Kelp Forest is discovered for good")
 	_expect(_ships().size() == 1 and not regions.exploration_ready(self, kelp) and regions.exploration_ready(self, region.call("home_island")),
 		"discovering gives no ship: the Kelp Forest isn't Exploration Ready yet")
-	_expect(regions.exploration_level(self) == 1, "Exploration Level 1: one ship")
 	map.open()
 	_expect(map.find_child("Entry_home_island", true, false).find_child("Compass", true, false) != null
 		and map.find_child("Entry_kelp_forest", true, false).find_child("Compass", true, false) == null,
 		"the Map shows a compass only on islands with an Exploration Ship")
 	map.close()
 	_expect(build_mode.placement_problem(ship, Vector2i(-3, 8)).contains("already has"), "one Exploration Ship per island")
-	# Establish a ship at the Kelp Forest (in the water by the landing spot).
+	# Establish a ship at the Kelp Forest (in the water by the landing spot; no objective there yet).
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	build_mode.add_building(ship, kelp_cell)
-	_expect(regions.exploration_ready(self, kelp) and regions.exploration_level(self) == 2,
-		"a ship there makes it Exploration Ready: Exploration Level 2")
+	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")
 
-	# --- From the Kelp Forest: colder is the Deep Sea, warmer still the Mangrove Coast ---
+	# --- From the Kelp Forest: colder is the Deep Sea (needs Kelp Fibre), warmer still the Mangrove Coast ---
 	_expect(regions.next_undiscovered(&"colder") == region.call("deep_sea")
 		and regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "next: Deep Sea colder, Mangrove Coast warmer")
+	explore.open()
+	_expect(explore.find_child("ExploreColder", true, false).disabled and _texts(explore).contains("Kelp Fibre"),
+		"the Deep Sea needs the Kelp Forest's discovery")
+	explore.close()
+	explore.explore(&"colder")
+	_expect(not regions.is_discovered(region.call("deep_sea")), "no way through without it")
+	fleet.complete(kelp)
+	fleet.install(&"kelp_fibre")
+	_expect(fleet.level() == 2 and home_ship.get_node("Sprite2D").texture == ship.fleet_textures[1],
+		"Kelp Fibre installed: Level 2, every ship upgraded")
 	explore.explore(&"colder")
 	for i in 240:
 		await process_frame
@@ -103,6 +143,8 @@ func _initialize() -> void:
 	explore.explore(&"warmer")
 	for i in 240:
 		await process_frame
+	fleet.complete(region.call("mangrove_coast"))
+	fleet.install(&"mangrove_resin")
 	_expect(regions.next_undiscovered(&"warmer") == region.call("tropical_reef")
 		and regions.next_undiscovered(&"colder") == region.call("arctic_ocean"), "then Tropical Reef warmer, Polar Ocean colder")
 	regions.discover(region.call("tropical_reef"))
@@ -126,6 +168,13 @@ func _initialize() -> void:
 
 func _ships() -> Array:
 	return get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"expedition_boat")
+
+
+func _texts(node: Node) -> String:
+	var text := ""
+	for label in node.find_children("*", "Label", true, false):
+		text += (label as Label).text + "\n"
+	return text
 
 
 func _entry(map: Node, id: String) -> String:

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"ice_core"
+display_name = "Ice Core"
+order = 6
+description = "A small core of ancient ice drilled at a safe research site, holding bubbles of air from long ago."
+upgrade_name = "Polar Equipment"
+capability = "sail safely through freezing polar seas"
+fact = "Air bubbles trapped in Antarctic ice cores hold samples of the atmosphere from up to about 800,000 years ago."

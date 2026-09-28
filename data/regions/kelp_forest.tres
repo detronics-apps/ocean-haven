@@ -16,3 +16,5 @@ waters_radius = 982.0
 arrival = Vector2(4528, 16)
 boat_mooring = Vector2(4496, 16)
 map_icon = ExtResource("1_vyq8o")
+requires = &"salvaged_sonar_core"
+discovery = &"kelp_fibre"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"salvaged_sonar_core"
+display_name = "Salvaged Sonar Core"
+order = 1
+description = "An old sonar unit recovered from the litter around the Starting Island, cleaned and working again."
+upgrade_name = "Basic Navigation"
+capability = "find the way to new islands"
+fact = "Sonar sends pulses of sound through the water and listens for the echoes, so ships can map the sea floor and find things they can't see."

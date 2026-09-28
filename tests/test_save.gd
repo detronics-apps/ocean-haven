@@ -73,12 +73,17 @@ func _initialize() -> void:
 	var regions: GDScript = load("res://scripts/world/regions.gd")
 	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
 	regions.discover(kelp)
+	var fleet := root.get_node("Fleet")
+	fleet.complete(kelp)
+	fleet.install(&"kelp_fibre")
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
 	# --- "Restart": empty state, fresh world, load ---
 	regions.restore([])
+	fleet.restore({})
 	_inventory.restore({})
+	_inventory.litter_collected = 0
 	_journal.restore([])
 	clock.day = 1
 	clock.time_of_day = 0.3
@@ -96,6 +101,11 @@ func _initialize() -> void:
 	_expect(regions.is_discovered(kelp) and not regions.is_discovered(load("res://data/regions/deep_sea.tres")),
 		"discovered islands restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
+	_expect(_inventory.litter_collected == 7, "litter collected ever restored (%d)" % _inventory.litter_collected)
+	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 1, "fleet upgrades restored")
+	var home: Resource = load("res://data/regions/home_island.tres")
+	_expect(fleet.objective_done(home) and fleet.has_found(&"salvaged_sonar_core") and not fleet.is_installed(&"salvaged_sonar_core"),
+		"a ship built before objectives existed counts its island's objective as done")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
 		if b.data.id in [&"tent", &"turtle_protection_area"]:

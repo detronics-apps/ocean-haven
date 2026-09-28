@@ -1,6 +1,7 @@
 extends OverlayScreen
-## The Ocean Journal: every species in data/animals/. Discovered ones show what
-## you've learned (observed, photos, helped); the rest are "???" to find.
+## The Ocean Journal: each discovered island's objective (and the discovery it gave),
+## then every species in data/animals/. Discovered ones show what you've learned
+## (observed, photos, helped); the rest are "???" to find.
 
 
 func _enter_tree() -> void:
@@ -11,6 +12,9 @@ func _fill() -> void:
 	var species := DataFiles.load_all("res://data/animals")
 	var found := species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
+	for region: RegionData in Regions.all():
+		if Regions.is_discovered(region) and not region.goals.is_empty():
+			_content.add_child(_objective(region))
 	for animal: AnimalData in species:
 		_content.add_child(_entry(animal))
 	_content.add_child(_backup_card())
@@ -62,6 +66,22 @@ func _load_code() -> String:
 	if SaveGame.import_code(code):
 		return "Loading your progress..."
 	return "That isn't a BlueHaven save code. Copy the whole code, starting with BH1:"
+
+
+## An island's objective: each goal and how far along it is, then what it gave.
+func _objective(region: RegionData) -> Control:
+	var done := Fleet.objective_done(region)
+	var lines: Array[String] = ["%s: %s" % [region.display_name, region.objective]]
+	for goal: ObjectiveGoal in region.goals:
+		lines.append("  - " + Fleet.goal_line(region, goal))
+	var found := Fleet.discovery(region.discovery)
+	if done and found:
+		lines.append("Found: %s. %s" % [found.display_name, found.description])
+	elif found:
+		lines.append("Complete it to find something special, and to build an Exploration Ship here.")
+	var entry := card(found.icon if done and found else null, lines)
+	entry.name = "Objective_" + region.id
+	return entry
 
 
 func _entry(animal: AnimalData) -> Control:

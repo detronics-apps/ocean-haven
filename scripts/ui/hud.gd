@@ -35,6 +35,7 @@ func _ready() -> void:
 	Journal.hatched.connect(_on_hatched)
 	Journal.gifted.connect(_on_gifted)
 	Funding.earned.connect(_on_earned)
+	Fleet.objective_completed.connect(_on_objective_completed)
 	SaveGame.saved.connect(_flash_saved)
 	Funding.donations_waiting.connect(_on_donations_waiting)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
@@ -250,6 +251,13 @@ func _on_nested(animal: AnimalData) -> void:
 
 func _on_hatched(animal: AnimalData, count: int) -> void:
 	show_toast("%d hatchlings are heading for the sea!\n%s" % [count, animal.hatch_fact])
+
+
+func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> void:
+	var text := "%s: objective complete!" % region.display_name
+	if discovery:
+		text += "\n%s\n%s" % [region.discovery_text, discovery.fact]
+	show_toast(text)
 
 
 func _on_built(building: Building) -> void:

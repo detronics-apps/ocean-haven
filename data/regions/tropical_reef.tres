@@ -16,3 +16,5 @@ waters_radius = 1062.0
 arrival = Vector2(19920, 16)
 boat_mooring = Vector2(19888, 16)
 map_icon = ExtResource("1_cueq0")
+requires = &"mangrove_resin"
+discovery = &"reef_limestone"

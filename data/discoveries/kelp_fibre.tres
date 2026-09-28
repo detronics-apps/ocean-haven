@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"kelp_fibre"
+display_name = "Kelp Fibre"
+order = 2
+description = "Strong fibre from kelp the forest shed naturally, gathered once the forest was healthy again."
+upgrade_name = "Deep-Water Equipment"
+capability = "reach deeper, rougher water"
+fact = "Giant kelp is one of the fastest-growing living things on Earth: it can grow about half a metre in a single day."

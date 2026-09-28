@@ -16,3 +16,5 @@ waters_radius = 985.0
 arrival = Vector2(15632, 16)
 boat_mooring = Vector2(15600, 16)
 map_icon = ExtResource("1_vsim8")
+requires = &"kelp_fibre"
+discovery = &"cargo_module"

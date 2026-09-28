@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"cargo_module"
+display_name = "Cargo Module"
+order = 5
+description = "An abandoned cargo module, found on the deep seabed with sonar and cameras, and recovered."
+upgrade_name = "Cargo Hold"
+capability = "carry supplies between islands"
+fact = "Ships lose cargo containers overboard every year. Scientists who studied one on the deep seabed found sea stars, snails and other animals had made it their home."

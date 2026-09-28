@@ -16,3 +16,5 @@ waters_radius = 1035.0
 arrival = Vector2(9712, 80)
 boat_mooring = Vector2(9680, 80)
 map_icon = ExtResource("1_xdssp")
+requires = &"salvaged_sonar_core"
+discovery = &"mangrove_resin"

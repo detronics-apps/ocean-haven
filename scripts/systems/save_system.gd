@@ -39,6 +39,8 @@ func attach(world: Node) -> bool:
 	Journal.observed.connect(func(_a): _dirty = true)
 	Journal.photographed.connect(func(_a, _c): _dirty = true)
 	Funding.changed.connect(func(_b): _dirty = true)
+	Fleet.objective_completed.connect(func(_r, _d): _dirty = true)
+	Fleet.upgraded.connect(func(_d, _l): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
 	Journal.hatched.connect(func(_a, _c): _dirty = true)
 	Journal.gifted.connect(func(_a): _dirty = true)
@@ -136,6 +138,8 @@ func save_to(world: Node, path: String) -> bool:
 		"avatar": RangerProfile.look,
 		"avatar_created": RangerProfile.created,
 		"discovered_regions": Regions.discovered_ids(),
+		"fleet": Fleet.to_dict(),
+		"litter_collected": Inventory.litter_collected,
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	# Web: write the save itself — the browser's storage is only updated when a file is
@@ -243,6 +247,7 @@ func load_from(world: Node, path: String) -> bool:
 
 	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
 	Regions.restore(state.get("discovered_regions", []))
+	Fleet.restore(state.get("fleet", {}))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	_tile_edits = state.get("tile_edits", {})
@@ -255,6 +260,7 @@ func load_from(world: Node, path: String) -> bool:
 			var atlas: Array = _tile_edits[ground_path][key]
 			ground.set_cell(Vector2i(int(xy[0]), int(xy[1])), 0, Vector2i(int(atlas[0]), int(atlas[1])))
 	Inventory.restore(state.get("inventory", {}), state.get("stored", {}))
+	Inventory.litter_collected = int(state.get("litter_collected", 0))
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	for animal_name: String in state.get("freed_animals", []):
@@ -317,6 +323,10 @@ func load_from(world: Node, path: String) -> bool:
 		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):
 			building.remove_from_group("buildings")
 			building.queue_free()
+	# Exploration Ships built before island objectives: their islands' objectives count as done.
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.needs_objective and not building.is_queued_for_deletion():
+			Fleet.complete(Regions.nearest(building.global_position), false)
 	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
 		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	var p: Array = state.get("player", [])
@@ -331,6 +341,7 @@ func load_from(world: Node, path: String) -> bool:
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if (animal.young or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
 			animal.link_to_nearest_area()
+	Fleet.check()  # goals met before objectives existed (older saves)
 	return true
 
 

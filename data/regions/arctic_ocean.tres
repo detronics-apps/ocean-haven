@@ -16,3 +16,5 @@ waters_radius = 931.0
 arrival = Vector2(25136, 16)
 boat_mooring = Vector2(25104, 16)
 map_icon = ExtResource("1_pu2hy")
+requires = &"cargo_module"
+discovery = &"ice_core"

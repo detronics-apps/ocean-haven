@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DiscoveryData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/discovery_data.gd" id="1_disc"]
+
+[resource]
+script = ExtResource("1_disc")
+id = &"mangrove_resin"
+display_name = "Mangrove Resin"
+order = 3
+description = "Resin from fallen mangrove branches on the mud banks, collected once the channels flowed again."
+upgrade_name = "Environment Sensors"
+capability = "sense the water to find a way through winding coastal channels"
+fact = "Mangrove roots trap mud and calm the waves, protecting coasts from storms and giving young fish a safe place to grow."
