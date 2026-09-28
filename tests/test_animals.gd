@@ -108,14 +108,24 @@ func _initialize() -> void:
 	var litter: Node2D = spawner.spawn_at(load("res://data/items/plastic_bottle.tres"),
 		guide.global_position + Vector2(0, 250), true)
 	var journal := root.get_node("Journal")
+	for i in 150:
+		await physics_frame
+	_expect(guide.is_relaxed() and guide.get("_guide_to") == null, "a trusting dolphin waits for you to play before it guides")
+	var play_labels: Array = guide.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Play with the Bottlenose Dolphin" in play_labels, "offers to play (%s)" % [play_labels])
+	guide.actions().filter(func(a: Dictionary) -> bool: return a.label.begins_with("Play"))[0].do.call()
 	var guided := false
 	for i in 900:
 		await physics_frame
 		if guide.global_position.distance_to(litter.global_position) < 40.0:
 			guided = true
 			break
-	_expect(guided, "trusting dolphin swims to the litter it spotted")
+	_expect(guided, "after playing, the dolphin swims to the litter it spotted")
 	_expect(journal.gifts(&"bottlenose_dolphin") >= 1, "the Journal counts it")
+	litter.queue_free()  # the ranger picks it up
+	await physics_frame
+	await physics_frame
+	_expect(not guide.played, "after each find, play with it again for the next")
 
 	# --- Crabs dig up buried litter while you watch ---
 	var digger: Node2D = world.get_node("Crab2")

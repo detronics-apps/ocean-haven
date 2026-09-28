@@ -60,6 +60,8 @@ var _breath_left := 0.0
 var _last_ranger_pos := Vector2.INF
 ## Litter this animal is leading the ranger to (trusting dolphins).
 var _guide_to: Node2D
+## Guides: the ranger has played with it, so it'll show them the next litter it finds.
+var played := false
 ## What normally blocks it (switched off while crawling over land to nest).
 var _land_mask: int
 var _lay_left := 0.0
@@ -225,14 +227,15 @@ func _react_to_ranger(delta: float) -> void:
 			_hint.text = "%s: take a photo" % _key_hint()
 
 
-## Trusting (relaxed) guides lead the ranger to floating litter they've spotted,
-## and keep at it until the litter has been picked up.
+## Trusting (relaxed) guides the ranger has played with lead them to floating
+## litter they've spotted, and keep at it until the litter has been picked up.
 func _maybe_guide() -> void:
 	if not data.guides_to_litter or tangled or young or _state == State.FLEE:
 		return
 	if _guide_to and (not is_instance_valid(_guide_to) or _guide_to.is_queued_for_deletion()):
 		_guide_to = null  # picked up: job done
-	if not _guide_to and is_relaxed():
+		played = false  # play again for the next one
+	if not _guide_to and is_relaxed() and played:
 		_guide_to = _nearest_floating_litter(data.guide_range)
 		if _guide_to:
 			Journal.record_gift(data)
@@ -288,7 +291,22 @@ func actions() -> Array:
 	if not can_interact():
 		return []
 	var verb := "Free the %s" % data.display_name if tangled else "Photo: %s" % data.display_name
-	return [{"label": verb, "do": _interact, "helps": tangled}]
+	var list := [{"label": verb, "do": _interact, "helps": tangled}]
+	if data.guides_to_litter and not tangled and not young and not played:
+		list.append({"label": "Play with the %s" % data.display_name, "do": play})
+	return list
+
+
+## Guides: a splash and a leap; then it leads the ranger to the next litter it finds.
+func play() -> void:
+	played = true
+	underwater = false
+	_breath_left = maxf(_breath_left, 3.0)
+	var leap := create_tween()
+	leap.tween_property(_sprite, "position:y", -14.0, 0.25).set_ease(Tween.EASE_OUT)
+	leap.parallel().tween_property(_sprite, "rotation", -0.4, 0.25)
+	leap.tween_property(_sprite, "position:y", 0.0, 0.3).set_ease(Tween.EASE_IN)
+	leap.parallel().tween_property(_sprite, "rotation", 0.0, 0.3)
 
 
 ## Relaxed and close enough for the ranger to observe, photograph or help it.
