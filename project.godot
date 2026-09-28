@@ -25,6 +25,7 @@ RangerProfile="*res://scripts/systems/ranger_profile.gd"
 Funding="*res://scripts/systems/money_system.gd"
 Fleet="*res://scripts/systems/fleet.gd"
 Missions="*res://scripts/systems/missions.gd"
+RareEvents="*res://scripts/systems/rare_events.gd"
 
 [display]
 

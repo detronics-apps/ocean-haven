@@ -30,3 +30,4 @@ category = &"sea"
 action = &"explore"
 needs_objective = true
 fleet_textures = Array[Texture2D]([ExtResource("2_br52n"), ExtResource("3_lv2"), ExtResource("3_lv3"), ExtResource("3_lv4"), ExtResource("3_lv5"), ExtResource("3_lv6")])
+storm_proof = true

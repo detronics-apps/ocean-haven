@@ -22,6 +22,15 @@ var tier := 1:
 		tier = value
 		if is_node_ready():
 			_show_tier()
+## Made safe for a coming storm (RareEvents): it won't be damaged.
+var secured := false
+## Damaged by a storm: no visitors, nesting or use until the ranger repairs it.
+var damaged := false:
+	set(value):
+		damaged = value
+		if is_node_ready():
+			_sprite.modulate = DAMAGED_TINT if damaged else Color.WHITE
+const DAMAGED_TINT := Color(0.62, 0.55, 0.5)
 ## The day it was built (palms grow from it).
 var built_day := -1
 var _bob := 0.0
@@ -48,6 +57,7 @@ func _ready() -> void:
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
 	_show_tier()
+	damaged = damaged  # show it
 	if not data.fleet_textures.is_empty():
 		_show_fleet_level()
 		Fleet.upgraded.connect(_show_fleet_level.unbind(2))
@@ -117,13 +127,18 @@ func actions() -> Array:
 	if not ranger_is_near() or (build_mode and build_mode.is_active()) or not visible:
 		return []
 	var list := []
+	if damaged:
+		var wood := _repair_wood()
+		list.append({"label": "Repair %s (%d wood)" % [data.display_name, wood], "do": repair, "helps": true})
+	elif RareEvents.is_coming() and not secured and not data.storm_proof:
+		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
-	if data.action == &"missions":
+	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
-	if recycle_value() > 0 and Inventory.total() > 0:
+	if recycle_value() > 0 and Inventory.total() > 0 and not damaged:
 		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
 			"do": recycle})
 	if tier < data.max_tier:
@@ -208,8 +223,8 @@ func animals_in_view() -> int:
 ## What visitors donate this morning: a base amount, more for every animal that lives here
 ## or is in view, and more again the healthier the island is.
 func visitors_today() -> int:
-	if data.visitors <= 0:
-		return 0
+	if data.visitors <= 0 or damaged:
+		return 0  # closed until it's repaired
 	var base := data.visitors + data.visitors_per_animal * (animals_here() + animals_in_view())
 	var health := maxf(IslandHealth.of(get_tree(), Regions.nearest(global_position)), 0.0)
 	return roundi(base * (1.0 + health * data.health_bonus))
@@ -256,6 +271,21 @@ func upgrade() -> void:
 		data.display_name, tier, data.max_tier, better])
 
 
+## Fixes storm damage, if the ranger has the wood.
+func repair() -> void:
+	var wood := _repair_wood()
+	if not Inventory.use(&"wood", wood):
+		get_tree().call_group("hud", "show_toast", "Repairing your %s needs %d wood." % [data.display_name, wood])
+		return
+	damaged = false
+	get_tree().call_group("hud", "show_toast", "%s repaired!" % data.display_name)
+
+
+func _repair_wood() -> int:
+	var event := RareEvents.for_region(Regions.nearest(global_position).id)
+	return event.repair_wood if event else 1
+
+
 ## The footprint in tiles.
 func rect() -> Rect2i:
 	return Rect2i(cell, data.size)
@@ -278,6 +308,14 @@ func _process(delta: float) -> void:
 
 ## Short stats shown above it when the ranger is close ("" = nothing to show).
 func stats() -> String:
+	if damaged:
+		return "Damaged"
+	var note := "Secured" if secured and RareEvents.is_coming() else ""
+	var numbers := _numbers()
+	return numbers + ("\n" if numbers and note else "") + note
+
+
+func _numbers() -> String:
 	if data.action == &"sleep":
 		return "  ".join(storable_items().map(func(item: ItemData) -> String:
 			return "%s %d/%d" % [item.display_name, Inventory.stored(item.id), storage_space(get_tree())])) \

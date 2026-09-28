@@ -46,6 +46,9 @@ func _initialize() -> void:
 	area.add_funds(25)
 	area.tier = 2
 	area.built_day = 3
+	area.damaged = true  # by a storm
+	var events := root.get_node("RareEvents")
+	events.warn(load("res://data/events/coastal_storm.tres"))
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
 	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
 	nest.set("species", turtle_data)
@@ -93,6 +96,7 @@ func _initialize() -> void:
 	regions.restore([])
 	fleet.restore({})
 	missions.restore({})
+	events.restore({})
 	_inventory.restore({})
 	_inventory.litter_collected = 0
 	_journal.restore([])
@@ -131,6 +135,7 @@ func _initialize() -> void:
 	_expect(restored_area.tier == 2 and restored_area.capacity() == 5 and restored_area.built_day == 3,
 		"upgrade tier and build day restored")
 	_expect(restored_area.get_node("Sprite2D").texture == restored_area.data.tier_textures[1], "and its tier's picture")
+	_expect(restored_area.damaged and events.is_coming(), "storm damage and a coming storm are saved")
 	_expect(restored_area.pending_funds == 25,
 		"uncollected donations restored")
 	var nests := get_nodes_in_group("nests")

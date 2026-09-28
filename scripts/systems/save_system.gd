@@ -44,6 +44,8 @@ func attach(world: Node) -> bool:
 	Fleet.objective_completed.connect(func(_r, _d): _dirty = true)
 	Fleet.upgraded.connect(func(_d, _l): _dirty = true)
 	Missions.sent.connect(func(_m): _dirty = true)
+	RareEvents.warned.connect(func(_e): _dirty = true)
+	RareEvents.struck.connect(func(_e, _d): _dirty = true)
 	Missions.returned.connect(func(_m, _f): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
 	Journal.hatched.connect(func(_a, _c): _dirty = true)
@@ -110,7 +112,8 @@ func save_to(world: Node, path: String) -> bool:
 	var buildings: Array[Dictionary] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y],
-			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day})
+			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day,
+			"damaged": building.damaged, "secured": building.secured})
 	var litter: Array[Dictionary] = []
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
 		if debris.spawned and not debris.is_queued_for_deletion():
@@ -158,6 +161,7 @@ func save_to(world: Node, path: String) -> bool:
 		"arrived_animals": Arrivals.arrived_names(),
 		"fleet": Fleet.to_dict(),
 		"mission": Missions.to_dict(),
+		"rare_events": RareEvents.to_dict(),
 		"litter_collected": Inventory.litter_collected,
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
@@ -268,6 +272,7 @@ func load_from(world: Node, path: String) -> bool:
 	Regions.restore(state.get("discovered_regions", []))
 	Fleet.restore(state.get("fleet", {}))
 	Missions.restore(state.get("mission", {}))
+	RareEvents.restore(state.get("rare_events", {}))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	_tile_edits = state.get("tile_edits", {})
@@ -345,6 +350,8 @@ func load_from(world: Node, path: String) -> bool:
 			building.add_funds(int(entry.get("funds", 0)))
 			building.tier = int(entry.get("tier", 1))
 			building.built_day = int(entry.get("built_day", -100))  # older saves: palms fully grown
+			building.damaged = bool(entry.get("damaged", false))
+			building.secured = bool(entry.get("secured", false))
 	# Exploration Ships an older version moored for free, with no dock: gone (build your own).
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):

@@ -198,7 +198,7 @@ caring for animals". Build in this order, placeholder art:
     the Journal and the Build menu. Loading removes ships whose objective isn't done (funding
     returned) and re-locks islands found without the upgrade they need.
 
-**MVP 0.4 — "Starting Island complete" (current).** Details: `docs/MASTER_PLAN.md` → "Build order",
+**MVP 0.4 — "Starting Island complete" ✅** Details: `docs/MASTER_PLAN.md` → "Build order",
 Step 2. Build in this order:
 
 1. ✅ Island health (`IslandHealth`, 0..1 per island): weighted RegionData.health factors
@@ -230,11 +230,13 @@ Step 2. Build in this order:
    it; its 8 pieces of litter are cleared from the boat; then its old sonar unit is lifted into
    the boat. The Starting Island's objective is now these three flags (ObjectiveGoal "flag",
    Fleet.mark) → Salvaged Sonar Core
-8. Coastal Storm, the first rare event (MASTER_PLAN "Rare events": each island's event tests its
-   main mechanic; at most once per 30 days, 1–2 per 120-day year; damages habitat /
-   infrastructure / access, never animal numbers)
+8. ✅ Coastal Storm, the first rare event (data/events/, EventData; `RareEvents` autoload, saved):
+   never within 30 days of the last (2 % a morning after that: ~1–2 per 120-day year); warned a day
+   ahead (HUD banner); "Secure for the storm" on buildings (not storm_proof ones); unsecured ones
+   may be damaged (no visitors / nesting / missions / recycling) until repaired with 1 wood; litter
+   washes up. Never harms animals (MASTER_PLAN "Rare events")
 
-Then MVP 0.5 Kelp Forest (Step 3) and MVP 0.6 Mangrove Coast (Step 4).
+Next: MVP 0.5 Kelp Forest (Step 3), then MVP 0.6 Mangrove Coast (Step 4).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

@@ -20,3 +20,4 @@ cost_items = Dictionary[StringName, int]({&"sapling": 1})
 category = &"land"
 movable = false
 build_verb = "Plant"
+storm_proof = true

@@ -454,7 +454,7 @@ Each step ends with a playable build. ✅ = done.
   built until its island's discovery is found, so islands with no objective yet have none. Older
   saves: ships whose island objective isn't done are removed (funding returned), and islands found
   without the upgrade they need are locked again.
-- **Step 2 — Starting Island complete.** Pollution types (plastic, oil/chemicals, fishing debris,
+- **Step 2 — Starting Island complete ✅** Pollution types (plastic, oil/chemicals, fishing debris,
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
   reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris
   field → Salvaged Sonar Core. Buildings: ⭐ Marine Rescue & Research Station
@@ -492,7 +492,7 @@ The Starting Island is finished first, then the two islands you can explore from
 **Kelp Forest** (colder) and the **Mangrove Coast** (warmer). Each item is one small, playable,
 tested commit. Placeholder art throughout.
 
-### Step 2 — Starting Island complete
+### Step 2 — Starting Island complete ✅
 1. **Island health (Ocean Impact for one island).** A 0–100 % health per island from what's been
    done there (litter left, animals helped, nests protected, later pollution types). Shown at the
    signature facility and in the Journal; the island's water and ground colours shift from muted

@@ -63,6 +63,8 @@ extends Resource
 @export var fleet_textures: Array[Texture2D] = []
 ## At most this many can exist (0 = no limit).
 @export var max_count := 0
+## Rare events (storms) can't damage it (docks, boats, trees).
+@export var storm_proof := false
 ## Nesting beaches need quiet: another building within this many tiles (not docks, not
 ## planted trees) makes it too busy for animals to nest here (0 = doesn't mind).
 @export var needs_quiet := 0

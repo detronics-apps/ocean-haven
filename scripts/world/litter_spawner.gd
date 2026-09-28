@@ -82,6 +82,15 @@ func _process(delta: float) -> void:
 		spawn_one()
 
 
+## Washes `count` pieces up onto its beaches (a storm), whatever is already about.
+func wash_up_beaches(count: int) -> void:
+	var beach := _sand_spots()
+	if beach.is_empty():
+		return
+	for i in count:
+		spawn_at(_items.pick_random(), beach.pick_random(), false)
+
+
 ## Fills its area up to `count` pieces (a new game starts with plenty to clean up).
 func fill(count: int) -> void:
 	var usual := max_litter

@@ -517,7 +517,7 @@ func link_to_nearest_area() -> void:
 func _nest_site() -> Node2D:
 	var best: Node2D = null
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == data.nest_building and not building.too_busy() and (not best
+		if building.data.id == data.nest_building and not building.too_busy() and not building.damaged and (not best
 				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
 			best = building
 	return best

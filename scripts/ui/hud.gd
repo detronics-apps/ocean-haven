@@ -17,6 +17,7 @@ var _action_bar: VBoxContainer
 var _info: Label
 var _shown_actions: Array[String] = []
 var _saved_note: Label
+var _event_note: Label
 
 
 func _enter_tree() -> void:
@@ -56,6 +57,23 @@ func _ready() -> void:
 	get_parent().add_child.call_deferred(missions)
 	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back at %s." % [m.display_name, Missions.back_time()]))
 	Missions.returned.connect(_on_mission_returned)
+	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s!\n%s" % [e.display_name, e.warning]))
+	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged))
+	# What's coming (a storm warning), under the clock until it arrives.
+	_event_note = Label.new()
+	_event_note.name = "EventNote"
+	_event_note.anchor_left = 1.0
+	_event_note.anchor_right = 1.0
+	_event_note.offset_left = -420
+	_event_note.offset_right = -16
+	_event_note.offset_top = 132
+	_event_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_event_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_event_note.add_theme_color_override("font_color", Color("ffd27a"))
+	_event_note.add_theme_constant_override("outline_size", 5)
+	_event_note.add_theme_color_override("font_outline_color", Color.BLACK)
+	_event_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_event_note)
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
@@ -209,6 +227,7 @@ func _update_action_bar() -> void:
 
 func _process(_delta: float) -> void:
 	_update_action_bar()
+	_event_note.text = RareEvents.warning_text()
 	_info.text = nearest_animal_info()
 	_info.visible = _info.text != ""
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
