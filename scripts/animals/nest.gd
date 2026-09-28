@@ -1,9 +1,10 @@
 class_name Nest
 extends Node2D
 ## Eggs buried in a protected beach. Once incubated they hatch at night and the
-## hatchlings crawl to the sea. As many stay as its protection area has room for
-## (BuildingData.animal_capacity) and belong to that area; the rest swim off into
-## the open ocean. Every hatchling counts in the Journal either way.
+## hatchlings crawl to the sea. They join its protection area if there's room
+## (BuildingData.animal_capacity), otherwise the nearest other protection area with
+## room; only when every area is full do they swim off into the open ocean. Every
+## hatchling counts in the Journal either way.
 
 # ponytail: all species share one animal scene; give AnimalData a scene when one needs its own.
 const ANIMAL_SCENE := "res://scenes/animals/animal.tscn"
@@ -74,21 +75,31 @@ func _process(_delta: float) -> void:
 func hatch() -> void:
 	if is_queued_for_deletion():
 		return  # already hatched this frame
-	var room: int = area.room_for_animals() if area else 0
 	var world := get_parent()
 	for i in species.hatchlings:
+		var home := _area_with_room()
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
 		baby.set("young", true)
-		var stays := i < room
-		baby.set("leaving", not stays)
+		baby.set("leaving", home == null)
+		baby.set("home_area", home)  # set before joining the world, so it counts straight away
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))
 		world.add_child(baby)
-		if stays:
-			baby.set("home_area", area)
 		baby.call("crawl_to_sea")
 	Journal.record_hatch(species, species.hatchlings)
 	queue_free()
+
+
+## This nest's own area if it has room, else the nearest other one that does, else null.
+func _area_with_room() -> Node2D:
+	if area and area.room_for_animals() > 0:
+		return area
+	var best: Node2D = null
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == species.nest_building and building.room_for_animals() > 0 and (not best
+				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
+			best = building
+	return best
 
 
 func _nearest_area() -> Node2D:

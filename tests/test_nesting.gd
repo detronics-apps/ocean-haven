@@ -104,6 +104,19 @@ func _initialize() -> void:
 	var turtles := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data == turtle_data)
 	_expect(turtles.size() == 4, "the area keeps 4 turtles; the rest swam out of the play area (%d left)" % turtles.size())
 
+	# --- With an empty second protection area, new hatchlings move in there instead ---
+	var second: Node2D = world.get_node("BuildMode").add_building(
+		load("res://data/buildings/turtle_protection_area.tres"), Vector2i(-8, 7))
+	var nest2: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
+	nest2.set("species", turtle_data)
+	nest2.position = Vector2(480, 0)  # at the full first area
+	world.add_child(nest2)
+	nest2.hatch()
+	await physics_frame
+	var leaving_now := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving).size()
+	_expect(second.animals_here() == 3 and leaving_now == 0,
+		"hatchlings fill the empty second area first (%d there, %d leaving)" % [second.animals_here(), leaving_now])
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

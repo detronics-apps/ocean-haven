@@ -474,5 +474,6 @@ func _settle_in_water() -> void:
 		_state = State.SWIM
 		return
 	if young:
-		_home = global_position
+		# Live in the water by the protection area it belongs to (it may be another beach).
+		_home = Terrain.nearest(get_tree(), home_area.global_position, ["water", ""]) if home_area else global_position
 	_rest(data.rest_min)
