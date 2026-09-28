@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_open.svg" id="1_88l0l"]
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="2_8l4ks"]
+[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_closed.svg" id="3_4cw1c"]
+
+[resource]
+script = ExtResource("2_8l4ks")
+id = &"drawbridge"
+display_name = "Drawbridge"
+description = "A jetty piece you can walk across that swings up when your boat comes by, so you can sail through."
+order = 4
+texture = ExtResource("3_4cw1c")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("water", "")
+cost_funding = 40
+deck = true
+open_texture = ExtResource("1_88l0l")
+connects_to_shore = true
+fact = "Drawbridges let people walk across and boats sail through the same stretch of water."

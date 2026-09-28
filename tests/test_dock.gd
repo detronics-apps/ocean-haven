@@ -66,6 +66,25 @@ func _initialize() -> void:
 	_expect(build_mode.place_at(Vector2i(16, 1)), "moved beside the jetty")
 	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "", "open sea is back where the plank was")
 
+	# --- A drawbridge at the end: walkable, but swings up for a sailing boat ---
+	var bridge_data: Resource = load("res://data/buildings/drawbridge.tres")
+	build_mode.start(bridge_data)
+	_expect(build_mode.place_at(Vector2i(19, 0)), "drawbridge added to the end of the jetty")
+	build_mode.cancel()
+	var bridge: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"drawbridge")[0]
+	var spot := Vector2(19 * 32 + 16, 16)
+	await process_frame
+	_expect(_walkable(spot) and not bridge.is_open, "closed: you can walk across")
+	boat.restore_aboard()
+	boat.global_position = spot + Vector2(0, 48)
+	for i in 3:
+		await process_frame
+	_expect(bridge.is_open and not _walkable(spot), "a sailing boat comes close: it swings up")
+	boat.global_position = spot + Vector2(0, 300)
+	for i in 3:
+		await process_frame
+	_expect(not bridge.is_open and _walkable(spot), "boat gone: it closes again")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
@@ -73,6 +92,14 @@ func _initialize() -> void:
 
 func _cell_of(point: Vector2) -> Vector2i:
 	return Vector2i((point / 32.0).floor())
+
+
+func _walkable(point: Vector2) -> bool:
+	for ground: TileMapLayer in get_nodes_in_group("ground"):
+		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
+		if tile:
+			return tile.get_custom_data("walkable")
+	return false
 
 
 func _terrain(point: Vector2) -> String:

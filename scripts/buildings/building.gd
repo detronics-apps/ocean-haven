@@ -17,6 +17,10 @@ const DECK_ALTERNATIVE := 1
 ## Visitor donations waiting to be collected here.
 var pending_funds := 0
 var _bob := 0.0
+## Drawbridges: raised right now (boats pass, the ranger can't cross).
+var is_open := false
+## How close a sailing boat must come for a drawbridge to open.
+const BRIDGE_OPEN_RANGE := 64.0
 ## Decks: the tiles they replaced, to put back if moved. World cell -> [ground, local cell, source, atlas, alt].
 var _deck_tiles: Dictionary = {}
 
@@ -97,6 +101,24 @@ func actions() -> Array:
 	return list
 
 
+## Opens when a sailing boat comes close (and nobody's standing on it); closes after.
+func _update_drawbridge() -> void:
+	var boat_near := false
+	for boat: Node2D in get_tree().get_nodes_in_group("boat"):
+		boat_near = boat_near or (boat.get("controlled") and boat.global_position.distance_to(global_position) < BRIDGE_OPEN_RANGE)
+	var player: Node2D = get_tree().get_first_node_in_group("player")
+	var ranger_on := player and player.visible and rect().has_point(Terrain.cell_of(player.global_position))
+	var want_open := boat_near and not ranger_on
+	if want_open == is_open:
+		return
+	is_open = want_open
+	if is_open:
+		_lift_deck()  # water again: boats sail through
+	else:
+		_lay_deck()
+	_sprite.texture = data.open_texture if is_open else data.texture
+
+
 ## Recycles everything the ranger is carrying into conservation funding.
 func recycle() -> void:
 	var pieces := Inventory.total()
@@ -132,6 +154,8 @@ func rect() -> Rect2i:
 
 
 func _process(delta: float) -> void:
+	if data.open_texture and visible:  # not while being moved (hidden, deck lifted)
+		_update_drawbridge()
 	if pending_funds > 0:
 		_bob += delta
 		_coin.position.y = -data.size.y * Terrain.TILE / 2.0 - 12.0 + roundf(sin(_bob * 3.0) * 2.0)

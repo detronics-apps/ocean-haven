@@ -44,6 +44,8 @@ extends Resource
 @export var recycle_value := 0
 ## A walkway over the water (dock planks): the ranger can walk on it, boats bump into it.
 @export var deck := false
+## Drawbridges: shown (and walk-through for boats) while a sailing boat is close.
+@export var open_texture: Texture2D
 ## Must touch the shore or another deck, so walkways grow out from the land.
 @export var connects_to_shore := false
 ## Must be right next to a building of this kind (the Expedition Boat moors at a dock).
