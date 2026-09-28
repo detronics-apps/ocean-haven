@@ -1,0 +1,61 @@
+class_name IslandHealth
+## Each island's health, 0..1 (its Ocean Impact): the weighted average of its
+## RegionData.health factors — how clean its waters are, animals helped and living
+## there. Islands without factors have no health yet (-1). Ground colours follow it
+## (see tint), from muted when damaged to vibrant when healthy.
+
+## Ground colour at 0 health (muted grey-blue); healthy ground shows its own colours.
+const DAMAGED_TINT := Color(0.66, 0.7, 0.78)
+
+
+## `region`'s health 0..1, or -1 if it has no health factors yet.
+static func of(tree: SceneTree, region: RegionData) -> float:
+	if region.health.is_empty():
+		return -1.0
+	var total := 0.0
+	var weights := 0.0
+	for factor: HealthFactor in region.health:
+		total += score(tree, region, factor) * factor.weight
+		weights += factor.weight
+	return total / weights if weights > 0.0 else -1.0
+
+
+## How far along one factor is, 0..1.
+static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> float:
+	var amount := float(maxi(factor.amount, 1))
+	match factor.kind:
+		&"clean":
+			return clampf(1.0 - count(tree, region, factor) / amount, 0.0, 1.0)
+		&"help", &"animals":
+			return clampf(count(tree, region, factor) / amount, 0.0, 1.0)
+	return 0.0
+
+
+## The raw number behind a factor: litter pieces about, times helped, animals living there.
+static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> int:
+	match factor.kind:
+		&"clean":
+			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+				return not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region).size()
+		&"help":
+			return Journal.helped_count(factor.target)
+		&"animals":
+			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
+				return a.data.id == factor.target and not a.leaving and Regions.nearest(a.global_position) == region).size()
+	return 0
+
+
+## "Litter in the water: 4 pieces" / "Turtles living here: 3 / 8" for the Journal.
+static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) -> String:
+	var n := count(tree, region, factor)
+	if factor.kind == &"clean":
+		return "%s: %s" % [factor.text, "none" if n == 0 else "%d piece%s" % [n, "" if n == 1 else "s"]]
+	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]
+
+
+## Colours every island's ground by its health.
+static func tint(tree: SceneTree) -> void:
+	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+		var middle := ground.to_global(ground.map_to_local(ground.get_used_rect().get_center()))
+		var health := of(tree, Regions.nearest(middle))
+		ground.modulate = Color.WHITE if health < 0.0 else DAMAGED_TINT.lerp(Color.WHITE, health)

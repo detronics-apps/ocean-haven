@@ -27,9 +27,12 @@ extends Resource
 ## Fleet upgrade (discovery id) needed before exploring can find this island ("" = none).
 @export var requires: StringName
 
+## What makes the island healthy (IslandHealth); none = no health shown yet.
+@export var health: Array[HealthFactor] = []
+
 @export_group("Objective")
 ## The island's objective: done once every goal is met; then its Exploration Ship can be
-## built and `discovery` is found. No goals = nothing asked yet (the ship can be built).
+## built and `discovery` is found. No goals = not made yet (no ship there yet).
 @export var objective: String
 @export var goals: Array[ObjectiveGoal] = []
 ## Discovery id found when the objective is done.

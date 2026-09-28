@@ -6,7 +6,17 @@ const TENT_PATH := "res://data/buildings/tent.tres"
 const TOUCH_SCALE := 1.5
 
 
+## How often island colours follow their health (seconds).
+@export var tint_interval := 2.0
+
+
 func _ready() -> void:
+	var tint := Timer.new()
+	tint.wait_time = tint_interval
+	tint.autostart = true
+	tint.timeout.connect(IslandHealth.tint.bind(get_tree()))
+	add_child(tint)
+	IslandHealth.tint.call_deferred(get_tree())
 	if not SaveGame.attach(self):
 		return
 	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):

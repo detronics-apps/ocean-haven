@@ -324,6 +324,8 @@ mini-game. The player should think "I've built this ecosystem; now it has to wit
 disturbance", not "another mini-game".
 
 Rules:
+- **An in-game year is 120 days** (a setting in the event data); "1–2 a year" means 1–2 every
+  120 days.
 - **Rare and predictable enough to prepare for:** a warning comes first (the Deep Sea's oil spill
   is detected rather than forecast). **At most once every 30 in-game days per island**; most
   events are rarer still (below).

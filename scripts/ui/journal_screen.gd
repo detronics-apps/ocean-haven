@@ -13,6 +13,8 @@ func _fill() -> void:
 	var found := species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
 	for region: RegionData in Regions.all():
+		if Regions.is_discovered(region) and not region.health.is_empty():
+			_content.add_child(_health(region))
 		if Regions.is_discovered(region) and not region.goals.is_empty():
 			_content.add_child(_objective(region))
 	for animal: AnimalData in species:
@@ -66,6 +68,18 @@ func _load_code() -> String:
 	if SaveGame.import_code(code):
 		return "Loading your progress..."
 	return "That isn't a BlueHaven save code. Copy the whole code, starting with BH1:"
+
+
+## How healthy an island is, and what goes into it.
+func _health(region: RegionData) -> Control:
+	var tree := get_tree()
+	var lines: Array[String] = ["%s: island health %d%%" % [
+		region.display_name, roundi(IslandHealth.of(tree, region) * 100.0)]]
+	for factor: HealthFactor in region.health:
+		lines.append("  - " + IslandHealth.describe(tree, region, factor))
+	var entry := card(null, lines)
+	entry.name = "Health_" + region.id
+	return entry
 
 
 ## An island's objective: each goal and how far along it is, then what it gave.
