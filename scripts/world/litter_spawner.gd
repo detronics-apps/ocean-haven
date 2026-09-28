@@ -14,7 +14,8 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 @export var area := Rect2(-900, -600, 1800, 1200)
 @export var min_distance_from_ranger := 320.0
 
-var _items: Array[Resource] = DataFiles.load_all("res://data/items")
+var _items: Array[Resource] = DataFiles.load_all("res://data/items").filter(
+	func(item: ItemData) -> bool: return item.is_litter)
 var _time := 0.0
 
 

@@ -18,6 +18,8 @@ var _collected: Array[String] = []
 var _freed: Array[String] = []
 ## Island trees the ranger cut down (paths from the world), so they stay gone.
 var _cut_trees: Array[String] = []
+## Tiles the ranger changed (moving sand): "<island>/<ground>" -> {"x,y": [atlas x, atlas y]}.
+var _tile_edits: Dictionary = {}
 var _world: Node
 var _dirty := false
 var _since_save := 0.0
@@ -46,6 +48,14 @@ func attach(world: Node) -> bool:
 
 func mark_collected(debris: Node) -> void:
 	_collected.append(String(debris.name))
+
+
+func record_tile(ground: TileMapLayer, local_cell: Vector2i, atlas: Vector2i) -> void:
+	var key := "%s/%s" % [ground.get_parent().name, ground.name]
+	if not _tile_edits.has(key):
+		_tile_edits[key] = {}
+	_tile_edits[key]["%d,%d" % [local_cell.x, local_cell.y]] = [atlas.x, atlas.y]
+	_dirty = true
 
 
 ## Island trees are recorded as "<island>/<tree>" (e.g. "StarterIsland/Palm3").
@@ -109,6 +119,7 @@ func save_to(world: Node, path: String) -> bool:
 		"collected_debris": _collected,
 		"freed_animals": _freed,
 		"cut_trees": _cut_trees,
+		"tile_edits": _tile_edits,
 		"washed_in_litter": litter,
 		"funding": Funding.to_dict(),
 		"nests": nests,
@@ -176,6 +187,7 @@ func load_from(world: Node, path: String) -> bool:
 	_collected.clear()
 	_freed.clear()
 	_cut_trees.clear()
+	_tile_edits = {}
 	var text := _newest_save_text(path)
 	if text == "":
 		return false
@@ -188,6 +200,15 @@ func load_from(world: Node, path: String) -> bool:
 	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
+	_tile_edits = state.get("tile_edits", {})
+	for ground_path: String in _tile_edits:  # before buildings, so decks sit on the right tiles
+		var ground := world.get_node_or_null(ground_path) as TileMapLayer
+		if not ground:
+			continue
+		for key: String in _tile_edits[ground_path]:
+			var xy := key.split(",")
+			var atlas: Array = _tile_edits[ground_path][key]
+			ground.set_cell(Vector2i(int(xy[0]), int(xy[1])), 0, Vector2i(int(atlas[0]), int(atlas[1])))
 	Inventory.restore(state.get("inventory", {}))
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))

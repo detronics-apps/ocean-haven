@@ -31,6 +31,7 @@
 [ext_resource type="Script" path="res://scripts/world/litter_spawner.gd" id="25_swpth"]
 [ext_resource type="PackedScene" path="res://scenes/ui/voyage_map.tscn" id="30_j1yad"]
 [ext_resource type="Script" path="res://scripts/ui/voyage_map.gd" id="31_kcxw8"]
+[ext_resource type="Script" path="res://scripts/world/sand_shovel.gd" id="32_j1yad"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -232,3 +233,6 @@ area = Rect2(4420, -500, 1400, 1000)
 
 [node name="VoyageMap" type="CanvasLayer" parent="." unique_id=231089713 instance=ExtResource("30_j1yad")]
 script = ExtResource("31_kcxw8")
+
+[node name="SandShovel" type="Node" parent="." unique_id=356299371]
+script = ExtResource("32_j1yad")

@@ -23,7 +23,10 @@ func _fill() -> void:
 func _entry(data: BuildingData) -> Control:
 	var status: String
 	var can_build := false
-	if data.locked:
+	if data.tool:
+		status = "A tool: pick it up to use it, then tap Done."
+		can_build = true
+	elif data.locked:
 		status = "Coming later: " + data.unlock_hint
 	elif data.unique and _exists(data.id):
 		status = "Already built."
@@ -42,7 +45,7 @@ func _entry(data: BuildingData) -> Control:
 	if can_build:
 		var build := Button.new()
 		build.name = "Build"
-		build.text = "Build"
+		build.text = "Pick up" if data.tool else "Build"
 		build.custom_minimum_size = Vector2(96, 48)
 		build.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		build.pressed.connect(_choose.bind(data))
@@ -61,7 +64,10 @@ static func _cost_text(data: BuildingData) -> String:
 
 func _choose(data: BuildingData) -> void:
 	close()
-	get_tree().call_group("build_mode", "start", data)
+	if data.tool == &"shovel":
+		get_tree().call_group("sand_shovel", "start")
+	else:
+		get_tree().call_group("build_mode", "start", data)
 
 
 func _exists(id: StringName) -> bool:

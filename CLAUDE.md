@@ -147,7 +147,13 @@ caring for animals". Build in this order, placeholder art:
 12. ✅ Dolphins spread 120° around the island; they surface and dive
 13. ✅ Action bar at the top: one button per nearby action (free / photo / sleep / move / board) so the
     player chooses; E still does the most important one
-14. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+14. ✅ Web saves also go to localStorage (instant) + a "Saved" note
+15. ✅ Placement snaps to the nearest spot that fits; Expedition Boat moors next to a dock plank;
+    patrol boats go round docks
+16. ✅ Hatchlings fill empty protection areas before leaving
+17. ✅ Recycling centre (litter -> funding); cut down / plant palm trees; drawbridge; shovel tool
+    to scoop up beach sand and place it on shallows (sand isn't litter: ItemData.is_litter)
+18. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**

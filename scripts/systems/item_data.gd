@@ -5,5 +5,7 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export var icon: Texture2D
+## Litter: washes in, is spent on buildings and can be recycled (sand isn't).
+@export var is_litter := true
 ## Short, accurate fact shown when the item is first picked up (and later in the journal).
 @export_multiline var fact: String

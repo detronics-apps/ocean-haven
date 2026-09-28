@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/sand.svg" id="1_dly5u"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_kf7em"]
+
+[resource]
+script = ExtResource("2_kf7em")
+id = &"sand"
+display_name = "Sand"
+icon = ExtResource("1_dly5u")
+is_litter = false
+fact = "Beach sand is made of tiny bits of rock and shell, worn down by the sea over thousands of years."

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_akqsv"]
+[ext_resource type="Texture2D" path="res://assets/items/sand.svg" id="2_okw24"]
+
+[resource]
+script = ExtResource("1_akqsv")
+id = &"shovel"
+display_name = "Shovel"
+description = "Move sand: scoop up a beach tile (it becomes shallows) and place it on shallow water to make new beach."
+order = 7
+texture = ExtResource("2_okw24")
+terrain = PackedStringArray("sand", "grass")
+tool = &"shovel"

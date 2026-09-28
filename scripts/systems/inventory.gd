@@ -20,24 +20,36 @@ func count(id: StringName) -> int:
 	return _counts.get(id, 0)
 
 
+## Pieces of litter carried (what buildings cost and what gets recycled; not sand).
 func total() -> int:
 	var n := 0
-	for c in _counts.values():
-		n += c
+	for id in _litter_ids():
+		n += _counts[id]
 	return n
 
 
-## Removes `amount` items of any kind, biggest piles first. Removes nothing and
+## Removes `amount` pieces of litter, biggest piles first. Removes nothing and
 ## returns false if there aren't enough.
-# ponytail: every item is litter for now; take by kind once non-litter items exist.
 func take(amount: int) -> bool:
 	if total() < amount:
 		return false
 	while amount > 0:
-		var id: StringName = _counts.keys().reduce(func(a, b): return a if _counts[a] >= _counts[b] else b)
+		var id: StringName = _litter_ids().reduce(func(a, b): return a if _counts[a] >= _counts[b] else b)
 		var n := mini(amount, _counts[id])
 		_set_count(_items[id], _counts[id] - n)
 		amount -= n
+	return true
+
+
+func _litter_ids() -> Array:
+	return _counts.keys().filter(func(id: StringName) -> bool: return _items[id].is_litter)
+
+
+## Removes `amount` of one particular item (e.g. sand). Returns whether there was enough.
+func take_item(id: StringName, amount := 1) -> bool:
+	if count(id) < amount:
+		return false
+	_set_count(_items[id], count(id) - amount)
 	return true
 
 
