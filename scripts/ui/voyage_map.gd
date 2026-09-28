@@ -3,7 +3,11 @@ extends OverlayScreen
 ## The Map: every region of the ocean. You can sail to any island you've discovered
 ## (the voyage fades out and in, and brings the ranger and their rowboat ashore there).
 ## Undiscovered islands are shown but can't be chosen: they're found by exploring
-## warmer or colder with the Exploration Ship (see ExploreMenu).
+## warmer or colder with the Exploration Ship (see ExploreMenu). The Map answers just two
+## questions: discovered? (greyed out if not) and has an Exploration Ship? (a compass).
+## Everything else (levels, upgrades) belongs in the ship's own screen.
+
+const COMPASS := preload("res://assets/ui/compass.svg")
 
 
 func _enter_tree() -> void:
@@ -19,11 +23,24 @@ func _fill() -> void:
 	var here := Regions.nearest(_ranger_position())
 	for region: RegionData in Regions.all():
 		var known := Regions.is_discovered(region)
-		var status := "You are here." if region == here else ("Discovered." if known
-			else "Not discovered yet: explore %s with your Exploration Ship to find it." % region.direction)
-		var lines: Array[String] = [region.display_name, region.description if known else region.theme, status]
-		var entry := card(region.map_icon, lines, not known)
+		var lines: Array[String] = [region.display_name, region.description if known else region.theme]
+		if region == here:
+			lines.append("You are here.")
+		elif not known:
+			lines.append("Not discovered yet.")
+		var entry := card(region.map_icon, lines)
 		entry.name = "Entry_" + region.id
+		if not known:
+			entry.modulate = Color(0.55, 0.58, 0.62, 0.8)  # greyed out
+		if Regions.exploration_ready(get_tree(), region):
+			var compass := TextureRect.new()
+			compass.name = "Compass"
+			compass.texture = COMPASS
+			compass.custom_minimum_size = Vector2(32, 32)
+			compass.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			compass.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			compass.tooltip_text = "Has an Exploration Ship"
+			entry.get_child(0).add_child(compass)
 		if known and region != here:
 			var sail := Button.new()
 			sail.name = "Sail"

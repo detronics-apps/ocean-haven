@@ -42,6 +42,19 @@ static func next_undiscovered(direction: StringName) -> RegionData:
 	return null
 
 
+## Has an Exploration Ship established on its island (so you can explore on from there).
+static func exploration_ready(tree: SceneTree, region: RegionData) -> bool:
+	for building: Building in tree.get_nodes_in_group("buildings"):
+		if building.data.action == &"explore" and nearest(building.global_position) == region:
+			return true
+	return false
+
+
+## One level per island with an Exploration Ship: the whole network gets more capable.
+static func exploration_level(tree: SceneTree) -> int:
+	return all().filter(func(region: RegionData) -> bool: return exploration_ready(tree, region)).size()
+
+
 ## For the save file.
 static func discovered_ids() -> Array:
 	return _discovered.keys()

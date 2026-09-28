@@ -1,11 +1,10 @@
 class_name ExploreMenu
 extends OverlayScreen
 ## The Exploration Ship's menu (only opened from the ship itself, never from the Map):
-## explore warmer or colder. Each finds the next undiscovered island that way, which
-## is then discovered for good (the Map can sail there from then on) and gets its own
-## Exploration Ship moored by the shore, to explore on from there.
-
-const SHIP := "res://data/buildings/expedition_boat.tres"
+## explore warmer or colder. Each finds the next undiscovered island that way, which is
+## then discovered for good (the Map can sail there from then on). To explore on from
+## there, establish an Exploration Ship on it (that makes it Exploration Ready, and
+## raises your Exploration Level: one per ship).
 
 
 func _enter_tree() -> void:
@@ -18,8 +17,10 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	var level := Regions.exploration_level(get_tree())
 	var note := Label.new()
-	note.text = "Where shall we explore? You'll find out what's there when you arrive."
+	note.text = "Exploration Level %d: %s. Where shall we explore? You'll find out what's there when you arrive." % [
+		level, "one ship" if level == 1 else "a network of %d ships" % level]
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_content.add_child(note)
 	for direction in [Regions.WARMER, Regions.COLDER]:
@@ -41,39 +42,11 @@ func _fill() -> void:
 		_content.add_child(row)
 
 
-## Discovers the next island `direction`, moors a ship there, and sails there.
+## Discovers the next island `direction` and sails there.
 func explore(direction: StringName) -> void:
 	var region := Regions.next_undiscovered(direction)
 	if not region:
 		return
 	close()
 	Regions.discover(region)
-	moor_ship(get_tree(), region)
 	get_tree().call_group("hud", "voyage", region, true)
-
-
-## Adds an Exploration Ship in the shallows by the island's landing spot (if it hasn't one).
-static func moor_ship(tree: SceneTree, region: RegionData) -> void:
-	for building: Building in tree.get_nodes_in_group("buildings"):
-		if building.data.id == &"expedition_boat" and building.global_position.distance_to(region.center) < region.waters_radius:
-			return
-	var data: BuildingData = load(SHIP)
-	var mooring := Terrain.cell_of(region.boat_mooring)
-	for ring in range(1, 6):  # nearest spot all in water, not on the rowboat's mooring
-		for dx in range(-ring, ring + 1):
-			for dy in range(-ring, ring + 1):
-				var cell := mooring + Vector2i(dx, dy)
-				if maxi(absi(dx), absi(dy)) == ring and _ship_fits(tree, data, cell, mooring):
-					tree.get_first_node_in_group("build_mode").add_building(data, cell)
-					return
-
-
-static func _ship_fits(tree: SceneTree, data: BuildingData, cell: Vector2i, mooring: Vector2i) -> bool:
-	var footprint := Rect2i(cell, data.size)
-	if footprint.has_point(mooring):
-		return false
-	for x in data.size.x:
-		for y in data.size.y:
-			if Terrain.at(tree, Terrain.centre_of(cell + Vector2i(x, y))) not in data.terrain:
-				return false
-	return true

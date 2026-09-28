@@ -1,0 +1,252 @@
+# BlueHaven — Master Plan
+
+The end goal to build towards. Each step below is a playable milestone; the detailed
+build order for the current step lives in `CLAUDE.md` (Milestones). Game rules in
+`CLAUDE.md` always win (no combat, animals never die, no failure states, one currency…).
+
+> **The more we understand and care for one part of the ocean, the better equipped we
+> become to understand the whole system.**
+
+Progression of scale: individual wildlife → populations → ecosystems → global systems.
+
+---
+
+## The six islands
+
+| # | Island | Lesson | Core question | Signature mechanic | Found by |
+|---|---|---|---|---|---|
+| 1 | 🏝️ Starting Island | What we do locally affects the ocean | What are humans doing? | Pollution → cleanup → recovery | (start) |
+| 2 | 🌿 Kelp Forest | Species depend on one another | What happens when one species changes? | Predator → prey → habitat (food web) | Colder, 1st |
+| 3 | 🌱 Mangrove Coast | The land and ocean are connected | Where do the water and wildlife go? | Water flow & nursery network | Warmer, 1st |
+| 4 | 🪸 Tropical Reef | An ecosystem is many systems working together | How do many systems work together? | Habitat restoration | Warmer, 2nd |
+| 5 | 🌊 Deep Sea | We can't protect what we don't understand | What don't we know yet? | Research & hidden information | Colder, 2nd |
+| 6 | ❄️ Polar Ocean | The ocean connects the whole planet | How does everything connect globally? | Seasonal ice & colonies | Colder, 3rd |
+
+Routes: **colder** Starting → Kelp Forest → Deep Sea → Polar Ocean; **warmer** Starting →
+Mangrove Coast → Tropical Reef.
+
+Ground tiles are plain and shared (sand, grass, rock, ice, mud; water shallow / mid / deep).
+Coral, kelp, seagrass and mangroves are **plants** placed on top — never ground tiles.
+
+---
+
+## Exploration
+
+### Map vs Explore — two separate things, never one menu
+- 🗺️ **Map** (HUD button) — *"Where can I go?"* Every island is shown. You can sail only to islands
+  you've discovered. Undiscovered islands are informational only.
+- 🚢 **Explore** — *"Where can I discover next?"* Only by walking up to an **Exploration Ship**.
+  It offers **Explore warmer / Explore colder** — a direction, never a named island — and finds the
+  **next undiscovered island in that direction** from wherever you are.
+- Once discovered, an island stays on the Map for good. No rebuilding ships just to go back.
+
+### Exploration Ready (per island)
+An island is **Exploration Ready** once the player has *earned* and established an Exploration
+Ship there. The ship is a reward for engaging with the island, not something you get by landing:
+
+Arrive → explore the ecosystem → solve its core problem (the island objective) → establish the
+Exploration Ship → 🧭 on the Map → explore warmer/colder from there.
+
+This stops "build ship → explore → build ship → unlock everything".
+
+### Island technology & ship upgrades (the whole fleet)
+Every island's restoration gives something that **cannot be obtained anywhere else** — something
+the player *learned or developed* there, not "50 kelp". It upgrades the **whole** fleet (every
+ship), and the upgrade is what makes the next region reachable:
+
+| Island | Technology earned | Ship upgrade | Enables |
+|---|---|---|---|
+| 🏝️ Starting | Coastal Navigation Kit | Basic navigation | The first exploration (Kelp Forest or Mangrove Coast) |
+| 🌿 Kelp Forest | Kelp Fibre (strong, flexible bio-material) | Reinforced underwater equipment | Deeper water → Deep Sea |
+| 🌱 Mangrove Coast | Mangrove resin / water-filter technology | Water & navigation sensors | Complex coastal waterways → Tropical Reef |
+| 🪸 Tropical Reef | Coral research equipment | Reef mapping & scanning gear | Further offshore |
+| 🌊 Deep Sea | Deep-sea pressure technology | Pressure-rated equipment | Extreme depths → Polar Ocean |
+| ❄️ Polar Ocean | Ice-navigation technology | Ice-capable equipment | Final / global exploration |
+
+**The fleet visibly evolves** (every ship's sprite changes with the equipment level):
+1. Basic hull, small antenna, simple navigation
+2. Reinforced hull, underwater equipment, diving sensor
+3. Water sensors, navigation scanner, mapping equipment
+4. Biological scanner, reef mapping, improved sonar
+5. Pressure-rated hull, deep sonar, bioluminescence camera
+6. Ice navigation, cold-weather gear, advanced global communication
+
+At the ship:
+```
+EXPLORATION SHIP
+Current equipment: Level 2
+Next upgrade: Deep-Water Equipment
+Required: Kelp Fibre Technology — ✓ Obtained
+[ UPGRADE ]
+```
+
+**The Map stays simple** — it answers only two questions:
+
+| State | On the Map |
+|---|---|
+| Not discovered | Island greyed out |
+| Discovered | Normal island picture |
+| Has an Exploration Ship | Normal picture + a small 🧭 |
+
+No levels, readiness, upgrades or expedition counts on the Map — those belong in the ship's screen.
+
+**Exploration Level** — the fleet's equipment level, shown at the ship ("Level 1: one basic
+expedition vessel" … "Level 5: a global research network"). Not charges, fuel or tokens.
+
+---
+
+## Island by island
+
+Animal rule (CLAUDE.md): every animal needs the ranger's help, helps other animals, or both —
+and **animals never die**. Declines are shown as animals leaving, fewer arriving, colonies moving
+away or fewer young — and always recoverable. Interventions are never lethal.
+
+### 1. 🏝️ Starting Island — Human impact
+Pollution isn't one score; each kind hits a different system, and the player chooses what to clean
+first and what to protect:
+- Plastic → wildlife hazard · Oil/chemicals → water quality · Fishing debris → entanglement ·
+  Boat traffic → disturbance · Too much beach use → nesting disruption
+
+| Animal | Role |
+|---|---|
+| 🐬 Dolphin | Finds pollution: reveals floating and submerged litter (✅ leads you to litter after you play with it) |
+| 🦀 Ghost Crab | Finds buried beach litter by digging (✅) |
+| 🐢 Sea Turtle | Nesting zones the player keeps free of disturbance and obstacles (✅ protection areas, hatchlings) |
+| 🐦 Seabird | Nests in coastal vegetation — you can't clear every tree for resources |
+
+Result: cleaner beach → more nesting → more wildlife — by changing how the island is used.
+**Objective / technology:** restore the coastline → **Coastal Navigation Kit**.
+
+### 2. 🌿 Kelp Forest — Food web
+Sea otter → sea urchin → kelp → habitat → fish. Lose otters: urchins ↑, kelp ↓, habitat ↓, fish ↓.
+The lesson isn't "remove urchins" but "why are there too many urchins?" — restore the otters and the
+system fixes itself.
+
+| Animal | Role |
+|---|---|
+| 🦦 Sea Otter | Keeps urchins in balance; restoring otters changes the whole forest |
+| 🦔 Sea Urchin | Kelp grazer — managed through the food web, never eliminated |
+| 🦭 Seal | Needs safe haul-out / breeding areas → protected coastal zones |
+| 🐟 Kelp fish / Rockfish | Habitat indicator: numbers follow the forest's health |
+
+Plants: kelp (grows back visibly). **Technology:** Kelp Fibre → reinforced underwater equipment.
+
+### 3. 🌱 Mangrove Coast — Land meets ocean
+Land → freshwater → sediment/nutrients → mangroves → juvenile fish → ocean. The player restores (or
+damages) mangrove channels, mud flats, shallow pools, nursery areas, boat channels; a blocked channel
+stops fish reaching the nursery.
+
+| Animal | Role |
+|---|---|
+| 🦀 Mangrove Crab | Ecosystem engineer: burrows change sediment and water flow, and where mangroves thrive |
+| 🐟 Juvenile fish | Nursery connection: grow up in the channels, then move to other habitats (later the Reef) |
+| 🦩 Flamingo | Water-level indicator: feeding areas follow shallow-water conditions |
+| 🐊 Crocodile | Territories are protected zones where boats and people must keep away |
+
+Plants: mangroves. **Technology:** mangrove resin / water-filter tech → water & navigation sensors.
+
+### 4. 🪸 Tropical Reef — Ecosystem complexity
+Lagoon, coral reef, seagrass, outer reef, deep reef edge. Not just "plant coral": create the
+conditions — water quality + coral + grazing + predators + seagrass + protection. The reef visibly
+progresses: bare rock → algae → recovering coral → structured reef → diverse ecosystem.
+
+| Animal | Role |
+|---|---|
+| 🐠 Parrotfish | Grazing keeps algae from overwhelming the reef |
+| 🦈 Reef Shark | Predator balance: protect predator habitat, not only small animals |
+| 🐚 Giant Clam | Part of the reef's water-quality / nutrient system |
+| 🐴 Seahorse | Sensitive seagrass zones: manage boats and anchors |
+
+Event: **crown-of-thorns starfish outbreak** — detect → map → prioritise → intervene → monitor.
+Interventions stay non-lethal (e.g. protect its natural predators, cut the nutrient run-off that
+feeds outbreaks, shield priority coral). Plants: coral, seagrass.
+**Technology:** coral research equipment → reef mapping & scanning gear.
+
+### 5. 🌊 Deep Sea — Scientific discovery
+You can't see everything: deploy cameras, hydrophones, mapping equipment, sensors and research
+vessels to build up understanding. "There's nothing here" becomes "we didn't know what was here".
+Findings (species, habitats, fishing impacts, migration routes) are useful on later islands.
+
+| Animal | Role |
+|---|---|
+| 🐋 Sperm Whale | Acoustic mapping: its sounds reveal activity where you can't see |
+| 🦑 Giant Squid | Rare discovery: leave cameras/sensors running long enough to find it |
+| 🐟 Anglerfish | Bioluminescence helps identify animals and navigate the dark |
+| 🦈 Deep-sea shark | Encounters reveal lost fishing gear to investigate and clean up |
+
+**Technology:** deep-sea pressure technology → pressure-rated equipment.
+
+### 6. ❄️ Polar Ocean — Global connectivity
+Seasons change the island: ice forms → breeding habitat appears → food arrives → animals feed →
+ice retreats → colonies relocate. It can't be "fixed" once; the player plans around change.
+Chain: sea ice → penguin colonies → fish/krill → predators → ocean health.
+
+| Animal | Role |
+|---|---|
+| 🐧 Penguin | Colonies need undisturbed breeding sites and access to feeding waters |
+| 🦭 Seal | Uses particular ice areas to rest and breed; protected zones move with the ice |
+| 🐻‍❄️ Polar Bear | Needs connected ice corridors between feeding and resting areas |
+| 🐦 Skua / Arctic seabird | Early warning: responds fast to changes in fish and colonies |
+
+**Technology:** ice-navigation → ice-capable equipment (final/global exploration).
+
+---
+
+## Changes that travel between islands
+
+Effects must be **seen in the world**, not only in statistics.
+
+| Player action | Immediate result | Elsewhere |
+|---|---|---|
+| 🗑️ Clean pollution (Starting) | Cleaner coastal water | Kelp Forest recovers faster |
+| 🚤 Reduce boat disturbance | Wildlife returns | Dolphins, seals, migrants use safer routes |
+| 🌿 Restore the Kelp Forest | More habitat & fish | More food for migrating predators |
+| 🦦 Restore sea otters | Urchins balanced | Kelp expands → more fish habitat |
+| 🌱 Restore mangroves | More nursery habitat | More juvenile fish reach the Tropical Reef |
+| 🚧 Keep mangrove channels open | Fish move through the nursery | Reef fish improve later |
+| 🪸 Restore the reef | More adult fish habitat | Better feeding grounds for migrants |
+| 🐠 Protect parrotfish | Better grazing | Coral restoration succeeds more |
+| 🔬 Research the Deep Sea | Discover migration/fishing problems | New protections available elsewhere |
+| 🎣 Change fishing practices | Less bycatch | Deep-sea and polar populations recover |
+| 🧭 Protect migration routes | Animals travel safely | Wildlife returns to several islands |
+| ❄️ Protect polar habitat | Migration succeeds | Animals later appear in other regions |
+
+Seen examples: restored mangroves → more juveniles in the channels → later, more adult fish on the
+reef ("they came from the nursery I restored"). Unprotected otters → the forest is thinner when you
+come back → restore otters → it regrows. Unmanaged pollution at home → slower kelp, poorer nursery,
+fewer reef fish — traceable back to where it started.
+
+---
+
+## Steps
+
+Each step ends with a playable build. ✅ = done.
+
+- **Step 0 — Foundations ✅** Home island, walking, rowboat, litter & inventory, turtles & nesting,
+  protection areas, dolphins & crabs, funding, buildings & upgrades, wood/trees/sand, docks, patrol
+  boats, recycling, save/backup codes, phone PWA; six island shapes; Map vs Explore; Exploration
+  Ready (one ship per island) with the 🧭 on the Map.
+- **Step 1 — Island objectives & the fleet.** An objective per island (data-driven) that must be
+  completed before its Exploration Ship can be built; island technology items; ship equipment level
+  (one level for the whole fleet) with the upgrade screen at the ship; each direction's next island
+  requires the right technology; ship sprites per level. (The Map keeps just grey / normal / 🧭.)
+- **Step 2 — Starting Island complete.** Pollution types (plastic, oil/chemicals, fishing debris,
+  boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
+  reason not to cut every tree); turtle nesting zones kept clear; objective "restore the coastline"
+  → Coastal Navigation Kit.
+- **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, seals, kelp fish; the food-web
+  simulation (visible forest thinning and regrowing); objective → Kelp Fibre.
+- **Step 4 — Mangrove Coast.** Mangroves as plants; water flow, channels, mud flats, nursery;
+  mangrove crab, juvenile fish, flamingo, crocodile zones; objective → water-filter tech.
+- **Step 5 — Tropical Reef.** Coral and seagrass plants; reef stages from bare rock to diverse reef;
+  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; objective → coral research
+  equipment.
+- **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
+  information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
+  elsewhere; objective → pressure technology.
+- **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
+  objective → ice-navigation.
+- **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
+  gradually from Step 3 on: each new island links to the ones before it).
+- **Step 9 — Global research network.** Late game: every ship visible across the ocean, the whole
+  fleet at its highest level, the full picture of how the islands depend on each other.

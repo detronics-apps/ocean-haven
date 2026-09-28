@@ -7,13 +7,13 @@
 script = ExtResource("1_k7kwi")
 id = &"expedition_boat"
 display_name = "Exploration Ship"
-description = "Your ship for discovering new islands. Moor it next to 2 dock planks, then walk up to it and explore warmer or colder waters. Every island you discover gets its own ship."
+description = "Makes this island Exploration Ready. Moor it next to 2 dock planks, then walk up to it to explore warmer or colder waters. One per island; every ship raises your Exploration Level."
 order = 5
 texture = ExtResource("2_br52n")
 size = Vector2i(2, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 250
-max_count = 3
+one_per_island = true
 requires = &"dock"
 must_touch = &"dock"
 must_touch_count = 2

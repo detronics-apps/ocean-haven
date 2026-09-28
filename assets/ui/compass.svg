@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Exploration Ready: a brass compass (shown faded on the Map when an island isn't ready yet) -->
+  <rect x="5" y="1" width="6" height="1" fill="#8a6a2e"/>
+  <rect x="3" y="2" width="10" height="1" fill="#8a6a2e"/>
+  <rect x="2" y="3" width="12" height="10" fill="#8a6a2e"/>
+  <rect x="3" y="13" width="10" height="1" fill="#8a6a2e"/>
+  <rect x="5" y="14" width="6" height="1" fill="#8a6a2e"/>
+  <rect x="4" y="3" width="8" height="1" fill="#f3ead2"/>
+  <rect x="3" y="4" width="10" height="8" fill="#f3ead2"/>
+  <rect x="4" y="12" width="8" height="1" fill="#f3ead2"/>
+  <rect x="7" y="4" width="2" height="4" fill="#d9483b"/>
+  <rect x="7" y="8" width="2" height="4" fill="#2a4a6e"/>
+  <rect x="7" y="7" width="2" height="2" fill="#f4d35e"/>
+</svg>

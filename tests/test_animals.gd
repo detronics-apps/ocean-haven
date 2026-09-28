@@ -49,22 +49,30 @@ func _initialize() -> void:
 
 	# --- A boat-speed approach doesn't scare dolphins; they come to look ---
 	var dolphin: Node2D = dolphins[0]
-	player.global_position = dolphin.global_position + Vector2(250, 0)  # from the open sea, like a boat
+	var rowboat: Node2D = world.get_node("Boat")  # untyped: Boat uses autoloads
+	rowboat.restore_aboard()  # at sea in the boat (on foot the ranger can't follow a dolphin out)
+	rowboat.global_position = dolphin.global_position + Vector2(250, 0)  # from the open sea
 	await physics_frame
 	var fled := false
 	for i in 600:  # until it relaxes (it may swim off a little first)
-		if player.global_position.distance_to(dolphin.global_position) > 60.0:
-			player.global_position = player.global_position.move_toward(dolphin.global_position, 2.5)  # 150 px/s
+		if rowboat.global_position.distance_to(dolphin.global_position) > 60.0:
+			rowboat.global_position = rowboat.global_position.move_toward(dolphin.global_position, 2.5)  # 150 px/s
 		await physics_frame
 		fled = fled or dolphin.get("_state") == 2
 		if dolphin.is_relaxed():
 			break
 	_expect(not fled, "dolphins don't flee from a cruising boat")
 	_expect(dolphin.is_relaxed(), "dolphin relaxed and curious (%.0f px away, calm %.1f s, state %d)" % [
-		player.global_position.distance_to(dolphin.global_position), dolphin.get("_calm"), dolphin.get("_state")])
+		rowboat.global_position.distance_to(dolphin.global_position), dolphin.get("_calm"), dolphin.get("_state")])
+	rowboat.restore_ashore()
+	for i in 5:
+		await physics_frame  # settle ashore before the next check moves the ranger
 
 	# --- Rushing at a crab sends it scuttling off ---
 	var crab: Node2D = crabs[0]
+	crab.global_position = crab.home()  # its spot on the beach (crabs roam, and inland of a roaming crab can be the lagoon)
+	crab.set("_state", 0)
+	crab.set("_rest_left", 5.0)
 	player.global_position = crab.global_position + crab.global_position.direction_to(Vector2.ZERO) * 150.0  # from inland
 	await physics_frame
 	var crab_fled := false

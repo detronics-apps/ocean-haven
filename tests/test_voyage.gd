@@ -3,7 +3,8 @@ extends SceneTree
 ## region but only sails to discovered ones; islands are discovered by exploring
 ## warmer or colder with the Exploration Ship, which finds the next undiscovered
 ## island that way (Colder: Kelp Forest, Deep Sea, Polar Ocean. Warmer: Mangrove
-## Coast, Tropical Reef), moors a ship there, and brings you ashore.
+## Coast, Tropical Reef) and brings you ashore. An island is Exploration Ready once it has
+## its own Exploration Ship (one per island); each ship raises the Exploration Level.
 ## Run: godot --headless --path . --script res://tests/test_voyage.gd --quit-after 300000
 
 var _failed := false
@@ -75,9 +76,20 @@ func _initialize() -> void:
 	var kelp: Resource = region.call("kelp_forest")
 	_expect(player.global_position == kelp.arrival and boat.global_position == kelp.boat_mooring, "arrived at the Kelp Forest with the rowboat")
 	_expect(regions.is_discovered(kelp), "the Kelp Forest is discovered for good")
-	var kelp_ships := _ships().filter(func(s: Node2D) -> bool: return s.global_position.distance_to(kelp.center) < kelp.waters_radius)
-	_expect(kelp_ships.size() == 1 and kelp_ships[0].global_position.distance_to(kelp.arrival) < 120.0,
-		"an Exploration Ship is moored by the landing spot there")
+	_expect(_ships().size() == 1 and not regions.exploration_ready(self, kelp) and regions.exploration_ready(self, region.call("home_island")),
+		"discovering gives no ship: the Kelp Forest isn't Exploration Ready yet")
+	_expect(regions.exploration_level(self) == 1, "Exploration Level 1: one ship")
+	map.open()
+	_expect(map.find_child("Entry_home_island", true, false).find_child("Compass", true, false) != null
+		and map.find_child("Entry_kelp_forest", true, false).find_child("Compass", true, false) == null,
+		"the Map shows a compass only on islands with an Exploration Ship")
+	map.close()
+	_expect(build_mode.placement_problem(ship, Vector2i(-3, 8)).contains("already has"), "one Exploration Ship per island")
+	# Establish a ship at the Kelp Forest (in the water by the landing spot).
+	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
+	build_mode.add_building(ship, kelp_cell)
+	_expect(regions.exploration_ready(self, kelp) and regions.exploration_level(self) == 2,
+		"a ship there makes it Exploration Ready: Exploration Level 2")
 
 	# --- From the Kelp Forest: colder is the Deep Sea, warmer still the Mangrove Coast ---
 	_expect(regions.next_undiscovered(&"colder") == region.call("deep_sea")

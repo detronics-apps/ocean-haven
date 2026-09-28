@@ -129,8 +129,10 @@ Coast → Tropical Reef.
   the current island. It offers **Explore warmer** / **Explore colder** — a direction, never a named
   island. Each finds the **next undiscovered island in that direction**, from wherever you are (e.g.
   from the Deep Sea, warmer finds the Mangrove Coast if it's still unknown, else the Tropical Reef).
-- Once discovered, an island is permanently on the Map, and gets its own Exploration Ship so you can
-  explore on from there. Never rebuild ships just to go back.
+- Once discovered, an island is permanently on the Map. To explore on from it, establish its own
+  Exploration Ship there (a 🧭 on the Map). Never rebuild ships just to go back.
+- The full end goal — islands, animals, island technology and fleet upgrades, cross-island effects,
+  and the steps to get there — is in `docs/MASTER_PLAN.md`.
 
 Ground tiles are plain and shared (sand, grass, rock, ice, mud; water shallow / mid / deep). Coral,
 kelp and mangroves are plants on top.

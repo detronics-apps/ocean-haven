@@ -43,6 +43,8 @@ extends Resource
 @export var movable := true
 ## Only one of these can exist (e.g. your home).
 @export var unique := false
+## At most one on each island (the Exploration Ship: one per island makes it Exploration Ready).
+@export var one_per_island := false
 ## At most this many can exist (0 = no limit).
 @export var max_count := 0
 ## How many of the animals that nest here it can hold at once (0 = none).

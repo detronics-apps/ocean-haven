@@ -1,6 +1,8 @@
 # BlueHaven
 
-A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean up and restore the ocean around it, and watch wildlife return. Full design: `docs/GAME_DESIGN.md` — read it before adding any gameplay feature.
+A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean up and restore the ocean around it, and watch wildlife return. Full design: `docs/GAME_DESIGN.md` — read it before adding any gameplay feature. The end goal and its steps
+(islands, animals per island, exploration & fleet upgrades, cross-island effects): `docs/MASTER_PLAN.md`
+— build every feature towards it.
 
 ## Tech
 
@@ -183,8 +185,11 @@ caring for animals". Build in this order, placeholder art:
     be plants on top, never ground tiles.
 24. ✅ Exploration (docs/GAME_DESIGN.md "World map"): the Exploration Ship (id expedition_boat)
     offers Explore warmer / colder → the next undiscovered island that way (`Regions.next_undiscovered`,
-    RegionData.direction + order), which is then discovered for good (saved), gets its own moored
-    ship, and can be reached from the Map. The Map only sails to discovered islands.
+    RegionData.direction + order), which is then discovered for good (saved) and reachable from the
+    Map. The Map only sails to discovered islands; undiscovered ones are greyed out; a 🧭 marks islands
+    with an Exploration Ship. One ship per island (built by the player; `one_per_island`); the
+    Exploration Level shown at the ship = islands with a ship. Next: MASTER_PLAN Step 1 (island
+    objectives gate the ship; island technology upgrades the fleet).
 25. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
 26. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")
