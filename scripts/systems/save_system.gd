@@ -312,6 +312,11 @@ func load_from(world: Node, path: String) -> bool:
 			building.add_funds(int(entry.get("funds", 0)))
 			building.tier = int(entry.get("tier", 1))
 			building.built_day = int(entry.get("built_day", -100))  # older saves: palms fully grown
+	# Exploration Ships an older version moored for free, with no dock: gone (build your own).
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):
+			building.remove_from_group("buildings")
+			building.queue_free()
 	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
 		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	var p: Array = state.get("player", [])

@@ -32,6 +32,13 @@ func _initialize() -> void:
 	build_mode.start(load("res://data/buildings/tent.tres"), true)
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "pitched the tent")
 	_inventory.restore(_inventory.to_dict(), {"wood": 6})  # in a Ranger House
+	# An Exploration Ship at a dock, and one an older version moored with no dock.
+	var ship: Resource = load("res://data/buildings/expedition_boat.tres")
+	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
+	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
+	build_mode.add_building(ship, Vector2i(-3, 6))
+	var kelp_mooring: Vector2 = load("res://data/regions/kelp_forest.tres").boat_mooring
+	build_mode.add_building(ship, Vector2i((kelp_mooring / 32.0).floor()) + Vector2i(-2, 1))
 	build_mode.start(load("res://data/buildings/turtle_protection_area.tres"))
 	_expect(build_mode.place_at(Vector2i(14, -1)), "built the sanctuary (uses 5 of 7)")
 	var area: Node = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0]
@@ -91,9 +98,12 @@ func _initialize() -> void:
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
-		cells[b.data.id] = b.cell
+		if b.data.id in [&"tent", &"turtle_protection_area"]:
+			cells[b.data.id] = b.cell
 	_expect(cells == {&"tent": Vector2i(-1, -1), &"turtle_protection_area": Vector2i(14, -1)},
 		"buildings restored where they were placed")
+	var ships := get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"expedition_boat")
+	_expect(ships.size() == 1 and ships[0].cell == Vector2i(-3, 6), "an Exploration Ship with no dock is removed on loading; the docked one stays")
 	var restored_area: Node = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0]
 	_expect(restored_area.tier == 2 and restored_area.capacity() == 5 and restored_area.built_day == 3,
 		"upgrade tier and build day restored")
