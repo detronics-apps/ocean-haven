@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlueHaven</title>
+<meta name="description" content="A cozy pixel-art game about cleaning up the ocean, protecting sea turtles and watching an island come back to life.">
+<link rel="icon" type="image/png" href="icon_32.png">
+<link rel="apple-touch-icon" href="icon_180.png">
+<style>
+  :root {
+    --ocean-deep: #12303f;
+    --ocean: #1f4a5e;
+    --lagoon: #2a78a8;
+    --sand: #e6d5a4;
+    --leaf: #6f9a55;
+    --text: #eef6f8;
+    --muted: #b6cdd5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--ocean-deep), var(--ocean) 60%, var(--lagoon));
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+  header { display: flex; align-items: center; gap: 16px; }
+  header img { width: 72px; height: 72px; image-rendering: pixelated; border-radius: 16px; }
+  h1 { font-size: 2.6rem; margin: 0; letter-spacing: 0.02em; }
+  .tagline { margin: 4px 0 0; color: var(--muted); font-size: 1.1rem; }
+  .screenshot {
+    width: 100%; margin: 28px 0 8px; border-radius: 14px; image-rendering: pixelated;
+    border: 3px solid rgba(230, 213, 164, 0.5); display: block;
+  }
+  .play {
+    display: block; text-align: center; margin: 24px 0; padding: 18px 24px;
+    background: var(--leaf); color: #fff; text-decoration: none; font-size: 1.6rem; font-weight: 700;
+    border-radius: 14px; box-shadow: 0 6px 0 #4f7a3a;
+  }
+  .play:active { transform: translateY(3px); box-shadow: 0 3px 0 #4f7a3a; }
+  h2 { font-size: 1.3rem; margin: 32px 0 8px; color: var(--sand); }
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin: 6px 0; }
+  .card {
+    background: rgba(8, 24, 32, 0.45); border: 1px solid rgba(182, 205, 213, 0.25);
+    border-radius: 12px; padding: 14px 18px; margin: 12px 0;
+  }
+  .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 0.9rem; text-align: center; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon_180.png" alt="">
+    <div>
+      <h1>BlueHaven</h1>
+      <p class="tagline">Start with one little island. Help the ocean around you. Watch it come alive.</p>
+    </div>
+  </header>
+
+  <img class="screenshot" src="screenshot.png" alt="The ranger on a sandy horseshoe island with palm trees, a wooden jetty, a rowboat and a turtle protection area.">
+
+  <a class="play" href="play/">Play BlueHaven</a>
+
+  <h2>What you do</h2>
+  <ul>
+    <li>Sail your little boat and collect the litter washing into the sea.</li>
+    <li>Calmly help sea turtles, dolphins and crabs, and fill your Ocean Journal.</li>
+    <li>Build protected beaches where turtles nest and hatchlings reach the sea.</li>
+    <li>Recycle litter, earn conservation funding and grow your island.</li>
+    <li>Set sail for new islands once your home is looked after.</li>
+  </ul>
+
+  <h2>Keep your progress on a phone</h2>
+  <p>The game saves by itself. To make sure your phone keeps it, add BlueHaven to your home screen and always open it from there:</p>
+  <div class="card">
+    <h3>iPhone or iPad</h3>
+    <ol>
+      <li>Open <strong>Play BlueHaven</strong> in Safari.</li>
+      <li>Tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>.</li>
+      <li>Open BlueHaven from its new icon.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>Android</h3>
+    <ol>
+      <li>Open <strong>Play BlueHaven</strong> in Chrome.</li>
+      <li>Tap the <strong>&#8942;</strong> menu, then <strong>Install app</strong> (or <strong>Add to Home screen</strong>).</li>
+      <li>Open BlueHaven from its new icon.</li>
+    </ol>
+  </div>
+  <p>Progress is kept on each device separately. Private browsing, or clearing your browser's data, removes it.</p>
+
+  <footer>BlueHaven is a game in progress. Turn your phone sideways to play.</footer>
+</main>
+</body>
+</html>

@@ -84,7 +84,15 @@ addons/                  third-party Godot plugins only
   Web saves are also copied to localStorage (synchronous) and loading takes the newest copy
   (`saved_at`); a small "Saved" note flashes after each save.
 
-## Testing on a phone (itch.io — preferred)
+## Website (GitHub Pages — where the phone should play)
+
+`bash tools/publish_pages.sh` exports the "Web Pages" preset (an installable PWA) to
+`build/site/play/`, adds the home page from `web/` (Godot ignores it), and pushes the site to the
+`gh-pages` branch (checked out as a worktree at `build/gh-pages`). Served at
+https://detronics-apps.github.io/ocean-haven/. It's first-party storage, so saves survive,
+unlike itch.io's iframe on iOS. Publish it whenever the itch zip is rebuilt.
+
+## Testing on a phone (itch.io)
 
 This PC's firewall can't accept connections from the phone, so phone builds go to itch.io
 (restricted page, HTTPS, works on Wi-Fi or mobile data).
