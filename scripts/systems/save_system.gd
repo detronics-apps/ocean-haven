@@ -41,6 +41,8 @@ func attach(world: Node) -> bool:
 	Funding.changed.connect(func(_b): _dirty = true)
 	Fleet.objective_completed.connect(func(_r, _d): _dirty = true)
 	Fleet.upgraded.connect(func(_d, _l): _dirty = true)
+	Missions.sent.connect(func(_m): _dirty = true)
+	Missions.returned.connect(func(_m, _f): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
 	Journal.hatched.connect(func(_a, _c): _dirty = true)
 	Journal.gifted.connect(func(_a): _dirty = true)
@@ -139,6 +141,7 @@ func save_to(world: Node, path: String) -> bool:
 		"avatar_created": RangerProfile.created,
 		"discovered_regions": Regions.discovered_ids(),
 		"fleet": Fleet.to_dict(),
+		"mission": Missions.to_dict(),
 		"litter_collected": Inventory.litter_collected,
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
@@ -248,6 +251,7 @@ func load_from(world: Node, path: String) -> bool:
 	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
 	Regions.restore(state.get("discovered_regions", []))
 	Fleet.restore(state.get("fleet", {}))
+	Missions.restore(state.get("mission", {}))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	_tile_edits = state.get("tile_edits", {})

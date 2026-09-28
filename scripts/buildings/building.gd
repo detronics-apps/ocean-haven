@@ -111,6 +111,8 @@ func actions() -> Array:
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
+	if data.action == &"missions":
+		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
 	if recycle_value() > 0 and Inventory.total() > 0:
 		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
 			"do": recycle})
@@ -259,6 +261,9 @@ func _process(delta: float) -> void:
 		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
 		_hint.text = "%ss in view: %d (visitors love them)" % [kind, seen] if seen > 0 \
 			else "No %ss in view right now" % kind.to_lower()
+	elif _hint.visible and data.action == &"missions":
+		_hint.text = "%s is out: back at %s" % [Missions.active.display_name, Missions.back_time()] \
+			if Missions.active else "Send a mission"
 	elif _hint.visible and data.action == &"explore":
 		_hint.text = "Exploration Ship: equipment level %d" % Fleet.level()
 	elif _hint.visible:

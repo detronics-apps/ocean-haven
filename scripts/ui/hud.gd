@@ -51,6 +51,11 @@ func _ready() -> void:
 	var explore := ExploreMenu.new()  # opened only from the Exploration Ship, never from here
 	explore.name = "ExploreMenu"
 	get_parent().add_child.call_deferred(explore)
+	var missions := MissionMenu.new()  # opened from a signature facility
+	missions.name = "MissionMenu"
+	get_parent().add_child.call_deferred(missions)
+	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back at %s." % [m.display_name, Missions.back_time()]))
+	Missions.returned.connect(_on_mission_returned)
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
@@ -258,6 +263,10 @@ func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> vo
 	if discovery:
 		text += "\n%s\n%s" % [region.discovery_text, discovery.fact]
 	show_toast(text)
+
+
+func _on_mission_returned(mission: MissionData, found: int) -> void:
+	show_toast("%s is back!\n%s" % [mission.display_name, mission.report % found if found > 0 else mission.report_none])
 
 
 func _on_built(building: Building) -> void:

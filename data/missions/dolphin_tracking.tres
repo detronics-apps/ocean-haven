@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"dolphin_tracking"
+display_name = "Dolphin tracking"
+description = "Researchers follow the dolphin pod by listening for their clicks and whistles."
+order = 4
+facility = &"marine_rescue_station"
+cost = 10
+hours = 2.0
+finds_group = &"animals"
+finds_species = &"bottlenose_dolphin"
+finds_tangled = false
+marker_colour = Color(0.498, 0.8314, 1, 1)
+report = "Dolphin tracking found %d dolphin(s). They're marked in blue on your minimap today."
+report_none = "Dolphin tracking heard no dolphins nearby today."

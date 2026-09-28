@@ -94,6 +94,8 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	var name := data.display_name.to_lower()
 	var island := Regions.nearest(Terrain.centre_of(cell))
+	if data.only_on != &"" and island.id != data.only_on:
+		return "Your %s belongs on the %s." % [name, (load("res://data/regions/%s.tres" % data.only_on) as RegionData).display_name]
 	if data.needs_objective and Fleet.ship_problem(island) != "":
 		return Fleet.ship_problem(island)
 	if data.one_per_island:

@@ -52,6 +52,11 @@ func _draw() -> void:
 		var b: Array = map_point(boat.global_position, centre)
 		if b[1]:
 			draw_rect(Rect2(b[0] - Vector2(3, 2), Vector2(6, 4)), BOAT_COLOUR)
+	# What the last mission found (until the next morning); pinned to the rim when off the map.
+	for node: Node2D in Missions.marked():
+		var m: Array = map_point(node.global_position, centre)
+		draw_circle(m[0], 3.5, Color.BLACK)
+		draw_circle(m[0], 2.5, Missions.marker_colour())
 	var home := _home()
 	if home:
 		var h: Array = map_point(home.global_position, centre)

@@ -207,7 +207,10 @@ Step 2. Build in this order:
 2. ✅ Wildlife Conservation Parks (funding facilities, BuildingData.facility = "funding", shown in
    gold in the Build menu): up to 3 Turtle Protection Areas + 1 Dolphin Viewing Area (visitors per
    dolphin in view: `watches`). Morning funding (Building.visitors_today) × (1 + island health).
-3. Marine Rescue & Research Station (signature, 1): funded missions
+3. ✅ Marine Rescue & Research Station (signature facility, one per island, `only_on` the Starting
+   Island): sends missions (data/missions/, MissionData; `Missions` autoload, one at a time, saved)
+   for funding — rescue boat (animals in distress), pollution survey, turtle monitoring, dolphin
+   tracking. Back after a few hours; what it found is marked on the minimap until the next morning.
 4. Pollution types (fishing debris, oil, boat disturbance, beach use)
 5. Seabirds (nest in grown palms; tangled chicks; flocks show litter)
 6. Upgrade art (a texture per building tier)

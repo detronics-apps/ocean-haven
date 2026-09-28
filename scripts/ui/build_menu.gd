@@ -72,6 +72,10 @@ func _entry(data: BuildingData) -> Control:
 		status = "Already built."
 	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
 		status = "You've built as many as you can (%d)." % data.max_count
+	elif data.only_on != &"" and _island().id != data.only_on:
+		status = "Only on the %s." % (load("res://data/regions/%s.tres" % data.only_on) as RegionData).display_name
+	elif data.one_per_island and _on_island(data.id):
+		status = "This island already has one."
 	elif data.needs_objective and Fleet.ship_problem(_island()) != "":
 		var island := _island()
 		status = Fleet.ship_problem(island)
@@ -115,6 +119,13 @@ func _choose(data: BuildingData) -> void:
 func _island() -> RegionData:
 	var ranger := ControlledBody.active(get_tree())
 	return Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
+
+
+func _on_island(id: StringName) -> bool:
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == id and Regions.nearest(building.global_position) == _island():
+			return true
+	return false
 
 
 func _exists(id: StringName) -> bool:

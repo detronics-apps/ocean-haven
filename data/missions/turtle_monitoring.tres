@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"turtle_monitoring"
+display_name = "Turtle monitoring"
+description = "Researchers count the sea turtles living around the island."
+order = 3
+facility = &"marine_rescue_station"
+cost = 10
+hours = 2.0
+finds_group = &"animals"
+finds_species = &"green_turtle"
+finds_tangled = false
+marker_colour = Color(0.3725, 0.8627, 0.4784, 1)
+report = "Turtle monitoring counted %d turtle(s). They're marked in green on your minimap today."
+report_none = "Turtle monitoring found no turtles here yet. Protected nesting beaches will bring them."

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_mrs"]
+[ext_resource type="Texture2D" path="res://assets/buildings/marine_rescue_station.svg" id="2_mrs"]
+
+[resource]
+script = ExtResource("1_mrs")
+id = &"marine_rescue_station"
+display_name = "Marine Rescue & Research Station"
+description = "The Starting Island's special building. Spend funding to send out missions: a rescue boat to find animals in distress, and surveys of the island's litter, turtles and dolphins."
+order = 0
+texture = ExtResource("2_mrs")
+size = Vector2i(3, 2)
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 80
+cost_litter = 10
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+facility = &"signature"
+one_per_island = true
+only_on = &"home_island"
+action = &"missions"
+placement_hint = "on the island"
+fact = "Marine rescue teams respond to stranded and entangled animals, and researchers survey the coast to find out where help is needed most."

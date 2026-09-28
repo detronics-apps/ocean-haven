@@ -56,6 +56,9 @@ func _initialize() -> void:
 	baby.set("young", true)
 	baby.position = Vector2(-500, 100)
 	world.add_child(baby)
+	root.get_node("Funding").restore({"balance": 100})
+	var missions := root.get_node("Missions")
+	missions.send(load("res://data/missions/turtle_monitoring.tres"), load("res://data/regions/home_island.tres"))
 	root.get_node("Funding").restore({"balance": 77})
 	var cut_tree: Node = world.get_node("StarterIsland/Palm3")
 	_save.mark_cut(cut_tree)
@@ -87,6 +90,7 @@ func _initialize() -> void:
 	# --- "Restart": empty state, fresh world, load ---
 	regions.restore([])
 	fleet.restore({})
+	missions.restore({})
 	_inventory.restore({})
 	_inventory.litter_collected = 0
 	_journal.restore([])
@@ -109,6 +113,7 @@ func _initialize() -> void:
 	_expect(_inventory.litter_collected == 7, "litter collected ever restored (%d)" % _inventory.litter_collected)
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
+	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
 		if b.data.id in [&"tent", &"turtle_protection_area"]:

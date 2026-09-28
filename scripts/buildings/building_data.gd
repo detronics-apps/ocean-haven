@@ -53,6 +53,8 @@ extends Resource
 @export var unique := false
 ## At most one on each island (the Exploration Ship: one per island makes it Exploration Ready).
 @export var one_per_island := false
+## Only on this island (region id; "" = any): each island's signature facility is its own.
+@export var only_on: StringName
 ## Only once the island's objective is done (RegionData.goals; the Exploration Ship).
 @export var needs_objective := false
 ## Pictures by fleet equipment level (Fleet.level(): 1 = first entry); `texture` below level 1.
@@ -87,7 +89,8 @@ extends Resource
 @export var must_touch_count := 1
 ## Where it goes, for the placement bar (e.g. "in the water, next to 2 dock planks").
 @export var placement_hint: String
-## What interacting with it does: "" (nothing), "sleep" or "explore" (the Exploration Ship).
+## What interacting with it does: "" (nothing), "sleep", "explore" (the Exploration Ship) or
+## "missions" (a signature facility: send missions, see Missions).
 @export var action: StringName
 ## Short, accurate fact shown when it's built.
 @export_multiline var fact: String

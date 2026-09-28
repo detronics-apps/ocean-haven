@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"pollution_survey"
+display_name = "Pollution survey"
+description = "Researchers survey the water and beaches and map every piece of litter they find."
+order = 2
+facility = &"marine_rescue_station"
+cost = 15
+hours = 2.0
+finds_group = &"debris"
+finds_species = &""
+finds_tangled = false
+marker_colour = Color(0.949, 0.7882, 0.298, 1)
+report = "The pollution survey mapped %d piece(s) of litter. They're marked in yellow on your minimap today."
+report_none = "The pollution survey found no litter. The island is clean!"
