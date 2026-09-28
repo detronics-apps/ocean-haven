@@ -96,6 +96,9 @@ func _ready() -> void:
 		_tangle.texture = tangle_item.icon  # whatever it's caught in: line, net, bag...
 	_rest_left = randf_range(0.0, data.rest_max)
 	collision_mask = WATER_LAYER if _lives_on_land() else LAND_LAYER
+	if data.flies:
+		collision_mask = 0
+		z_index = 2  # over the trees
 	_land_mask = collision_mask
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
@@ -306,6 +309,16 @@ func _nearest_floating_litter(within: float) -> Node2D:
 
 
 ## Diggers (crabs) sometimes turn up buried litter while the ranger is watching.
+func _nearest_floating_litter_to(point: Vector2, within: float) -> Node2D:
+	var best: Node2D = null
+	for debris: Debris in get_tree().get_nodes_in_group("debris"):
+		if debris.floating and not debris.is_queued_for_deletion() and debris.item.is_litter \
+				and debris.global_position.distance_to(point) <= within \
+				and (not best or debris.global_position.distance_to(point) < best.global_position.distance_to(point)):
+			best = debris
+	return best
+
+
 func _maybe_dig() -> void:
 	if not data.digs_up_litter or tangled or young or randf() > data.dig_chance:
 		return
@@ -425,6 +438,10 @@ func _rest(seconds: float) -> void:
 
 ## A random spot in its habitat (e.g. the sea, or the beach) within home_radius of home.
 func _pick_target() -> Vector2:
+	if data.circles_litter and not tangled:
+		var litter := _nearest_floating_litter_to(_home, data.circle_range)
+		if litter:  # circling over it shows the ranger where it is
+			return litter.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 32.0)
 	var spot := _home
 	for attempt in 20:
 		spot = _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius

@@ -220,7 +220,10 @@ Step 2. Build in this order:
    ranger's boat cleans them; a "clean" health factor with a target); dolphins keep away from patrol
    boats (AnimalData.boat_shy_distance); turtles won't nest at a protection area with another
    building within 2 tiles (BuildingData.needs_quiet; docks and trees are fine)
-5. Seabirds (nest in grown palms; tangled chicks; flocks show litter)
+5. ✅ Seabirds (brown noddies; AnimalData.flies / circles_litter): arrive by trees
+   (ArrivalData.needs_trees: 5 / 10 / 14 full-grown palms), fly off while there are too few and
+   come back when palms regrow (never while tangled); circle over floating litter near home; can
+   be caught in litter; a health factor
 6. Upgrade art (a texture per building tier)
 7. The wreck → Salvaged Sonar Core (replaces the stand-in objective)
 8. Coastal Storm, the first rare event (MASTER_PLAN "Rare events": each island's event tests its

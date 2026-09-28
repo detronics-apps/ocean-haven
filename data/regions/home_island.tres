@@ -7,6 +7,37 @@
 [ext_resource type="Script" path="res://scripts/animals/arrival_data.gd" id="4_arr"]
 [ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="5_crab"]
 [ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="6_dolphin"]
+[ext_resource type="Resource" path="res://data/animals/brown_noddy.tres" id="7_noddy"]
+
+[sub_resource type="Resource" id="Arrival_Noddy1"]
+script = ExtResource("4_arr")
+species = ExtResource("7_noddy")
+node_name = "Noddy1"
+position = Vector2(-200, -80)
+home_radius = 420.0
+island_health = 0.0
+needs_trees = 5
+note = "Brown noddies have come to nest in your palm trees! They circle over floating litter, showing you where it is."
+
+[sub_resource type="Resource" id="Arrival_Noddy2"]
+script = ExtResource("4_arr")
+species = ExtResource("7_noddy")
+node_name = "Noddy2"
+position = Vector2(150, -150)
+home_radius = 420.0
+island_health = 0.3
+needs_trees = 10
+note = "Another brown noddy is nesting in your palms."
+
+[sub_resource type="Resource" id="Arrival_Noddy3"]
+script = ExtResource("4_arr")
+species = ExtResource("7_noddy")
+node_name = "Noddy3"
+position = Vector2(-80, 150)
+home_radius = 420.0
+island_health = 0.5
+needs_trees = 14
+note = "A third brown noddy has joined them: your palms make a fine seabird colony."
 
 [sub_resource type="Resource" id="Arrival_Crab2"]
 script = ExtResource("4_arr")
@@ -86,6 +117,13 @@ amount = 2
 weight = 2.0
 text = "Oil patches on the water"
 
+[sub_resource type="Resource" id="Health_seabirds"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"brown_noddy"
+amount = 3
+text = "Seabirds nesting in the palms"
+
 [sub_resource type="Resource" id="Health_turtles"]
 script = ExtResource("3_health")
 kind = &"animals"
@@ -150,5 +188,5 @@ discovery = &"salvaged_sonar_core"
 objective = "Clean up the island and help its wildlife"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_litter"), SubResource("Goal_turtle"), SubResource("Goal_dolphin"), SubResource("Goal_crab")])
 discovery_text = "Under the last of the litter you cleaned up, you found an old sonar unit. Cleaned and working again, it's the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
-health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
-arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5")])
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
+arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Noddy1"), SubResource("Arrival_Noddy2"), SubResource("Arrival_Noddy3")])

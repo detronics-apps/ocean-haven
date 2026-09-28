@@ -27,10 +27,10 @@ func _initialize() -> void:
 	var area: Node2D = build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
 	clock.day = 1
 	clock.time_of_day = 0.9
+	var expected: int = area.visitors_today()
 	clock.sleep_until_morning()
 	var paid: int = area.pending_funds
-	var health: float = (load("res://scripts/systems/island_health.gd") as GDScript).of(self, load("res://data/regions/home_island.tres"))
-	_expect(funding.balance == 0 and paid == roundi(20 * (1.0 + health)),
+	_expect(funding.balance == 0 and paid >= 20 and paid == expected,
 		"visitors leave 20 (+10 per turtle belonging here: none yet), a little more for island health (waiting: %d)" % paid)
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(-50, 10)

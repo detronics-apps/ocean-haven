@@ -63,6 +63,11 @@ extends Resource
 ## Keeps this far from busy boats (patrol boats): swims off, and won't settle near their
 ## waters (0 = doesn't mind). Keep patrol areas away from the dolphins' waters.
 @export var boat_shy_distance := 0.0
+## Flies (seabirds): goes over land and sea alike, above everything.
+@export var flies := false
+## Circles over floating litter this close to its home, showing the ranger where it is.
+@export var circles_litter := false
+@export var circle_range := 420.0
 ## Can get caught in litter left about (items that entangle): the ranger frees it again.
 @export var can_tangle := false
 

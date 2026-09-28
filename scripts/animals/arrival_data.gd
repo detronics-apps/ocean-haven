@@ -15,5 +15,8 @@ extends Resource
 ## ... and how many other islands must be healthy (see Arrivals.HEALTHY) — the ocean
 ## around them recovering too.
 @export var healthy_islands := 0
+## Nests in trees: stays only while the island has at least this many full-grown trees
+## (away while there are fewer, back when they regrow). 0 = doesn't need trees.
+@export var needs_trees := 0
 ## Said when it arrives.
 @export var note: String

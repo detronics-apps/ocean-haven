@@ -27,7 +27,9 @@ func _initialize() -> void:
 		"the island starts with 1 crab, 1 dolphin and 1 turtle")
 	world.get_node("LitterSpawner").fill(30)
 	_expect(get_nodes_in_group("debris").size() >= 30, "a new game starts with about 30 pieces of litter (%d)" % get_nodes_in_group("debris").size())
-	_expect(arrivals.check(world).is_empty(), "nobody new arrives while it's polluted")
+	var names := func(list: Array) -> Array: return list.map(func(a: Node) -> String: return String(a.name))
+	var first: Array = names.call(arrivals.check(world))
+	_expect(first == ["Noddy1"], "while it's polluted only a seabird comes (it needs palms, not a clean beach) (%s)" % [first])
 	var start: float = health.of(self, home)
 	_expect(start > 0.0 and start < 0.5, "the Starting Island starts in poor health (%.2f)" % start)
 	# Clean up all its litter.
@@ -35,8 +37,8 @@ func _initialize() -> void:
 		debris.free()
 	var cleaned: float = health.of(self, home)
 	_expect(cleaned > start, "cleaning up raises its health (%.2f)" % cleaned)
-	var came: Array = arrivals.check(world)
-	_expect(came.size() == 1 and came[0].name == "Crab2" and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives")
+	var came: Array = names.call(arrivals.check(world))
+	_expect("Crab2" in came and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives (%s)" % [came])
 	_expect(arrivals.check(world).is_empty(), "and only once")
 	for id in ["green_turtle", "bottlenose_dolphin", "ghost_crab"]:
 		journal.help(load("res://data/animals/%s.tres" % id))
@@ -48,10 +50,34 @@ func _initialize() -> void:
 		turtle.set("young", true)
 		turtle.position = Vector2(-500 + i * 20, 100)
 		world.add_child(turtle)
-	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 6 turtles: fully healthy")
-	came = arrivals.check(world)
-	_expect(came.size() == 1 and came[0].name == "Dolphin1" and count.call(&"bottlenose_dolphin") == 2,
-		"cleaner water: a second dolphin (the rest wait for other islands to recover)")
+	came = names.call(arrivals.check(world))
+	_expect("Dolphin1" in came and not "Dolphin3" in came and count.call(&"bottlenose_dolphin") == 2,
+		"cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
+	_expect(count.call(&"brown_noddy") == 3, "three seabirds nest in the palms of a healthy island")
+	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 6 turtles, 3 seabirds: fully healthy")
+
+	# Seabirds need full-grown palms: cut too many and one flies off (back when they regrow).
+	var palms: Array = world.get_node("StarterIsland").get_children().filter(func(n: Node) -> bool: return n.is_in_group("plants"))
+	for i in 4:
+		palms[i].free()
+	arrivals.check(world)
+	var noddy3: Node2D = world.get_node("Noddy3")
+	_expect(not noddy3.visible and not noddy3.is_in_group("animals") and count.call(&"brown_noddy") == 2,
+		"13 palms left: the third seabird flies off")
+	_expect(health.of(self, home) < 1.0, "and the island is a little less healthy")
+	var planted: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), Vector2i(-2, -8))
+	planted.built_day = -10  # full grown
+	arrivals.check(world)
+	_expect(noddy3.visible and count.call(&"brown_noddy") == 3, "a palm grows back: it returns")
+	var noddy1: Node2D = world.get_node("Noddy1")
+	noddy1.global_position = Vector2(-900, 700)
+	var net: Node = world.get_node("LitterSpawner").spawn_at(load("res://data/items/plastic_bottle.tres"), Vector2(-250, -400), true)
+	var spots := 0
+	for i in 20:
+		if noddy1.call("_pick_target").distance_to(net.global_position) < 40.0:
+			spots += 1
+	_expect(spots == 20, "seabirds circle over floating litter near their home")
+	net.free()
 	for arrival: Resource in home.arrivals:
 		_expect(terrain_ok(arrival), "%s arrives in its habitat" % arrival.node_name)
 
