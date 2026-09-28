@@ -4,3 +4,6 @@
 
 # Export output
 /build/
+
+# Written by tools/publish_pages.sh
+/version.txt

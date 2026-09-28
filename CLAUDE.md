@@ -97,6 +97,14 @@ milestone or a major feature). Then publish and tell the user it's live.
 
 itch.io is no longer kept up to date — don't rebuild the itch zip.
 
+- `editor/export/convert_text_resources_to_binary` is **off**: the binary conversion silently reset
+  `PackedStringArray` exports to their defaults (every building's `terrain`, crabs' habitat), so the
+  phone build let docks go on land. The publish script compares all data/ in the exported .pck with
+  the project (`tools/dump_data.gd`) and refuses to publish if they differ.
+- Test exported builds, not just the editor: the browser caches `index.pck` (use a fresh port for a
+  local server), and headless can run an exported pack: `godot --headless --main-pack <pck> --script <abs path>`.
+- The game shows its revision (`rN sha`, bottom left) from `version.txt`, written at publish time.
+
 ## Testing on a phone (web build over home Wi-Fi — needs firewall access)
 
 Godot web builds need a secure context (HTTPS or localhost), so the phone gets HTTPS with a

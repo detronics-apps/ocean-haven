@@ -12,8 +12,19 @@ PAGES=build/gh-pages
 # 1. Build the site.
 rm -rf "$SITE"
 mkdir -p "$SITE/play"
+# Revision shown in the game (bottom left), so you can tell which version you're playing.
+echo "r$(git rev-list --count HEAD) $(git rev-parse --short HEAD)" > version.txt
 "$GODOT" --headless --path . --export-release "Web Pages" "$SITE/play/index.html"
 rm -f "$SITE"/play/*.import
+# The exported game must hold exactly the same data as the project (an export setting
+# once silently reset every building's terrain; see tools/dump_data.gd).
+dump() { "$GODOT" --headless "$@" 2>/dev/null | grep "^DATA" | sed 's/#-\?[0-9]*>/>/g' | sort; }
+dump --path . --script res://tools/dump_data.gd > build/data_project.txt
+dump --main-pack "$SITE/play/index.pck" --script "$(cygpath -m "$PWD")/tools/dump_data.gd" > build/data_export.txt
+if [ ! -s build/data_project.txt ] || ! diff -q build/data_project.txt build/data_export.txt >/dev/null; then
+  echo "The exported game's data differs from the project (see build/data_*.txt) - not publishing." >&2
+  exit 1
+fi
 cp web/index.html web/screenshot.png "$SITE/"
 cp assets/ui/app_icon_32.png "$SITE/icon_32.png"
 cp assets/ui/app_icon_180.png "$SITE/icon_180.png"

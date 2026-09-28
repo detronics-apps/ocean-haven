@@ -49,6 +49,18 @@ func _ready() -> void:
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
+	# Which version this is (written by tools/publish_pages.sh), tiny, under the minimap.
+	var revision := Label.new()
+	revision.name = "Revision"
+	revision.text = FileAccess.get_file_as_string("res://version.txt").strip_edges() \
+		if FileAccess.file_exists("res://version.txt") else "dev"
+	revision.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	revision.offset_left = 18
+	revision.offset_top = -16
+	revision.add_theme_font_size_override("font_size", 11)
+	revision.modulate = Color(1, 1, 1, 0.6)
+	revision.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(revision)
 	# Bottom right, stacked upwards: easy to reach with a thumb.
 	_action_bar = VBoxContainer.new()
 	_action_bar.name = "ActionBar"

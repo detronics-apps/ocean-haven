@@ -60,7 +60,8 @@ func _initialize() -> void:
 		if dolphin.is_relaxed():
 			break
 	_expect(not fled, "dolphins don't flee from a cruising boat")
-	_expect(dolphin.is_relaxed(), "dolphin relaxed and curious")
+	_expect(dolphin.is_relaxed(), "dolphin relaxed and curious (%.0f px away, calm %.1f s, state %d)" % [
+		player.global_position.distance_to(dolphin.global_position), dolphin.get("_calm"), dolphin.get("_state")])
 
 	# --- Rushing at a crab sends it scuttling off ---
 	var crab: Node2D = crabs[0]
