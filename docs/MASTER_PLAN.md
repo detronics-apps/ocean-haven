@@ -263,7 +263,7 @@ income grow.
 
 | Island | ⭐ Signature facility (1) | What it does | 💰 Funding facility | Max |
 |---|---|---|---|---|
-| 🏝️ Starting Island | Marine Rescue & Research Station | Funds rescue-boat missions, finding wildlife in distress and coastal surveys | Wildlife Conservation Park | 3 |
+| 🏝️ Starting Island | Marine Rescue & Research Station | Funds rescue-boat missions, finding wildlife in distress and coastal surveys | Wildlife Conservation Parks: Turtle Protection Area + Dolphin Viewing Area | 3 + 1 |
 | 🌿 Kelp Forest | Kelp Research Platform | Sends divers / submersibles into the kelp forest to check its health and food-web balance | Kelp Discovery Centre | 2 |
 | 🌱 Mangrove Coast | Mangrove Waterworks Station | Runs gates and pumps to manage freshwater flow through the mangroves | Mangrove Eco-Lodge | 3 |
 | 🪸 Tropical Reef | Coral Restoration Laboratory | Grows and prepares coral and deploys restoration projects | Reef Diving Centre | 3 |
@@ -277,9 +277,9 @@ centres, docks, the workshop, the Exploration Ship.
 - ⭐ **Marine Rescue & Research Station** — the first signature facility, which introduces the
   idea. Spend funding to send out missions: wildlife rescue boat, coastal survey equipment,
   dolphin tracking, turtle monitoring, pollution surveys.
-- 💰 **Wildlife Conservation Park** (up to 3) — visitor / protection areas: Turtle Protection Area
-  (✅ exists), Dolphin Viewing Area, Coastal Wildlife Area. Each earns funding every morning. Start
-  with one (enough to run basic rescue missions), then grow to 2–3 as the island improves.
+- 💰 **Wildlife Conservation Parks** — up to 3 Turtle Protection Areas (✅ exist) alongside a
+  Dolphin Viewing Area. Each earns funding every morning. Start with one (enough to run basic
+  rescue missions), then grow as the island improves.
 
 ### 🌿 Kelp Forest
 - ⭐ **Kelp Research Platform** — home of the food-web mechanic. Fund research / diving missions to
@@ -319,25 +319,95 @@ Outpost's submarines locate the Cargo Module; the Polar Research Station drills 
 
 ## Rare events
 
-Occasional events, different per island type, that call for **preparation** (warned in advance)
-or **immediate action** (sudden) — otherwise wildlife numbers dip. Per the rules, animals never
-die: a dip means animals leave, fewer arrive, nests are lost to the sea or colonies move, and it
-always recovers when the player responds. Never a "you failed"; say what needs help.
+One rare event per island. It **tests the island's main mechanic** — never a new mechanic or
+mini-game. The player should think "I've built this ecosystem; now it has to withstand a
+disturbance", not "another mini-game".
 
-| Event | Where | Warning? | Prepare / respond |
+Rules:
+- **Rare and predictable enough to prepare for:** a warning comes first (the Deep Sea's oil spill
+  is detected rather than forecast). **At most once every 30 in-game days per island**; most
+  events are rarer still (below).
+- **Damages habitat, infrastructure, resources or access — not animal numbers.** No population
+  surges or animal-management problems. Animals never die; they're never hurt by the event.
+- **Preparation pays:** a well-prepared island gets through with little damage; an unprepared
+  one needs more recovery work. Always recoverable; never "you failed", only what needs help.
+- Each has three phases: **Before** (warning, prepare) → **During** (what it damages or closes)
+  → **After** (repair, restore, reopen).
+
+| Island | Event | What it tests | How often |
 |---|---|---|---|
-| 🌀 Storm | Tropical islands (Starting, Mangrove, Reef) | Yes — forecast a day ahead | Secure nests above the tide line, moor boats, protect young plants; afterwards clear the storm litter and check buildings and reef damage |
-| 🛢️ Oil spill | Any, near shipping (Starting, Kelp, Reef) | No — sudden | Boom it off fast, clean oiled beaches and water, care for oiled animals (rescue → care → release) |
-| 🌡️ Marine heatwave / coral bleaching | Tropical Reef | Yes — water warming | Shade and cool priority coral, cut other stress (runoff, anchors), watch recovery |
-| 🦔 Urchin boom | Kelp Forest | Builds up slowly | Read the food web: support the otters rather than removing urchins |
-| ⭐ Crown-of-thorns outbreak | Tropical Reef | Detectable early | Detect → map → prioritise → non-lethal intervention → monitor |
-| 🌊 King tide / flood | Mangrove Coast, Starting | Yes — tide tables | Keep channels open, move nests, protect nursery pools |
-| 🥅 Ghost-net drift | Deep Sea, Kelp | Found by research / animals | Track and recover the lost gear before it entangles wildlife |
-| 🧊 Early ice break-up | Polar Ocean | Yes — seasonal signs | Relocate protected zones, keep colonies' route to the sea open |
+| 🏝️ Starting | 🌪️ Coastal Storm | Protection & cleanup | 1–2 a year |
+| 🌿 Kelp Forest | 🌊 Underwater Storm (heavy swell) | Habitat restoration | 1–2 a year |
+| 🌱 Mangrove Coast | 🌧️ Flash Flood | Water management | 1–2 a year |
+| 🪸 Tropical Reef | 🌀 Hurricane | Habitat preparation & resilience | once every 1–2 years |
+| 🌊 Deep Sea | 🛢️ Oil Spill | Research & emergency response | once every 2–3 years |
+| ❄️ Polar Ocean | 🧊 Major Ice Breakup | Adaptation & connectivity | 1–2 a year |
 
-Preparation is rewarded: a well-prepared island shrugs a storm off; an unprepared one needs a
-cleanup. Events also connect islands (a spill's slick drifts; a storm scatters litter to the
-next island).
+### 🌪️ Starting Island — Coastal Storm
+- **Before:** "Storm approaching — prepare the island." Secure visitor facilities, close
+  vulnerable visitor areas, protect turtle nesting areas, clear litter from vulnerable beaches,
+  move important equipment inland.
+- **During:** damages some buildings, pushes litter onto the beach, damages sections of nesting
+  habitat, temporarily closes visitor areas.
+- **After:** clean the beach, repair facilities, restore nesting areas, reopen visitor zones.
+- **Impact:** funding and conservation capacity dip for a while; beach condition and visitor
+  access drop.
+
+### 🌊 Kelp Forest — Underwater Storm (heavy swell)
+- **Before:** "Heavy swell approaching." The Kelp Research Platform identifies vulnerable areas;
+  prioritise strong established beds, fish nursery areas and beds that are already recovering.
+- **During:** strong currents break some kelp, move rocks and debris, damage habitat, and cut
+  underwater visibility for a while.
+- **After:** send researchers down to survey the damage; prioritise restoration.
+- **Impact:** research costs more / is limited while visibility is poor; kelp habitat (and so fish
+  habitat) dips.
+
+### 🌧️ Mangrove Coast — Flash Flood
+- **Before:** "Flash flood approaching." Prepare the water network at the Waterworks Station: open
+  some channels, close others, protect nursery areas, send excess water through resilient channels.
+- **During:** a big freshwater and sediment pulse. Poor preparation → blocked channels, excess
+  sediment, damaged mangroves, cut-off nurseries; good preparation spreads the water safely.
+- **After:** clear blocked channels, repair waterways, reconnect the nurseries.
+- **Impact:** juvenile-fish habitat dips if the water was badly managed; water flow and mangrove
+  health are disrupted for a while.
+
+### 🌀 Tropical Reef — Hurricane
+- **Before:** "Hurricane approaching — prepare the reef." Is the habitat strong enough? Seahorses
+  need healthy seagrass to anchor to with their tails: restore and protect seagrass beds, close
+  boat routes through sensitive seagrass, restrict diving and snorkelling in vulnerable areas, and
+  prioritise vulnerable coral.
+- **During:** big waves, strong currents and moving sediment; some coral and seagrass damage;
+  diving areas close for a while.
+- **After:** well prepared → little habitat damage, seahorses keep their habitat, the reef
+  recovers quickly. Poorly prepared → more seagrass and coral damage, the Reef Diving Centre earns
+  less, restoration needed.
+- **Impact:** tourism funding dips; reef and seagrass health dip. This gives the player a reason to
+  build strong seagrass habitat *before* anything goes wrong.
+
+### 🛢️ Deep Sea — Oil Spill
+- **Starts:** "Oil detected in offshore waters." The player can't see the whole problem: the
+  Deep-Ocean Outpost's submarine must search → locate → map → respond → monitor, finding where the
+  oil is, which way it's moving and which habitats are at risk. Funding pays for the response.
+- **During:** the slower the response, the further it spreads: more deep-sea habitat affected, and
+  research missions suspended in contaminated areas.
+- **After:** contain the source, monitor the area, survey its recovery.
+- **Impact:** research funding goes to the emergency response; pollution and reduced research
+  access for a while.
+
+### 🧊 Polar Ocean — Major Ice Breakup
+- **Before:** "Major ice movement detected." Protect key penguin colony areas, keep routes open
+  between colonies and feeding areas, adjust protected zones, move research equipment off
+  unstable ice.
+- **During:** a large section of ice breaks away: travel routes change, some habitat is cut off,
+  some areas close and others open.
+- **After:** re-map the coastline and ice, re-establish safe routes, monitor penguin and seal
+  habitat, move or rebuild affected facilities.
+- **Impact:** some areas can't be reached for a while; the habitat layout changes rather than
+  animal numbers.
+
+Real-world basis: storms damage coral, seagrass and mangroves and tear up kelp, while healthy
+coastal habitats also protect coasts from storms; heavy rain changes water and sediment flow
+through mangroves; deep-water oil spills are hard to see and track without research equipment.
 
 ## Changes that travel between islands
 
@@ -387,28 +457,28 @@ Each step ends with a playable build. ✅ = done.
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
   reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris
   field → Salvaged Sonar Core. Buildings: ⭐ Marine Rescue & Research Station
-  (funded missions) and 💰 Wildlife Conservation Parks (up to 3; the Turtle Protection Area becomes
-  one kind).
+  (funded missions) and 💰 Wildlife Conservation Parks (up to 3 Turtle Protection Areas + a Dolphin
+  Viewing Area). Rare event: 🌪️ Coastal Storm.
 - **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, seals, kelp fish; the food-web
-  simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre. ⭐ Kelp Research Platform, 💰 Kelp Discovery Centre (2).
+  simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre. ⭐ Kelp Research Platform, 💰 Kelp Discovery Centre (2). Rare event: 🌊 Underwater Storm.
 - **Step 4 — Mangrove Coast.** Mangroves as plants; water flow, channels, mud flats, nursery;
   mangrove crab, juvenile fish, flamingo, crocodile zones; fallen branches → Mangrove Resin. ⭐ Mangrove Waterworks Station, 💰 Mangrove
-  Eco-Lodge (3).
+  Eco-Lodge (3). Rare event: 🌧️ Flash Flood.
 - **Step 5 — Tropical Reef.** Coral and seagrass plants; reef stages from bare rock to diverse reef;
-  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; coral rubble → Reef Limestone. ⭐ Coral Restoration Laboratory, 💰 Reef Diving
-  Centre (3).
+  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns outbreaks (part of the reef mechanic); coral rubble → Reef Limestone. ⭐ Coral Restoration Laboratory, 💰 Reef Diving
+  Centre (3). Rare event: 🌀 Hurricane (seagrass for seahorses).
 - **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
   information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
   elsewhere; recovering the lost module → Cargo Module (ship cargo storage). ⭐ Deep-Ocean Outpost, 💰 Deep-Sea Discovery
-  Centre (2).
+  Centre (2). Rare event: 🛢️ Oil Spill.
 - **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
   no trees — build with wood brought as cargo; research site and drilling → Ice Core. ⭐ Polar Research Station, 💰 Polar
-  Research Centre (2).
+  Research Centre (2). Rare event: 🧊 Major Ice Breakup.
 - **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
   gradually from Step 3 on: each new island links to the ones before it).
-- **Step 8b — Rare events.** Storms, oil spills, heatwaves and the island-specific events above:
-  forecasts / warnings, preparation, immediate response, visible dips and recovery. Start with a
-  storm and an oil spill on the Starting Island, then add each island's own event with its step.
+- **Step 8b — Rare events.** One per island (see "Rare events"), each testing that island's main
+  mechanic: warning → prepare → event → recover, at most once per 30 days. Built with each island's
+  step, starting with the Starting Island's Coastal Storm (Step 2).
 - **Step 9 — Ocean Research Vessel & Global Ocean Observatory.** With all six discoveries the ship
   becomes the Ocean Research Vessel and the Map gains the Global Ocean Observatory: the whole
   ocean's health and how the islands affect each other. Every ship visible across the ocean.
@@ -426,10 +496,9 @@ tested commit. Placeholder art throughout.
    done there (litter left, animals helped, nests protected, later pollution types). Shown at the
    signature facility and in the Journal; the island's water and ground colours shift from muted
    to vibrant as it rises. Everything below feeds it, and funding facilities read it.
-2. **Funding facilities → Wildlife Conservation Park (up to 3 on the island).** One building
-   category with three kinds: Turtle Protection Area (✅ exists, becomes a park), Dolphin Viewing
-   Area (on the shore, near the pod) and Coastal Wildlife Area. Morning funding grows with island
-   health. Existing protection areas count towards the 3.
+2. **Funding facilities → Wildlife Conservation Parks.** Up to 3 Turtle Protection Areas (✅
+   exist) alongside a Dolphin Viewing Area (on the shore, near the pod). Both marked as funding
+   facilities; morning funding grows with island health.
 3. **Signature facility → Marine Rescue & Research Station (exactly 1).** Spend funding to send a
    mission (one at a time, back the next morning): *rescue boat* (finds an animal in distress and
    marks it), *pollution survey* (reveals hidden litter and oil on the minimap), *turtle
@@ -448,9 +517,11 @@ tested commit. Placeholder art throughout.
 7. **The underwater wreck / debris field.** Found by the coastal survey; a zone of sunken litter
    cleared from the boat; once cleared, recover the old sonar unit → **Salvaged Sonar Core**. This
    replaces the stand-in objective (litter + freeing three animals).
-8. **Storm and oil spill (first rare events).** Storm forecast a day ahead: secure nests, moor
-   boats, then clear storm litter. Oil spill (sudden): boom it off, clean it, care for oiled animals.
-   Dips are animals leaving, never dying; always recoverable.
+8. **🌪️ Coastal Storm (first rare event; see "Rare events").** The event system (warning →
+   prepare → storm → recover, at most once per 30 days per island) plus the storm itself: prepare
+   by securing visitor facilities, closing vulnerable areas, protecting nesting areas, clearing
+   beach litter and moving equipment inland; afterwards clean the beach, repair facilities,
+   restore nesting habitat and reopen visitor areas.
 
 ### Step 3 — Kelp Forest (colder, 1st)
 1. **Coastal trees** replace the leftover palms: wood and saplings, same growth stages.
@@ -467,6 +538,8 @@ tested commit. Placeholder art throughout.
 7. **Objective → Kelp Fibre:** restore the balance, then gather shed kelp from set spots.
    Kelp Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
 8. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
+9. **🌊 Underwater Storm (heavy swell):** the Kelp Research Platform finds vulnerable beds to
+   prioritise; afterwards survey and restore broken kelp.
 
 ### Step 4 — Mangrove Coast (warmer, 1st)
 1. **Mangrove trees** as the island's wood and a plant: planted along mud edges, they hold mud
@@ -483,4 +556,6 @@ tested commit. Placeholder art throughout.
 6. **Objective → Mangrove Resin:** restore the channels, then collect resin from fallen branches.
    Mangrove Exploration Ship; Environment Sensors open the Tropical Reef.
 7. **Cross-island link:** open channels → more juvenile fish (shown later on the Reef).
+8. **🌧️ Flash Flood:** set the gates and channels before it arrives; afterwards clear blocked
+   channels and restore nursery connectivity.
 

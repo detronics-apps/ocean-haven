@@ -199,10 +199,12 @@ caring for animals". Build in this order, placeholder art:
     returned) and re-locks islands found without the upgrade they need.
 
 **MVP 0.4 — "Starting Island complete" (next).** Build order and details: `docs/MASTER_PLAN.md` →
-"Build order", Step 2: island health · Wildlife Conservation Parks (funding facilities, up to 3) ·
-Marine Rescue & Research Station (signature, 1; funded missions) · pollution types · seabirds ·
-upgrade art · the wreck → Salvaged Sonar Core (replaces the stand-in objective) · storm and oil
-spill. Then MVP 0.5 Kelp Forest (Step 3) and MVP 0.6 Mangrove Coast (Step 4).
+"Build order", Step 2: island health · Wildlife Conservation Parks (funding facilities: up to 3
+Turtle Protection Areas + a Dolphin Viewing Area) · Marine Rescue & Research Station (signature, 1;
+funded missions) · pollution types · seabirds · upgrade art · the wreck → Salvaged Sonar Core
+(replaces the stand-in objective) · Coastal Storm (the first rare event; MASTER_PLAN "Rare events":
+each island's event tests its main mechanic, at most once per 30 days, damages habitat /
+infrastructure / access, never animal numbers). Then MVP 0.5 Kelp Forest (Step 3) and MVP 0.6 Mangrove Coast (Step 4).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
