@@ -49,19 +49,39 @@ Exploration Ship → 🧭 on the Map → explore warmer/colder from there.
 
 This stops "build ship → explore → build ship → unlock everything".
 
-### Island technology & ship upgrades (the whole fleet)
-Every island's restoration gives something that **cannot be obtained anywhere else** — something
-the player *learned or developed* there, not "50 kelp". It upgrades the **whole** fleet (every
-ship), and the upgrade is what makes the next region reachable:
+### Island discoveries & ship upgrades (the whole fleet)
+Every island's restoration gives one unique discovery that **cannot be obtained anywhere else** —
+tangible proof of what the player restored or learned there, gathered through a small objective,
+never "collect 10 of X". It upgrades the **whole** fleet (every ship), and some upgrades are what
+make the next region reachable:
 
-| Island | Technology earned | Ship upgrade | Enables |
-|---|---|---|---|
-| 🏝️ Starting | Coastal Navigation Kit | Basic navigation | The first exploration (Kelp Forest or Mangrove Coast) |
-| 🌿 Kelp Forest | Kelp Fibre (strong, flexible bio-material) | Reinforced underwater equipment | Deeper water → Deep Sea |
-| 🌱 Mangrove Coast | Mangrove resin / water-filter technology | Water & navigation sensors | Complex coastal waterways → Tropical Reef |
-| 🪸 Tropical Reef | Coral research equipment | Reef mapping & scanning gear | Further offshore |
-| 🌊 Deep Sea | Deep-sea pressure technology | Pressure-rated equipment | Extreme depths → Polar Ocean |
-| ❄️ Polar Ocean | Ice-navigation technology | Ice-capable equipment | Final / global exploration |
+| Island | Discovery | How it's gathered | Ship capability | Opens |
+|---|---|---|---|---|
+| 🏝️ Starting | Salvaged Sonar Core | Clean up a polluted underwater wreck / debris field; once enough is cleared, recover its old sonar unit | Basic navigation | The first exploration (Kelp Forest or Mangrove Coast) |
+| 🌿 Kelp Forest | Kelp Fibre | Restore the otter → urchin → kelp balance; once the kelp is dense, gather a little naturally shed / overgrown kelp from set areas | Underwater durability | Deeper water → Deep Sea |
+| 🌱 Mangrove Coast | Mangrove Resin | Restore the damaged channels and protect mature mangroves; collect resin from naturally fallen branches on the mud banks | Water & environment sensors | Complex coastal waterways → Tropical Reef |
+| 🪸 Tropical Reef | Reef Limestone | Restore coral and seagrass and clean damaged reef zones; collect dead coral rubble from the seabed — never break living coral | Detailed habitat mapping | (reef tools; part of the full set) |
+| 🌊 Deep Sea | Deep-Sea Mineral Sample | Use the deep-sea research equipment to locate a rare mineral deposit; send the research sub for a small scientific sample (research, not mining) | Extreme-depth exploration | Extreme depths → Polar Ocean |
+| ❄️ Polar Ocean | Ice Core | Establish a safe research site and drill a small scientific core from ancient ice (climate history), stored aboard | Extreme-cold navigation | (polar field work; part of the full set) |
+
+The gathering grows more sophisticated island by island: 🧹 clean → discover · ⚖️ restore balance →
+harvest sustainably · 💧 restore waterways → collect natural material · 🪸 restore habitat → collect
+non-living material · 🔬 research → locate → sample · 🧊 research → set up a station → take a
+scientific sample.
+
+**The full set — Ocean Research Vessel & Global Ocean Observatory.** Because the world branches,
+the player can reach every island without every discovery. Collecting **all six** is the mastery
+reward, not a travel requirement: the ship's final upgrade turns it into an **Ocean Research
+Vessel** (the six components visibly built in), and unlocks the **Global Ocean Observatory** on the
+Map — a view of BlueHaven's whole ocean system:
+- overall ocean health; pollution moving between regions; fish and wildlife population links;
+  water-quality changes; temperature/climate effects;
+- how restoration on one island has affected another (e.g. mangroves restored → more juvenile
+  fish → more fish reach the Reef → healthier Reef → more food further north).
+
+It's the reason to explore *both* branches, and it lands the game's biggest message: the ocean
+isn't six separate ecosystems, it's one connected system. Discover → restore → obtain the unique
+discovery → upgrade the ship → explore further → complete all six → understand the whole ocean.
 
 **The fleet visibly evolves** (every ship's sprite changes with the equipment level):
 1. Basic hull, small antenna, simple navigation
@@ -76,7 +96,7 @@ At the ship:
 EXPLORATION SHIP
 Current equipment: Level 2
 Next upgrade: Deep-Water Equipment
-Required: Kelp Fibre Technology — ✓ Obtained
+Required: Kelp Fibre — ✓ Obtained
 [ UPGRADE ]
 ```
 
@@ -115,7 +135,7 @@ first and what to protect:
 | 🐦 Seabird | Nests in coastal vegetation — you can't clear every tree for resources |
 
 Result: cleaner beach → more nesting → more wildlife — by changing how the island is used.
-**Objective / technology:** restore the coastline → **Coastal Navigation Kit**.
+**Discovery:** clean up the underwater wreck / debris field → **Salvaged Sonar Core**.
 
 ### 2. 🌿 Kelp Forest — Food web
 Sea otter → sea urchin → kelp → habitat → fish. Lose otters: urchins ↑, kelp ↓, habitat ↓, fish ↓.
@@ -129,7 +149,7 @@ system fixes itself.
 | 🦭 Seal | Needs safe haul-out / breeding areas → protected coastal zones |
 | 🐟 Kelp fish / Rockfish | Habitat indicator: numbers follow the forest's health |
 
-Plants: kelp (grows back visibly). **Technology:** Kelp Fibre → reinforced underwater equipment.
+Plants: kelp (grows back visibly). **Discovery:** restore the food web, then gather shed kelp → **Kelp Fibre**.
 
 ### 3. 🌱 Mangrove Coast — Land meets ocean
 Land → freshwater → sediment/nutrients → mangroves → juvenile fish → ocean. The player restores (or
@@ -143,7 +163,7 @@ stops fish reaching the nursery.
 | 🦩 Flamingo | Water-level indicator: feeding areas follow shallow-water conditions |
 | 🐊 Crocodile | Territories are protected zones where boats and people must keep away |
 
-Plants: mangroves. **Technology:** mangrove resin / water-filter tech → water & navigation sensors.
+Plants: mangroves. **Discovery:** restore the channels, then collect resin from fallen branches → **Mangrove Resin**.
 
 ### 4. 🪸 Tropical Reef — Ecosystem complexity
 Lagoon, coral reef, seagrass, outer reef, deep reef edge. Not just "plant coral": create the
@@ -160,7 +180,7 @@ progresses: bare rock → algae → recovering coral → structured reef → div
 Event: **crown-of-thorns starfish outbreak** — detect → map → prioritise → intervene → monitor.
 Interventions stay non-lethal (e.g. protect its natural predators, cut the nutrient run-off that
 feeds outbreaks, shield priority coral). Plants: coral, seagrass.
-**Technology:** coral research equipment → reef mapping & scanning gear.
+**Discovery:** restore the reef, then collect dead coral rubble → **Reef Limestone**.
 
 ### 5. 🌊 Deep Sea — Scientific discovery
 You can't see everything: deploy cameras, hydrophones, mapping equipment, sensors and research
@@ -174,7 +194,7 @@ Findings (species, habitats, fishing impacts, migration routes) are useful on la
 | 🐟 Anglerfish | Bioluminescence helps identify animals and navigate the dark |
 | 🦈 Deep-sea shark | Encounters reveal lost fishing gear to investigate and clean up |
 
-**Technology:** deep-sea pressure technology → pressure-rated equipment.
+**Discovery:** locate a mineral deposit and send the sub for a sample → **Deep-Sea Mineral Sample**.
 
 ### 6. ❄️ Polar Ocean — Global connectivity
 Seasons change the island: ice forms → breeding habitat appears → food arrives → animals feed →
@@ -188,7 +208,7 @@ Chain: sea ice → penguin colonies → fish/krill → predators → ocean healt
 | 🐻‍❄️ Polar Bear | Needs connected ice corridors between feeding and resting areas |
 | 🐦 Skua / Arctic seabird | Early warning: responds fast to changes in fish and colonies |
 
-**Technology:** ice-navigation → ice-capable equipment (final/global exploration).
+**Discovery:** set up a research site and drill → **Ice Core** (with all six: the Ocean Research Vessel).
 
 ---
 
@@ -249,29 +269,29 @@ Each step ends with a playable build. ✅ = done.
   boats, recycling, save/backup codes, phone PWA; six island shapes; Map vs Explore; Exploration
   Ready (one ship per island) with the 🧭 on the Map.
 - **Step 1 — Island objectives & the fleet.** An objective per island (data-driven) that must be
-  completed before its Exploration Ship can be built; island technology items; ship equipment level
+  completed before its Exploration Ship can be built; the six discovery items; ship equipment level
   (one level for the whole fleet) with the upgrade screen at the ship; each direction's next island
-  requires the right technology; ship sprites per level. (The Map keeps just grey / normal / 🧭.)
+  requires the right discovery; ship sprites per level. (The Map keeps just grey / normal / 🧭.)
 - **Step 2 — Starting Island complete.** Pollution types (plastic, oil/chemicals, fishing debris,
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
-  reason not to cut every tree); turtle nesting zones kept clear; objective "restore the coastline"
-  → Coastal Navigation Kit.
+  reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris
+  field → Salvaged Sonar Core.
 - **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, seals, kelp fish; the food-web
-  simulation (visible forest thinning and regrowing); objective → Kelp Fibre.
+  simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre.
 - **Step 4 — Mangrove Coast.** Mangroves as plants; water flow, channels, mud flats, nursery;
-  mangrove crab, juvenile fish, flamingo, crocodile zones; objective → water-filter tech.
+  mangrove crab, juvenile fish, flamingo, crocodile zones; fallen branches → Mangrove Resin.
 - **Step 5 — Tropical Reef.** Coral and seagrass plants; reef stages from bare rock to diverse reef;
-  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; objective → coral research
-  equipment.
+  parrotfish, reef shark, giant clam, seahorse; crown-of-thorns events; coral rubble → Reef Limestone.
 - **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
   information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
-  elsewhere; objective → pressure technology.
+  elsewhere; the research sub's sample → Deep-Sea Mineral Sample.
 - **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
-  objective → ice-navigation.
+  research site and drilling → Ice Core.
 - **Step 8 — Connected ocean.** The cross-island effects above, shown in the world (grown
   gradually from Step 3 on: each new island links to the ones before it).
 - **Step 8b — Rare events.** Storms, oil spills, heatwaves and the island-specific events above:
   forecasts / warnings, preparation, immediate response, visible dips and recovery. Start with a
   storm and an oil spill on the Starting Island, then add each island's own event with its step.
-- **Step 9 — Global research network.** Late game: every ship visible across the ocean, the whole
-  fleet at its highest level, the full picture of how the islands depend on each other.
+- **Step 9 — Ocean Research Vessel & Global Ocean Observatory.** With all six discoveries the ship
+  becomes the Ocean Research Vessel and the Map gains the Global Ocean Observatory: the whole
+  ocean's health and how the islands affect each other. Every ship visible across the ocean.
