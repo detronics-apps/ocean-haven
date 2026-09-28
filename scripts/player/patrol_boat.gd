@@ -65,5 +65,7 @@ func _pick_spot() -> Vector2:
 
 
 func _is_water(local_point: Vector2) -> bool:
-	return Terrain.at(get_tree(), to_global(local_point)) in ["", "water"]
+	var point := to_global(local_point)
+	# Docks are walkways over the water: patrol boats go round them.
+	return Terrain.at(get_tree(), point) in ["", "water"] and not Terrain.walkable(get_tree(), point)
 

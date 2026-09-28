@@ -42,6 +42,8 @@ extends Resource
 @export var deck := false
 ## Must touch the shore or another deck, so walkways grow out from the land.
 @export var connects_to_shore := false
+## Must be right next to a building of this kind (the Expedition Boat moors at a dock).
+@export var must_touch: StringName
 ## What interacting with it does: "" (nothing) or "sleep".
 @export var action: StringName
 ## Short, accurate fact shown when it's built.

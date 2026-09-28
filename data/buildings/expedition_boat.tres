@@ -7,12 +7,13 @@
 script = ExtResource("1_k7kwi")
 id = &"expedition_boat"
 display_name = "Expedition Boat"
-description = "A sturdy boat for long voyages. Moor it in the shallows, then open the Map to set sail for other islands."
+description = "A sturdy boat for long voyages. Moor it in the water right next to a dock plank, then open the Map to set sail for other islands."
 order = 5
 texture = ExtResource("2_br52n")
 size = Vector2i(2, 1)
-terrain = PackedStringArray("water")
+terrain = PackedStringArray("water", "")
 cost_funding = 250
 unique = true
 requires = &"dock"
+must_touch = &"dock"
 fact = "Research vessels carry rangers and scientists far out to sea to study and protect the open ocean."

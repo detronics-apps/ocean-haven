@@ -22,6 +22,13 @@ func _initialize() -> void:
 	var boat: Node2D = world.get_node("Boat")
 	_expect(not build_mode.can_place(dock, _cell_of(boat.global_position)), "can't build a plank on the boat")
 	boat.global_position = Vector2(16, 300)  # moor it further out
+	# Standing on the lagoon beach facing inland, the preview still finds the water.
+	player.global_position = Vector2(-16, 40)
+	for i in 3:
+		await process_frame
+	var ghost_cell: Vector2i = build_mode.get("_cell")
+	_expect(build_mode.can_place(dock, ghost_cell) and _terrain(Vector2(ghost_cell) * 32.0 + Vector2(16, 16)) == "water",
+		"the preview snaps to the nearest water spot (%s)" % ghost_cell)
 	_expect(not build_mode.can_place(dock, Vector2i(0, 5)), "a floating plank isn't allowed")
 	_expect(build_mode.place_at(Vector2i(0, 2)), "first plank at the beach")
 	_expect(build_mode.is_active(), "still placing: ready for the next plank")

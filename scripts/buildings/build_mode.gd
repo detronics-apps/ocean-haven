@@ -11,6 +11,8 @@ signal built(building: Building)
 const BUILDING_SCENE := preload("res://scenes/buildings/building.tscn")
 const FITS := Color(0.6, 1.0, 0.6, 0.75)
 const BLOCKED := Color(1.0, 0.45, 0.45, 0.6)
+## How far (in tiles) the preview looks for a spot where the building fits.
+const SNAP_RANGE := 4
 
 var _data: BuildingData
 ## A building being moved (placing it again costs nothing; cancelling puts it back).
@@ -98,6 +100,8 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 			return false
 	if data.connects_to_shore and not _touches_walkable(footprint):
 		return false
+	if data.must_touch != &"" and not _touches_building(footprint, data.must_touch):
+		return false
 	if data.deck:
 		for boat: Node2D in get_tree().get_nodes_in_group("boat"):
 			if footprint.has_point(Terrain.cell_of(boat.global_position)):
@@ -105,14 +109,50 @@ func can_place(data: BuildingData, cell: Vector2i) -> bool:
 	return has_requirement(data) and not at_limit(data) and (_free or can_afford(data))
 
 
-## Whether any tile right next to `footprint` (not diagonally) can be walked on.
-func _touches_walkable(footprint: Rect2i) -> bool:
+## Whether a building of kind `id` is right next to `footprint` (not diagonally).
+func _touches_building(footprint: Rect2i, id: StringName) -> bool:
+	var kind := get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool: return b.data.id == id)
+	for next in _cells_beside(footprint):
+		for building: Building in kind:
+			if building.rect().has_point(next):
+				return true
+	return false
+
+
+## The tiles right next to `footprint` (left, right, above, below; not diagonally).
+static func _cells_beside(footprint: Rect2i) -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
 	for x in range(footprint.position.x, footprint.end.x):
 		for y in range(footprint.position.y, footprint.end.y):
 			for step in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 				var next: Vector2i = Vector2i(x, y) + step
-				if not footprint.has_point(next) and Terrain.walkable(get_tree(), Terrain.centre_of(next)):
-					return true
+				if not footprint.has_point(next) and next not in cells:
+					cells.append(next)
+	return cells
+
+
+## The cell nearest `preferred` (within a few tiles) where `data` fits, or `preferred`
+## if there's none — so a boat's preview finds the water next to a ranger on the beach.
+func _nearest_fit(data: BuildingData, preferred: Vector2i) -> Vector2i:
+	if can_place(data, preferred):
+		return preferred
+	var best := preferred
+	var best_distance := INF
+	for dx in range(-SNAP_RANGE, SNAP_RANGE + 1):
+		for dy in range(-SNAP_RANGE, SNAP_RANGE + 1):
+			var cell := preferred + Vector2i(dx, dy)
+			var distance := Vector2(dx, dy).length()
+			if distance < best_distance and can_place(data, cell):
+				best = cell
+				best_distance = distance
+	return best
+
+
+## Whether any tile right next to `footprint` (not diagonally) can be walked on.
+func _touches_walkable(footprint: Rect2i) -> bool:
+	for next in _cells_beside(footprint):
+		if Terrain.walkable(get_tree(), Terrain.centre_of(next)):
+			return true
 	return false
 
 
@@ -200,7 +240,7 @@ func _process(_delta: float) -> void:
 	if ranger:
 		_update_facing(ranger.global_position)
 	if _follow_ranger and ranger:
-		_cell = _cell_beside(Terrain.cell_of(ranger.global_position), _facing, _data.size)
+		_cell = _nearest_fit(_data, _cell_beside(Terrain.cell_of(ranger.global_position), _facing, _data.size))
 	_ghost.position = Vector2(_cell * Terrain.TILE) + Vector2(_data.size * Terrain.TILE) / 2.0
 	var fits := can_place(_data, _cell)
 	_ghost.modulate = FITS if fits else BLOCKED

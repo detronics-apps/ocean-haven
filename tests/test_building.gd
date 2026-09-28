@@ -33,9 +33,11 @@ func _initialize() -> void:
 	_expect(not boat.controlled and world.get_node("Player").visible, "can go ashore while the tent waits")
 	_expect(build_mode.is_active(), "tent placement still waiting")
 
-	# --- The ghost goes on the side the ranger moves towards ---
+	# --- The ghost goes on the side the ranger moves towards (on open land, where
+	# a tent fits on every side, so it doesn't need to snap elsewhere) ---
 	var player: Node2D = world.get_node("Player")
 	var ghost: Node2D = build_mode.get("_ghost")
+	player.global_position = Vector2(-12 * 32 + 16, -3 * 32 + 16)
 	for side in [Vector2.LEFT, Vector2.UP, Vector2.DOWN, Vector2.RIGHT]:
 		for i in 4:
 			player.global_position += side * 2.0  # walking that way
