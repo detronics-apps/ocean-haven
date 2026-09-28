@@ -31,6 +31,7 @@ func _initialize() -> void:
 	var build_mode := world.get_node("BuildMode")
 	build_mode.start(load("res://data/buildings/tent.tres"), true)
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "pitched the tent")
+	_inventory.restore(_inventory.to_dict(), {"wood": 6})  # in a Ranger House
 	build_mode.start(load("res://data/buildings/turtle_protection_area.tres"))
 	_expect(build_mode.place_at(Vector2i(14, -1)), "built the sanctuary (uses 5 of 7)")
 	get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0].add_funds(25)
@@ -76,6 +77,7 @@ func _initialize() -> void:
 	_expect(world.get_node("StarterIsland/Palm3").is_queued_for_deletion(), "a cut-down tree stays cut down")
 	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
+	_expect(_inventory.stored(&"wood") == 4, "stored wood restored (6 - 2 for the sanctuary)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
 	var cells := {}

@@ -35,9 +35,9 @@ func _entry(data: BuildingData) -> Control:
 	elif data.requires and not _exists(data.requires):
 		status = "Build a %s first." % data.requires
 	else:
-		can_build = Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
-		status = _cost_text(data) + ("" if can_build else "  (you have %d litter, %d funding)" % [
-			Inventory.total(), Funding.balance])
+		can_build = get_tree().get_first_node_in_group("build_mode").can_afford(data)
+		status = data.cost_text() + ("" if can_build else "  (you have %d litter, %d funding, %d wood, %d saplings)" % [
+			Inventory.total(), Funding.balance, Inventory.available(&"wood"), Inventory.available(&"sapling")])
 	if data.replaces and not data.locked:
 		status += "  Replaces your %s." % data.replaces
 	var entry := card(data.texture, [data.display_name, data.description, status], data.locked)
@@ -51,15 +51,6 @@ func _entry(data: BuildingData) -> Control:
 		build.pressed.connect(_choose.bind(data))
 		entry.get_child(0).add_child(build)
 	return entry
-
-
-static func _cost_text(data: BuildingData) -> String:
-	var parts: Array[String] = []
-	if data.cost_funding > 0:
-		parts.append("%d funding" % data.cost_funding)
-	if data.cost_litter > 0:
-		parts.append("%d recycled litter" % data.cost_litter)
-	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."
 
 
 func _choose(data: BuildingData) -> void:

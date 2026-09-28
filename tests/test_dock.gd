@@ -16,6 +16,7 @@ func _initialize() -> void:
 	var player: Node2D = world.get_node("Player")
 	var dock: Resource = load("res://data/buildings/dock.tres")
 	funding.earn(1000, "test")
+	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
 
 	# --- The placement bar says the water buildings go in the water ---
 	var bm_script: Script = load("res://scripts/buildings/build_mode.gd")

@@ -58,6 +58,20 @@ func _initialize() -> void:
 	await process_frame
 	_expect(shovel.selected == null, "a tile that isn't next to you can't stay selected")
 
+	# Deep water takes 2 sand: it becomes shallows first, then beach.
+	var sand: Resource = load("res://data/items/sand.tres")
+	player.global_position = Vector2(18 * 32 + 16, 16)
+	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "", "(19, 0) is open sea")
+	inventory.add(sand)
+	shovel.selected = Vector2i(19, 0)
+	labels = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(labels == ["Place sand (makes it shallow)"], "deep water: sand makes it shallow (%s)" % [labels])
+	shovel.actions()[0].do.call()
+	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "water", "deep water is shallows now")
+	inventory.add(sand)
+	shovel.place(Vector2i(19, 0))
+	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "sand" and inventory.count(&"sand") == 0, "a second sand makes it beach")
+
 	# Nothing under a building.
 	world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -3))
 	player.global_position = Vector2(13 * 32 + 16, -3 * 32 + 16)

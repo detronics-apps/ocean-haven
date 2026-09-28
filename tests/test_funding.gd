@@ -52,11 +52,30 @@ func _initialize() -> void:
 	build_mode.start(house)
 	_expect(not build_mode.can_place(house, Vector2i(-1, -1)), "house needs 10 litter too")
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 10)
+	_expect(not build_mode.can_place(house, Vector2i(-1, -1)), "and 3 wood")
+	inventory.add(load("res://data/items/wood.tres"), 5)
+	_expect(inventory.count(&"wood") == 3, "can only carry 3 wood")
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "house built where the tent was")
 	await process_frame
 	var ids := get_nodes_in_group("buildings").map(func(b: Node) -> StringName: return b.data.id)
 	_expect(&"house" in ids and not &"tent" in ids, "tent replaced by the house")
-	_expect(funding.balance == 10 and inventory.total() == 0, "house cost 120 funding + 10 litter")
+	_expect(funding.balance == 10 and inventory.total() == 0 and inventory.count(&"wood") == 0,
+		"house cost 120 funding + 10 litter + 3 wood")
+
+	# --- The house stores wood; building uses carried wood, then stored ---
+	var home: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"house")[0]
+	player.global_position = home.global_position + Vector2(-50, 20)
+	inventory.add(load("res://data/items/wood.tres"), 3)
+	var labels: Array = home.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Store 3 wood" in labels, "offers to store wood (%s)" % [labels])
+	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Store 3 wood")[0].do.call()
+	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "wood stored in the house")
+	inventory.add(load("res://data/items/wood.tres"), 1)
+	_expect(inventory.use(&"wood", 2) and inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 2,
+		"building uses carried wood first, then stored")
+	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Take 2 wood")[0].do.call()
+	_expect(inventory.count(&"wood") == 2 and inventory.stored(&"wood") == 0, "took the wood back out")
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 1)  # a dock plank needs 1 litter + 1 wood
 
 	# --- Dock: shallows only, costs funding ---
 	var dock: Resource = load("res://data/buildings/dock.tres")
@@ -72,6 +91,7 @@ func _initialize() -> void:
 	var centre: Resource = load("res://data/buildings/recycling_centre.tres")
 	build_mode.cancel()
 	inventory.add(load("res://data/items/plastic_bag.tres"), 10)
+	inventory.add(load("res://data/items/wood.tres"), 1)  # 1 left from the dock + 1 = the 2 it needs
 	build_mode.start(centre)
 	_expect(build_mode.place_at(Vector2i(-3, -3)), "recycling centre built (10 litter)")
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 7)

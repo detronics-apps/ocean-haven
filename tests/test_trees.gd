@@ -48,6 +48,13 @@ func _initialize() -> void:
 	first.actions()[0].do.call()
 	await process_frame
 	_expect(get_nodes_in_group("plants").size() == count_before - 1, "the tree is gone")
+	var inventory := root.get_node("Inventory")
+	_expect(inventory.count(&"wood") == 1 and inventory.count(&"sapling") in [1, 2],
+		"cutting gives 1 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
+	inventory.add(load("res://data/items/wood.tres"), 2)
+	player.global_position = get_nodes_in_group("plants")[0].global_position + Vector2(-30, 10)
+	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full of wood", "can't cut with 3 wood in your arms")
+	inventory.take_item(&"wood", 3)
 	var palm: Resource = load("res://data/buildings/palm_tree.tres")
 	build_mode.start(palm)
 	_expect(build_mode.place_at(Vector2i(-12, -3)), "planted a new palm")

@@ -161,7 +161,14 @@ caring for animals". Build in this order, placeholder art:
 16. ✅ Hatchlings fill empty protection areas before leaving
 17. ✅ Recycling centre (litter -> funding); cut down / plant palm trees; drawbridge; shovel tool
     to scoop up beach sand and place it on shallows (sand isn't litter: ItemData.is_litter)
-18. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+18. ✅ Save code (Journal): copy progress as text, paste it back; GitHub Pages site (installable)
+19. ✅ Wood: cutting a palm gives 1 wood + 1-2 saplings (planting needs a sapling); buildings cost
+    wood + litter + funding; carry 3 wood / 1 sand; Ranger Houses (up to 2) store 10 each; up to 3
+    recycling centres; sand on deep water makes shallows (2 sand to make beach)
+20. Building upgrades, 3 tiers each (buildings, not the player — no player levels): protection area
+    +1 turtle per tier, Ranger House +1 storage per tier, recycling centre +1 funding per piece per tier
+21. Build 2-3 boats, not just 1
+22. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**

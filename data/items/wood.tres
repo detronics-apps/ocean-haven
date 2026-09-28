@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/wood.svg" id="1_wood"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"wood"
+display_name = "Wood"
+icon = ExtResource("1_wood")
+is_litter = false
+carry_limit = 3
+fact = "Wood from a fallen palm is light but strong. Island people have built homes and boats from it for thousands of years."

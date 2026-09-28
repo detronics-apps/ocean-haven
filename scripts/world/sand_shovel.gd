@@ -4,12 +4,11 @@ extends Node
 ## the ranger are outlined: sand that can be picked up, and (while carrying sand)
 ## shallow water that can be filled. Tap one to select it; the action bar then
 ## offers "Pick up sand" or "Place sand" for exactly that tile. The ranger carries
-## one sand at a time. Done puts the shovel away. Every changed tile is saved.
+## one sand at a time. Sand on deep water makes it shallow, so filling deep water takes 2.
+## Done puts the shovel away. Every changed tile is saved.
 
 const SAND_TILE := Vector2i(1, 0)
 const SHALLOW_TILE := Vector2i(0, 0)
-## How much sand the ranger can carry at once.
-const CARRY_LIMIT := 1
 const CAN_PICK_UP := Color(0.55, 1.0, 0.55, 0.9)
 const CAN_PLACE := Color(0.5, 0.8, 1.0, 0.9)
 
@@ -58,7 +57,7 @@ func _process(_delta: float) -> void:
 	if selected != null and selected not in around:
 		selected = null  # walked away from it
 	if _label:
-		_label.text = "Shovel: tap a tile next to you. Carrying %d / %d sand." % [Inventory.count(_sand.id), CARRY_LIMIT]
+		_label.text = "Shovel: tap a tile next to you. Carrying %d / %d sand." % [Inventory.count(_sand.id), _sand.carry_limit]
 	_outlines.queue_redraw()
 
 
@@ -91,9 +90,10 @@ func what_can_be_done(cell: Vector2i) -> String:
 		return ""
 	var centre := Terrain.centre_of(cell)
 	var terrain := Terrain.at(get_tree(), centre)
-	if terrain == "sand" and Inventory.count(_sand.id) < CARRY_LIMIT:
+	if terrain == "sand" and Inventory.room_for(_sand) > 0:
 		return "pick_up"
-	if terrain == "water" and not Terrain.walkable(get_tree(), centre) and Inventory.count(_sand.id) > 0:
+	var fillable := (terrain == "water" and not Terrain.walkable(get_tree(), centre)) 		or (terrain == "" and Terrain.ground_near(get_tree(), centre) != null)  # deep water
+	if fillable and Inventory.count(_sand.id) > 0:
 		return "place"
 	return ""
 
@@ -106,7 +106,8 @@ func actions() -> Array:
 		"pick_up":
 			return [{"label": "Pick up sand", "do": pick_up.bind(selected)}]
 		"place":
-			return [{"label": "Place sand", "do": place.bind(selected)}]
+			var deep := Terrain.at(get_tree(), Terrain.centre_of(selected)) == ""
+			return [{"label": "Place sand (makes it shallow)" if deep else "Place sand", "do": place.bind(selected)}]
 	return []
 
 
@@ -118,12 +119,13 @@ func pick_up(cell: Vector2i) -> void:
 	Inventory.add(_sand, 1, false)
 
 
-## Shallow water -> beach, using the carried sand.
+## Shallow water -> beach, or deep water -> shallow, using the carried sand.
 func place(cell: Vector2i) -> void:
 	if what_can_be_done(cell) != "place":
 		return
+	var deep := Terrain.at(get_tree(), Terrain.centre_of(cell)) == ""
 	if Inventory.take_item(_sand.id):
-		_set_tile(cell, SAND_TILE)
+		_set_tile(cell, SHALLOW_TILE if deep else SAND_TILE)
 
 
 func _set_tile(cell: Vector2i, atlas: Vector2i) -> void:

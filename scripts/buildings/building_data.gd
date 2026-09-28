@@ -18,6 +18,11 @@ extends Resource
 @export var cost_litter := 0
 ## Conservation funding needed.
 @export var cost_funding := 0
+## Items needed, by item id (e.g. {wood: 2}, or a sapling for a palm tree).
+## Paid from what the ranger carries, then from Ranger House storage.
+@export var cost_items: Dictionary[StringName, int] = {}
+## How much of each storable item (wood, sand) it can keep (0 = not a store).
+@export var storage := 0
 ## Building id this one replaces when placed (the house replaces the tent).
 @export var replaces: StringName
 ## Funding visitors donate each morning (0 = attracts no visitors) ...
@@ -60,3 +65,16 @@ extends Resource
 @export var action: StringName
 ## Short, accurate fact shown when it's built.
 @export_multiline var fact: String
+
+
+## "Needs 20 funding + 5 recycled litter + 2 wood." for menus and hints.
+func cost_text() -> String:
+	var parts: Array[String] = []
+	if cost_funding > 0:
+		parts.append("%d funding" % cost_funding)
+	if cost_litter > 0:
+		parts.append("%d recycled litter" % cost_litter)
+	for item_id in cost_items:
+		var item: ItemData = load("res://data/items/%s.tres" % item_id)
+		parts.append("%d %s" % [cost_items[item_id], item.display_name.to_lower()])
+	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."

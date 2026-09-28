@@ -39,6 +39,7 @@ func _initialize() -> void:
 
 	# --- Expedition Boat (needs the dock) + a patrol boat unlocks Tropical Waters ---
 	funding.earn(1000, "test")
+	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
 	var expedition: Resource = load("res://data/buildings/expedition_boat.tres")
 	build_mode.start(expedition)
 	_expect(not build_mode.can_place(expedition, Vector2i(-3, 7)), "expedition boat needs a dock first")

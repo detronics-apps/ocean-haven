@@ -179,6 +179,9 @@ func has_requirement(data: BuildingData) -> bool:
 
 
 func can_afford(data: BuildingData) -> bool:
+	for item_id in data.cost_items:
+		if Inventory.available(item_id) < data.cost_items[item_id]:
+			return false
 	return Inventory.total() >= data.cost_litter and Funding.balance >= data.cost_funding
 
 
@@ -209,6 +212,8 @@ func place() -> bool:
 			return false
 		Funding.spend(_data.cost_funding)
 		Inventory.take(_data.cost_litter)
+		for item_id in _data.cost_items:
+			Inventory.use(item_id, _data.cost_items[item_id])
 	for old: Building in get_tree().get_nodes_in_group("buildings"):
 		if old.data.id == _data.replaces:
 			old.queue_free()
@@ -251,7 +256,7 @@ func _process(_delta: float) -> void:
 	_label.text = "%s your %s %s: walk, or tap a spot." % [
 		"Move" if _moving else "Place", _data.display_name.to_lower(), where_it_goes(_data)]
 	if not _free and not can_afford(_data):
-		_label.text = "You need %d litter and %d funding to build this." % [_data.cost_litter, _data.cost_funding]
+		_label.text = "Not enough to build another. " + _data.cost_text()
 	if not ranger is Player:
 		_label.text = "Go ashore to place your %s." % _data.display_name.to_lower()
 		_place.disabled = true

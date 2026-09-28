@@ -97,6 +97,15 @@ func actions() -> Array:
 	if data.recycle_value > 0 and Inventory.total() > 0:
 		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * data.recycle_value],
 			"do": recycle})
+	if data.storage > 0:
+		for item: ItemData in storable_items():
+			var name := item.display_name.to_lower()
+			var give := mini(Inventory.count(item.id), storage_space(get_tree()) - Inventory.stored(item.id))
+			if give > 0:
+				list.append({"label": "Store %d %s" % [give, name], "do": Inventory.store.bind(item, give)})
+			var take := mini(Inventory.stored(item.id), Inventory.room_for(item))
+			if take > 0:
+				list.append({"label": "Take %d %s" % [take, name], "do": Inventory.take_out.bind(item, take)})
 	list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	return list
 
@@ -167,6 +176,9 @@ func _process(delta: float) -> void:
 	_hint.visible = near and (data.action != &"" or data.animal_capacity > 0)
 	if _hint.visible and data.action == &"sleep":
 		_hint.text = "E / tap: sleep until morning" if GameClock.is_night() else "Rest here when it gets dark"
+		if data.storage > 0:
+			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
+				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
 	elif _hint.visible:
 		var here := animals_here()
 		var note := ""
@@ -174,6 +186,24 @@ func _process(delta: float) -> void:
 			note = "  (full: new hatchlings join your other areas)" if _other_areas_have_room() \
 				else "  (all areas full: new hatchlings swim out to sea)"
 		_hint.text = "Turtles here: %d / %d%s" % [here, data.animal_capacity, note]
+
+
+static var _storable: Array = []
+
+
+## Items that can be kept in a Ranger House: those with a carry limit (wood, sand).
+static func storable_items() -> Array:
+	if _storable.is_empty():
+		_storable = DataFiles.load_all("res://data/items").filter(func(item: ItemData) -> bool: return item.carry_limit > 0)
+	return _storable
+
+
+## How much of each storable item all the ranger's houses hold together.
+static func storage_space(tree: SceneTree) -> int:
+	var space := 0
+	for building: Building in tree.get_nodes_in_group("buildings"):
+		space += building.data.storage
+	return space
 
 
 func _other_areas_have_room() -> bool:

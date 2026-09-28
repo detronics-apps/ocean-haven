@@ -115,6 +115,7 @@ func save_to(world: Node, path: String) -> bool:
 		"version": VERSION,
 		"saved_at": Time.get_unix_time_from_system(),
 		"inventory": Inventory.to_dict(),
+		"stored": Inventory.stored_to_dict(),
 		"discovered": Journal.ids(),
 		"journal": Journal.details(),
 		"collected_debris": _collected,
@@ -251,7 +252,7 @@ func load_from(world: Node, path: String) -> bool:
 			var xy := key.split(",")
 			var atlas: Array = _tile_edits[ground_path][key]
 			ground.set_cell(Vector2i(int(xy[0]), int(xy[1])), 0, Vector2i(int(atlas[0]), int(atlas[1])))
-	Inventory.restore(state.get("inventory", {}))
+	Inventory.restore(state.get("inventory", {}), state.get("stored", {}))
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	for animal_name: String in state.get("freed_animals", []):

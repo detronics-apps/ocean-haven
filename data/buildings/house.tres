@@ -7,13 +7,15 @@
 script = ExtResource("1_gjtea")
 id = &"house"
 display_name = "Ranger House"
-description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night."
+description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night. Stores up to 10 wood and 10 sand. You can build 2."
 order = 2
 texture = ExtResource("2_22yc1")
 terrain = PackedStringArray("sand", "grass")
 cost_litter = 10
 cost_funding = 120
 replaces = &"tent"
-unique = true
 action = &"sleep"
 fact = "Solar panels let remote ranger stations run without noisy, polluting generators."
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+storage = 10
+max_count = 2

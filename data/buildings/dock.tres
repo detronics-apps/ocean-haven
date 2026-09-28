@@ -17,3 +17,5 @@ deck = true
 connects_to_shore = true
 placement_hint = "in the water, touching the beach or another plank"
 fact = "A dock lets boats tie up without dragging anchors across the seabed."
+cost_items = Dictionary[StringName, int]({&"wood": 1})
+cost_litter = 1

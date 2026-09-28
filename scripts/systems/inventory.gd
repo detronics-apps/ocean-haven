@@ -8,9 +8,15 @@ signal item_added(item: ItemData, count: int)
 
 var _counts: Dictionary[StringName, int] = {}
 var _items: Dictionary[StringName, ItemData] = {}
+## Kept in Ranger Houses (wood, sand): usable for building from anywhere.
+var _stored: Dictionary[StringName, int] = {}
 
 
+## Adds as much of `amount` as the ranger can carry (see ItemData.carry_limit).
 func add(item: ItemData, amount := 1, announce := true) -> void:
+	amount = mini(amount, room_for(item))
+	if amount <= 0:
+		return
 	_set_count(item, count(item.id) + amount)
 	if announce:
 		item_added.emit(item, _counts[item.id])
@@ -53,19 +59,65 @@ func take_item(id: StringName, amount := 1) -> bool:
 	return true
 
 
+## How many more of `item` the ranger can carry.
+func room_for(item: ItemData) -> int:
+	return item.carry_limit - count(item.id) if item.carry_limit > 0 else 1 << 30
+
+
+func stored(id: StringName) -> int:
+	return _stored.get(id, 0)
+
+
+## Moves up to `amount` carried into storage (the caller checks there's space).
+func store(item: ItemData, amount: int) -> void:
+	amount = mini(amount, count(item.id))
+	_set_count(item, count(item.id) - amount)
+	_stored[item.id] = stored(item.id) + amount
+
+
+## Moves up to `amount` from storage into the ranger's arms.
+func take_out(item: ItemData, amount: int) -> void:
+	amount = mini(mini(amount, stored(item.id)), room_for(item))
+	_stored[item.id] = stored(item.id) - amount
+	_set_count(item, count(item.id) + amount)
+
+
+## Carried plus stored: what building can use.
+func available(id: StringName) -> int:
+	return count(id) + stored(id)
+
+
+## Spends `amount` for building: carried first, then stored. Returns whether there was enough.
+func use(id: StringName, amount: int) -> bool:
+	if available(id) < amount:
+		return false
+	var carried := mini(amount, count(id))
+	if carried > 0:
+		take_item(id, carried)
+	_stored[id] = stored(id) - (amount - carried)
+	return true
+
+
 ## Item id -> count, for the save file.
 func to_dict() -> Dictionary:
 	return _counts.duplicate()
 
 
+func stored_to_dict() -> Dictionary:
+	return _stored.duplicate()
+
+
 ## Replaces the contents from a save file. Items are looked up as data/items/<id>.tres.
-func restore(counts: Dictionary) -> void:
+func restore(counts: Dictionary, stored_counts: Dictionary = {}) -> void:
 	for id in _counts.keys():
 		_set_count(_items[id], 0)
 	for id in counts:
 		var path := "res://data/items/%s.tres" % id
 		if ResourceLoader.exists(path):
 			_set_count(load(path), int(counts[id]))
+	_stored.clear()
+	for id in stored_counts:
+		_stored[StringName(id)] = int(stored_counts[id])
 
 
 func _set_count(item: ItemData, n: int) -> void:

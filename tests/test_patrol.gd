@@ -18,6 +18,7 @@ func _initialize() -> void:
 	var build_mode: Node = world.get_node("BuildMode")
 	var patrol: Resource = load("res://data/buildings/patrol_boat.tres")
 	funding.earn(1000, "test")
+	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
 
 	build_mode.start(patrol)
 	_expect(not build_mode.can_place(patrol, Vector2i(-24, 0)), "needs a dock first")

@@ -70,6 +70,7 @@ func _initialize() -> void:
 
 	# --- Sanctuary: beach only, costs litter, no overlaps, no new turtle ---
 	var animals_before := _count_animals()
+	inventory.restore(inventory.to_dict(), {"wood": 99})  # building wood, kept in storage
 	build_mode.start(sanctuary)
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 3)
 	_expect(not build_mode.can_place(sanctuary, Vector2i(14, -1)), "not enough litter (3 of 5)")
@@ -109,6 +110,7 @@ func _initialize() -> void:
 	# --- Build menu ---
 	var menu: Node = world.get_node("BuildMenu")
 	root.get_node("Funding").restore({"balance": 150})
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 1)  # a dock plank needs 1
 	menu.open()
 	_expect(paused, "menu pauses the game")
 	_expect(menu.find_child("Entry_dock", true, false).find_child("Build", true, false) != null,
