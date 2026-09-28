@@ -2,6 +2,11 @@ extends Node
 ## Autoload "SaveGame": saves progress to user://save.json and restores it on start.
 ## Autosaves after progress (collecting, discovering, building), every few seconds,
 ## and when the game is closed or sent to the background.
+## On the web it also keeps a copy in the browser's localStorage, which is written
+## instantly (the user:// copy reaches IndexedDB asynchronously, and phones can kill
+## a page before that finishes); loading uses whichever copy is newest.
+
+signal saved
 
 const PATH := "user://save.json"
 const VERSION := 1
@@ -89,6 +94,7 @@ func save_to(world: Node, path: String) -> bool:
 			nest_days[animal.name] = animal.last_nest_day
 	var state := {
 		"version": VERSION,
+		"saved_at": Time.get_unix_time_from_system(),
 		"inventory": Inventory.to_dict(),
 		"discovered": Journal.ids(),
 		"journal": Journal.details(),
@@ -113,14 +119,46 @@ func save_to(world: Node, path: String) -> bool:
 	# closed after writing (a rename isn't copied over until the next save, and phones
 	# close pages abruptly).
 	var web := OS.has_feature("web")
+	var text := JSON.stringify(state, "\t")
+	if web:
+		_web_backup_write(path, text)
 	var target := path if web else path + ".tmp"
 	var file := FileAccess.open(target, FileAccess.WRITE)
 	if not file:
 		push_error("Can't write save: %s" % error_string(FileAccess.get_open_error()))
-		return false
-	file.store_string(JSON.stringify(state, "\t"))
+		return web  # the localStorage copy still counts
+	file.store_string(text)
 	file.close()
-	return web or DirAccess.rename_absolute(target, path) == OK
+	var ok := web or DirAccess.rename_absolute(target, path) == OK
+	saved.emit()
+	return ok
+
+
+## Web: the same save text in localStorage (synchronous, survives abrupt closes).
+func _web_backup_write(path: String, text: String) -> void:
+	JavaScriptBridge.eval("try { localStorage.setItem(%s, %s); } catch (e) {}" % [
+		JSON.stringify("bluehaven:" + path), JSON.stringify(text)])
+
+
+func _web_backup_read(path: String) -> String:
+	var text: Variant = JavaScriptBridge.eval(
+		"(function () { try { return localStorage.getItem(%s) || ''; } catch (e) { return ''; } })()"
+		% JSON.stringify("bluehaven:" + path))
+	return text if text is String else ""
+
+
+## The newest readable save text: the file, or on the web possibly the localStorage copy.
+func _newest_save_text(path: String) -> String:
+	var file_text := FileAccess.get_file_as_string(path) if FileAccess.file_exists(path) else ""
+	if not OS.has_feature("web"):
+		return file_text
+	var backup := _web_backup_read(path)
+	return backup if _saved_at(backup) > _saved_at(file_text) else file_text
+
+
+static func _saved_at(text: String) -> float:
+	var state: Variant = JSON.parse_string(text) if text else null
+	return float(state.get("saved_at", 0.0)) if state is Dictionary else -1.0
 
 
 ## Restores progress into `world`. Returns false if there's no usable save
@@ -128,9 +166,10 @@ func save_to(world: Node, path: String) -> bool:
 func load_from(world: Node, path: String) -> bool:
 	_collected.clear()
 	_freed.clear()
-	if not FileAccess.file_exists(path):
+	var text := _newest_save_text(path)
+	if text == "":
 		return false
-	var state: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var state: Variant = JSON.parse_string(text)
 	if not state is Dictionary or state.get("version") != VERSION:
 		push_warning("Save file unreadable; kept as %s.bad and starting fresh." % path)
 		DirAccess.rename_absolute(path, path + ".bad")

@@ -15,6 +15,7 @@ var _toast_queue: Array[String] = []
 ## Buttons for what the ranger can do nearby (top centre).
 var _action_bar: HBoxContainer
 var _shown_actions: Array[String] = []
+var _saved_note: Label
 
 
 func _enter_tree() -> void:
@@ -33,6 +34,7 @@ func _ready() -> void:
 	Journal.hatched.connect(_on_hatched)
 	Journal.gifted.connect(_on_gifted)
 	Funding.earned.connect(_on_earned)
+	SaveGame.saved.connect(_flash_saved)
 	Funding.donations_waiting.connect(_on_donations_waiting)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
@@ -55,6 +57,29 @@ func _ready() -> void:
 	_action_bar.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_action_bar.add_theme_constant_override("separation", 10)
 	add_child(_action_bar)
+
+
+## A small "Saved" that fades in and out after every save, so you know progress is kept.
+func _flash_saved() -> void:
+	if not _saved_note:
+		_saved_note = Label.new()
+		_saved_note.name = "SavedNote"
+		_saved_note.text = "Saved"
+		_saved_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_saved_note.anchor_left = 1.0
+		_saved_note.anchor_right = 1.0
+		_saved_note.offset_left = -80
+		_saved_note.offset_right = -16
+		_saved_note.offset_top = 106
+		_saved_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		_saved_note.add_theme_constant_override("outline_size", 4)
+		_saved_note.add_theme_color_override("font_outline_color", Color.BLACK)
+		_saved_note.modulate.a = 0.0
+		add_child(_saved_note)
+	var tween := create_tween()
+	tween.tween_property(_saved_note, "modulate:a", 1.0, 0.2)
+	tween.tween_interval(1.2)
+	tween.tween_property(_saved_note, "modulate:a", 0.0, 0.6)
 
 
 ## A note that stays on screen (e.g. progress can't be saved in this browser).

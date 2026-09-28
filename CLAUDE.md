@@ -81,6 +81,8 @@ addons/                  third-party Godot plugins only
   On the web, user:// lives in the browser's IndexedDB and is only copied there when a file is
   closed after writing — so web saves are written directly (no temp-file rename), and the game
   warns if the browser won't keep saves (`OS.is_userfs_persistent()`).
+  Web saves are also copied to localStorage (synchronous) and loading takes the newest copy
+  (`saved_at`); a small "Saved" note flashes after each save.
 
 ## Testing on a phone (itch.io — preferred)
 
