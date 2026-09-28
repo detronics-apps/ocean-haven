@@ -25,7 +25,7 @@ func _fill() -> void:
 	for region: RegionData in Regions.all():
 		var locked := Regions.why_locked(get_tree(), region)
 		var status := "You are here." if region == here else ("Locked: " + locked if locked else "Ready to visit.")
-		var entry := card(null, [region.display_name, region.description, status], locked != "")
+		var entry := card(region.map_icon, [region.display_name, region.description, status], locked != "")
 		entry.name = "Entry_" + region.id
 		if can_sail and not locked and region != here:
 			var sail := Button.new()

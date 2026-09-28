@@ -17,6 +17,8 @@ extends Resource
 @export var boat_mooring := Vector2.ZERO
 ## Building that must exist before you can sail here (e.g. "patrol_boat": automate first).
 @export var requires_building: StringName
+## A little picture of the island for the Map menu (made by tools/generate_islands.gd).
+@export var map_icon: Texture2D
 ## Shown on the map but can't be visited yet.
 @export var locked := false
 ## What unlocks it.

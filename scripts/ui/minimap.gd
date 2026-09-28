@@ -8,7 +8,8 @@ const RADIUS := 64.0
 ## How much of the world (in pixels from the ranger) the map shows.
 const WORLD_RADIUS := 800.0
 const OCEAN := Color("2b4a5e")
-const TERRAIN_COLOURS := {"water": Color("5aa0b0"), "sand": Color("e6d5a4"), "grass": Color("6f9a55")}
+const TERRAIN_COLOURS := {"water": Color("5aa0b0"), "sand": Color("e6d5a4"), "grass": Color("6f9a55"),
+	"rock": Color("6e7c86"), "ice": Color("eef6fa"), "mud": Color("7a5e3c"), "reef": Color("f28c38")}
 const HOME_COLOUR := Color("f28c38")
 const BOAT_COLOUR := Color("8a5a36")
 

@@ -1,14 +1,18 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_kvp4x"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/mangrove_island.png" id="1_xdssp"]
 
 [resource]
 script = ExtResource("1_kvp4x")
 id = &"mangrove_coast"
 display_name = "Mangrove Coast"
-description = "Tangled mangrove forests where young fish grow up."
+description = "A maze of mangrove fingers and muddy channels, where young fish hide and grow. (Wildlife coming soon.)"
 order = 2
-center = Vector2(0, 50000)
-waters_radius = 1000.0
-locked = true
-unlock_hint = "keep restoring the ocean to reach it."
+center = Vector2(10240, 0)
+waters_radius = 1035.0
+arrival = Vector2(9712, 80)
+boat_mooring = Vector2(9680, 80)
+requires_building = &"patrol_boat"
+map_icon = ExtResource("1_xdssp")
+unlock_hint = "Automate your home island first: build a Patrol Boat."

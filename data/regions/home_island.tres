@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
+[ext_resource type="Texture2D" path="res://assets/ui/maps/starter_island.png" id="1_ovoyb"]
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_t5gy4"]
 
 [resource]
@@ -9,3 +10,4 @@ display_name = "Home Island"
 description = "Your horseshoe island and its lagoon, where it all began."
 arrival = Vector2(0, 40)
 boat_mooring = Vector2(16, 112)
+map_icon = ExtResource("1_ovoyb")

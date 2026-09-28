@@ -7,30 +7,24 @@
 [ext_resource type="PackedScene" path="res://scenes/world/debris.tscn" id="2_mbqjn"]
 [ext_resource type="Resource" path="res://data/items/plastic_bottle.tres" id="4_uhrbv"]
 [ext_resource type="PackedScene" path="res://scenes/islands/tropical_island.tscn" id="4_vk2ck"]
-[ext_resource type="Script" path="res://scripts/world/debris.gd" id="5_6t0eb"]
+[ext_resource type="PackedScene" path="res://scenes/islands/polar_island.tscn" id="5_t5e65"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
+[ext_resource type="PackedScene" path="res://scenes/islands/ring_island.tscn" id="6_swpth"]
+[ext_resource type="PackedScene" path="res://scenes/islands/hook_island.tscn" id="7_fas81"]
 [ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="7_tch0r"]
+[ext_resource type="PackedScene" path="res://scenes/islands/mangrove_island.tscn" id="8_1sar7"]
 [ext_resource type="PackedScene" path="res://scenes/player/boat.tscn" id="9_jy21m"]
-[ext_resource type="Script" path="res://scripts/animals/animal.gd" id="10_3w6ph"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="11_0ob8n"]
-[ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="11_t5e65"]
 [ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="12_swpth"]
 [ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="13_fas81"]
-[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="13_swpth"]
 [ext_resource type="Resource" path="res://data/items/ghost_net.tres" id="14_fas81"]
-[ext_resource type="Script" path="res://scripts/player/boat.gd" id="15_fas81"]
 [ext_resource type="Script" path="res://scripts/buildings/build_mode.gd" id="16_1sar7"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="18_s6jd1"]
-[ext_resource type="Script" path="res://scripts/ui/avatar_creator.gd" id="20_vk2ck"]
 [ext_resource type="PackedScene" path="res://scenes/ui/avatar_creator.tscn" id="21_3b068"]
 [ext_resource type="PackedScene" path="res://scenes/ui/build_menu.tscn" id="21_j1yad"]
-[ext_resource type="Script" path="res://scripts/ui/build_menu.gd" id="22_3w6ph"]
 [ext_resource type="PackedScene" path="res://scenes/ui/journal_screen.tscn" id="23_t36bi"]
-[ext_resource type="Script" path="res://scripts/ui/journal_screen.gd" id="24_t5e65"]
 [ext_resource type="Script" path="res://scripts/world/litter_spawner.gd" id="25_swpth"]
 [ext_resource type="PackedScene" path="res://scenes/ui/voyage_map.tscn" id="30_j1yad"]
-[ext_resource type="Script" path="res://scripts/ui/voyage_map.gd" id="31_kcxw8"]
 [ext_resource type="Script" path="res://scripts/world/sand_shovel.gd" id="32_j1yad"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
@@ -45,182 +39,119 @@ script = ExtResource("1_0ob8n")
 script = ExtResource("2_4aha6")
 colors = SubResource("Gradient_1xntt")
 
-[node name="StarterIsland" type="Node2D" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
-y_sort_enabled = true
+[node name="StarterIsland" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
 
-[node name="TropicalIsland" type="Node2D" parent="." unique_id=1935725137 instance=ExtResource("4_vk2ck")]
-y_sort_enabled = true
+[node name="TropicalIsland" parent="." unique_id=1935725137 instance=ExtResource("4_vk2ck")]
 position = Vector2(5120, 0)
 
-[node name="Debris1" type="Area2D" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
+[node name="PolarIsland" parent="." unique_id=1093347847 instance=ExtResource("5_t5e65")]
+position = Vector2(25600, 0)
+
+[node name="RingIsland" parent="." unique_id=54259257 instance=ExtResource("6_swpth")]
+position = Vector2(20480, 0)
+
+[node name="HookIsland" parent="." unique_id=1706261147 instance=ExtResource("7_fas81")]
+position = Vector2(15360, 0)
+
+[node name="MangroveIsland" parent="." unique_id=579526730 instance=ExtResource("8_1sar7")]
+position = Vector2(10240, 0)
+
+[node name="Debris1" parent="." unique_id=1498847274 instance=ExtResource("2_mbqjn")]
 position = Vector2(-605.9138, -163.62244)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris2" type="Area2D" parent="." unique_id=74407063 instance=ExtResource("2_mbqjn")]
+[node name="Debris2" parent="." unique_id=74407063 instance=ExtResource("2_mbqjn")]
 position = Vector2(558.4132, -239.2)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris3" type="Area2D" parent="." unique_id=148457466 instance=ExtResource("2_mbqjn")]
+[node name="Debris3" parent="." unique_id=148457466 instance=ExtResource("2_mbqjn")]
 position = Vector2(605.9138, 163.62244)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("6_elm8k")
 
-[node name="Debris4" type="Area2D" parent="." unique_id=1091758055 instance=ExtResource("2_mbqjn")]
+[node name="Debris4" parent="." unique_id=1091758055 instance=ExtResource("2_mbqjn")]
 position = Vector2(-322.4, 414.30655)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris5" type="Area2D" parent="." unique_id=764560415 instance=ExtResource("2_mbqjn")]
+[node name="Debris5" parent="." unique_id=764560415 instance=ExtResource("2_mbqjn")]
 position = Vector2(-605.9138, 163.62244)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris6" type="Area2D" parent="." unique_id=503492549 instance=ExtResource("2_mbqjn")]
+[node name="Debris6" parent="." unique_id=503492549 instance=ExtResource("2_mbqjn")]
 position = Vector2(-220.53459, -449.54895)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 
-[node name="Debris7" type="Area2D" parent="." unique_id=1557556454 instance=ExtResource("2_mbqjn")]
+[node name="Debris7" parent="." unique_id=1557556454 instance=ExtResource("2_mbqjn")]
 position = Vector2(322.4, 414.30655)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("6_elm8k")
 
-[node name="Debris8" type="Area2D" parent="." unique_id=878665859 instance=ExtResource("2_mbqjn")]
+[node name="Debris8" parent="." unique_id=878665859 instance=ExtResource("2_mbqjn")]
 position = Vector2(220.53459, -449.54895)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 
-[node name="Debris9" type="Area2D" parent="." unique_id=1024889149 instance=ExtResource("2_mbqjn")]
+[node name="Debris9" parent="." unique_id=1024889149 instance=ExtResource("2_mbqjn")]
 position = Vector2(-400, 80)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("4_uhrbv")
 floating = false
 
-[node name="Debris10" type="Area2D" parent="." unique_id=1911925822 instance=ExtResource("2_mbqjn")]
+[node name="Debris10" parent="." unique_id=1911925822 instance=ExtResource("2_mbqjn")]
 position = Vector2(208, 112)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("5_tch0r")
 floating = false
 
-[node name="Debris11" type="Area2D" parent="." unique_id=147284825 instance=ExtResource("2_mbqjn")]
+[node name="Debris11" parent="." unique_id=147284825 instance=ExtResource("2_mbqjn")]
 position = Vector2(-144, 208)
-collision_layer = 0
-collision_mask = 10
-script = ExtResource("5_6t0eb")
 item = ExtResource("6_elm8k")
 floating = false
 
-[node name="GreenTurtle" type="CharacterBody2D" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
+[node name="GreenTurtle" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
 position = Vector2(-650, 40)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
-data = ExtResource("11_t5e65")
 tangled = true
 tangle_item = ExtResource("6_elm8k")
 
-[node name="Crab2" type="CharacterBody2D" parent="." unique_id=1791080907 instance=ExtResource("7_tch0r")]
+[node name="Crab2" parent="." unique_id=1791080907 instance=ExtResource("7_tch0r")]
 position = Vector2(400, 208)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
 data = ExtResource("12_swpth")
 home_radius = 220.0
 
-[node name="Crab1" type="CharacterBody2D" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
+[node name="Crab1" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
 position = Vector2(-368, -176)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
 data = ExtResource("12_swpth")
 home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("5_tch0r")
 
-[node name="Dolphin3" type="CharacterBody2D" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
+[node name="Dolphin3" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
 position = Vector2(-360, -512.687)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
 home_radius = 220.0
 
-[node name="Dolphin2" type="CharacterBody2D" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
+[node name="Dolphin2" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
 position = Vector2(-360, 512.687)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
 home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("14_fas81")
 
-[node name="Dolphin1" type="CharacterBody2D" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
+[node name="Dolphin1" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
 position = Vector2(720, 0)
-collision_layer = 0
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("10_3w6ph")
 data = ExtResource("13_fas81")
 home_radius = 220.0
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=1682992877 groups=["player"] instance=ExtResource("2_b6ysu")]
-collision_layer = 2
-collision_mask = 17
-motion_mode = 1
-script = ExtResource("13_swpth")
+[node name="Player" parent="." unique_id=1682992877 instance=ExtResource("2_b6ysu")]
 
-[node name="Boat" type="CharacterBody2D" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
+[node name="Boat" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
 position = Vector2(16, 112)
-collision_layer = 8
-collision_mask = 4
-motion_mode = 1
-script = ExtResource("15_fas81")
-speed = 160.0
-controlled = false
 
 [node name="BuildMode" type="Node2D" parent="." unique_id=179090689]
 script = ExtResource("16_1sar7")
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=466484113 instance=ExtResource("11_0ob8n")]
-script = ExtResource("18_s6jd1")
+[node name="HUD" parent="." unique_id=466484113 instance=ExtResource("11_0ob8n")]
 
-[node name="AvatarCreator" type="CanvasLayer" parent="." unique_id=1323067438 instance=ExtResource("21_3b068")]
-layer = 10
-script = ExtResource("20_vk2ck")
+[node name="AvatarCreator" parent="." unique_id=1323067438 instance=ExtResource("21_3b068")]
 
-[node name="BuildMenu" type="CanvasLayer" parent="." unique_id=2057624750 instance=ExtResource("21_j1yad")]
-script = ExtResource("22_3w6ph")
+[node name="BuildMenu" parent="." unique_id=2057624750 instance=ExtResource("21_j1yad")]
 
-[node name="JournalScreen" type="CanvasLayer" parent="." unique_id=208451075 instance=ExtResource("23_t36bi")]
-script = ExtResource("24_t5e65")
+[node name="JournalScreen" parent="." unique_id=208451075 instance=ExtResource("23_t36bi")]
 
 [node name="LitterSpawner" type="Node" parent="." unique_id=621590369]
 script = ExtResource("25_swpth")
@@ -229,10 +160,9 @@ area = Rect2(-1100, -800, 2200, 1600)
 [node name="TropicalLitter" type="Node" parent="." unique_id=158994949]
 script = ExtResource("25_swpth")
 max_litter = 10
-area = Rect2(4420, -500, 1400, 1000)
+area = Rect2(4138, -982, 1964, 1964)
 
-[node name="VoyageMap" type="CanvasLayer" parent="." unique_id=231089713 instance=ExtResource("30_j1yad")]
-script = ExtResource("31_kcxw8")
+[node name="VoyageMap" parent="." unique_id=231089713 instance=ExtResource("30_j1yad")]
 
 [node name="SandShovel" type="Node" parent="." unique_id=356299371]
 script = ExtResource("32_j1yad")

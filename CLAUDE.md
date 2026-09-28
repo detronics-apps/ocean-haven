@@ -174,9 +174,16 @@ caring for animals". Build in this order, placeholder art:
 22. ✅ Growing palms: a planted sapling grows small -> medium (after 1 day) -> full grown (after
     another day). Cutting it down gives: small = the sapling back; medium = 1 wood + 1 sapling;
     full grown = 1-2 wood + 1-2 saplings (the island's own palms are full grown)
-23. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
+23. ✅ Six islands (shape, size, colours only — animals, plants, mechanics later), painted by
+    `tools/generate_islands.gd` (re-run it to tweak a shape), each with a little map in the Map menu:
+    Home (horseshoe; north half kept so saved buildings stay on land), Tropical Waters (crescent,
+    coral inside), Mangrove Coast (branching fingers, mud), Deep Sea (hook round a trench), Coral
+    Kingdom (broken coral ring, lagoon), Polar Ocean (ice floes, rock). New tiles: rock, ice, mud,
+    reef, seagrass, coral sand, island greens, bright/cold shallows, a deep-water band, trench.
+    For now the new islands open like Tropical Waters (patrol boat + expedition boat).
+24. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
-24. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+25. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**

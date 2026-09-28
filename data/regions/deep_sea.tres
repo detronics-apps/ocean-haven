@@ -1,14 +1,18 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_l7stf"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/hook_island.png" id="1_vsim8"]
 
 [resource]
 script = ExtResource("1_l7stf")
 id = &"deep_sea"
-display_name = "Open Ocean & Deep Sea"
-description = "Whales, sharks and the mysteries of the deep."
-order = 5
-center = Vector2(0, 80000)
-waters_radius = 1000.0
-locked = true
-unlock_hint = "keep restoring the ocean to reach it."
+display_name = "Deep Sea"
+description = "A rugged hook of rock curling round a deep, dark trench. (Wildlife coming soon.)"
+order = 3
+center = Vector2(15360, 0)
+waters_radius = 985.0
+arrival = Vector2(15632, 16)
+boat_mooring = Vector2(15600, 16)
+requires_building = &"patrol_boat"
+map_icon = ExtResource("1_vsim8")
+unlock_hint = "Automate your home island first: build a Patrol Boat."

@@ -1,14 +1,18 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_2asjv"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/polar_island.png" id="1_pu2hy"]
 
 [resource]
 script = ExtResource("1_2asjv")
 id = &"arctic_ocean"
-display_name = "Arctic Ocean"
-description = "Icy waters with penguins, seals and whales."
-order = 6
-center = Vector2(0, 90000)
-waters_radius = 1000.0
-locked = true
-unlock_hint = "keep restoring the ocean to reach it."
+display_name = "Polar Ocean"
+description = "Floes of ice and bare rock in cold, quiet water. (Wildlife coming soon.)"
+order = 5
+center = Vector2(25600, 0)
+waters_radius = 931.0
+arrival = Vector2(25136, 16)
+boat_mooring = Vector2(25104, 16)
+requires_building = &"patrol_boat"
+map_icon = ExtResource("1_pu2hy")
+unlock_hint = "Automate your home island first: build a Patrol Boat."

@@ -33,7 +33,16 @@ func _initialize() -> void:
 	var map: Node = world.get_node("VoyageMap")
 	map.open()
 	_expect(_entry(map, "tropical_waters").contains("Patrol Boat"), "Tropical Waters: build a patrol boat first")
-	_expect(_entry(map, "coral_kingdom").contains("Coming later"), "later regions are shown as coming later")
+	_expect(_entry(map, "kelp_forest").contains("Coming later"), "later regions are shown as coming later")
+	_expect(_entry(map, "coral_kingdom").contains("Patrol Boat"), "the new islands open like Tropical Waters")
+	var terrain: GDScript = load("res://scripts/world/terrain.gd")
+	for region: Resource in load("res://scripts/world/regions.gd").all():
+		if region.locked:
+			continue
+		_expect(region.map_icon != null, "%s has a little map" % region.id)
+		_expect(terrain.walkable(self, region.arrival) and terrain.at(self, region.boat_mooring) == "water",
+			"%s: you step ashore on land, with the rowboat in the water (%s, %s)" % [region.id,
+			terrain.at(self, region.arrival), terrain.at(self, region.boat_mooring)])
 	_expect(map.find_children("Sail", "Button", true, false).is_empty(), "no sailing without an Expedition Boat")
 	map.close()
 
