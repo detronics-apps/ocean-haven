@@ -9,3 +9,4 @@ id = &"ghost_net"
 display_name = "Ghost net"
 icon = ExtResource("1_wnslj")
 fact = "Ghost nets are fishing nets lost at sea. They drift for years and keep trapping animals."
+entangles = true

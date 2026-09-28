@@ -24,3 +24,4 @@ calm_speed = 30.0
 curious = false
 interact_distance = 70.0
 digs_up_litter = true
+can_tangle = true

@@ -69,6 +69,15 @@ func mark_cut(tree: Node) -> void:
 	_dirty = true
 
 
+## The world's own animals (not hatchlings) that are tangled right now: name -> item id.
+func _tangled_animals(world: Node) -> Dictionary:
+	var tangles := {}
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if animal.tangled and animal.tangle_item and not animal.young and animal.get_parent() == world:
+			tangles[String(animal.name)] = animal.tangle_item.id
+	return tangles
+
+
 func mark_freed(animal: Node) -> void:
 	_freed.append(String(animal.name))
 	_dirty = true
@@ -124,6 +133,7 @@ func save_to(world: Node, path: String) -> bool:
 		"journal": Journal.details(),
 		"collected_debris": _collected,
 		"freed_animals": _freed,
+		"tangled_animals": _tangled_animals(world),
 		"cut_trees": _cut_trees,
 		"tile_edits": _tile_edits,
 		"washed_in_litter": litter,
@@ -272,6 +282,12 @@ func load_from(world: Node, path: String) -> bool:
 		var animal := world.get_node_or_null(animal_name)
 		if animal:
 			animal.restore_freed()
+	var tangles: Dictionary = state.get("tangled_animals", {})
+	for animal_name: String in tangles:  # caught again after being freed
+		var animal := world.get_node_or_null(animal_name)
+		var item_path := "res://data/items/%s.tres" % tangles[animal_name]
+		if animal and ResourceLoader.exists(item_path):
+			animal.tangle(load(item_path))
 	for debris_name: String in state.get("collected_debris", []):
 		_collected.append(debris_name)
 		var debris := world.get_node_or_null(debris_name)

@@ -24,3 +24,4 @@ calm_speed = 200.0
 interact_distance = 100.0
 dives = true
 guides_to_litter = true
+can_tangle = true

@@ -60,6 +60,7 @@ func _initialize() -> void:
 	var missions := root.get_node("Missions")
 	missions.send(load("res://data/missions/turtle_monitoring.tres"), load("res://data/regions/home_island.tres"))
 	root.get_node("Funding").restore({"balance": 77})
+	world.get_node("Dolphin1").tangle(load("res://data/items/fishing_line.tres"))  # caught by litter left about
 	var cut_tree: Node = world.get_node("StarterIsland/Palm3")
 	_save.mark_cut(cut_tree)
 	cut_tree.free()
@@ -114,6 +115,8 @@ func _initialize() -> void:
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
+	var caught: Node = world.get_node("Dolphin1")
+	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
 		if b.data.id in [&"tent", &"turtle_protection_area"]:

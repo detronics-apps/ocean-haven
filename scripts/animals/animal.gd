@@ -111,6 +111,14 @@ func restore_freed() -> void:
 	_tangle.visible = false
 
 
+## Caught in `item` (litter left about): swims slowly until the ranger frees it again.
+func tangle(item: ItemData) -> void:
+	tangled = true
+	tangle_item = item
+	_tangle.texture = item.icon
+	_tangle.visible = true
+
+
 ## Where it lives (for the save file).
 func home() -> Vector2:
 	return _home

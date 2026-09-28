@@ -7,6 +7,8 @@ extends Resource
 @export var icon: Texture2D
 ## Litter: washes in, is spent on buildings and can be recycled (sand isn't).
 @export var is_litter := true
+## Fishing gear and bags left about can catch an animal (see LitterSpawner.entangle).
+@export var entangles := false
 ## Most the ranger can carry at once (0 = no limit). Items with a limit (wood, sand)
 ## can be kept in a Ranger House.
 @export var carry_limit := 0

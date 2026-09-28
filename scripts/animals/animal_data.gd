@@ -60,6 +60,9 @@ extends Resource
 ## Most litter all animals of this kind dig up in one day, together.
 @export var digs_per_day := 2
 
+## Can get caught in litter left about (items that entangle): the ranger frees it again.
+@export var can_tangle := false
+
 @export_group("Nesting")
 ## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).
 @export var nest_building: StringName

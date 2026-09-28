@@ -65,6 +65,21 @@ func _initialize() -> void:
 	dolphin.restore_freed()
 	_expect(missions.marked().size() == 2 and not dolphin in missions.marked(), "a freed animal drops off the map")
 
+	# --- Fishing gear left in the water catches an animal again (one a morning) ---
+	dolphin.global_position = Vector2(950, -700)  # away from the other animals
+	var spawner: Node = world.get_node("LitterSpawner")
+	for debris: Node in get_nodes_in_group("debris"):
+		debris.free()  # only the litter placed here
+	var net: Node2D = spawner.spawn_at(load("res://data/items/ghost_net.tres"), dolphin.global_position + Vector2(60, 0), true)
+	var bottle: Node2D = spawner.spawn_at(load("res://data/items/plastic_bottle.tres"), dolphin.global_position + Vector2(-40, 0), true)
+	var caught: Array = spawner.entangle()
+	_expect(caught == [dolphin] and dolphin.tangled and dolphin.tangle_item.id == &"ghost_net" and net.is_queued_for_deletion(),
+		"a ghost net left near a dolphin catches it")
+	_expect(not bottle.is_queued_for_deletion(), "bottles don't entangle")
+	_expect(spawner.entangle().is_empty(), "nothing else to catch it")
+	await process_frame
+	_expect(root.get_node("SaveGame")._tangled_animals(world).get("Dolphin2") == &"ghost_net", "saved as tangled")
+
 	# --- Surveys find litter; marks last until the next morning ---
 	missions.send(load("res://data/missions/pollution_survey.tres"), load("res://data/regions/home_island.tres"))
 	clock.advance(clock.DAY_LENGTH * 2.5 / 24.0)

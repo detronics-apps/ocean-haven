@@ -13,6 +13,10 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 ## Area searched for spots (the waters around the home island).
 @export var area := Rect2(-900, -600, 1800, 1200)
 @export var min_distance_from_ranger := 320.0
+## Each morning, litter that entangles (nets, line, bags) this close to an animal that can
+## get caught may catch one: at most this many a day in this area. Clean it up to prevent it.
+@export var tangle_range := 320.0
+@export var tangles_per_day := 1
 
 var _items: Array[Resource] = DataFiles.load_all("res://data/items").filter(
 	func(item: ItemData) -> bool: return item.is_litter)
@@ -21,6 +25,41 @@ var _time := 0.0
 
 func _enter_tree() -> void:
 	add_to_group("litter_spawner")
+
+
+func _ready() -> void:
+	GameClock.new_day.connect(func(_d: int) -> void: entangle())
+
+
+## Litter that entangles, left near an animal that can get caught, catches it (at most
+## tangles_per_day). The litter is then round the animal: freeing it collects it. Returns
+## the animals caught.
+func entangle() -> Array[Animal]:
+	var caught: Array[Animal] = []
+	for debris: Debris in get_tree().get_nodes_in_group("debris"):
+		if caught.size() >= tangles_per_day:
+			break
+		if not debris.item.entangles or debris.is_queued_for_deletion() or not area.has_point(debris.global_position):
+			continue
+		var animal := _catchable_near(debris.global_position)
+		if animal:
+			animal.tangle(debris.item)
+			debris.remove()
+			caught.append(animal)
+			get_tree().call_group("hud", "show_toast", "A %s is caught in a %s!\nFind it and help it (the rescue boat can find it for you)." % [
+				animal.data.display_name, debris.item.display_name.to_lower()])
+	return caught
+
+
+func _catchable_near(point: Vector2) -> Animal:
+	var best: Animal = null
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if not animal.data.can_tangle or animal.tangled or animal.young or animal.leaving:
+			continue
+		var distance := animal.global_position.distance_to(point)
+		if distance <= tangle_range and (not best or distance < best.global_position.distance_to(point)):
+			best = animal
+	return best
 
 
 ## A random piece of litter at `spot` (e.g. dug up by a crab), unless there's

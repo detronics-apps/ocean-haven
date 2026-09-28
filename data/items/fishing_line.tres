@@ -9,3 +9,4 @@ id = &"fishing_line"
 display_name = "Fishing line"
 icon = ExtResource("1_0gfkp")
 fact = "Lost fishing line can tangle seabirds, seals and turtles."
+entangles = true

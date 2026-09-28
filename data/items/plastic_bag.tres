@@ -9,3 +9,4 @@ id = &"plastic_bag"
 display_name = "Plastic bag"
 icon = ExtResource("1_cki5n")
 fact = "Sea turtles can mistake floating plastic bags for jellyfish, one of their foods."
+entangles = true
