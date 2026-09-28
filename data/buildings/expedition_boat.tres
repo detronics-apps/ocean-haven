@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_k7kwi")
 id = &"expedition_boat"
-display_name = "Expedition Boat"
-description = "A sturdy boat for long voyages. Moor it in the water right next to 2 dock planks, then open the Map to set sail for other islands."
+display_name = "Exploration Ship"
+description = "Your ship for discovering new islands. Moor it next to 2 dock planks, then walk up to it and explore warmer or colder waters. Every island you discover gets its own ship."
 order = 5
 texture = ExtResource("2_br52n")
 size = Vector2i(2, 1)
@@ -22,3 +22,4 @@ fact = "Research vessels carry rangers and scientists far out to sea to study an
 cost_items = Dictionary[StringName, int]({&"wood": 3})
 cost_litter = 10
 category = &"sea"
+action = &"explore"

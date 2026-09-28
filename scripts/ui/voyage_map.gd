@@ -1,8 +1,9 @@
 class_name VoyageMap
 extends OverlayScreen
-## The voyage map: every region of the ocean. With an Expedition Boat you can set
-## sail to any region that's unlocked; the voyage fades out and in, and brings the
-## ranger (and their rowboat) ashore there.
+## The Map: every region of the ocean. You can sail to any island you've discovered
+## (the voyage fades out and in, and brings the ranger and their rowboat ashore there).
+## Undiscovered islands are shown but can't be chosen: they're found by exploring
+## warmer or colder with the Exploration Ship (see ExploreMenu).
 
 
 func _enter_tree() -> void:
@@ -11,23 +12,19 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	super()
-	_title.text = "Voyage map"
+	_title.text = "Map"
 
 
 func _fill() -> void:
-	var can_sail := has_expedition_boat()
-	if not can_sail:
-		var note := Label.new()
-		note.text = "Build an Expedition Boat at your dock to sail to other islands."
-		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_content.add_child(note)
 	var here := Regions.nearest(_ranger_position())
 	for region: RegionData in Regions.all():
-		var locked := Regions.why_locked(get_tree(), region)
-		var status := "You are here." if region == here else ("Locked: " + locked if locked else "Ready to visit.")
-		var entry := card(region.map_icon, [region.display_name, region.description, status], locked != "")
+		var known := Regions.is_discovered(region)
+		var status := "You are here." if region == here else ("Discovered." if known
+			else "Not discovered yet: explore %s with your Exploration Ship to find it." % region.direction)
+		var lines: Array[String] = [region.display_name, region.description if known else region.theme, status]
+		var entry := card(region.map_icon, lines, not known)
 		entry.name = "Entry_" + region.id
-		if can_sail and not locked and region != here:
+		if known and region != here:
 			var sail := Button.new()
 			sail.name = "Sail"
 			sail.text = "Set sail"
@@ -36,13 +33,6 @@ func _fill() -> void:
 			sail.pressed.connect(sail_to.bind(region))
 			entry.get_child(0).add_child(sail)
 		_content.add_child(entry)
-
-
-func has_expedition_boat() -> bool:
-	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == &"expedition_boat":
-			return true
-	return false
 
 
 ## Sails to `region`: a fade, then the ranger steps ashore there with their rowboat moored nearby.

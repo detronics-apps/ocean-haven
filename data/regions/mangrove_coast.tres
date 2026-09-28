@@ -7,12 +7,12 @@
 script = ExtResource("1_kvp4x")
 id = &"mangrove_coast"
 display_name = "Mangrove Coast"
-description = "A maze of mangrove fingers and muddy channels, where young fish hide and grow. (Wildlife coming soon.)"
-order = 2
+description = "A maze of grassy fingers and muddy channels. (Mangroves and their wildlife coming soon.)"
+order = 3
+direction = &"warmer"
+theme = "The land and ocean connection"
 center = Vector2(10240, 0)
 waters_radius = 1035.0
 arrival = Vector2(9712, 80)
 boat_mooring = Vector2(9680, 80)
-requires_building = &"patrol_boat"
 map_icon = ExtResource("1_xdssp")
-unlock_hint = "Automate your home island first: build a Patrol Boat."

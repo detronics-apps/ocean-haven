@@ -1,18 +1,18 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/ui/maps/ring_island.png" id="1_cueq0"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/reef_island.png" id="1_cueq0"]
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_opv3m"]
 
 [resource]
 script = ExtResource("1_opv3m")
-id = &"coral_kingdom"
-display_name = "Coral Kingdom"
-description = "A broken ring of coral round a huge turquoise lagoon. (Wildlife coming soon.)"
+id = &"tropical_reef"
+display_name = "Tropical Reef"
+description = "A broken ring of islands round a huge shallow lagoon. (The reef and its wildlife coming soon.)"
 order = 4
+direction = &"warmer"
+theme = "Ecosystem complexity and restoration"
 center = Vector2(20480, 0)
 waters_radius = 1062.0
 arrival = Vector2(19920, 16)
 boat_mooring = Vector2(19888, 16)
-requires_building = &"patrol_boat"
 map_icon = ExtResource("1_cueq0")
-unlock_hint = "Automate your home island first: build a Patrol Boat."

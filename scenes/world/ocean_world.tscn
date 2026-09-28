@@ -6,11 +6,11 @@
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_b6ysu"]
 [ext_resource type="PackedScene" path="res://scenes/world/debris.tscn" id="2_mbqjn"]
 [ext_resource type="Resource" path="res://data/items/plastic_bottle.tres" id="4_uhrbv"]
-[ext_resource type="PackedScene" path="res://scenes/islands/tropical_island.tscn" id="4_vk2ck"]
+[ext_resource type="PackedScene" path="res://scenes/islands/kelp_island.tscn" id="4_vk2ck"]
 [ext_resource type="PackedScene" path="res://scenes/islands/polar_island.tscn" id="5_t5e65"]
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="5_tch0r"]
 [ext_resource type="Resource" path="res://data/items/fishing_line.tres" id="6_elm8k"]
-[ext_resource type="PackedScene" path="res://scenes/islands/ring_island.tscn" id="6_swpth"]
+[ext_resource type="PackedScene" path="res://scenes/islands/reef_island.tscn" id="6_swpth"]
 [ext_resource type="PackedScene" path="res://scenes/islands/hook_island.tscn" id="7_fas81"]
 [ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="7_tch0r"]
 [ext_resource type="PackedScene" path="res://scenes/islands/mangrove_island.tscn" id="8_1sar7"]
@@ -41,13 +41,13 @@ colors = SubResource("Gradient_1xntt")
 
 [node name="StarterIsland" parent="." unique_id=103628659 instance=ExtResource("1_jdf47")]
 
-[node name="TropicalIsland" parent="." unique_id=1935725137 instance=ExtResource("4_vk2ck")]
+[node name="KelpIsland" parent="." unique_id=1935725137 instance=ExtResource("4_vk2ck")]
 position = Vector2(5120, 0)
 
 [node name="PolarIsland" parent="." unique_id=1093347847 instance=ExtResource("5_t5e65")]
 position = Vector2(25600, 0)
 
-[node name="RingIsland" parent="." unique_id=54259257 instance=ExtResource("6_swpth")]
+[node name="ReefIsland" parent="." unique_id=54259257 instance=ExtResource("6_swpth")]
 position = Vector2(20480, 0)
 
 [node name="HookIsland" parent="." unique_id=1706261147 instance=ExtResource("7_fas81")]
@@ -157,7 +157,7 @@ script = ExtResource("16_1sar7")
 script = ExtResource("25_swpth")
 area = Rect2(-1100, -800, 2200, 1600)
 
-[node name="TropicalLitter" type="Node" parent="." unique_id=158994949]
+[node name="KelpLitter" type="Node" parent="." unique_id=158994949]
 script = ExtResource("25_swpth")
 max_litter = 10
 area = Rect2(4138, -982, 1964, 1964)

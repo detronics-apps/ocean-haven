@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 		if not _warned_far:
 			_warned_far = true
 			get_tree().call_group("hud", "show_toast",
-				"This little boat can't go that far.\nBuild an Expedition Boat at your dock to sail to other islands.")
+				"This little boat can't go that far.\nBuild an Exploration Ship at your dock to discover other islands.")
 	elif from_centre.length() < region.waters_radius - 150.0:
 		_warned_far = false
 

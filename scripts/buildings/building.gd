@@ -100,6 +100,8 @@ func actions() -> Array:
 	var list := []
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
+	if data.action == &"explore":
+		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if recycle_value() > 0 and Inventory.total() > 0:
 		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
 			"do": recycle})
@@ -224,6 +226,8 @@ func _process(delta: float) -> void:
 		if storage() > 0:
 			_hint.text += "\nStored: " + ", ".join(storable_items().map(func(item: ItemData) -> String:
 				return "%d / %d %s" % [Inventory.stored(item.id), storage_space(get_tree()), item.display_name.to_lower()]))
+	elif _hint.visible and data.action == &"explore":
+		_hint.text = "Explore to discover new islands"
 	elif _hint.visible:
 		var here := animals_here()
 		var note := ""

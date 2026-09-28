@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("1_t5gy4")
 id = &"home_island"
-display_name = "Home Island"
+display_name = "Starting Island"
 description = "Your horseshoe island and its lagoon, where it all began."
+order = 1
+theme = "Human impact"
 arrival = Vector2(0, 40)
 boat_mooring = Vector2(16, 112)
 map_icon = ExtResource("1_ovoyb")

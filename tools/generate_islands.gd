@@ -34,10 +34,10 @@ func _initialize() -> void:
 func _islands() -> void:
 	var info := {}
 	info["home_island"] = _save_island("StarterIsland", "res://scenes/islands/starter_island.tscn", _starter(), 0)
-	info["tropical_waters"] = _save_island("TropicalIsland", "res://scenes/islands/tropical_island.tscn", _crescent(), 1)
+	info["kelp_forest"] = _save_island("KelpIsland", "res://scenes/islands/kelp_island.tscn", _crescent(), 1)
 	info["mangrove_coast"] = _save_island("MangroveIsland", "res://scenes/islands/mangrove_island.tscn", _branching(), 2)
 	info["deep_sea"] = _save_island("HookIsland", "res://scenes/islands/hook_island.tscn", _hook(), 3)
-	info["coral_kingdom"] = _save_island("RingIsland", "res://scenes/islands/ring_island.tscn", _ring(), 4)
+	info["tropical_reef"] = _save_island("ReefIsland", "res://scenes/islands/reef_island.tscn", _ring(), 4)
 	info["arctic_ocean"] = _save_island("PolarIsland", "res://scenes/islands/polar_island.tscn", _polar(), 5)
 	var file := FileAccess.open(INFO, FileAccess.WRITE)
 	file.store_string(JSON.stringify(info, "\t"))
@@ -71,7 +71,7 @@ func _starter() -> Dictionary:
 		return SHALLOW if d <= 3 else (MID if d <= 5 else -1))
 
 
-## Tropical Waters: a long thin crescent with wide shallows inside its curve (coral comes later, as plants).
+## Kelp Forest: a long thin crescent with wide shallows inside its curve (kelp comes later, as plants).
 func _crescent() -> Dictionary:
 	var inner_centre := Vector2(4, -1)
 	var mask := {}
@@ -153,7 +153,7 @@ func _hook() -> Dictionary:
 		return SHALLOW if d <= 1 else (MID if d <= 4 else -1))
 
 
-## Coral Kingdom: a broken ring of sand and grass round a big shallow lagoon (coral comes later, as plants).
+## Tropical Reef: a broken ring of sand and grass round a big shallow lagoon (coral comes later, as plants).
 func _ring() -> Dictionary:
 	var gaps := [20.0, 75.0, 140.0, 205.0, 262.0, 320.0]
 	var radius := func(p: Vector2) -> float: return 18.0 + 1.2 * sin(3.0 * p.angle()) + 0.8 * sin(5.0 * p.angle() + 1.0)
@@ -326,10 +326,10 @@ func _place_in_world(info: Dictionary) -> void:
 		island.position = Vector2(entry.position[0], entry.position[1])
 		world.add_child(island)
 		island.owner = world
-		world.move_child(island, world.get_node("TropicalIsland").get_index() + 1)
-	var tropical: Dictionary = info["tropical_waters"]
-	(world.get_node("TropicalLitter") as Node).set("area", Rect2(tropical.position[0] - tropical.radius,
-		-tropical.radius, tropical.radius * 2, tropical.radius * 2))
+		world.move_child(island, world.get_node("KelpIsland").get_index() + 1)
+	var kelp: Dictionary = info["kelp_forest"]
+	(world.get_node("KelpLitter") as Node).set("area", Rect2(kelp.position[0] - kelp.radius,
+		-kelp.radius, kelp.radius * 2, kelp.radius * 2))
 	var packed := PackedScene.new()
 	packed.pack(world)
 	ResourceSaver.save(packed, WORLD)
@@ -349,26 +349,28 @@ func _regions() -> void:
 			region.arrival = Vector2(entry.arrival[0], entry.arrival[1])
 			region.boat_mooring = Vector2(entry.mooring[0], entry.mooring[1])
 			region.waters_radius = entry.radius
-		if DETAILS.has(id):
-			var details: Array = DETAILS[id]
-			region.display_name = details[0]
-			region.order = details[1]
-			region.description = details[2]
-			# ponytail: open to visit (like Tropical Waters) while their wildlife is still to come;
-			# give them their own unlock goals once they have something to restore.
-			region.locked = false
-			region.requires_building = &"patrol_boat"
-			region.unlock_hint = "Automate your home island first: build a Patrol Boat."
+		var details: Array = DETAILS[id]
+		region.display_name = details[0]
+		region.order = details[1]
+		region.direction = details[2]
+		region.theme = details[3]
+		region.description = details[4]
 		ResourceSaver.save(region, path)
-	var kelp: RegionData = load("res://data/regions/kelp_forest.tres")
-	kelp.order = 6
-	ResourceSaver.save(kelp, "res://data/regions/kelp_forest.tres")
 
 
-## New regions: [name, map order, description].
+## Every region: [name, order, direction explored to find it, theme, description].
+## Colder: Kelp Forest -> Deep Sea -> Polar Ocean. Warmer: Mangrove Coast -> Tropical Reef.
 const DETAILS := {
-	"mangrove_coast": ["Mangrove Coast", 2, "A maze of mangrove fingers and muddy channels, where young fish hide and grow. (Wildlife coming soon.)"],
-	"deep_sea": ["Deep Sea", 3, "A rugged hook of rock curling round a deep, dark trench. (Wildlife coming soon.)"],
-	"coral_kingdom": ["Coral Kingdom", 4, "A broken ring of coral round a huge turquoise lagoon. (Wildlife coming soon.)"],
-	"arctic_ocean": ["Polar Ocean", 5, "Floes of ice and bare rock in cold, quiet water. (Wildlife coming soon.)"],
+	"home_island": ["Starting Island", 1, &"", "Human impact",
+		"Your horseshoe island and its lagoon, where it all began."],
+	"kelp_forest": ["Kelp Forest", 2, &"colder", "Food-web relationships",
+		"Cool, clear water round a long, thin crescent. (Kelp and its wildlife coming soon.)"],
+	"mangrove_coast": ["Mangrove Coast", 3, &"warmer", "The land and ocean connection",
+		"A maze of grassy fingers and muddy channels. (Mangroves and their wildlife coming soon.)"],
+	"tropical_reef": ["Tropical Reef", 4, &"warmer", "Ecosystem complexity and restoration",
+		"A broken ring of islands round a huge shallow lagoon. (The reef and its wildlife coming soon.)"],
+	"deep_sea": ["Deep Sea", 5, &"colder", "Scientific discovery",
+		"A rocky hook curling round deep water. (Its wildlife coming soon.)"],
+	"arctic_ocean": ["Polar Ocean", 6, &"colder", "Global connectivity",
+		"Floes of ice and bare rock in cold, quiet water. (Its wildlife coming soon.)"],
 }

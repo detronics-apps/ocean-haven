@@ -1,7 +1,9 @@
 extends SceneTree
-## Voyages: the rowboat can't leave its island's coastal waters; the voyage map
-## lists every region; Tropical Waters unlocks once home has a patrol boat; with an
-## Expedition Boat you set sail and arrive ashore there with your rowboat; and back.
+## Voyages: the rowboat can't leave its island's coastal waters. The Map lists every
+## region but only sails to discovered ones; islands are discovered by exploring
+## warmer or colder with the Exploration Ship, which finds the next undiscovered
+## island that way (Colder: Kelp Forest, Deep Sea, Polar Ocean. Warmer: Mangrove
+## Coast, Tropical Reef), moors a ship there, and brings you ashore.
 ## Run: godot --headless --path . --script res://tests/test_voyage.gd --quit-after 300000
 
 var _failed := false
@@ -12,10 +14,12 @@ func _initialize() -> void:
 	var funding := root.get_node("Funding")  # autoloads: looked up at runtime
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
+	await process_frame  # the HUD adds the Explore menu
 	var player: Node2D = world.get_node("Player")
 	var boat: Node2D = world.get_node("Boat")  # untyped: Boat uses autoloads
 	var build_mode: Node = world.get_node("BuildMode")
-	var tropical: Resource = load("res://data/regions/tropical_waters.tres")
+	var regions: GDScript = load("res://scripts/world/regions.gd")
+	var region := func(id: String) -> Resource: return load("res://data/regions/%s.tres" % id)
 
 	# --- The rowboat stays in its coastal waters ---
 	boat.restore_aboard()
@@ -29,61 +33,87 @@ func _initialize() -> void:
 	boat.global_position = Vector2(16, 112)
 	player.global_position = Vector2(0, 40)
 
-	# --- The map before you can sail ---
+	# --- Every island: a little map, and you land on land with the rowboat in water ---
+	var terrain: GDScript = load("res://scripts/world/terrain.gd")
+	for r: Resource in regions.all():
+		_expect(r.map_icon != null, "%s has a little map" % r.id)
+		_expect(terrain.walkable(self, r.arrival) and terrain.at(self, r.boat_mooring) == "water",
+			"%s: you step ashore on land, with the rowboat in the water" % r.id)
+
+	# --- At the start, the Map can't take you anywhere new ---
 	var map: Node = world.get_node("VoyageMap")
 	map.open()
-	_expect(_entry(map, "tropical_waters").contains("Patrol Boat"), "Tropical Waters: build a patrol boat first")
-	_expect(_entry(map, "kelp_forest").contains("Coming later"), "later regions are shown as coming later")
-	_expect(_entry(map, "coral_kingdom").contains("Patrol Boat"), "the new islands open like Tropical Waters")
-	var terrain: GDScript = load("res://scripts/world/terrain.gd")
-	for region: Resource in load("res://scripts/world/regions.gd").all():
-		if region.locked:
-			continue
-		_expect(region.map_icon != null, "%s has a little map" % region.id)
-		_expect(terrain.walkable(self, region.arrival) and terrain.at(self, region.boat_mooring) == "water",
-			"%s: you step ashore on land, with the rowboat in the water (%s, %s)" % [region.id,
-			terrain.at(self, region.arrival), terrain.at(self, region.boat_mooring)])
-	_expect(map.find_children("Sail", "Button", true, false).is_empty(), "no sailing without an Expedition Boat")
+	_expect(_entry(map, "kelp_forest").contains("Not discovered yet"), "undiscovered islands are shown, but locked")
+	_expect(map.find_children("Sail", "Button", true, false).is_empty(), "nothing to sail to yet")
+	_expect(map.find_children("Explore*", "Button", true, false).is_empty(), "exploring isn't on the Map")
 	map.close()
 
-	# --- Expedition Boat (needs the dock) + a patrol boat unlocks Tropical Waters ---
+	# --- Build an Exploration Ship (next to 2 dock planks) and explore colder ---
 	funding.earn(1000, "test")
 	root.get_node("Inventory").restore({"plastic_bottle": 99}, {"wood": 99})  # building materials
-	var expedition: Resource = load("res://data/buildings/expedition_boat.tres")
-	build_mode.start(expedition)
-	_expect(not build_mode.can_place(expedition, Vector2i(-3, 7)), "expedition boat needs a dock first")
+	var ship: Resource = load("res://data/buildings/expedition_boat.tres")
+	build_mode.start(ship)
+	_expect(not build_mode.can_place(ship, Vector2i(-3, 7)), "the ship needs a dock first")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
-	_expect(not build_mode.can_place(expedition, Vector2i(-4, 8)), "expedition boat must moor next to a dock")
-	_expect(not build_mode.can_place(expedition, Vector2i(-3, 6)), "one dock plank beside it isn't enough")
+	_expect(not build_mode.can_place(ship, Vector2i(-3, 6)), "one dock plank beside it isn't enough")
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
-	_expect(build_mode.place_at(Vector2i(-3, 6)), "expedition boat moored beside 2 dock planks")
-	build_mode.add_building(load("res://data/buildings/patrol_boat.tres"), Vector2i(-24, 0))
+	_expect(build_mode.place_at(Vector2i(-3, 6)), "ship moored beside 2 dock planks")
+	build_mode.cancel()  # done building (placing keeps going for another)
+	var home_ship: Node2D = _ships()[0]
+	player.global_position = home_ship.global_position + Vector2(0, -40)
+	var labels: Array = home_ship.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Explore" in labels, "walk up to the ship to explore (%s)" % [labels])
+	home_ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Explore")[0].do.call()
+	var explore: Node = world.get_node("ExploreMenu")
+	_expect(explore.visible and not explore.find_child("ExploreWarmer", true, false).disabled
+		and not explore.find_child("ExploreColder", true, false).disabled, "explore warmer or colder")
+	_expect(regions.next_undiscovered(&"colder") == region.call("kelp_forest")
+		and regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "colder finds Kelp Forest, warmer Mangrove Coast")
+	explore.find_child("ExploreColder", true, false).pressed.emit()
+	for i in 240:
+		await process_frame
+	var kelp: Resource = region.call("kelp_forest")
+	_expect(player.global_position == kelp.arrival and boat.global_position == kelp.boat_mooring, "arrived at the Kelp Forest with the rowboat")
+	_expect(regions.is_discovered(kelp), "the Kelp Forest is discovered for good")
+	var kelp_ships := _ships().filter(func(s: Node2D) -> bool: return s.global_position.distance_to(kelp.center) < kelp.waters_radius)
+	_expect(kelp_ships.size() == 1 and kelp_ships[0].global_position.distance_to(kelp.arrival) < 120.0,
+		"an Exploration Ship is moored by the landing spot there")
 
-	# --- Set sail ---
+	# --- From the Kelp Forest: colder is the Deep Sea, warmer still the Mangrove Coast ---
+	_expect(regions.next_undiscovered(&"colder") == region.call("deep_sea")
+		and regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "next: Deep Sea colder, Mangrove Coast warmer")
+	explore.explore(&"colder")
+	for i in 240:
+		await process_frame
+	_expect(player.global_position == region.call("deep_sea").arrival, "on to the Deep Sea")
+	# From the Deep Sea, warmer crosses back to the warmer route: Mangrove, then the Reef.
+	_expect(regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "warmer from the Deep Sea: Mangrove Coast")
+	explore.explore(&"warmer")
+	for i in 240:
+		await process_frame
+	_expect(regions.next_undiscovered(&"warmer") == region.call("tropical_reef")
+		and regions.next_undiscovered(&"colder") == region.call("arctic_ocean"), "then Tropical Reef warmer, Polar Ocean colder")
+	regions.discover(region.call("tropical_reef"))
+	explore.open()
+	_expect(explore.find_child("ExploreWarmer", true, false).disabled, "every warmer island found")
+	explore.close()
+
+	# --- The Map sails to discovered islands (no ship needed), not to undiscovered ones ---
 	map.open()
-	var sail: Button = map.find_child("Entry_tropical_waters", true, false).find_child("Sail", true, false)
-	_expect(sail != null, "Tropical Waters is ready to visit")
-	if sail:
-		sail.pressed.emit()
-		for i in 240:
-			await process_frame
-		_expect(player.global_position == tropical.arrival, "arrived ashore at Tropical Waters")
-		_expect(boat.global_position == tropical.boat_mooring, "rowboat moored beside you")
-		_expect(_terrain(player.global_position) == "sand" and _terrain(boat.global_position) == "water",
-			"standing on its beach, boat in the shallows")
-		_expect(player.visible and not boat.controlled, "on foot")
-
-		# --- And home again ---
-		map.open()
-		var home_sail: Button = map.find_child("Entry_home_island", true, false).find_child("Sail", true, false)
-		home_sail.pressed.emit()
-		for i in 240:
-			await process_frame
-		_expect(player.global_position == Vector2(0, 40), "sailed home again")
+	_expect(map.find_child("Entry_kelp_forest", true, false).find_child("Sail", true, false) != null, "sail back to the Kelp Forest")
+	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null, "not to the undiscovered Polar Ocean")
+	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
+	for i in 240:
+		await process_frame
+	_expect(player.global_position == Vector2(0, 40), "sailed home again")
 
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func _ships() -> Array:
+	return get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"expedition_boat")
 
 
 func _entry(map: Node, id: String) -> String:
@@ -91,14 +121,6 @@ func _entry(map: Node, id: String) -> String:
 	for label in map.find_child("Entry_" + id, true, false).find_children("*", "Label", true, false):
 		text += (label as Label).text + "\n"
 	return text
-
-
-func _terrain(point: Vector2) -> String:
-	for ground: TileMapLayer in get_nodes_in_group("ground"):
-		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
-		if tile:
-			return tile.get_custom_data("terrain")
-	return ""
 
 
 func _expect(ok: bool, what: String) -> void:

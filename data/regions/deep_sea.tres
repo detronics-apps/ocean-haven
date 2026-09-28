@@ -7,12 +7,12 @@
 script = ExtResource("1_l7stf")
 id = &"deep_sea"
 display_name = "Deep Sea"
-description = "A rugged hook of rock curling round a deep, dark trench. (Wildlife coming soon.)"
-order = 3
+description = "A rocky hook curling round deep water. (Its wildlife coming soon.)"
+order = 5
+direction = &"colder"
+theme = "Scientific discovery"
 center = Vector2(15360, 0)
 waters_radius = 985.0
 arrival = Vector2(15632, 16)
 boat_mooring = Vector2(15600, 16)
-requires_building = &"patrol_boat"
 map_icon = ExtResource("1_vsim8")
-unlock_hint = "Automate your home island first: build a Patrol Boat."

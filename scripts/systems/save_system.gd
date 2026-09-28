@@ -135,6 +135,7 @@ func save_to(world: Node, path: String) -> bool:
 		"time_of_day": GameClock.time_of_day,
 		"avatar": RangerProfile.look,
 		"avatar_created": RangerProfile.created,
+		"discovered_regions": Regions.discovered_ids(),
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	# Web: write the save itself — the browser's storage is only updated when a file is
@@ -241,6 +242,7 @@ func load_from(world: Node, path: String) -> bool:
 		return false
 
 	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
+	Regions.restore(state.get("discovered_regions", []))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	_tile_edits = state.get("tile_edits", {})

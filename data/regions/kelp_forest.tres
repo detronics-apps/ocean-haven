@@ -1,14 +1,18 @@
 [gd_resource type="Resource" script_class="RegionData" format=3]
 
-[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_qw2mg"]
+[ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_4kmir"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/kelp_island.png" id="1_vyq8o"]
 
 [resource]
-script = ExtResource("1_qw2mg")
+script = ExtResource("1_4kmir")
 id = &"kelp_forest"
 display_name = "Kelp Forest"
-description = "Tall underwater forests of kelp, home to sea otters and seals."
-order = 6
-center = Vector2(0, 60000)
-waters_radius = 1000.0
-locked = true
-unlock_hint = "keep restoring the ocean to reach it."
+description = "Cool, clear water round a long, thin crescent. (Kelp and its wildlife coming soon.)"
+order = 2
+direction = &"colder"
+theme = "Food-web relationships"
+center = Vector2(5120, 0)
+waters_radius = 982.0
+arrival = Vector2(4528, 16)
+boat_mooring = Vector2(4496, 16)
+map_icon = ExtResource("1_vyq8o")

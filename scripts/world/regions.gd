@@ -1,8 +1,13 @@
 class_name Regions
-## The ocean's regions (data/regions/): which one a point is in, and which can be visited.
+## The ocean's regions (data/regions/): which one a point is in, which have been
+## discovered, and which one exploring warmer or colder finds next.
 
+const WARMER := &"warmer"
+const COLDER := &"colder"
 
 static var _all: Array[Resource] = []
+## Discovered region ids (the starting island is always known). Saved by SaveGame.
+static var _discovered := {}
 
 
 static func all() -> Array[Resource]:
@@ -21,13 +26,28 @@ static func nearest(point: Vector2) -> RegionData:
 	return best
 
 
-## Whether the ranger can sail to `region` yet (and why not, if not).
-static func why_locked(tree: SceneTree, region: RegionData) -> String:
-	if region.locked:
-		return "Coming later: " + region.unlock_hint
-	if region.requires_building == &"":
-		return ""
-	for building: Building in tree.get_nodes_in_group("buildings"):
-		if building.data.id == region.requires_building:
-			return ""
-	return region.unlock_hint
+static func is_discovered(region: RegionData) -> bool:
+	return region.direction == &"" or _discovered.has(region.id)
+
+
+static func discover(region: RegionData) -> void:
+	_discovered[region.id] = true
+
+
+## The next undiscovered island that way, or null if that way is all explored.
+static func next_undiscovered(direction: StringName) -> RegionData:
+	for region: RegionData in all():  # sorted by order
+		if region.direction == direction and not is_discovered(region):
+			return region
+	return null
+
+
+## For the save file.
+static func discovered_ids() -> Array:
+	return _discovered.keys()
+
+
+static func restore(ids: Array) -> void:
+	_discovered.clear()
+	for id in ids:
+		_discovered[StringName(id)] = true

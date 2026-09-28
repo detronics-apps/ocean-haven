@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/palm_tree.tscn" id="2_wvljg"]
 [ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="3_wvljg"]
 
-[node name="TropicalIsland" type="Node2D" unique_id=1935725137]
+[node name="KelpIsland" type="Node2D" unique_id=1935725137]
 y_sort_enabled = true
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=536507799 groups=["ground"]]

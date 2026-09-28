@@ -22,7 +22,7 @@ A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean 
 - **Progress is visible.** Restored areas change colour, sound and animal count — muted (dark blue, grey, brown) when damaged, vibrant (turquoise, coral pink, tropical green) when healthy.
 - **The player is a conservation ranger**, not a superhero: no stats.
 - **Avatar creation.** The player creates and customises their avatar (skin tone, face, hair style and colour, eye colour, outfit, gear, accessories, boat appearance). Build the player sprite as swappable layers from the start, so customisation never requires redrawing the character.
-- **Multiple islands and regions.** The world grows: home island first, then new regions (Tropical Waters, Mangrove Coast, Kelp Forest, Coral Kingdom, Open Ocean / Deep Sea, Arctic Ocean — see `docs/GAME_DESIGN.md`) unlock through exploration and conservation progress. Each island is its own scene in `scenes/islands/`, placed into the world — never hard-code the world as one island.
+- **Multiple islands and regions.** The world grows: the starting island first, then five more discovered by exploring warmer (Mangrove Coast, Tropical Reef) or colder (Kelp Forest, Deep Sea, Polar Ocean) with the Exploration Ship — see `docs/GAME_DESIGN.md` "World map". The **Map** only travels to discovered islands; **Explore** (only at the ship) discovers new ones. Never merge the two. Each island is its own scene in `scenes/islands/`, placed into the world — never hard-code the world as one island.
 - Playable by a 7-year-old; depth for adults comes from choices, not complex controls.
 
 ## Art
@@ -154,7 +154,7 @@ caring for animals". Build in this order, placeholder art:
    area they hatched / nested at
 10. ✅ Move anything you've built: interact with it → Move → place it again
 11. ✅ Voyages: rowboat limited to coastal waters; Expedition Boat (at the dock) + Map button → voyage
-    map (data/regions/); Tropical Waters (second island) unlocks once home has a patrol boat
+    map (data/regions/). (Unlocking replaced by exploring, item 24.)
 12. ✅ Dolphins spread 120° around the island; they surface and dive
 13. ✅ Action buttons, bottom right (stacked): one button per nearby action (free / photo / sleep / move / board) so the
     player chooses; E still does the most important one
@@ -176,19 +176,21 @@ caring for animals". Build in this order, placeholder art:
     full grown = 1-2 wood + 1-2 saplings (the island's own palms are full grown)
 23. ✅ Six islands (shape, size, colours only — animals, plants, mechanics later), painted by
     `tools/generate_islands.gd` (re-run it to tweak a shape), each with a little map in the Map menu:
-    Home (horseshoe; north half kept so saved buildings stay on land), Tropical Waters (crescent,
-    coral inside), Mangrove Coast (branching fingers, mud), Deep Sea (hook round a trench), Coral
-    Kingdom (broken ring, lagoon), Polar Ocean (ice floes, rock). **Ground tiles are plain and
-    shared: sand, grass, rock, ice, mud. Water: shallow, mid, deep (open ocean, no tile).** Coral,
-    kelp and mangroves will be plants on top, never ground tiles.
-    For now the new islands open like Tropical Waters (patrol boat + expedition boat).
-24. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
+    Starting Island (horseshoe; north half kept so saved buildings stay on land), Kelp Forest
+    (crescent), Mangrove Coast (branching fingers, mud), Tropical Reef (broken ring, lagoon), Deep Sea
+    (rocky hook), Polar Ocean (ice floes, rock). **Ground tiles are plain and shared: sand, grass,
+    rock, ice, mud. Water: shallow, mid, deep (open ocean, no tile).** Coral, kelp and mangroves will
+    be plants on top, never ground tiles.
+24. ✅ Exploration (docs/GAME_DESIGN.md "World map"): the Exploration Ship (id expedition_boat)
+    offers Explore warmer / colder → the next undiscovered island that way (`Regions.next_undiscovered`,
+    RegionData.direction + order), which is then discovered for good (saved), gets its own moored
+    ship, and can be reached from the Map. The Map only sails to discovered islands.
+25. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
-25. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+26. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
-(turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**
-(the new regions).
+(turtle rehab mini-game).
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

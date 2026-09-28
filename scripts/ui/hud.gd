@@ -46,6 +46,9 @@ func _ready() -> void:
 	map_button.focus_mode = Control.FOCUS_NONE
 	map_button.custom_minimum_size = Vector2(80, 44)
 	map_button.pressed.connect(get_tree().call_group.bind("voyage_map", "open"))
+	var explore := ExploreMenu.new()  # opened only from the Exploration Ship, never from here
+	explore.name = "ExploreMenu"
+	get_parent().add_child.call_deferred(explore)
 	%JournalButton.add_sibling(map_button)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
@@ -119,13 +122,15 @@ func show_warning(text: String) -> void:
 
 
 ## Fades out, sails to `region` (the ranger arrives there with their rowboat), fades in.
-func voyage(region: RegionData) -> void:
+## `discovered`: found by exploring, so it says so.
+func voyage(region: RegionData, discovered := false) -> void:
 	var tween := create_tween()
 	tween.tween_property(_fade, "color:a", 1.0, 0.8)
 	tween.tween_callback(func() -> void: VoyageMap.arrive(get_tree(), region))
 	tween.tween_interval(0.6)
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
-	tween.tween_callback(func() -> void: show_toast("You sailed to %s!\n%s" % [region.display_name, region.description]))
+	tween.tween_callback(func() -> void: show_toast("%s %s!\n%s" % [
+		"You discovered" if discovered else "You sailed to", region.display_name, region.description]))
 
 
 ## Fades to black, sleeps until morning, fades back in.

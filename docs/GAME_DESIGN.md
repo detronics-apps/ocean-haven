@@ -107,17 +107,33 @@ Initially a dull/brown reef. The player:
 
 ## World map
 
-Progressively unlocked by Ocean Impact (restoration progress) — not by player level.
+Six islands, discovered by exploring — not by player level.
 
-| Region | Ecosystem |
-|---|---|
-| 🏝️ Starting Island | Beaches, turtle nesting |
-| 🌴 Tropical Waters | Shallow reef, seagrass |
-| 🌿 Mangrove Coast | Mangroves |
-| 🌊 Kelp Forest | Kelp |
-| 🪸 Coral Kingdom | Large coral reefs |
-| 🐋 Open Ocean / Deep Sea | Whales, sharks, deep-sea life |
-| 🧊 Arctic Ocean | Penguins, seals, cold-water whales |
+| # | Region | Theme | Island | Found by exploring |
+|---|---|---|---|---|
+| 1 | 🏝️ Starting Island | Human impact | Horseshoe round a lagoon | (start) |
+| 2 | 🌿 Kelp Forest | Food-web relationships | Long thin crescent | Colder, 1st |
+| 3 | 🌱 Mangrove Coast | Land/ocean connection | Branching fingers, mud | Warmer, 1st |
+| 4 | 🪸 Tropical Reef | Ecosystem complexity & restoration | Broken ring, big lagoon | Warmer, 2nd |
+| 5 | 🌊 Deep Sea | Scientific discovery | Rocky hook round deep water | Colder, 2nd |
+| 6 | ❄️ Polar Ocean | Global connectivity | Ice floes and rock | Colder, 3rd |
+
+Routes: **colder** Starting → Kelp Forest → Deep Sea → Polar Ocean; **warmer** Starting → Mangrove
+Coast → Tropical Reef.
+
+### Map vs Explore — two separate things, never one menu
+
+- 🗺️ **Map** (HUD button) — "Where can I go?" Shows every island. Sails only to islands you've
+  already discovered (no ship needed). Undiscovered islands are shown but locked, informational only.
+- 🚢 **Explore** — "Where can I discover next?" Only by walking up to an **Exploration Ship** on
+  the current island. It offers **Explore warmer** / **Explore colder** — a direction, never a named
+  island. Each finds the **next undiscovered island in that direction**, from wherever you are (e.g.
+  from the Deep Sea, warmer finds the Mangrove Coast if it's still unknown, else the Tropical Reef).
+- Once discovered, an island is permanently on the Map, and gets its own Exploration Ship so you can
+  explore on from there. Never rebuild ships just to go back.
+
+Ground tiles are plain and shared (sand, grass, rock, ice, mud; water shallow / mid / deep). Coral,
+kelp and mangroves are plants on top.
 
 Each region introduces: **one new ecosystem + several animals + one major environmental problem + one new gameplay mechanic.**
 
@@ -328,7 +344,7 @@ Potentially partner with real organizations ("This month's Ocean Project"), and 
 - Goal per island: automate its cleanup "to a certain degree" → then set out to the next region.
 
 ### Regions, each with its own mechanic
-Order: Starting Island → **Tropical Waters** (save more fish) → **Mangrove Coast** → **Deep Sea Zone** → **Coral Kingdom** → **Arctic Ocean**. Each region has different ways of saving that area.
+Discovered warmer (**Mangrove Coast** → **Tropical Reef**, save the fish) or colder (**Kelp Forest** → **Deep Sea** → **Polar Ocean**) — see "World map". Each region has different ways of saving that area.
 
 ### Sanctuaries are places, not props
 - The turtle sanctuary is **not** a turtle spawner. The **existing turtle comes to the protected beach and lays eggs**; the eggs hatch and hatchlings reach the sea → more turtles.

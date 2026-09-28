@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wctx6c25jysc"
-path="res://.godot/imported/tropical_island.png-5ae2b9f17ace3892b1f2e6a2a664a7c8.ctex"
+uid="uid://dv3i35ys23rrj"
+path="res://.godot/imported/reef_island.png-aaacb392ea247602588bb7b595072d3b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/maps/tropical_island.png"
-dest_files=["res://.godot/imported/tropical_island.png-5ae2b9f17ace3892b1f2e6a2a664a7c8.ctex"]
+source_file="res://assets/ui/maps/reef_island.png"
+dest_files=["res://.godot/imported/reef_island.png-aaacb392ea247602588bb7b595072d3b.ctex"]
 
 [params]
 

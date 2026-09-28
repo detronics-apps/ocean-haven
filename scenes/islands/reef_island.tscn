@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" path="res://assets/tilesets/placeholder_tileset.tres" id="1_325vv"]
 
-[node name="RingIsland" type="Node2D" unique_id=54259257]
+[node name="ReefIsland" type="Node2D" unique_id=54259257]
 y_sort_enabled = true
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1234623413 groups=["ground"]]

@@ -63,10 +63,14 @@ func _initialize() -> void:
 	var profile := root.get_node("RangerProfile")
 	profile.set_choice("hair", 3)
 	profile.finish_creation()
+	var regions: GDScript = load("res://scripts/world/regions.gd")
+	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
+	regions.discover(kelp)
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
 	# --- "Restart": empty state, fresh world, load ---
+	regions.restore([])
 	_inventory.restore({})
 	_journal.restore([])
 	clock.day = 1
@@ -82,6 +86,8 @@ func _initialize() -> void:
 	_expect(_inventory.count(&"plastic_bottle") == 2, "inventory restored (2 bottles)")
 	_expect(_inventory.stored(&"wood") == 4, "stored wood restored (6 - 2 for the sanctuary)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")
+	_expect(regions.is_discovered(kelp) and not regions.is_discovered(load("res://data/regions/deep_sea.tres")),
+		"discovered islands restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):
