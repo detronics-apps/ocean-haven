@@ -204,6 +204,10 @@ Step 2. Build in this order:
 1. ✅ Island health (`IslandHealth`, 0..1 per island): weighted RegionData.health factors
    (HealthFactor "clean" = litter about its waters, "help" = species freed, "animals" = living
    there). Ground colours go from muted to full with it (checked every 2 s); shown in the Journal.
+   The Starting Island starts with 1 turtle, 1 crab, 1 dolphin and ~30 litter (new game:
+   `start_litter`); more animals arrive as islands recover (RegionData.arrivals, `Arrivals`, saved):
+   2nd crab at 45 % health, 2nd dolphin at 65 %, then dolphins 3–5 and crabs 3–4 as 1–3 other
+   islands become healthy (≥ 70 %).
 2. ✅ Wildlife Conservation Parks (funding facilities, BuildingData.facility = "funding", shown in
    gold in the Build menu): up to 3 Turtle Protection Areas + 1 Dolphin Viewing Area (visitors per
    dolphin in view: `watches`). Morning funding (Building.visitors_today) × (1 + island health).

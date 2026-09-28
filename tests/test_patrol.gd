@@ -13,6 +13,7 @@ func _initialize() -> void:
 	var inventory := root.get_node("Inventory")
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
+	load("res://scripts/animals/arrivals.gd").restore(world, ["Dolphin1", "Dolphin3", "Crab2"])  # the pod and crabs of a recovered island
 	for d in get_nodes_in_group("debris"):
 		d.free()  # a clean sea, so we know exactly what's out there
 	var build_mode: Node = world.get_node("BuildMode")

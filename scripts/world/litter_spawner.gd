@@ -82,6 +82,17 @@ func _process(delta: float) -> void:
 		spawn_one()
 
 
+## Fills its area up to `count` pieces (a new game starts with plenty to clean up).
+func fill(count: int) -> void:
+	var usual := max_litter
+	max_litter = count
+	for attempt in count * 2:
+		if _litter_in_area() >= count:
+			break
+		spawn_one()
+	max_litter = usual
+
+
 ## Adds one piece of litter somewhere suitable. Returns it, or null if there's
 ## already enough litter or no spot was found.
 func spawn_one() -> Debris:

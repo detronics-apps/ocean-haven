@@ -29,6 +29,8 @@ extends Resource
 
 ## What makes the island healthy (IslandHealth); none = no health shown yet.
 @export var health: Array[HealthFactor] = []
+## Animals that move in as it (and the ocean) recovers (see Arrivals).
+@export var arrivals: Array[ArrivalData] = []
 
 @export_group("Objective")
 ## The island's objective: done once every goal is met; then its Exploration Ship can be

@@ -13,6 +13,7 @@ func _initialize() -> void:
 	await process_frame
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
+	load("res://scripts/animals/arrivals.gd").restore(world, ["Dolphin1", "Dolphin3", "Crab2"])  # the pod and crabs of a recovered island
 	var player: Node2D = world.get_node("Player")
 	var dolphins := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == &"bottlenose_dolphin")
 	var crabs := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == &"ghost_crab")

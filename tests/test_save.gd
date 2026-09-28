@@ -23,6 +23,7 @@ func _initialize() -> void:
 
 	# --- Play a bit, then save ---
 	var world := _new_world()
+	load("res://scripts/animals/arrivals.gd").restore(world, ["Dolphin1", "Dolphin3", "Crab2"])  # the pod and crabs of a recovered island
 	_inventory.add(load("res://data/items/plastic_bottle.tres"), 7)
 	_journal.discover(load("res://data/animals/green_turtle.tres"))
 	var debris := world.get_node("Debris1")
@@ -115,7 +116,8 @@ func _initialize() -> void:
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
-	var caught: Node = world.get_node("Dolphin1")
+	var caught: Node = world.get_node_or_null("Dolphin1")
+	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")
 	var cells := {}
 	for b in get_nodes_in_group("buildings"):

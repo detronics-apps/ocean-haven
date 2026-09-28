@@ -2,6 +2,8 @@ extends SceneTree
 ## Island health (Ocean Impact per island): the Starting Island's health rises as its
 ## litter is cleaned up, animals are freed and more turtles live there, and its ground
 ## colours go from muted to vibrant with it. Islands without health factors have none yet.
+## The island starts with 1 turtle, 1 crab and 1 dolphin (and plenty of litter); more crabs
+## and dolphins arrive as it recovers, and more again once other islands are healthy too.
 ## Run: godot --headless --path . --script res://tests/test_island_health.gd --quit-after 200000
 
 var _failed := false
@@ -18,6 +20,14 @@ func _initialize() -> void:
 	var journal := root.get_node("Journal")
 	_expect(health.of(self, kelp) < 0.0, "no health on islands without factors yet")
 
+	var arrivals: GDScript = load("res://scripts/animals/arrivals.gd")
+	var count := func(id: StringName) -> int:
+		return get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == id).size()
+	_expect(count.call(&"ghost_crab") == 1 and count.call(&"bottlenose_dolphin") == 1 and count.call(&"green_turtle") == 1,
+		"the island starts with 1 crab, 1 dolphin and 1 turtle")
+	world.get_node("LitterSpawner").fill(30)
+	_expect(get_nodes_in_group("debris").size() >= 30, "a new game starts with about 30 pieces of litter (%d)" % get_nodes_in_group("debris").size())
+	_expect(arrivals.check(world).is_empty(), "nobody new arrives while it's polluted")
 	var start: float = health.of(self, home)
 	_expect(start > 0.0 and start < 0.5, "the Starting Island starts in poor health (%.2f)" % start)
 	# Clean up all its litter.
@@ -25,6 +35,9 @@ func _initialize() -> void:
 		debris.free()
 	var cleaned: float = health.of(self, home)
 	_expect(cleaned > start, "cleaning up raises its health (%.2f)" % cleaned)
+	var came: Array = arrivals.check(world)
+	_expect(came.size() == 1 and came[0].name == "Crab2" and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives")
+	_expect(arrivals.check(world).is_empty(), "and only once")
 	for id in ["green_turtle", "bottlenose_dolphin", "ghost_crab"]:
 		journal.help(load("res://data/animals/%s.tres" % id))
 	var helped: float = health.of(self, home)
@@ -36,6 +49,11 @@ func _initialize() -> void:
 		turtle.position = Vector2(-500 + i * 20, 100)
 		world.add_child(turtle)
 	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 6 turtles: fully healthy")
+	came = arrivals.check(world)
+	_expect(came.size() == 1 and came[0].name == "Dolphin1" and count.call(&"bottlenose_dolphin") == 2,
+		"cleaner water: a second dolphin (the rest wait for other islands to recover)")
+	for arrival: Resource in home.arrivals:
+		_expect(terrain_ok(arrival), "%s arrives in its habitat" % arrival.node_name)
 
 	# Ground colours follow health.
 	var ground: CanvasItem = world.get_node("StarterIsland/Ground")
@@ -92,6 +110,11 @@ func _initialize() -> void:
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func terrain_ok(arrival: Resource) -> bool:
+	var terrain: GDScript = load("res://scripts/world/terrain.gd")
+	return terrain.at(self, arrival.position) in arrival.species.habitat_terrain
 
 
 func _expect(ok: bool, what: String) -> void:

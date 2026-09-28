@@ -4,6 +4,72 @@
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_t5gy4"]
 [ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="2_goal"]
 [ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/animals/arrival_data.gd" id="4_arr"]
+[ext_resource type="Resource" path="res://data/animals/ghost_crab.tres" id="5_crab"]
+[ext_resource type="Resource" path="res://data/animals/bottlenose_dolphin.tres" id="6_dolphin"]
+
+[sub_resource type="Resource" id="Arrival_Crab2"]
+script = ExtResource("4_arr")
+species = ExtResource("5_crab")
+node_name = "Crab2"
+position = Vector2(400, 208)
+island_health = 0.45
+healthy_islands = 0
+note = "A second ghost crab has moved onto your beach: it's clean enough for them now!"
+
+[sub_resource type="Resource" id="Arrival_Dolphin1"]
+script = ExtResource("4_arr")
+species = ExtResource("6_dolphin")
+node_name = "Dolphin1"
+position = Vector2(720, 0)
+island_health = 0.65
+healthy_islands = 0
+note = "Another dolphin has joined the pod: the cleaner water is bringing them back!"
+
+[sub_resource type="Resource" id="Arrival_Dolphin3"]
+script = ExtResource("4_arr")
+species = ExtResource("6_dolphin")
+node_name = "Dolphin3"
+position = Vector2(-360, -512)
+island_health = 0.65
+healthy_islands = 1
+note = "A third dolphin has joined the pod: healthier seas around your islands mean more fish to eat."
+
+[sub_resource type="Resource" id="Arrival_Crab3"]
+script = ExtResource("4_arr")
+species = ExtResource("5_crab")
+node_name = "Crab3"
+position = Vector2(-112, 400)
+island_health = 0.65
+healthy_islands = 1
+note = "Another ghost crab has come to your beach, now the ocean around it is recovering."
+
+[sub_resource type="Resource" id="Arrival_Dolphin4"]
+script = ExtResource("4_arr")
+species = ExtResource("6_dolphin")
+node_name = "Dolphin4"
+position = Vector2(560, -520)
+island_health = 0.65
+healthy_islands = 2
+note = "A fourth dolphin has joined the pod: the ocean between your islands is full of fish again."
+
+[sub_resource type="Resource" id="Arrival_Crab4"]
+script = ExtResource("4_arr")
+species = ExtResource("5_crab")
+node_name = "Crab4"
+position = Vector2(112, -336)
+island_health = 0.65
+healthy_islands = 2
+note = "Another ghost crab has come to your beach!"
+
+[sub_resource type="Resource" id="Arrival_Dolphin5"]
+script = ExtResource("4_arr")
+species = ExtResource("6_dolphin")
+node_name = "Dolphin5"
+position = Vector2(560, 520)
+island_health = 0.65
+healthy_islands = 3
+note = "A fifth dolphin has joined the pod: your healthy islands are bringing the whole ocean back to life."
 
 [sub_resource type="Resource" id="Health_clean"]
 script = ExtResource("3_health")
@@ -85,3 +151,4 @@ objective = "Clean up the island and help its wildlife"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_litter"), SubResource("Goal_turtle"), SubResource("Goal_dolphin"), SubResource("Goal_crab")])
 discovery_text = "Under the last of the litter you cleaned up, you found an old sonar unit. Cleaned and working again, it's the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
+arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5")])

@@ -108,11 +108,6 @@ position = Vector2(-650, 40)
 tangled = true
 tangle_item = ExtResource("6_elm8k")
 
-[node name="Crab2" parent="." unique_id=1791080907 instance=ExtResource("7_tch0r")]
-position = Vector2(400, 208)
-data = ExtResource("12_swpth")
-home_radius = 220.0
-
 [node name="Crab1" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
 position = Vector2(-368, -176)
 data = ExtResource("12_swpth")
@@ -120,22 +115,12 @@ home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("5_tch0r")
 
-[node name="Dolphin3" parent="." unique_id=359328380 instance=ExtResource("7_tch0r")]
-position = Vector2(-360, -512.687)
-data = ExtResource("13_fas81")
-home_radius = 220.0
-
 [node name="Dolphin2" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
 position = Vector2(-360, 512.687)
 data = ExtResource("13_fas81")
 home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("14_fas81")
-
-[node name="Dolphin1" parent="." unique_id=106377201 instance=ExtResource("7_tch0r")]
-position = Vector2(720, 0)
-data = ExtResource("13_fas81")
-home_radius = 220.0
 
 [node name="Player" parent="." unique_id=1682992877 instance=ExtResource("2_b6ysu")]
 

@@ -22,6 +22,8 @@ var _cut_trees: Array[String] = []
 ## Tiles the ranger changed (moving sand): "<island>/<ground>" -> {"x,y": [atlas x, atlas y]}.
 var _tile_edits: Dictionary = {}
 var _world: Node
+## No save was found when the game started.
+var new_game := false
 var _dirty := false
 var _since_save := 0.0
 
@@ -33,7 +35,7 @@ func attach(world: Node) -> bool:
 	if world != get_tree().current_scene:
 		return false
 	_world = world
-	load_from(world, PATH)
+	new_game = not load_from(world, PATH)
 	Inventory.changed.connect(func(_i, _c): _dirty = true)
 	Journal.discovered.connect(func(_a): _dirty = true)
 	Journal.observed.connect(func(_a): _dirty = true)
@@ -150,6 +152,7 @@ func save_to(world: Node, path: String) -> bool:
 		"avatar": RangerProfile.look,
 		"avatar_created": RangerProfile.created,
 		"discovered_regions": Regions.discovered_ids(),
+		"arrived_animals": Arrivals.arrived_names(),
 		"fleet": Fleet.to_dict(),
 		"mission": Missions.to_dict(),
 		"litter_collected": Inventory.litter_collected,
@@ -277,6 +280,7 @@ func load_from(world: Node, path: String) -> bool:
 	Inventory.litter_collected = int(state.get("litter_collected", 0))
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
+	Arrivals.restore(world, state.get("arrived_animals", []))  # before anything refers to them by name
 	for animal_name: String in state.get("freed_animals", []):
 		_freed.append(animal_name)
 		var animal := world.get_node_or_null(animal_name)
