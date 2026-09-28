@@ -12,12 +12,11 @@ const TILESET := "res://assets/tilesets/placeholder_tileset.tres"
 const WORLD := "res://scenes/world/ocean_world.tscn"
 const INFO := "res://build/islands.json"
 ## Tile atlas columns (see assets/tilesets/placeholder_tiles.svg).
-enum { SHALLOW, SAND, GRASS, ROCK, ICE, MUD, REEF, SEAGRASS, VIVID, MANGROVE, DARK, DEEP, TRENCH,
-	BRIGHT, COLD, COLD_DEEP, CORAL_SAND }
+## Ground: sand, grass, rock, ice, mud. Water: shallow, mid, and deep (the open ocean: no tile).
+## Coral, kelp and mangroves will be plants on top, not ground.
+enum { SHALLOW, SAND, GRASS, ROCK, ICE, MUD, MID }
 ## The same tiles' colours, for the region maps.
-const COLOURS := ["5fb3b8", "e6d5a4", "7f9a52", "6e7c86", "eef6fa", "7a5e3c", "f28c38", "4fa39a",
-	"58a845", "3f6a3a", "4a5e48", "336a8a", "1c3550", "4fd0d8", "7fa3b3", "3a5566", "ebc3a0"]
-const WATERY := [SHALLOW, SEAGRASS, BRIGHT, COLD]
+const COLOURS := ["528b93", "e6d5a4", "7f9a52", "7c858c", "e8f1f5", "7a5e3c", "3a6478"]
 ## Islands sit in a row east of home, one every SPACING pixels.
 const SPACING := 5120
 
@@ -46,8 +45,7 @@ func _islands() -> void:
 
 
 ## The home island: its north half (where the ranger has built) stays as it was; the
-## arms curl in around the lagoon, leaving a narrow mouth, with seagrass in the lagoon
-## and a little pond on the east arm.
+## arms curl in around the lagoon, leaving a narrow mouth, with a little pond on the east arm.
 func _starter() -> Dictionary:
 	var ground: TileMapLayer = load("res://scenes/islands/starter_island.tscn").instantiate().get_node("Ground")
 	var land := {}
@@ -67,15 +65,13 @@ func _starter() -> Dictionary:
 	for cell in [Vector2i(10, 3), Vector2i(10, 4)]:  # pond
 		land.erase(cell)
 		water[cell] = SHALLOW
-	for cell in [Vector2i(-2, 6), Vector2i(-1, 6), Vector2i(2, 5), Vector2i(3, 8), Vector2i(-3, 8), Vector2i(0, 8)]:
-		water[cell] = SEAGRASS
 	return _finish(land, func(cell: Vector2i, d: int) -> int:
 		if water.has(cell):
 			return water[cell]
-		return SHALLOW if d <= 3 else (DEEP if d <= 5 else -1))
+		return SHALLOW if d <= 3 else (MID if d <= 5 else -1))
 
 
-## Tropical Waters: a long thin crescent, bright cyan inside with coral along the inner curve.
+## Tropical Waters: a long thin crescent with wide shallows inside its curve (coral comes later, as plants).
 func _crescent() -> Dictionary:
 	var inner_centre := Vector2(4, -1)
 	var mask := {}
@@ -84,20 +80,15 @@ func _crescent() -> Dictionary:
 			var p := Vector2(x, y)
 			if p.length() <= 19.0 and p.distance_to(inner_centre) > 17.0:
 				mask[Vector2i(x, y)] = true
-	var land := _with_edges(mask, func(_c: Vector2i) -> int: return VIVID, func(_c: Vector2i) -> int: return SAND)
+	var land := _with_edges(mask, func(_c: Vector2i) -> int: return GRASS, func(_c: Vector2i) -> int: return SAND)
 	return _finish(land, func(cell: Vector2i, d: int) -> int:
-		var inside := Vector2(cell).distance_to(inner_centre) <= 17.0
-		if inside and d <= 5:  # a wide band of bright shallows inside the curve
-			if d >= 2 and d <= 3 and _noise(cell) > 0.55 or d == 1 and _noise(cell, 1) > 0.85:
-				return REEF
-			return BRIGHT
-		if inside:
-			return DEEP if d <= 7 else -1
-		return BRIGHT if d <= 2 else (DEEP if d <= 4 else -1))
+		if Vector2(cell).distance_to(inner_centre) <= 17.0:  # wide shallows inside the curve
+			return SHALLOW if d <= 5 else (MID if d <= 7 else -1)
+		return SHALLOW if d <= 2 else (MID if d <= 4 else -1))
 
 
 ## Mangrove Coast: a central mass with long branching fingers and water between them;
-## dark mangrove green, muddy banks, sandy tips.
+## grass with muddy banks and a muddy middle, sandy tips (mangroves come later, as plants).
 func _branching() -> Dictionary:
 	var branches := []  # [end, base width]
 	for i in 9:
@@ -123,15 +114,13 @@ func _branching() -> Dictionary:
 			if is_land:
 				mask[cell] = true
 	var land := _with_edges(mask,
-		func(c: Vector2i) -> int: return MUD if Vector2(c).length() < 2.5 or _noise(c, 4) > 0.8 else MANGROVE,
-		func(c: Vector2i) -> int: return SAND if tips.has(c) else (MUD if _noise(c, 5) > 0.3 else MANGROVE))
-	return _finish(land, func(cell: Vector2i, d: int) -> int:
-		if d == 1 and _noise(cell, 6) > 0.6:
-			return SEAGRASS
-		return SHALLOW if d <= 2 else (DEEP if d <= 4 else -1))
+		func(c: Vector2i) -> int: return MUD if Vector2(c).length() < 2.5 or _noise(c, 4) > 0.8 else GRASS,
+		func(c: Vector2i) -> int: return SAND if tips.has(c) else (MUD if _noise(c, 5) > 0.3 else GRASS))
+	return _finish(land, func(_cell: Vector2i, d: int) -> int:
+		return SHALLOW if d <= 2 else (MID if d <= 4 else -1))
 
 
-## Deep Sea: a rugged hook curling round a dark trench; a pale beach runs along its inside.
+## Deep Sea: a grassy, rocky hook curling round deep water; a beach runs along its inside.
 func _hook() -> Dictionary:
 	var path := []  # [point, width]
 	for i in 78:  # over the top: from the east tip (curled down) round to the west
@@ -152,7 +141,7 @@ func _hook() -> Dictionary:
 				mask[Vector2i(x, y)] = true  # a little islet off the tip
 	var inside := func(c: Vector2i) -> bool: return Vector2(c).distance_to(Vector2(4, 1)) < 11.0
 	var land := _with_edges(mask,
-		func(c: Vector2i) -> int: return ROCK if _noise(c, 7) > 0.8 else DARK,
+		func(c: Vector2i) -> int: return ROCK if _noise(c, 7) > 0.8 else GRASS,
 		func(c: Vector2i) -> int:
 			for step in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 				if not mask.has(c + step) and inside.call(c + step):
@@ -160,11 +149,11 @@ func _hook() -> Dictionary:
 			return ROCK)
 	return _finish(land, func(cell: Vector2i, d: int) -> int:
 		if inside.call(cell):
-			return BRIGHT if d <= 2 else TRENCH
-		return SHALLOW if d <= 1 else (DEEP if d <= 4 else -1))
+			return SHALLOW if d <= 2 else (MID if d <= 3 else -1)  # deep water right inside the hook
+		return SHALLOW if d <= 1 else (MID if d <= 4 else -1))
 
 
-## Coral Kingdom: a broken ring of coral sand round a big turquoise lagoon, reef all round.
+## Coral Kingdom: a broken ring of sand and grass round a big shallow lagoon (coral comes later, as plants).
 func _ring() -> Dictionary:
 	var gaps := [20.0, 75.0, 140.0, 205.0, 262.0, 320.0]
 	var radius := func(p: Vector2) -> float: return 18.0 + 1.2 * sin(3.0 * p.angle()) + 0.8 * sin(5.0 * p.angle() + 1.0)
@@ -178,14 +167,12 @@ func _ring() -> Dictionary:
 			if p.distance_to(Vector2(7, -9)) <= 1.3 or p.distance_to(Vector2(10, -5)) <= 1.0:
 				mask[Vector2i(x, y)] = true  # islets in the lagoon
 	var land := _with_edges(mask,
-		func(c: Vector2i) -> int: return VIVID if _noise(c, 8) > 0.5 else CORAL_SAND,
-		func(_c: Vector2i) -> int: return CORAL_SAND)
+		func(c: Vector2i) -> int: return GRASS if _noise(c, 8) > 0.5 else SAND,
+		func(_c: Vector2i) -> int: return SAND)
 	return _finish(land, func(cell: Vector2i, d: int) -> int:
-		if d == 1 and _noise(cell, 9) > 0.45:
-			return REEF
 		if Vector2(cell).length() < radius.call(Vector2(cell)):
-			return BRIGHT  # the lagoon
-		return BRIGHT if d <= 2 else (DEEP if d <= 4 else -1))
+			return SHALLOW  # the lagoon
+		return SHALLOW if d <= 2 else (MID if d <= 4 else -1))
 
 
 ## Polar Ocean: a central ice mass among broken floes and bits of ice, with some bare rock.
@@ -212,7 +199,7 @@ func _polar() -> Dictionary:
 		func(c: Vector2i) -> int: return ROCK if _noise(c, 18) > 0.86 else ICE,
 		func(_c: Vector2i) -> int: return ICE)
 	return _finish(land, func(_cell: Vector2i, d: int) -> int:
-		return COLD if d <= 1 else (COLD_DEEP if d <= 3 else -1))
+		return SHALLOW if d <= 1 else (MID if d <= 3 else -1))
 
 
 ## Land cells with a non-land neighbour get `edge`, the rest `interior`.
@@ -279,8 +266,8 @@ func _save_island(node_name: String, path: String, grid: Dictionary, index: int)
 	for cell: Vector2i in grid:
 		layer.set_cell(cell, 0, Vector2i(grid[cell], 0))
 	for plant in island.get_children():
-		if plant.is_in_group("plants") and grid.get(Vector2i((plant.position / 32.0).floor()), -1) not in [GRASS, VIVID]:
-			plant.position = _nearest(grid, Vector2i((plant.position / 32.0).floor()), [GRASS, VIVID]) * 32 + Vector2i(16, 24)
+		if plant.is_in_group("plants") and grid.get(Vector2i((plant.position / 32.0).floor()), -1) != GRASS:
+			plant.position = _nearest(grid, Vector2i((plant.position / 32.0).floor()), [GRASS]) * 32 + Vector2i(16, 24)
 	var packed := PackedScene.new()
 	packed.pack(island)
 	ResourceSaver.save(packed, path)
@@ -289,8 +276,8 @@ func _save_island(node_name: String, path: String, grid: Dictionary, index: int)
 	var arrival := Vector2i.ZERO
 	var best := 1 << 30
 	for cell: Vector2i in grid:
-		if grid[cell] in [SAND, GRASS, VIVID, CORAL_SAND, ICE, MUD, MANGROVE, DARK] \
-				and grid.get(cell + Vector2i.LEFT, -1) in WATERY and absi(cell.y) * 4 + cell.x < best:
+		if grid[cell] in [SAND, GRASS, ICE, MUD] \
+				and grid.get(cell + Vector2i.LEFT, -1) == SHALLOW and absi(cell.y) * 4 + cell.x < best:
 			best = absi(cell.y) * 4 + cell.x
 			arrival = cell
 	var offset := Vector2(index * SPACING, 0)

@@ -178,8 +178,9 @@ caring for animals". Build in this order, placeholder art:
     `tools/generate_islands.gd` (re-run it to tweak a shape), each with a little map in the Map menu:
     Home (horseshoe; north half kept so saved buildings stay on land), Tropical Waters (crescent,
     coral inside), Mangrove Coast (branching fingers, mud), Deep Sea (hook round a trench), Coral
-    Kingdom (broken coral ring, lagoon), Polar Ocean (ice floes, rock). New tiles: rock, ice, mud,
-    reef, seagrass, coral sand, island greens, bright/cold shallows, a deep-water band, trench.
+    Kingdom (broken ring, lagoon), Polar Ocean (ice floes, rock). **Ground tiles are plain and
+    shared: sand, grass, rock, ice, mud. Water: shallow, mid, deep (open ocean, no tile).** Coral,
+    kelp and mangroves will be plants on top, never ground tiles.
     For now the new islands open like Tropical Waters (patrol boat + expedition boat).
 24. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
     bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
