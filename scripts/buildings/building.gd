@@ -90,8 +90,19 @@ func actions() -> Array:
 	var list := []
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
+	if data.recycle_value > 0 and Inventory.total() > 0:
+		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * data.recycle_value],
+			"do": recycle})
 	list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	return list
+
+
+## Recycles everything the ranger is carrying into conservation funding.
+func recycle() -> void:
+	var pieces := Inventory.total()
+	if pieces <= 0 or not Inventory.take(pieces):
+		return
+	Funding.earn(pieces * data.recycle_value, "You recycled %d pieces of litter at your %s." % [pieces, data.display_name])
 
 
 ## Whether the ranger (on foot) is standing next to it.

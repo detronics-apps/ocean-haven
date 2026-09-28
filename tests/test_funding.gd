@@ -68,6 +68,22 @@ func _initialize() -> void:
 	_expect(funding.balance == 190, "a dock plank costs 20 funding (left %d)" % funding.balance)
 	_expect(not funding.spend(1000), "can't overspend")
 
+	# --- Recycling centre: turn litter into funding ---
+	var centre: Resource = load("res://data/buildings/recycling_centre.tres")
+	build_mode.cancel()
+	inventory.add(load("res://data/items/plastic_bag.tres"), 10)
+	build_mode.start(centre)
+	_expect(build_mode.place_at(Vector2i(-3, -3)), "recycling centre built (10 litter)")
+	inventory.add(load("res://data/items/plastic_bottle.tres"), 7)
+	var building: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"recycling_centre")[0]
+	player.global_position = building.global_position + Vector2(-50, 20)
+	var before: int = funding.balance
+	var actions: Array = building.actions()
+	_expect(actions.size() > 0 and actions[0].label == "Recycle 7 litter (+21 funding)",
+		"offers to recycle what you carry (%s)" % [actions.map(func(a: Dictionary) -> String: return a.label)])
+	actions[0].do.call()
+	_expect(funding.balance == before + 21 and inventory.total() == 0, "7 litter recycled into 21 funding")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

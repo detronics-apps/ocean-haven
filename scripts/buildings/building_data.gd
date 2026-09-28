@@ -38,6 +38,8 @@ extends Resource
 @export var requires: StringName
 ## Added as a child when it's built or loaded (e.g. the patrol buoy's boat).
 @export var spawns: PackedScene
+## Funding paid for each piece of litter recycled here (0 = not a recycling centre).
+@export var recycle_value := 0
 ## A walkway over the water (dock planks): the ranger can walk on it, boats bump into it.
 @export var deck := false
 ## Must touch the shore or another deck, so walkways grow out from the land.

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_xk2v5"]
+[ext_resource type="Texture2D" path="res://assets/buildings/recycling_centre.svg" id="2_yxnl8"]
+
+[resource]
+script = ExtResource("1_xk2v5")
+id = &"recycling_centre"
+display_name = "Recycling Centre"
+description = "Bring the litter you collect here and recycle it into conservation funding (3 per piece). Patrol boats' litter counts too."
+order = 2
+texture = ExtResource("2_yxnl8")
+terrain = PackedStringArray("sand", "grass")
+cost_litter = 10
+unique = true
+recycle_value = 3
+fact = "Recycling keeps plastic out of the sea and saves energy - and using less plastic in the first place is even better."
