@@ -412,3 +412,75 @@ Each step ends with a playable build. ✅ = done.
 - **Step 9 — Ocean Research Vessel & Global Ocean Observatory.** With all six discoveries the ship
   becomes the Ocean Research Vessel and the Map gains the Global Ocean Observatory: the whole
   ocean's health and how the islands affect each other. Every ship visible across the ocean.
+
+---
+
+## Build order: finish the Starting Island, then its two neighbours
+
+The Starting Island is finished first, then the two islands you can explore from it: the
+**Kelp Forest** (colder) and the **Mangrove Coast** (warmer). Each item is one small, playable,
+tested commit. Placeholder art throughout.
+
+### Step 2 — Starting Island complete
+1. **Island health (Ocean Impact for one island).** A 0–100 % health per island from what's been
+   done there (litter left, animals helped, nests protected, later pollution types). Shown at the
+   signature facility and in the Journal; the island's water and ground colours shift from muted
+   to vibrant as it rises. Everything below feeds it, and funding facilities read it.
+2. **Funding facilities → Wildlife Conservation Park (up to 3 on the island).** One building
+   category with three kinds: Turtle Protection Area (✅ exists, becomes a park), Dolphin Viewing
+   Area (on the shore, near the pod) and Coastal Wildlife Area. Morning funding grows with island
+   health. Existing protection areas count towards the 3.
+3. **Signature facility → Marine Rescue & Research Station (exactly 1).** Spend funding to send a
+   mission (one at a time, back the next morning): *rescue boat* (finds an animal in distress and
+   marks it), *pollution survey* (reveals hidden litter and oil on the minimap), *turtle
+   monitoring* (shows nests and how many hatch), *dolphin tracking* (where the pod is), *coastal
+   survey* (finds the wreck — item 7). Its screen shows island health.
+4. **Pollution types.** Each hits its own system: plastic → wildlife hazard (✅ litter);
+   fishing debris → entanglement (ghost nets and line wash in; animals can get tangled again, and
+   the rescue boat finds them); oil / chemicals → water quality (dark patches on the water, cleaned
+   with the boat, lowering health while there); boat disturbance → dolphins avoid busy water near
+   patrol routes; beach use → turtles won't nest next to buildings (keep nesting beaches clear).
+5. **Seabirds** (e.g. brown noddy or white tern). Nest in grown palms — a reason not to cut every
+   tree. Need help: chicks caught in fishing line. Give: flocks circle over floating litter and
+   fish, showing where to go.
+6. **Upgrade art.** Each building upgrade tier changes its picture (a texture per tier in
+   BuildingData), like the ship's fleet levels.
+7. **The underwater wreck / debris field.** Found by the coastal survey; a zone of sunken litter
+   cleared from the boat; once cleared, recover the old sonar unit → **Salvaged Sonar Core**. This
+   replaces the stand-in objective (litter + freeing three animals).
+8. **Storm and oil spill (first rare events).** Storm forecast a day ahead: secure nests, moor
+   boats, then clear storm litter. Oil spill (sudden): boom it off, clean it, care for oiled animals.
+   Dips are animals leaving, never dying; always recoverable.
+
+### Step 3 — Kelp Forest (colder, 1st)
+1. **Coastal trees** replace the leftover palms: wood and saplings, same growth stages.
+2. **Kelp as a plant** on shallow and mid water: grows, thins, regrows visibly; forest density
+   is the island's health.
+3. **Sea urchins** (graze kelp; their numbers rise when otters are few) and **sea otters** (eat
+   urchins). The food web: few otters → urchins ↑ → kelp ↓ → fish ↓. The fix is helping otters
+   (e.g. an otter tangled in a net; protected resting areas), never removing urchins.
+4. **Kelp Research Platform** (signature): funded dive / submersible missions to parts of the
+   forest reveal urchin density, kelp health, otter activity and fish habitat.
+5. **Kelp Discovery Centre** (funding, up to 2): guided dives; more kelp → more funding.
+6. **Harbour seals** need protected haul-out beaches (like turtle areas); **kelp fish / rockfish**
+   follow the forest's health (an indicator, and they draw visitors).
+7. **Objective → Kelp Fibre:** restore the balance, then gather shed kelp from set spots.
+   Kelp Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
+8. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
+
+### Step 4 — Mangrove Coast (warmer, 1st)
+1. **Mangrove trees** as the island's wood and a plant: planted along mud edges, they hold mud
+   and grow the nursery.
+2. **Water flow and channels:** channels can be blocked (debris, silt) or open; blocked ones stop
+   fish reaching the nursery pools.
+3. **Mangrove Waterworks Station** (signature): funding runs gates and pumps; the player opens,
+   closes and clears channels to manage freshwater flow.
+4. **Mangrove Eco-Lodge** (funding, up to 3): visitors on set routes; healthier mangroves and
+   better access → more funding.
+5. **Mangrove crabs** (burrows change sediment and flow), **juvenile fish** (grow in the
+   nursery, later move to the Reef), **flamingos** (feed where shallows are right: a water-level
+   indicator), **crocodile zones** (boats and people keep away).
+6. **Objective → Mangrove Resin:** restore the channels, then collect resin from fallen branches.
+   Mangrove Exploration Ship; Environment Sensors open the Tropical Reef.
+7. **Cross-island link:** open channels → more juvenile fish (shown later on the Reef).
+

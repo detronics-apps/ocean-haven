@@ -138,7 +138,7 @@ caring for animals". Build in this order, placeholder art:
 7. ✅ Litter keeps washing in
 8. ✅ Dock + a patrol boat that auto-collects litter in an area you choose
 
-**MVP 0.3 — "A living island" (current).**
+**MVP 0.3 — "A living island" ✅**
 
 1. ✅ Visitor donations wait at the building (coin) until the ranger collects them
 2. ✅ Dolphins (open-sea pod, curious about boats) and ghost crabs (beaches)
@@ -197,9 +197,12 @@ caring for animals". Build in this order, placeholder art:
     turtle, dolphin and crab → Salvaged Sonar Core. Islands with no objective yet: no ship. Shown in
     the Journal and the Build menu. Loading removes ships whose objective isn't done (funding
     returned) and re-locks islands found without the upgrade they need.
-26. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
-    bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
-27. Tropical Reef's own mechanics: coral reef restoration, reef fish ("save the fish")
+
+**MVP 0.4 — "Starting Island complete" (next).** Build order and details: `docs/MASTER_PLAN.md` →
+"Build order", Step 2: island health · Wildlife Conservation Parks (funding facilities, up to 3) ·
+Marine Rescue & Research Station (signature, 1; funded missions) · pollution types · seabirds ·
+upgrade art · the wreck → Salvaged Sonar Core (replaces the stand-in objective) · storm and oil
+spill. Then MVP 0.5 Kelp Forest (Step 3) and MVP 0.6 Mangrove Coast (Step 4).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
