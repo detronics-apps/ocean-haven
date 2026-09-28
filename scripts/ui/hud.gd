@@ -209,7 +209,8 @@ func _on_hatched(animal: AnimalData, count: int) -> void:
 
 
 func _on_built(building: Building) -> void:
-	show_toast("%s built!\n%s" % [building.data.display_name, building.data.fact])
+	var done := "planted" if building.data.build_verb == "Plant" else "built"
+	show_toast("%s %s!\n%s" % [building.data.display_name, done, building.data.fact])
 
 
 func _set_row(item: ItemData, count: int) -> void:

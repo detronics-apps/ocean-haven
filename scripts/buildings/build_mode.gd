@@ -87,26 +87,38 @@ func _finish_move() -> void:
 
 ## Whether `data` fits with its top-left tile at `cell` (and can be paid for).
 func can_place(data: BuildingData, cell: Vector2i) -> bool:
+	return placement_problem(data, cell) == ""
+
+
+## Why `data` doesn't fit at `cell`, in words for the placement bar ("" = it fits).
+func placement_problem(data: BuildingData, cell: Vector2i) -> String:
+	var name := data.display_name.to_lower()
 	for x in data.size.x:
 		for y in data.size.y:
 			if Terrain.at(get_tree(), Terrain.centre_of(cell + Vector2i(x, y))) not in data.terrain:
-				return false
+				return "Your %s goes %s." % [name, where_it_goes(data)]
 	var footprint := Rect2i(cell, data.size)
 	for plant: Node2D in get_tree().get_nodes_in_group("plants"):
 		if footprint.has_point(Terrain.cell_of(plant.global_position)):
-			return false  # trees are in the way
+			return "A tree is in the way."
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
-			return false
+			return "Your %s is in the way." % other.data.display_name.to_lower()
 	if data.connects_to_shore and not _touches_walkable(footprint):
-		return false
+		return "It has to touch the beach or another plank."
 	if data.must_touch != &"" and not _touches_building(footprint, data.must_touch, data.must_touch_count):
-		return false
+		return "Your %s goes %s." % [name, where_it_goes(data)]
 	if data.deck:
 		for boat: Node2D in get_tree().get_nodes_in_group("boat"):
 			if footprint.has_point(Terrain.cell_of(boat.global_position)):
-				return false  # a deck would trap the boat
-	return has_requirement(data) and not at_limit(data) and (_free or can_afford(data))
+				return "Your boat is in the way."  # a deck would trap it
+	if not has_requirement(data):
+		return "Build a %s first." % data.requires
+	if at_limit(data):
+		return "You've built as many as you can."
+	if not _free and not can_afford(data):
+		return "Not enough to build another. " + data.cost_text()
+	return ""
 
 
 ## Whether buildings of kind `id` fill at least `count` of the tiles right next to
@@ -260,13 +272,14 @@ func _process(_delta: float) -> void:
 	if _follow_ranger and ranger:
 		_cell = _nearest_fit(_data, _cell_beside(Terrain.cell_of(ranger.global_position), _facing, _data.size))
 	_ghost.position = Vector2(_cell * Terrain.TILE) + Vector2(_data.size * Terrain.TILE) / 2.0
-	var fits := can_place(_data, _cell)
+	var problem := placement_problem(_data, _cell)
+	var fits := problem == ""
 	_ghost.modulate = FITS if fits else BLOCKED
 	_place.disabled = not fits
 	_label.text = "%s your %s %s: walk, or tap a spot." % [
 		"Move" if _moving else "Place", _data.display_name.to_lower(), where_it_goes(_data)]
-	if not _free and not can_afford(_data):
-		_label.text = "Not enough to build another. " + _data.cost_text()
+	if not fits:
+		_label.text = problem
 	if not ranger is Player:
 		_label.text = "Go ashore to place your %s." % _data.display_name.to_lower()
 		_place.disabled = true

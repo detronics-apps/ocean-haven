@@ -19,3 +19,4 @@ fact = "Trees along the coast hold the sand together with their roots and give s
 cost_items = Dictionary[StringName, int]({&"sapling": 1})
 category = &"land"
 movable = false
+build_verb = "Plant"

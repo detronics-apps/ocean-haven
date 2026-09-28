@@ -8,6 +8,8 @@ extends Resource
 @export_multiline var description: String
 ## Position in the Build menu.
 @export var order := 0
+## The Build menu's button for it: "Build", or "Plant" for trees.
+@export var build_verb := "Build"
 ## Build menu tab: buildings, land (trees, sand) or sea (docks, bridges, boats).
 @export var category: StringName = &"buildings"
 ## Null for buildings that aren't drawn yet ("coming later").

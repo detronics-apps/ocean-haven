@@ -166,7 +166,9 @@ caring for animals". Build in this order, placeholder art:
 22. ✅ Growing palms: a planted sapling grows small -> medium (after 1 day) -> full grown (after
     another day). Cutting it down gives: small = the sapling back; medium = 1 wood + 1 sapling;
     full grown = 1-2 wood + 1-2 saplings (the island's own palms are full grown)
-23. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
+23. Upgrade art: each upgrade tier changes the building's picture (e.g. the Ranger House grows a
+    bigger store; protection areas, recycling centres likewise) — a texture per tier in BuildingData
+24. Tropical Waters' own mechanics: coral reef restoration, reef fish ("save the fish")
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game), **bigger boats and ships built at the dock to travel to other islands**

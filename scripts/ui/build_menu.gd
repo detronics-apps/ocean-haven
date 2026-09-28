@@ -77,7 +77,7 @@ func _entry(data: BuildingData) -> Control:
 	if can_build:
 		var build := Button.new()
 		build.name = "Build"
-		build.text = "Pick up" if data.tool else "Build"
+		build.text = "Pick up" if data.tool else data.build_verb
 		build.custom_minimum_size = Vector2(96, 48)
 		build.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		build.pressed.connect(_choose.bind(data))

@@ -37,6 +37,10 @@ func _initialize() -> void:
 	_expect(build_mode.can_place(dock, ghost_cell) and _terrain(Vector2(ghost_cell) * 32.0 + Vector2(16, 16)) == "water",
 		"the preview snaps to the nearest water spot (%s)" % ghost_cell)
 	_expect(not build_mode.can_place(dock, Vector2i(0, 5)), "a floating plank isn't allowed")
+	_expect(build_mode.placement_problem(dock, Vector2i(0, 5)) == "It has to touch the beach or another plank.",
+		"and the bar says why")
+	_expect(build_mode.placement_problem(dock, Vector2i(0, 1)).begins_with("Your dock goes in the water"),
+		"on the beach it says docks go in the water (%s)" % build_mode.placement_problem(dock, Vector2i(0, 1)))
 	_expect(build_mode.place_at(Vector2i(0, 2)), "first plank at the beach")
 	_expect(build_mode.is_active(), "still placing: ready for the next plank")
 	_expect(build_mode.place_at(Vector2i(0, 3)) and build_mode.place_at(Vector2i(0, 4)), "two more planks in a row")
