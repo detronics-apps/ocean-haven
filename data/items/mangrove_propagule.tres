@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/mangrove_propagule.svg" id="1_prop"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"mangrove_propagule"
+display_name = "Mangrove Propagule"
+icon = ExtResource("1_prop")
+is_litter = false
+fact = "Red mangrove seedlings, called propagules, start growing while still hanging on the tree. When they drop, they can float for months until they lodge in mud."
+carry_limit = 5

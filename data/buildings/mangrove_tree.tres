@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_dvrnw"]
+[ext_resource type="PackedScene" path="res://scenes/world/mangrove_tree.tscn" id="2_kh4ij"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree.svg" id="3_islgd"]
+
+[resource]
+script = ExtResource("1_dvrnw")
+id = &"mangrove_tree"
+display_name = "Red Mangrove"
+description = "Plant a mangrove propagule in the mud. It grows a stage a day; a full-grown mangrove gives 1-2 wood and 1-2 propagules. Mangroves trap mud, so channels silt up more slowly, and shelter young fish."
+order = 6
+texture = ExtResource("3_islgd")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("mud")
+spawns = ExtResource("2_kh4ij")
+draw_texture = false
+fact = "Mangrove forests shield coasts from storm waves and are nurseries for many fish that later live on coral reefs."
+cost_items = Dictionary[StringName, int]({&"mangrove_propagule": 1})
+only_on = &"mangrove_coast"
+category = &"land"
+movable = false
+build_verb = "Plant"
+storm_proof = true

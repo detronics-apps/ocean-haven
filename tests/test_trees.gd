@@ -154,6 +154,30 @@ func _initialize() -> void:
 	var palm_data: Resource = load("res://data/buildings/palm_tree.tres")
 	_expect(bm.placement_problem(coastal_data, kelp_cell) == "", "a coastal sapling can be planted back there (%s)" % bm.placement_problem(coastal_data, kelp_cell))
 	_expect(bm.placement_problem(palm_data, kelp_cell) != "", "palms belong on the Starting Island")
+
+	# --- The Mangrove Coast has red mangroves: grown from propagules, only in the mud ---
+	var mangrove: Node2D = world.get_node("MangroveIsland/Mangrove1")
+	kelp_inventory.restore({}, {})
+	player.global_position = mangrove.global_position + Vector2(-30, 10)
+	await process_frame
+	_expect(mangrove.sapling.id == &"mangrove_propagule", "the Mangrove Coast's trees are mangroves")
+	var mud_cell := Vector2i((mangrove.global_position / 32.0).floor())
+	mangrove.cut_down()
+	await process_frame
+	_expect(kelp_inventory.count(&"mangrove_propagule") >= 1 and kelp_inventory.count(&"wood") >= 1,
+		"cutting one gives wood and propagules")
+	var mangrove_data: Resource = load("res://data/buildings/mangrove_tree.tres")
+	_expect(bm.placement_problem(mangrove_data, mud_cell) == "", "a propagule can be planted back in the mud (%s)" % bm.placement_problem(mangrove_data, mud_cell))
+	_expect(bm.placement_problem(coastal_data, mud_cell) != "", "other islands' trees don't grow here")
+	var ground: TileMapLayer = world.get_node("MangroveIsland/Ground")
+	var not_mud := Vector2i.MAX
+	for c in ground.get_used_cells():
+		var t := ground.get_cell_tile_data(c)
+		if t.get_custom_data("terrain") in ["grass", "sand"]:
+			not_mud = Vector2i((ground.to_global(ground.map_to_local(c)) / 32.0).floor())
+			if bm.placement_problem(mangrove_data, not_mud) != "":
+				break
+	_expect(bm.placement_problem(mangrove_data, not_mud) != "", "mangroves only grow in mud, not on sand or grass")
 	player.global_position = Vector2.ZERO
 
 	# --- Plants go in the Journal the first time you come close ---

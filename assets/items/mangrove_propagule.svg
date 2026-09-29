@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- A mangrove propagule: a long green seedling that grows while still on the tree, then drops into the mud. -->
+  <rect x="7" y="1" width="2" height="2" fill="#6a4a2a"/>
+  <rect x="6" y="3" width="4" height="2" fill="#4f8f4a"/>
+  <rect x="7" y="5" width="2" height="8" fill="#6a9a3a"/>
+  <rect x="7" y="13" width="2" height="2" fill="#8a6a3a"/>
+</svg>

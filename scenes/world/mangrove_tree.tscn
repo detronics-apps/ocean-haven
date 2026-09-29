@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree.svg" id="1_mtree"]
+[ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="2_mtree"]
+[ext_resource type="Resource" path="res://data/items/mangrove_propagule.tres" id="3_mtree"]
+[ext_resource type="Resource" path="res://data/plants/red_mangrove.tres" id="4_mtree"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mtree"]
+radius = 5.0
+
+[node name="MangroveTree" type="StaticBody2D" groups=["plants"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_mtree")
+sapling = ExtResource("3_mtree")
+plant = ExtResource("4_mtree")
+
+[node name="Trunk" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mtree")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mtree")
+offset = Vector2(0, -28)

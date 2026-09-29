@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"red_mangrove"
+display_name = "Red Mangrove"
+picture = ExtResource("2_plant")
+habitat = "Muddy tropical shores, where salt water meets fresh (the Mangrove Coast)"
+fact = "Red mangroves stand on arching prop roots that trap mud and shelter young fish between them. They can live in salty water that would kill most trees."
+role = "Traps sediment so channels silt up more slowly, holds the shore together, and makes the fish nursery. Gives wood and propagules."
