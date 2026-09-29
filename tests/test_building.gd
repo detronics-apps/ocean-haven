@@ -179,6 +179,26 @@ func _initialize() -> void:
 	clock.sleep_until_morning()
 	_expect(clock.day == 2 and absf(clock.time_of_day - 0.25) < 0.001, "slept until 6am on Day 2")
 
+	# --- A tent and up to 2 Ranger Houses on every island ---
+	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
+	var house: Resource = load("res://data/buildings/house.tres")
+	var home_tents := func() -> int:
+		return get_nodes_in_group("buildings").filter(func(b: Node) -> bool:
+			return b.data.id == &"tent" and not b.is_queued_for_deletion() and b.global_position.length() < 2000.0).size()
+	var tents_here: int = home_tents.call()
+	var kelp_cell := _land_cell_near(build_mode, tent, kelp.arrival)
+	_expect(build_mode.placement_problem(tent, kelp_cell) == "", "a tent can go up on the Kelp Forest too (%s)" % build_mode.placement_problem(tent, kelp_cell))
+	build_mode.add_building(tent, kelp_cell)
+	_expect(build_mode.placement_problem(tent, _land_cell_near(build_mode, house, kelp.arrival + Vector2(0, 96))) != "", "but only one there")
+	root.get_node("Funding").restore({"balance": 1000})
+	inventory.restore({"plastic_bottle": 50}, {"wood": 50})
+	build_mode.start(house)
+	var house_cell := _land_cell_near(build_mode, house, kelp.arrival + Vector2(96, 0))
+	_expect(build_mode.place_at(house_cell), "a Ranger House on the Kelp Forest (%s)" % build_mode.placement_problem(house, house_cell))
+	await process_frame
+	_expect(home_tents.call() == tents_here, "it replaces the tent there, not the one on the Starting Island")
+	build_mode.cancel()
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
@@ -197,6 +217,18 @@ func _entry_text(screen: Node, entry_name: String) -> String:
 	for label in screen.find_child(entry_name, true, false).find_children("*", "Label", true, false):
 		text += (label as Label).text + "\n"
 	return text
+
+
+## A cell near `point` where `data` fits (or the nearest one tried).
+func _land_cell_near(build_mode: Node, data: Resource, point: Vector2) -> Vector2i:
+	var start := Vector2i((point / 32.0).floor())
+	for r in range(0, 10):
+		for dx in range(-r, r + 1):
+			for dy in range(-r, r + 1):
+				var c := start + Vector2i(dx, dy)
+				if build_mode.placement_problem(data, c) == "" or (data.id == &"tent" and build_mode.placement_problem(data, c).contains("already")):
+					return c
+	return start
 
 
 func _expect(ok: bool, what: String) -> void:

@@ -7,9 +7,10 @@
 script = ExtResource("1_v6kfi")
 id = &"tent"
 display_name = "Tent"
-description = "Your first home on the island. Sleep here at night."
+description = "A simple camp: a place to sleep at night on any island."
 texture = ExtResource("2_ifqt6")
 terrain = PackedStringArray("sand", "grass")
 unique = true
 action = &"sleep"
 fact = "Many conservation rangers live at remote field camps, close to the wildlife they protect."
+limit_per_island = true

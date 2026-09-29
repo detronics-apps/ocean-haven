@@ -72,10 +72,11 @@ func _entry(data: BuildingData) -> Control:
 		can_build = true
 	elif data.locked:
 		status = "Coming later: " + data.unlock_hint
-	elif data.unique and _exists(data.id):
-		status = "Already built."
+	elif data.unique and (_on_island(data.id) if data.limit_per_island else _exists(data.id)):
+		status = "Already built here." if data.limit_per_island else "Already built."
 	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
-		status = "You've built as many as you can (%d)." % data.max_count
+		status = ("This island has as many as you can build (%d)." if data.limit_per_island
+			else "You've built as many as you can (%d).") % data.max_count
 	elif data.one_per_island and _on_island(data.id):
 		status = "This island already has one."
 	elif data.needs_objective and Fleet.ship_problem(_island()) != "":
