@@ -58,7 +58,7 @@ func _initialize() -> void:
 	dolphin.global_position = deck.global_position + Vector2(2000, 0)
 	_expect(deck.visitors_today() < with_dolphins, "fewer dolphins in view, fewer visitors")
 	build_mode.start(viewing)
-	_expect(build_mode.at_limit(viewing), "one Dolphin Viewing Area")
+	_expect(not build_mode.at_limit(viewing) and viewing.max_count == 3, "up to 3 Dolphin Viewing Areas")
 	build_mode.cancel()
 	deck.queue_free()
 	await process_frame

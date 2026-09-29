@@ -72,7 +72,7 @@ func _initialize() -> void:
 	# --- Dolphins keep away from busy boats ---
 	var dolphin: Node2D = world.get_node("Dolphin3")
 	dolphin.global_position = hull.global_position + Vector2(80, 0)
-	dolphin.set("_home", hull.global_position + Vector2(180, 0))
+	dolphin.set("_home", hull.global_position + Vector2(260, 0))
 	for i in 3:
 		await physics_frame
 	_expect(dolphin.get("_state") == 2, "a dolphin swims off from a patrol boat nearby")  # State.FLEE
