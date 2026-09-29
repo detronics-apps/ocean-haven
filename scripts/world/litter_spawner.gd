@@ -77,6 +77,12 @@ func wash_up_at(spot: Vector2, floating: bool) -> Debris:
 	return spawn_at(_items.pick_random(), spot, floating)
 
 
+## Buried litter turned up at `spot` (the ranger's shovel), however much is already about.
+## It floats: the sand it was in is gone. Returns it.
+func dig_up_at(spot: Vector2) -> Debris:
+	return spawn_at(_items.pick_random(), spot, true)
+
+
 func _process(delta: float) -> void:
 	_time += delta
 	if _time >= interval:

@@ -23,6 +23,7 @@ func _initialize() -> void:
 	shovel.selected = Vector2i(15, 0)
 	_expect(shovel.actions().is_empty(), "no sand buttons until you pick up the shovel")
 	shovel.start()
+	shovel.litter_chance = 0.0  # no buried litter until it's tested below
 	for i in 30:
 		await process_frame  # let the (smoothed) camera settle on the ranger
 	_expect(shovel.tiles_around().size() == 8, "the 8 tiles around you can be picked")
@@ -54,6 +55,17 @@ func _initialize() -> void:
 	shovel.actions()[0].do.call()
 	_expect(_terrain(Vector2(16 * 32 + 16, -1 * 32 + 16)) == "sand", "the shallow tile is beach now")
 	_expect(inventory.count(&"sand") == 0, "used the sand")
+	# Now and then the sand hides buried litter.
+	shovel.litter_chance = 1.0
+	var litter_before := get_nodes_in_group("debris").size()
+	shovel.pick_up(Vector2i(16, -1))
+	var found := get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+		return d.global_position.distance_to(Vector2(16 * 32 + 16, -1 * 32 + 16)) < 1.0)
+	_expect(get_nodes_in_group("debris").size() == litter_before + 1 and found.size() == 1 and found[0].item.is_litter,
+		"digging sand can turn up buried litter, right there")
+	shovel.litter_chance = 0.0
+	found[0].free()
+	shovel.place(Vector2i(16, -1))  # put the beach back
 	shovel.selected = Vector2i(20, 20)
 	await process_frame
 	_expect(shovel.selected == null, "a tile that isn't next to you can't stay selected")

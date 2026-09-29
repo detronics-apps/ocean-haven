@@ -4,13 +4,16 @@ extends Node
 ## the ranger are outlined: sand that can be picked up, and (while carrying sand)
 ## shallow water that can be filled. Tap one to select it; the action bar then
 ## offers "Pick up sand" or "Place sand" for exactly that tile. The ranger carries
-## one sand at a time. Sand on deep water makes it shallow, so filling deep water takes 2.
+## one sand at a time; now and then the sand hides buried litter. Sand on deep water makes it shallow, so filling deep water takes 2.
 ## "Put shovel away" (an action button) ends it. Every changed tile is saved.
 
 const SAND_TILE := Vector2i(1, 0)
 const SHALLOW_TILE := Vector2i(0, 0)
 const CAN_PICK_UP := Color(0.55, 1.0, 0.55, 0.9)
 const CAN_PLACE := Color(0.5, 0.8, 1.0, 0.9)
+
+## Chance that scooping up sand turns up a piece of buried litter (like a digging crab).
+@export var litter_chance := 0.1
 
 var _sand: ItemData = load("res://data/items/sand.tres")
 ## Holding the shovel right now.
@@ -118,6 +121,11 @@ func pick_up(cell: Vector2i) -> void:
 		return
 	_set_tile(cell, SHALLOW_TILE)
 	Inventory.add(_sand, 1, false)
+	if randf() < litter_chance:
+		var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
+		if spawner:
+			spawner.dig_up_at(Terrain.centre_of(cell))
+			get_tree().call_group("hud", "show_toast", "You dug up some buried litter!\nPick it up before it drifts away.")
 
 
 ## Shallow water -> beach, or deep water -> shallow, using the carried sand.
