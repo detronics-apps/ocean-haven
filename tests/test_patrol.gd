@@ -67,7 +67,8 @@ func _initialize() -> void:
 			near += 1
 	_expect(near < 6, "and mostly doesn't settle near it (%d of 40 spots)" % near)
 	var turtle: Node2D = world.get_node("GreenTurtle")
-	_expect(turtle.data.boat_shy_distance == 0.0, "turtles don't mind boats")
+	_expect(turtle.data.boat_shy_distance > 0.0 and turtle.data.boat_shy_distance < 200.0,
+		"turtles keep away from patrol boats too (a bit less than dolphins)")
 
 	if not _failed:
 		print("PASS")

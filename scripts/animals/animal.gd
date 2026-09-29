@@ -36,8 +36,10 @@ const NEST_SCENE := "res://scenes/animals/nest.tscn"
 @export var tangled := false
 ## Added to the inventory when the ranger frees it (the line is litter too).
 @export var tangle_item: ItemData
-## A hatchling: smaller, and doesn't nest.
+## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
 @export var young := false
+## GameClock.now() when it hatched here (-1 = it didn't: it was always here, or arrived).
+var born_at := -1.0
 ## A hatchling with no room at home: once in the water it swims off into the open ocean.
 @export var leaving := false
 ## Day this animal last nested (spaces nests out by nest_interval_days).
@@ -65,6 +67,8 @@ var played := false
 ## Day the ranger last photographed this animal: one photo per animal per day.
 ## ponytail: not saved, so reloading allows another photo that day.
 var photo_day := -1
+## Day the "growing up" note was last shown (one a day).
+static var _grow_note_day := -1
 ## Diggers: litter dug up today by each species (all of them together): id -> [day, count].
 ## ponytail: not saved, so reloading resets today's count.
 static var _digs := {}
@@ -147,6 +151,59 @@ func crawl_to_sea() -> void:
 func _process(delta: float) -> void:
 	if data.dives:
 		_breathe(delta)
+	if young and not leaving and data.grow_days > 0.0 and born_at >= 0.0:
+		_grow()
+
+
+## Hatchlings get bigger as they grow, then grow up (not while crawling to the sea).
+func _grow() -> void:
+	var age := clampf((GameClock.now() - born_at) / data.grow_days, 0.0, 1.0)
+	_sprite.scale = Vector2.ONE * lerpf(0.5, 0.85, age)
+	if age >= 1.0 and _state != State.CRAWL:
+		grow_up()
+
+
+## Grown up: full size, off to a spot of its own in the island's waters, and nesting
+## from the next time it's due.
+func grow_up() -> void:
+	young = false
+	last_nest_day = GameClock.day
+	create_tween().tween_property(_sprite, "scale", Vector2.ONE, 1.5)
+	home_radius = maxf(home_radius, data.adult_home_radius)
+	_home = _own_spot()
+	_rest(0.1)
+	if _grow_note_day != GameClock.day:  # one note a day, however many grow up
+		_grow_note_day = GameClock.day
+		get_tree().call_group("hud", "show_toast", "Your young %ss are growing up and swimming out to live around the island!\nKeep some water free of patrol boats for them." % data.display_name.get_slice(" ", data.display_name.get_slice_count(" ") - 1).to_lower())
+
+
+## A spot in its island's waters it can swim straight to, away from busy boats and as
+## far as it can be from other grown-ups of its kind (so they spread out).
+func _own_spot() -> Vector2:
+	var region := Regions.nearest(global_position)
+	var best := _home
+	var best_room := -1.0
+	for attempt in 40:
+		var spot := region.center + Vector2.from_angle(randf() * TAU) * randf_range(0.35, 0.85) * region.waters_radius
+		if not in_habitat(spot) or _near_busy_boat(spot) or not _clear_route(global_position, spot):
+			continue
+		var room := INF
+		for other: Animal in get_tree().get_nodes_in_group("animals"):
+			if other != self and other.data == data and not other.young and not other.leaving:
+				room = minf(room, other.home().distance_to(spot))
+		if room > best_room:
+			best_room = room
+			best = spot
+	return best
+
+
+## Water all the way from `from` to `to` (a sea animal can swim straight there).
+func _clear_route(from: Vector2, to: Vector2) -> bool:
+	var steps := ceili(from.distance_to(to) / 16.0)
+	for i in steps + 1:
+		if not in_habitat(from.lerp(to, float(i) / maxf(steps, 1))):
+			return false
+	return true
 
 
 ## Divers come up for air, then dive and fade to a faint shadow under the water.

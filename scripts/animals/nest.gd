@@ -1,7 +1,7 @@
 class_name Nest
 extends Node2D
 ## Eggs buried in a protected beach. Once incubated they hatch at night and the
-## hatchlings crawl to the sea. They join its protection area if there's room
+## hatchlings crawl to the sea, where they grow up (AnimalData.grow_days). They join its protection area if there's room
 ## (BuildingData.animal_capacity), otherwise the nearest other protection area with
 ## room; only when every area is full do they swim off into the open ocean. Every
 ## hatchling counts in the Journal either way.
@@ -81,6 +81,7 @@ func hatch() -> void:
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
 		baby.set("young", true)
+		baby.set("born_at", GameClock.now())
 		baby.set("leaving", home == null)
 		baby.set("home_area", home)  # set before joining the world, so it counts straight away
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))

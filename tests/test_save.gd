@@ -60,6 +60,13 @@ func _initialize() -> void:
 	baby.set("young", true)
 	baby.position = Vector2(-500, 100)
 	world.add_child(baby)
+	var grown: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	grown.set("data", turtle_data)
+	grown.set("born_at", 1.5)  # hatched here and grown up
+	grown.set("last_nest_day", 3)
+	grown.set("home_radius", 200.0)
+	grown.position = Vector2(-560, 200)
+	world.add_child(grown)
 	root.get_node("Funding").restore({"balance": 100})
 	var missions := root.get_node("Missions")
 	missions.send(load("res://data/missions/turtle_monitoring.tres"), load("res://data/regions/home_island.tres"))
@@ -143,6 +150,9 @@ func _initialize() -> void:
 		"nest restored")
 	var babies := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.young)
 	_expect(babies.size() == 1 and babies[0].position.distance_to(Vector2(-500, 100)) < 1.0, "hatchling restored")
+	var grown_ups := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return not a.young and is_equal_approx(a.born_at, 1.5))
+	_expect(grown_ups.size() == 1 and grown_ups[0].position.distance_to(Vector2(-560, 200)) < 1.0
+		and grown_ups[0].last_nest_day == 3 and grown_ups[0].home_radius == 200.0, "a grown-up hatchling restored (still grown up)")
 	var washed_in := get_nodes_in_group("debris").filter(func(d: Node) -> bool: return d.spawned)
 	_expect(washed_in.size() == 1 and washed_in[0].position == Vector2(-700, -300)
 		and washed_in[0].item.id == &"plastic_bag", "washed-in litter restored")

@@ -80,5 +80,11 @@ extends Resource
 @export var incubation_days := 1.0
 ## Young that hatch from one nest (a game-sized stand-in for the real clutch).
 @export var hatchlings := 3
+## In-game days for a hatchling to grow up (it gets bigger meanwhile; 0 = never). Grown,
+## it moves out to its own spot in the island's waters (away from busy boats and other
+## adults) and nests itself. Real green turtles take decades; this is game-sized.
+@export var grow_days := 2.0
+## How far a grown-up wanders around its own spot.
+@export var adult_home_radius := 200.0
 @export_multiline var nest_fact: String
 @export_multiline var hatch_fact: String

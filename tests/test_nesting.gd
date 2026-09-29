@@ -96,6 +96,29 @@ func _initialize() -> void:
 		"the area shows 'Turtles 4/4' (%s)" % area.get_node("Hint").text)
 	world.get_node("Player").global_position = Vector2(-600, 400)
 
+	# --- Hatchlings grow bigger, then grow up and move out to spots of their own ---
+	var baby: Node2D = young[0]
+	var small: float = baby.get_node("Sprite2D").scale.x
+	clock.day = 3
+	clock.time_of_day = 0.3
+	await process_frame
+	_expect(baby.young and baby.get_node("Sprite2D").scale.x > small, "a day later it's bigger (%.2f -> %.2f)" % [
+		small, baby.get_node("Sprite2D").scale.x])
+	clock.day = 5
+	clock.time_of_day = 0.4
+	await process_frame
+	await process_frame
+	_expect(young.all(func(a: Node) -> bool: return not a.young), "after %d days the hatchlings are grown up" % turtle_days())
+	var homes: Array = young.map(func(a: Node) -> Vector2: return a.home())
+	var spread := true
+	for i in homes.size():
+		for j in range(i + 1, homes.size()):
+			spread = spread and homes[i].distance_to(homes[j]) > 60.0
+	_expect(spread, "the grown-ups live at spots of their own, spread out (%s)" % [homes])
+	_expect(area.animals_here() == 4, "they still belong to their protection area (%d)" % area.animals_here())
+	clock.day = 2
+	clock.time_of_day = 0.85
+
 	# --- The area is full (4 turtles): the next hatchlings head out to sea ---
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
 	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
@@ -143,6 +166,10 @@ func _initialize() -> void:
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func turtle_days() -> int:
+	return int(load("res://data/animals/green_turtle.tres").grow_days)
 
 
 func _terrain(point: Vector2) -> String:

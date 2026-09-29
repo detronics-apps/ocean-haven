@@ -127,9 +127,10 @@ func save_to(world: Node, path: String) -> bool:
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if animal.leaving:
 			continue  # already heading out to sea
-		if animal.young:
+		if animal.young or animal.born_at >= 0.0:  # hatched here: growing, or grown up
 			young.append({"species": animal.data.id, "pos": [animal.position.x, animal.position.y],
-				"home": [animal.home().x, animal.home().y]})
+				"home": [animal.home().x, animal.home().y], "born_at": animal.born_at,
+				"adult": not animal.young, "radius": animal.home_radius, "last_nest": animal.last_nest_day})
 		else:
 			nest_days[animal.name] = animal.last_nest_day
 	var state := {
@@ -337,7 +338,10 @@ func load_from(world: Node, path: String) -> bool:
 		if species and pos.size() == 2 and home.size() == 2:
 			var baby: Animal = load(Nest.ANIMAL_SCENE).instantiate()
 			baby.data = species
-			baby.young = true
+			baby.young = not entry.get("adult", false)
+			baby.born_at = float(entry.get("born_at", 0.0))  # older saves: old enough to grow up now
+			baby.home_radius = float(entry.get("radius", baby.home_radius))
+			baby.last_nest_day = int(entry.get("last_nest", -99))
 			world.add_child(baby)
 			world.move_child(baby, world.get_node("Player").get_index())
 			baby.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
@@ -388,7 +392,7 @@ func load_from(world: Node, path: String) -> bool:
 		(world.get_node("Boat") as Boat).restore_aboard()
 	# Turtles belong to a protection area; relink hatchlings and mothers to the nearest one.
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
-		if (animal.young or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
+		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
 			animal.link_to_nearest_area()
 	# On an island that isn't discovered any more: back home.
 	var ranger := ControlledBody.active(get_tree())

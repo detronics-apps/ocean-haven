@@ -17,3 +17,4 @@ nest_building = &"turtle_protection_area"
 nest_fact = "A green turtle lays around 100 eggs in each nest, then returns to the sea."
 hatch_fact = "Hatchlings find the sea by heading for the brightest horizon - that's why bright beach lights can confuse them."
 can_tangle = true
+boat_shy_distance = 120.0
