@@ -69,7 +69,7 @@ script = ExtResource("4_goal")
 kind = &"count"
 target = &"mangrove_resin"
 amount = 5
-text = "Gather resin from fallen mangrove branches"
+text = "Gather resin: each morning up to 2 fallen branches lie by full-grown mangroves (pick them up, then sleep for the next)"
 
 [resource]
 script = ExtResource("1_kvp4x")

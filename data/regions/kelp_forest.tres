@@ -62,7 +62,7 @@ script = ExtResource("4_goal")
 kind = &"count"
 target = &"shed_kelp"
 amount = 5
-text = "Gather shed kelp from the healthy forest"
+text = "Gather shed kelp: each morning up to 2 pieces float up by the healthiest kelp beds (pick them up, then sleep for the next)"
 
 [resource]
 script = ExtResource("1_4kmir")
