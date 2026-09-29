@@ -13,3 +13,6 @@ extends Resource
 @export var weight := 1.0
 ## What it is, for the Journal ("Litter in the water").
 @export var text: String
+## Only counts (and shows) once a building with this id exists somewhere, e.g. oil patches
+## once the Deep-Ocean Outpost's oil-spill equipment is there ("" = always).
+@export var needs_building: StringName

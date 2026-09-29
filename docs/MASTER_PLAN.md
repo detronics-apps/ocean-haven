@@ -304,6 +304,10 @@ centres, docks, the workshop, the Exploration Ship.
 - ⭐ **Deep-Ocean Outpost** — an oil-rig-style platform. Spend funding to launch submarines; the
   player chooses where to send them, to investigate deep-sea animals, lost fishing gear, geological
   features, unknown habitats and pollution.
+- 🛢️ **Oil-spill response equipment** comes with the outpost (building id `deep_ocean_outpost`).
+  Only from then on do oil patches (from passing ships) start drifting in around every island —
+  oil is a mid-game problem, met once the ranger has the equipment to handle it — and each
+  island's "oil patches" health factor starts to count.
 - 💰 **Deep-Sea Discovery Centre** (2) — visitors don't go down themselves: live submarine feeds,
   deep-sea specimens and data, interactive displays, and the outpost's discoveries. The funding
   pays for more submarine expeditions.
@@ -470,7 +474,8 @@ Each step ends with a playable build. ✅ = done.
   Centre (3). Rare event: 🌀 Hurricane (seagrass for seahorses).
 - **Step 6 — Deep Sea.** Research equipment (cameras, hydrophones, mapping, sensors) and hidden
   information; sperm whale, giant squid, anglerfish, deep-sea shark; findings unlock protections
-  elsewhere; recovering the lost module → Cargo Module (ship cargo storage). ⭐ Deep-Ocean Outpost, 💰 Deep-Sea Discovery
+  elsewhere; recovering the lost module → Cargo Module (ship cargo storage). ⭐ Deep-Ocean Outpost
+  (with oil-spill response equipment: from now on oil patches drift in around every island), 💰 Deep-Sea Discovery
   Centre (2). Rare event: 🛢️ Oil Spill.
 - **Step 7 — Polar Ocean.** Seasons and moving ice; colonies; penguin, seal, polar bear, skua;
   no trees — build with wood brought as cargo; research site and drilling → Ice Core. ⭐ Polar Research Station, 💰 Polar
@@ -508,7 +513,9 @@ tested commit. Placeholder art throughout.
 4. **Pollution types.** Each hits its own system: plastic → wildlife hazard (✅ litter);
    fishing debris → entanglement (ghost nets and line wash in; animals can get tangled again, and
    the rescue boat finds them); oil / chemicals → water quality (dark patches on the water, cleaned
-   with the boat, lowering health while there); boat disturbance → dolphins avoid busy water near
+   with the boat, lowering health while there) — **mid-game only**: oil patches don't appear until
+   the Deep Sea's Deep-Ocean Outpost is built, which brings the oil-spill response equipment
+   (Step 6); until then the oil health factor doesn't count (HealthFactor.needs_building); boat disturbance → dolphins avoid busy water near
    patrol routes; beach use → turtles won't nest next to buildings (keep nesting beaches clear).
 5. **Seabirds** (red-footed boobies). Nest in grown palms — a reason not to cut every
    tree. Need help: chicks caught in fishing line. Give: flocks circle over floating litter and

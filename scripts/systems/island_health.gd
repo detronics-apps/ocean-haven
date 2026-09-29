@@ -14,10 +14,24 @@ static func of(tree: SceneTree, region: RegionData) -> float:
 		return -1.0
 	var total := 0.0
 	var weights := 0.0
-	for factor: HealthFactor in region.health:
+	for factor: HealthFactor in factors(tree, region):
 		total += score(tree, region, factor) * factor.weight
 		weights += factor.weight
 	return total / weights if weights > 0.0 else -1.0
+
+
+## The factors that count right now (some wait for a building: HealthFactor.needs_building).
+static func factors(tree: SceneTree, region: RegionData) -> Array[HealthFactor]:
+	var list: Array[HealthFactor] = []
+	for factor: HealthFactor in region.health:
+		if factor.needs_building == &"" or built(tree, factor.needs_building):
+			list.append(factor)
+	return list
+
+
+## Whether a building with this id exists anywhere.
+static func built(tree: SceneTree, id: StringName) -> bool:
+	return tree.get_nodes_in_group("buildings").any(func(b: Node) -> bool: return b.data.id == id)
 
 
 ## How far along one factor is, 0..1.

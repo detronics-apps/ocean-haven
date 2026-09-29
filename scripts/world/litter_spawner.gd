@@ -10,8 +10,11 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 @export var max_litter := 15
 ## Chance that a new piece floats at sea (the rest wash up on beaches).
 @export var at_sea_chance := 0.75
-## Chance that what drifts in at sea is an oil patch (from passing ships) instead of litter ...
+## Chance that what drifts in at sea is an oil patch (from passing ships) instead of litter,
+## once a building with id `oil_needs` exists (mid-game: the Deep Sea's Deep-Ocean Outpost
+## brings the oil-spill equipment) ...
 @export var oil_chance := 0.08
+@export var oil_needs: StringName = &"deep_ocean_outpost"
 ## ... while there are fewer than this many oil patches in the area.
 @export var max_oil := 2
 const OIL := preload("res://data/items/oil_patch.tres")
@@ -131,7 +134,7 @@ func spawn_one() -> Debris:
 			spot = beach.pick_random()
 		if ranger and spot.distance_to(ranger.global_position) < min_distance_from_ranger:
 			continue
-		var oil := at_sea and randf() < oil_chance and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
+		var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
 		return spawn_at(OIL if oil else _items.pick_random(), spot, at_sea)
 	return null
 

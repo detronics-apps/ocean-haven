@@ -92,10 +92,27 @@ func _initialize() -> void:
 	_expect(ground.modulate.r < 1.0 and ground.modulate.b > ground.modulate.r, "litter back: muted colours again")
 	_expect(world.get_node("KelpIsland/Ground").modulate == Color.WHITE, "islands without health keep their colours")
 
-	# Oil on the water: only the ranger's own boat cleans it up, and it's never carried.
+	# Oil: none until mid-game, when the Deep Sea's Deep-Ocean Outpost brings oil-spill equipment.
 	for debris: Node in get_nodes_in_group("debris"):
 		debris.free()
 	var spawner: Node = world.get_node("LitterSpawner")
+	spawner.at_sea_chance = 1.0
+	spawner.oil_chance = 1.0
+	var early_oil := 0
+	for i in 6:
+		var piece: Node = spawner.spawn_one()
+		if piece and piece.item.id == &"oil_patch":
+			early_oil += 1
+	_expect(early_oil == 0, "no oil patches before the Deep-Ocean Outpost exists")
+	for debris: Node in get_nodes_in_group("debris"):
+		debris.free()
+	var before_outpost: float = health.of(self, home)
+	var outpost: Resource = load("res://data/buildings/recycling_centre.tres").duplicate()
+	outpost.id = &"deep_ocean_outpost"  # stand-in until the Deep Sea's outpost is made
+	world.get_node("BuildMode").add_building(outpost, Vector2i(40, 40))
+	_expect(is_equal_approx(health.of(self, home), before_outpost), "no oil about: the oil factor is full once it counts")
+
+	# Oil on the water: only the ranger's own boat cleans it up, and it's never carried.
 	var clean: float = health.of(self, home)
 	var oil: Node = spawner.spawn_at(load("res://data/items/oil_patch.tres"), Vector2(-700, -300), true)
 	_expect(health.of(self, home) < clean, "oil on the water lowers the island's health")

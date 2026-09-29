@@ -44,7 +44,7 @@ script = ExtResource("4_arr")
 species = ExtResource("5_crab")
 node_name = "Crab2"
 position = Vector2(400, 208)
-island_health = 0.45
+island_health = 0.4
 healthy_islands = 0
 note = "A second ghost crab has moved onto your beach: it's clean enough for them now!"
 
@@ -116,6 +116,7 @@ target = &"oil_patch"
 amount = 2
 weight = 2.0
 text = "Oil patches on the water"
+needs_building = &"deep_ocean_outpost"
 
 [sub_resource type="Resource" id="Health_seabirds"]
 script = ExtResource("3_health")
