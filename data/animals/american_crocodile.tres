@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/crocodile/american_crocodile.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"american_crocodile"
+display_name = "American Crocodile"
+sprite = ExtResource("2_t")
+habitat = "Quiet mangrove channels and coastal lagoons"
+diet = "Fish, crabs and birds"
+fact = "American crocodiles are shy and live in salty mangrove waters. Once endangered, they have come back where their quiet waters are protected."
+photo_fact = "A crocodile can stay still in the water for hours, with only its eyes and nostrils showing."
+help_fact = "Crocodiles need quiet water away from boats. Protected zones give them a place to rest and nest."
+habitat_terrain = PackedStringArray("", "water")
+swim_speed = 22.0
+rest_min = 6.0
+rest_max = 14.0
+shy_distance = 90.0
+discover_distance = 150.0
+calm_speed = 30.0
+curious = false
+interact_distance = 110.0
+boat_shy_distance = 120.0
+adult_home_radius = 160.0

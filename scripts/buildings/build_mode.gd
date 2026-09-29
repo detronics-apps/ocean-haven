@@ -106,6 +106,8 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 		for y in data.size.y:
 			if Terrain.at(get_tree(), Terrain.centre_of(cell + Vector2i(x, y))) not in data.terrain:
 				return "Your %s goes %s." % [name, where_it_goes(data)]
+	if data.needs_banks and not _between_banks(cell):
+		return "Your %s goes %s." % [name, where_it_goes(data)]
 	var footprint := Rect2i(cell, data.size)
 	for plant: Node2D in get_tree().get_nodes_in_group("plants"):
 		if footprint.has_point(Terrain.cell_of(plant.global_position)):
@@ -128,6 +130,13 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	if not _free and not can_afford(data):
 		return "Not enough to build another. " + data.cost_text()
 	return ""
+
+
+## Land on both sides of `cell` (left and right, or above and below): a narrow channel.
+func _between_banks(cell: Vector2i) -> bool:
+	var land := func(c: Vector2i) -> bool: return Terrain.at(get_tree(), Terrain.centre_of(c)) in ["sand", "grass", "mud", "rock"]
+	return (land.call(cell + Vector2i.LEFT) and land.call(cell + Vector2i.RIGHT)) \
+		or (land.call(cell + Vector2i.UP) and land.call(cell + Vector2i.DOWN))
 
 
 ## Whether buildings of kind `id` fill at least `count` of the tiles right next to

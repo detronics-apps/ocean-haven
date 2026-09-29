@@ -115,6 +115,10 @@ extends Resource
 @export var deck := false
 ## Drawbridges: shown (and walk-through for boats) while a sailing boat is close.
 @export var open_texture: Texture2D
+## Water gates (action "gate"): the picture while closed (`texture` while open).
+@export var closed_texture: Texture2D
+## Only across a narrow channel: land on both sides (left and right, or above and below).
+@export var needs_banks := false
 ## Must touch the shore or another deck, so walkways grow out from the land.
 @export var connects_to_shore := false
 ## Must be right next to a building of this kind (the Exploration Ship moors at a dock) ...

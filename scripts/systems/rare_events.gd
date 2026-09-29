@@ -136,6 +136,10 @@ func strike(event: EventData) -> int:
 		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
 			if ecosystem.region_id == event.region and ecosystem.has_method("swell"):
 				torn += ecosystem.swell(event.kelp_damage, event.kelp_damaged_share)
+	if event.flood_silt > 0.0:
+		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+			if ecosystem.region_id == event.region and ecosystem.has_method("flood"):
+				torn += ecosystem.flood(event.flood_silt)
 	if event.visibility_days > 0.0:
 		_murky[event.region] = GameClock.now() + event.visibility_days
 	struck.emit(event, damaged)

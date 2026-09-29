@@ -42,6 +42,12 @@ var built_day := -1
 var _bob := 0.0
 ## Drawbridges: raised right now (boats pass, the ranger can't cross).
 var is_open := false
+## Water gates: closed (holds water on the flats, blocks fish and flow) or open.
+var gate_closed := false:
+	set(value):
+		gate_closed = value
+		if is_node_ready() and data.closed_texture:
+			_sprite.texture = data.closed_texture if gate_closed else data.texture
 ## How close a sailing boat must come for a drawbridge to open.
 const BRIDGE_OPEN_RANGE := 64.0
 ## Decks: the tiles they replaced, to put back if moved. World cell -> [ground, local cell, source, atlas, alt].
@@ -142,6 +148,8 @@ func actions() -> Array:
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
+	if data.action == &"gate":
+		list.append({"label": "Open the gate" if gate_closed else "Close the gate", "do": toggle_gate})
 	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
 	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:
@@ -169,6 +177,15 @@ func actions() -> Array:
 		var sure := Time.get_ticks_msec() < _demolish_until
 		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.display_name), "do": demolish})
 	return list
+
+
+## Opens or closes a water gate: the island's water and flow change straight away.
+func toggle_gate() -> void:
+	gate_closed = not gate_closed
+	get_tree().call_group("ecosystems", "settle_now")
+	get_tree().call_group("hud", "show_toast", "Gate %s. %s" % ["closed" if gate_closed else "opened",
+		"It holds water on the flats, but fish and flowing water can't get through." if gate_closed
+		else "Fish and water flow through, flushing silt out, but the flats drain a little."])
 
 
 ## Takes it down (tap twice), giving back half its wood. Animals living here move out

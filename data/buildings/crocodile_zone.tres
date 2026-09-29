@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/crocodile_zone/crocodile_zone.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"crocodile_zone"
+display_name = "Crocodile Protection Zone"
+description = "Marks a quiet stretch of water where crocodiles can rest. Boats keep out: patrol boats won't patrol there. Each zone gives crocodiles a home but takes water away from your boats."
+order = 3
+texture = ExtResource("2_t")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("water", "")
+cost_funding = 80
+cost_litter = 5
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 4
+animal_capacity = 1
+hosts = &"american_crocodile"
+demolishable = true
+storm_proof = true
+only_on = &"mangrove_coast"
+category = &"sea"
+placement_hint = "on quiet water, away from your boats"
+fact = "Protecting quiet nesting areas has helped the American crocodile recover in Florida and the Caribbean."

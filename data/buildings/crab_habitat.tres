@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/crab_habitat/crab_habitat.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"crab_habitat"
+display_name = "Crab Habitat"
+description = "A protected patch of soft mud where mangrove crabs can dig their burrows. Crab burrows drain the mud and slow the silting, but too many crabs undercut the banks."
+order = 2
+texture = ExtResource("2_t")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("mud")
+cost_funding = 60
+cost_litter = 5
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 5
+animal_capacity = 2
+hosts = &"mangrove_crab"
+max_tier = 3
+upgrade_funding = 60
+upgrade_items = Dictionary[StringName, int]({&"wood": 2})
+upkeep = 4
+demolishable = true
+only_on = &"mangrove_coast"
+placement_hint = "on the mud"
+fact = "Crabs are the gardeners of the mangrove: their burrows bring air and water into the mud, and they recycle fallen leaves."

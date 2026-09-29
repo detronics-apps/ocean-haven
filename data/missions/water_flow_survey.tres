@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/water_flow_survey.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"water_flow_survey"
+display_name = "Water flow survey"
+icon = ExtResource("2_icon")
+description = "Surveyors follow the water: which pools are connected to the sea, which are cut off, and which channels are silting up."
+order = 1
+facility = &"waterworks_station"
+cost = 15
+minutes = 2.0
+effect = &"water_flow"
+effect_days = 0.0
+marker_colour = Color(0.3, 0.7, 0.95, 1)
+report = "{detail}"
+report_none = "{detail}"

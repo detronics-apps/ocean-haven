@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/eco_lodge/eco_lodge.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"eco_lodge"
+display_name = "Mangrove Eco-Lodge"
+description = "Visitors walk the boardwalks and watch the flamingos. More flamingos and a healthier coast, more visitors and funding."
+order = 4
+texture = ExtResource("2_t")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 120
+cost_litter = 8
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+facility = &"funding"
+visitors = 20
+visitors_per_animal = 8
+watches = &"american_flamingo"
+watch_range = 0.0
+max_count = 3
+only_on = &"mangrove_coast"
+placement_hint = "on the land, looking over the flats"
+fact = "Mangrove boardwalks let people see these forests up close without trampling the roots or disturbing the wildlife."

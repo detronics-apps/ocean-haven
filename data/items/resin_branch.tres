@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/items/resin_branch.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"resin_branch"
+display_name = "Fallen mangrove branch"
+icon = ExtResource("2_t")
+is_litter = false
+counts_as = &"mangrove_resin"
+pickup_note = "Resin gathered from a fallen branch (%d / 5). Mangroves drop old branches all the time; collecting them does no harm."
+fact = "Mangrove bark and resin are full of tannins, which is why water in mangroves often looks like tea."

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/water_level_check.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"water_level_check"
+display_name = "Water level check"
+icon = ExtResource("2_icon")
+description = "Measures the water on the flats: is it right for flamingos to feed and nest, and which way to change the gates?"
+order = 3
+facility = &"waterworks_station"
+cost = 10
+minutes = 1.0
+effect = &"water_level"
+effect_days = 0.0
+marker_colour = Color(0.95, 0.45, 0.55, 1)
+report = "{detail}"
+report_none = "{detail}"

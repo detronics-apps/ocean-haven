@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/wildlife_monitoring.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"wildlife_monitoring"
+display_name = "Wildlife monitoring"
+icon = ExtResource("2_icon")
+description = "Checks on the crabs, the young fish, the flamingo nests and the crocodile, and what each of them needs."
+order = 6
+facility = &"waterworks_station"
+cost = 15
+minutes = 2.0
+effect = &"mangrove_wildlife"
+effect_days = 0.0
+marker_colour = Color(0.95, 0.85, 0.3, 1)
+report = "{detail}"
+report_none = "{detail}"

@@ -113,7 +113,7 @@ func save_to(world: Node, path: String) -> bool:
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y],
 			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day,
-			"damaged": building.damaged, "secured": building.secured})
+			"damaged": building.damaged, "secured": building.secured, "closed": building.gate_closed})
 	var litter: Array[Dictionary] = []
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
 		if debris.spawned and not debris.is_queued_for_deletion():
@@ -375,6 +375,7 @@ func load_from(world: Node, path: String) -> bool:
 			building.built_day = int(entry.get("built_day", -100))  # older saves: palms fully grown
 			building.damaged = bool(entry.get("damaged", false))
 			building.secured = bool(entry.get("secured", false))
+			building.gate_closed = bool(entry.get("closed", false))
 	# Exploration Ships an older version moored for free, with no dock: gone (build your own).
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):

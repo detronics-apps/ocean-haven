@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="12" viewBox="0 0 34 12" shape-rendering="crispEdges">
+  <!-- Placeholder American crocodile, low in the water: olive-grey back, pale narrow snout, eyes up -->
+  <rect x="2" y="4" width="4" height="4" fill="#6f7a4a"/><rect x="0" y="5" width="2" height="2" fill="#6f7a4a"/>
+  <rect x="6" y="3" width="16" height="6" fill="#7d8a55"/>
+  <g fill="#5a6438"><rect x="8" y="3" width="2" height="1"/><rect x="12" y="3" width="2" height="1"/><rect x="16" y="3" width="2" height="1"/></g>
+  <rect x="22" y="4" width="11" height="4" fill="#9aa66a"/>
+  <rect x="23" y="3" width="2" height="2" fill="#5a6438"/><rect x="24" y="3" width="1" height="1" fill="#e8d040"/>
+  <rect x="29" y="7" width="1" height="1" fill="#f0f0e0"/><rect x="31" y="7" width="1" height="1" fill="#f0f0e0"/>
+</svg>

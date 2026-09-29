@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/waterworks_station/waterworks_station.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"waterworks_station"
+display_name = "Mangrove Waterworks Station"
+description = "The Mangrove Coast's special building: it studies how water flows through the mangroves. Surveys show which pools are cut off, where channels silt up and whether the water level suits the flamingos; its teams clear channels and hold back silt."
+order = 0
+texture = ExtResource("2_t")
+size = Vector2i(3, 2)
+terrain = PackedStringArray("sand", "grass", "mud")
+cost_funding = 300
+cost_litter = 15
+cost_items = Dictionary[StringName, int]({&"wood": 8})
+facility = &"signature"
+one_per_island = true
+only_on = &"mangrove_coast"
+action = &"missions"
+placement_hint = "on the land, near the channels"
+fact = "In mangroves, water is the transport system: it carries mud, nutrients and young fish between the land and the sea."

@@ -39,3 +39,5 @@ extends Resource
 ## for this many days.
 @export var visibility_days := 0.0
 @export var slow_missions := 1.5
+## Flash floods: silt dumped in the island's channels (1 = a channel tile silts up).
+@export var flood_silt := 0.0

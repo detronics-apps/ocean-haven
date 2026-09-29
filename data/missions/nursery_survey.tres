@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/nursery_survey.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"nursery_survey"
+display_name = "Nursery connectivity survey"
+icon = ExtResource("2_icon")
+description = "Counts the young fish and finds out how many can reach the open sea, and which pools lack the mangroves they hide in."
+order = 2
+facility = &"waterworks_station"
+cost = 15
+minutes = 2.0
+effect = &"nursery"
+effect_days = 0.0
+marker_colour = Color(0.85, 0.8, 0.7, 1)
+report = "{detail}"
+report_none = "{detail}"
