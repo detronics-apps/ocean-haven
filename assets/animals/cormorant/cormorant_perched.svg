@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16" shape-rendering="crispEdges">
+  <!-- Placeholder cormorant standing with its wings spread out to dry (side view, facing right). Feet at the bottom middle. -->
+  <rect x="7" y="1" width="3" height="3" fill="#1e1e22"/>
+  <rect x="10" y="2" width="3" height="1" fill="#4a4a48"/>
+  <rect x="9" y="3" width="1" height="1" fill="#e8923a"/>
+  <rect x="7" y="4" width="4" height="8" fill="#1e1e22"/>
+  <rect x="0" y="4" width="7" height="3" fill="#2a2a2e"/><rect x="1" y="7" width="5" height="2" fill="#2a2a2e"/>
+  <rect x="11" y="4" width="7" height="3" fill="#2a2a2e"/><rect x="12" y="7" width="5" height="2" fill="#2a2a2e"/>
+  <rect x="7" y="12" width="1" height="3" fill="#3a3a3a"/><rect x="10" y="12" width="1" height="3" fill="#3a3a3a"/>
+</svg>

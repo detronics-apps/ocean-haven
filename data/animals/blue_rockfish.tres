@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_rock"]
+[ext_resource type="Texture2D" path="res://assets/animals/rockfish/blue_rockfish.svg" id="2_rock"]
+
+[resource]
+script = ExtResource("1_rock")
+id = &"blue_rockfish"
+display_name = "Blue Rockfish"
+sprite = ExtResource("2_rock")
+habitat = "Kelp forests and rocky reefs of cool coasts"
+diet = "Plankton, jellies and small shrimp-like animals"
+fact = "Kelp is their home: young rockfish shelter in the kelp, so their numbers show how healthy the forest is."
+photo_fact = "Some kinds of rockfish can live for more than 100 years."
+habitat_terrain = PackedStringArray("", "water")
+swim_speed = 30.0
+shy_distance = 50.0
+curious = false
+discover_distance = 110.0
+settles_near = &"kelp_beds"

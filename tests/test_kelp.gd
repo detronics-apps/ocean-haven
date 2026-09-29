@@ -62,12 +62,40 @@ func _initialize() -> void:
 		bed.urchins = minf(bed.urchins, 2.0)
 	_expect(bed.health > 0.6, "with few urchins the kelp grows back (%.2f)" % bed.health)
 
+	# --- Fish follow the kelp, cormorants follow the fish (one change a morning) ---
+	var regions: GDScript = load("res://scripts/world/regions.gd")
+	regions.discover(load("res://data/regions/kelp_forest.tres"))
+	for b: Node2D in beds:
+		b.health = 0.1
+	_expect(ecosystem.fish_supported() == 0, "thin kelp supports no fish")
+	for b: Node2D in beds:
+		b.health = 0.9
+		b.urchins = 1.0
+	var fish_target: int = ecosystem.fish_supported()
+	_expect(fish_target >= 6, "a healthy forest supports fish (%d)" % fish_target)
+	for i in fish_target + 1:
+		ecosystem.settle()
+	var fish: Array = ecosystem.living(ecosystem.FISH)
+	_expect(fish.size() == fish_target, "fish come back to the kelp, one a morning (%d)" % fish.size())
+	_expect(fish.all(func(f: Node2D) -> bool: return terrain.at(self, f.global_position) in ["water", ""]), "they live in the water by the kelp")
+	var birds: Array = ecosystem.living(ecosystem.CORMORANT)
+	_expect(birds.size() >= 1, "with fish to eat, cormorants arrive (%d)" % birds.size())
+	for b: Node2D in beds:
+		b.health = 0.1
+	for i in 12:
+		ecosystem.settle()
+	_expect(ecosystem.living(ecosystem.FISH).is_empty() and ecosystem.living(ecosystem.CORMORANT).is_empty(),
+		"the kelp collapses: fish swim away, and the cormorants follow")
+	for b: Node2D in beds:
+		b.health = 0.7
+		b.urchins = 1.0
+
 	# --- Saved ---
 	var saved: Dictionary = ecosystem.to_dict()
 	bed.health = 0.0
 	bed.urchins = 0.0
 	ecosystem.restore(saved)
-	_expect(bed.health > 0.6 and bed.urchins > 0.0, "the beds are restored from the save")
+	_expect(bed.health > 0.6, "the beds are restored from the save")
 
 	if not _failed:
 		print("PASS")

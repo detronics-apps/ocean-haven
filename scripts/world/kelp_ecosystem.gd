@@ -41,6 +41,15 @@ const SPOT_RANGE := 72.0
 @export var crowd_range := 240.0
 ## Chance that a new otter is a pup born on the island (with 2+ grown otters), not a newcomer.
 @export var pup_chance := 0.5
+@export_group("Fish and birds")
+## Kelp fish the forest supports per healthy bed (health at least healthy_bed_at).
+@export var fish_per_bed := 0.5
+@export var healthy_bed_at := 0.5
+## Fish it takes to feed one cormorant; cormorants also need a full-grown tree each to nest in.
+@export var fish_per_cormorant := 3
+@export var cormorant_max := 4
+const FISH := preload("res://data/animals/blue_rockfish.tres")
+const CORMORANT := preload("res://data/animals/double_crested_cormorant.tres")
 
 var _last_tick := -1.0
 
@@ -220,6 +229,71 @@ func settle() -> void:
 			continue
 		_new_otter(species, home, all)
 		all = otters()
+	# Fish follow the kelp, and cormorants the fish: one arrives or moves away a morning.
+	_follow(FISH, fish_supported())
+	_follow(CORMORANT, cormorants_supported())
+
+
+## Kelp fish the forest can support now.
+func fish_supported() -> int:
+	return floori(beds().filter(func(b: KelpBed) -> bool: return b.health >= healthy_bed_at).size() * fish_per_bed)
+
+
+## Cormorants the fish can feed, if there are full-grown trees to nest in.
+func cormorants_supported() -> int:
+	var fish := living(FISH).size()
+	return mini(mini(fish / fish_per_cormorant, cormorant_max), Arrivals.grown_trees(get_tree(), region()))
+
+
+## The island's animals of `species` (not ones moving away).
+func living(species: AnimalData) -> Array[Animal]:
+	var list: Array[Animal] = []
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if animal.data == species and not animal.leaving and Regions.nearest(animal.global_position).id == region_id:
+			list.append(animal)
+	return list
+
+
+## One more of `species` arrives, or one moves away, towards `target`.
+func _follow(species: AnimalData, target: int) -> void:
+	var now := living(species)
+	if now.size() > target:
+		var going: Animal = now.back()
+		if going.data.nests_in_trees:
+			going.set_nest_tree(null)
+		going.leaving = true
+		if species.flies:
+			get_tree().call_group("hud", "show_toast", "A %s has flown off: there aren't enough fish for it." % species.display_name)
+		return
+	if now.size() >= target:
+		return
+	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	animal.data = species
+	animal.born_at = GameClock.now() - species.grow_days  # grown: saved like the island's own
+	var world := get_tree().get_first_node_in_group("player").get_parent()
+	var n := 1
+	while world.has_node("%s%d" % [species.id.to_pascal_case(), n]):
+		n += 1
+	animal.name = "%s%d" % [species.id.to_pascal_case(), n]
+	if species.flies:
+		animal.home_radius = 360.0
+		animal.position = region().center + Vector2(randf_range(-200.0, 200.0), randf_range(-200.0, 200.0))
+		get_tree().call_group("hud", "show_toast",
+			"A %s has come to fish in the Kelp Forest: there are enough fish now!" % species.display_name)
+	else:
+		# At a healthy bed with few fish yet.
+		var best: KelpBed = null
+		var best_score := -INF
+		for bed in beds():
+			var crowd := now.filter(func(f: Animal) -> bool: return f.home().distance_to(bed.global_position) < 48.0).size()
+			var score := bed.health - 0.3 * crowd
+			if score > best_score:
+				best_score = score
+				best = bed
+		animal.home_radius = 60.0
+		animal.position = best.global_position + Vector2(randf_range(-16.0, 16.0), randf_range(-16.0, 16.0))
+	world.add_child(animal)
+	world.move_child(animal, world.get_node("Player").get_index())
 
 
 func _move_away(otter: Animal, why: String) -> void:
