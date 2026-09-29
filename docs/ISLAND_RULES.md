@@ -121,12 +121,15 @@ foundations the mechanics sit on, not the mechanics themselves.
 
 ## 5. Buildings
 
-- **Every building has 3 levels.** Each level is visibly different (`tier_textures`) and
-  improves what the building does:
+- **Buildings with a proper function to improve get 3 levels.** Each level is visibly
+  different (`tier_textures`) and improves what the building does:
   - capacity (turtle areas);
   - storage (Ranger Houses);
   - reach (patrol boats: 120 → 160 → 200 px);
   - output (recycling, visitors).
+
+  Simple structures (docks, drawbridges) never get levels. Which buildings get levels, and
+  what each level does, is worked out per island.
 - **Hard limits are not targets** (`max_count`). Overbuilding is allowed and has consequences:
   - upkeep (`BuildingData.upkeep`);
   - an unbalanced island;
@@ -188,9 +191,8 @@ foundations the mechanics sit on, not the mechanics themselves.
 - Data defines content: a new animal, plant, building, mission or event is a `.tres` file;
   code only for a genuinely new mechanic.
 
-## Not yet following these rules (to fix)
+## Still to work out
 
-- **Not every building has 3 visible levels yet.** Missing: Otter Habitat, Kelp Restoration
-  Site, Kelp Discovery Centre, Kelp Research Platform, Dolphin Viewing Area, Marine Rescue &
-  Research Station, dock, tent/house, drawbridge. The patrol buoy has 3 levels, but no
-  separate picture for each yet.
+- **Levels for the functional buildings that don't have them yet** (Otter Habitat, Kelp
+  Restoration Site, Kelp Discovery Centre, Kelp Research Platform, Dolphin Viewing Area,
+  Marine Rescue & Research Station, tent/house), and a picture per level for the patrol buoy.
