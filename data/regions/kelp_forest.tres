@@ -2,12 +2,56 @@
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_4kmir"]
 [ext_resource type="Texture2D" path="res://assets/ui/maps/kelp_island.png" id="1_vyq8o"]
+[ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+
+[sub_resource type="Resource" id="Health_clean"]
+script = ExtResource("3_health")
+kind = &"clean"
+amount = 10
+weight = 2.0
+text = "Litter in the water and on the beaches"
+
+[sub_resource type="Resource" id="Health_kelp"]
+script = ExtResource("3_health")
+kind = &"kelp"
+amount = 80
+weight = 3.0
+text = "Kelp forest"
+
+[sub_resource type="Resource" id="Health_balance"]
+script = ExtResource("3_health")
+kind = &"balance"
+target = &"sea_urchin"
+weight = 2.0
+text = "Urchins in balance"
+
+[sub_resource type="Resource" id="Health_otters"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"sea_otter"
+amount = 4
+weight = 2.0
+text = "Sea otters"
+
+[sub_resource type="Resource" id="Health_fish"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"blue_rockfish"
+amount = 8
+text = "Rockfish in the kelp"
+
+[sub_resource type="Resource" id="Health_cormorants"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"double_crested_cormorant"
+amount = 3
+text = "Cormorants fishing"
 
 [resource]
 script = ExtResource("1_4kmir")
 id = &"kelp_forest"
 display_name = "Kelp Forest"
-description = "Cool, clear water round a long, thin crescent. (Kelp and its wildlife coming soon.)"
+description = "Cool, clear water round a long, thin crescent, and a kelp forest that urchins are eating away. Why are there so many urchins?"
 order = 2
 direction = &"colder"
 theme = "Food-web relationships"
@@ -18,3 +62,4 @@ boat_mooring = Vector2(4496, 16)
 map_icon = ExtResource("1_vyq8o")
 requires = &"salvaged_sonar_core"
 discovery = &"kelp_fibre"
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_kelp"), SubResource("Health_balance"), SubResource("Health_otters"), SubResource("Health_fish"), SubResource("Health_cormorants")])

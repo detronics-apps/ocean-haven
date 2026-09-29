@@ -121,6 +121,36 @@ func _initialize() -> void:
 		_expect(menu.find_child("Entry_" + id, true, false) == null, "but not the %s" % id)
 	menu.close()
 
+	# --- Island health follows the food web ---
+	var health: GDScript = load("res://scripts/systems/island_health.gd")
+	var kelp_region: Resource = load("res://data/regions/kelp_forest.tres")
+	for b: Node2D in beds:
+		b.health = 0.2
+		b.urchins = 10.0
+	var poor: float = health.of(self, kelp_region)
+	_expect(poor >= 0.0 and poor < 0.4, "an overgrazed Kelp Forest is in poor health (%.2f)" % poor)
+	for b: Node2D in beds:
+		b.health = 0.9
+		b.urchins = 2.0
+	for d in get_nodes_in_group("debris"):
+		if d.global_position.distance_to(kelp_region.center) < kelp_region.waters_radius:
+			d.free()
+	for id in ["sea_otter:4", "blue_rockfish:8", "double_crested_cormorant:3"]:
+		var parts: PackedStringArray = id.split(":")
+		var have: int = ecosystem.living(load("res://data/animals/%s.tres" % parts[0])).size()
+		for i in int(parts[1]) - have:
+			var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+			animal.set("data", load("res://data/animals/%s.tres" % parts[0]))
+			animal.position = beds[i % beds.size()].global_position
+			world.add_child(animal)
+	var full: float = health.of(self, kelp_region)
+	_expect(is_equal_approx(full, 1.0), "dense kelp, urchins in balance, 4 otters, 8 fish, 3 cormorants, no litter: 100 %% (%.2f)" % full)
+	for b: Node2D in beds:
+		b.urchins = 0.0
+	_expect(health.of(self, kelp_region) < 1.0, "no urchins at all isn't balance either")
+	for b: Node2D in beds:
+		b.urchins = 2.0
+
 	# --- Saved ---
 	var saved: Dictionary = ecosystem.to_dict()
 	var saved_health: float = bed.health

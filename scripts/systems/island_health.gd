@@ -31,9 +31,25 @@ static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	match factor.kind:
 		&"clean":
 			return clampf(1.0 - count(tree, region, factor) / amount, 0.0, 1.0)
-		&"help", &"animals":
+		&"help", &"animals", &"kelp":
 			return clampf(count(tree, region, factor) / amount, 0.0, 1.0)
+		&"balance":
+			var eco := ecosystem(tree, region)
+			if not eco:
+				return 0.0
+			var beds: int = maxi(eco.beds().size(), 1)
+			var overgrazed := 1.0 - 2.0 * float(count(tree, region, factor)) / beds
+			var some := clampf(eco.urchin_total() / (beds * 0.5), 0.0, 1.0)  # a healthy forest keeps some
+			return clampf(minf(overgrazed, some), 0.0, 1.0)
 	return 0.0
+
+
+## The island's own ecosystem node (e.g. the Kelp Forest's), or null.
+static func ecosystem(tree: SceneTree, region: RegionData) -> Node:
+	for eco: Node in tree.get_nodes_in_group("ecosystems"):
+		if eco.region_id == region.id:
+			return eco
+	return null
 
 
 ## The raw number behind a factor: litter pieces about, times helped, animals living there.
@@ -47,6 +63,12 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 					and (d.item.id == factor.target if factor.target != &"" else d.item.is_litter))).size()
 		&"help":
 			return Journal.helped_count(factor.target)
+		&"kelp":  # the kelp's condition, in percent
+			var eco := ecosystem(tree, region)
+			return roundi(eco.kelp_health() * 100.0) if eco else 0
+		&"balance":  # overgrazed beds
+			var eco := ecosystem(tree, region)
+			return eco.beds().filter(func(b: Node) -> bool: return b.urchins >= eco.overgrazed_at).size() if eco else 0
 		&"animals":
 			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
 				# Healthy residents only: hurt or caught ones count again once helped, and a
@@ -62,6 +84,11 @@ static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) 
 	var n := count(tree, region, factor)
 	if factor.kind == &"clean":
 		return "%s: %s" % [factor.text, "none" if n == 0 else str(n)]
+	if factor.kind == &"kelp":
+		return "%s: %d%% (%d%% for full health)" % [factor.text, n, factor.amount]
+	if factor.kind == &"balance":
+		var eco := ecosystem(tree, region)
+		return "%s: %d overgrazed bed(s), %d urchins in all" % [factor.text, n, eco.urchin_total() if eco else 0]
 	if factor.kind == &"animals" and n >= factor.amount:
 		return "%s: %d (%d for full health)" % [factor.text, n, factor.amount]
 	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]

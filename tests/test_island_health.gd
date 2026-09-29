@@ -16,7 +16,7 @@ func _initialize() -> void:
 	await process_frame
 	var health: GDScript = load("res://scripts/systems/island_health.gd")
 	var home: Resource = load("res://data/regions/home_island.tres")
-	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
+	var kelp: Resource = load("res://data/regions/mangrove_coast.tres")  # (no health factors yet)
 	var journal := root.get_node("Journal")
 	_expect(health.of(self, kelp) < 0.0, "no health on islands without factors yet")
 
@@ -95,7 +95,7 @@ func _initialize() -> void:
 		world.get_node("LitterSpawner").spawn_at(load("res://data/items/plastic_bag.tres"), Vector2(-600 + i * 30, -300), true)
 	health.tint(self)
 	_expect(ground.modulate.r < 1.0 and ground.modulate.b > ground.modulate.r, "litter back: muted colours again")
-	_expect(world.get_node("KelpIsland/Ground").modulate == Color.WHITE, "islands without health keep their colours")
+	_expect(world.get_node("MangroveIsland/Ground").modulate == Color.WHITE, "islands without health keep their colours")
 
 	# Oil: none until mid-game, when the Deep Sea's Deep-Ocean Outpost brings oil-spill equipment.
 	for debris: Node in get_nodes_in_group("debris"):
