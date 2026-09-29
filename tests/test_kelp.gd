@@ -87,6 +87,8 @@ func _initialize() -> void:
 		"within 4 days it has settled: urchins spiked, grazed the kelp down (%.2f) and now starve at %.0f" % [bed.health, bed.urchins])
 
 	# --- Restoration alone feeds an urchin boom: the kelp can't get far ---
+	bed.urchins = 4.0  # a moderately grazed bed (restoring an overgrazed one barely helps at all)
+	bed.health = 0.45
 	var urchins_before: float = bed.urchins
 	bed.restored_until = 1000.0
 	for i in 16:

@@ -30,8 +30,14 @@ func discover(animal: AnimalData) -> void:
 	discovered.emit(animal)
 
 
+## Spotted (the ranger has come close to one).
 func has(id: StringName) -> bool:
 	return _found.has(id)
+
+
+## In the Ocean Journal: a species only goes in once the ranger has photographed it.
+func in_journal(id: StringName) -> bool:
+	return photos(id) > 0
 
 
 func discover_plant(plant: PlantData) -> void:

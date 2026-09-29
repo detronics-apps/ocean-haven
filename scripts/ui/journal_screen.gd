@@ -59,7 +59,7 @@ func _fill() -> void:
 		tab = ISLAND
 	(_tab_buttons[tab] as Button).set_pressed_no_signal(true)
 	var species := DataFiles.load_all("res://data/animals")
-	var found := species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size()
+	var found := species.filter(func(a: AnimalData) -> bool: return Journal.in_journal(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
 	if tab == ANIMALS:
 		for animal: AnimalData in species:
@@ -161,8 +161,9 @@ func _objective(region: RegionData) -> Control:
 
 
 func _entry(animal: AnimalData) -> Control:
-	if not Journal.has(animal.id):
-		var unknown := card(null, ["???", "Not discovered yet. Keep exploring!"], true)
+	if not Journal.in_journal(animal.id):
+		var unknown := card(null, ["???", "Spotted, but no photo yet: take one to add it to your Journal." if Journal.has(animal.id)
+			else "Not discovered yet. Keep exploring, and take a photo when you find it!"], true)
 		unknown.name = "Entry_" + animal.id
 		return unknown
 	var lines: Array[String] = [animal.display_name, animal.fact]
@@ -207,7 +208,7 @@ func _ocean() -> void:
 		photos += Journal.photos(animal.id)
 	var total := card(null, ["The whole ocean", "Fleet upgrades: %d of %d. Species found: %d of %d. Plants found: %d of %d." % [
 		Fleet.level(), DataFiles.load_all("res://data/discoveries").size(),
-		species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size(), species.size(),
+		species.filter(func(a: AnimalData) -> bool: return Journal.in_journal(a.id)).size(), species.size(),
 		plants.filter(func(p: PlantData) -> bool: return Journal.has_plant(p.id)).size(), plants.size()],
 		"Litter collected: %d. Animals helped: %d. Hatchlings: %d. Photos: %d." % [Inventory.litter_collected, helped, hatched, photos]])
 	total.name = "OceanTotals"

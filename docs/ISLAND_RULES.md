@@ -172,6 +172,12 @@ foundations the mechanics sit on, not the mechanics themselves.
 
 ## 8. Journal, UI and touch
 
+- **A species only goes into the Journal once the ranger has photographed it.** Spotting one
+  says "take a photo to add it to your Journal". Every species must be photographable, even
+  ones that aren't separate animals in the world (urchins, at their kelp beds).
+- **Plants and habitat pieces the player didn't place can still be moved** where it makes sense
+  (kelp beds are towed behind the boat to other shallow water).
+
 - **The Journal has tabs:** This island / Animals / Plants, plus Ocean (the whole ocean's
   stats) once all 6 fleet upgrades are installed.
 - **Touch comes first:**

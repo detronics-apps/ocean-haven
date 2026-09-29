@@ -48,7 +48,7 @@ const SPOT_RANGE := 72.0
 @export var upstream_region: StringName = &"home_island"
 @export var upstream_boost := 0.5
 ## A bed counts as overgrazed at this many urchins.
-@export var overgrazed_at := 8.0
+@export var overgrazed_at := 6.0
 @export_group("Otters")
 ## Otters settled at a habitat only move away when food falls below this share of what they
 ## need (they ride out lean days while the kelp grows back).
@@ -606,8 +606,8 @@ func balance_report() -> String:
 	var chain := "Otters: %d (eating about %d urchins a day) → urchins: %d, overgrazing %d of %d beds → kelp: %d%% → fish: %d → cormorants: %d." % [
 		otter_count, eaten, urchin_total(), overgrazed, beds().size(), roundi(kelp_health() * 100.0), fish, birds]
 	var advice := ""
-	if overgrazed > beds().size() / 3:
-		advice = "Too many urchins: few otters to keep them in check, so the kelp is being eaten faster than it grows."
+	if urchin_amount() / maxf(beds().size(), 1) > 3.0:
+		advice = "Too many urchins (more than 3 a bed): few otters to keep them in check, so the kelp is being eaten faster than it grows."
 	elif urchin_total() < beds().size() * 0.2:
 		advice = "Almost no urchins left: otters may be eating them faster than they breed. A healthy forest keeps some; fewer habitats may balance it."
 	elif kelp_health() > 0.6 and fish < fish_supported():
@@ -699,7 +699,7 @@ func urchin_total() -> int:
 func to_dict() -> Dictionary:
 	var saved := {"last_tick": _last_tick, "seeded": _seeded, "beds": {}}
 	for bed in beds():
-		saved.beds[String(bed.name)] = [bed.health, bed.urchins, bed.restored_until, bed.storm_hit]
+		saved.beds[String(bed.name)] = [bed.health, bed.urchins, bed.restored_until, bed.storm_hit, bed.position.x, bed.position.y]
 	return saved
 
 
@@ -714,3 +714,5 @@ func restore(saved: Dictionary) -> void:
 			bed.urchins = float(entry[1])
 			bed.restored_until = float(entry[2])
 			bed.storm_hit = entry.size() > 3 and bool(entry[3])
+			if entry.size() > 5:
+				bed.position = Vector2(entry[4], entry[5])  # it may have been moved

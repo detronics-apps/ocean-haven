@@ -169,7 +169,11 @@ func _initialize() -> void:
 	screen.close()
 	journal.discover(load("res://data/animals/green_turtle.tres"))
 	screen.open()
-	_expect(_entry_text(screen, "Entry_green_turtle").contains("Green Sea Turtle"), "discovered species listed")
+	_expect(_entry_text(screen, "Entry_green_turtle").contains("no photo yet"), "spotted, but not in the Journal until photographed")
+	screen.close()
+	journal.photograph(load("res://data/animals/green_turtle.tres"))
+	screen.open()
+	_expect(_entry_text(screen, "Entry_green_turtle").contains("Green Sea Turtle"), "photographed: in the Journal")
 	screen.close()
 
 	# --- Sleep until morning ---

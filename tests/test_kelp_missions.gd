@@ -65,6 +65,41 @@ func _initialize() -> void:
 	await _send(missions, clock, "storm_damage_survey", kelp)
 	_expect(missions.last_report.contains("No storm damage"), "the storm damage survey only finds storm damage")
 
+	# --- Urchins can be photographed at a kelp bed (then they're in the Journal) ---
+	var journal := root.get_node("Journal")
+	var player: Node2D = world.get_node("Player")
+	var rowboat: Node2D = world.get_node("Boat")
+	player.global_position = rowboat.global_position
+	rowboat.call("_board")
+	var bed: Node2D = ecosystem.beds().filter(func(b: Node) -> bool: return b.urchin_count() > 0)[0]
+	rowboat.global_position = bed.global_position + Vector2(20, 0)
+	await process_frame
+	_expect(not journal.in_journal(&"sea_urchin"), "urchins aren't in the Journal before a photo")
+	var photo: Array = bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Photo: sea urchins")
+	_expect(photo.size() == 1, "from the boat you can photograph a bed's urchins")
+	photo[0].do.call()
+	_expect(journal.in_journal(&"sea_urchin"), "and then they're in the Journal")
+
+	# --- Kelp beds can be moved: towed behind the boat, put down on the island's shallow water ---
+	var start: Vector2 = bed.global_position
+	bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Move kelp bed")[0].do.call()
+	var target := Vector2.INF
+	for other: Node2D in ecosystem.beds():
+		for offset in [Vector2(80, 0), Vector2(-80, 0), Vector2(0, 80), Vector2(0, -80)]:
+			if target == Vector2.INF and other != bed and bed.place_problem(other.global_position + offset) == "":
+				target = other.global_position + offset
+	rowboat.global_position = target
+	await process_frame
+	_expect(bed.global_position.distance_to(target) < 30.0, "it follows the boat")
+	bed.actions()[0].do.call()
+	_expect(not bed.carried and bed.global_position == target and bed.global_position != start, "and is put down there")
+	rowboat.global_position = kelp.center + Vector2(kelp.waters_radius * 0.95, 0)
+	bed.carried = true
+	_expect(bed.actions()[0].label != "Put kelp bed down here", "not out in the deep open ocean (%s)" % bed.actions()[0].label)
+	bed.carried = false
+	_expect(ecosystem.to_dict().beds[String(bed.name)][4] == bed.position.x, "its new place is saved")
+	rowboat.restore_ashore()
+
 	# --- Heavy swell: kelp torn up, murky water (missions slower), then survey and restore ---
 	var events := root.get_node("RareEvents")
 	var swell: Resource = load("res://data/events/underwater_storm.tres")

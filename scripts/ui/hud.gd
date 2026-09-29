@@ -327,7 +327,7 @@ func _on_item_added(item: ItemData, _count: int) -> void:
 
 
 func _on_discovered(animal: AnimalData) -> void:
-	show_toast("New discovery: %s!\n%s" % [animal.display_name, animal.fact])
+	show_toast("You spotted a %s!\nStay calm, and take a photo to add it to your Journal." % animal.display_name)
 
 
 func _on_observed(animal: AnimalData) -> void:
@@ -337,7 +337,7 @@ func _on_observed(animal: AnimalData) -> void:
 
 func _on_photographed(animal: AnimalData, count: int) -> void:
 	if count == 1:
-		show_toast("Your first photo of a %s!\n%s" % [animal.display_name, animal.photo_fact])
+		show_toast("New in your Journal: %s!\n%s %s" % [animal.display_name, animal.fact, animal.photo_fact])
 	else:
 		show_toast("Photo saved! (%d %s photos)" % [count, animal.display_name])
 
