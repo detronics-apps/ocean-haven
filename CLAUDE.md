@@ -283,6 +283,16 @@ research leads to action). Built so far:
    "count") → Kelp Fibre
 10. ✅ Cross-island: clean Starting Island water speeds kelp regrowth (`upstream_boost`)
 
+Then: urchins also follow their food (boom and bust; `urchin_starved`), no species ever drops
+below 1, the island starts with every species struggling (a tangled otter, 2 rockfish, 1
+cormorant) and a litter surge on every first visit (RegionData.arrival_litter); the urchin
+balance scales the whole island's health (HealthFactor.scales_all; too_many for otters); the HUD
+health gauge shows now vs where it's heading (IslandHealth.heading / KelpEcosystem.project);
+buildings can be used from the rowboat; patrol boats (max 6, area 120/160/200 by tier) hurt
+boat-shy animals when under 65 % of the island's water is free of them; 3 Dolphin Viewing
+Areas; 10 turtles for full health; mission icons (MissionData.icon); Journal Plants tab
+(data/plants/) and an Ocean tab after all 6 upgrades.
+
 Next: MVP 0.6 Mangrove Coast (Step 4; design in MASTER_PLAN).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
