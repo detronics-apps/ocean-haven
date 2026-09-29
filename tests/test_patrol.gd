@@ -26,6 +26,21 @@ func _initialize() -> void:
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
 	_expect(build_mode.place_at(Vector2i(-24, 0)), "buoy placed in the open sea")
 	var buoy: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"patrol_boat")[0]
+	build_mode.cancel()
+
+	# --- Offshore, it can be used from the rowboat: move it ---
+	var rowboat: Node2D = world.get_node("Boat")
+	var player: Node2D = world.get_node("Player")
+	player.global_position = rowboat.global_position
+	rowboat.call("_board")
+	rowboat.global_position = buoy.global_position + Vector2(60, 0)
+	await process_frame
+	var boat_labels: Array = buoy.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(boat_labels.any(func(l: String) -> bool: return l.begins_with("Move")), "from the rowboat you can move the buoy (%s)" % [boat_labels])
+	build_mode.start_move(buoy)
+	_expect(build_mode.place_at(Vector2i(-25, 2)) and buoy.cell == Vector2i(-25, 2), "and place it again from the boat")
+	rowboat.restore_ashore()
+	player.global_position = Vector2.ZERO
 	var boat: Node2D = buoy.get_node("PatrolBoat")
 	var hull: Node2D = boat.get_node("Hull")
 

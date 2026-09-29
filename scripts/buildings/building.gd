@@ -31,6 +31,8 @@ var damaged := false:
 		if is_node_ready():
 			_sprite.modulate = DAMAGED_TINT if damaged else Color.WHITE
 const DAMAGED_TINT := Color(0.62, 0.55, 0.5)
+## Extra reach from the rowboat.
+const BOAT_REACH := 40.0
 ## Its upkeep was paid this morning (unpaid: not looked after today).
 var upkeep_paid := true
 ## "Demolish" was tapped: tap again before this (msec) to confirm.
@@ -417,6 +419,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().call_group("hud", "sleep_through_night")
 
 
+## The ranger is this close, on foot or in their rowboat (e.g. to move a buoy offshore; the
+## boat can't come right up to things on land, so it gets a little more room).
 func _ranger_in_range(distance: float) -> bool:
 	var ranger := ControlledBody.active(get_tree())
-	return ranger is Player and ranger.global_position.distance_to(global_position) <= distance
+	if ranger is Boat:
+		distance += BOAT_REACH
+	return (ranger is Player or ranger is Boat) and ranger.global_position.distance_to(global_position) <= distance

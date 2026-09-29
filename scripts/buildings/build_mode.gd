@@ -290,12 +290,9 @@ func _process(_delta: float) -> void:
 		"Move" if _moving else "Place", _data.display_name.to_lower(), where_it_goes(_data)]
 	if not fits:
 		_label.text = problem
-	if not ranger is Player:
-		_label.text = "Go ashore to place your %s." % _data.display_name.to_lower()
-		_place.disabled = true
-		_ghost.visible = false
-	else:
-		_ghost.visible = true
+	_ghost.visible = true
+	if ranger is Boat and fits:
+		_label.text = "%s your %s: sail to move it, then Place." % ["Move" if _moving else "Place", _data.display_name.to_lower()]
 
 
 ## Where a building goes, in words: its own hint, or worked out from its ground.
@@ -336,7 +333,7 @@ static func _cell_beside(ranger_cell: Vector2i, side: Vector2i, size: Vector2i) 
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# In the boat, E and taps belong to the boat (go ashore, sail): placing waits until you're on land.
+	# In the boat, taps belong to the boat (sailing moves the spot; the Place button places).
 	if not _data or not ControlledBody.active(get_tree()) is Player:
 		return
 	if ControlledBody.is_tap(event):
