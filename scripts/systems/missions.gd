@@ -179,6 +179,7 @@ func _keep_visitor() -> void:
 func _new_visitor() -> Node2D:
 	var visitor: Node2D = load(Nest.ANIMAL_SCENE).instantiate()
 	visitor.name = VISITOR_NAME
+	visitor.set("visiting", true)
 	visitor.set("data", load(DOLPHIN))
 	visitor.set("home_radius", 220.0)
 	var region: RegionData = _region if _region else Regions.all()[0]

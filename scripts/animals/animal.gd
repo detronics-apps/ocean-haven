@@ -46,6 +46,8 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 var born_at := -1.0
 ## A hatchling with no room at home: once in the water it swims off into the open ocean.
 @export var leaving := false
+## Only passing through (dolphin tracking's visitor): not one of the island's own.
+var visiting := false
 ## Day this animal last nested (spaces nests out by nest_interval_days).
 var last_nest_day := -99
 ## The protection area this animal belongs to (where it hatched or nests), or null.

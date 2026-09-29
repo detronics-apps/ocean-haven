@@ -306,8 +306,8 @@ centres, docks, the workshop, the Exploration Ship.
   features, unknown habitats and pollution.
 - 🛢️ **Oil-spill response equipment** comes with the outpost (building id `deep_ocean_outpost`).
   Only from then on do oil patches (from passing ships) start drifting in around every island —
-  oil is a mid-game problem, met once the ranger has the equipment to handle it — and each
-  island's "oil patches" health factor starts to count.
+  oil is a mid-game problem, met once the ranger has the equipment to handle it. Oil isn't part
+  of island health.
 - 💰 **Deep-Sea Discovery Centre** (2) — visitors don't go down themselves: live submarine feeds,
   deep-sea specimens and data, interactive displays, and the outpost's discoveries. The funding
   pays for more submarine expeditions.
@@ -531,7 +531,8 @@ tested commit. Placeholder art throughout.
    the rescue boat finds them); oil / chemicals → water quality (dark patches on the water, cleaned
    with the boat, lowering health while there) — **mid-game only**: oil patches don't appear until
    the Deep Sea's Deep-Ocean Outpost is built, which brings the oil-spill response equipment
-   (Step 6); until then the oil health factor doesn't count (HealthFactor.needs_building); boat disturbance → dolphins avoid busy water near
+   (Step 6). Oil is never part of island health: 100 % is no litter in reach, no hurt or caught
+   animals and a fully populated island; boat disturbance → dolphins avoid busy water near
    patrol routes; beach use → turtles won't nest next to buildings (keep nesting beaches clear).
 5. **Seabirds** (red-footed boobies). Nest in grown palms — a reason not to cut every
    tree. Need help: chicks caught in fishing line. Give: flocks circle over floating litter and

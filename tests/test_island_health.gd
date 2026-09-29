@@ -39,9 +39,10 @@ func _initialize() -> void:
 	_expect(cleaned > start, "cleaning up raises its health (%.2f)" % cleaned)
 	var came: Array = names.call(arrivals.check(world))
 	_expect("Crab2" in came and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives (%s)" % [came])
-	_expect(arrivals.check(world).is_empty(), "and only once")
-	for id in ["green_turtle", "bottlenose_dolphin", "ghost_crab"]:
-		journal.help(load("res://data/animals/%s.tres" % id))
+	_expect(not "Crab2" in names.call(arrivals.check(world)), "and only once")
+	# Caught animals don't count as living there until they're freed.
+	for animal_name in ["GreenTurtle", "Crab1", "Dolphin2"]:
+		world.get_node(animal_name).restore_freed()
 	var helped: float = health.of(self, home)
 	_expect(helped > cleaned, "freeing animals raises it (%.2f)" % helped)
 	for i in 8:  # more than full health needs: the Journal counts them all
@@ -54,7 +55,11 @@ func _initialize() -> void:
 	_expect("Dolphin1" in came and not "Dolphin3" in came and count.call(&"bottlenose_dolphin") == 2,
 		"cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
 	_expect(count.call(&"red_footed_booby") == 3, "three seabirds nest in the palms of a healthy island")
-	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 9 turtles, 3 seabirds: fully healthy")
+	_expect(is_equal_approx(health.of(self, home), 1.0), "no litter, no hurt or caught animals, fully populated (9 turtles, 3 seabirds, 2 crabs, 2 dolphins): 100 %")
+	var hurt: Node = world.get_node("Crab1")
+	hurt.injure()
+	_expect(health.of(self, home) < 1.0, "a hurt animal doesn't count until it's rescued")
+	hurt.recover()
 
 	# Seabirds need full-grown palms: cut too many and one flies off (back when they regrow).
 	var palms: Array = world.get_node("StarterIsland").get_children().filter(func(n: Node) -> bool: return n.is_in_group("plants"))
@@ -106,16 +111,14 @@ func _initialize() -> void:
 	_expect(early_oil == 0, "no oil patches before the Deep-Ocean Outpost exists")
 	for debris: Node in get_nodes_in_group("debris"):
 		debris.free()
-	var before_outpost: float = health.of(self, home)
 	var outpost: Resource = load("res://data/buildings/recycling_centre.tres").duplicate()
 	outpost.id = &"deep_ocean_outpost"  # stand-in until the Deep Sea's outpost is made
 	world.get_node("BuildMode").add_building(outpost, Vector2i(40, 40))
-	_expect(is_equal_approx(health.of(self, home), before_outpost), "no oil about: the oil factor is full once it counts")
 
 	# Oil on the water: only the ranger's own boat cleans it up, and it's never carried.
 	var clean: float = health.of(self, home)
 	var oil: Node = spawner.spawn_at(load("res://data/items/oil_patch.tres"), Vector2(-700, -300), true)
-	_expect(health.of(self, home) < clean, "oil on the water lowers the island's health")
+	_expect(is_equal_approx(health.of(self, home), clean), "oil isn't part of island health")
 	oil._on_body_entered(world.get_node("Player"))
 	var patrol := CharacterBody2D.new()
 	oil._on_body_entered(patrol)
@@ -146,7 +149,7 @@ func _initialize() -> void:
 	var text := ""
 	for label in journal_screen.find_child("Health_home_island", true, false).find_children("*", "Label", true, false):
 		text += (label as Label).text + "\n"
-	_expect(text.contains("island health") and text.contains("Oil patches on the water: 2") and text.contains("Turtles living here: 9 (6 for full health)"),
+	_expect(text.contains("island health") and not text.contains("Oil") and text.contains("Dolphins in the pod") and text.contains("Turtles living here: 9 (6 for full health)"),
 		"the Journal shows island health and what goes into it")
 	journal_screen.close()
 

@@ -1,7 +1,7 @@
 class_name IslandHealth
 ## Each island's health, 0..1 (its Ocean Impact): the weighted average of its
-## RegionData.health factors — how clean its waters are, animals helped and living
-## there. Islands without factors have no health yet (-1). Ground colours follow it
+## RegionData.health factors — how clean its waters are and how many healthy animals
+## live there (100 % = no litter in reach, no hurt or caught animals, fully populated). Islands without factors have no health yet (-1). Ground colours follow it
 ## (see tint), from muted when damaged to vibrant when healthy.
 
 ## Ground colour at 0 health (muted grey-blue); healthy ground shows its own colours.
@@ -14,19 +14,10 @@ static func of(tree: SceneTree, region: RegionData) -> float:
 		return -1.0
 	var total := 0.0
 	var weights := 0.0
-	for factor: HealthFactor in factors(tree, region):
+	for factor: HealthFactor in region.health:
 		total += score(tree, region, factor) * factor.weight
 		weights += factor.weight
 	return total / weights if weights > 0.0 else -1.0
-
-
-## The factors that count right now (some wait for a building: HealthFactor.needs_building).
-static func factors(tree: SceneTree, region: RegionData) -> Array[HealthFactor]:
-	var list: Array[HealthFactor] = []
-	for factor: HealthFactor in region.health:
-		if factor.needs_building == &"" or built(tree, factor.needs_building):
-			list.append(factor)
-	return list
 
 
 ## Whether a building with this id exists anywhere.
@@ -58,9 +49,10 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 			return Journal.helped_count(factor.target)
 		&"animals":
 			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
-				# Hurt animals count again once they've recovered (a Rescue mission).
-				return (a.data.id == factor.target and not a.leaving and not a.injured
-					and Regions.nearest(a.global_position) == region)).size()
+				# Healthy residents only: hurt or caught ones count again once helped, and a
+				# visiting dolphin (dolphin tracking) is only passing through.
+				return (a.data.id == factor.target and not a.leaving and not a.injured and not a.tangled
+					and not a.visiting and Regions.nearest(a.global_position) == region)).size()
 	return 0
 
 

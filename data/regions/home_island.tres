@@ -109,15 +109,6 @@ amount = 12
 weight = 3.0
 text = "Litter in the water and on the beaches"
 
-[sub_resource type="Resource" id="Health_oil"]
-script = ExtResource("3_health")
-kind = &"clean"
-target = &"oil_patch"
-amount = 2
-weight = 2.0
-text = "Oil patches on the water"
-needs_building = &"deep_ocean_outpost"
-
 [sub_resource type="Resource" id="Health_seabirds"]
 script = ExtResource("3_health")
 kind = &"animals"
@@ -133,23 +124,19 @@ amount = 6
 weight = 2.0
 text = "Turtles living here"
 
-[sub_resource type="Resource" id="Health_turtle_freed"]
+[sub_resource type="Resource" id="Health_crabs"]
 script = ExtResource("3_health")
-kind = &"help"
-target = &"green_turtle"
-text = "Tangled turtle freed"
-
-[sub_resource type="Resource" id="Health_dolphin_freed"]
-script = ExtResource("3_health")
-kind = &"help"
-target = &"bottlenose_dolphin"
-text = "Dolphin freed from the ghost net"
-
-[sub_resource type="Resource" id="Health_crab_freed"]
-script = ExtResource("3_health")
-kind = &"help"
+kind = &"animals"
 target = &"ghost_crab"
-text = "Crab freed from the plastic bag"
+amount = 2
+text = "Ghost crabs on the beaches"
+
+[sub_resource type="Resource" id="Health_dolphins"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"bottlenose_dolphin"
+amount = 2
+text = "Dolphins in the pod"
 
 [sub_resource type="Resource" id="Goal_found"]
 script = ExtResource("2_goal")
@@ -183,5 +170,5 @@ discovery = &"salvaged_sonar_core"
 objective = "Find and clear the old wreck off the coast"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_found"), SubResource("Goal_cleared"), SubResource("Goal_recovered")])
 discovery_text = "Cleaned and working again, the old sonar unit is the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
-health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_oil"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_turtle_freed"), SubResource("Health_dolphin_freed"), SubResource("Health_crab_freed")])
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_crabs"), SubResource("Health_dolphins")])
 arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Seabird1"), SubResource("Arrival_Seabird2"), SubResource("Arrival_Seabird3")])

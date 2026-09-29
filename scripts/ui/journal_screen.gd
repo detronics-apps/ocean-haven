@@ -118,7 +118,7 @@ func _health(region: RegionData) -> Control:
 	var tree := get_tree()
 	var lines: Array[String] = ["%s: island health %d%%" % [
 		region.display_name, roundi(IslandHealth.of(tree, region) * 100.0)]]
-	for factor: HealthFactor in IslandHealth.factors(tree, region):
+	for factor: HealthFactor in region.health:
 		lines.append("  - " + IslandHealth.describe(tree, region, factor))
 	var entry := card(null, lines)
 	entry.name = "Health_" + region.id

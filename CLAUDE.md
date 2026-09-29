@@ -202,8 +202,9 @@ caring for animals". Build in this order, placeholder art:
 Step 2. Build in this order:
 
 1. ✅ Island health (`IslandHealth`, 0..1 per island): weighted RegionData.health factors
-   (HealthFactor "clean" = litter about its waters, "help" = species freed, "animals" = living
-   there). Ground colours go from muted to full with it (checked every 2 s); shown in the Journal.
+   (HealthFactor "clean" = litter within rowboat reach, "animals" = healthy residents: not hurt,
+   caught or visiting; no oil). 100 % = no litter, no hurt or caught animals, fully populated
+   (Starting Island: 6 turtles, 3 seabirds, 2 crabs, 2 dolphins). Ground colours go from muted to full with it (checked every 2 s); shown in the Journal.
    The Starting Island starts with 1 turtle, 1 crab, 1 dolphin and ~30 litter (new game:
    `start_litter`); more animals arrive as islands recover (RegionData.arrivals, `Arrivals`, saved):
    2nd crab at 40 % health, 2nd dolphin at 65 %, then dolphins 3–5 and crabs 3–4 as 1–3 other
