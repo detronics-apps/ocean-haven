@@ -69,7 +69,8 @@ func send(mission: MissionData, region: RegionData) -> bool:
 		return false
 	active = mission
 	_region = region
-	_back_at = GameClock.now() + mission.minutes * 60.0 / GameClock.DAY_LENGTH
+	# After heavy swell the water is murky: missions there take longer.
+	_back_at = GameClock.now() + mission.minutes * 60.0 / GameClock.DAY_LENGTH * RareEvents.mission_slowdown(region.id)
 	sent.emit(mission)
 	return true
 

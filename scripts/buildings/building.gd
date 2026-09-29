@@ -134,7 +134,7 @@ func actions() -> Array:
 	if damaged:
 		var wood := _repair_wood()
 		list.append({"label": "Repair %s (%d wood)" % [data.display_name, wood], "do": repair, "helps": true})
-	elif RareEvents.is_coming() and not secured and not data.storm_proof:
+	elif RareEvents.is_coming_to(Regions.nearest(global_position).id) and not secured and not data.storm_proof:
 		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
@@ -357,7 +357,7 @@ func stats() -> String:
 	var numbers := _numbers()
 	if numbers:
 		lines.append(numbers)
-	if secured and RareEvents.is_coming():
+	if secured and RareEvents.is_coming_to(Regions.nearest(global_position).id):
 		lines.append("Secured")
 	return "\n".join(lines)
 

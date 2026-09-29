@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+
+[resource]
+script = ExtResource("1_evt")
+id = &"underwater_storm"
+display_name = "Heavy Swell"
+region = &"kelp_forest"
+min_gap_days = 30
+chance_per_day = 0.02
+warning_days = 1
+warning = "Heavy swell is coming to the Kelp Forest tomorrow! Secure your buildings. Afterwards, a storm damage survey from the Kelp Research Platform shows which kelp to restore first."
+banner = "Heavy swell tomorrow in the Kelp Forest"
+aftermath = "The swell has passed. %d building(s) need repairing, kelp has been torn up, debris has washed around and the water is murky for a while."
+damage_chance = 0.3
+litter_washed = 6
+repair_wood = 1
+kelp_damage = 0.4
+kelp_damaged_share = 0.5
+visibility_days = 2.0
+slow_missions = 1.5

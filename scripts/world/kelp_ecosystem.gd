@@ -159,6 +159,8 @@ func tick(days: float) -> void:
 		var eaten := graze * bed.urchins
 		var grown := (regrow + restore_boost * restoring) * (1.0 - bed.health)
 		bed.health += (grown - eaten) * days
+		if bed.storm_hit and bed.health >= 0.6:
+			bed.storm_hit = false  # recovered
 
 
 ## Each otter eats urchins from the beds it forages (near where it lives), most from the
@@ -333,6 +335,18 @@ func _new_otter(species: AnimalData, home: Building, all: Array[Animal]) -> void
 		else "A sea otter has settled at your %s: the kelp around it can feed it.") % home.data.display_name)
 
 
+## Heavy swell tears up kelp: `share` of the beds lose up to `damage` health (marked as
+## storm-hit until they recover). Returns how many were damaged.
+func swell(damage: float, share: float) -> int:
+	var list := beds()
+	list.shuffle()
+	var hit := list.slice(0, ceili(list.size() * share))
+	for bed: KelpBed in hit:
+		bed.health -= damage * randf_range(0.5, 1.0)
+		bed.storm_hit = true
+	return hit.size()
+
+
 ## The Kelp Research Platform's missions (MissionData.effect) this ecosystem runs.
 const MISSIONS := [&"kelp_survey", &"urchin_survey", &"otter_monitoring", &"balance_survey",
 	&"kelp_restoration", &"urchin_relocation", &"storm_survey"]
@@ -477,7 +491,7 @@ func urchin_total() -> int:
 func to_dict() -> Dictionary:
 	var saved := {"last_tick": _last_tick, "beds": {}}
 	for bed in beds():
-		saved.beds[String(bed.name)] = [bed.health, bed.urchins, bed.restored_until]
+		saved.beds[String(bed.name)] = [bed.health, bed.urchins, bed.restored_until, bed.storm_hit]
 	return saved
 
 
@@ -490,3 +504,4 @@ func restore(saved: Dictionary) -> void:
 			bed.health = float(entry[0])
 			bed.urchins = float(entry[1])
 			bed.restored_until = float(entry[2])
+			bed.storm_hit = entry.size() > 3 and bool(entry[3])

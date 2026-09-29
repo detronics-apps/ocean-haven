@@ -13,6 +13,8 @@ signal struck(event: EventData, damaged: int)
 var _last_day := {}
 ## Warned events waiting to strike: event id -> day they strike.
 var _coming := {}
+## Region id -> GameClock.now() until which visibility underwater is poor (missions slower).
+var _murky := {}
 
 
 func _ready() -> void:
@@ -31,7 +33,8 @@ func _on_new_day(day: int) -> void:
 		if _coming.has(event.id):
 			if day >= _coming[event.id]:
 				strike(event)
-		elif day - _last_day.get(event.id, 0) >= event.min_gap_days and randf() < event.chance_per_day:
+		elif day - _last_day.get(event.id, 0) >= event.min_gap_days and randf() < event.chance_per_day \
+				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)):
 			warn(event)
 
 
@@ -51,6 +54,14 @@ func warning_text() -> String:
 
 func is_coming() -> bool:
 	return not _coming.is_empty()
+
+
+## Whether an event is heading for this island.
+func is_coming_to(region_id: StringName) -> bool:
+	for event: EventData in all():
+		if _coming.has(event.id) and event.region == region_id:
+			return true
+	return false
 
 
 ## It strikes now: unsecured buildings on its island may be damaged, litter washes up, and
@@ -76,15 +87,34 @@ func strike(event: EventData) -> int:
 		if Regions.nearest(nest.global_position).id == event.region and nest.storm():
 			nests_hit += 1
 	var hurt := injure(event)
+	var torn := 0
+	if event.kelp_damage > 0.0:
+		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+			if ecosystem.region_id == event.region and ecosystem.has_method("swell"):
+				torn += ecosystem.swell(event.kelp_damage, event.kelp_damaged_share)
+	if event.visibility_days > 0.0:
+		_murky[event.region] = GameClock.now() + event.visibility_days
 	struck.emit(event, damaged)
-	if hurt > 0 or nests_hit > 0:
+	if hurt > 0 or nests_hit > 0 or torn > 0:
 		var lines: Array[String] = []
+		if torn > 0:
+			lines.append("%d kelp bed(s) were torn up: a storm damage survey shows which to restore first." % torn)
 		if hurt > 0:
 			lines.append("%d animal(s) were hurt: send a Rescue mission from your station to help them recover." % hurt)
 		if nests_hit > 0:
 			lines.append("%d unprotected nest(s) were washed over (turtle monitoring protects them)." % nests_hit)
 		get_tree().call_group("hud", "show_toast", "\n".join(lines))
 	return damaged
+
+
+## How much longer missions on `region_id` take right now (poor visibility after heavy swell).
+func mission_slowdown(region_id: StringName) -> float:
+	if _murky.get(region_id, -1.0) <= GameClock.now():
+		return 1.0
+	for event: EventData in all():
+		if event.region == region_id and event.visibility_days > 0.0:
+			return event.slow_missions
+	return 1.0
 
 
 ## Hurts a few of the animals `event` can hurt on its island (fewer during a boat patrol).
@@ -114,7 +144,7 @@ static func for_region(region_id: StringName) -> EventData:
 
 ## For the save file.
 func to_dict() -> Dictionary:
-	return {"last_day": _last_day.duplicate(), "coming": _coming.duplicate()}
+	return {"last_day": _last_day.duplicate(), "coming": _coming.duplicate(), "murky": _murky.duplicate()}
 
 
 func restore(saved: Dictionary) -> void:
@@ -126,3 +156,7 @@ func restore(saved: Dictionary) -> void:
 	var coming: Dictionary = saved.get("coming", {})
 	for id in coming:
 		_coming[StringName(id)] = int(coming[id])
+	_murky.clear()
+	var murky: Dictionary = saved.get("murky", {})
+	for id in murky:
+		_murky[StringName(id)] = float(murky[id])

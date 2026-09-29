@@ -31,3 +31,10 @@ extends Resource
 ## are injured until a Rescue mission helps them recover (fewer during a boat patrol).
 @export var injures: PackedStringArray = []
 @export var injured_max := 0
+## Kelp it tears up: this share of the island's kelp beds lose up to `kelp_damage` health.
+@export var kelp_damage := 0.0
+@export var kelp_damaged_share := 0.5
+## Poor visibility underwater afterwards: missions there take `slow_missions` times longer
+## for this many days.
+@export var visibility_days := 0.0
+@export var slow_missions := 1.5

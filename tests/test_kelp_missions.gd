@@ -65,6 +65,26 @@ func _initialize() -> void:
 	await _send(missions, clock, "storm_damage_survey", kelp)
 	_expect(missions.last_report.contains("No storm damage"), "the storm damage survey only finds storm damage")
 
+	# --- Heavy swell: kelp torn up, murky water (missions slower), then survey and restore ---
+	var events := root.get_node("RareEvents")
+	var swell: Resource = load("res://data/events/underwater_storm.tres")
+	for b: Node2D in ecosystem.beds():
+		b.health = 0.8
+	events.warn(swell)
+	_expect(events.is_coming_to(&"kelp_forest") and not events.is_coming_to(&"home_island"), "the swell is warned for the Kelp Forest only")
+	events.strike(swell)
+	var torn: Array = ecosystem.beds().filter(func(b: Node) -> bool: return b.storm_hit)
+	_expect(torn.size() >= ecosystem.beds().size() / 2 and torn.all(func(b: Node) -> bool: return b.health < 0.8),
+		"it tears up half the kelp beds (%d)" % torn.size())
+	var survey: Resource = load("res://data/missions/storm_damage_survey.tres")
+	missions.send(survey, kelp)
+	_expect(missions.time_left() == "3 minutes", "murky water: missions take longer (%s instead of 2 minutes)" % missions.time_left())
+	clock.advance(survey.minutes * 60.0 * 1.5 + 1.0)
+	await process_frame
+	await process_frame
+	_expect(missions.marked().size() == 3 and missions.marked().all(func(b: Node) -> bool: return b.storm_hit),
+		"the storm damage survey marks the 3 beds to restore first (%s)" % missions.last_report)
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
