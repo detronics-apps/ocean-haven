@@ -141,6 +141,10 @@ func _draw() -> void:
 		var lean := roundf(sin(_sway * 1.5 + i) * 1.5)
 		draw_line(base, base + Vector2(lean, -height), colour, 2.0)
 		draw_rect(Rect2(base + Vector2(lean - 2, -height * 0.6), Vector2(3, 2)), colour.lightened(0.15))
+	# Urchins: little spiky purple balls around its foot, one for each urchin (up to 12).
 	for i in mini(urchin_count(), URCHIN_DOTS):
-		var spot := Vector2(float((i * 5) % 11) * 2.2 - 11.0, 7.0 + float((i * 3) % 4))
-		draw_rect(Rect2(spot, Vector2(2, 2)), URCHIN)
+		var spot := Vector2(float((i * 7) % 13) * 2.6 - 16.0, 8.0 + float((i * 5) % 3) * 3.0)
+		for spine in [Vector2(-3, 0), Vector2(3, 0), Vector2(0, -3), Vector2(0, 3)]:
+			draw_line(spot, spot + spine, URCHIN.darkened(0.35), 1.0)
+		draw_circle(spot, 2.0, URCHIN)
+		draw_rect(Rect2(spot + Vector2(-1, -1), Vector2(1, 1)), URCHIN.lightened(0.4))
