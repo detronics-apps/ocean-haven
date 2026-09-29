@@ -683,78 +683,87 @@ See "Island by island → Kelp Forest" for the design. Build order (each a playa
    Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
 10. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
 
-### Step 4 — Mangrove Coast (warmer, 1st) — DRAFT, awaiting the user's OK
+### Step 4 — Mangrove Coast (warmer, 1st) — DRAFT 2, awaiting the user's OK
 Design against `docs/ISLAND_RULES.md`. Lesson: **the land and ocean are connected: water is
 the transport system.** A different game from the Kelp Forest: there the player balances
-populations; here they manage **water**, and animals respond to where it flows.
+populations; here they **shape the land and steer the water**, and the animals follow.
 
-**The model (island-wide, settles in 3–4 days, 20 % at once):**
-- **Nursery channels** run through the mangrove fingers to the open sea (placed on the
-  island's water like kelp beds). Each has a **flow** 0..1. Sediment builds up in them and cuts
-  their flow; open channels carry freshwater and let juvenile fish through.
-- **Water level** (island-wide): low / right / high, set at the Waterworks Station. The
-  right level keeps mud flats shallow for flamingos and mangroves healthy. Too high drowns
-  the flats; too low dries the nursery.
-- **Mangrove trees** (the island's land trees: sapling → 3 stages on mud and shallow edges,
-  cut and replant) trap sediment, so fewer channels silt up. Their health follows the water
-  level and flow.
-- **Sediment** comes in from the land every day, and much more in a flood. Mangroves and crab
-  burrows reduce it; missions clear it.
+**What the player shapes:**
+- **Digging channels** (the mangrove shovel): digging turns a mud tile into shallow water.
+  - A pool counts as *connected* when water links it to the open sea. Juvenile fish can only
+    use connected pools (their nursery).
+  - The dug mud is carried (up to 3). It can go on shallow water to build a mud flat, where
+    flamingos feed and nest and mangroves can be planted, or fill a channel back in.
+  - So every channel dug costs flat space: the balance is **water vs mud**.
+- **Water gates**, placed across a channel and opened or closed (an action). They're how the
+  player sets the water:
+  - open gates let fish through and flush sediment out, but drain the flats;
+  - closed gates hold water on the flats, but block fish and let silt settle.
+
+  The island's water level is set by how many gates are open versus closed (island-wide), so
+  the player finds a mix rather than one right layout.
+- **Silting:** every day a little sediment settles. Where channel water isn't flowing (behind
+  closed gates, or far from an open gate), a silted channel tile slowly turns back into mud
+  and pools get cut off. Mangroves reduce the silting; digging clears it. A flash flood dumps
+  a lot at once.
+- **Understanding it first:**
+  - the Waterworks Station has a "How the water works" card;
+  - the Water Flow Survey marks connected and cut-off pools and silting channels;
+  - the gauge shows where the island is heading.
 
 **Species and their roles:**
-- **Mangrove crab** (runaway species 1): their burrows drain the mud and slow silting. Crab
-  Habitats let them settle. Too many crabs and their burrows undercut the banks: sediment
-  rises again.
-- **Juvenile fish:** they follow how connected the nursery is (flow through the channels,
-  healthy mangroves). The count of fish reaching the ocean is the island's key number, and
-  the cross-island link (more fish offshore; later the Reef).
-- **Flamingo:** needs the right water level on the flats. It's the visible indicator of
-  water management, capped by the size of the flats. It never runs away.
-- **Crocodile:** needs protected territory. With too few protected zones and busy tourism,
-  crocodiles are disturbed (they move away, but the last one stays).
+- **Mangrove crab** (the runaway species): their burrows drain the mud and slow the silting,
+  so crabs help. Crab Habitats let them settle. Too many crabs and their burrows undercut the
+  banks: mud slumps into the channels and silting speeds up again.
+- **Juvenile fish:** they need connected nursery pools with mangroves. The number reaching the
+  open sea is the island's key number (and the cross-island link).
+- **American flamingo:** feeds on the flats when the water level is right. **Nests on the mud:**
+  it builds mud-mound nests on the flats, a different kind of nesting from every other island.
+  Too little flat space, or the water too high, and there are no nests. It follows food and
+  flats, capped; it never runs away.
+- **American crocodile:** needs a quiet stretch of water. Crocodile Protection Zones give it
+  one, but boats (patrol boats, the rowboat) can't pass through a zone. So each zone takes
+  water away from the player's own boating, and too many make the island hard to get around.
+- (Tourists are never a runaway, and there's no tourism loop.)
 
-**The tourism loop (runaway 2, human activity rather than a species):**
-- Eco-Lodges bring visitors and funding, but also boat traffic that disturbs crocodiles and
-  flamingos.
-- Crocodile Protection Zones calm things down, but each takes a share of the water away from
-  boat tours, so visitor funding falls.
-- Both are measured island-wide as shares, never by layout.
-
-**Buildings** (3 levels where they have a function):
-- ⭐ **Mangrove Waterworks Station** (one only): runs the missions.
-- **Crab Habitat** (max 5; levels: capacity). Upkeep, and can be demolished.
-- **Crocodile Protection Zone** (max 4; levels: territory, calmer water). Can be demolished.
-- 💰 **Mangrove Eco-Lodge** (max 3; levels: visitors, and more boats).
-- **Mangrove trees:** planted, not built.
+**Buildings** (3 levels only where they do something):
+- ⭐ **Mangrove Waterworks Station:** runs the missions.
+- **Water Gate:** placed on a channel; open or closed.
+- **Crab Habitat:** max 5; levels add capacity; upkeep; can be demolished.
+- **Crocodile Protection Zone:** max 4; levels give a larger territory; can be demolished.
+- 💰 **Mangrove Eco-Lodge:** max 3; levels add visitors. Funding only, rising with health.
+- **Mangrove trees:** planted, not built. Sapling → 3 stages, only on mud.
 
 **Missions** (each ends in an action):
-1. **Water flow survey:** marks blocked and silting channels.
-2. **Nursery connectivity survey:** can fish get through, and where it breaks.
-3. **Water level adjustment:** sets low / right / high.
-4. **Channel restoration:** clears the worst channels.
+1. **Water flow survey:** marks connected and cut-off pools and silting channels.
+2. **Nursery connectivity survey:** how many fish can reach the sea, and where it breaks.
+3. **Water level check:** too high or too low for the flats, and which gates to change.
+4. **Channel restoration:** clears the worst silted channel tiles.
 5. **Sediment management:** slows silting for 2 days.
 6. **Mangrove recovery:** replants damaged stands.
-7. **Wildlife monitoring:** crabs, nursery, flamingo flats, crocodile territory.
+7. **Wildlife monitoring:** crabs, nursery, flamingo nests, crocodile territory.
 
 **Starting state:** every species is present but struggling:
-- most channels silted, and the water level wrong;
+- most pools cut off by silt, and the water level wrong;
 - mangroves sparse;
-- a crab trapped in litter, 2 juvenile fish, 1 flamingo, 1 disturbed crocodile;
+- a crab trapped in litter, 2 juvenile fish, 1 flamingo with no nest, 1 crocodile;
 - a litter surge. Health starts around 5 %.
 
-**Health:** clean water, mangroves, fish reaching the ocean, flamingos, crabs (`too_many`) and
-crocodiles, all scaled by **water flow in balance**. 100 % is reachable with different mixes
-(more mangroves and fewer crab habitats, or the other way round; any layout).
+**Health:** clean water, mangroves, fish reaching the sea, flamingos (with nests), crabs
+(`too_many`) and a crocodile, all scaled by **water in balance** (connected nursery and the
+right level). 100 % is reachable with different mixes: more channels and fewer flats, or the
+other way round, more gates open or more closed.
 
-**Rare event — Flash Flood:** warned the day before. The water level spikes, sediment is
-dumped (many channels block), and some mangroves are damaged. Response: water flow survey →
-channel restoration → level back to right.
+**Rare event — Flash Flood:** warned the day before. The water level spikes, lots of sediment is
+dumped (pools cut off), and some mangroves are damaged. Response: survey → dig out or restore
+channels → reset the gates.
 
-**Objective → Mangrove Resin:** get every nursery channel flowing and the island to 70 %, then
-gather resin from 5 fallen branches → Environment Sensors (opens the Tropical Reef).
+**Objective → Mangrove Resin:** get the nursery connected (most pools linked to the sea) and the
+island to 70 %, then gather resin from 5 fallen mangrove branches → Environment Sensors.
 
-**Build order:** mangrove trees → channels + water level + sediment model → Waterworks Station
-and missions → juvenile fish and flamingos → crabs + Crab Habitat → crocodiles + zones +
-Eco-Lodge (the tourism loop) → health and gauge projection → Flash Flood → objective →
-simulate the strategies → publish.
+**Build order:** mud shovel + digging and carrying mud → mangrove trees → silting and
+connectivity (flood fill from the open sea) → water gates and water level → Waterworks
+Station + survey missions → juvenile fish → flamingos with mud nests → crabs + habitats →
+crocodiles + zones (block boats) → Eco-Lodge → health and projection → Flash Flood →
+objective → simulate → publish.
 

@@ -77,6 +77,10 @@ foundations the mechanics sit on, not the mechanics themselves.
   (Kelp Forest: urchins when kelp recovers before otters; otters when habitats are
   overbuilt). Top predators and indicator species follow their food and are capped: they
   never take over (cormorants follow fish, capped by trees and a maximum).
+- **Runaway species are animals, never people.** Tourists aren't seen in the game, so tourism is
+  never a runaway or a balancing loop; funding buildings just earn more on a healthier island.
+- **Nesting differs by island** where the biology does: turtles on protected sand, boobies and
+  cormorants in full-grown trees, flamingos on mud-mound nests on the flats.
 - **Boom and bust:** a species that eats something follows its food as well as its predators.
 - **Island-wide, not layout-based.** How many of something the player builds matters, never
   exactly where they put it on the island. A player must be able to keep all the wildlife on
