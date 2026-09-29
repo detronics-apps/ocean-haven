@@ -8,7 +8,7 @@
 script = ExtResource("1_h2gec")
 id = &"patrol_boat"
 display_name = "Patrol Boat"
-description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Dolphins keep away from busy boats: patrol away from their waters."
+description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Upgrade it to patrol a bigger area. Dolphins keep away from busy boats: patrol away from their waters."
 order = 4
 texture = ExtResource("3_1iptj")
 size = Vector2i(1, 1)
@@ -23,3 +23,7 @@ cost_litter = 5
 category = &"sea"
 storm_proof = true
 max_count = 6
+max_tier = 3
+upgrade_funding = 80
+upgrade_items = Dictionary[StringName, int]({&"wood": 2})
+range_per_tier = PackedFloat32Array(120, 160, 200)

@@ -82,6 +82,8 @@ extends Resource
 ## most damaged ones, wherever it's placed. Planting can't beat overgrazing: where urchins
 ## are too many, the kelp still declines.
 @export var restores_beds := 0
+## How far it reaches at each upgrade tier (e.g. a patrol boat's area: 120, 160, 200 px).
+@export var range_per_tier: PackedFloat32Array = []
 ## Offers "Demolish" (conservation structures that can unbalance an island), returning
 ## half its wood.
 @export var demolishable := false

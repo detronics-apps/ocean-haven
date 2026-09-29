@@ -85,6 +85,14 @@ func _initialize() -> void:
 	_expect(turtle.data.boat_shy_distance > 0.0 and turtle.data.boat_shy_distance < 200.0,
 		"turtles keep away from patrol boats too (a bit less than dolphins)")
 
+	# --- Upgrades widen the patrol area: 120, 160, 200 px ---
+	var sizes := []
+	for tier in [1, 2, 3]:
+		buoy.tier = tier
+		await process_frame
+		sizes.append(roundi(boat.radius))
+	_expect(sizes == [120, 160, 200], "upgrading widens its patrol area (%s)" % [sizes])
+
 	# --- Up to 6 patrol boats; but if they leave too little quiet water, they hit turtles ---
 	_expect(patrol.max_count == 6 and load("res://data/buildings/dolphin_viewing_area.tres").max_count == 3,
 		"up to 6 patrol boats and 3 Dolphin Viewing Areas")
@@ -101,9 +109,12 @@ func _initialize() -> void:
 	for i in 5:
 		var cell: Vector2i = water_cells[(i + 1) * water_cells.size() / 6]
 		build_mode.add_building(patrol, Terrain_cell(ground, cell))
+	for b: Node in get_nodes_in_group("buildings").filter(func(n: Node) -> bool: return n.data.id == &"patrol_boat"):
+		b.tier = 3  # fully upgraded: the widest areas
+	await process_frame
 	await process_frame
 	var free_now: float = share.call()
-	_expect(free_now < spawner.min_free_water, "6 patrol boats round the island leave little quiet water (%d%% free)" % roundi(free_now * 100))
+	_expect(free_now < spawner.min_free_water, "6 fully upgraded patrol boats round the island leave little quiet water (%d%% free)" % roundi(free_now * 100))
 	var hit: Node = spawner.busy_waters(1.0)
 	_expect(hit != null and hit.injured and hit.data.boat_shy_distance > 0.0, "and one hits a turtle or dolphin (hurt, never killed)")
 

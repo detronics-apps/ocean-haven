@@ -4,7 +4,8 @@ extends Node2D
 ## cruises to random spots in its area and collects floating litter that washes
 ## in there, quietly, into the ranger's inventory. Stays on the water.
 
-@export var radius := 200.0
+## Its patrol area; grows with its buoy's upgrades (BuildingData.range_per_tier).
+@export var radius := 120.0
 @export var speed := 70.0
 
 var _target := Vector2.ZERO
@@ -25,6 +26,12 @@ func hull_position() -> Vector2:
 
 
 func _process(delta: float) -> void:
+	var buoy := get_parent() as Building
+	if buoy and not buoy.data.range_per_tier.is_empty():
+		var reach := buoy.data.range_per_tier[clampi(buoy.tier, 1, buoy.data.range_per_tier.size()) - 1]
+		if reach != radius:
+			radius = reach
+			queue_redraw()
 	var litter := _nearest_litter()
 	if litter:
 		_target = to_local(litter.global_position)

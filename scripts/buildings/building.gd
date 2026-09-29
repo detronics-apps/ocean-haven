@@ -307,7 +307,9 @@ func upgrade() -> void:
 	BuildMode.pay(data.upgrade_funding, 0, data.upgrade_items)
 	tier += 1
 	var better := "pays %d funding per piece" % recycle_value()
-	if data.animal_capacity > 0:
+	if not data.range_per_tier.is_empty():
+		better = "patrols %d px around its buoy" % roundi(data.range_per_tier[mini(tier, data.range_per_tier.size()) - 1])
+	elif data.animal_capacity > 0:
 		better = "holds %d turtles" % capacity()
 	elif data.storage > 0:
 		better = "stores %d of each" % storage()
