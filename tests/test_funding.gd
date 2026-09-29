@@ -97,9 +97,11 @@ func _initialize() -> void:
 	_expect("Store 3 wood" in labels, "offers to store wood (%s)" % [labels])
 	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Store 3 wood")[0].do.call()
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "wood stored in the house")
-	_expect(home.storage() == 10, "a house stores 10 of each")
+	_expect(home.storage() == 4, "a house stores 4 of each")
+	home.tier = 2
+	_expect(home.storage() == 8, "8 at level 2")
 	home.tier = 3
-	_expect(home.storage() == 30 and home.stats().begins_with("Lv 3/3"), "at level 3 it stores 30 (and shows its level)")
+	_expect(home.storage() == 10 and home.stats().begins_with("Lv 3/3"), "at level 3 it stores 10 (and shows its level)")
 	home.tier = 1
 	inventory.add(load("res://data/items/wood.tres"), 1)
 	_expect(inventory.use(&"wood", 2) and inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 2,
@@ -125,6 +127,9 @@ func _initialize() -> void:
 	inventory.add(load("res://data/items/wood.tres"), 1)  # 1 left from the dock + 1 = the 2 it needs
 	build_mode.start(centre)
 	_expect(build_mode.place_at(Vector2i(-3, -3)), "recycling centre built (10 litter)")
+	_expect(build_mode.at_limit(centre, load("res://data/regions/home_island.tres"))
+		and not build_mode.at_limit(centre, load("res://data/regions/kelp_forest.tres")),
+		"one recycling centre on each island")
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 7)
 	var building: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"recycling_centre")[0]
 	player.global_position = building.global_position + Vector2(-50, 20)

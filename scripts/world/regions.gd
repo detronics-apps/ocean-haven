@@ -27,6 +27,13 @@ static func nearest(point: Vector2) -> RegionData:
 
 
 ## Whether `point` is within `region`'s rowboat waters (less `margin`), so the ranger can reach it.
+## Whether the ranger is on (or around) `region`. Islands they're not on are paused, so
+## time spent on one island never costs progress on another.
+static func ranger_on(tree: SceneTree, region: RegionData) -> bool:
+	var ranger := ControlledBody.active(tree)
+	return not ranger or not region or nearest(ranger.global_position) == region
+
+
 static func in_reach(region: RegionData, point: Vector2, margin := 0.0) -> bool:
 	return point.distance_to(region.center) <= region.waters_radius - margin
 

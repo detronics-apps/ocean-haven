@@ -35,6 +35,8 @@ const OIL := preload("res://data/items/oil_patch.tres")
 var _items: Array[Resource] = DataFiles.load_all("res://data/items").filter(
 	func(item: ItemData) -> bool: return item.is_litter)
 var _time := 0.0
+## GameClock.now() when the ranger left this island (-1 = they're here).
+var _away_since := -1.0
 
 
 func _enter_tree() -> void:
@@ -52,6 +54,8 @@ func _ready() -> void:
 ## the animals caught.
 func entangle() -> Array[Animal]:
 	var caught: Array[Animal] = []
+	if not Regions.ranger_on(get_tree(), Regions.nearest(area.get_center())):
+		return caught  # paused while the ranger's away
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
 		if caught.size() >= tangles_per_day:
 			break
@@ -87,7 +91,7 @@ func busy_waters(chance := -1.0) -> Animal:
 		return null
 	if chance < 0.0:  # up to 60% a morning, as the quiet water shrinks
 		chance = clampf((min_free_water - free) / 0.15, 0.0, 1.0) * 0.6
-	if randf() >= chance:
+	if not Regions.ranger_on(get_tree(), region) or randf() >= chance:
 		return null
 	var at_risk := get_tree().get_nodes_in_group("animals").filter(func(a: Animal) -> bool:
 		return (a.data.boat_shy_distance > 0.0 and not a.young and not a.injured and not a.leaving
@@ -117,6 +121,16 @@ func dig_up_at(spot: Vector2) -> Debris:
 
 
 func _process(delta: float) -> void:
+	var region := Regions.nearest(area.get_center())
+	if not Regions.ranger_on(get_tree(), region):
+		if _away_since < 0.0:
+			_away_since = GameClock.now()
+		return  # paused while the ranger's on another island ...
+	if _away_since >= 0.0:  # ... then a little litter has washed in while they were away
+		var pieces := mini(floori((GameClock.now() - _away_since) * region.away_litter_per_day), region.away_litter_max)
+		_away_since = -1.0
+		for i in mini(pieces, max_litter - _litter_in_area()):
+			spawn_one()
 	_time += delta
 	if _time >= interval:
 		_time = 0.0

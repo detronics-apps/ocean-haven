@@ -241,8 +241,8 @@ Step 2. Build in this order:
    washes up; unprotected nests are washed over (1 egg hatches) and up to 3 turtles / seabirds
    are injured (never badly) until a Rescue mission helps them (MASTER_PLAN "Rare events")
 
-Tweaks after 0.4: upgradable buildings show "Lv N/3"; a Ranger House stores 10 of each per level
-(30 at level 3); saplings: carry 5, storable, spare ones given to coastal replanting at the Research
+Tweaks after 0.4: upgradable buildings show "Lv N/3"; a Ranger House stores 4 / 8 / 10 of each by
+level (BuildingData.storage_per_tier); saplings: carry 5, storable, spare ones given to coastal replanting at the Research
 Station (BuildingData.accepts, ItemData.grant_value: 5 funding each); Research Station 400 funding
 + 20 litter + 10 wood, Exploration Ship 600 + 20 litter + 8 wood (exploring itself stays free).
 
@@ -295,6 +295,10 @@ buildings can be used from the rowboat; patrol boats (max 6, area 120/160/200 by
 boat-shy animals when under 65 % of the island's water is free of them; 3 Dolphin Viewing
 Areas; 10 turtles for full health; mission icons (MissionData.icon); Journal Plants tab
 (data/plants/) and an Ocean tab after all 6 upgrades.
+
+Balance tweaks: islands the ranger isn't on are paused (no storms, tangling, patrol injuries or
+ecosystem change; a little litter on return; `Regions.ranger_on`); one recycling centre per
+island; tangled seabirds wait on their nest.
 
 Next: MVP 0.6 Mangrove Coast (Step 4; design in MASTER_PLAN).
 

@@ -36,6 +36,12 @@ extends Resource
 ## Animals that move in as it (and the ocean) recovers (see Arrivals).
 @export var arrivals: Array[ArrivalData] = []
 
+## While the ranger is on another island this island is paused (no storms, no animals
+## caught, its ecosystem waits); only litter builds up: this many pieces per day away wash
+## in when the ranger gets back (up to `away_litter_max`).
+@export var away_litter_per_day := 3.0
+@export var away_litter_max := 8
+
 @export_group("Objective")
 ## The island's objective: done once every goal is met; then its Exploration Ship can be
 ## built and `discovery` is found. No goals = not made yet (no ship there yet).

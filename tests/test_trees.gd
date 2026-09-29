@@ -116,6 +116,18 @@ func _initialize() -> void:
 		"the booby picks a full-grown palm for its nest, and the nest shows in the tree")
 	_expect(perched and bird.global_position.distance_to(nest_palm.perch_point()) < 1.0
 		and bird.get_node("Sprite2D").texture == bird.data.perched_sprite, "it flies to its nest and stands on it (a standing picture)")
+	# Caught in litter: it flies back to its nest and waits there to be freed.
+	bird.take_off()
+	bird.set("_fly_left", 999.0)
+	bird.tangle(load("res://data/items/plastic_bag.tres"))
+	var waited := 0
+	for i in 900:
+		await physics_frame
+		if bird.perched:
+			waited += 1
+	_expect(bird.perched and waited > 600, "a caught booby goes to its nest and stays there until it's freed")
+	bird.restore_freed()
+	_expect(bird.perched and bird.get("_perch_left") > 0.0, "freed, it stands on its nest a while as usual")
 	var nests := get_nodes_in_group("plants").filter(func(p: Node) -> bool: return p is StaticBody2D and p.has_nest())
 	var birds := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.nests_in_trees)
 	_expect(nests.size() == birds.size() and nests.filter(func(p: Node) -> bool: return p.nest_of == bird).size() == 1,

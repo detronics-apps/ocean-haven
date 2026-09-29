@@ -66,6 +66,7 @@ const FISH := preload("res://data/animals/blue_rockfish.tres")
 const CORMORANT := preload("res://data/animals/double_crested_cormorant.tres")
 
 var _last_tick := -1.0
+var _last_seen := -1.0
 ## The island's own struggling animals have been put out (the first time it's discovered).
 var _seeded := false
 ## Otters with no habitat move away after this many days (a freed otter needs a quiet place).
@@ -140,6 +141,10 @@ func _process(_delta: float) -> void:
 	var now := GameClock.now()
 	if _last_tick < 0.0:
 		_last_tick = now
+	# Paused while the ranger is on another island (Regions.ranger_on).
+	if _last_seen >= 0.0 and now > _last_seen and not Regions.ranger_on(get_tree(), region()):
+		_last_tick += now - _last_seen
+	_last_seen = now
 	# Catch up on time that passed (sleeping), but not forever.
 	var ticks := 0
 	while now - _last_tick >= tick_days and ticks < 32:

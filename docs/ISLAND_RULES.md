@@ -51,6 +51,16 @@ foundations the mechanics sit on, not the mechanics themselves.
   what their choice did and fix it.
 - **Something happens straight away when the player acts.** A building that invites animals
   gets its first one immediately. Taking something down makes its animals react right away.
+- **Islands the ranger isn't on are paused**, so time spent on one island never costs
+  progress on another (`Regions.ranger_on`):
+  - no storms start there, and a warned one waits until the ranger is back (then strikes a
+    morning later at the earliest);
+  - no animals get caught, and patrol boats hurt none;
+  - the ecosystem waits.
+
+  Only litter builds up a little: a few pieces per day away wash in when the ranger gets
+  back (`RegionData.away_litter_per_day`, capped). Growth keeps going (trees, hatchlings), so
+  after 2 days away planted trees are full grown.
 - **Show where things are heading.** The HUD health gauge shows two lines: health now, and
   where it will settle if everything stays as it is (`IslandHealth.heading`). Every
   ecosystem must provide a `project()` so the gauge works on its island.
@@ -91,6 +101,8 @@ foundations the mechanics sit on, not the mechanics themselves.
 - **Grown young spread out** around their island's waters (near their habitat's food), away
   from busy boats. Hatchlings and pups grow bigger over a couple of days, then grow up.
 - **Birds nest only in full-grown trees**, one nest per bird, and the nest shows in the tree.
+  - A bird caught in litter flies back to its nest and waits there, so the ranger can find
+    and free it.
   - A tree with a nest can't be cut down until the ranger moves the nest.
   - Perched birds switch to a standing picture, so they're easy to photograph.
 - **Boats and wildlife share the water.** Boat-shy animals keep away from patrol areas. If
@@ -134,6 +146,8 @@ foundations the mechanics sit on, not the mechanics themselves.
 
   Simple structures (docks, drawbridges) never get levels. Which buildings get levels, and
   what each level does, is worked out per island.
+- **Shared buildings stay modest**, so they don't make other choices pointless: a Ranger House
+  stores 4 / 8 / 10 of each (by level), and there's one recycling centre per island.
 - **Hard limits are not targets** (`max_count`). Overbuilding is allowed and has consequences:
   - upkeep (`BuildingData.upkeep`);
   - an unbalanced island;

@@ -87,6 +87,8 @@ extends Resource
 @export var restores_beds := 0
 ## How far it reaches at each upgrade tier (e.g. a patrol boat's area: 120, 160, 200 px).
 @export var range_per_tier: PackedFloat32Array = []
+## What it stores of each item at each tier, if not `storage` × tier (Ranger House: 4, 8, 10).
+@export var storage_per_tier: PackedInt32Array = []
 ## Offers "Demolish" (conservation structures that can unbalance an island), returning
 ## half its wood.
 @export var demolishable := false

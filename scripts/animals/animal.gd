@@ -142,6 +142,8 @@ func is_relaxed() -> bool:
 func restore_freed() -> void:
 	tangled = false
 	_tangle.visible = false
+	if perched:  # freed on its nest: it stands there a while as usual, then flies off
+		_perch_left = randf_range(data.perch_seconds.x, data.perch_seconds.y)
 
 
 ## Caught in `item` (litter left about): swims slowly until the ranger frees it again.
@@ -314,12 +316,16 @@ func _physics_process(delta: float) -> void:
 
 
 ## Tree nesters fly about for a while, then fly back to their nest and stand on it (easy
-## to photograph). Rushing at them makes them take off. Returns true while it's handling
+## to photograph). Rushing at them makes them take off. A bird caught in litter flies back
+## to its nest and waits there until the ranger frees it. Returns true while it's handling
 ## the movement (flying to the nest, perched).
 func _tree_nesting(delta: float) -> bool:
 	if not data.nests_in_trees:
 		return false
-	if tangled or injured or _state == State.FLEE or _guide_to:
+	var caught := tangled and not injured
+	if caught and _state == State.FLEE:
+		_state = State.REST  # too tangled up to fly off from the ranger
+	if injured or (not caught and (_state == State.FLEE or _guide_to)):
 		if perched or _to_nest:
 			take_off()
 		return false
@@ -332,13 +338,14 @@ func _tree_nesting(delta: float) -> bool:
 	if perched:
 		velocity = Vector2.ZERO
 		global_position = nest_tree.perch_point()
-		_perch_left -= delta
-		if _perch_left <= 0.0:
+		if not caught:
+			_perch_left -= delta
+		if _perch_left <= 0.0 and not caught:
 			take_off()
 		return perched
 	if not _to_nest:
 		_fly_left -= delta
-		if _fly_left > 0.0 or not _has_nest_tree():
+		if (_fly_left > 0.0 and not caught) or not _has_nest_tree():
 			return false
 		_to_nest = true
 	var to_nest: Vector2 = nest_tree.perch_point() - global_position

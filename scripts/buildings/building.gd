@@ -283,8 +283,11 @@ func capacity() -> int:
 	return _upgraded(data.animal_capacity)
 
 
-## Each tier stores the full amount again (a Ranger House: 10, 20, 30 of each).
+## What it stores of each item: `storage_per_tier` (a Ranger House: 4, 8, 10), or the full
+## amount again for each tier.
 func storage() -> int:
+	if not data.storage_per_tier.is_empty():
+		return data.storage_per_tier[clampi(tier, 1, data.storage_per_tier.size()) - 1]
 	return data.storage * tier
 
 

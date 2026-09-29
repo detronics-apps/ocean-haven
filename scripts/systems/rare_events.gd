@@ -30,10 +30,16 @@ static func all() -> Array[EventData]:
 
 func _on_new_day(day: int) -> void:
 	for event: EventData in all():
+		# Only on the island the ranger is on: a warned event waits while they're away, and
+		# strikes a morning after they're back; none starts on an island they're not on.
+		var here := Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region))
 		if _coming.has(event.id):
 			if day >= _coming[event.id]:
-				strike(event)
-		elif day - _last_day.get(event.id, 0) >= event.min_gap_days and randf() < event.chance_per_day \
+				if here:
+					strike(event)
+				else:
+					_coming[event.id] = day + 1
+		elif here and day - _last_day.get(event.id, 0) >= event.min_gap_days and randf() < event.chance_per_day \
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)):
 			warn(event)
 
