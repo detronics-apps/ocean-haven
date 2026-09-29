@@ -16,3 +16,5 @@ aftermath = "The storm has passed. %d building(s) need repairing, and litter has
 damage_chance = 0.6
 litter_washed = 10
 repair_wood = 1
+injures = PackedStringArray("green_turtle", "red_footed_booby")
+injured_max = 3

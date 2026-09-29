@@ -234,12 +234,23 @@ Step 2. Build in this order:
    never within 30 days of the last (2 % a morning after that: ~1–2 per 120-day year); warned a day
    ahead (HUD banner); "Secure for the storm" on buildings (not storm_proof ones); unsecured ones
    may be damaged (no visitors / nesting / missions / recycling) until repaired with 1 wood; litter
-   washes up. Never harms animals (MASTER_PLAN "Rare events")
+   washes up; unprotected nests are washed over (1 egg hatches) and up to 3 turtles / seabirds
+   are injured (never badly) until a Rescue mission helps them (MASTER_PLAN "Rare events")
 
 Tweaks after 0.4: upgradable buildings show "Lv N/3"; a Ranger House stores 10 of each per level
 (30 at level 3); saplings: carry 5, storable, spare ones given to coastal replanting at the Research
 Station (BuildingData.accepts, ItemData.grant_value: 5 funding each); Research Station 400 funding
 + 20 litter + 10 wood, Exploration Ship 600 + 20 litter + 8 wood (exploring itself stays free).
+
+Second batch of tweaks: litter only washes in within rowboat reach and drifts in towards the
+island (out-of-reach litter doesn't count for health); hatchlings grow up (AnimalData.grow_days)
+and spread out over the island's waters, keeping away from patrol boats; seabirds nest in one
+full-grown palm each (move the nest before cutting it; perched picture); station missions are
+real minutes and respond to the island (MASTER_PLAN Step 2 item 3: rescue, boat patrol, pollution
+survey, turtle monitoring, dolphin tracking, coastal survey 20 % / sure by 5th); oil patches wait
+for the Deep Sea's Deep-Ocean Outpost; Journal tabs (This island / Animals); Build menu lists only
+this island's buildings (`only_on`); shovel digs up litter 10 %; patrol-boat pickup count; action
+button dead zone; portrait-phone bottom margin.
 
 Next: MVP 0.5 Kelp Forest (Step 3), then MVP 0.6 Mangrove Coast (Step 4).
 

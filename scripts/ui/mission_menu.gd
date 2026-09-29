@@ -26,7 +26,11 @@ func _fill() -> void:
 	if Missions.active:
 		status.text += "\nYour %s is out, back in %s." % [Missions.active.display_name.to_lower(), Missions.time_left()]
 	else:
-		status.text += "\nSend a mission. It's back in a few minutes, and what it finds is marked on your minimap for the rest of the day."
+		status.text += "\nSend a mission: it's back in a few minutes and responds to what's happening on the island."
+	for effect: StringName in [&"boat_patrol", &"dolphin_tracking"]:
+		if Missions.is_on(effect):
+			status.text += "\n%s: going on for %s more." % ["Boat patrol" if effect == &"boat_patrol" else "Visiting dolphin",
+				Missions.real_time((Missions._until[effect] - GameClock.now()) * GameClock.DAY_LENGTH)]
 	_content.add_child(status)
 	if not station:
 		return
@@ -34,6 +38,8 @@ func _fill() -> void:
 		var problem := Missions.problem(mission)
 		var lines: Array[String] = [mission.display_name, mission.description,
 			"Costs %d funding. Back in %s." % [mission.cost, Missions.real_time(mission.minutes * 60.0)]]
+		if problem != "":
+			lines.append(problem)  # (no tooltips on a phone)
 		var entry := card(null, lines)
 		entry.name = "Mission_" + mission.id
 		var send := BuildMode._big_button("Send", Color("3f8a4a"))

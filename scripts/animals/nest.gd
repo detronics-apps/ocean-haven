@@ -15,6 +15,10 @@ const SHOW_RANGE := 72.0
 @export var species: AnimalData
 ## GameClock.now() when it was laid.
 @export var laid_at := 0.0
+## Turtle monitoring protects it until then (GameClock.now()): a storm can't touch it.
+@export var protected_until := -1.0
+## A storm washed over it while it wasn't protected: only one egg still hatches.
+@export var storm_hit := false
 ## The protection area it's in (found automatically if not set).
 var area: Node2D
 
@@ -54,6 +58,19 @@ func _ready() -> void:
 	add_child(_bar)
 
 
+func is_protected() -> bool:
+	return protected_until > GameClock.now()
+
+
+## A storm strikes: an unprotected nest is washed over (one egg still hatches). Returns
+## whether it was hit.
+func storm() -> bool:
+	if is_protected() or storm_hit:
+		return false
+	storm_hit = true
+	return true
+
+
 ## How far along the eggs are, 0.0 (just laid) to 1.0 (ready to hatch at night).
 func progress() -> float:
 	return clampf((GameClock.now() - laid_at) / species.incubation_days, 0.0, 1.0)
@@ -70,13 +87,17 @@ func _process(_delta: float) -> void:
 	if near:
 		_bar.value = progress() * 100.0
 		_caption.text = "Ready! They'll hatch tonight" if progress() >= 1.0 else "Turtle eggs"
+		if is_protected():
+			_caption.text += " (protected)"
+		elif storm_hit:
+			_caption.text += " (storm-hit: 1 egg left)"
 
 
 func hatch() -> void:
 	if is_queued_for_deletion():
 		return  # already hatched this frame
 	var world := get_parent()
-	for i in species.hatchlings:
+	for i in (1 if storm_hit else species.hatchlings):
 		var home := _area_with_room()
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
@@ -87,7 +108,7 @@ func hatch() -> void:
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))
 		world.add_child(baby)
 		baby.call("crawl_to_sea")
-	Journal.record_hatch(species, species.hatchlings)
+	Journal.record_hatch(species, 1 if storm_hit else species.hatchlings)
 	queue_free()
 
 

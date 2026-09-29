@@ -1,8 +1,9 @@
 extends SceneTree
 ## The Marine Rescue & Research Station (the Starting Island's signature facility): one per
 ## island, only on the Starting Island. It sends missions for funding, one at a time; each is
-## back a few real minutes later and marks what it found on the minimap until the next morning
-## (the rescue boat: animals in distress, dropping off once freed). A mission that's out is saved.
+## back a few real minutes later and responds to what's happening: rescue (hurt animals
+## recover), boat patrol, pollution survey (hidden litter), turtle monitoring (protects
+## nests from storms), dolphin tracking (a visiting dolphin). A mission that's out is saved.
 ## Run: godot --headless --path . --script res://tests/test_missions.gd --quit-after 200000
 
 var _failed := false
@@ -89,17 +90,86 @@ func _initialize() -> void:
 	await process_frame
 	_expect(root.get_node("SaveGame")._tangled_animals(world).get("Dolphin2") == &"ghost_net", "saved as tangled")
 
-	# --- Surveys find litter; marks last until the next morning ---
-	missions.send(load("res://data/missions/pollution_survey.tres"), load("res://data/regions/home_island.tres"))
+	# --- Pollution survey: turns up 5-10 more pieces of hidden litter, marked until collected ---
+	var home: Resource = load("res://data/regions/home_island.tres")
+	var litter_before: int = get_nodes_in_group("debris").size()
+	missions.send(load("res://data/missions/pollution_survey.tres"), home)
 	clock.advance(121.0)
 	await process_frame
-	var litter: int = get_nodes_in_group("debris").size()
-	_expect(missions.marked().size() == litter and litter > 0, "the pollution survey marks every piece of litter (%d)" % litter)
+	var revealed: int = get_nodes_in_group("debris").size() - litter_before
+	_expect(revealed >= 5 and revealed <= 10 and missions.marked().size() == revealed,
+		"the pollution survey finds %d hidden pieces, even past the usual limit, and marks them" % revealed)
 	var piece: Node = missions.marked()[0]
 	piece.free()
-	_expect(missions.marked().size() == litter - 1, "collected litter drops off the map")
+	_expect(missions.marked().size() == revealed - 1, "collected litter drops off the map")
 	clock.sleep_until_morning()
-	_expect(missions.marked().is_empty(), "marks clear the next morning")
+	_expect(missions.marked().size() == revealed - 1, "its marks stay until the litter is collected")
+
+	funding.restore({"balance": 500})
+	# --- A storm hurts a few animals and washes over unprotected nests ---
+	var events := root.get_node("RareEvents")
+	var storm: Resource = load("res://data/events/coastal_storm.tres")
+	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
+	var protected_nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
+	protected_nest.set("species", turtle_data)
+	protected_nest.position = Vector2(480, 0)
+	world.add_child(protected_nest)
+	missions.send(load("res://data/missions/turtle_monitoring.tres"), home)
+	clock.advance(181.0)
+	await process_frame
+	_expect(protected_nest.is_protected() and protected_nest in missions.marked(), "turtle monitoring finds and protects the nest")
+	var open_nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
+	open_nest.set("species", turtle_data)
+	open_nest.position = Vector2(-480, 60)
+	world.add_child(open_nest)
+	var turtle: Node2D = world.get_node("GreenTurtle")
+	turtle.set("tangled", false)
+	storm.injured_max = 1
+	storm.injures = PackedStringArray(["green_turtle"])
+	events.strike(storm)
+	_expect(turtle.injured, "the storm hurt the turtle (never badly)")
+	_expect(not protected_nest.storm_hit and open_nest.storm_hit, "the protected nest came through; the other was washed over")
+	var hatched: Array = [0]
+	root.get_node("Journal").hatched.connect(func(_a, n: int) -> void: hatched[0] = n)
+	open_nest.hatch()
+	_expect(hatched[0] == 1, "one egg of the washed-over nest still hatches")
+	var ranger: Node2D = world.get_node("Player")
+	ranger.global_position = turtle.global_position + Vector2(40, 0)
+	await physics_frame
+	turtle.set("_calm", 10.0)
+	await physics_frame
+	_expect(turtle.info.contains("hurt") and turtle.info.contains("Rescue"), "near it: it's hurt, a Rescue mission can help (%s)" % turtle.info)
+
+	# --- Rescue: the hurt animals recover ---
+	missions.send(load("res://data/missions/rescue_boat.tres"), home)
+	clock.advance(121.0)
+	await process_frame
+	await process_frame
+	_expect(not turtle.injured, "the rescue team helped the turtle recover")
+
+	# --- Boat patrol: for 2 days busy boats don't disturb animals, and storms hurt fewer ---
+	missions.send(load("res://data/missions/boat_patrol.tres"), home)
+	clock.advance(121.0)
+	await process_frame
+	await process_frame
+	_expect(missions.is_on(&"boat_patrol") and missions.problem(load("res://data/missions/boat_patrol.tres")).begins_with("Still going"),
+		"the boat patrol is on (and can't be sent twice)")
+	_expect(turtle.call("_nearest_busy_boat", turtle.global_position) == Vector2.INF, "animals aren't disturbed by boats meanwhile")
+	events.strike(storm)  # 1 at most, halved
+	_expect(not turtle.injured, "a storm hurts fewer animals during a boat patrol")
+	clock.advance(clock.DAY_LENGTH * 2.0)
+	_expect(not missions.is_on(&"boat_patrol"), "it's over after 2 days")
+
+	# --- Dolphin tracking: a visiting dolphin for 2 days ---
+	missions.send(load("res://data/missions/dolphin_tracking.tres"), home)
+	clock.advance(181.0)
+	await process_frame
+	await process_frame
+	var visitor: Node2D = world.get_node_or_null("VisitingDolphin")
+	_expect(visitor != null and not visitor.leaving, "a visiting dolphin joins the island")
+	clock.advance(clock.DAY_LENGTH * 2.0)
+	await process_frame
+	_expect(visitor.leaving, "after 2 days it swims back out to its pod")
 
 	# --- Not enough funding: can't send ---
 	funding.restore({"balance": 5})

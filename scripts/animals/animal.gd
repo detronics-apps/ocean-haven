@@ -28,12 +28,16 @@ const WATER_LAYER := 1
 const OPEN_OCEAN_DISTANCE := 900.0
 const LAND_LAYER := 4
 const NEST_SCENE := "res://scenes/animals/nest.tscn"
+const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 
 @export var data: AnimalData
 ## How far from its home spot it wanders.
 @export var home_radius := 140.0
 ## Tangled in fishing line: swims slowly until the ranger frees it.
 @export var tangled := false
+## Hurt (by a storm): slow and doesn't nest until a Rescue mission helps it recover. Never
+## worse than that, never for good.
+@export var injured := false
 ## Added to the inventory when the ranger frees it (the line is litter too).
 @export var tangle_item: ItemData
 ## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
@@ -93,6 +97,7 @@ var _crawl_then: Callable
 var info := ""
 ## Close enough for the ranger to observe, photograph or help it.
 var _in_reach := false
+var _bandage: Sprite2D
 
 
 func _enter_tree() -> void:
@@ -114,6 +119,12 @@ func _ready() -> void:
 	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
+	_bandage = Sprite2D.new()
+	_bandage.texture = BANDAGE
+	_bandage.position = Vector2(0, -12)
+	_bandage.z_index = 3
+	_bandage.visible = injured
+	add_child(_bandage)
 
 
 func is_relaxed() -> bool:
@@ -132,6 +143,22 @@ func tangle(item: ItemData) -> void:
 	tangle_item = item
 	_tangle.texture = item.icon
 	_tangle.visible = true
+
+
+## Hurt by a storm: needs a Rescue mission (the station) to recover.
+func injure() -> void:
+	injured = true
+	if _bandage:
+		_bandage.visible = true
+	if perched or _to_nest:
+		take_off()
+
+
+## Helped by the rescue team: well again.
+func recover() -> void:
+	injured = false
+	if _bandage:
+		_bandage.visible = false
 
 
 ## Where it lives (for the save file).
@@ -239,7 +266,7 @@ func _physics_process(delta: float) -> void:
 	if _tree_nesting(delta):
 		return
 
-	var speed := data.swim_speed * (0.5 if tangled else 1.0)
+	var speed := data.swim_speed * (0.5 if tangled or injured else 1.0)
 	match _state:
 		State.REST:
 			velocity = Vector2.ZERO
@@ -276,7 +303,7 @@ func _physics_process(delta: float) -> void:
 func _tree_nesting(delta: float) -> bool:
 	if not data.nests_in_trees:
 		return false
-	if tangled or _state == State.FLEE or _guide_to:
+	if tangled or injured or _state == State.FLEE or _guide_to:
 		if perched or _to_nest:
 			take_off()
 		return false
@@ -358,6 +385,8 @@ func _avoid_busy_boats() -> void:
 ## The nearest patrol boat's position (INF if none).
 func _nearest_busy_boat(point: Vector2) -> Vector2:
 	var best := Vector2.INF
+	if Missions.is_on(&"boat_patrol"):
+		return best  # the station's boat patrol keeps the waters calm
 	for boat: Node in get_tree().get_nodes_in_group("busy_boats"):
 		var at: Vector2 = boat.hull_position()
 		if at.distance_to(point) < best.distance_to(point):
@@ -413,6 +442,8 @@ func _react_to_ranger(delta: float) -> void:
 			info = "%s: stay still so it can relax..." % name
 		elif tangled:
 			info = "%s: it's caught - free it!" % name
+		elif injured:
+			info = "%s: it's hurt. Send a Rescue mission from your station to help it recover." % name
 		elif photographed_today():
 			info = "%s: photographed today - see you tomorrow." % name
 		elif perched:
@@ -424,7 +455,7 @@ func _react_to_ranger(delta: float) -> void:
 ## Trusting (relaxed) guides the ranger has played with lead them to floating
 ## litter they've spotted, and keep at it until the litter has been picked up.
 func _maybe_guide() -> void:
-	if not data.guides_to_litter or tangled or young or _state == State.FLEE:
+	if not data.guides_to_litter or tangled or injured or young or _state == State.FLEE:
 		return
 	if _guide_to and (not is_instance_valid(_guide_to) or _guide_to.is_queued_for_deletion()):
 		_guide_to = null  # picked up: job done
@@ -463,7 +494,7 @@ func _nearest_floating_litter_to(point: Vector2, within: float) -> Node2D:
 
 
 func _maybe_dig() -> void:
-	if not data.digs_up_litter or tangled or young or randf() > data.dig_chance:
+	if not data.digs_up_litter or tangled or injured or young or randf() > data.dig_chance:
 		return
 	var today: Array = _digs.get(data.id, [-1, 0])
 	if today[0] != GameClock.day:
@@ -634,7 +665,7 @@ func _face(motion: Vector2) -> void:
 
 
 func _maybe_nest() -> void:
-	if young or tangled or data.nest_building == &"" or not GameClock.is_night():
+	if young or tangled or injured or data.nest_building == &"" or not GameClock.is_night():
 		return
 	if GameClock.day - last_nest_day < data.nest_interval_days:
 		return

@@ -119,6 +119,29 @@ func spawn_one() -> Debris:
 	if _litter_in_area() >= max_litter:
 		return null
 	var at_sea := randf() < at_sea_chance
+	var spot: Variant = _free_spot(at_sea)
+	if spot == null:
+		return null
+	var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
+	return spawn_at(OIL if oil else _items.pick_random(), spot, at_sea)
+
+
+## A pollution survey searches further than the ranger can see: `count` more pieces of
+## hidden, missed litter turn up (however much is already about). Returns them.
+func reveal_hidden(count: int) -> Array[Debris]:
+	var found: Array[Debris] = []
+	for i in count:
+		var at_sea := randf() < at_sea_chance
+		var spot: Variant = _free_spot(at_sea)
+		if spot == null:
+			spot = _free_spot(not at_sea)
+		if spot != null:
+			found.append(spawn_at(_items.pick_random(), spot, at_sea))
+	return found
+
+
+## A spot for new litter at sea (within reach) or on a beach, away from the ranger; or null.
+func _free_spot(at_sea: bool) -> Variant:
 	var ranger := ControlledBody.active(get_tree())
 	var beach := [] if at_sea else _sand_spots()
 	for attempt in 40:
@@ -134,8 +157,7 @@ func spawn_one() -> Debris:
 			spot = beach.pick_random()
 		if ranger and spot.distance_to(ranger.global_position) < min_distance_from_ranger:
 			continue
-		var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
-		return spawn_at(OIL if oil else _items.pick_random(), spot, at_sea)
+		return spot
 	return null
 
 

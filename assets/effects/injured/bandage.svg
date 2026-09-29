@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" shape-rendering="crispEdges">
+  <!-- Placeholder "hurt, needs care" badge: a white plaster with a red cross, over an injured animal. -->
+  <rect x="0" y="0" width="9" height="9" fill="#ffffff"/>
+  <rect x="0" y="0" width="9" height="1" fill="#c9ced4"/>
+  <rect x="3" y="1" width="3" height="7" fill="#e8413a"/>
+  <rect x="1" y="3" width="7" height="3" fill="#e8413a"/>
+</svg>

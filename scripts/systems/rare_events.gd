@@ -2,7 +2,9 @@ extends Node
 ## Autoload "RareEvents": each morning, an island's rare event (EventData) may be warned about
 ## (not within min_gap_days of the last one); a warning_days later it strikes. The ranger
 ## prepares by securing buildings (Building.secured); afterwards they repair what was damaged
-## and clean up the litter. Nothing is ever "failed": it's always recoverable.
+## and clean up the litter. A storm may also hurt a few animals (never badly: a Rescue
+## mission helps them recover) and wash over nests turtle monitoring didn't protect.
+## Nothing is ever "failed": it's always recoverable.
 
 signal warned(event: EventData)
 signal struck(event: EventData, damaged: int)
@@ -68,8 +70,38 @@ func strike(event: EventData) -> int:
 	for spawner: LitterSpawner in get_tree().get_nodes_in_group("litter_spawner"):
 		if Regions.nearest(spawner.area.get_center()).id == event.region:
 			spawner.wash_up_beaches(event.litter_washed)
+	# Nests turtle monitoring hasn't protected are washed over (one egg still hatches).
+	var nests_hit := 0
+	for nest: Nest in get_tree().get_nodes_in_group("nests"):
+		if Regions.nearest(nest.global_position).id == event.region and nest.storm():
+			nests_hit += 1
+	var hurt := injure(event)
 	struck.emit(event, damaged)
+	if hurt > 0 or nests_hit > 0:
+		var lines: Array[String] = []
+		if hurt > 0:
+			lines.append("%d animal(s) were hurt: send a Rescue mission from your station to help them recover." % hurt)
+		if nests_hit > 0:
+			lines.append("%d unprotected nest(s) were washed over (turtle monitoring protects them)." % nests_hit)
+		get_tree().call_group("hud", "show_toast", "\n".join(lines))
 	return damaged
+
+
+## Hurts a few of the animals `event` can hurt on its island (fewer during a boat patrol).
+## Never badly: they're only injured until a Rescue mission helps them. Returns how many.
+func injure(event: EventData) -> int:
+	if event.injured_max <= 0:
+		return 0
+	var most := randi_range(1, event.injured_max)
+	if Missions.is_on(&"boat_patrol"):
+		most = most / 2
+	var candidates := get_tree().get_nodes_in_group("animals").filter(func(a: Animal) -> bool:
+		return (String(a.data.id) in event.injures and not a.young and not a.leaving and not a.injured
+			and not a.tangled and Regions.nearest(a.global_position).id == event.region))
+	candidates.shuffle()
+	for animal: Animal in candidates.slice(0, most):
+		animal.injure()
+	return mini(most, candidates.size())
 
 
 ## The event whose repairs `building` needs (for its repair cost).

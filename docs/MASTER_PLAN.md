@@ -334,7 +334,11 @@ Rules:
   is detected rather than forecast). **At most once every 30 in-game days per island**; most
   events are rarer still (below).
 - **Damages habitat, infrastructure, resources or access — not animal numbers.** No population
-  surges or animal-management problems. Animals never die; they're never hurt by the event.
+  surges or animal-management problems. Animals never die. A few may be **injured** (never badly,
+  never worse over time): they rest until the island's signature facility's Rescue mission helps
+  them recover, and don't count as living there meanwhile. The loop: warning → protect (e.g.
+  turtle monitoring protects nests; a boat patrol means fewer injuries) → it strikes → rescue →
+  back to normal. Protection prevents losses, rescue reverses injuries, breeding grows numbers.
 - **Preparation pays:** a well-prepared island gets through with little damage; an unprepared
   one needs more recovery work. Always recoverable; never "you failed", only what needs help.
 - Each has three phases: **Before** (warning, prepare) → **During** (what it damages or closes)
@@ -353,9 +357,11 @@ Rules:
 - **Before:** "Storm approaching — prepare the island." Secure visitor facilities, close
   vulnerable visitor areas, protect turtle nesting areas, clear litter from vulnerable beaches,
   move important equipment inland.
-- **During:** damages some buildings, pushes litter onto the beach, damages sections of nesting
-  habitat, temporarily closes visitor areas.
-- **After:** clean the beach, repair facilities, restore nesting areas, reopen visitor zones.
+- **During:** damages some buildings, pushes litter onto the beach, washes over nests that turtle
+  monitoring hasn't protected (only one egg still hatches), injures up to 3 turtles / seabirds
+  (fewer during a boat patrol), temporarily closes visitor areas.
+- **After:** clean the beach, repair facilities, send a Rescue mission for the injured animals,
+  reopen visitor zones.
 - **Impact:** funding and conservation capacity dip for a while; beach condition and visitor
   access drop.
 
@@ -505,11 +511,21 @@ tested commit. Placeholder art throughout.
 2. **Funding facilities → Wildlife Conservation Parks.** Up to 3 Turtle Protection Areas (✅
    exist) alongside a Dolphin Viewing Area (on the shore, near the pod). Both marked as funding
    facilities; morning funding grows with island health.
-3. **Signature facility → Marine Rescue & Research Station (exactly 1).** Spend funding to send a
-   mission (one at a time, back the next morning): *rescue boat* (finds an animal in distress and
-   marks it), *pollution survey* (reveals hidden litter and oil on the minimap), *turtle
-   monitoring* (shows nests and how many hatch), *dolphin tracking* (where the pod is), *coastal
-   survey* (finds the wreck — item 7). Its screen shows island health.
+3. **Signature facility → Marine Rescue & Research Station (exactly 1).** The island's active
+   conservation response tool, not a source of permanent upgrades: spend funding to send a
+   mission (one at a time, back after a few real minutes) that responds to what's happening:
+
+   | Mission | What it does | Lasts |
+   |---|---|---|
+   | 🛟 Rescue | Injured animals (after a storm) recover and return to the ecosystem; ones caught in litter are marked for the ranger to free | immediate |
+   | 🚤 Boat patrol | Busy boats don't disturb animals, and a storm injures fewer | 2 days |
+   | 🗑️ Pollution survey | Searches beyond the usual visible litter (max 15): 5–10 more hidden pieces turn up, even on a clean island | marked until collected |
+   | 🐢 Turtle monitoring | Finds and protects the active nests (a storm can't wash them over) — best when a storm is coming | 2 days |
+   | 🐬 Dolphin tracking | A visiting dolphin joins the island (near the Dolphin Viewing Area: more visitors) | 2 days |
+   | 🧭 Coastal survey | Searches for the wreck (the Exploration Ship's component): 20 % chance, always found by the 5th try; no longer offered once found | — |
+
+   Rescue recovers existing animals — it never creates new ones; numbers grow through healthy
+   animals breeding. Its screen shows island health and what's going on.
 4. **Pollution types.** Each hits its own system: plastic → wildlife hazard (✅ litter);
    fishing debris → entanglement (ghost nets and line wash in; animals can get tangled again, and
    the rescue boat finds them); oil / chemicals → water quality (dark patches on the water, cleaned

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"boat_patrol"
+display_name = "Boat patrol"
+description = "Rangers patrol the island's waters for 2 days: boats slow down, so animals aren't disturbed by busy boats and fewer are hurt if a storm comes."
+order = 2
+facility = &"marine_rescue_station"
+cost = 15
+minutes = 2.0
+effect = &"boat_patrol"
+effect_days = 2.0
+finds_group = &""
+marker_colour = Color(1, 1, 1, 1)
+report = "The boat patrol is out for the next 2 days: busy waters are calmer for the animals."
+report_none = "The boat patrol is out for the next 2 days: busy waters are calmer for the animals."

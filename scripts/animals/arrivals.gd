@@ -45,7 +45,7 @@ static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 	var animal := world.get_node_or_null(arrival.node_name) as Node2D
 	if not animal or arrival.needs_trees <= 0:
 		return
-	var stays: bool = trees >= arrival.needs_trees or animal.get("tangled")  # never flies off needing help
+	var stays: bool = trees >= arrival.needs_trees or animal.get("tangled") or animal.get("injured")  # never flies off needing help
 	if stays == animal.visible:
 		return
 	animal.visible = stays

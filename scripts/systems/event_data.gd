@@ -27,3 +27,7 @@ extends Resource
 @export var litter_washed := 10
 ## What repairing one damaged building costs (wood).
 @export var repair_wood := 1
+## Species it can hurt (never badly, never for good): up to injured_max of them on the island
+## are injured until a Rescue mission helps them recover (fewer during a boat patrol).
+@export var injures: PackedStringArray = []
+@export var injured_max := 0

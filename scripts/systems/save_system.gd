@@ -121,7 +121,8 @@ func save_to(world: Node, path: String) -> bool:
 				"floating": debris.floating})
 	var nests: Array[Dictionary] = []
 	for nest: Nest in get_tree().get_nodes_in_group("nests"):
-		nests.append({"species": nest.species.id, "pos": [nest.position.x, nest.position.y], "laid_at": nest.laid_at})
+		nests.append({"species": nest.species.id, "pos": [nest.position.x, nest.position.y], "laid_at": nest.laid_at,
+			"protected_until": nest.protected_until, "storm_hit": nest.storm_hit})
 	var young: Array[Dictionary] = []
 	var nest_days := {}
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
@@ -130,7 +131,8 @@ func save_to(world: Node, path: String) -> bool:
 		if animal.young or animal.born_at >= 0.0:  # hatched here: growing, or grown up
 			young.append({"species": animal.data.id, "pos": [animal.position.x, animal.position.y],
 				"home": [animal.home().x, animal.home().y], "born_at": animal.born_at,
-				"adult": not animal.young, "radius": animal.home_radius, "last_nest": animal.last_nest_day})
+				"adult": not animal.young, "radius": animal.home_radius, "last_nest": animal.last_nest_day,
+				"injured": animal.injured})
 		else:
 			nest_days[animal.name] = animal.last_nest_day
 	var state := {
@@ -143,6 +145,8 @@ func save_to(world: Node, path: String) -> bool:
 		"collected_debris": _collected,
 		"freed_animals": _freed,
 		"tangled_animals": _tangled_animals(world),
+		"injured_animals": get_tree().get_nodes_in_group("animals").filter(func(a: Animal) -> bool:
+			return a.injured and a.born_at < 0.0 and a.get_parent() == world).map(func(a: Animal) -> String: return String(a.name)),
 		"cut_trees": _cut_trees,
 		"tile_edits": _tile_edits,
 		"washed_in_litter": litter,
@@ -302,6 +306,10 @@ func load_from(world: Node, path: String) -> bool:
 		var item_path := "res://data/items/%s.tres" % tangles[animal_name]
 		if animal and ResourceLoader.exists(item_path):
 			animal.tangle(load(item_path))
+	for animal_name: String in state.get("injured_animals", []):  # hurt by a storm, not rescued yet
+		var animal := world.get_node_or_null(animal_name)
+		if animal:
+			animal.injure()
 	for debris_name: String in state.get("collected_debris", []):
 		_collected.append(debris_name)
 		var debris := world.get_node_or_null(debris_name)
@@ -329,6 +337,8 @@ func load_from(world: Node, path: String) -> bool:
 			var nest: Nest = load(Animal.NEST_SCENE).instantiate()
 			nest.species = species
 			nest.laid_at = float(entry.get("laid_at", 0.0))
+			nest.protected_until = float(entry.get("protected_until", -1.0))
+			nest.storm_hit = bool(entry.get("storm_hit", false))
 			nest.position = Vector2(pos[0], pos[1])
 			world.add_child(nest)
 			world.move_child(nest, world.get_node("Player").get_index())
@@ -343,6 +353,7 @@ func load_from(world: Node, path: String) -> bool:
 			baby.born_at = float(entry.get("born_at", 0.0))  # older saves: old enough to grow up now
 			baby.home_radius = float(entry.get("radius", baby.home_radius))
 			baby.last_nest_day = int(entry.get("last_nest", -99))
+			baby.injured = bool(entry.get("injured", false))
 			world.add_child(baby)
 			world.move_child(baby, world.get_node("Player").get_index())
 			baby.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))

@@ -58,7 +58,9 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 			return Journal.helped_count(factor.target)
 		&"animals":
 			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
-				return a.data.id == factor.target and not a.leaving and Regions.nearest(a.global_position) == region).size()
+				# Hurt animals count again once they've recovered (a Rescue mission).
+				return (a.data.id == factor.target and not a.leaving and not a.injured
+					and Regions.nearest(a.global_position) == region)).size()
 	return 0
 
 

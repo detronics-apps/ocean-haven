@@ -29,13 +29,24 @@ func _initialize() -> void:
 	var pieces: Array = wreck.get_children().filter(func(n: Node) -> bool: return n.name.begins_with("Sunken"))
 	_expect(pieces.size() == 8 and pieces.all(func(p: Node) -> bool: return not p.visible and not p.is_in_group("debris")),
 		"its 8 pieces of litter are hidden (not litter yet)")
-	root.get_node("Funding").restore({"balance": 100})
-	missions.send(load("res://data/missions/coastal_survey.tres"), home)
-	clock.advance(301.0)  # 5 real minutes
+	root.get_node("Funding").restore({"balance": 500})
+	var survey: Resource = load("res://data/missions/coastal_survey.tres")
+	_expect(is_equal_approx(survey.find_chance, 0.2) and survey.sure_by == 5, "a coastal survey has a 20% chance, and is sure by the 5th try")
+	survey.find_chance = 0.0  # unlucky every time...
+	for i in 4:
+		missions.send(survey, home)
+		clock.advance(301.0)  # 5 real minutes
+		await process_frame
+		await process_frame
+	_expect(not fleet.has_flag(&"wreck_found") and missions.active == null, "4 unlucky surveys: nothing found yet")
+	missions.send(survey, home)  # ... but the 5th always finds it
+	clock.advance(301.0)
 	await process_frame
 	await process_frame
+	survey.find_chance = 0.2
 	_expect(fleet.has_flag(&"wreck_found") and wreck in missions.marked(), "the coastal survey finds it (marked on the minimap)")
 	_expect(pieces.all(func(p: Node) -> bool: return p.visible and p.is_in_group("debris")), "its litter appears")
+	_expect(not survey in missions.offered_by(&"marine_rescue_station"), "no more coastal surveys once it's found")
 	var treasure: Node2D = wreck.get_node("Treasure")
 	_expect(not treasure.visible, "the sonar unit is buried under the litter")
 

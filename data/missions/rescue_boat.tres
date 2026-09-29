@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_mis")
 id = &"rescue_boat"
-display_name = "Rescue boat patrol"
-description = "The rescue boat searches the island's waters and beaches for animals in distress, like one tangled in fishing line."
+display_name = "Rescue"
+description = "The rescue team searches the island for injured animals (after a storm, say) and helps them recover, then marks any caught in litter for you to free."
 order = 1
 facility = &"marine_rescue_station"
 cost = 20
@@ -15,5 +15,6 @@ finds_group = &"animals"
 finds_species = &""
 finds_tangled = true
 marker_colour = Color(1, 0.4196, 0.2902, 1)
-report = "The rescue boat found %d animal(s) that need your help! They're marked in red on your minimap."
-report_none = "The rescue boat found no animals in distress. Everyone is safe and well!"
+report = "The rescue team is back: %d animal(s) found. Injured ones are recovering and back in the wild; any caught in litter are marked in red on your minimap."
+report_none = "The rescue team found no animals in distress. Everyone is safe and well!"
+effect = &"rescue"
