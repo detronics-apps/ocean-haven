@@ -330,6 +330,11 @@ old litter cost added as 3 funding a piece). A recycling centre opens a menu (Re
 recycle 25 / 50 / 75 / 100 % of the carried litter. Mangrove gate spots (narrow channels) are
 marked with posts and offer "Build a water gate here". Menu scroll bars are finger-wide.
 
+Playable islands: Starting Island, Kelp Forest, Mangrove Coast. The Tropical Reef, Deep Sea and
+Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or what it still
+needs) and that the island is still under development, and the Map doesn't sail there. Clear
+the flag when an island is finished.
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 

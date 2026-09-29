@@ -18,3 +18,4 @@ boat_mooring = Vector2(15600, 16)
 map_icon = ExtResource("1_vsim8")
 requires = &"kelp_fibre"
 discovery = &"cargo_module"
+in_development = true

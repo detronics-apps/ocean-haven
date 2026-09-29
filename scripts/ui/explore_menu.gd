@@ -29,12 +29,18 @@ func _fill() -> void:
 		row.add_theme_constant_override("separation", 16)
 		var button := BuildMode._big_button("Explore %s" % direction, Color("2a78a8") if direction == Regions.COLDER else Color("c9772e"))
 		button.name = "Explore" + direction.capitalize()
-		button.disabled = next == null or needs != null
+		button.disabled = next == null or needs != null or next.in_development
 		button.pressed.connect(explore.bind(direction))
 		row.add_child(button)
 		var hint := Label.new()
 		if not next:
 			hint.text = "You've discovered every island in the %s waters." % direction
+		elif next.in_development and needs:
+			hint.text = "To find the way into %s waters, the fleet will need %s (from the %s). The next island that way, the %s, is still under development." % [
+				direction, needs.upgrade_name, needs.display_name, next.display_name]
+		elif next.in_development:
+			hint.text = "You've done everything needed to explore %s waters! The next island, the %s, is still under development: it arrives in a future update." % [
+				direction, next.display_name]
 		elif needs:
 			hint.text = "To find the way into %s waters, the fleet needs %s (from the %s). Restore the islands you've found to find it." % [
 				direction, needs.upgrade_name, needs.display_name]
@@ -84,7 +90,7 @@ func install(discovery: DiscoveryData) -> void:
 ## Discovers the next island `direction` and sails there.
 func explore(direction: StringName) -> void:
 	var region := Regions.next_undiscovered(direction)
-	if not region or Fleet.missing_for(region):
+	if not region or Fleet.missing_for(region) or region.in_development:
 		return
 	close()
 	Regions.discover(region)

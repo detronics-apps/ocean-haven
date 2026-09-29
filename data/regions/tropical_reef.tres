@@ -18,3 +18,4 @@ boat_mooring = Vector2(19888, 16)
 map_icon = ExtResource("1_cueq0")
 requires = &"mangrove_resin"
 discovery = &"reef_limestone"
+in_development = true

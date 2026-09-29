@@ -42,6 +42,9 @@ extends Resource
 @export var away_litter_per_day := 3.0
 @export var away_litter_max := 8
 
+## Still being designed and built: exploring can't find it yet, and the Map doesn't sail there.
+@export var in_development := false
+
 @export_group("Objective")
 ## The island's objective: done once every goal is met; then its Exploration Ship can be
 ## built and `discovery` is found. No goals = not made yet (no ship there yet).

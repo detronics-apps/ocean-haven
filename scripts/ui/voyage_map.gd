@@ -26,6 +26,8 @@ func _fill() -> void:
 		var lines: Array[String] = [region.display_name, region.description if known else region.theme]
 		if region == here:
 			lines.append("You are here.")
+		elif region.in_development:
+			lines.append("Still under development.")
 		elif not known:
 			lines.append("Not discovered yet.")
 		var entry := card(region.map_icon, lines)
@@ -41,7 +43,7 @@ func _fill() -> void:
 			compass.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			compass.tooltip_text = "Has an Exploration Ship"
 			entry.get_child(0).add_child(compass)
-		if known and region != here:
+		if known and region != here and not region.in_development:
 			var sail := Button.new()
 			sail.name = "Sail"
 			sail.text = "Set sail"
