@@ -346,7 +346,7 @@ func _numbers() -> String:
 		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
 		return "%ss: %d" % [kind.get_slice(" ", kind.get_slice_count(" ") - 1), animals_in_view()]
 	if data.action == &"missions":
-		return "Back at %s" % Missions.back_time() if Missions.active else ""
+		return "Back in %s" % Missions.time_left() if Missions.active else ""
 	if data.action == &"explore":
 		return "Level %d" % Fleet.level()
 	if capacity() > 0:

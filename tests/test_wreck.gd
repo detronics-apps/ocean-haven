@@ -31,7 +31,7 @@ func _initialize() -> void:
 		"its 8 pieces of litter are hidden (not litter yet)")
 	root.get_node("Funding").restore({"balance": 100})
 	missions.send(load("res://data/missions/coastal_survey.tres"), home)
-	clock.advance(clock.DAY_LENGTH * 3.5 / 24.0)
+	clock.advance(301.0)  # 5 real minutes
 	await process_frame
 	await process_frame
 	_expect(fleet.has_flag(&"wreck_found") and wreck in missions.marked(), "the coastal survey finds it (marked on the minimap)")

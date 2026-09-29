@@ -55,7 +55,7 @@ func _ready() -> void:
 	var missions := MissionMenu.new()  # opened from a signature facility
 	missions.name = "MissionMenu"
 	get_parent().add_child.call_deferred(missions)
-	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back at %s." % [m.display_name, Missions.back_time()]))
+	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back in %s." % [m.display_name, Missions.time_left()]))
 	Missions.returned.connect(_on_mission_returned)
 	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s!\n%s" % [e.display_name, e.warning]))
 	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged))

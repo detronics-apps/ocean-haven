@@ -1,6 +1,6 @@
 extends Node
 ## Autoload "Missions": signature facilities send missions for funding (MissionData), one at
-## a time. A mission is away for a few hours, then reports back, and what it found is marked
+## a time. A mission is away for a few real minutes, then reports back, and what it found is marked
 ## on the minimap until the next morning.
 
 signal sent(mission: MissionData)
@@ -50,15 +50,22 @@ func send(mission: MissionData, region: RegionData) -> bool:
 		return false
 	active = mission
 	_region = region
-	_back_at = GameClock.now() + mission.hours / 24.0
+	_back_at = GameClock.now() + mission.minutes * 60.0 / GameClock.DAY_LENGTH
 	sent.emit(mission)
 	return true
 
 
-## In-game time it's back, e.g. "14:00".
-func back_time() -> String:
-	var hours := fposmod(_back_at, 1.0) * 24.0
-	return "%02d:%02d" % [int(hours), int(fmod(hours, 1.0) * 60.0)]
+## Real time until it's back, e.g. "2 minutes" (no in-game clock).
+func time_left() -> String:
+	return real_time(maxf(_back_at - GameClock.now(), 0.0) * GameClock.DAY_LENGTH)
+
+
+## "less than a minute", "1 minute", "3 minutes".
+static func real_time(seconds: float) -> String:
+	var mins := ceili(seconds / 60.0 - 0.01)
+	if mins <= 0:
+		return "less than a minute"
+	return "1 minute" if mins == 1 else "%d minutes" % mins
 
 
 func _finish() -> void:

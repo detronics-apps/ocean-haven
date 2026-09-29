@@ -1,7 +1,7 @@
 extends SceneTree
 ## The Marine Rescue & Research Station (the Starting Island's signature facility): one per
 ## island, only on the Starting Island. It sends missions for funding, one at a time; each is
-## back a few hours later and marks what it found on the minimap until the next morning
+## back a few real minutes later and marks what it found on the minimap until the next morning
 ## (the rescue boat: animals in distress, dropping off once freed). A mission that's out is saved.
 ## Run: godot --headless --path . --script res://tests/test_missions.gd --quit-after 200000
 
@@ -61,14 +61,15 @@ func _initialize() -> void:
 	menu.open()
 	_expect(menu.find_child("Mission_pollution_survey", true, false).find_child("Send", true, false).disabled, "one mission at a time")
 	menu.close()
-	clock.advance(clock.DAY_LENGTH * 1.0 / 24.0)
+	_expect(missions.time_left() == "2 minutes", "back in 2 real minutes (%s)" % missions.time_left())
+	clock.advance(60.0)
 	await process_frame
-	_expect(missions.active != null, "not back after 1 hour")
-	clock.advance(clock.DAY_LENGTH * 1.5 / 24.0)
+	_expect(missions.active != null and missions.time_left() == "1 minute", "not back after 1 minute")
+	clock.advance(61.0)
 	await process_frame
 	var marked: Array = missions.marked()
 	_expect(missions.active == null and marked.size() == 3 and marked.all(func(a: Node) -> bool: return a.tangled),
-		"back after 2 hours: marks the 3 animals in distress (%d)" % marked.size())
+		"back after 2 minutes: marks the 3 animals in distress (%d)" % marked.size())
 	var dolphin: Node = world.get_node("Dolphin2")
 	dolphin.restore_freed()
 	_expect(missions.marked().size() == 2 and not dolphin in missions.marked(), "a freed animal drops off the map")
@@ -90,7 +91,7 @@ func _initialize() -> void:
 
 	# --- Surveys find litter; marks last until the next morning ---
 	missions.send(load("res://data/missions/pollution_survey.tres"), load("res://data/regions/home_island.tres"))
-	clock.advance(clock.DAY_LENGTH * 2.5 / 24.0)
+	clock.advance(121.0)
 	await process_frame
 	var litter: int = get_nodes_in_group("debris").size()
 	_expect(missions.marked().size() == litter and litter > 0, "the pollution survey marks every piece of litter (%d)" % litter)

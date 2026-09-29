@@ -1,7 +1,7 @@
 class_name MissionData
 extends Resource
 ## A mission a signature facility can send out for funding (data/missions/), e.g. the
-## Marine Rescue & Research Station's rescue boat. It's away for `hours`, then comes back
+## Marine Rescue & Research Station's rescue boat. It's away for `minutes` (real time), then comes back
 ## and marks what it found on the minimap for the rest of the day (see Missions).
 
 @export var id: StringName
@@ -13,8 +13,8 @@ extends Resource
 @export var facility: StringName
 ## Funding it costs to send.
 @export var cost := 10
-## In-game hours until it's back.
-@export var hours := 2.0
+## Real minutes until it's back (sleeping skips ahead too).
+@export var minutes := 2.0
 ## What it finds (on the facility's island): nodes in this group ("animals", "debris", "nests") ...
 @export var finds_group: StringName
 ## ... only this species ("" = any) ...

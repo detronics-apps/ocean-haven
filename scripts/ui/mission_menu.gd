@@ -24,16 +24,16 @@ func _fill() -> void:
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status.text = "%s health: %d%%. Funding: %d." % [region.display_name, roundi(maxf(health, 0.0) * 100.0), Funding.balance]
 	if Missions.active:
-		status.text += "\nYour %s is out, back at %s." % [Missions.active.display_name.to_lower(), Missions.back_time()]
+		status.text += "\nYour %s is out, back in %s." % [Missions.active.display_name.to_lower(), Missions.time_left()]
 	else:
-		status.text += "\nSend a mission. It's back in a few hours, and what it finds is marked on your minimap for the rest of the day."
+		status.text += "\nSend a mission. It's back in a few minutes, and what it finds is marked on your minimap for the rest of the day."
 	_content.add_child(status)
 	if not station:
 		return
 	for mission: MissionData in Missions.offered_by(station.data.id):
 		var problem := Missions.problem(mission)
 		var lines: Array[String] = [mission.display_name, mission.description,
-			"Costs %d funding. Back in %d hours." % [mission.cost, roundi(mission.hours)]]
+			"Costs %d funding. Back in %s." % [mission.cost, Missions.real_time(mission.minutes * 60.0)]]
 		var entry := card(null, lines)
 		entry.name = "Mission_" + mission.id
 		var send := BuildMode._big_button("Send", Color("3f8a4a"))
