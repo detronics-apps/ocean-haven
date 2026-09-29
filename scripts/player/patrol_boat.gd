@@ -30,6 +30,7 @@ func _process(delta: float) -> void:
 		_target = to_local(litter.global_position)
 		if _hull.position.distance_to(_target) < 10.0:
 			litter.collect(false)
+			get_tree().call_group("hud", "patrol_collected", litter.item)
 			_target = _pick_spot()
 	elif _hull.position.distance_to(_target) < 4.0:
 		_target = _pick_spot()

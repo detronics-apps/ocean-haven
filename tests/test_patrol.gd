@@ -46,6 +46,8 @@ func _initialize() -> void:
 	_expect(not is_instance_valid(inside), "collected the litter inside its area")
 	_expect(inventory.count(&"plastic_bag") == 1, "the litter went into the inventory")
 	_expect(notes[0] == 0, "quietly (no note for each piece)")
+	var patrol_note: Label = world.get_node("HUD").find_child("PatrolNote", true, false)
+	_expect(patrol_note != null and patrol_note.text == "Patrol boats: +1 litter", "just a small count under the inventory")
 	for i in 120:
 		await physics_frame
 		on_land = on_land or _terrain(hull.global_position) in ["sand", "grass"]

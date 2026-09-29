@@ -17,6 +17,10 @@ var _action_bar: VBoxContainer
 var _info: Label
 var _shown_actions: Array[String] = []
 var _saved_note: Label
+## "Patrol boats: +3 litter", under the inventory rows while they're collecting.
+var _patrol_note: Label
+var _patrol_count := 0
+var _patrol_tween: Tween
 var _event_note: Label
 
 
@@ -135,6 +139,30 @@ func _flash_saved() -> void:
 	tween.tween_property(_saved_note, "modulate:a", 1.0, 0.2)
 	tween.tween_interval(1.2)
 	tween.tween_property(_saved_note, "modulate:a", 0.0, 0.6)
+
+
+## A patrol boat put a piece of litter into the ranger's inventory: counted up in a
+## small note under the inventory (not a note per piece).
+func patrol_collected(_item: ItemData) -> void:
+	if not _patrol_note:
+		_patrol_note = Label.new()
+		_patrol_note.name = "PatrolNote"
+		_patrol_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_patrol_note.add_theme_color_override("font_color", Color("9fe3ff"))
+		_patrol_note.add_theme_constant_override("outline_size", 4)
+		_patrol_note.add_theme_color_override("font_outline_color", Color.BLACK)
+		_rows.add_child(_patrol_note)
+	_rows.move_child(_patrol_note, -1)
+	if not _patrol_tween or not _patrol_tween.is_running():
+		_patrol_count = 0
+	elif _patrol_tween:
+		_patrol_tween.kill()
+	_patrol_count += 1
+	_patrol_note.text = "Patrol boats: +%d litter" % _patrol_count
+	_patrol_note.modulate.a = 1.0
+	_patrol_tween = create_tween()
+	_patrol_tween.tween_interval(4.0)
+	_patrol_tween.tween_property(_patrol_note, "modulate:a", 0.0, 0.8)
 
 
 ## A note that stays on screen (e.g. progress can't be saved in this browser).

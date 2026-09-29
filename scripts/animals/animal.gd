@@ -443,10 +443,18 @@ func _pick_target() -> Vector2:
 		if litter:  # circling over it shows the ranger where it is
 			return litter.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 32.0)
 	var spot := _home
+	# Boat-shy animals: the spot furthest from busy boats, if none is clear of them.
+	var furthest := Vector2.INF
 	for attempt in 20:
 		spot = _home + Vector2.from_angle(randf() * TAU) * randf() * home_radius
-		if in_habitat(spot) and (attempt >= 15 or not _near_busy_boat(spot)):
+		if not in_habitat(spot):
+			continue
+		if not _near_busy_boat(spot):
 			return spot
+		if furthest == Vector2.INF or _nearest_busy_boat(spot).distance_to(spot) > _nearest_busy_boat(furthest).distance_to(furthest):
+			furthest = spot
+	if furthest != Vector2.INF:
+		return furthest
 	# Not much habitat around (a narrow beach): the nearest bit to a random spot,
 	# rather than always heading back to exactly the same place.
 	spot = Terrain.nearest(get_tree(), spot, Array(data.habitat_terrain), 4)
