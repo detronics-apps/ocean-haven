@@ -64,7 +64,7 @@ func _initialize() -> void:
 	_expect(seeded_otters[0].homeless_since >= 0.0 and not seeded_otters[0].leaving, "freed, it needs a quiet place to rest")
 	root.get_node("GameClock").advance(root.get_node("GameClock").DAY_LENGTH * 1.1)
 	ecosystem.settle()
-	_expect(seeded_otters[0].leaving, "with no Otter Habitat it moves away after a day")
+	_expect(not seeded_otters[0].leaving, "with no Otter Habitat it would move away, but the last otter stays on: no species disappears")
 	for animal in ecosystem.living(ecosystem.FISH) + ecosystem.living(ecosystem.CORMORANT):
 		animal.free()
 	seeded_otters[0].free()
@@ -83,14 +83,16 @@ func _initialize() -> void:
 	_expect(day_one > 0.45 and day_one < 0.6, "about half the change happens in the first day (%.0f%%)" % (day_one * 100.0))
 	for i in 12:  # 3 more days
 		ecosystem.tick(0.25)
-	_expect(bed.urchins > urchin_goal * 0.9 and bed.health < 0.3,
-		"within 4 days it has settled: many urchins (%.0f), kelp grazed down (%.2f)" % [bed.urchins, bed.health])
+	_expect(bed.urchins > 4.0 and bed.health < 0.5,
+		"within 4 days it has settled: urchins spiked, grazed the kelp down (%.2f) and now starve at %.0f" % [bed.health, bed.urchins])
 
-	# --- Restoration alone can't fix it while urchins are too many ---
+	# --- Restoration alone feeds an urchin boom: the kelp can't get far ---
+	var urchins_before: float = bed.urchins
 	bed.restored_until = 1000.0
 	for i in 16:
 		ecosystem.tick(0.25)
-	_expect(bed.health < 0.3, "restoring kelp alone doesn't last against overgrazing (%.2f)" % bed.health)
+	_expect(bed.urchins > urchins_before and bed.health < 0.6,
+		"restoring kelp without otters: the urchins boom (%.0f -> %.0f) and keep it down (%.2f)" % [urchins_before, bed.urchins, bed.health])
 	bed.restored_until = -1.0
 
 	# --- Otters anywhere on the island keep urchins down everywhere, and the kelp grows back ---
@@ -134,8 +136,8 @@ func _initialize() -> void:
 		b.health = 0.1
 	for i in 12:
 		ecosystem.settle()
-	_expect(ecosystem.living(ecosystem.FISH).is_empty() and ecosystem.living(ecosystem.CORMORANT).is_empty(),
-		"the kelp collapses: fish swim away, and the cormorants follow")
+	_expect(ecosystem.living(ecosystem.FISH).size() == 1 and ecosystem.living(ecosystem.CORMORANT).size() == 1,
+		"the kelp collapses: fish swim away and the cormorants follow, but a few always hang on")
 	for b: Node2D in beds:
 		b.health = 0.7
 		b.urchins = 1.0

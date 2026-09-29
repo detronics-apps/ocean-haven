@@ -70,7 +70,7 @@ func _initialize() -> void:
 		health.of(self, kelp_region), balanced])
 	var spawner: Node = world.get_node("KelpLitter")
 	spawner.fill(20)
-	_expect(health.of(self, kelp_region) < 0.3, "one species crowding out the rest, and litter left about: the island's health drops a long way (%.2f)" % health.of(self, kelp_region))
+	_expect(health.of(self, kelp_region) < 0.55, "too many otters and litter left about: the island's health drops a long way (%.2f)" % health.of(self, kelp_region))
 	for d in get_nodes_in_group("debris"):
 		if d.global_position.distance_to(kelp_region.center) < kelp_region.waters_radius:
 			d.free()
@@ -103,6 +103,7 @@ func _initialize() -> void:
 	var before: int = otter_count.call()
 	_expect(save.save_to(world, PATH), "saved")
 	world.free()
+	regions.forget(kelp_region)  # (as in a real start: the save decides; nothing moves before it loads)
 	world = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
 	await process_frame

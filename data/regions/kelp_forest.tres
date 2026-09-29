@@ -23,6 +23,7 @@ text = "Kelp forest"
 script = ExtResource("3_health")
 kind = &"balance"
 target = &"sea_urchin"
+amount = 3
 scales_all = true
 scale_floor = 0.4
 text = "Urchins in balance"
@@ -33,6 +34,7 @@ kind = &"animals"
 target = &"sea_otter"
 amount = 4
 too_many = 8
+weight = 2.0
 text = "Sea otters"
 
 [sub_resource type="Resource" id="Health_fish"]

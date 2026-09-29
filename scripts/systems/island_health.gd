@@ -46,10 +46,14 @@ static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 			var eco := ecosystem(tree, region)
 			if not eco:
 				return 0.0
+			# In balance: up to `amount` urchins a bed (none at twice that), and at least a few
+			# (a healthy forest keeps some).
 			var beds: int = maxi(eco.beds().size(), 1)
-			var overgrazed := 1.0 - 2.0 * float(count(tree, region, factor)) / beds
-			var some := clampf(eco.urchin_total() / (beds * 0.2), 0.0, 1.0)  # a healthy forest keeps some
-			return clampf(minf(overgrazed, some), 0.0, 1.0)
+			var urchins: float = eco.urchin_amount()
+			var not_too_many := clampf(2.0 - urchins / beds / amount, 0.0, 1.0)
+			# Fewer than 0.2 a bed: each time they fall tenfold, the score falls to nothing.
+			var some := clampf(1.0 + log(maxf(urchins / beds, 0.0001) / 0.2) / log(10.0), 0.0, 1.0)
+			return minf(not_too_many, some)
 	return 0.0
 
 
@@ -75,9 +79,9 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 		&"kelp":  # the kelp's condition, in percent
 			var eco := ecosystem(tree, region)
 			return roundi(eco.kelp_health() * 100.0) if eco else 0
-		&"balance":  # overgrazed beds
+		&"balance":  # urchins on the island
 			var eco := ecosystem(tree, region)
-			return eco.beds().filter(func(b: Node) -> bool: return b.urchins >= eco.overgrazed_at).size() if eco else 0
+			return eco.urchin_total() if eco else 0
 		&"animals":
 			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
 				# Healthy residents only: hurt or caught ones count again once helped, and a
@@ -97,7 +101,9 @@ static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) 
 		return "%s: %d%% (%d%% for full health)" % [factor.text, n, factor.amount]
 	if factor.kind == &"balance":
 		var eco := ecosystem(tree, region)
-		return "%s: %d overgrazed bed(s), %d urchins in all" % [factor.text, n, eco.urchin_total() if eco else 0]
+		var beds := maxi(eco.beds().size(), 1) if eco else 1
+		var state := "too many" if float(n) / beds > factor.amount else ("almost none left" if n < beds * 0.1 else "in balance")
+		return "%s: %d urchins, %s (up to %d a bed is healthy)" % [factor.text, n, state, factor.amount]
 	if factor.kind == &"animals" and factor.too_many > 0 and n > factor.too_many:
 		return "%s: %d (too many: more than %d crowd out the rest)" % [factor.text, n, factor.too_many]
 	if factor.kind == &"animals" and n >= factor.amount:

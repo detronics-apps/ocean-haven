@@ -20,10 +20,14 @@ const SPOT_RANGE := 72.0
 @export var bed_spacing := 96.0
 ## A new island starts damaged: kelp health and urchins per bed (random in these ranges).
 @export var start_health := Vector2(0.15, 0.4)
-@export var start_urchins := Vector2(6.0, 10.0)
+@export var start_urchins := Vector2(4.0, 7.0)
 @export_group("Food web")
 ## With no otters, each bed carries about this many urchins (varying bed to bed).
 @export var urchin_max := 12.0
+## On bare rock urchins starve to this share of what a full forest feeds; a bed never has
+## fewer than `urchin_min` (no species ever disappears).
+@export var urchin_starved := 0.25
+@export var urchin_min := 0.05
 ## Otters keep urchins down: every `otter_scale` otters cut the urchins to about a third.
 ## The whole island's otters count, wherever their habitats are.
 @export var otter_scale := 2.0
@@ -222,7 +226,11 @@ func otter_pressure() -> float:
 
 ## The urchins `bed` settles at with this many otters about.
 func urchin_target(bed: KelpBed, pressure: float) -> float:
-	return urchin_max * bed.urchin_share * exp(-pressure / otter_scale)
+	# Urchins follow their food as well as their predators: kelp growing back feeds a boom,
+	# and a barren starves them back down. So restoring kelp before there are otters makes
+	# urchins surge.
+	var food := urchin_starved + (1.0 - urchin_starved) * bed.health
+	return maxf(urchin_max * bed.urchin_share * food * exp(-pressure / otter_scale), urchin_min)
 
 
 ## The beds the island's Kelp Restoration Sites look after: each restores its share of the
@@ -318,10 +326,11 @@ func settle() -> void:
 			otter.homeless_since = GameClock.now()
 			get_tree().call_group("hud", "show_toast", "A sea otter has nowhere quiet to rest: build an Otter Habitat, or it will move away.")
 		elif GameClock.now() - otter.homeless_since >= homeless_days:
-			_move_away(otter, "it had no quiet place to rest (an Otter Habitat)")
+			if otters().size() > 1:  # the last one stays on: no species ever disappears
+				_move_away(otter, "it had no quiet place to rest (an Otter Habitat)")
 	all = otters()
 	var fed := food(species)
-	if not all.is_empty() and fed / all.size() < species.food_needed * leave_below:
+	if all.size() > 1 and fed / all.size() < species.food_needed * leave_below:
 		_move_away(all.back(), "there isn't enough food in the kelp for so many otters")
 	else:
 		for home in homes:
@@ -393,6 +402,7 @@ func _objective() -> void:
 
 ## One more of `species` arrives, or one moves away, towards `target`.
 func _follow(species: AnimalData, target: int) -> void:
+	target = maxi(target, 1)  # a few always hang on: no species ever disappears
 	var now := living(species)
 	if now.size() > target:
 		var going: Animal = now.back()
@@ -626,6 +636,11 @@ func kelp_health() -> float:
 	if list.is_empty():
 		return 0.0
 	return list.reduce(func(sum: float, b: KelpBed) -> float: return sum + b.health, 0.0) / list.size()
+
+
+## Urchins on the island, not rounded (a few scattered ones still count).
+func urchin_amount() -> float:
+	return beds().reduce(func(sum: float, b: KelpBed) -> float: return sum + b.urchins, 0.0)
 
 
 func urchin_total() -> int:

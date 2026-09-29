@@ -8,7 +8,7 @@ extends Resource
 ## "help": `target` species freed (helped `amount` times = 1).
 ## "animals": `target` species living at the island (`amount` = 1).
 ## "kelp": the island's kelp condition in percent (`amount` % = 1).
-## "balance": urchins in balance: no more than a few overgrazed beds, but some urchins left.
+## "balance": urchins in balance: up to `amount` a kelp bed (none at twice that), but some left.
 @export var kind: StringName
 @export var target: StringName
 @export var amount := 1
