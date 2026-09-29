@@ -26,6 +26,11 @@ static func nearest(point: Vector2) -> RegionData:
 	return best
 
 
+## Whether `point` is within `region`'s rowboat waters (less `margin`), so the ranger can reach it.
+static func in_reach(region: RegionData, point: Vector2, margin := 0.0) -> bool:
+	return point.distance_to(region.center) <= region.waters_radius - margin
+
+
 static func is_discovered(region: RegionData) -> bool:
 	return region.direction == &"" or _discovered.has(region.id)
 

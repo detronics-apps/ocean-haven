@@ -36,7 +36,9 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	match factor.kind:
 		&"clean":
 			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+				# Only litter the rowboat can reach counts (drifting litter further out doesn't).
 				return (not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region
+					and Regions.in_reach(region, d.global_position)
 					and (d.item.id == factor.target if factor.target != &"" else d.item.is_litter))).size()
 		&"help":
 			return Journal.helped_count(factor.target)

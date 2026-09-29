@@ -7,8 +7,13 @@ extends Area2D
 @export var floating := true
 ## Washed in during play (LitterSpawner) rather than placed in the world scene.
 @export var spawned := false
+## Washed-in floating litter out on the open ocean drifts slowly towards its island (px/s),
+## until it reaches the island's shallower water.
+@export var drift_speed := 3.0
 
 var _time := randf() * TAU
+var _drifting := true
+var _drift_check := randf()
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -29,6 +34,20 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_time += delta
 	_sprite.position.y = roundf(sin(_time * 2.0) * 1.5)
+	if spawned and _drifting:
+		_drift(delta)
+
+
+func _drift(delta: float) -> void:
+	var region := Regions.nearest(global_position)
+	_drift_check -= delta
+	if _drift_check <= 0.0:
+		_drift_check = 1.0
+		# In the island's own water (shallows, lagoon) or close in: it's arrived.
+		if Terrain.at(get_tree(), global_position) != "" or Regions.in_reach(region, global_position, region.waters_radius * 0.6):
+			_drifting = false
+			return
+	global_position = global_position.move_toward(region.center, drift_speed * delta)
 
 
 func _on_body_entered(body: Node2D) -> void:

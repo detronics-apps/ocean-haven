@@ -39,6 +39,23 @@ func _initialize() -> void:
 		near_ranger = near_ranger or d.global_position.distance_to(player.global_position) < 320.0
 	_expect(ok_spots, "floating litter is at sea, beach litter on sand (%d at sea, %d on beaches)" % [at_sea, on_beach])
 	_expect(not near_ranger, "never appears right next to the ranger")
+	var home: Resource = load("res://data/regions/home_island.tres")
+	var reachable := get_nodes_in_group("debris").filter(func(d: Node2D) -> bool: return d.spawned).all(
+		func(d: Node2D) -> bool: return d.global_position.length() <= home.waters_radius)
+	_expect(reachable, "all of it is within the rowboat's reach")
+
+	# --- Litter far out drifts in, and doesn't count against the island until it's in reach ---
+	var far: Node2D = spawner.spawn_at(load("res://data/items/plastic_bottle.tres"), Vector2(1050, 800), true)
+	var clean: Resource = home.health[0]
+	var counted: int = load("res://scripts/systems/island_health.gd").count(self, home, clean)
+	far.global_position = Vector2(1050, 800)
+	_expect(load("res://scripts/systems/island_health.gd").count(self, home, clean) == counted, "out-of-reach litter doesn't count for island health")
+	var start_distance := far.global_position.length()
+	for i in 90:
+		await process_frame
+	_expect(far.global_position.length() < start_distance - 1.0, "it drifts in towards the island (%.0f -> %.0f)" % [
+		start_distance, far.global_position.length()])
+	far.free()
 
 	# --- Beaches get litter too (ranger out at sea, away from the beaches) ---
 	player.global_position = Vector2(-1500, 0)

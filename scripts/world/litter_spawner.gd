@@ -1,8 +1,8 @@
 class_name LitterSpawner
 extends Node
 ## Litter keeps washing in: every `interval` seconds a piece of litter drifts into
-## the sea around the island or washes up on a beach, until `max_litter` pieces
-## are out there. It always appears away from the ranger, so it never pops up in view.
+## the sea around the island (within the rowboat's reach) or washes up on a beach, until
+## `max_litter` pieces are out there. Floating litter slowly drifts in towards the island. It always appears away from the ranger, so it never pops up in view.
 
 const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 
@@ -15,8 +15,10 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 ## ... while there are fewer than this many oil patches in the area.
 @export var max_oil := 2
 const OIL := preload("res://data/items/oil_patch.tres")
-## Area searched for spots (the waters around the home island).
+## Area searched for spots (the waters around the home island). Spots are also always
+## within its island's rowboat waters (less `reach_margin`), so every piece can be reached.
 @export var area := Rect2(-900, -600, 1800, 1200)
+@export var reach_margin := 80.0
 @export var min_distance_from_ranger := 320.0
 ## Each morning, litter that entangles (nets, line, bags) this close to an animal that can
 ## get caught may catch one: at most this many a day in this area. Clean it up to prevent it.
@@ -113,8 +115,9 @@ func spawn_one() -> Debris:
 	for attempt in 40:
 		var spot: Vector2
 		if at_sea:
-			spot = Vector2(randf_range(area.position.x, area.end.x), randf_range(area.position.y, area.end.y))
-			if Terrain.at(get_tree(), spot) not in ["", "water"]:
+			var region := Regions.nearest(area.get_center())
+			spot = region.center + Vector2.from_angle(randf() * TAU) * sqrt(randf()) * (region.waters_radius - reach_margin)
+			if not area.has_point(spot) or Terrain.at(get_tree(), spot) not in ["", "water"]:
 				continue
 		else:
 			if beach.is_empty():
