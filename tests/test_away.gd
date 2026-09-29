@@ -40,11 +40,8 @@ func _initialize() -> void:
 	# --- Storms: none start there, and a warned one waits for the ranger ---
 	var swell: Resource = load("res://data/events/underwater_storm.tres")
 	events.restore({})
-	var saved_chance: float = swell.chance_per_day
-	swell.chance_per_day = 1.0
-	events.call("_on_new_day", 999)
+	events.call("_on_new_day", 999)  # long overdue: it would be certain on the island
 	_expect(not events.is_coming_to(&"kelp_forest"), "no storm starts on an island the ranger isn't on")
-	swell.chance_per_day = saved_chance
 	events.warn(swell)
 	for bed: Node2D in ecosystem.beds():
 		bed.storm_hit = false
@@ -56,14 +53,28 @@ func _initialize() -> void:
 	net.remove()
 	await process_frame
 	var litter_before: int = spawner.call("_litter_in_area")
+	events.call("_process", 2.0)  # (it knows the ranger is on the Starting Island)
 	player.global_position = kelp.center + Vector2(0, 40)
 	await process_frame
 	await process_frame
 	var litter_after: int = spawner.call("_litter_in_area")
 	_expect(litter_after > litter_before and litter_after - litter_before <= kelp.away_litter_max,
 		"back on the island: a little litter washed in while you were away (%d -> %d)" % [litter_before, litter_after])
-	events.call("_on_new_day", clock.day + 6)
-	_expect(not events.is_coming_to(&"kelp_forest"), "and a warned storm strikes once the ranger is there")
+	events.call("_process", 2.0)  # notices the ranger is back
+	var back: int = clock.day
+	events._coming[&"underwater_storm"] = back + 1  # due the morning after coming back
+	events.call("_on_new_day", back + 1)
+	_expect(events.is_coming_to(&"kelp_forest"), "no storm in the first 2 days back")
+	events.call("_on_new_day", back + 2)
+	_expect(not events.is_coming_to(&"kelp_forest"), "then the warned storm strikes")
+
+	# --- The time between storms kept counting while away: a new one can come soon after ---
+	events.restore({"last_day": {"underwater_storm": back + 2}, "back_on": {"kelp_forest": back + 100}})
+	events.call("_process", 2.0)
+	clock.day = back + 100
+	events.call("_on_new_day", back + 100)
+	_expect(events.is_coming_to(&"kelp_forest") and events._coming[&"underwater_storm"] >= back + 103,
+		"back after 100 days away, it's overdue: warned 3-4 days ahead, never within 2 days of coming back")
 
 	if not _failed:
 		print("PASS")

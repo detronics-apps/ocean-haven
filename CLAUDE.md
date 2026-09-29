@@ -299,7 +299,9 @@ Areas; 10 turtles for full health; mission icons (MissionData.icon); Journal Pla
 Balance tweaks: islands the ranger isn't on are paused (no storms, tangling, patrol injuries or
 ecosystem change; a little litter on return; `Regions.ranger_on`); one recycling centre per
 island; tangled seabirds wait on their nest; mission cards count runs per island; sea otters carry
-floating litter near them ashore (AnimalData.carries_litter_ashore).
+floating litter near them ashore (AnimalData.carries_litter_ashore). Rare events: a random 30–60 days apart
+(EventData.min_gap_days / max_gap_days), warned 3–4 days ahead, never in the ranger's first 2 days
+back on an island (RareEvents.calm_days).
 
 Next: MVP 0.6 Mangrove Coast (Step 4; design in MASTER_PLAN).
 

@@ -24,18 +24,18 @@ func _initialize() -> void:
 
 	# --- Never in the first 30 days; then now and then ---
 	clock.day = 1
-	for i in 28:
+	for i in 25:  # the first can only strike from day 30 (warned 3-4 days ahead)
 		clock.time_of_day = 0.9
 		clock.sleep_until_morning()
 	_expect(not events.is_coming(), "no storm in the first 30 days")
 	events.restore({})
 
-	# --- Warned a day ahead: secure what you can ---
+	# --- Warned days ahead: secure what you can ---
 	clock.day = 40
-	events.warn(storm)
+	events.warn(storm, 3)
 	_expect(events.is_coming() and world.get_node("HUD/EventNote").text == "", "warned (the HUD note shows next frame)")
 	await process_frame
-	_expect((world.get_node("HUD/EventNote") as Label).text.contains("Storm tomorrow"), "the HUD says a storm is coming")
+	_expect((world.get_node("HUD/EventNote") as Label).text.contains("Storm in 3 days"), "the HUD says a storm is coming, and when")
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(0, 50)
 	var secure: Array = area.actions().filter(func(a: Dictionary) -> bool: return a.label == "Secure for the storm")
@@ -45,9 +45,10 @@ func _initialize() -> void:
 	player.global_position = dock.global_position + Vector2(0, -40)
 	_expect(dock.actions().filter(func(a: Dictionary) -> bool: return a.label.begins_with("Secure")).is_empty(), "docks are storm-proof")
 
-	# --- It strikes the next morning ---
+	# --- It strikes on the day ---
 	storm.damage_chance = 1.0
 	var litter: int = get_nodes_in_group("debris").size()
+	events._coming[&"coastal_storm"] = clock.day + 1  # (fast-forward to the day before)
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()
 	_expect(not events.is_coming(), "the storm has passed")
@@ -76,15 +77,22 @@ func _initialize() -> void:
 	_expect(turtle.call("_nest_site") == area, "repaired: they will again")
 
 	# --- Not again for 30 days ---
-	events.restore({"last_day": {"coastal_storm": clock.day}})
-	storm.chance_per_day = 1.0
-	for i in 29:
-		clock.time_of_day = 0.9
-		clock.sleep_until_morning()
-	_expect(not events.is_coming(), "no storm within 30 days of the last")
-	clock.time_of_day = 0.9
-	clock.sleep_until_morning()
-	_expect(events.is_coming(), "after that it can come again")
+	# --- The next one: at a random time 30-60 days after the last, warned 3-4 days ahead ---
+	var strikes := []
+	var leads := []
+	for run in 20:
+		var last: int = clock.day
+		events.restore({"last_day": {"coastal_storm": last}})
+		for i in 70:
+			clock.day += 1
+			events.call("_on_new_day", clock.day)
+			if events.is_coming():
+				strikes.append(events._coming[&"coastal_storm"] - last)
+				leads.append(events._coming[&"coastal_storm"] - clock.day)
+				break
+	_expect(strikes.size() == 20 and strikes.all(func(d: int) -> bool: return d >= 30 and d <= 60)
+		and strikes.max() - strikes.min() >= 8, "a storm comes 30-60 days after the last, never at a set time (%s)" % [strikes])
+	_expect(leads.all(func(d: int) -> bool: return d == 3 or d == 4), "warned 3-4 days ahead (%s)" % [leads])
 	var saved: Dictionary = events.to_dict()
 	events.restore({})
 	events.restore(saved)

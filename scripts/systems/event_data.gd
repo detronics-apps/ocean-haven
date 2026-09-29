@@ -9,12 +9,13 @@ extends Resource
 @export var display_name: String
 ## The island it happens on (region id).
 @export var region: StringName
-## At most once in this many days on its island ...
+## It strikes a random number of days after the last one, between these (never
+## predictable), on its island. Days away count, but it never strikes while the ranger is away.
 @export var min_gap_days := 30
-## ... and after that, this chance each morning (1–2 a 120-day year on average).
-@export var chance_per_day := 0.02
-## Days between the warning and the event.
-@export var warning_days := 1
+@export var max_gap_days := 60
+## Days between the warning and the event: a random number between these.
+@export var warning_days := 3
+@export var warning_days_max := 4
 ## Shown when it's coming ...
 @export var warning: String
 ## ... and in short on the HUD until it strikes.
