@@ -2,6 +2,14 @@ extends CanvasLayer
 ## On-screen inventory counts, clock, the menu bar (Build / Journal / Look), and a
 ## short non-blocking note with a fact when something is collected, discovered or built.
 
+## Portrait phones have rounded corners: the bottom UI (minimap, revision, action buttons)
+## moves up (and a little in) by this much when the screen is taller than it is wide.
+@export var portrait_lift := 40.0
+@export var portrait_inset := 10.0
+## Taps this close around the action buttons (and in the gaps between them) never walk
+## the ranger: a missed button is just a missed button.
+@export var action_dead_zone := 28.0
+
 var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
 ## Notes waiting for the current one to fade (so they don't overwrite each other).
@@ -14,6 +22,9 @@ var _toast_queue: Array[String] = []
 @onready var _fade: ColorRect = %Fade
 ## Buttons for what the ranger can do nearby (bottom right, stacked).
 var _action_bar: VBoxContainer
+## Around the action buttons: stops taps (the dead zone).
+var _action_zone: MarginContainer
+var _revision: Label
 var _info: Label
 var _shown_actions: Array[String] = []
 var _saved_note: Label
@@ -87,25 +98,32 @@ func _ready() -> void:
 	revision.text = FileAccess.get_file_as_string("res://version.txt").strip_edges() \
 		if FileAccess.file_exists("res://version.txt") else "dev"
 	revision.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	revision.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	revision.offset_left = 18
-	revision.offset_top = -16
+	revision.offset_bottom = 0
 	revision.add_theme_font_size_override("font_size", 11)
 	revision.modulate = Color(1, 1, 1, 0.6)
 	revision.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(revision)
-	# Bottom right, stacked upwards: easy to reach with a thumb.
+	_revision = revision
+	# Bottom right, stacked upwards: easy to reach with a thumb. The zone around them
+	# (margins, gaps) swallows taps, so a near miss doesn't walk the ranger off.
+	_action_zone = MarginContainer.new()
+	_action_zone.name = "ActionZone"
+	_action_zone.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	_action_zone.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_action_zone.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_action_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_action_zone.add_theme_constant_override("margin_left", int(action_dead_zone))
+	_action_zone.add_theme_constant_override("margin_top", int(action_dead_zone))
+	add_child(_action_zone)
 	_action_bar = VBoxContainer.new()
 	_action_bar.name = "ActionBar"
-	_action_bar.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	_action_bar.offset_left = -16
-	_action_bar.offset_right = -16
-	_action_bar.offset_top = -16
-	_action_bar.offset_bottom = -16
-	_action_bar.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	_action_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_action_bar.alignment = BoxContainer.ALIGNMENT_END
 	_action_bar.add_theme_constant_override("separation", 8)
-	add_child(_action_bar)
+	_action_zone.add_child(_action_bar)
+	get_viewport().size_changed.connect(_layout_bottom)
+	_layout_bottom()
 	# One line about the nearest animal (instead of a label over every animal), above the buttons.
 	_info = Label.new()
 	_info.name = "Info"
@@ -116,6 +134,29 @@ func _ready() -> void:
 	_info.add_theme_constant_override("outline_size", 5)
 	_info.add_theme_color_override("font_outline_color", Color.BLACK)
 	_action_bar.add_child(_info)
+
+
+## Keeps the bottom UI clear of a portrait phone's rounded corners.
+func _layout_bottom() -> void:
+	var size := get_viewport().get_visible_rect().size
+	var portrait := size.y > size.x
+	var lift := portrait_lift if portrait else 0.0
+	var inset := portrait_inset if portrait else 0.0
+	var minimap: Control = $Minimap
+	minimap.offset_left = 16.0 + inset
+	minimap.offset_right = 144.0 + inset
+	minimap.offset_top = -144.0 - lift
+	minimap.offset_bottom = -16.0 - lift
+	_revision.offset_left = 18.0 + inset
+	_revision.offset_top = -lift
+	_revision.offset_bottom = -lift
+	# The zone reaches the screen edge; the buttons sit 16 px (plus the lift) in from it.
+	_action_zone.add_theme_constant_override("margin_right", int(16.0 + inset))
+	_action_zone.add_theme_constant_override("margin_bottom", int(16.0 + lift))
+	_action_zone.offset_left = 0.0
+	_action_zone.offset_top = 0.0
+	_action_zone.offset_right = 0.0
+	_action_zone.offset_bottom = 0.0
 
 
 ## A small "Saved" that fades in and out after every save, so you know progress is kept.
@@ -251,6 +292,8 @@ func _update_action_bar() -> void:
 		button.add_theme_font_size_override("font_size", 18)
 		button.pressed.connect(action.do)
 		_action_bar.add_child(button)
+	# Only a dead zone while there are buttons (the animal note alone doesn't block taps).
+	_action_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE if actions.is_empty() else Control.MOUSE_FILTER_STOP
 
 
 func _process(_delta: float) -> void:

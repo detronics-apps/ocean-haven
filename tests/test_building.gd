@@ -56,8 +56,38 @@ func _initialize() -> void:
 	player.global_position = tent_node.global_position + Vector2(-40, 20)
 	await process_frame
 	await process_frame
-	var labels: Array = world.get_node("HUD").get_node("ActionBar").get_children().filter(func(b: Node) -> bool: return b is Button).map(func(b: Button) -> String: return b.text)
+	var labels: Array = world.get_node("HUD/ActionZone/ActionBar").get_children().filter(func(b: Node) -> bool: return b is Button).map(func(b: Button) -> String: return b.text)
 	_expect("Move Tent" in labels, "a 'Move Tent' button appears in the action bar (%s)" % [labels])
+	# A tap just beside the buttons (a near miss) doesn't walk the ranger off.
+	var button: Control = world.get_node("HUD/ActionZone/ActionBar").get_children().filter(func(b: Node) -> bool: return b is Button)[0]
+	for miss in [button.get_global_rect().position + Vector2(-12, 10), button.get_global_rect().end + Vector2(0, 4)]:
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.pressed = true
+		click.position = miss
+		click.global_position = miss
+		root.push_input(click, true)
+		var release := click.duplicate()
+		release.pressed = false
+		root.push_input(release, true)
+		await physics_frame
+		_expect(not player.get("_has_target"), "a near miss by the action buttons doesn't walk the ranger (%s)" % miss)
+	var elsewhere := InputEventMouseButton.new()
+	elsewhere.button_index = MOUSE_BUTTON_LEFT
+	elsewhere.pressed = true
+	elsewhere.position = button.get_global_rect().position - Vector2(120, 120)
+	root.push_input(elsewhere, true)
+	_expect(player.get("_has_target"), "a tap further away still walks there")
+	player.stop()
+	# Portrait phones: the bottom UI moves up, clear of the rounded screen corners.
+	var minimap: Control = world.get_node("HUD/Minimap")
+	var landscape_bottom := minimap.offset_bottom
+	var old_size := root.size
+	root.size = Vector2i(600, 1200)
+	await process_frame
+	_expect(minimap.offset_bottom < landscape_bottom - 20.0, "portrait: the minimap moves up (%.0f -> %.0f)" % [landscape_bottom, minimap.offset_bottom])
+	root.size = old_size
+	await process_frame
 	build_mode.start_move(tent_node)
 	_expect(build_mode.place_at(Vector2i(-3, -3)), "tent moved to a new spot")
 	_expect(tent_node.cell == Vector2i(-3, -3) and tent_node.visible and _count("tent") == 1, "it's there, still just one tent")
