@@ -2,7 +2,10 @@
 
 A cozy 2D pixel-art ocean-conservation game. Start with one small island, clean up and restore the ocean around it, and watch wildlife return. Full design: `docs/GAME_DESIGN.md` — read it before adding any gameplay feature. The end goal and its steps
 (islands, animals per island, exploration & fleet upgrades, cross-island effects): `docs/MASTER_PLAN.md`
-— build every feature towards it.
+— build every feature towards it. **Before designing any new island, read
+`docs/ISLAND_RULES.md`** (the rules learned so far: design first and simulate, quick visible
+consequences, species never disappear, island-wide balance, health range, 3-level buildings,
+missions that lead to action…) and add to it whenever the user corrects something.
 
 ## Tech
 
