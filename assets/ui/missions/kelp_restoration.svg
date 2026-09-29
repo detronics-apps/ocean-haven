@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Kelp restoration: young kelp growing on a rope strung under a yellow marker buoy. -->
+  <rect x="0" y="0" width="32" height="32" fill="#3a7fa0"/>
+  <rect x="13" y="2" width="6" height="6" fill="#f2c94c"/><rect x="13" y="4" width="6" height="2" fill="#e8413a"/>
+  <rect x="15" y="8" width="2" height="8" fill="#c9bfae"/>
+  <rect x="2" y="16" width="28" height="2" fill="#c9bfae"/>
+  <rect x="5" y="18" width="2" height="9" fill="#58b85c"/><rect x="11" y="18" width="2" height="6" fill="#58b85c"/>
+  <rect x="19" y="18" width="2" height="10" fill="#58b85c"/><rect x="25" y="18" width="2" height="7" fill="#58b85c"/>
+  <rect x="7" y="21" width="2" height="2" fill="#7ad07a"/><rect x="21" y="23" width="2" height="2" fill="#7ad07a"/>
+</svg>

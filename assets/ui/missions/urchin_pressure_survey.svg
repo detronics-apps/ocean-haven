@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Urchin pressure survey: a purple urchin on bare rock, with tally marks counting them. -->
+  <rect x="0" y="24" width="32" height="8" fill="#8a8a86"/>
+  <rect x="7" y="15" width="10" height="9" fill="#6a3a86"/>
+  <rect x="9" y="17" width="6" height="5" fill="#8a52a8"/>
+  <rect x="11" y="10" width="2" height="5" fill="#4e2866"/><rect x="3" y="18" width="4" height="2" fill="#4e2866"/><rect x="17" y="18" width="4" height="2" fill="#4e2866"/>
+  <rect x="5" y="12" width="2" height="3" fill="#4e2866"/><rect x="17" y="12" width="2" height="3" fill="#4e2866"/>
+  <rect x="22" y="4" width="2" height="12" fill="#f4efe2"/><rect x="25" y="4" width="2" height="12" fill="#f4efe2"/><rect x="28" y="4" width="2" height="12" fill="#f4efe2"/>
+  <polygon points="20,13 31,6 31,8 20,15" fill="#f4efe2"/>
+</svg>

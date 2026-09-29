@@ -44,7 +44,7 @@ func _fill() -> void:
 			"Costs %d funding. Back in %s." % [mission.cost, Missions.real_time(mission.minutes * 60.0)]]
 		if problem != "":
 			lines.append(problem)  # (no tooltips on a phone)
-		var entry := card(null, lines)
+		var entry := card(mission.icon, lines)
 		entry.name = "Mission_" + mission.id
 		var send := BuildMode._big_button("Send", Color("3f8a4a"))
 		send.name = "Send"

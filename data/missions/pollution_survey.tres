@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/pollution_survey.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"pollution_survey"
 display_name = "Pollution survey"
+icon = ExtResource("2_icon")
 description = "Researchers search further than you can see, and turn up hidden and missed litter: 5 to 10 more pieces, marked on your minimap until you collect them."
 order = 3
 facility = &"marine_rescue_station"

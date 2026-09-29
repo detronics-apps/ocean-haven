@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/turtle_monitoring.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"turtle_monitoring"
 display_name = "Turtle monitoring"
+icon = ExtResource("2_icon")
 description = "Researchers find the active turtle nests and protect them for 2 days, so a storm can't wash them away. Best sent when a storm is coming."
 order = 4
 facility = &"marine_rescue_station"

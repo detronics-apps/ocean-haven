@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Storm damage survey: a diving mask in front of a big swell. -->
+  <path d="M0 14 Q8 4 16 12 T32 12 L32 32 L0 32 Z" fill="#2f6a8a"/>
+  <path d="M0 14 Q8 4 16 12" fill="none" stroke="#dff2f6" stroke-width="2"/>
+  <rect x="5" y="16" width="22" height="11" fill="#2a2a2e"/>
+  <rect x="7" y="18" width="8" height="7" fill="#9fd4e0"/><rect x="17" y="18" width="8" height="7" fill="#9fd4e0"/>
+  <rect x="8" y="19" width="2" height="2" fill="#dff2f6"/><rect x="18" y="19" width="2" height="2" fill="#dff2f6"/>
+  <rect x="2" y="19" width="3" height="3" fill="#e8413a"/><rect x="27" y="19" width="3" height="3" fill="#e8413a"/>
+</svg>

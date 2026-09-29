@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Pollution survey: a magnifying glass over a plastic bottle half-buried in sand. -->
+  <rect x="0" y="24" width="32" height="8" fill="#d9c79a"/>
+  <rect x="5" y="17" width="12" height="7" fill="#9fd4e0"/><rect x="17" y="19" width="3" height="3" fill="#4a8ae8"/>
+  <rect x="7" y="19" width="6" height="2" fill="#dff2f6"/>
+  <circle cx="19" cy="12" r="8" fill="none" stroke="#5a3e22" stroke-width="3"/>
+  <circle cx="19" cy="12" r="6" fill="#dff2f6" fill-opacity="0.55"/>
+  <polygon points="24,17 27,16 31,22 28,24" fill="#5a3e22"/>
+</svg>

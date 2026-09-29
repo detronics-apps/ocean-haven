@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/coastal_survey.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"coastal_survey"
 display_name = "Coastal survey"
+icon = ExtResource("2_icon")
 description = "Researchers map the sea floor around the island with sonar, searching for anything hidden under the water. It may take a few tries."
 order = 6
 facility = &"marine_rescue_station"

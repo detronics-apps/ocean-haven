@@ -51,6 +51,13 @@ func _initialize() -> void:
 	for id in ["rescue_boat", "pollution_survey", "turtle_monitoring", "dolphin_tracking"]:
 		_expect(menu.find_child("Mission_" + id, true, false) != null, "offers the %s" % id)
 	_expect((menu.find_child("Status", true, false) as Label).text.contains("health"), "shows the island's health")
+	var no_icon := []
+	for f in DirAccess.get_files_at("res://data/missions"):
+		if f.ends_with(".tres") and not load("res://data/missions/" + f).icon:
+			no_icon.append(f)
+	_expect(no_icon.is_empty(), "every mission has its own picture (%s)" % [no_icon])
+	var pic: TextureRect = menu.find_child("Mission_rescue_boat", true, false).find_children("*", "TextureRect", true, false)[0]
+	_expect(pic.texture != null, "shown on the left of its card")
 
 	# --- The rescue boat: finds the tangled dolphin (and the turtle and crab) ---
 	clock.day = 1

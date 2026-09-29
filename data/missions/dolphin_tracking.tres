@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/dolphin_tracking.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"dolphin_tracking"
 display_name = "Dolphin tracking"
+icon = ExtResource("2_icon")
 description = "Researchers follow the clicks and whistles of a passing pod, and guide a visiting dolphin to your island for 2 days. More dolphins, more visitors at your viewing area!"
 order = 5
 facility = &"marine_rescue_station"

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/boat_patrol.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"boat_patrol"
 display_name = "Boat patrol"
+icon = ExtResource("2_icon")
 description = "Rangers patrol the island's waters for 2 days: boats slow down, so animals aren't disturbed by busy boats and fewer are hurt if a storm comes."
 order = 2
 facility = &"marine_rescue_station"

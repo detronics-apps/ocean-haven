@@ -7,6 +7,8 @@ extends Resource
 
 @export var id: StringName
 @export var display_name: String
+## Its picture on the mission screen (a small drawing, never an emoji).
+@export var icon: Texture2D
 @export_multiline var description: String
 ## Position in the facility's list.
 @export var order := 0

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/rescue_boat.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"rescue_boat"
 display_name = "Rescue"
+icon = ExtResource("2_icon")
 description = "The rescue team searches the island for injured animals (after a storm, say) and helps them recover, then marks any caught in litter for you to free."
 order = 1
 facility = &"marine_rescue_station"

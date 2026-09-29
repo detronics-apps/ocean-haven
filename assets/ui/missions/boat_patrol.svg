@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Boat patrol: a small ranger patrol boat with a blue light, on calm water. -->
+  <rect x="0" y="24" width="32" height="8" fill="#3a7fa0"/>
+  <rect x="2" y="26" width="6" height="1" fill="#6fb2c8"/><rect x="20" y="28" width="8" height="1" fill="#6fb2c8"/>
+  <polygon points="3,18 29,18 25,25 7,25" fill="#f4f6f8"/>
+  <rect x="7" y="22" width="18" height="2" fill="#2f6a8a"/>
+  <rect x="11" y="11" width="10" height="7" fill="#dfe6ea"/>
+  <rect x="13" y="13" width="3" height="3" fill="#6fb2c8"/><rect x="17" y="13" width="3" height="3" fill="#6fb2c8"/>
+  <rect x="15" y="7" width="2" height="4" fill="#8a8a86"/><rect x="14" y="5" width="4" height="3" fill="#4a8ae8"/>
+</svg>

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="MissionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/storm_damage_survey.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_mis")
 id = &"storm_damage_survey"
 display_name = "Storm damage survey"
+icon = ExtResource("2_icon")
 description = "After heavy swell, divers find the damaged kelp beds and which to restore first."
 order = 7
 facility = &"kelp_research_platform"
