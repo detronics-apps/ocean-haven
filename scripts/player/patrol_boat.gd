@@ -4,7 +4,7 @@ extends Node2D
 ## cruises to random spots in its area and collects floating litter that washes
 ## in there, quietly, into the ranger's inventory. Stays on the water.
 
-@export var radius := 160.0
+@export var radius := 200.0
 @export var speed := 70.0
 
 var _target := Vector2.ZERO
@@ -69,6 +69,35 @@ func _pick_spot() -> Vector2:
 		if _is_water(spot) and _is_water(halfway):
 			return spot
 	return Vector2.ZERO
+
+
+## Share (0..1) of `region`'s own water (the shallows and mid water round its island) that's
+## outside every patrol area: quiet water where turtles and dolphins can feed and rest.
+static func free_water_share(tree: SceneTree, region: RegionData) -> float:
+	var areas: Array[Vector2] = []
+	var radii: Array[float] = []
+	for boat: Node in tree.get_nodes_in_group("busy_boats"):
+		if Regions.nearest(boat.global_position) == region:
+			areas.append(boat.global_position)
+			radii.append(boat.radius)
+	if areas.is_empty():
+		return 1.0
+	var water := 0
+	var busy := 0
+	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+		for cell in ground.get_used_cells():
+			var tile := ground.get_cell_tile_data(cell)
+			if not tile or tile.get_custom_data("walkable") or tile.get_custom_data("terrain") not in ["water", ""]:
+				continue
+			var spot := ground.to_global(ground.map_to_local(cell))
+			if Regions.nearest(spot) != region:
+				continue
+			water += 1
+			for i in areas.size():
+				if spot.distance_to(areas[i]) <= radii[i]:
+					busy += 1
+					break
+	return 1.0 - float(busy) / maxi(water, 1)
 
 
 func _is_water(local_point: Vector2) -> bool:

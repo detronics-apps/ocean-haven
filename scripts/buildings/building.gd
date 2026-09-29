@@ -389,6 +389,9 @@ func _numbers() -> String:
 			lines.append("Too busy: %s nearby" % busy.data.display_name)
 	if data.upkeep > 0 and not upkeep_paid:
 		lines.append("Upkeep unpaid today")
+	if has_node("PatrolBoat"):  # patrol boats must leave turtles and dolphins some quiet water
+		var free := PatrolBoat.free_water_share(get_tree(), Regions.nearest(global_position))
+		lines.append("Quiet water left: %d%%%s" % [roundi(free * 100.0), " (too little!)" if free < 0.65 else ""])
 	return "\n".join(lines)
 
 

@@ -85,9 +85,35 @@ func _initialize() -> void:
 	_expect(turtle.data.boat_shy_distance > 0.0 and turtle.data.boat_shy_distance < 200.0,
 		"turtles keep away from patrol boats too (a bit less than dolphins)")
 
+	# --- Up to 6 patrol boats; but if they leave too little quiet water, they hit turtles ---
+	_expect(patrol.max_count == 6 and load("res://data/buildings/dolphin_viewing_area.tres").max_count == 3,
+		"up to 6 patrol boats and 3 Dolphin Viewing Areas")
+	spawner = world.get_node("LitterSpawner")
+	var home: Resource = load("res://data/regions/home_island.tres")
+	var share: Callable = func() -> float: return load("res://scripts/player/patrol_boat.gd").free_water_share(self, home)
+	_expect(share.call() > spawner.min_free_water and spawner.busy_waters(1.0) == null,
+		"one patrol boat leaves plenty of quiet water (%d%% free): nobody is hurt" % roundi(share.call() * 100))
+	var ground: TileMapLayer = world.get_node("StarterIsland/Ground")
+	var water_cells: Array = ground.get_used_cells().filter(func(c: Vector2i) -> bool:
+		var t := ground.get_cell_tile_data(c)
+		return not t.get_custom_data("walkable") and t.get_custom_data("terrain") in ["water", ""])
+	water_cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return Vector2(a).angle() < Vector2(b).angle())
+	for i in 5:
+		var cell: Vector2i = water_cells[(i + 1) * water_cells.size() / 6]
+		build_mode.add_building(patrol, Terrain_cell(ground, cell))
+	await process_frame
+	var free_now: float = share.call()
+	_expect(free_now < spawner.min_free_water, "6 patrol boats round the island leave little quiet water (%d%% free)" % roundi(free_now * 100))
+	var hit: Node = spawner.busy_waters(1.0)
+	_expect(hit != null and hit.injured and hit.data.boat_shy_distance > 0.0, "and one hits a turtle or dolphin (hurt, never killed)")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func Terrain_cell(ground: TileMapLayer, cell: Vector2i) -> Vector2i:
+	return Vector2i((ground.to_global(ground.map_to_local(cell)) / 32.0).floor())
 
 
 func _terrain(point: Vector2) -> String:

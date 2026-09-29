@@ -27,6 +27,10 @@ const OIL := preload("res://data/items/oil_patch.tres")
 ## get caught may catch one: at most this many a day in this area. Clean it up to prevent it.
 @export var tangle_range := 320.0
 @export var tangles_per_day := 1
+## Patrol boats need to leave quiet water: with less than this share of the island's water
+## free of them, a boat now and then hits a turtle or dolphin (hurt, never killed: a
+## Rescue mission helps it). The less free water, the likelier.
+@export var min_free_water := 0.65
 
 var _items: Array[Resource] = DataFiles.load_all("res://data/items").filter(
 	func(item: ItemData) -> bool: return item.is_litter)
@@ -38,7 +42,9 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	GameClock.new_day.connect(func(_d: int) -> void: entangle())
+	GameClock.new_day.connect(func(_d: int) -> void:
+		entangle()
+		busy_waters())
 
 
 ## Litter that entangles, left near an animal that can get caught, catches it (at most
@@ -70,6 +76,30 @@ func _catchable_near(point: Vector2) -> Animal:
 		if distance <= tangle_range and (not best or distance < best.global_position.distance_to(point)):
 			best = animal
 	return best
+
+
+## Too much of the water is patrolled: maybe one boat-shy animal gets hit (never killed).
+## Returns it, or null.
+func busy_waters(chance := -1.0) -> Animal:
+	var region := Regions.nearest(area.get_center())
+	var free := PatrolBoat.free_water_share(get_tree(), region)
+	if free >= min_free_water:
+		return null
+	if chance < 0.0:  # up to 60% a morning, as the quiet water shrinks
+		chance = clampf((min_free_water - free) / 0.15, 0.0, 1.0) * 0.6
+	if randf() >= chance:
+		return null
+	var at_risk := get_tree().get_nodes_in_group("animals").filter(func(a: Animal) -> bool:
+		return (a.data.boat_shy_distance > 0.0 and not a.young and not a.injured and not a.leaving
+			and Regions.nearest(a.global_position) == region))
+	if at_risk.is_empty():
+		return null
+	var hit: Animal = at_risk.pick_random()
+	hit.injure()
+	get_tree().call_group("hud", "show_toast",
+		"A patrol boat hit a %s! Patrol boats cover %d%% of the water, leaving turtles and dolphins too little quiet water. Move or take some away, and send a Rescue mission." % [
+		hit.data.display_name.to_lower(), roundi((1.0 - free) * 100.0)])
+	return hit
 
 
 ## A random piece of litter at `spot` (e.g. dug up by a crab), unless there's
