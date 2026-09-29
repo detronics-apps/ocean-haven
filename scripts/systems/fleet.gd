@@ -14,6 +14,8 @@ var _obtained := {}
 var _installed := {}
 ## Progress flags (e.g. "wreck_found", "sonar_recovered"): island objectives check them.
 var _flags := {}
+## Progress counts (e.g. shed kelp gathered): id -> number. Saved.
+var _counts := {}
 
 
 func _ready() -> void:
@@ -64,6 +66,8 @@ func progress(goal: ObjectiveGoal) -> int:
 			return Inventory.litter_collected
 		&"flag":
 			return 1 if _flags.has(goal.target) else 0
+		&"count":
+			return _counts.get(goal.target, 0)
 	return 0
 
 
@@ -78,6 +82,16 @@ func goal_line(region: RegionData, goal: ObjectiveGoal) -> String:
 	if goal.amount > 1:
 		return "%s: %d / %d" % [goal.text, progress(goal), goal.amount]
 	return goal.text
+
+
+## Adds to a progress count (ObjectiveGoal "count") and checks the objectives.
+func add_count(id: StringName, n := 1) -> void:
+	_counts[id] = _counts.get(id, 0) + n
+	check()
+
+
+func count_of(id: StringName) -> int:
+	return _counts.get(id, 0)
 
 
 ## Marks a progress flag and checks the objectives.
@@ -147,7 +161,7 @@ func missing_for(region: RegionData) -> DiscoveryData:
 ## For the save file.
 func to_dict() -> Dictionary:
 	return {"completed": _completed.keys(), "found": _obtained.keys(), "installed": _installed.keys(),
-		"flags": _flags.keys()}
+		"flags": _flags.keys(), "counts": _counts.duplicate()}
 
 
 func restore(saved: Dictionary) -> void:
@@ -155,6 +169,10 @@ func restore(saved: Dictionary) -> void:
 		into.clear()
 	for flag in saved.get("flags", []):
 		_flags[StringName(flag)] = true
+	_counts.clear()
+	var counts: Dictionary = saved.get("counts", {})
+	for id in counts:
+		_counts[StringName(id)] = int(counts[id])
 	for id in saved.get("completed", []):
 		_completed[StringName(id)] = true
 	for id in saved.get("found", []):

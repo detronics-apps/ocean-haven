@@ -151,6 +151,21 @@ func _initialize() -> void:
 	for b: Node2D in beds:
 		b.urchins = 2.0
 
+	# --- The objective: balance, then gather shed kelp → Kelp Fibre ---
+	var fleet := root.get_node("Fleet")
+	_expect(not fleet.objective_done(kelp_region), "the objective isn't done yet")
+	ecosystem._objective()
+	_expect(fleet.has_flag(&"kelp_balanced"), "a balanced food web is marked")
+	for day in 4:
+		for d in get_nodes_in_group("debris").filter(func(n: Node) -> bool: return n.item.id == &"shed_kelp"):
+			d.collect()
+		await process_frame
+		ecosystem._objective()
+	for d in get_nodes_in_group("debris").filter(func(n: Node) -> bool: return n.item.id == &"shed_kelp"):
+		d.collect()
+	_expect(fleet.count_of(&"shed_kelp") >= 5, "the healthy forest sheds kelp to gather (%d)" % fleet.count_of(&"shed_kelp"))
+	_expect(fleet.objective_done(kelp_region) and fleet.has_found(&"kelp_fibre"), "objective done: Kelp Fibre found")
+
 	# --- Saved ---
 	var saved: Dictionary = ecosystem.to_dict()
 	var saved_health: float = bed.health

@@ -66,6 +66,7 @@ func _ready() -> void:
 	GameClock.new_day.connect(func(_d: int) -> void:
 		if Regions.is_discovered(region()):
 			settle()
+			_objective()
 		for bed in beds():
 			bed.health_yesterday = bed.health)
 
@@ -262,6 +263,41 @@ func living(species: AnimalData) -> Array[Animal]:
 		if animal.data == species and not animal.leaving and Regions.nearest(animal.global_position).id == region_id:
 			list.append(animal)
 	return list
+
+
+## The objective (RegionData.goals): once the food web is in balance (island health at
+## balanced_at, marked for good), the healthiest beds shed kelp each morning for the ranger
+## to gather, until enough has been gathered.
+@export_group("Objective")
+@export var balanced_at := 0.7
+@export var balanced_flag := &"kelp_balanced"
+@export var shed_count := &"shed_kelp"
+@export var shed_needed := 5
+@export var shed_per_day := 2
+const SHED_KELP := preload("res://data/items/shed_kelp.tres")
+
+
+func _objective() -> void:
+	if not Fleet.has_flag(balanced_flag):
+		if IslandHealth.of(get_tree(), region()) >= balanced_at:
+			Fleet.mark(balanced_flag)
+			get_tree().call_group("hud", "show_toast",
+				"The Kelp Forest's food web is back in balance! Healthy kelp sheds old fronds: gather them from the water.")
+		else:
+			return
+	if Fleet.count_of(shed_count) >= shed_needed:
+		return
+	var floating := get_tree().get_nodes_in_group("debris").filter(func(d: Debris) -> bool: return d.item == SHED_KELP).size()
+	var list := beds()
+	list.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.health > b.health)
+	var spawner: LitterSpawner = null
+	for s: LitterSpawner in get_tree().get_nodes_in_group("litter_spawner"):
+		if Regions.nearest(s.area.get_center()).id == region_id:
+			spawner = s
+	if not spawner:
+		return
+	for bed in list.slice(0, maxi(shed_per_day - floating, 0)):
+		spawner.spawn_at(SHED_KELP, bed.global_position + Vector2(randf_range(-12.0, 12.0), 14.0), true)
 
 
 ## One more of `species` arrives, or one moves away, towards `target`.

@@ -16,6 +16,8 @@ extends Resource
 @export var grant_value := 0
 ## Picking it up marks this progress flag (Fleet.mark), e.g. the wreck's old sonar unit.
 @export var flag: StringName
+## Picking it up adds 1 to this progress count (Fleet.add_count) instead of carrying it.
+@export var counts_as: StringName
 ## Said when it's picked up, instead of "... cleaned up!".
 @export_multiline var pickup_note: String
 ## Most the ranger can carry at once (0 = no limit). Items with a limit (wood, sand)

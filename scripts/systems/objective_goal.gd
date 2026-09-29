@@ -5,6 +5,7 @@ extends Resource
 
 ## "help": free `target` species (Journal helped count). "litter": collect pieces of litter.
 ## "flag": `target` progress flag marked (Fleet.mark), e.g. "wreck_found".
+## "count": `amount` of `target` counted (Fleet.add_count), e.g. shed kelp gathered.
 @export var kind: StringName
 ## Species id for "help".
 @export var target: StringName

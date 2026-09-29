@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_4kmir"]
 [ext_resource type="Texture2D" path="res://assets/ui/maps/kelp_island.png" id="1_vyq8o"]
 [ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="4_goal"]
 
 [sub_resource type="Resource" id="Health_clean"]
 script = ExtResource("3_health")
@@ -47,6 +48,19 @@ target = &"double_crested_cormorant"
 amount = 3
 text = "Cormorants fishing"
 
+[sub_resource type="Resource" id="Goal_balance"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"kelp_balanced"
+text = "Bring the food web back into balance (island health 70 %)"
+
+[sub_resource type="Resource" id="Goal_gather"]
+script = ExtResource("4_goal")
+kind = &"count"
+target = &"shed_kelp"
+amount = 5
+text = "Gather shed kelp from the healthy forest"
+
 [resource]
 script = ExtResource("1_4kmir")
 id = &"kelp_forest"
@@ -63,3 +77,6 @@ map_icon = ExtResource("1_vyq8o")
 requires = &"salvaged_sonar_core"
 discovery = &"kelp_fibre"
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_kelp"), SubResource("Health_balance"), SubResource("Health_otters"), SubResource("Health_fish"), SubResource("Health_cormorants")])
+objective = "Restore the kelp forest's food web"
+goals = Array[ExtResource("4_goal")]([SubResource("Goal_balance"), SubResource("Goal_gather")])
+discovery_text = "Woven from the kelp you gathered, the Kelp Fibre is strong and light. Build an Exploration Ship here and install it: Deep-Water Equipment for rougher, deeper seas."

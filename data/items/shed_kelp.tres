@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/shed_kelp.svg" id="1_shed"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"shed_kelp"
+display_name = "Shed kelp"
+icon = ExtResource("1_shed")
+is_litter = false
+counts_as = &"shed_kelp"
+pickup_note = "Shed kelp gathered (%d / 5). Kelp sheds old fronds all the time; gathering them doesn't harm the forest."
+fact = "Kelp that breaks off drifts ashore and feeds beach life, from sand hoppers to shorebirds."
