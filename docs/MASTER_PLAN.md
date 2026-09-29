@@ -121,6 +121,23 @@ Animal rule (CLAUDE.md): every animal needs the ranger's help, helps other anima
 and **animals never die**. Declines are shown as animals leaving, fewer arriving, colonies moving
 away or fewer young — and always recoverable. Interventions are never lethal.
 
+**Ecosystem principle (from the Kelp Forest on): population growth is an outcome of successful
+conservation, not an animal's gameplay purpose.** The player changes the environment and the
+ecosystem responds. Every animal has an ecological role that creates or changes a decision; if it
+could be removed without changing the player's decisions, it doesn't belong. The player can
+identify a problem, understand its cause, choose an intervention, see the response, make mistakes
+(including creating new problems), recognise the consequences, remove or change infrastructure,
+and restore balance. So:
+- **Buildings create conditions; animals respond.** Never "build 3 Otter Habitats = 3 otters";
+  buildings never manufacture animals; not every animal needs its own building.
+- **Hard limits are not targets.** A habitat may allow up to 6, but the healthy number might be
+  2–3 depending on the ecosystem. Overbuilding is allowed and has consequences (space, upkeep,
+  displaced activities, imbalance) that the ecosystem shows — never "you built too many". The
+  player can demolish and adapt. The game never tells an exact optimal number.
+- **Research always leads to an action** (observe → understand → intervene → observe again),
+  never just a report.
+- Mission effects use real elapsed time where it matters, not "until midnight".
+
 ### 1. 🏝️ Starting Island — Human impact
 Pollution isn't one score; each kind hits a different system, and the player chooses what to clean
 first and what to protect:
@@ -137,33 +154,83 @@ first and what to protect:
 Result: cleaner beach → more nesting → more wildlife — by changing how the island is used.
 **Discovery:** clean up the underwater wreck / debris field → **Salvaged Sonar Core**.
 
-### 2. 🌿 Kelp Forest — Food web
-Sea otter → sea urchin → kelp → habitat → fish. Lose otters: urchins ↑, kelp ↓, habitat ↓, fish ↓.
-The lesson isn't "remove urchins" but "why are there too many urchins?" — restore the otters and the
-system fixes itself.
+### 2. 🌿 Kelp Forest — Food web ("species depend on one another")
+Sea otter → sea urchin → kelp → kelp fish → cormorant. Otters control urchin grazing pressure;
+urchins graze kelp; kelp is habitat for fish; fish feed cormorants. No problem can be solved in
+isolation. **Exactly four animal species — no seals.**
 
-| Animal | Role |
-|---|---|
-| 🦦 Sea Otter | Keeps urchins in balance; restoring otters changes the whole forest |
-| 🦔 Sea Urchin | Kelp grazer — managed through the food web, never eliminated |
-| 🦭 Seal | Needs safe haul-out / breeding areas → protected coastal zones |
-| 🐟 Kelp fish / Rockfish | Habitat indicator: numbers follow the forest's health |
+| Animal | Ecological role | Gameplay |
+|---|---|---|
+| 🦦 Sea Otter | The predator that keeps urchin grazing in check | Never bought or spawned: Otter Habitats create resting, feeding, low-disturbance and breeding conditions; otters establish and reproduce naturally if the ecosystem supports them. Fewer otters → more urchins → kelp damaged → less fish habitat → fewer cormorants |
+| 🟣 Sea Urchin | The main kelp grazer — not bad; a healthy forest has some | Creates the island's main pressure. No habitat building: part of the ecosystem, influenced indirectly (otters, kelp restoration) and, when needed, relocated from overgrazed areas to low-pressure ones (a limited management tool: "not the enemy — too many in the wrong place") |
+| 🐟 Kelp fish / Rockfish | Depend on healthy kelp: the indicator of a functioning forest | Not managed directly; numbers follow habitat quality. No fish farm |
+| 🐦 Cormorant | Visible top of the food chain; eats fish | Feedback: an underwater problem shows at the surface. No cormorant building; they follow fish and ecosystem health (nest in full-grown coastal trees, like all tree-nesting birds) |
 
-Plants: kelp (grows back visibly). **Discovery:** restore the food web, then gather shed kelp → **Kelp Fibre**.
+**Kelp** is the foundation habitat (structure, shelter, fish), not decoration: its condition is a
+main indicator of balance. It can be restored — but endless planting never fixes overgrazing:
+restored kelp keeps struggling until the food web is fixed. Land trees: **coastal trees** (wood;
+sapling → 3 stages, one a day; cut and replant as on the Starting Island).
 
-### 3. 🌱 Mangrove Coast — Land meets ocean
-Land → freshwater → sediment/nutrients → mangroves → juvenile fish → ocean. The player restores (or
-damages) mangrove channels, mud flats, shallow pools, nursery areas, boat channels; a blocked channel
-stops fish reaching the nursery.
+**Buildings**
+- ⭐ **Kelp Research Platform** (exactly 1): observe → understand → intervene → observe again.
+  Missions: Kelp Health Survey (where kelp is healthy / damaged / recovering), Urchin Pressure
+  Survey (where grazing is getting dangerous), Otter Monitoring (presence, habitat use, whether
+  conditions support growth), Ecosystem Balance Survey (spells out links like low otters → high
+  urchins → declining kelp), Kelp Restoration (restores damaged kelp), Urchin Relocation (moves
+  excess urchins from high- to low-pressure areas), Storm Damage Survey (after heavy swell:
+  damage and restoration priorities).
+- **Otter Habitat** (hard max 6; the healthy number isn't fixed — often 2–3). Overbuilding uses
+  shore space, raises upkeep, displaces other uses and unbalances the island; demolish to adapt.
+- **Kelp Restoration Site** (hard max): local kelp restoration; spamming them can't win while
+  urchin grazing is too high.
+- 💰 **Kelp Discovery Centre** (max 2): visitors learn about kelp, otters, food webs, research →
+  funding. Healthy ecosystem / attraction → funding → research and interventions → healthier
+  ecosystem; balance infrastructure rather than building unlimited income.
 
-| Animal | Role |
-|---|---|
-| 🦀 Mangrove Crab | Ecosystem engineer: burrows change sediment and water flow, and where mangroves thrive |
-| 🐟 Juvenile fish | Nursery connection: grow up in the channels, then move to other habitats (later the Reef) |
-| 🦩 Flamingo | Water-level indicator: feeding areas follow shallow-water conditions |
-| 🐊 Crocodile | Territories are protected zones where boats and people must keep away |
+**Rare event — Underwater Storm / heavy swell:** warned ahead; damages kelp sections, moves
+debris, reduces visibility, may disrupt habitat. Response through the ecosystem: survey damage →
+prioritise → restore → monitor. Never kills animals or gives a population bonus.
 
-Plants: mangroves. **Discovery:** restore the channels, then collect resin from fallen branches → **Mangrove Resin**.
+**Core loop:** observe → kelp declining → research shows high urchin pressure → check otter
+conditions → build / protect suitable Otter Habitat → otters recover if conditions allow →
+urchin pressure falls → kelp recovers → fish habitat improves → cormorants recover. And the
+mistake loop: overbuild → space and resources constrained → inefficient → spot it → demolish /
+reposition → balance improves.
+
+**Discovery:** restore the food web, then gather shed kelp → **Kelp Fibre**.
+
+### 3. 🌱 Mangrove Coast — Land meets ocean ("the land and ocean are connected")
+Freshwater + sediment + nutrients → mangroves → juvenile fish nursery → ocean: an island about
+water flow and connectivity. Current animal set (more only if they add a genuinely useful
+mechanic, never to look populated):
+
+| Animal | Ecological role | Gameplay |
+|---|---|---|
+| 🦀 Mangrove Crab | Ecosystem engineer: burrows change sediment, drainage, infiltration and local habitat | Crab Habitats (protected muddy burrowing ground) let crabs establish naturally; crab activity changes how water moves nearby — changing one habitat can change water elsewhere. Too little activity → poor drainage |
+| 🐟 Juvenile fish | Mangroves are their nursery (shallows, roots, protected channels); grown, they move offshore | Keep mangrove → nursery channel → ocean connected; pollution, obstruction or bad construction cuts recruitment. No fish farm |
+| 🦩 Flamingo | Feeds in shallow water; follows water depth and condition | Makes water-level management visible: too deep / too shallow / stagnant → feeding areas fail. Managed via the Waterworks Station |
+| 🐊 Crocodile | Needs protected territory where visitors and boats can't go | A spatial-planning trade-off: Crocodile Protection Zones protect territory but restrict boat routes, visitor access, tourism and building; too many are inefficient and may need moving or demolishing |
+
+**Mangrove trees** are the foundation habitat and the island's visible structure: they stabilise
+shorelines, steer water flow, give nursery habitat, trap sediment; their health depends on the
+right water and sediment.
+
+**Buildings**
+- ⭐ **Mangrove Waterworks Station** (exactly 1): Water Flow Survey (where freshwater enters,
+  flows, is blocked, collects), Water Level Management, Nursery Flow Management, Channel Clearing,
+  Sediment Management, Mangrove Recovery. "Water isn't just a resource: it's the transport
+  system connecting the ecosystem."
+- **Crab Habitat** (hard max): muddy protected burrowing ground; too many use valuable shoreline,
+  interfere with other structures and shift the balance; demolishable.
+- **Nursery Channels**: buildable / restorable pathways from mangroves to open water, critical for
+  juvenile fish; can become blocked, damaged, disconnected or badly placed; restore or modify.
+- **Crocodile Protection Zone** (hard max): protects territory but restricts boats, visitor routes
+  and access. More protected area ≠ automatically better.
+- 💰 **Mangrove Eco-Lodge** (max 3): visitors, education, kayak / boat tours, wildlife viewing →
+  funding; but more tourism also means more boat traffic, disturbance and pressure… *(the design
+  notes were cut off here — the rest of the Mangrove spec is still to come)*
+
+**Discovery:** restore the channels, then collect resin from fallen branches → **Mangrove Resin**.
 
 ### 4. 🪸 Tropical Reef — Ecosystem complexity
 Lagoon, coral reef, seagrass, outer reef, deep reef edge. Not just "plant coral": create the
@@ -470,7 +537,7 @@ Each step ends with a playable build. ✅ = done.
   field → Salvaged Sonar Core. Buildings: ⭐ Marine Rescue & Research Station
   (funded missions) and 💰 Wildlife Conservation Parks (up to 3 Turtle Protection Areas + a Dolphin
   Viewing Area). Rare event: 🌪️ Coastal Storm.
-- **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, seals, kelp fish; the food-web
+- **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, kelp fish, cormorants; the food-web
   simulation (visible forest thinning and regrowing); shed kelp → Kelp Fibre. ⭐ Kelp Research Platform, 💰 Kelp Discovery Centre (2). Rare event: 🌊 Underwater Storm.
 - **Step 4 — Mangrove Coast.** Mangroves as plants; water flow, channels, mud flats, nursery;
   mangrove crab, juvenile fish, flamingo, crocodile zones; fallen branches → Mangrove Resin. ⭐ Mangrove Waterworks Station, 💰 Mangrove
@@ -549,22 +616,28 @@ tested commit. Placeholder art throughout.
    restore nesting habitat and reopen visitor areas.
 
 ### Step 3 — Kelp Forest (colder, 1st)
-1. **Coastal trees** replace the leftover palms: wood and saplings, same growth stages.
-2. **Kelp as a plant** on shallow and mid water: grows, thins, regrows visibly; forest density
-   is the island's health.
-3. **Sea urchins** (graze kelp; their numbers rise when otters are few) and **sea otters** (eat
-   urchins). The food web: few otters → urchins ↑ → kelp ↓ → fish ↓. The fix is helping otters
-   (e.g. an otter tangled in a net; protected resting areas), never removing urchins.
-4. **Kelp Research Platform** (signature): funded dive / submersible missions to parts of the
-   forest reveal urchin density, kelp health, otter activity and fish habitat.
-5. **Kelp Discovery Centre** (funding, up to 2): guided dives; more kelp → more funding.
-6. **Harbour seals** need protected haul-out beaches (like turtle areas); **kelp fish / rockfish**
-   follow the forest's health (an indicator, and they draw visitors).
-7. **Objective → Kelp Fibre:** restore the balance, then gather shed kelp from set spots.
-   Kelp Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
-8. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
-9. **🌊 Underwater Storm (heavy swell):** the Kelp Research Platform finds vulnerable beds to
-   prioritise; afterwards survey and restore broken kelp.
+See "Island by island → Kelp Forest" for the design. Build order (each a playable commit):
+1. **Coastal trees** replace the leftover palms: wood and saplings, sapling → 3 stages (one a day).
+2. **Kelp beds and urchins:** kelp beds on shallow and mid water, each with its health (drawn
+   denser / sparser) and its urchins; the daily food-web model: urchins graze and multiply, kelp
+   regrows where grazing is low.
+3. **Sea otters + Otter Habitat** (hard max 6): otters settle and breed only while habitats offer
+   room *and* the forest can feed them; they eat urchins near their habitat; they move away (never
+   die) when food runs short. Each habitat has daily upkeep and uses shore space; habitats
+   crowded together share the same stretch of coast, so extra ones add upkeep, not otters.
+4. **Kelp fish and cormorants** follow kelp and fish (arrive / move away day by day);
+   cormorants nest in full-grown coastal trees.
+5. **Kelp Research Platform** (signature, 1) with its missions: kelp health survey, urchin
+   pressure survey, otter monitoring, ecosystem balance survey, kelp restoration, urchin
+   relocation, storm damage survey.
+6. **Kelp Restoration Site** (hard max) and 💰 **Kelp Discovery Centre** (max 2).
+7. **Island health** from the food web (kelp cover, urchins in balance — neither overgrazing
+   nor none, otters, fish, cormorants, clean water).
+8. **🌊 Underwater Storm (heavy swell):** warned; damages kelp beds, moves debris, reduces
+   visibility (missions take longer for a while); respond by surveying and restoring.
+9. **Objective → Kelp Fibre:** restore the balance, then gather shed kelp at set spots. Kelp
+   Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
+10. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
 
 ### Step 4 — Mangrove Coast (warmer, 1st)
 1. **Mangrove trees** as the island's wood and a plant: planted along mud edges, they hold mud
