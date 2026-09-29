@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/items/shed_kelp.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"giant_kelp"
+display_name = "Giant Kelp"
+picture = ExtResource("2_plant")
+habitat = "Cool, clear, shallow seas over rocky floors (the Kelp Forest)"
+fact = "Giant kelp is one of the fastest-growing living things on Earth: it can grow about half a metre in a single day. It's a seaweed, not a plant with roots, holding on to rocks with a 'holdfast'."
+role = "The forest itself: shelter for rockfish, food for urchins, and a resting place for otters."

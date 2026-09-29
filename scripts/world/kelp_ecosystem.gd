@@ -8,6 +8,7 @@ extends Node2D
 
 const BED_SCRIPT := preload("res://scripts/world/kelp_bed.gd")
 const URCHIN := preload("res://data/animals/sea_urchin.tres")
+const KELP := preload("res://data/plants/giant_kelp.tres")
 ## The ranger finds the urchins this close to a bed that has some.
 const SPOT_RANGE := 72.0
 
@@ -178,16 +179,18 @@ func _spawn(species: AnimalData, spot: Vector2) -> Animal:
 	return animal
 
 
-## Close to a bed with urchins: they're in the Journal.
+## Close to a bed: the kelp (and its urchins) go in the Journal.
 func _spot_urchins() -> void:
-	if Journal.has(URCHIN.id):
+	if Journal.has(URCHIN.id) and Journal.has_plant(KELP.id):
 		return
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger:
 		return
 	for bed in beds():
-		if bed.urchin_count() > 0 and bed.global_position.distance_to(ranger.global_position) <= SPOT_RANGE:
-			Journal.discover(URCHIN)
+		if bed.global_position.distance_to(ranger.global_position) <= SPOT_RANGE:
+			Journal.discover_plant(KELP)
+			if bed.urchin_count() > 0:
+				Journal.discover(URCHIN)
 			return
 
 

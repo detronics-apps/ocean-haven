@@ -156,6 +156,36 @@ func _initialize() -> void:
 	_expect(bm.placement_problem(palm_data, kelp_cell) != "", "palms belong on the Starting Island")
 	player.global_position = Vector2.ZERO
 
+	# --- Plants go in the Journal the first time you come close ---
+	var journal := root.get_node("Journal")
+	var palm_near: Node2D = get_nodes_in_group("plants").filter(func(n: Node) -> bool: return Regions_home(n))[0]
+	player.global_position = palm_near.global_position + Vector2(-40, 10)
+	await process_frame
+	await process_frame
+	_expect(journal.has_plant(&"coconut_palm") and not journal.has_plant(&"giant_kelp"), "a palm close by: the Coconut Palm is in the Journal")
+	var screen: Node = world.get_node("JournalScreen")
+	screen.show_tab(&"plants")
+	screen.open()
+	var texts := ""
+	for label in screen.find_child("Plant_coconut_palm", true, false).find_children("*", "Label", true, false):
+		texts += label.text
+	_expect(texts.contains("Coconut Palm") and screen.find_child("Plant_giant_kelp", true, false) != null,
+		"the Plants tab shows it, and ??? for plants still to find")
+	_expect(not screen.find_child("Tab_ocean", true, false).visible, "the Ocean tab waits for every fleet upgrade")
+	var fleet := root.get_node("Fleet")
+	var all_ids := []
+	for d in DirAccess.get_files_at("res://data/discoveries"):
+		if d.ends_with(".tres"):
+			all_ids.append(d.get_basename())
+	fleet.restore({"found": all_ids, "installed": all_ids})
+	screen.show_tab(&"ocean")
+	screen.refresh()
+	_expect(screen.find_child("Tab_ocean", true, false).visible and screen.find_child("OceanTotals", true, false) != null
+		and screen.find_child("Ocean_home_island", true, false) != null, "with all 6 upgrades: the whole ocean's stats")
+	screen.close()
+	fleet.restore({})
+	player.global_position = Vector2.ZERO
+
 	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---
 	var minimap: Node = world.get_node("HUD/Minimap")
 	var near: Array = minimap.map_point(Vector2(100, 0), Vector2.ZERO)
@@ -166,6 +196,10 @@ func _initialize() -> void:
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func Regions_home(n: Node) -> bool:
+	return n is StaticBody2D and (n as Node2D).global_position.length() < 1200.0 and n.get("plant") == null
 
 
 func _expect(ok: bool, what: String) -> void:

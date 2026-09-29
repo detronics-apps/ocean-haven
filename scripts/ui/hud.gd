@@ -44,6 +44,7 @@ func _ready() -> void:
 	Inventory.changed.connect(_set_row)
 	Inventory.item_added.connect(_on_item_added)
 	Journal.discovered.connect(_on_discovered)
+	Journal.plant_discovered.connect(func(p: PlantData) -> void: show_toast("New plant in your Journal: %s!\n%s" % [p.display_name, p.fact]))
 	Journal.observed.connect(_on_observed)
 	Journal.photographed.connect(_on_photographed)
 	Journal.helped.connect(_on_helped)

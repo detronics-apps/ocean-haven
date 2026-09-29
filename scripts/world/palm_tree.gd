@@ -27,6 +27,9 @@ var _nest: Sprite2D
 
 ## The sapling it grows from and gives back (each island's land trees have their own).
 @export var sapling: ItemData
+## What it is, for the Journal's Plants tab (found the first time the ranger comes close).
+@export var plant: PlantData
+const SPOT_RANGE := 90.0
 
 var _wood: ItemData = load("res://data/items/wood.tres")
 @onready var _sapling: ItemData = sapling if sapling else load("res://data/items/sapling.tres")
@@ -128,3 +131,8 @@ func stage() -> int:
 
 func _process(_delta: float) -> void:
 	$Sprite2D.scale = Vector2.ONE * STAGE_SIZE[stage()]
+	var kind: PlantData = plant if plant else load("res://data/plants/coconut_palm.tres")
+	if not Journal.has_plant(kind.id):
+		var ranger := ControlledBody.active(get_tree())
+		if ranger and ranger.global_position.distance_to(global_position) <= SPOT_RANGE:
+			Journal.discover_plant(kind)

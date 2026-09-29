@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/coastal_tree.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"coastal_conifer"
+display_name = "Sitka Spruce"
+picture = ExtResource("2_plant")
+habitat = "Cool, rainy coasts (the Kelp Forest)"
+fact = "Sitka spruces grow right down to the shore along cool coasts, and can grow taller than a 20-storey building."
+role = "Gives wood and saplings; full-grown trees are where cormorants nest."

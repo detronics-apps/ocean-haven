@@ -101,6 +101,7 @@ func _initialize() -> void:
 	fleet.complete(kelp)
 	fleet.install(&"kelp_fibre")
 	fleet.add_count(&"shed_kelp", 3)
+	root.get_node("Journal").discover_plant(load("res://data/plants/giant_kelp.tres"))
 	var arctic: Resource = load("res://data/regions/arctic_ocean.tres")
 	regions.discover(arctic)  # without the Cargo Module: locked again on loading
 	_expect(_save.save_to(world, PATH), "saved")
@@ -133,6 +134,7 @@ func _initialize() -> void:
 	_expect(_inventory.litter_collected == 7, "litter collected ever restored (%d)" % _inventory.litter_collected)
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")
 	_expect(fleet.count_of(&"shed_kelp") == 3, "gathered shed kelp restored")
+	_expect(root.get_node("Journal").has_plant(&"giant_kelp"), "plants found are restored")
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
 	var caught: Node = world.get_node_or_null("Dolphin1")

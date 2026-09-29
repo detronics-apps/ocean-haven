@@ -8,6 +8,8 @@ signal photographed(animal: AnimalData, count: int)
 signal helped(animal: AnimalData, count: int)
 signal nested(animal: AnimalData)
 signal hatched(animal: AnimalData, count: int)
+## A plant seen for the first time (PlantData).
+signal plant_discovered(plant: PlantData)
 ## An animal helped the ranger (found or dug up litter).
 signal gifted(animal: AnimalData)
 
@@ -18,6 +20,7 @@ var _helped: Dictionary[StringName, int] = {}
 var _nests: Dictionary[StringName, int] = {}
 var _hatched: Dictionary[StringName, int] = {}
 var _gifts: Dictionary[StringName, int] = {}
+var _plants: Dictionary[StringName, PlantData] = {}
 
 
 func discover(animal: AnimalData) -> void:
@@ -29,6 +32,17 @@ func discover(animal: AnimalData) -> void:
 
 func has(id: StringName) -> bool:
 	return _found.has(id)
+
+
+func discover_plant(plant: PlantData) -> void:
+	if not plant or _plants.has(plant.id):
+		return
+	_plants[plant.id] = plant
+	plant_discovered.emit(plant)
+
+
+func has_plant(id: StringName) -> bool:
+	return _plants.has(id)
 
 
 func observe(animal: AnimalData) -> void:
@@ -96,7 +110,8 @@ func ids() -> Array:
 ## Observations, photos and help counts, for the save file.
 func details() -> Dictionary:
 	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate(),
-		"nests": _nests.duplicate(), "hatched": _hatched.duplicate(), "gifts": _gifts.duplicate()}
+		"nests": _nests.duplicate(), "hatched": _hatched.duplicate(), "gifts": _gifts.duplicate(),
+		"plants": _plants.keys()}
 
 
 ## Replaces discoveries from a save file (no "new discovery" notes).
@@ -118,6 +133,11 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	_restore_counts(_nests, saved_details.get("nests", {}))
 	_restore_counts(_hatched, saved_details.get("hatched", {}))
 	_restore_counts(_gifts, saved_details.get("gifts", {}))
+	_plants.clear()
+	for id in saved_details.get("plants", []):
+		var plant_path := "res://data/plants/%s.tres" % id
+		if ResourceLoader.exists(plant_path):
+			_plants[StringName(id)] = load(plant_path)
 
 
 func _restore_counts(into: Dictionary[StringName, int], saved: Dictionary) -> void:
