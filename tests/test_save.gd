@@ -40,8 +40,8 @@ func _initialize() -> void:
 	build_mode.add_building(ship, Vector2i(-3, 6))
 	var kelp_mooring: Vector2 = load("res://data/regions/kelp_forest.tres").boat_mooring
 	build_mode.add_building(ship, Vector2i((kelp_mooring / 32.0).floor()) + Vector2i(-2, 1))
-	build_mode.start(load("res://data/buildings/turtle_protection_area.tres"))
-	_expect(build_mode.place_at(Vector2i(14, -1)), "built the sanctuary (uses 5 of 7)")
+	build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
+	_expect(_inventory.take(5) and _inventory.use(&"wood", 2), "built the sanctuary (2 wood; and used 5 of the 7 bottles on something else)")
 	var area: Node = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")[0]
 	area.add_funds(25)
 	area.tier = 2

@@ -160,8 +160,8 @@ func actions() -> Array:
 		list.append({"label": "Give %d %s to %s (+%d funding)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
 			data.accepts_for, n * item.grant_value], "do": give_away})
 	if recycle_value() > 0 and Inventory.total() > 0 and not damaged:
-		list.append({"label": "Recycle %d litter (+%d funding)" % [Inventory.total(), Inventory.total() * recycle_value()],
-			"do": recycle})
+		list.append({"label": "Recycle litter (%d carried)" % Inventory.total(),
+			"do": get_tree().call_group.bind("recycle_menu", "open_for", self)})
 	if tier < data.max_tier:
 		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
 	if storage() > 0:
@@ -246,8 +246,10 @@ func give_away() -> void:
 
 
 ## Recycles everything the ranger is carrying into conservation funding.
-func recycle() -> void:
-	var pieces := Inventory.total()
+## Recycles `pieces` of the litter the ranger carries (-1 = all of it) into funding.
+func recycle(pieces := -1) -> void:
+	if pieces < 0 or pieces > Inventory.total():
+		pieces = Inventory.total()
 	if pieces <= 0 or not Inventory.take(pieces):
 		return
 	Funding.earn(pieces * recycle_value(), "You recycled %d pieces of litter at your %s." % [pieces, data.display_name])
@@ -330,11 +332,11 @@ func _upgraded(base: int) -> int:
 func upgrade() -> void:
 	if tier >= data.max_tier:
 		return
-	if not BuildMode.has_enough(data.upgrade_funding, 0, data.upgrade_items):
+	if not BuildMode.has_enough(data.upgrade_funding, data.upgrade_litter, data.upgrade_items):
 		get_tree().call_group("hud", "show_toast", "To upgrade your %s: %s" % [
 			data.display_name, data.upgrade_cost_text()])
 		return
-	BuildMode.pay(data.upgrade_funding, 0, data.upgrade_items)
+	BuildMode.pay(data.upgrade_funding, data.upgrade_litter, data.upgrade_items)
 	tier += 1
 	var better := "pays %d funding per piece" % recycle_value()
 	if not data.range_per_tier.is_empty():

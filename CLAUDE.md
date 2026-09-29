@@ -324,6 +324,12 @@ nothing sails along on voyages and every boat stays where it was left (saved). U
 Rowboats per island (building holding a Boat), each needing 2 dock planks on the island
 (BuildingData.requires_each); the ranger boards the nearest boat.
 
+Litter: only tents, Ranger Houses and recycling centres (6 litter, and 6 per upgrade:
+BuildingData.upgrade_litter) are built with litter; everything else costs funding and wood (its
+old litter cost added as 3 funding a piece). A recycling centre opens a menu (RecycleMenu):
+recycle 25 / 50 / 75 / 100 % of the carried litter. Mangrove gate spots (narrow channels) are
+marked with posts and offer "Build a water gate here". Menu scroll bars are finger-wide.
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 

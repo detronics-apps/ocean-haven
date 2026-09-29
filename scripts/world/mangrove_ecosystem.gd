@@ -95,12 +95,52 @@ const LOOK_RANGE := 40.0
 var _nests_at: Array[Vector2] = []
 
 
+## Narrow channels (water with land on both sides) where a water gate can go, marked with
+## two little posts.
+var _gate_spots: Array[Vector2i] = []
+const GATE := preload("res://data/buildings/water_gate.tres")
+
+
+func _find_gate_spots() -> void:
+	_gate_spots.clear()
+	var land := func(c: Vector2i) -> bool: return _terrain(c) in LAND
+	for cell in _ground.get_used_cells():
+		if _is_water(cell) and ((land.call(cell + Vector2i.LEFT) and land.call(cell + Vector2i.RIGHT))
+				or (land.call(cell + Vector2i.UP) and land.call(cell + Vector2i.DOWN))):
+			_gate_spots.append(cell)
+
+
+func _gate_at(cell: Vector2i) -> Building:
+	var world_cell := Terrain.cell_of(_world(cell))
+	for gate in gates():
+		if gate.rect().has_point(world_cell):
+			return gate
+	return null
+
+
+## Builds a water gate at `cell` straight away (if it can go there and the ranger can pay).
+func _build_gate(cell: Vector2i) -> void:
+	var build_mode: BuildMode = get_tree().get_first_node_in_group("build_mode")
+	var world_cell := Terrain.cell_of(_world(cell))
+	var problem := build_mode.placement_problem(GATE, world_cell)
+	if problem != "":
+		get_tree().call_group("hud", "show_toast", problem)
+		return
+	BuildMode.pay(GATE.cost_funding, GATE.cost_litter, GATE.cost_items)
+	build_mode.add_building(GATE, world_cell)
+	settle_now()
+	get_tree().call_group("hud", "show_toast", "Water gate built. It's open: close it to hold water on the flats (it blocks this channel while closed). To take it away, demolish it.")
+
+
 ## For the action bar: what that mud mound or brown channel is, when the ranger is beside it.
 func actions() -> Array:
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger or not Regions.ranger_on(get_tree(), region()):
 		return []
 	var at := ranger.global_position
+	for spot in _gate_spots:
+		if _world(spot).distance_to(at) <= LOOK_RANGE and not _gate_at(spot):
+			return [{"label": "Build a water gate here", "do": _build_gate.bind(spot)}]
 	for nest in _nests_at:
 		if nest.distance_to(at) <= LOOK_RANGE:
 			return [{"label": "Flamingo nest", "do": func() -> void:
@@ -118,6 +158,7 @@ func _ready() -> void:
 		if _terrain(cell) in LAND:
 			_base_land[cell] = true
 	_find_pools()
+	_find_gate_spots()
 	GameClock.new_day.connect(func(_d: int) -> void:
 		for mark in _silt_marks:
 			if is_instance_valid(mark):
@@ -414,6 +455,7 @@ func settle() -> void:
 	_follow(CRAB, crabs_supported())
 	_follow(CROCODILE, crocodiles_supported())
 	_nests_at = _nest_spots()
+	_find_gate_spots()  # digging and silting change the channels
 	queue_redraw()
 
 
@@ -565,6 +607,15 @@ func _seed() -> void:
 ## Nests on the flats (mud mounds, one per flamingo while the water is right) and silt
 ## building up in the channels (brown, as it gets closer to silting up).
 func _draw() -> void:
+	for spot in _gate_spots:  # where a gate can go: two little posts on the banks
+		if _gate_at(spot):
+			continue
+		var at := to_local(_world(spot))
+		var across := Vector2(1, 0) if _terrain(spot + Vector2i.LEFT) in LAND else Vector2(0, 1)
+		for side in [-1.0, 1.0]:
+			var post: Vector2 = at + across * 14.0 * side
+			draw_rect(Rect2(post - Vector2(2, 5), Vector2(4, 7)), Color(0.48, 0.34, 0.2, 0.85))
+			draw_rect(Rect2(post - Vector2(2, 5), Vector2(4, 2)), Color(0.66, 0.5, 0.3, 0.85))
 	for spot in _nests_at:
 		var at := to_local(spot)
 		draw_circle(at + Vector2(0, 2), 7.0, Color(0, 0, 0, 0.18))

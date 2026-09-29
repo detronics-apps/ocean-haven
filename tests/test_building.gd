@@ -1,6 +1,6 @@
 extends SceneTree
 ## Building: the free tent goes anywhere on land; the sanctuary only on the beach,
-## costs 5 litter and doesn't spawn turtles; no overlaps; the Build menu offers
+## costs funding (no litter) and doesn't spawn turtles; no overlaps; the Build menu offers
 ## what's buildable and shows locked entries; the Journal lists species; sleeping
 ## skips to morning.
 ## Run: godot --headless --path . --script res://tests/test_building.gd --quit-after 100000
@@ -98,17 +98,17 @@ func _initialize() -> void:
 	build_mode.place_at(Vector2i(-1, -1))  # back where the rest of the test expects it
 	player.global_position = Vector2.ZERO
 
-	# --- Sanctuary: beach only, costs litter, no overlaps, no new turtle ---
+	# --- Sanctuary: beach only, costs funding (no litter), no overlaps, no new turtle ---
 	var animals_before := _count_animals()
 	inventory.restore(inventory.to_dict(), {"wood": 99})  # building wood, kept in storage
+	root.get_node("Funding").restore({"balance": 1000})
 	build_mode.start(sanctuary)
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 3)
-	_expect(not build_mode.can_place(sanctuary, Vector2i(14, -1)), "not enough litter (3 of 5)")
-	inventory.add(load("res://data/items/plastic_bag.tres"), 2)
+	_expect(sanctuary.cost_litter == 0 and sanctuary.cost_funding > 0, "it costs funding, not litter")
 	_expect(not build_mode.can_place(sanctuary, Vector2i(-3, -3)), "sanctuary can't go on grass")
 	_expect(not build_mode.can_place(sanctuary, Vector2i(-1, -1)), "can't overlap the tent")
 	_expect(build_mode.place_at(Vector2i(14, -1)), "sanctuary placed on the east beach")
-	_expect(inventory.total() == 0, "litter used up")
+	_expect(inventory.total() == 3, "the litter is kept")
 	_expect(_count_animals() == animals_before, "no turtle spawned by the sanctuary")
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 20)
 	build_mode.start(sanctuary)

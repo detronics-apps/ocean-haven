@@ -108,7 +108,6 @@ func _initialize() -> void:
 		"building uses carried wood first, then stored")
 	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Take 2 wood")[0].do.call()
 	_expect(inventory.count(&"wood") == 2 and inventory.stored(&"wood") == 0, "took the wood back out")
-	inventory.add(load("res://data/items/plastic_bottle.tres"), 1)  # a dock plank needs 1 litter + 1 wood
 
 	# --- Dock: shallows only, costs funding ---
 	var dock: Resource = load("res://data/buildings/dock.tres")
@@ -117,16 +116,16 @@ func _initialize() -> void:
 	_expect(not build_mode.can_place(dock, Vector2i(-3, -3)), "dock can't go on grass")
 	_expect(not build_mode.can_place(dock, Vector2i(-30, 0)), "a dock plank must connect to the shore")
 	_expect(build_mode.place_at(Vector2i(0, 2)), "dock plank built at the lagoon beach")
-	_expect(funding.balance == 190, "a dock plank costs 20 funding (left %d)" % funding.balance)
+	_expect(funding.balance == 187, "a dock plank costs 23 funding, no litter (left %d)" % funding.balance)
 	_expect(not funding.spend(1000), "can't overspend")
 
 	# --- Recycling centre: turn litter into funding ---
 	var centre: Resource = load("res://data/buildings/recycling_centre.tres")
 	build_mode.cancel()
-	inventory.add(load("res://data/items/plastic_bag.tres"), 10)
+	inventory.add(load("res://data/items/plastic_bag.tres"), 6)
 	inventory.add(load("res://data/items/wood.tres"), 1)  # 1 left from the dock + 1 = the 2 it needs
 	build_mode.start(centre)
-	_expect(build_mode.place_at(Vector2i(-3, -3)), "recycling centre built (10 litter)")
+	_expect(build_mode.place_at(Vector2i(-3, -3)), "recycling centre built (6 litter)")
 	_expect(build_mode.at_limit(centre, load("res://data/regions/home_island.tres"))
 		and not build_mode.at_limit(centre, load("res://data/regions/kelp_forest.tres")),
 		"one recycling centre on each island")
@@ -135,12 +134,19 @@ func _initialize() -> void:
 	player.global_position = building.global_position + Vector2(-50, 20)
 	var before: int = funding.balance
 	var actions: Array = building.actions()
-	_expect(actions.size() > 0 and actions[0].label == "Recycle 7 litter (+21 funding)",
+	_expect(actions.size() > 0 and actions[0].label == "Recycle litter (7 carried)",
 		"offers to recycle what you carry (%s)" % [actions.map(func(a: Dictionary) -> String: return a.label)])
 	actions[0].do.call()
-	_expect(funding.balance == before + 21 and inventory.total() == 0, "7 litter recycled into 21 funding")
+	await process_frame
+	var recycle_menu: Node = world.get_node("RecycleMenu")
+	_expect(recycle_menu.visible and recycle_menu.find_child("Recycle25", true, false) != null, "it opens the recycling menu: 25 / 50 / 75 / 100 %")
+	recycle_menu.find_child("Recycle50", true, false).pressed.emit()
+	_expect(funding.balance == before + 12 and inventory.total() == 3 and not recycle_menu.visible, "50 %: 4 of the 7 recycled into 12 funding, 3 kept for building")
+	actions[0].do.call()
+	recycle_menu.find_child("Recycle100", true, false).pressed.emit()
+	_expect(funding.balance == before + 21 and inventory.total() == 0, "100 %: the rest recycled")
 
-	# --- Upgrades: 3 tiers, each +1 funding per piece; they cost funding + wood ---
+	# --- Upgrades: 3 tiers, each +1 funding per piece; they cost funding + litter + wood ---
 	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
 	_expect("Upgrade (2/3)" in labels, "offers an upgrade (%s)" % [labels])
 	inventory.take_item(&"wood", inventory.available(&"wood"))
@@ -149,8 +155,13 @@ func _initialize() -> void:
 	_expect(building.tier == 1 and funding.balance == 500, "no upgrade without the wood it needs")
 	inventory.add(load("res://data/items/wood.tres"), 3)
 	building.upgrade()
-	_expect(building.tier == 2 and funding.balance == 420 and inventory.count(&"wood") == 1, "upgraded for 80 funding + 2 wood")
+	_expect(building.tier == 1, "no upgrade without the litter it needs")
+	inventory.add(load("res://data/items/plastic_bag.tres"), 6)
+	building.upgrade()
+	_expect(building.tier == 2 and funding.balance == 420 and inventory.count(&"wood") == 1 and inventory.total() == 0,
+		"upgraded for 80 funding + 6 litter + 2 wood")
 	inventory.add(load("res://data/items/wood.tres"), 1)
+	inventory.add(load("res://data/items/plastic_bag.tres"), 6)
 	building.upgrade()
 	_expect(building.tier == 3 and building.recycle_value() == 5, "top tier recycles for 5 per piece")
 	_expect(building.get_node("Sprite2D").texture == building.data.tier_textures[2], "each tier has its own picture")

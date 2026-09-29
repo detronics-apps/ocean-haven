@@ -40,11 +40,31 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_widen_scroll_bar(scroll.get_v_scroll_bar())
 	_page.add_child(scroll)
 	_content = VBoxContainer.new()
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_content.add_theme_constant_override("separation", 12)
 	scroll.add_child(_content)
+
+
+## A scroll bar wide enough to grab with a finger.
+const SCROLL_BAR_WIDTH := 36
+
+
+static func _widen_scroll_bar(bar: VScrollBar) -> void:
+	bar.custom_minimum_size.x = SCROLL_BAR_WIDTH
+	var track := StyleBoxFlat.new()
+	track.bg_color = Color(1, 1, 1, 0.12)
+	track.set_corner_radius_all(SCROLL_BAR_WIDTH / 2)
+	bar.add_theme_stylebox_override("scroll", track)
+	for state in ["grabber", "grabber_highlight", "grabber_pressed"]:
+		var grab := StyleBoxFlat.new()
+		grab.bg_color = Color(0.85, 0.92, 1.0, 0.75 if state == "grabber" else 0.95)
+		grab.set_corner_radius_all(SCROLL_BAR_WIDTH / 2)
+		grab.content_margin_left = SCROLL_BAR_WIDTH / 2.0
+		grab.content_margin_right = SCROLL_BAR_WIDTH / 2.0
+		bar.add_theme_stylebox_override(state, grab)
 
 
 func open() -> void:

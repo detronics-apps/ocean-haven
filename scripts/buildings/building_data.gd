@@ -35,6 +35,8 @@ extends Resource
 @export var tier_textures: Array[Texture2D] = []
 ## What each upgrade costs.
 @export var upgrade_funding := 0
+## Litter each upgrade uses (recycling centres).
+@export var upgrade_litter := 0
 @export var upgrade_items: Dictionary[StringName, int] = {}
 ## Building id this one replaces when placed (the house replaces the tent).
 @export var replaces: StringName
@@ -145,7 +147,7 @@ func cost_text() -> String:
 
 
 func upgrade_cost_text() -> String:
-	return describe_cost(upgrade_funding, 0, upgrade_items)
+	return describe_cost(upgrade_funding, upgrade_litter, upgrade_items)
 
 
 static func describe_cost(funding: int, litter: int, items: Dictionary) -> String:
