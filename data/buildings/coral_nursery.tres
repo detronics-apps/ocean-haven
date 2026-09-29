@@ -10,5 +10,6 @@ description = "Grow coral fragments to restore reefs."
 order = 5
 terrain = PackedStringArray("water")
 locked = true
-unlock_hint = "unlocks in Tropical Waters."
+unlock_hint = "coming soon to the Tropical Reef."
+only_on = &"tropical_reef"
 category = &"sea"

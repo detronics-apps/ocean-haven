@@ -151,6 +151,8 @@ func _initialize() -> void:
 		"house can't be built without the litter it needs")
 	_expect(menu.find_child("Entry_tent", true, false).find_child("Build", true, false) == null,
 		"only one tent")
+	_expect(menu.find_child("Entry_coral_nursery", true, false) == null and menu.find_child("Entry_marine_rescue_station", true, false) != null,
+		"only what can be built on this island is listed (no Coral Nursery here)")
 	(menu.find_child("TabLand", true, false) as Button).pressed.emit()
 	var shown: Array = menu.find_children("Entry_*", "", true, false).map(func(e: Node) -> String: return e.name)
 	shown.sort()

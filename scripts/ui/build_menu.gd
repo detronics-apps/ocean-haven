@@ -1,5 +1,6 @@
 extends OverlayScreen
-## Build menu: everything in data/buildings/ — what you can build now (with its
+## Build menu: what can be built on the island the ranger is on (data/buildings/; a
+## building `only_on` another island isn't listed) — what you can build now (with its
 ## cost), and what's coming later. Choosing one starts placing it.
 
 
@@ -55,7 +56,10 @@ func _fill() -> void:
 		Funding.balance, Inventory.total(), Inventory.available(&"wood"), Inventory.available(&"sapling")]
 	var all := DataFiles.load_all("res://data/buildings")
 	all.sort_custom(func(a: BuildingData, b: BuildingData) -> bool: return a.order < b.order)
+	var island := _island()
 	for data: BuildingData in all:
+		if data.only_on != &"" and data.only_on != island.id:
+			continue  # belongs to another island
 		if _tab == &"" or data.category == _tab:
 			_content.add_child(_entry(data))
 
@@ -72,8 +76,6 @@ func _entry(data: BuildingData) -> Control:
 		status = "Already built."
 	elif get_tree().get_first_node_in_group("build_mode").at_limit(data):
 		status = "You've built as many as you can (%d)." % data.max_count
-	elif data.only_on != &"" and _island().id != data.only_on:
-		status = "Only on the %s." % (load("res://data/regions/%s.tres" % data.only_on) as RegionData).display_name
 	elif data.one_per_island and _on_island(data.id):
 		status = "This island already has one."
 	elif data.needs_objective and Fleet.ship_problem(_island()) != "":
