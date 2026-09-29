@@ -97,15 +97,15 @@ body {
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BlueHaven">
 <script>
-// The installed app caches the game; when a new version has downloaded, switch to it now
-// (reloads the page) instead of waiting for the app to be fully closed.
+// The installed app caches the game. A new version that has already downloaded is switched
+// to straight away when the app opens; one that downloads while you play waits until you come
+// back to the app (the game saves when you leave it), so loading or playing is never cut off.
 if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then(function (reg) {
 	if (!reg) return;
 	function take(worker) { if (worker && navigator.serviceWorker.controller) worker.postMessage('update'); }
 	take(reg.waiting);
-	reg.addEventListener('updatefound', function () {
-		var worker = reg.installing;
-		worker.addEventListener('statechange', function () { if (worker.state === 'installed') take(worker); });
+	document.addEventListener('visibilitychange', function () {
+		if (document.visibilityState === 'visible') take(reg.waiting);
 	});
 	reg.update();
 });
@@ -128,7 +128,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":613832,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":671792,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 

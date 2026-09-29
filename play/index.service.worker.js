@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1790679234|7327522';
+const CACHE_VERSION = '1790683757|4190872';
 /** @type {string} */
 const CACHE_PREFIX = 'BlueHaven-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
@@ -19,6 +19,9 @@ const CACHED_FILES = ["index.html","index.js","index.offline.html","index.icon.p
 /** @type {string[]} */
 const CACHEABLE_FILES = ["index.wasm","index.pck"];
 const FULL_CACHE = CACHED_FILES.concat(CACHEABLE_FILES);
+// The engine, cached apart from the rest and kept across versions while it's unchanged.
+const ENGINE_FILE = 'index.wasm';
+const ENGINE_CACHE = CACHE_PREFIX + 'engine-c91d71625bc4';
 
 self.addEventListener('install', (event) => {
 	event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHED_FILES)));
@@ -28,7 +31,7 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(caches.keys().then(
 		function (keys) {
 			// Remove old caches.
-			return Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME).map((key) => caches.delete(key)));
+			return Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME && key !== ENGINE_CACHE).map((key) => caches.delete(key)));
 		}
 	).then(function () {
 		// Enable navigation preload if available.
@@ -100,6 +103,21 @@ self.addEventListener(
 		const base = referrer.slice(0, referrer.lastIndexOf('/') + 1);
 		const local = url.startsWith(base) ? url.replace(base, '') : '';
 		const isCacheable = FULL_CACHE.some((v) => v === local) || (base === referrer && base.endsWith(CACHED_FILES[0]));
+		if (local === ENGINE_FILE) {
+			event.respondWith((async () => {
+				const engineCache = await caches.open(ENGINE_CACHE);
+				const cached = await engineCache.match(ENGINE_FILE);
+				if (cached != null) {
+					return cached;
+				}
+				const response = await self.fetch(event.request);
+				if (response.ok) {
+					engineCache.put(ENGINE_FILE, response.clone());
+				}
+				return response;
+			})());
+			return;
+		}
 		if (isNavigate || isCacheable) {
 			event.respondWith((async () => {
 				// Try to use cache first
@@ -107,7 +125,8 @@ self.addEventListener(
 				if (isNavigate) {
 					// Check if we have full cache during HTML page request.
 					/** @type {Response[]} */
-					const fullCache = await Promise.all(FULL_CACHE.map((name) => cache.match(name)));
+					const engineCache = await caches.open(ENGINE_CACHE);
+					const fullCache = await Promise.all(FULL_CACHE.map((name) => (name === ENGINE_FILE ? engineCache : cache).match(name)));
 					const missing = fullCache.some((v) => v === undefined);
 					if (missing) {
 						try {
