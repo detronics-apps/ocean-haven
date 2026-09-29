@@ -161,6 +161,7 @@ func _initialize() -> void:
 
 	# --- Journal ---
 	var screen: Node = world.get_node("JournalScreen")
+	screen.show_tab(&"animals")
 	screen.open()
 	_expect(_entry_text(screen, "Entry_green_turtle").contains("???"), "undiscovered species shows ???")
 	screen.close()

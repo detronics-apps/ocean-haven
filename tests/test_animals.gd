@@ -173,6 +173,9 @@ func _initialize() -> void:
 	# --- Journal knows every species ---
 	var screen: Node = world.get_node("JournalScreen")
 	screen.open()
+	_expect(screen.find_child("Entry_ghost_crab", true, false) == null and screen.find_child("Health_home_island", true, false) != null,
+		"the Journal opens on this island's tab: its health, no animals")
+	screen.find_child("Tab_animals", true, false).pressed.emit()
 	_expect(screen.find_child("Entry_bottlenose_dolphin", true, false) != null
 		and screen.find_child("Entry_ghost_crab", true, false) != null, "Journal lists dolphins and crabs")
 	screen.close()

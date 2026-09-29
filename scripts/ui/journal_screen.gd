@@ -1,24 +1,67 @@
 extends OverlayScreen
-## The Ocean Journal: each discovered island's objective (and the discovery it gave),
-## then every species in data/animals/. Discovered ones show what you've learned
-## (observed, photos, helped); the rest are "???" to find.
+## The Ocean Journal, in two tabs. Island: the island the ranger is on now, its health
+## and objective (and the discovery it gave), and the save code. Animals: every species in
+## data/animals/; discovered ones show what you've learned (observed, photos, helped),
+## the rest are "???" to find.
+
+const ISLAND := &"island"
+const ANIMALS := &"animals"
+
+## The tab showing (kept between visits).
+var tab := ISLAND
+var _tab_buttons := {}
 
 
 func _enter_tree() -> void:
 	add_to_group("journal_screen")
 
 
+func _ready() -> void:
+	super()
+	var tabs := HBoxContainer.new()
+	tabs.name = "Tabs"
+	tabs.add_theme_constant_override("separation", 8)
+	var group := ButtonGroup.new()
+	for id: StringName in [ISLAND, ANIMALS]:
+		var button := Button.new()
+		button.name = "Tab_" + id
+		button.text = "This island" if id == ISLAND else "Animals"
+		button.toggle_mode = true
+		button.button_group = group
+		button.focus_mode = Control.FOCUS_NONE
+		button.custom_minimum_size = Vector2(150, 44)
+		button.pressed.connect(show_tab.bind(id))
+		tabs.add_child(button)
+		_tab_buttons[id] = button
+	_page.add_child(tabs)
+	_page.move_child(tabs, 1)  # under the title
+
+
+## Switches to the Island or Animals tab.
+func show_tab(id: StringName) -> void:
+	tab = id
+	if visible:
+		refresh()
+
+
 func _fill() -> void:
+	(_tab_buttons[tab] as Button).set_pressed_no_signal(true)
 	var species := DataFiles.load_all("res://data/animals")
 	var found := species.filter(func(a: AnimalData) -> bool: return Journal.has(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
-	for region: RegionData in Regions.all():
-		if Regions.is_discovered(region) and not region.health.is_empty():
-			_content.add_child(_health(region))
-		if Regions.is_discovered(region) and not region.goals.is_empty():
-			_content.add_child(_objective(region))
-	for animal: AnimalData in species:
-		_content.add_child(_entry(animal))
+	if tab == ANIMALS:
+		for animal: AnimalData in species:
+			_content.add_child(_entry(animal))
+		return
+	var ranger := ControlledBody.active(get_tree())
+	var region := Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
+	if not region.health.is_empty():
+		_content.add_child(_health(region))
+	if not region.goals.is_empty():
+		_content.add_child(_objective(region))
+	if region.health.is_empty() and region.goals.is_empty():
+		_content.add_child(card(region.map_icon, [region.display_name, region.description,
+			"Nothing to measure here yet: more is coming to this island soon."]))
 	_content.add_child(_backup_card())
 
 

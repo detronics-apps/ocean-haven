@@ -48,11 +48,14 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	return 0
 
 
-## "Litter in the water: 4" / "Turtles living here: 3 / 8" for the Journal.
+## "Litter in the water: 4" / "Turtles living here: 3 / 6" / "Turtles living here: 18
+## (6 for full health)" for the Journal: animals are counted in full, not capped.
 static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) -> String:
 	var n := count(tree, region, factor)
 	if factor.kind == &"clean":
 		return "%s: %s" % [factor.text, "none" if n == 0 else str(n)]
+	if factor.kind == &"animals" and n >= factor.amount:
+		return "%s: %d (%d for full health)" % [factor.text, n, factor.amount]
 	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]
 
 

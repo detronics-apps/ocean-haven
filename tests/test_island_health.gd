@@ -44,7 +44,7 @@ func _initialize() -> void:
 		journal.help(load("res://data/animals/%s.tres" % id))
 	var helped: float = health.of(self, home)
 	_expect(helped > cleaned, "freeing animals raises it (%.2f)" % helped)
-	for i in 5:
+	for i in 8:  # more than full health needs: the Journal counts them all
 		var turtle: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 		turtle.set("data", load("res://data/animals/green_turtle.tres"))
 		turtle.set("young", true)
@@ -54,7 +54,7 @@ func _initialize() -> void:
 	_expect("Dolphin1" in came and not "Dolphin3" in came and count.call(&"bottlenose_dolphin") == 2,
 		"cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
 	_expect(count.call(&"red_footed_booby") == 3, "three seabirds nest in the palms of a healthy island")
-	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 6 turtles, 3 seabirds: fully healthy")
+	_expect(is_equal_approx(health.of(self, home), 1.0), "clean, animals freed, 9 turtles, 3 seabirds: fully healthy")
 
 	# Seabirds need full-grown palms: cut too many and one flies off (back when they regrow).
 	var palms: Array = world.get_node("StarterIsland").get_children().filter(func(n: Node) -> bool: return n.is_in_group("plants"))
@@ -129,7 +129,7 @@ func _initialize() -> void:
 	var text := ""
 	for label in journal_screen.find_child("Health_home_island", true, false).find_children("*", "Label", true, false):
 		text += (label as Label).text + "\n"
-	_expect(text.contains("island health") and text.contains("Oil patches on the water: 2") and text.contains("Turtles living here: 6 / 6"),
+	_expect(text.contains("island health") and text.contains("Oil patches on the water: 2") and text.contains("Turtles living here: 9 (6 for full health)"),
 		"the Journal shows island health and what goes into it")
 	journal_screen.close()
 
