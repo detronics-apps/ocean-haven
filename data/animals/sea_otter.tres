@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_otter"]
+[ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="2_otter"]
+
+[resource]
+script = ExtResource("1_otter")
+id = &"sea_otter"
+display_name = "Sea Otter"
+sprite = ExtResource("2_otter")
+habitat = "Cool coastal waters with kelp forests; they rest in the kelp canopy"
+diet = "Sea urchins, crabs, clams and other shellfish"
+fact = "A sea otter eats about a quarter of its own weight in food every day. By keeping urchin numbers down, otters protect whole kelp forests."
+photo_fact = "Sea otters often wrap themselves in kelp while they sleep, so they don't drift away."
+help_fact = "Lost fishing nets and line can trap otters. Picking up fishing litter keeps them safe."
+habitat_terrain = PackedStringArray("", "water")
+swim_speed = 34.0
+shy_distance = 60.0
+discover_distance = 130.0
+interact_distance = 90.0
+boat_shy_distance = 100.0
+can_tangle = true
+grow_days = 2.0
+adult_home_radius = 120.0
+lives_at = &"otter_habitat"
+settles_near = &"kelp_beds"
+urchins_per_day = 4.0
+forage_range = 260.0
+food_needed = 4.0
+kelp_food = 3.0

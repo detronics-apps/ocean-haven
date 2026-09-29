@@ -71,6 +71,15 @@ extends Resource
 @export var needs_quiet := 0
 ## How many of the animals that nest here it can hold at once (0 = none).
 @export var animal_capacity := 0
+## The species it gives a home to (its animal_capacity is for them), e.g. "sea_otter".
+## A home is a condition, not a supply: animals only settle while the ecosystem supports them.
+@export var hosts: StringName
+## Funding it costs to look after, every morning (0 = none). Unpaid, it isn't looked after
+## that day (see Building.upkeep_paid).
+@export var upkeep := 0
+## Offers "Demolish" (conservation structures that can unbalance an island), returning
+## half its wood.
+@export var demolishable := false
 ## Shown in the Build menu but can't be built yet.
 @export var locked := false
 ## Why it's locked / what unlocks it.
@@ -111,7 +120,8 @@ extends Resource
 
 ## "Needs 20 funding + 5 recycled litter + 2 wood." for menus and hints.
 func cost_text() -> String:
-	return describe_cost(cost_funding, cost_litter, cost_items)
+	var text := describe_cost(cost_funding, cost_litter, cost_items)
+	return text + (" Upkeep: %d funding a day." % upkeep if upkeep > 0 else "")
 
 
 func upgrade_cost_text() -> String:

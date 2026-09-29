@@ -80,6 +80,9 @@ var perched := false
 var _to_nest := false
 var _fly_left := 0.0
 var _perch_left := 0.0
+## Where it's leaving from (the middle of its island), and how far it goes before it's gone.
+var _leave_from := Vector2.INF
+var _leave_distance := 0.0
 ## Day the "growing up" note was last shown (one a day).
 static var _grow_note_day := -1
 ## Diggers: litter dug up today by each species (all of them together): id -> [day, count].
@@ -220,8 +223,17 @@ func _own_spot() -> Vector2:
 	var region := Regions.nearest(global_position)
 	var best := _home
 	var best_room := -1.0
+	var near := get_tree().get_nodes_in_group(data.settles_near).filter(func(n: Node2D) -> bool:
+		return Regions.nearest(n.global_position) == region) if data.settles_near != &"" else []
+	if is_instance_valid(home_area):  # close enough to forage from its own home
+		var close := near.filter(func(n: Node2D) -> bool:
+			return n.global_position.distance_to(home_area.global_position) <= data.forage_range)
+		if not close.is_empty():
+			near = close
 	for attempt in 40:
 		var spot := region.center + Vector2.from_angle(randf() * TAU) * randf_range(0.35, 0.85) * region.waters_radius
+		if not near.is_empty():  # e.g. otters live among the kelp
+			spot = (near.pick_random() as Node2D).global_position + Vector2.from_angle(randf() * TAU) * randf_range(10.0, 60.0)
 		if not in_habitat(spot) or _near_busy_boat(spot) or not _clear_route(global_position, spot):
 			continue
 		var room := INF
@@ -683,12 +695,17 @@ func _maybe_nest() -> void:
 	_crawl_to(shore, false, func() -> void: _crawl_to(beach_spot, true, _lay))
 
 
+## The kind of building it belongs to: where it lives (otters), or else where it nests (turtles).
+func home_building() -> StringName:
+	return data.lives_at if data.lives_at != &"" else data.nest_building
+
+
 ## Links it to the nearest protection area its species nests in that still has room
 ## (loading a save), so a reload spreads turtles out as they were, not all into one area.
 func link_to_nearest_area() -> void:
 	home_area = null  # don't count itself while looking for room
 	var sites := get_tree().get_nodes_in_group("buildings").filter(
-		func(b: Building) -> bool: return b.data.id == data.nest_building)
+		func(b: Building) -> bool: return b.data.id == home_building())
 	sites.sort_custom(func(a: Node2D, b: Node2D) -> bool:
 		return a.global_position.distance_to(global_position) < b.global_position.distance_to(global_position))
 	for site: Building in sites:
@@ -755,14 +772,20 @@ func _finish_laying() -> void:
 	crawl_to_sea()
 
 
-## The hatchling "swimming frenzy": straight out to sea, away from the island,
-## until it's out of the play area.
+## Heading out to sea (a hatchling's "swimming frenzy", or an animal moving away from an
+## island that can't support it): straight away from its island until it's out in the
+## open ocean, then gone (never dies: it lives on elsewhere).
 func _swim_out_to_sea() -> void:
-	if global_position.length() > OPEN_OCEAN_DISTANCE:
+	if _leave_from == Vector2.INF:
+		var region := Regions.nearest(global_position)
+		_leave_from = region.center
+		_leave_distance = maxf(region.waters_radius, OPEN_OCEAN_DISTANCE)
+	var away := global_position - _leave_from
+	if away.length() > _leave_distance:
 		queue_free()
 		return
 	collision_mask = 0  # heading away from the island, so nothing's in the way
-	velocity = global_position.normalized() * data.swim_speed * 2.0
+	velocity = (away.normalized() if away.length() > 1.0 else Vector2.RIGHT) * data.swim_speed * 2.0
 	move_and_slide()
 	_face(velocity)
 

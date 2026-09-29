@@ -77,6 +77,18 @@ extends Resource
 ## Can get caught in litter left about (items that entangle): the ranger frees it again.
 @export var can_tangle := false
 
+@export_group("Food web")
+## Buildings of this id are homes it can settle at (e.g. Otter Habitats); "" = none.
+@export var lives_at: StringName
+## Grown up, it settles near a member of this group (e.g. "kelp_beds"), not just anywhere.
+@export var settles_near: StringName
+## Sea urchins it eats a day, from the kelp beds within forage_range of where it lives.
+@export var urchins_per_day := 0.0
+@export var forage_range := 260.0
+## Food it needs around its home to stay (urchins there + kelp_food per healthy bed).
+@export var food_needed := 4.0
+@export var kelp_food := 3.0
+
 @export_group("Nesting")
 ## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).
 @export var nest_building: StringName

@@ -405,7 +405,7 @@ func load_from(world: Node, path: String) -> bool:
 		(world.get_node("Boat") as Boat).restore_aboard()
 	# Turtles belong to a protection area; relink hatchlings and mothers to the nearest one.
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
-		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
+		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.home_building() != &"":
 			animal.link_to_nearest_area()
 	var ecosystems: Dictionary = state.get("ecosystems", {})
 	for eco_path: String in ecosystems:

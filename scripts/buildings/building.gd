@@ -31,6 +31,10 @@ var damaged := false:
 		if is_node_ready():
 			_sprite.modulate = DAMAGED_TINT if damaged else Color.WHITE
 const DAMAGED_TINT := Color(0.62, 0.55, 0.5)
+## Its upkeep was paid this morning (unpaid: not looked after today).
+var upkeep_paid := true
+## "Demolish" was tapped: tap again before this (msec) to confirm.
+var _demolish_until := 0
 ## The day it was built (palms grow from it).
 var built_day := -1
 var _bob := 0.0
@@ -159,7 +163,28 @@ func actions() -> Array:
 				list.append({"label": "Take %d %s" % [take, name], "do": Inventory.take_out.bind(item, take)})
 	if data.movable:
 		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
+	if data.demolishable:
+		var sure := Time.get_ticks_msec() < _demolish_until
+		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.display_name), "do": demolish})
 	return list
+
+
+## Takes it down (tap twice), giving back half its wood. Animals living here move out
+## (they may settle at another home, or leave the island).
+func demolish() -> void:
+	if Time.get_ticks_msec() >= _demolish_until:
+		_demolish_until = Time.get_ticks_msec() + 4000
+		return
+	for animal: Node in get_tree().get_nodes_in_group("animals"):
+		if animal.get("home_area") == self:
+			animal.set("home_area", null)
+	var wood: int = data.cost_items.get(&"wood", 0) / 2
+	if wood > 0:
+		Inventory.add(load("res://data/items/wood.tres"), wood, false)
+	remove_from_group("buildings")
+	get_tree().call_group("hud", "show_toast", "%s taken down.%s" % [data.display_name,
+		" You got %d wood back." % wood if wood > 0 else ""])
+	queue_free()
 
 
 ## Opens when a sailing boat comes close (and nobody's standing on it); closes after.
@@ -349,11 +374,19 @@ func _numbers() -> String:
 		return "Back in %s" % Missions.time_left() if Missions.active else ""
 	if data.action == &"explore":
 		return "Level %d" % Fleet.level()
+	var lines: Array[String] = []
 	if capacity() > 0:
-		var text := "Turtles %d/%d" % [animals_here(), capacity()]
+		var kind := "Turtles"
+		if data.hosts != &"":
+			var name: String = load("res://data/animals/%s.tres" % data.hosts).display_name
+			kind = name.get_slice(" ", name.get_slice_count(" ") - 1) + "s"
+		lines.append("%s %d/%d" % [kind, animals_here(), capacity()])
 		var busy := too_busy()
-		return text + ("\nToo busy: %s nearby" % busy.data.display_name if busy else "")
-	return ""
+		if busy:
+			lines.append("Too busy: %s nearby" % busy.data.display_name)
+	if data.upkeep > 0 and not upkeep_paid:
+		lines.append("Upkeep unpaid today")
+	return "\n".join(lines)
 
 
 static var _storable: Array = []

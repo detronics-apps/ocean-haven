@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_ohab"]
+[ext_resource type="Texture2D" path="res://assets/buildings/otter_habitat/otter_habitat.svg" id="2_ohab"]
+
+[resource]
+script = ExtResource("1_ohab")
+id = &"otter_habitat"
+display_name = "Otter Habitat"
+description = "A quiet, protected stretch of shore where sea otters can rest, feed and raise pups, if the kelp forest around it can feed them. It doesn't bring otters by itself."
+order = 2
+texture = ExtResource("2_ohab")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 80
+cost_litter = 5
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+max_count = 6
+animal_capacity = 2
+hosts = &"sea_otter"
+upkeep = 5
+demolishable = true
+only_on = &"kelp_forest"
+placement_hint = "on the shore, close to kelp"
+fact = "Otters need quiet places to rest and groom: their thick fur, not fat, keeps them warm, so they spend hours every day keeping it clean."

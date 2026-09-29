@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="12" viewBox="0 0 22 12" shape-rendering="crispEdges">
+  <!-- Placeholder sea otter floating on its back, seen from above, facing right: brown body, pale grey head, paws on its chest, flat tail behind. -->
+  <rect x="0" y="5" width="5" height="2" fill="#5a3a24"/>
+  <rect x="4" y="3" width="11" height="6" fill="#7a5234"/>
+  <rect x="5" y="4" width="9" height="4" fill="#8a6040"/>
+  <rect x="14" y="3" width="6" height="6" fill="#c9bfae"/>
+  <rect x="17" y="4" width="1" height="1" fill="#1c1c1c"/><rect x="17" y="7" width="1" height="1" fill="#1c1c1c"/>
+  <rect x="19" y="5" width="2" height="2" fill="#3a2a20"/>
+  <rect x="11" y="4" width="2" height="1" fill="#5a3a24"/><rect x="11" y="7" width="2" height="1" fill="#5a3a24"/>
+</svg>

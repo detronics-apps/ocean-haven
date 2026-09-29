@@ -47,12 +47,29 @@ func spend(amount: int) -> bool:
 ## more animals and a healthier island, more visitors). They wait at the building
 ## until the ranger collects them.
 func _on_new_day(_day: int) -> void:
+	_pay_upkeep()
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		var amount := building.visitors_today()
 		if amount <= 0:
 			continue
 		building.add_funds(amount)
 		donations_waiting.emit(building, amount)
+
+
+## Each morning, buildings with upkeep are looked after if there's funding for them (an
+## unpaid one just isn't looked after that day; nothing is lost).
+func _pay_upkeep() -> void:
+	var paid := 0
+	var count := 0
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.upkeep <= 0:
+			continue
+		building.upkeep_paid = spend(building.data.upkeep)
+		if building.upkeep_paid:
+			paid += building.data.upkeep
+			count += 1
+	if paid > 0:
+		get_tree().call_group("hud", "show_toast", "Morning upkeep: %d funding to look after %d building(s)." % [paid, count])
 
 
 func _on_photographed(animal: AnimalData, _count: int) -> void:
