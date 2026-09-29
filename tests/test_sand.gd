@@ -99,9 +99,54 @@ func _initialize() -> void:
 		"the changed tiles are restored")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 
+	# --- Mud (the Mangrove Coast): dig channels, carry up to 3, build mud flats with it ---
+	await process_frame
+	player = world.get_node("Player")
+	shovel = world.get_node("SandShovel")
+	shovel.start()
+	var mangrove: Node2D = world.get_node("MangroveIsland")
+	var mground: TileMapLayer = mangrove.get_node("Ground")
+	var mud_cell := Vector2i.MAX
+	for c in mground.get_used_cells():
+		if mground.get_cell_tile_data(c).get_custom_data("terrain") != "mud":
+			continue
+		var n := 0
+		for d in [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]:
+			var t := mground.get_cell_tile_data(c + d)
+			if t and t.get_custom_data("terrain") == "mud":
+				n += 1
+		if n == 3:
+			mud_cell = c
+			break
+	var world_cell := Vector2i((mground.to_global(mground.map_to_local(mud_cell)) / 32.0).floor())
+	player.global_position = Terrain_centre(world_cell + Vector2i(0, -1))
+	_expect(_terrain(Terrain_centre(world_cell + Vector2i(0, -1))) != "", "(standing on the mangrove island)")
+	inventory.restore({}, {})
+	var dug := 0
+	for i in 3:
+		shovel.selected = world_cell + Vector2i(i, 0)
+		var labels2: Array = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
+		if labels2.has("Dig up mud (makes a channel)"):
+			shovel.actions()[0].do.call()
+			dug += 1
+	_expect(dug >= 2 and inventory.count(&"mud") == dug and _terrain(Terrain_centre(world_cell)) == "water",
+		"digging mud makes a channel, and the ranger carries the mud (%d)" % dug)
+	var mud_item: Resource = load("res://data/items/mud.tres")
+	_expect(mud_item.carry_limit == 3 and not mud_item.is_litter, "up to 3 mud at a time (not litter)")
+	shovel.selected = world_cell
+	var fill: Array = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(fill.has("Place mud (makes a mud flat)"), "the dug mud can go back on shallow water (%s)" % [fill])
+	shovel.actions()[0].do.call()
+	_expect(_terrain(Terrain_centre(world_cell)) == "mud" and inventory.count(&"mud") == dug - 1, "so a channel can always be filled back in")
+	shovel.stop()
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func Terrain_centre(cell: Vector2i) -> Vector2:
+	return (Vector2(cell) + Vector2(0.5, 0.5)) * 32.0
 
 
 func _terrain(point: Vector2) -> String:

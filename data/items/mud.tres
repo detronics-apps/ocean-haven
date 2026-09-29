@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/mud.svg" id="1_mud"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"mud"
+display_name = "Mud"
+icon = ExtResource("1_mud")
+is_litter = false
+carry_limit = 3
+fact = "Mangrove mud is made of fine silt washed down from the land. Mangrove roots trap it, which slowly builds new land at the water's edge."

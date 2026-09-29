@@ -7,10 +7,10 @@
 script = ExtResource("1_akqsv")
 id = &"shovel"
 display_name = "Shovel"
-description = "Move sand: scoop up a beach tile (it becomes shallows) and place it on shallow water to make new beach."
+description = "Move sand and mud: dig up a beach or mud tile (it becomes shallow water: dig mud to make channels) and place it on shallow water to make new beach or mud flats."
 order = 7
 texture = ExtResource("2_okw24")
-terrain = PackedStringArray("sand", "grass")
+terrain = PackedStringArray("sand", "grass", "mud")
 tool = &"shovel"
 category = &"land"
 storm_proof = true

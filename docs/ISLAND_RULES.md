@@ -141,6 +141,10 @@ foundations the mechanics sit on, not the mechanics themselves.
 
   The game never says "you built too many" and never gives the optimal number.
 - **Anything that can unbalance an island can be demolished or moved**, so mistakes can be fixed.
+- **Nothing the player does can be permanent.** Every action can be undone and no resource the
+  balance depends on can run out for good. Dug mud or sand is never destroyed: it's carried or
+  stored and can be put back. Species never disappear. Taking down a building gives some
+  materials back.
 - **The Build menu only lists what can be built on the island the ranger is on** (`only_on`).
   Buildings for other islands don't appear, not even greyed out.
 - **Buildings can be used from the rowboat as well as on foot** (e.g. moving an offshore buoy).

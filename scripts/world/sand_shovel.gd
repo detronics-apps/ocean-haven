@@ -1,13 +1,16 @@
 class_name SandShovel
 extends Node
-## Moving sand. With the shovel picked up (Build menu -> Shovel), the 8 tiles around
-## the ranger are outlined: sand that can be picked up, and (while carrying sand)
+## Moving sand and mud. With the shovel picked up (Build menu -> Shovel), the 8 tiles around
+## the ranger are outlined: sand or mud that can be dug up, and (while carrying some)
 ## shallow water that can be filled. Tap one to select it; the action bar then
-## offers "Pick up sand" or "Place sand" for exactly that tile. The ranger carries
-## one sand at a time; now and then the sand hides buried litter. Sand on deep water makes it shallow, so filling deep water takes 2.
+## offers "Dig up sand / mud" or "Place sand / mud" for exactly that tile. The ranger carries
+## one sand or 3 mud (storable in Ranger Houses: dug mud is never lost, so a channel can
+## always be filled back in); now and then sand hides buried litter. Digging mud makes a
+## channel (shallow water); mud on shallow water makes a mud flat. Filling deep water takes 2.
 ## "Put shovel away" (an action button) ends it. Every changed tile is saved.
 
 const SAND_TILE := Vector2i(1, 0)
+const MUD_TILE := Vector2i(5, 0)
 const SHALLOW_TILE := Vector2i(0, 0)
 const CAN_PICK_UP := Color(0.55, 1.0, 0.55, 0.9)
 const CAN_PLACE := Color(0.5, 0.8, 1.0, 0.9)
@@ -16,6 +19,7 @@ const CAN_PLACE := Color(0.5, 0.8, 1.0, 0.9)
 @export var litter_chance := 0.1
 
 var _sand: ItemData = load("res://data/items/sand.tres")
+var _mud: ItemData = load("res://data/items/mud.tres")
 ## Holding the shovel right now.
 var active := false
 ## The tile the ranger tapped (one of the 8 around them), or null.
@@ -60,7 +64,8 @@ func _process(_delta: float) -> void:
 	if selected != null and selected not in around:
 		selected = null  # walked away from it
 	if _label:
-		_label.text = "Shovel: tap a tile next to you · Sand %d/%d" % [Inventory.count(_sand.id), _sand.carry_limit]
+		_label.text = "Shovel: tap a tile next to you · Sand %d/%d · Mud %d/%d" % [
+			Inventory.count(_sand.id), _sand.carry_limit, Inventory.count(_mud.id), _mud.carry_limit]
 	_outlines.queue_redraw()
 
 
@@ -93,12 +98,33 @@ func what_can_be_done(cell: Vector2i) -> String:
 		return ""
 	var centre := Terrain.centre_of(cell)
 	var terrain := Terrain.at(get_tree(), centre)
-	if terrain == "sand" and Inventory.room_for(_sand) > 0:
+	var item := material_at(cell)
+	if item and Inventory.room_for(item) > 0:
 		return "pick_up"
-	var fillable := (terrain == "water" and not Terrain.walkable(get_tree(), centre)) 		or (terrain == "" and Terrain.ground_near(get_tree(), centre) != null)  # deep water
-	if fillable and Inventory.count(_sand.id) > 0:
+	var fillable := (terrain == "water" and not Terrain.walkable(get_tree(), centre)) \
+		or (terrain == "" and Terrain.ground_near(get_tree(), centre) != null)  # deep water
+	if fillable and carried_material() != null:
 		return "place"
 	return ""
+
+
+## What digging `cell` gives (sand or mud), or null.
+func material_at(cell: Vector2i) -> ItemData:
+	match Terrain.at(get_tree(), Terrain.centre_of(cell)):
+		"sand":
+			return _sand
+		"mud":
+			return _mud
+	return null
+
+
+## What the ranger would place: mud first (if carrying any), else sand; null = nothing.
+func carried_material() -> ItemData:
+	if Inventory.count(_mud.id) > 0:
+		return _mud
+	if Inventory.count(_sand.id) > 0:
+		return _sand
+	return null
 
 
 ## For the action buttons: what can be done with the selected tile, and putting it away.
@@ -108,10 +134,13 @@ func actions() -> Array:
 	var list := [{"label": "Put shovel away", "do": stop}]
 	match what_can_be_done(selected) if selected != null else "":
 		"pick_up":
-			list.push_front({"label": "Pick up sand", "do": pick_up.bind(selected)})
+			var dug := material_at(selected)
+			list.push_front({"label": "Pick up sand" if dug == _sand else "Dig up mud (makes a channel)", "do": pick_up.bind(selected)})
 		"place":
 			var deep := Terrain.at(get_tree(), Terrain.centre_of(selected)) == ""
-			list.push_front({"label": "Place sand (makes it shallow)" if deep else "Place sand", "do": place.bind(selected)})
+			var what := carried_material().display_name.to_lower()
+			list.push_front({"label": ("Place %s (makes it shallow)" % what) if deep
+				else ("Place mud (makes a mud flat)" if what == "mud" else "Place sand"), "do": place.bind(selected)})
 	return list
 
 
@@ -119,9 +148,11 @@ func actions() -> Array:
 func pick_up(cell: Vector2i) -> void:
 	if what_can_be_done(cell) != "pick_up":
 		return
+	var dug := material_at(cell)
 	_set_tile(cell, SHALLOW_TILE)
-	Inventory.add(_sand, 1, false)
-	if randf() < litter_chance:
+	Inventory.add(dug, 1, false)
+	get_tree().call_group("ecosystems", "settle_now")  # the water changed
+	if dug == _sand and randf() < litter_chance:
 		var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
 		if spawner:
 			spawner.dig_up_at(Terrain.centre_of(cell))
@@ -133,8 +164,10 @@ func place(cell: Vector2i) -> void:
 	if what_can_be_done(cell) != "place":
 		return
 	var deep := Terrain.at(get_tree(), Terrain.centre_of(cell)) == ""
-	if Inventory.take_item(_sand.id):
-		_set_tile(cell, SHALLOW_TILE if deep else SAND_TILE)
+	var item := carried_material()
+	if Inventory.take_item(item.id):
+		_set_tile(cell, SHALLOW_TILE if deep else (MUD_TILE if item == _mud else SAND_TILE))
+		get_tree().call_group("ecosystems", "settle_now")  # the water changed
 
 
 func _set_tile(cell: Vector2i, atlas: Vector2i) -> void:
