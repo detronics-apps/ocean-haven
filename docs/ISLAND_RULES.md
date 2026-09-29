@@ -91,6 +91,9 @@ foundations the mechanics sit on, not the mechanics themselves.
   never a runaway or a balancing loop; funding buildings just earn more on a healthier island.
 - **Nesting differs by island** where the biology does: turtles on protected sand, boobies and
   cormorants in full-grown trees, flamingos on mud-mound nests on the flats.
+- **Helper animals can make placement a convenience, never a balance.** Sea otters carry floating
+  litter near them ashore, so otter habitats on one side of the crescent keep that side's
+  water clean for the ranger on foot.
 - **Boom and bust:** a species that eats something follows its food as well as its predators.
 - **Island-wide, not layout-based.** How many of something the player builds matters, never
   exactly where they put it on the island. A player must be able to keep all the wildlife on

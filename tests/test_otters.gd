@@ -121,6 +121,36 @@ func _initialize() -> void:
 	_expect(ecosystem.otters().size() == before and ecosystem.otters().all(func(o: Node) -> bool: return o.home_area != null),
 		"the otters are back, each at its habitat (%d)" % ecosystem.otters().size())
 
+	# --- Otters bring floating litter near them ashore, to be picked up on foot ---
+	var carrier: Node2D = ecosystem.otters().filter(func(o: Node) -> bool: return not o.leaving and not o.young and not o.tangled)[0]
+	var ground: TileMapLayer = world.get_node("KelpIsland/Ground")
+	var shore_cell := Vector2i.MAX
+	var out := Vector2i.ZERO
+	for c in ground.get_used_cells():
+		if ground.get_cell_tile_data(c).get_custom_data("terrain") != "sand":
+			continue
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var run := true
+			for k in range(1, 5):
+				var t := ground.get_cell_tile_data(c + d * k)
+				run = run and t != null and t.get_custom_data("terrain") in ["water", ""]
+			if run and shore_cell == Vector2i.MAX:
+				shore_cell = c
+				out = d
+	var land_at := ground.to_global(ground.map_to_local(shore_cell))
+	for debris: Node in get_nodes_in_group("debris"):
+		debris.free()  # only this bottle about
+	carrier.global_position = land_at + Vector2(out) * 32.0 * 2.5
+	var bottle: Node2D = world.get_node("KelpLitter").spawn_at(load("res://data/items/plastic_bottle.tres"),
+		land_at + Vector2(out) * 32.0 * 3.5, true)
+	for i in 1800:
+		await physics_frame
+		if not bottle.floating:
+			break
+	_expect(not bottle.floating and bottle.global_position.distance_to(land_at) < 48.0
+		and load("res://scripts/world/terrain.gd").at(self, bottle.global_position) in ["sand", "grass", "rock", "mud"],
+		"an otter fetches floating litter near it and leaves it on the shore (%s from the shore)" % roundi(bottle.global_position.distance_to(land_at)))
+
 	# --- No food: otters move away (they never die) ---
 	for bed: Node2D in ecosystem.beds():
 		bed.urchins = 0.0

@@ -53,6 +53,12 @@ extends Resource
 ## Once it trusts the ranger, leads them to floating litter within guide_range (dolphins).
 @export var guides_to_litter := false
 @export var guide_range := 400.0
+## Floating litter within carry_range of it is carried to the nearest shore and left on
+## land, where the ranger can pick it up on foot (sea otters). One piece at a time, with a
+## rest of carry_rest seconds after each.
+@export var carries_litter_ashore := false
+@export var carry_range := 160.0
+@export var carry_rest := 12.0
 ## Sometimes digs up buried beach litter while the ranger watches (crabs).
 @export var digs_up_litter := false
 ## Chance of digging something up each time it finishes a rest.

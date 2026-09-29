@@ -73,6 +73,15 @@ func collect(announce := true) -> void:
 	remove()
 
 
+## Left on land at `point` (e.g. carried ashore by an otter): it stays there to be picked up.
+func put_ashore(point: Vector2) -> void:
+	floating = false
+	_drifting = false
+	set_process(false)
+	_sprite.position = Vector2.ZERO
+	global_position = point
+
+
 ## Takes it out of the world for good (collected, or caught round an animal).
 func remove() -> void:
 	if not spawned:

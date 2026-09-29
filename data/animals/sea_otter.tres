@@ -28,3 +28,4 @@ urchins_per_day = 4.0
 forage_range = 260.0
 food_needed = 4.0
 kelp_food = 3.0
+carries_litter_ashore = true

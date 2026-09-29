@@ -70,6 +70,17 @@ var _breath_left := 0.0
 var _last_ranger_pos := Vector2.INF
 ## Litter this animal is leading the ranger to (trusting dolphins).
 var _guide_to: Node2D
+## Carriers (otters): the litter it's fetching or bringing ashore, where it's taking it
+## (a water spot beside `_carry_land`), seconds on this trip, and seconds until it looks again.
+var _carry: Debris
+var _carry_ashore := false
+var _carry_shore := Vector2.ZERO
+var _carry_land := Vector2.ZERO
+var _carry_time := 0.0
+var _carry_wait := 0.0
+static var _carry_note_day := -1
+const LAND := ["sand", "grass", "mud", "rock", "ice"]
+const CARRY_GIVE_UP := 40.0
 ## Guides: the ranger has played with it, so it'll show them the next litter it finds.
 var played := false
 ## Day the ranger last photographed this animal: one photo per animal per day.
@@ -281,6 +292,7 @@ func _physics_process(delta: float) -> void:
 	_avoid_busy_boats()
 	_maybe_nest()
 	_maybe_guide()
+	_maybe_carry(delta)
 	if _tree_nesting(delta):
 		return
 
@@ -503,6 +515,85 @@ func _nearest_floating_litter(within: float) -> Node2D:
 		if debris.floating and not debris.is_queued_for_deletion() 				and debris.global_position.distance_to(global_position) <= within 				and (not best or debris.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
 			best = debris
 	return best
+
+
+## Carriers (otters) fetch floating litter near them and leave it on the nearest shore.
+func _maybe_carry(delta: float) -> void:
+	if not data.carries_litter_ashore:
+		return
+	if tangled or injured or young or leaving or (_carry and not is_instance_valid(_carry)):
+		_drop_carry()
+		return
+	if not _carry:
+		_carry_wait -= delta
+		if _carry_wait > 0.0:
+			return
+		_carry_wait = 2.0
+		_carry = _litter_to_carry()
+		if not _carry:
+			return
+		_carry.set_meta("carried_by", self)
+		_carry_ashore = false
+		_carry_time = 0.0
+		_swim_to(_carry.global_position, State.SWIM)
+		return
+	_carry_time += delta
+	if not _carry_ashore:
+		if global_position.distance_to(_carry.global_position) < 12.0:
+			_carry_land = Terrain.nearest(get_tree(), global_position, LAND)
+			_carry_shore = _shore_beside(_carry_land)
+			_carry_ashore = true
+			_swim_to(_carry_shore, State.SWIM)
+		elif _state == State.REST:
+			_swim_to(_carry.global_position, State.SWIM)
+		elif _carry_time > CARRY_GIVE_UP:
+			_drop_carry()
+		return
+	_carry.global_position = global_position + Vector2(0, -6)  # held up out of the water
+	if global_position.distance_to(_carry_shore) < 8.0 or _carry_time > CARRY_GIVE_UP \
+			or (_state == State.REST and global_position.distance_to(_carry_land) < 56.0):
+		_carry.put_ashore(_carry_land)
+		_carry.remove_meta("carried_by")
+		_carry = null
+		_carry_wait = data.carry_rest
+		Journal.record_gift(data)
+		if _carry_note_day != GameClock.day:  # one note a day
+			_carry_note_day = GameClock.day
+			get_tree().call_group("hud", "show_toast", "A %s brought some litter ashore - pick it up on the beach!" % data.display_name.to_lower())
+		_rest(1.0)
+	elif _state == State.REST:
+		_swim_to(_carry_shore, State.SWIM)
+
+
+## Lets go of what it's carrying (it floats on where it is).
+func _drop_carry() -> void:
+	if is_instance_valid(_carry):
+		_carry.remove_meta("carried_by")
+	_carry = null
+
+
+## Floating litter within carry_range that no one else is fetching, with land near it.
+func _litter_to_carry() -> Debris:
+	var best: Debris = null
+	for debris: Debris in get_tree().get_nodes_in_group("debris"):
+		if not debris.floating or debris.is_queued_for_deletion() or not debris.item.is_litter \
+				or debris.item.ranger_cleans or debris.has_meta("carried_by"):
+			continue
+		var distance := debris.global_position.distance_to(global_position)
+		if distance <= data.carry_range and (not best or distance < best.global_position.distance_to(global_position)):
+			best = debris
+	if best and not Terrain.at(get_tree(), Terrain.nearest(get_tree(), best.global_position, LAND)) in LAND:
+		return null  # no shore anywhere near
+	return best
+
+
+## The water spot just off `land`, on the side towards this animal.
+func _shore_beside(land: Vector2) -> Vector2:
+	for i in range(1, 9):
+		var spot := land.move_toward(global_position, 8.0 * i)
+		if in_habitat(spot):
+			return spot
+	return global_position
 
 
 ## Diggers (crabs) sometimes turn up buried litter while the ranger is watching.
