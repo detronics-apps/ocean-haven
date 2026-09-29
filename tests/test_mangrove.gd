@@ -96,6 +96,10 @@ func _initialize() -> void:
 	_expect(gate.gate_closed and eco.pools_connected() == 0 and eco.level_right(),
 		"closed: the pool is cut off again, but the flats hold water (level %d%%)" % roundi(eco.water_level() * 100.0))
 	_expect(eco.nests() >= 1, "the water level is right: the flamingo builds a mud-mound nest")
+	var nest_at: Vector2 = eco.get("_nests_at")[0]
+	player.global_position = nest_at + Vector2(10, 0)
+	_expect(eco.actions().size() == 1 and eco.actions()[0].label == "Flamingo nest", "beside a nest, it says what it is")
+	player.global_position = gate.global_position + Vector2(-40, 0)
 
 	# --- Standing water silts up; flowing water much more slowly ---
 	for i in 12:  # 3 days

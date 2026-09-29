@@ -214,6 +214,9 @@ foundations the mechanics sit on, not the mechanics themselves.
   - a dead zone around action buttons, so near misses don't walk the ranger;
   - bottom UI kept clear of rounded phone corners in portrait;
   - no tooltips-only information (show problems as text).
+- **Everything drawn in the world explains itself close up** (an action button when the ranger
+  is beside it: flamingo nests, silting channels…). Nothing is only decoration the player has to
+  guess about.
 - **No emoji in game text** (the font can't draw them); use drawn pictures instead.
 - Long notes get more time on screen.
 

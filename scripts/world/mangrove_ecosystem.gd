@@ -87,6 +87,29 @@ var _silt_marks: Array[Node2D] = []
 
 func _enter_tree() -> void:
 	add_to_group("ecosystems")
+	add_to_group("interactables")  # nests and silting channels explain themselves close up
+
+
+## How close the ranger must be to a nest or silting channel to find out what it is.
+const LOOK_RANGE := 40.0
+var _nests_at: Array[Vector2] = []
+
+
+## For the action bar: what that mud mound or brown channel is, when the ranger is beside it.
+func actions() -> Array:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger or not Regions.ranger_on(get_tree(), region()):
+		return []
+	var at := ranger.global_position
+	for nest in _nests_at:
+		if nest.distance_to(at) <= LOOK_RANGE:
+			return [{"label": "Flamingo nest", "do": func() -> void:
+				get_tree().call_group("hud", "show_toast", "A flamingo nest: a mound of mud with a single egg on top. Flamingos build them on the mud flats while the water level is right (water level %s)." % _level_word())}]
+	for cell: Vector2i in _silt:
+		if silt_of(cell) > 0.2 and _world(cell).distance_to(at) <= LOOK_RANGE:
+			return [{"label": "Silting channel (%d%%)" % roundi(silt_of(cell) * 100.0), "do": func() -> void:
+				get_tree().call_group("hud", "show_toast", "Silt is settling in this channel (%d%%). At 100%% it turns back into mud. Water standing still silts fast; flowing water, a full-grown mangrove beside it, or the station's channel restoration help." % roundi(silt_of(cell) * 100.0))}]
+	return []
 
 
 func _ready() -> void:
@@ -390,6 +413,7 @@ func settle() -> void:
 	_follow(FLAMINGO, flamingos_supported())
 	_follow(CRAB, crabs_supported())
 	_follow(CROCODILE, crocodiles_supported())
+	_nests_at = _nest_spots()
 	queue_redraw()
 
 
@@ -541,8 +565,7 @@ func _seed() -> void:
 ## Nests on the flats (mud mounds, one per flamingo while the water is right) and silt
 ## building up in the channels (brown, as it gets closer to silting up).
 func _draw() -> void:
-	var spots := _nest_spots()
-	for spot in spots:
+	for spot in _nests_at:
 		var at := to_local(spot)
 		draw_circle(at + Vector2(0, 2), 7.0, Color(0, 0, 0, 0.18))
 		draw_circle(at, 6.0, MOUND)
