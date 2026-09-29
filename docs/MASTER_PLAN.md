@@ -671,8 +671,12 @@ See "Island by island → Kelp Forest" for the design. Build order (each a playa
    pressure survey, otter monitoring, ecosystem balance survey, kelp restoration, urchin
    relocation, storm damage survey.
 6. **Kelp Restoration Site** (hard max) and 💰 **Kelp Discovery Centre** (max 2).
-7. **Island health** from the food web (kelp cover, urchins in balance — neither overgrazing
-   nor none, otters, fish, cormorants, clean water).
+7. **Island health** from the food web (kelp cover, otters, fish, cormorants, clean water), all
+   scaled by the urchin balance (neither overgrazing nor none): an unbalanced web pulls the
+   whole island down. Too many of one species (otters above 8) scores lower again. Range: every
+   island starts near 0 % on the first visit (a surge of litter left over years:
+   RegionData.arrival_litter); one species dominating with the litter left about ≈ 20 %; balanced
+   but littered ≈ 55 %; balanced and clean 100 %.
 8. **🌊 Underwater Storm (heavy swell):** warned; damages kelp beds, moves debris, reduces
    visibility (missions take longer for a while); respond by surveying and restoring.
 9. **Objective → Kelp Fibre:** restore the balance, then gather shed kelp at set spots. Kelp

@@ -16,6 +16,10 @@ extends Resource
 @export var theme: String
 ## Middle of the region's island in the world.
 @export var center := Vector2.ZERO
+## Litter already about the island the first time the ranger arrives (years of it washed up
+## before anyone looked after it), so it starts in poor health. The starting island gets
+## its own at the start of a new game.
+@export var arrival_litter := 25
 ## How far from the middle a rowboat can go (its coastal waters).
 @export var waters_radius := 1100.0
 ## Where the ranger steps ashore after sailing here.

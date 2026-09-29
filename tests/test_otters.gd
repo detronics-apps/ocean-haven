@@ -62,6 +62,12 @@ func _initialize() -> void:
 		"6 habitats: %d otters leave almost no urchins (%d)" % [otter_count.call(), ecosystem.urchin_total()])
 	_expect(health.of(self, kelp_region) < balanced, "more isn't better: the island is less healthy (%.2f vs %.2f)" % [
 		health.of(self, kelp_region), balanced])
+	var spawner: Node = world.get_node("KelpLitter")
+	spawner.fill(20)
+	_expect(health.of(self, kelp_region) < 0.3, "one species crowding out the rest, and litter left about: the island's health drops a long way (%.2f)" % health.of(self, kelp_region))
+	for d in get_nodes_in_group("debris"):
+		if d.global_position.distance_to(kelp_region.center) < kelp_region.waters_radius:
+			d.free()
 	var monitoring: Dictionary = ecosystem.run_mission(load("res://data/missions/otter_monitoring.tres"))
 	_expect(monitoring.detail.contains("fewer habitats"), "otter monitoring says so (%s)" % monitoring.detail)
 

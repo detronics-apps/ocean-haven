@@ -28,6 +28,23 @@ func _initialize() -> void:
 	_expect(ecosystem.kelp_health() < 0.45 and ecosystem.urchin_total() > beds.size() * 5,
 		"it starts damaged: thin kelp (%.2f), lots of urchins (%d)" % [ecosystem.kelp_health(), ecosystem.urchin_total()])
 
+	# --- The first visit: years of litter already about, so the island is in very poor health ---
+	var kelp_waters: Resource = load("res://data/regions/kelp_forest.tres")
+	var litter_there := func() -> int:
+		return get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+			return d.global_position.distance_to(kelp_waters.center) < kelp_waters.waters_radius).size()
+	var voyage: GDScript = load("res://scripts/ui/voyage_map.gd")
+	voyage.arrive(self, kelp_waters)
+	var surge: int = litter_there.call()
+	_expect(surge >= 20, "arriving the first time, there's litter everywhere (%d)" % surge)
+	_expect(load("res://scripts/systems/island_health.gd").of(self, kelp_waters) < 0.1,
+		"so the island starts close to 0 %% health (%.2f)" % load("res://scripts/systems/island_health.gd").of(self, kelp_waters))
+	voyage.arrive(self, kelp_waters)
+	_expect(litter_there.call() == surge, "only the first time")
+	for d in get_nodes_in_group("debris"):
+		d.free()
+	voyage.arrive(self, load("res://data/regions/home_island.tres"))
+
 	# --- Not discovered yet: nothing changes ---
 	var before: float = ecosystem.kelp_health()
 	root.get_node("GameClock").advance(600.0)

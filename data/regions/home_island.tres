@@ -120,7 +120,7 @@ text = "Seabirds nesting in the palms"
 script = ExtResource("3_health")
 kind = &"animals"
 target = &"green_turtle"
-amount = 6
+amount = 10
 weight = 2.0
 text = "Turtles living here"
 
@@ -167,6 +167,7 @@ arrival = Vector2(0, 40)
 boat_mooring = Vector2(16, 112)
 map_icon = ExtResource("1_ovoyb")
 discovery = &"salvaged_sonar_core"
+arrival_litter = 0
 objective = "Find and clear the old wreck off the coast"
 goals = Array[ExtResource("2_goal")]([SubResource("Goal_found"), SubResource("Goal_cleared"), SubResource("Goal_recovered")])
 discovery_text = "Cleaned and working again, the old sonar unit is the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."

@@ -68,6 +68,13 @@ static func arrive(tree: SceneTree, region: RegionData) -> void:
 	boat.global_position = region.boat_mooring
 	player.stop()
 	boat.stop()
+	# The first visit: the island has had nobody looking after it, so litter is everywhere.
+	var first_visit := StringName("arrived_%s" % region.id)
+	if region.direction != &"" and region.arrival_litter > 0 and not Fleet.has_flag(first_visit):
+		Fleet.mark(first_visit)
+		for spawner: LitterSpawner in tree.get_nodes_in_group("litter_spawner"):
+			if Regions.nearest(spawner.area.get_center()) == region:
+				spawner.fill(region.arrival_litter)
 
 
 func _ranger_position() -> Vector2:

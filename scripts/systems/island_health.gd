@@ -14,10 +14,14 @@ static func of(tree: SceneTree, region: RegionData) -> float:
 		return -1.0
 	var total := 0.0
 	var weights := 0.0
+	var scale := 1.0
 	for factor: HealthFactor in region.health:
+		if factor.scales_all:
+			scale *= lerpf(factor.scale_floor, 1.0, score(tree, region, factor))
+			continue
 		total += score(tree, region, factor) * factor.weight
 		weights += factor.weight
-	return total / weights if weights > 0.0 else -1.0
+	return total / weights * scale if weights > 0.0 else -1.0
 
 
 ## Whether a building with this id exists anywhere.
@@ -31,8 +35,13 @@ static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 	match factor.kind:
 		&"clean":
 			return clampf(1.0 - count(tree, region, factor) / amount, 0.0, 1.0)
-		&"help", &"animals", &"kelp":
+		&"help", &"kelp":
 			return clampf(count(tree, region, factor) / amount, 0.0, 1.0)
+		&"animals":
+			var n := count(tree, region, factor)
+			if factor.too_many > 0 and n > factor.too_many:  # one species crowding out the rest
+				return clampf(1.0 - float(n - factor.too_many) / factor.too_many, 0.0, 1.0)
+			return clampf(n / amount, 0.0, 1.0)
 		&"balance":
 			var eco := ecosystem(tree, region)
 			if not eco:
@@ -89,6 +98,8 @@ static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) 
 	if factor.kind == &"balance":
 		var eco := ecosystem(tree, region)
 		return "%s: %d overgrazed bed(s), %d urchins in all" % [factor.text, n, eco.urchin_total() if eco else 0]
+	if factor.kind == &"animals" and factor.too_many > 0 and n > factor.too_many:
+		return "%s: %d (too many: more than %d crowd out the rest)" % [factor.text, n, factor.too_many]
 	if factor.kind == &"animals" and n >= factor.amount:
 		return "%s: %d (%d for full health)" % [factor.text, n, factor.amount]
 	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]

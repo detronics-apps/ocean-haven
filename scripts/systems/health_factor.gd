@@ -15,3 +15,10 @@ extends Resource
 @export var weight := 1.0
 ## What it is, for the Journal ("Litter in the water").
 @export var text: String
+## "animals": more than this many is too many (0 = no limit): the score falls again above
+## it, to nothing at twice as many (one species crowding out the rest).
+@export var too_many := 0
+## A factor the whole island depends on (e.g. the food web in balance): the rest of the
+## health is multiplied by `scale_floor` .. 1 with its score, instead of it being one more part.
+@export var scales_all := false
+@export var scale_floor := 0.4

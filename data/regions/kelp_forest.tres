@@ -9,21 +9,22 @@
 script = ExtResource("3_health")
 kind = &"clean"
 amount = 10
-weight = 2.0
+weight = 4.0
 text = "Litter in the water and on the beaches"
 
 [sub_resource type="Resource" id="Health_kelp"]
 script = ExtResource("3_health")
 kind = &"kelp"
 amount = 80
-weight = 3.0
+weight = 2.0
 text = "Kelp forest"
 
 [sub_resource type="Resource" id="Health_balance"]
 script = ExtResource("3_health")
 kind = &"balance"
 target = &"sea_urchin"
-weight = 2.0
+scales_all = true
+scale_floor = 0.4
 text = "Urchins in balance"
 
 [sub_resource type="Resource" id="Health_otters"]
@@ -31,7 +32,7 @@ script = ExtResource("3_health")
 kind = &"animals"
 target = &"sea_otter"
 amount = 4
-weight = 2.0
+too_many = 8
 text = "Sea otters"
 
 [sub_resource type="Resource" id="Health_fish"]
