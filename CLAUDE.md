@@ -109,6 +109,9 @@ itch.io is no longer kept up to date — don't rebuild the itch zip.
 - Test exported builds, not just the editor: the browser caches `index.pck` (use a fresh port for a
   local server), and headless can run an exported pack: `godot --headless --main-pack <pck> --script <abs path>`.
 - The game shows its revision (`rN sha`, bottom left) from `version.txt`, written at publish time.
+- The installed app keeps the engine (`index.wasm`, ~39 MB) in its own cache across versions
+  (`tools/patch_service_worker.py`, run by the publish script), so an update only downloads
+  what changed. A new version switches over when the app is opened or returned to, never mid-load.
 
 ## Testing on a phone (web build over home Wi-Fi — needs firewall access)
 

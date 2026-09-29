@@ -16,6 +16,9 @@ mkdir -p "$SITE/play"
 echo "r$(git rev-list --count HEAD) $(git rev-parse --short HEAD)" > version.txt
 "$GODOT" --headless --path . --export-release "Web Pages" "$SITE/play/index.html"
 rm -f "$SITE"/play/*.import
+# The installed app keeps the (rarely changing) engine between versions: updates stay small.
+PYTHON="$(command -v python3 || command -v python)"
+"$PYTHON" tools/patch_service_worker.py "$SITE/play"
 # The exported game must hold exactly the same data as the project (an export setting
 # once silently reset every building's terrain; see tools/dump_data.gd).
 dump() { "$GODOT" --headless "$@" 2>/dev/null | grep "^DATA" | sed 's/#-\?[0-9]*>/>/g' | sort; }
