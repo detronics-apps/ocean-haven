@@ -77,6 +77,9 @@ extends Resource
 ## Funding it costs to look after, every morning (0 = none). Unpaid, it isn't looked after
 ## that day (see Building.upkeep_paid).
 @export var upkeep := 0
+## Kelp beds this close grow back faster while it stands (a Kelp Restoration Site; 0 = none).
+## Planting can't beat overgrazing: where urchins are too many, the kelp still declines.
+@export var restore_range := 0.0
 ## Offers "Demolish" (conservation structures that can unbalance an island), returning
 ## half its wood.
 @export var demolishable := false

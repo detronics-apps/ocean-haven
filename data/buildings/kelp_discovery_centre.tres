@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_kdc"]
+[ext_resource type="Texture2D" path="res://assets/buildings/kelp_discovery_centre/kelp_discovery_centre.svg" id="2_kdc"]
+
+[resource]
+script = ExtResource("1_kdc")
+id = &"kelp_discovery_centre"
+display_name = "Kelp Discovery Centre"
+description = "Visitors learn about kelp forests, otters and food webs, and watch the forest through a big window. More otters in view and a healthier forest, more visitors."
+order = 4
+texture = ExtResource("2_kdc")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 120
+cost_litter = 8
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+facility = &"funding"
+visitors = 20
+visitors_per_animal = 8
+watches = &"sea_otter"
+watch_range = 420.0
+max_count = 2
+only_on = &"kelp_forest"
+placement_hint = "on the shore, looking over the kelp"
+fact = "Kelp forests are among the most productive places on Earth, and visitors who see one up close often want to help protect it."

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Placeholder Kelp Discovery Centre (3/4 view): a visitor centre with a big window onto the kelp, an otter sign and a small tour boat jetty. -->
+  <rect x="4" y="24" width="56" height="30" fill="#e8e2d2"/>
+  <rect x="2" y="18" width="60" height="8" fill="#2f6a8a"/>
+  <rect x="8" y="30" width="30" height="16" fill="#3a7fa0"/>
+  <rect x="11" y="36" width="2" height="10" fill="#58b85c"/><rect x="17" y="33" width="2" height="13" fill="#58b85c"/><rect x="25" y="35" width="2" height="11" fill="#58b85c"/><rect x="32" y="37" width="2" height="9" fill="#58b85c"/>
+  <rect x="20" y="40" width="5" height="3" fill="#4f74a8"/>
+  <rect x="44" y="34" width="10" height="20" fill="#7a5a36"/>
+  <rect x="42" y="8" width="16" height="9" fill="#f4efe2"/><rect x="45" y="11" width="7" height="3" fill="#7a5234"/><rect x="52" y="11" width="3" height="3" fill="#c9bfae"/>
+  <rect x="49" y="17" width="2" height="2" fill="#8a5a34"/>
+  <rect x="4" y="54" width="56" height="4" fill="#a8844a"/>
+</svg>

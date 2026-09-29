@@ -22,3 +22,4 @@ watch_range = 480.0
 max_count = 1
 placement_hint = "on the beach, facing the dolphins' waters"
 fact = "Watching dolphins from the shore or from a slow, distant boat keeps them safe: chasing or crowding them disturbs their feeding and resting."
+only_on = &"home_island"

@@ -48,6 +48,14 @@ func _initialize() -> void:
 	_expect(otter_count.call() == 2 and home.animals_here() == 2, "otters settle at it, up to its 2 (%d)" % otter_count.call())
 	_expect(funding.balance < 1000, "and it costs upkeep every morning (%d left)" % funding.balance)
 
+	# --- A Kelp Discovery Centre: visitors come to see the otters ---
+	var centre_data: Resource = load("res://data/buildings/kelp_discovery_centre.tres")
+	var centre: Node2D = build_mode.add_building(centre_data, _free_cell_near(build_mode, centre_data, cell))
+	await process_frame
+	_expect(centre.animals_in_view() >= 1 and centre.visitors_today() > centre_data.visitors,
+		"a Kelp Discovery Centre earns more with otters in view (%d otters, %d funding)" % [centre.animals_in_view(), centre.visitors_today()])
+	centre.free()
+
 	# --- A second habitat right beside it: more upkeep, not more otters than the coast can hold ---
 	var beside := _free_cell_near(build_mode, habitat_data, cell)
 	var second: Node2D = build_mode.add_building(habitat_data, beside)

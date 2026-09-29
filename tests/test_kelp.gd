@@ -90,12 +90,44 @@ func _initialize() -> void:
 		b.health = 0.7
 		b.urchins = 1.0
 
+	# --- A Kelp Restoration Site helps the beds near it grow back faster ---
+	var near_bed: Node2D = beds[2]
+	var far_bed: Node2D = beds.reduce(func(a: Node2D, b: Node2D) -> Node2D:
+		return a if a.position.distance_to(near_bed.position) > b.position.distance_to(near_bed.position) else b)
+	var site: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_restoration_site.tres"),
+		Vector2i((near_bed.global_position / 32.0).floor()))
+	for b: Node2D in [near_bed, far_bed]:
+		b.health = 0.2
+		b.urchins = 1.0
+	for i in 8:
+		ecosystem.tick(0.25)
+		near_bed.urchins = 1.0
+		far_bed.urchins = 1.0
+	_expect(near_bed.health > far_bed.health + 0.1, "a restoration site speeds up kelp near it (%.2f vs %.2f far away)" % [near_bed.health, far_bed.health])
+	near_bed.urchins = 12.0
+	for i in 40:
+		ecosystem.tick(0.25)
+	_expect(near_bed.health < 0.5, "but it can't beat overgrazing (%.2f)" % near_bed.health)
+	site.free()
+
+	# --- The Build menu there offers the Kelp Forest's buildings, not the Starting Island's ---
+	var player: Node2D = world.get_node("Player")
+	player.global_position = load("res://data/regions/kelp_forest.tres").arrival
+	var menu: Node = world.get_node("BuildMenu")
+	menu.open()
+	for id in ["otter_habitat", "kelp_research_platform", "kelp_restoration_site", "kelp_discovery_centre", "coastal_tree"]:
+		_expect(menu.find_child("Entry_" + id, true, false) != null, "the Kelp Forest's Build menu has the %s" % id)
+	for id in ["turtle_protection_area", "dolphin_viewing_area", "palm_tree", "marine_rescue_station"]:
+		_expect(menu.find_child("Entry_" + id, true, false) == null, "but not the %s" % id)
+	menu.close()
+
 	# --- Saved ---
 	var saved: Dictionary = ecosystem.to_dict()
+	var saved_health: float = bed.health
 	bed.health = 0.0
 	bed.urchins = 0.0
 	ecosystem.restore(saved)
-	_expect(bed.health > 0.6, "the beds are restored from the save")
+	_expect(is_equal_approx(bed.health, saved_health), "the beds are restored from the save")
 
 	if not _failed:
 		print("PASS")

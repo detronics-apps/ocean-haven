@@ -39,6 +39,9 @@ const SPOT_RANGE := 72.0
 ## to forage), so habitats crowded together share the same otters.
 @export var crowd_max := 3
 @export var crowd_range := 240.0
+## Otters settled at a habitat only move away when food falls below this share of what they
+## need (they ride out lean days while the kelp grows back).
+@export var leave_below := 0.5
 ## Chance that a new otter is a pup born on the island (with 2+ grown otters), not a newcomer.
 @export var pup_chance := 0.5
 @export_group("Fish and birds")
@@ -145,8 +148,11 @@ func _spot_urchins() -> void:
 ## One step of the food web, `days` long.
 func tick(days: float) -> void:
 	_otters_eat(days)
+	var sites := get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
+		return b.data.restore_range > 0.0 and not b.damaged and b.upkeep_paid)
 	for bed in beds():
-		var restoring := 1.0 if bed.restored_until > GameClock.now() else 0.0
+		var restoring := 1.0 if bed.restored_until > GameClock.now() or sites.any(func(s: Building) -> bool:
+			return s.global_position.distance_to(bed.global_position) <= s.data.restore_range) else 0.0
 		var food := 0.3 + 0.7 * bed.health
 		var growth := urchin_growth * bed.urchins * (1.0 - bed.urchins / urchin_cap) * food
 		bed.urchins += (growth + urchin_drift_in * (1.0 if bed.urchins < 1.0 else 0.0)) * days
@@ -222,7 +228,7 @@ func settle() -> void:
 		var crowd := all.filter(func(o: Animal) -> bool:
 			return not o.leaving and o.home().distance_to(home.global_position) <= crowd_range).size()
 		var food := food_at(home.global_position, species)
-		if not living.is_empty() and food / maxf(crowd, 1) < species.food_needed:
+		if not living.is_empty() and food / maxf(crowd, 1) < species.food_needed * leave_below:
 			_move_away(living.back(), "there isn't enough food in the kelp around the %s" % home.data.display_name)
 			continue
 		if home.damaged or not home.upkeep_paid or home.room_for_animals() <= 0 or crowd >= crowd_max:
