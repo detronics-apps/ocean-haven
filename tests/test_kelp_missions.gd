@@ -39,7 +39,7 @@ func _initialize() -> void:
 	await _send(missions, clock, "otter_monitoring", kelp)
 	_expect(missions.last_report.contains("Otter Habitat"), "otter monitoring: with no habitat yet, it says to build one (%s)" % missions.last_report)
 	await _send(missions, clock, "ecosystem_balance_survey", kelp)
-	_expect(missions.last_report.contains("Otters: 0") and missions.last_report.contains("cormorants"),
+	_expect(missions.last_report.contains("Otters: ") and missions.last_report.contains("cormorants"),
 		"the balance survey spells out the food web (%s)" % missions.last_report)
 
 	# --- Restoration: the most damaged beds get replanted and grow faster ---

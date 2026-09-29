@@ -29,9 +29,15 @@ func _initialize() -> void:
 		"Otter Habitats: up to 6, with upkeep, and they can be demolished")
 	funding.restore({"balance": 5000})
 	root.get_node("Inventory").restore({"plastic_bottle": 100}, {"wood": 100})
+	await process_frame
+	for animal in ecosystem.otters():  # the island's own struggling otter (see test_kelp): a clean start here
+		animal.free()
 	var otter_count := func() -> int: return ecosystem.otters().size()
+	var clock := root.get_node("GameClock")
 	var days := func(n: float) -> void:
 		for i in roundi(n / ecosystem.tick_days):
+			clock.time_of_day = 0.4  # time passes (homeless otters move away after a day), but not a new morning
+			clock.day += 0 if i % 4 else 1
 			ecosystem.tick(ecosystem.tick_days)
 
 	# --- One habitat: the first otter comes straight away, it's full within a day ---

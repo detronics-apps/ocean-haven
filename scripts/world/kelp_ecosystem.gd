@@ -61,6 +61,10 @@ const FISH := preload("res://data/animals/blue_rockfish.tres")
 const CORMORANT := preload("res://data/animals/double_crested_cormorant.tres")
 
 var _last_tick := -1.0
+## The island's own struggling animals have been put out (the first time it's discovered).
+var _seeded := false
+## Otters with no habitat move away after this many days (a freed otter needs a quiet place).
+@export var homeless_days := 1.0
 
 
 func _enter_tree() -> void:
@@ -125,6 +129,8 @@ func _process(_delta: float) -> void:
 	if not Regions.is_discovered(region()):
 		_last_tick = -1.0
 		return
+	if not _seeded:
+		_seed()
 	_spot_urchins()
 	var now := GameClock.now()
 	if _last_tick < 0.0:
@@ -137,6 +143,35 @@ func _process(_delta: float) -> void:
 		ticks += 1
 	if now - _last_tick >= tick_days:
 		_last_tick = now
+
+
+## When the ranger first finds the island, every species is there but struggling: urchins
+## overgrazing a barren, a few rockfish in the thin kelp, one hungry cormorant, and an otter
+## caught in a ghost net — it needs help, then a quiet place to rest (an Otter Habitat).
+func _seed() -> void:
+	_seeded = true
+	var otter := _spawn(load("res://data/animals/sea_otter.tres"), beds()[0].global_position)
+	otter.tangle(load("res://data/items/ghost_net.tres"))
+	for i in 2:
+		_spawn(FISH, beds()[(i + 3) % beds().size()].global_position)
+	_spawn(CORMORANT, region().center + Vector2(0, -120))
+
+
+## Puts a grown animal of `species` into the world at `spot` (saved like the island's own).
+func _spawn(species: AnimalData, spot: Vector2) -> Animal:
+	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	animal.data = species
+	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
+	var world := get_tree().get_first_node_in_group("player").get_parent()
+	var n := 1
+	while world.has_node("%s%d" % [species.id.to_pascal_case(), n]):
+		n += 1
+	animal.name = "%s%d" % [species.id.to_pascal_case(), n]
+	animal.home_radius = 360.0 if species.flies else (species.adult_home_radius if species.urchins_per_day > 0.0 else 60.0)
+	animal.position = spot
+	world.add_child(animal)
+	world.move_child(animal, world.get_node("Player").get_index())
+	return animal
 
 
 ## Close to a bed with urchins: they're in the Journal.
@@ -267,7 +302,8 @@ func settle() -> void:
 	var homes := _habitats(species)
 	var all := otters()
 	var before := all.size()
-	# Otters whose home was taken down find another with room, or move away.
+	# Otters without a home (freed from a net, or their habitat taken down) find one with
+	# room, or move away after a while: they need a quiet place to rest.
 	for otter in all:
 		if not is_instance_valid(otter.home_area) or otter.home_area.is_queued_for_deletion():
 			otter.home_area = null
@@ -275,8 +311,14 @@ func settle() -> void:
 				if home.room_for_animals() > 0:
 					otter.home_area = home
 					break
-			if not otter.home_area:
-				_move_away(otter, "its habitat was taken down and there's no other with room")
+		if otter.home_area or otter.tangled or otter.injured:
+			otter.homeless_since = -1.0
+			continue
+		if otter.homeless_since < 0.0:
+			otter.homeless_since = GameClock.now()
+			get_tree().call_group("hud", "show_toast", "A sea otter has nowhere quiet to rest: build an Otter Habitat, or it will move away.")
+		elif GameClock.now() - otter.homeless_since >= homeless_days:
+			_move_away(otter, "it had no quiet place to rest (an Otter Habitat)")
 	all = otters()
 	var fed := food(species)
 	if not all.is_empty() and fed / all.size() < species.food_needed * leave_below:
@@ -296,13 +338,13 @@ func settle() -> void:
 
 ## Kelp fish the forest can support now.
 func fish_supported() -> int:
-	return floori(beds().filter(func(b: KelpBed) -> bool: return b.health >= healthy_bed_at).size() * fish_per_bed)
+	return floori(beds().reduce(func(sum: float, b: KelpBed) -> float: return sum + b.health, 0.0) * fish_per_bed)
 
 
 ## Cormorants the fish can feed, if there are full-grown trees to nest in.
 func cormorants_supported() -> int:
 	var fish := living(FISH).size()
-	return mini(mini(fish / fish_per_cormorant, cormorant_max), Arrivals.grown_trees(get_tree(), region()))
+	return mini(mini(roundi(float(fish) / fish_per_cormorant), cormorant_max), Arrivals.grown_trees(get_tree(), region()))
 
 
 ## The island's animals of `species` (not ones moving away).
@@ -592,7 +634,7 @@ func urchin_total() -> int:
 
 ## For the save file: each bed's health and urchins, by name.
 func to_dict() -> Dictionary:
-	var saved := {"last_tick": _last_tick, "beds": {}}
+	var saved := {"last_tick": _last_tick, "seeded": _seeded, "beds": {}}
 	for bed in beds():
 		saved.beds[String(bed.name)] = [bed.health, bed.urchins, bed.restored_until, bed.storm_hit]
 	return saved
@@ -600,6 +642,7 @@ func to_dict() -> Dictionary:
 
 func restore(saved: Dictionary) -> void:
 	_last_tick = float(saved.get("last_tick", -1.0))
+	_seeded = bool(saved.get("seeded", false))
 	var saved_beds: Dictionary = saved.get("beds", {})
 	for bed in beds():
 		var entry: Array = saved_beds.get(String(bed.name), [])

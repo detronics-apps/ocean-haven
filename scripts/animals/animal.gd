@@ -48,6 +48,8 @@ var born_at := -1.0
 @export var leaving := false
 ## Only passing through (dolphin tracking's visitor): not one of the island's own.
 var visiting := false
+## When it lost its home (GameClock.now(); -1 = it has one, or doesn't need one).
+var homeless_since := -1.0
 ## Day this animal last nested (spaces nests out by nest_interval_days).
 var last_nest_day := -99
 ## The protection area this animal belongs to (where it hatched or nests), or null.

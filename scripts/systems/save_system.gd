@@ -132,7 +132,8 @@ func save_to(world: Node, path: String) -> bool:
 			young.append({"species": animal.data.id, "pos": [animal.position.x, animal.position.y],
 				"home": [animal.home().x, animal.home().y], "born_at": animal.born_at,
 				"adult": not animal.young, "radius": animal.home_radius, "last_nest": animal.last_nest_day,
-				"injured": animal.injured})
+				"injured": animal.injured, "name": String(animal.name),
+				"tangled": animal.tangle_item.id if animal.tangled and animal.tangle_item else ""})
 		else:
 			nest_days[animal.name] = animal.last_nest_day
 	var state := {
@@ -355,9 +356,14 @@ func load_from(world: Node, path: String) -> bool:
 			baby.home_radius = float(entry.get("radius", baby.home_radius))
 			baby.last_nest_day = int(entry.get("last_nest", -99))
 			baby.injured = bool(entry.get("injured", false))
+			if entry.get("name", "") != "" and not world.has_node(String(entry.name)):
+				baby.name = String(entry.name)  # (tree nests and the like find it by name)
 			world.add_child(baby)
 			world.move_child(baby, world.get_node("Player").get_index())
 			baby.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
+			var caught_in := "res://data/items/%s.tres" % entry.get("tangled", "")
+			if entry.get("tangled", "") != "" and ResourceLoader.exists(caught_in):
+				baby.tangle(load(caught_in))
 	var build_mode: BuildMode = world.get_node("BuildMode")
 	for entry: Dictionary in state.get("buildings", []):
 		var data_path := "res://data/buildings/%s.tres" % entry.get("id", "")

@@ -51,6 +51,25 @@ func _initialize() -> void:
 	await process_frame
 	_expect(is_equal_approx(ecosystem.kelp_health(), before), "nothing happens before the island is found")
 
+	# --- Found for the first time: every species is there, but struggling ---
+	var regions0: GDScript = load("res://scripts/world/regions.gd")
+	regions0.discover(load("res://data/regions/kelp_forest.tres"))
+	await process_frame
+	var seeded_otters: Array = ecosystem.otters()
+	_expect(seeded_otters.size() == 1 and seeded_otters[0].tangled, "an otter is caught in a ghost net, waiting for help")
+	_expect(ecosystem.living(ecosystem.FISH).size() == 2 and ecosystem.living(ecosystem.CORMORANT).size() == 1,
+		"a few rockfish in the thin kelp and one hungry cormorant")
+	seeded_otters[0].restore_freed()
+	ecosystem.settle()
+	_expect(seeded_otters[0].homeless_since >= 0.0 and not seeded_otters[0].leaving, "freed, it needs a quiet place to rest")
+	root.get_node("GameClock").advance(root.get_node("GameClock").DAY_LENGTH * 1.1)
+	ecosystem.settle()
+	_expect(seeded_otters[0].leaving, "with no Otter Habitat it moves away after a day")
+	for animal in ecosystem.living(ecosystem.FISH) + ecosystem.living(ecosystem.CORMORANT):
+		animal.free()
+	seeded_otters[0].free()
+	regions0.forget(load("res://data/regions/kelp_forest.tres"))
+
 	# --- No otters: urchins build up and graze the kelp down, mostly within a day or two ---
 	var bed: Node2D = beds[0]
 	bed.health = 0.8
