@@ -319,6 +319,11 @@ works" card (BuildingData.guide); HealthFactor kind "eco" (the ecosystem scores 
 (EventData.flood_silt); objective: water flowing (4 pools linked, 70 %) -> 5 resin -> Mangrove
 Resin. All building limits count per island.
 
+Boats: every island starts with its own rowboat (world nodes Boat, KelpBoat, MangroveBoat…);
+nothing sails along on voyages and every boat stays where it was left (saved). Up to 2 extra
+Rowboats per island (building holding a Boat), each needing 2 dock planks on the island
+(BuildingData.requires_each); the ranger boards the nearest boat.
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 

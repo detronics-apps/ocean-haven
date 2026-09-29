@@ -126,6 +126,9 @@ extends Resource
 @export var must_touch: StringName
 ## ... touching at least this many tiles of it.
 @export var must_touch_count := 1
+## Needs this many `requires` buildings on its island for each one built (extra rowboats:
+## 2 dock planks each).
+@export var requires_each := 0
 ## Where it goes, for the placement bar (e.g. "in the water, next to 2 dock planks").
 @export var placement_hint: String
 ## What interacting with it does: "" (nothing), "sleep", "explore" (the Exploration Ship) or

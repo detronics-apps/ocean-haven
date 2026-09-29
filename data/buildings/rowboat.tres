@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/boats/rowboat.svg" id="2_t"]
+[ext_resource type="PackedScene" path="res://scenes/player/boat.tscn" id="3_b"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"rowboat"
+display_name = "Rowboat"
+description = "Another small wooden boat for this island, so there's one where you need it. It stays where you leave it. Each needs 2 dock planks on the island first. Up to 2 on each island, besides the rowboat every island starts with."
+order = 4
+texture = ExtResource("2_t")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("water", "")
+cost_funding = 120
+cost_litter = 5
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+max_count = 2
+requires = &"dock"
+requires_each = 2
+spawns = ExtResource("3_b")
+draw_texture = false
+storm_proof = true
+demolishable = true
+category = &"sea"
+placement_hint = "on the water"
+fact = "Small wooden boats have been used for thousands of years to fish and travel along calm coasts and mangrove channels."

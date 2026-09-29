@@ -167,6 +167,8 @@ foundations the mechanics sit on, not the mechanics themselves.
   materials back.
 - **The Build menu only lists what can be built on the island the ranger is on** (`only_on`).
   Buildings for other islands don't appear, not even greyed out.
+- **Nothing moves on its own:** every island has its own rowboat; boats stay where the ranger
+  left them and never sail along on voyages.
 - **Buildings can be used from the rowboat as well as on foot** (e.g. moving an offshore buoy).
 - Each island has **one signature facility** (research → action missions) and **funding
   facilities** whose income rises with island health. Money always comes from a healthy

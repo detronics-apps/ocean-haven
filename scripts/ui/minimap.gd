@@ -47,8 +47,9 @@ func _draw() -> void:
 			if point[1]:
 				var colour: Color = TERRAIN_COLOURS.get(ground.get_cell_tile_data(cell).get_custom_data("terrain"), OCEAN)
 				draw_rect(Rect2(point[0] - Vector2.ONE * cell_size / 2.0, Vector2.ONE * cell_size), colour)
-	var boat: Node2D = get_tree().get_first_node_in_group("boat")
-	if boat and boat != ranger:
+	for boat: Node2D in get_tree().get_nodes_in_group("boat"):
+		if boat == ranger:
+			continue
 		var b: Array = map_point(boat.global_position, centre)
 		if b[1]:
 			draw_rect(Rect2(b[0] - Vector2(3, 2), Vector2(6, 4)), BOAT_COLOUR)

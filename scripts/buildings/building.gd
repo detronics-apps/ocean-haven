@@ -97,6 +97,8 @@ func move_to(new_cell: Vector2i) -> void:
 		_lift_deck()
 	cell = new_cell
 	position = Vector2(cell * Terrain.TILE) + Vector2(data.size * Terrain.TILE) / 2.0
+	if boat() and not boat().controlled:
+		boat().position = Vector2.ZERO  # moved with its mooring
 	if data.deck:
 		_lay_deck()
 
@@ -177,6 +179,14 @@ func actions() -> Array:
 		var sure := Time.get_ticks_msec() < _demolish_until
 		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.display_name), "do": demolish})
 	return list
+
+
+## The rowboat moored here (an extra rowboat), if any.
+func boat() -> Boat:
+	for child in get_children():
+		if child is Boat:
+			return child
+	return null
 
 
 ## Opens or closes a water gate: the island's water and flow change straight away.

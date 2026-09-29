@@ -105,7 +105,8 @@ func _initialize() -> void:
 	for i in 240:
 		await process_frame
 	var kelp: Resource = region.call("kelp_forest")
-	_expect(player.global_position == kelp.arrival and boat.global_position == kelp.boat_mooring, "arrived at the Kelp Forest with the rowboat")
+	_expect(player.global_position == kelp.arrival and world.get_node("KelpBoat").global_position.distance_to(kelp.boat_mooring) < 1.0,
+		"arrived at the Kelp Forest, where its own rowboat is moored")
 	_expect(regions.is_discovered(kelp), "the Kelp Forest is discovered for good")
 	_expect(_ships().size() == 1 and not regions.exploration_ready(self, kelp) and regions.exploration_ready(self, region.call("home_island")),
 		"discovering gives no ship: the Kelp Forest isn't Exploration Ready yet")

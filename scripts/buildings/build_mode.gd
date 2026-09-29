@@ -127,6 +127,9 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 		return "Build a %s first." % data.requires
 	if at_limit(data, island):
 		return "This island already has as many as you can build."
+	var missing := requirement_short(data, island)
+	if missing > 0:
+		return "Build %d more dock plank(s) on this island first: each %s needs %d." % [missing, name, data.requires_each]
 	if not _free and not can_afford(data):
 		return "Not enough to build another. " + data.cost_text()
 	return ""
@@ -201,6 +204,16 @@ func at_limit(data: BuildingData, island: RegionData = null) -> bool:
 	return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
 		return (b.data.id == data.id and not b.is_queued_for_deletion()
 			and Regions.nearest(b.global_position) == island)).size() >= limit
+
+
+## How many more `requires` buildings `island` needs before another `data` (requires_each).
+func requirement_short(data: BuildingData, island: RegionData) -> int:
+	if data.requires_each <= 0:
+		return 0
+	var on_island := func(id: StringName) -> int:
+		return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
+			return b.data.id == id and Regions.nearest(b.global_position) == island).size()
+	return maxi(data.requires_each * (on_island.call(data.id) + 1) - on_island.call(data.requires), 0)
 
 
 ## Whether whatever `data` depends on (e.g. a dock) has been built.

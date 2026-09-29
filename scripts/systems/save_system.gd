@@ -21,6 +21,17 @@ var _freed: Array[String] = []
 var _cut_trees: Array[String] = []
 ## Tiles the ranger changed (moving sand): "<island>/<ground>" -> {"x,y": [atlas x, atlas y]}.
 var _tile_edits: Dictionary = {}
+## Every island's own rowboat (not the Starting Island's "Boat", nor built ones): where it is.
+func _island_boats(world: Node) -> Dictionary:
+	var boats := {}
+	for boat: Boat in get_tree().get_nodes_in_group("boat"):
+		if boat.get_parent() == world and boat.name != "Boat":
+			boats[String(boat.name)] = [boat.global_position.x, boat.global_position.y, boat.controlled]
+	return boats
+
+
+## An extra rowboat the ranger was in (loading).
+var _aboard_extra: Boat
 var _world: Node
 ## No save was found when the game started.
 var new_game := false
@@ -111,9 +122,14 @@ func save_to(world: Node, path: String) -> bool:
 	var boat: Boat = world.get_node("Boat")
 	var buildings: Array[Dictionary] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		buildings.append({"id": building.data.id, "cell": [building.cell.x, building.cell.y],
+		var entry := {"id": building.data.id, "cell": [building.cell.x, building.cell.y],
 			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day,
-			"damaged": building.damaged, "secured": building.secured, "closed": building.gate_closed})
+			"damaged": building.damaged, "secured": building.secured, "closed": building.gate_closed}
+		var extra := building.boat()
+		if extra:  # an extra rowboat stays where the ranger left it
+			entry["boat"] = [extra.global_position.x, extra.global_position.y]
+			entry["aboard"] = extra.controlled
+		buildings.append(entry)
 	var litter: Array[Dictionary] = []
 	for debris: Debris in get_tree().get_nodes_in_group("debris"):
 		if debris.spawned and not debris.is_queued_for_deletion():
@@ -161,6 +177,7 @@ func save_to(world: Node, path: String) -> bool:
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
 		"aboard": boat.controlled,
+		"island_boats": _island_boats(world),
 		"day": GameClock.day,
 		"time_of_day": GameClock.time_of_day,
 		"avatar": RangerProfile.look,
@@ -376,6 +393,11 @@ func load_from(world: Node, path: String) -> bool:
 			building.damaged = bool(entry.get("damaged", false))
 			building.secured = bool(entry.get("secured", false))
 			building.gate_closed = bool(entry.get("closed", false))
+			var left: Array = entry.get("boat", [])
+			if building.boat() and left.size() == 2:
+				building.boat().global_position = Vector2(left[0], left[1])
+				if entry.get("aboard", false):
+					_aboard_extra = building.boat()
 	# Exploration Ships an older version moored for free, with no dock: gone (build your own).
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.must_touch != &"" and not build_mode._touches_building(building.rect(), building.data.must_touch):
@@ -408,8 +430,28 @@ func load_from(world: Node, path: String) -> bool:
 	var b: Array = state.get("boat", [])
 	if b.size() == 2:
 		(world.get_node("Boat") as Node2D).global_position = Vector2(b[0], b[1])
-	if state.get("aboard", false):
-		(world.get_node("Boat") as Boat).restore_aboard()
+	var island_boats: Dictionary = state.get("island_boats", {})
+	for boat_name: String in island_boats:
+		var island_boat := world.get_node_or_null(boat_name) as Boat
+		var entry: Array = island_boats[boat_name]
+		if island_boat and entry.size() == 3:
+			island_boat.global_position = Vector2(entry[0], entry[1])
+			if entry[2]:
+				_aboard_extra = island_boat
+	# Older saves: the ranger's own rowboat sailed along on voyages. It belongs to the
+	# Starting Island now (every island has its own).
+	var own := world.get_node("Boat") as Boat
+	var moved_home := Regions.nearest(own.global_position).id != &"home_island"
+	if moved_home:
+		var was_at := Regions.nearest(own.global_position)
+		own.global_position = (load("res://data/regions/home_island.tres") as RegionData).boat_mooring
+		if state.get("aboard", false):  # they were out in it: ashore where they landed
+			(world.get_node("Player") as Node2D).global_position = was_at.arrival
+	if state.get("aboard", false) and not moved_home:
+		own.restore_aboard()
+	elif is_instance_valid(_aboard_extra):
+		_aboard_extra.restore_aboard()
+	_aboard_extra = null
 	# Turtles belong to a protection area; relink hatchlings and mothers to the nearest one.
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.home_building() != &"":

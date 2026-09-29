@@ -52,22 +52,22 @@ func _fill() -> void:
 		_content.add_child(entry)
 
 
-## Sails to `region`: a fade, then the ranger steps ashore there with their rowboat moored nearby.
+## Sails to `region`: a fade, then the ranger steps ashore there (its own rowboat is moored nearby).
 func sail_to(region: RegionData) -> void:
 	close()
 	get_tree().call_group("hud", "voyage", region)
 
 
-## Moves the ranger and rowboat to `region` straight away (the HUD calls this mid-fade).
+## Moves the ranger to `region` straight away (the HUD calls this mid-fade).
 static func arrive(tree: SceneTree, region: RegionData) -> void:
 	var player: Player = tree.get_first_node_in_group("player")
-	var boat: Boat = tree.get_first_node_in_group("boat")
-	if boat.controlled:
-		boat.restore_ashore()
+	# Nothing sails along: every island has its own rowboat(s), which stay where they were left.
+	for any: Boat in tree.get_nodes_in_group("boat"):
+		if any.controlled:
+			any.restore_ashore()
+			any.stop()
 	player.global_position = region.arrival
-	boat.global_position = region.boat_mooring
 	player.stop()
-	boat.stop()
 	# The first visit: the island has had nobody looking after it, so litter is everywhere.
 	var first_visit := StringName("arrived_%s" % region.id)
 	if region.direction != &"" and region.arrival_litter > 0 and not Fleet.has_flag(first_visit):

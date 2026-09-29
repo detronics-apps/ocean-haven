@@ -140,6 +140,21 @@ treasure = ExtResource("45_sonar")
 [node name="Boat" parent="." unique_id=235501150 instance=ExtResource("9_jy21m")]
 position = Vector2(16, 112)
 
+[node name="KelpBoat" parent="." instance=ExtResource("9_jy21m")]
+position = Vector2(4496, 16)
+
+[node name="MangroveBoat" parent="." instance=ExtResource("9_jy21m")]
+position = Vector2(9680, 80)
+
+[node name="DeepSeaBoat" parent="." instance=ExtResource("9_jy21m")]
+position = Vector2(15600, 16)
+
+[node name="ReefBoat" parent="." instance=ExtResource("9_jy21m")]
+position = Vector2(19888, 16)
+
+[node name="PolarBoat" parent="." instance=ExtResource("9_jy21m")]
+position = Vector2(25104, 16)
+
 [node name="BuildMode" type="Node2D" parent="." unique_id=179090689]
 script = ExtResource("16_1sar7")
 

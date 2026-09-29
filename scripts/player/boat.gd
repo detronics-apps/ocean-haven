@@ -64,7 +64,7 @@ func _process(_delta: float) -> void:
 func actions() -> Array:
 	if controlled and _shore_spot() != null:
 		return [{"label": "Go ashore", "do": _go_ashore}]
-	if not controlled and _player_in_range():
+	if not controlled and _player_in_range() and _nearest_boat():
 		return [{"label": "Board boat", "do": _board}]
 	return []
 
@@ -80,7 +80,7 @@ func restore_aboard() -> void:
 
 
 func _board(check_range := true) -> bool:
-	if check_range and not _player_in_range():
+	if check_range and (not _player_in_range() or not _nearest_boat()):
 		return false
 	_player.set_aboard(true)
 	# Show the ranger (with their current look) sitting in the boat, behind the hull.
@@ -110,6 +110,16 @@ func restore_ashore() -> void:
 	controlled = false
 	_driver.queue_free()
 	_player.set_aboard(false)
+
+
+## With several boats in reach, the ranger boards the nearest one.
+func _nearest_boat() -> bool:
+	var mine := _player.global_position.distance_to(global_position)
+	for boat: Boat in get_tree().get_nodes_in_group("boat"):
+		if boat != self and not boat.controlled and boat._player_in_range() \
+				and _player.global_position.distance_to(boat.global_position) < mine:
+			return false
+	return true
 
 
 func _player_in_range() -> bool:
