@@ -26,6 +26,8 @@ var _until := {}
 var _tries := {}
 ## What the last mission found out, in words (put into its report as "{detail}").
 var detail := ""
+## How many times each mission has come back, per island: {"region_id/mission_id": n}.
+var _done := {}
 ## The last mission's report (also shown at the facility, to read again).
 var last_report := ""
 
@@ -96,6 +98,8 @@ static func real_time(seconds: float) -> String:
 func _finish() -> void:
 	var mission := active
 	active = null
+	var key := _key(mission, _region)
+	_done[key] = int(_done.get(key, 0)) + 1
 	_marked.clear()
 	detail = ""
 	var found: Array[Node2D] = []
@@ -114,6 +118,15 @@ func _finish() -> void:
 	var report := mission.report if found.size() > 0 or detail != "" else mission.report_none
 	last_report = (report % found.size() if "%d" in report else report).replace("{detail}", detail)
 	returned.emit(mission, found.size())
+
+
+## How many times `mission` has been run (and come back) on `region`.
+func times_done(mission: MissionData, region: RegionData) -> int:
+	return int(_done.get(_key(mission, region), 0))
+
+
+static func _key(mission: MissionData, region: RegionData) -> String:
+	return "%s/%s" % [region.id if region else &"", mission.id]
 
 
 ## The island's own ecosystem (e.g. the Kelp Forest's), if it has one.
@@ -243,7 +256,7 @@ func marker_colour() -> Color:
 
 ## For the save file: the mission that's out, lasting effects and tries.
 func to_dict() -> Dictionary:
-	var saved := {"until": _until.duplicate(), "tries": _tries.duplicate()}
+	var saved := {"until": _until.duplicate(), "tries": _tries.duplicate(), "done": _done.duplicate()}
 	if active:
 		saved.merge({"mission": active.id, "region": _region.id, "back_at": _back_at})
 	return saved
@@ -254,6 +267,10 @@ func restore(saved: Dictionary) -> void:
 	_marked.clear()
 	_until.clear()
 	_tries.clear()
+	_done.clear()
+	var done: Dictionary = saved.get("done", {})
+	for key in done:
+		_done[String(key)] = int(done[key])
 	var until: Dictionary = saved.get("until", {})
 	for effect in until:
 		_until[StringName(effect)] = float(until[effect])

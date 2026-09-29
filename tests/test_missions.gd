@@ -58,6 +58,7 @@ func _initialize() -> void:
 	_expect(no_icon.is_empty(), "every mission has its own picture (%s)" % [no_icon])
 	var pic: TextureRect = menu.find_child("Mission_rescue_boat", true, false).find_children("*", "TextureRect", true, false)[0]
 	_expect(pic.texture != null, "shown on the left of its card")
+	_expect(_card_text(menu, "rescue_boat").contains("Not run yet."), "each card says how often it has been run: not yet")
 
 	# --- The rescue boat: finds the tangled dolphin (and the turtle and crab) ---
 	clock.day = 1
@@ -76,6 +77,10 @@ func _initialize() -> void:
 	clock.advance(61.0)
 	await process_frame
 	var marked: Array = missions.marked()
+	menu.open()
+	_expect(_card_text(menu, "rescue_boat").contains("Run once so far.") and _card_text(menu, "pollution_survey").contains("Not run yet."),
+		"once it's back: 'Run once so far' (per mission)")
+	menu.close()
 	_expect(missions.active == null and marked.size() == 3 and marked.all(func(a: Node) -> bool: return a.tangled),
 		"back after 2 minutes: marks the 3 animals in distress (%d)" % marked.size())
 	var dolphin: Node = world.get_node("Dolphin2")
@@ -194,6 +199,13 @@ func _initialize() -> void:
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
+
+
+func _card_text(menu: Node, id: String) -> String:
+	var text := ""
+	for label: Label in menu.find_child("Mission_" + id, true, false).find_children("*", "Label", true, false):
+		text += label.text + "\n"
+	return text
 
 
 func _expect(ok: bool, what: String) -> void:

@@ -104,6 +104,7 @@ func _initialize() -> void:
 	root.get_node("Journal").discover_plant(load("res://data/plants/giant_kelp.tres"))
 	var arctic: Resource = load("res://data/regions/arctic_ocean.tres")
 	regions.discover(arctic)  # without the Cargo Module: locked again on loading
+	missions._done["home_island/rescue_boat"] = 3
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
@@ -137,6 +138,7 @@ func _initialize() -> void:
 	_expect(root.get_node("Journal").has_plant(&"giant_kelp"), "plants found are restored")
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
+	_expect(missions.times_done(load("res://data/missions/rescue_boat.tres"), home) == 3, "how often each mission has run is restored")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

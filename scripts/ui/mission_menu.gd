@@ -41,7 +41,8 @@ func _fill() -> void:
 	for mission: MissionData in Missions.offered_by(station.data.id):
 		var problem := Missions.problem(mission)
 		var lines: Array[String] = [mission.display_name, mission.description,
-			"Costs %d funding. Back in %s." % [mission.cost, Missions.real_time(mission.minutes * 60.0)]]
+			"Costs %d funding. Back in %s." % [mission.cost, Missions.real_time(mission.minutes * 60.0)],
+			_times_text(Missions.times_done(mission, region))]
 		if problem != "":
 			lines.append(problem)  # (no tooltips on a phone)
 		var entry := card(mission.icon, lines)
@@ -54,6 +55,15 @@ func _fill() -> void:
 		send.pressed.connect(_send.bind(mission, region))
 		entry.get_child(0).add_child(send)
 		_content.add_child(entry)
+
+
+static func _times_text(times: int) -> String:
+	match times:
+		0:
+			return "Not run yet."
+		1:
+			return "Run once so far."
+	return "Run %d times so far." % times
 
 
 func _send(mission: MissionData, region: RegionData) -> void:
