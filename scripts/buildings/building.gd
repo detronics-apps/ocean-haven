@@ -182,6 +182,7 @@ func demolish() -> void:
 	if wood > 0:
 		Inventory.add(load("res://data/items/wood.tres"), wood, false)
 	remove_from_group("buildings")
+	get_tree().call_group.call_deferred("ecosystems", "settle_now")  # its animals react straight away
 	get_tree().call_group("hud", "show_toast", "%s taken down.%s" % [data.display_name,
 		" You got %d wood back." % wood if wood > 0 else ""])
 	queue_free()
@@ -256,8 +257,8 @@ func animals_in_view() -> int:
 	if data.watches == &"":
 		return 0
 	return get_tree().get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
-		return (a.data.id == data.watches and not a.leaving
-			and a.global_position.distance_to(global_position) <= data.watch_range)).size()
+		return (a.data.id == data.watches and not a.leaving and (a.global_position.distance_to(global_position) <= data.watch_range
+			or (data.watch_range <= 0.0 and Regions.nearest(a.global_position) == Regions.nearest(global_position))))).size()
 
 
 ## What visitors donate this morning: a base amount, more for every animal that lives here

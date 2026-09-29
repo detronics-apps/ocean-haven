@@ -251,6 +251,7 @@ func place() -> bool:
 			old.remove_from_group("buildings")  # gone for saving and overlap checks right away
 	var building := add_building(_data, _cell)
 	built.emit(building)
+	get_tree().call_group("ecosystems", "settle_now")  # animals respond straight away
 	# Keep going with another of the same (e.g. a row of dock planks) until Cancel.
 	if _free or _data.unique or at_limit(_data) or not can_afford(_data):
 		_data = null

@@ -21,28 +21,30 @@ const SPOT_RANGE := 72.0
 ## A new island starts damaged: kelp health and urchins per bed (random in these ranges).
 @export var start_health := Vector2(0.15, 0.4)
 @export var start_urchins := Vector2(6.0, 10.0)
-@export_group("Food web (per bed, per day)")
-## Urchins multiply towards urchin_cap, faster where there's kelp to eat.
-@export var urchin_growth := 0.5
-@export var urchin_cap := 12.0
-## Kelp eaten per urchin.
-@export var graze := 0.02
-## Kelp regrowth towards full (restoration adds `restore_boost`).
-@export var regrow := 0.15
-@export var restore_boost := 0.25
+@export_group("Food web")
+## With no otters, each bed carries about this many urchins (varying bed to bed).
+@export var urchin_max := 12.0
+## Otters keep urchins down: every `otter_scale` otters cut the urchins to about a third.
+## The whole island's otters count, wherever their habitats are.
+@export var otter_scale := 2.0
+## Urchins on a bed that graze it down to bare rock (kelp settles at 1 - urchins / bare_at).
+@export var bare_at := 10.0
+## Everything moves towards its new balance: half the way each `half_life_days` (so a change
+## mostly settles within 3-4 days), plus `instant_share` of the way straight away when
+## otters arrive or leave, so the player sees what their choice did.
+@export var half_life_days := 1.0
+@export var instant_share := 0.2
+## Restoration (missions, Restoration Sites) lifts the kelp this much above what grazing
+## allows; on overgrazed beds only `overgrazed_restore` of it.
+@export var restore_bonus := 0.3
+@export var overgrazed_restore := 0.2
 ## Cross-island link: clean water at this island (its first "clean" health factor) makes
 ## kelp here grow back up to `upstream_boost` faster.
 @export var upstream_region: StringName = &"home_island"
 @export var upstream_boost := 0.5
-## Urchins drift in from nearby reefs now and then, so there are always a few.
-@export var urchin_drift_in := 0.3
 ## A bed counts as overgrazed at this many urchins.
 @export var overgrazed_at := 8.0
 @export_group("Otters")
-## No more than this many otters live within crowd_range of one habitat (otters need room
-## to forage), so habitats crowded together share the same otters.
-@export var crowd_max := 3
-@export var crowd_range := 240.0
 ## Otters settled at a habitat only move away when food falls below this share of what they
 ## need (they ride out lean days while the kelp grows back).
 @export var leave_below := 0.5
@@ -69,7 +71,6 @@ func _ready() -> void:
 	_place_beds()
 	GameClock.new_day.connect(func(_d: int) -> void:
 		if Regions.is_discovered(region()):
-			settle()
 			_objective()
 		for bed in beds():
 			bed.health_yesterday = bed.health)
@@ -111,6 +112,7 @@ func _place_beds() -> void:
 		bed.name = "Kelp%d" % (i + 1)
 		bed.position = spots[i]
 		bed.health = lerpf(start_health.x, start_health.y, _noise(Vector2i(i, 7)))
+		bed.urchin_share = lerpf(0.7, 1.3, _noise(Vector2i(i, 21)))  # some beds suit urchins more
 		bed.urchins = roundf(lerpf(start_urchins.x, start_urchins.y, _noise(Vector2i(i, 13))))
 		add_child(bed)
 
@@ -150,38 +152,64 @@ func _spot_urchins() -> void:
 			return
 
 
-## One step of the food web, `days` long.
+## One step of the food web, `days` long: animals settle or leave, then urchins and kelp
+## move towards the balance the island's otters allow.
 func tick(days: float) -> void:
-	_otters_eat(days)
-	var sites := get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
-		return b.data.restore_range > 0.0 and not b.damaged and b.upkeep_paid)
-	var boost := 1.0 + upstream_boost * upstream_clean()
+	settle()
+	_approach(1.0 - pow(0.5, days / half_life_days))
+
+
+## Moves every bed `share` of the way towards its balance right now (after a change).
+func nudge(share := instant_share) -> void:
+	_approach(share)
+
+
+func _approach(share: float) -> void:
+	var sites := _restored_by_sites()
+	var faster := 1.0 + upstream_boost * upstream_clean()  # clean water upstream: kelp recovers faster
+	var kelp_share := 1.0 - pow(1.0 - share, faster)
+	var pressure := otter_pressure()
 	for bed in beds():
-		var restoring := 1.0 if bed.restored_until > GameClock.now() or sites.any(func(s: Building) -> bool:
-			return s.global_position.distance_to(bed.global_position) <= s.data.restore_range) else 0.0
-		var food := 0.3 + 0.7 * bed.health
-		var growth := urchin_growth * bed.urchins * (1.0 - bed.urchins / urchin_cap) * food
-		bed.urchins += (growth + urchin_drift_in * (1.0 if bed.urchins < 1.0 else 0.0)) * days
-		var eaten := graze * bed.urchins
-		var grown := (regrow * boost + restore_boost * restoring) * (1.0 - bed.health)
-		bed.health += (grown - eaten) * days
+		bed.urchins += (urchin_target(bed, pressure) - bed.urchins) * share
+		bed.health += (kelp_target(bed, sites) - bed.health) * (kelp_share if kelp_target(bed, sites) > bed.health else share)
 		if bed.storm_hit and bed.health >= 0.6:
 			bed.storm_hit = false  # recovered
 
 
-## Each otter eats urchins from the beds it forages (near where it lives), most from the
-## beds with most urchins.
-func _otters_eat(days: float) -> void:
+## Otters at work (pups count half; hurt or caught ones not at all).
+func otter_pressure() -> float:
+	var pressure := 0.0
 	for otter in otters():
-		if otter.young or otter.injured or otter.tangled:
-			continue
-		var near := beds_near(otter.home(), otter.data.forage_range)
-		var available: float = near.reduce(func(sum: float, b: KelpBed) -> float: return sum + b.urchins, 0.0)
-		if available <= 0.0:
-			continue
-		var eat := minf(otter.data.urchins_per_day * days, available)
-		for bed in near:
-			bed.urchins -= eat * bed.urchins / available
+		if not otter.injured and not otter.tangled:
+			pressure += 0.5 if otter.young else 1.0
+	return pressure
+
+
+## The urchins `bed` settles at with this many otters about.
+func urchin_target(bed: KelpBed, pressure: float) -> float:
+	return urchin_max * bed.urchin_share * exp(-pressure / otter_scale)
+
+
+## The beds the island's Kelp Restoration Sites look after: each restores its share of the
+## most damaged beds, wherever the site stands.
+func _restored_by_sites() -> Array[KelpBed]:
+	var count := 0
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.restores_beds > 0 and not building.damaged and building.upkeep_paid \
+				and Regions.nearest(building.global_position).id == region_id:
+			count += building.data.restores_beds
+	var list := beds()
+	list.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.health < b.health)
+	return list.slice(0, count)
+
+
+## The kelp `bed` settles at with its urchins (and any restoration).
+func kelp_target(bed: KelpBed, sites: Array) -> float:
+	var target := clampf(1.0 - bed.urchins / bare_at, 0.0, 1.0)
+	var restoring := bed.restored_until > GameClock.now() or bed in sites
+	if restoring:
+		target += restore_bonus * (overgrazed_restore if bed.urchins >= overgrazed_at else 1.0)
+	return clampf(target, 0.0, 1.0)
 
 
 ## The island's otters (and any other urchin eaters) that aren't leaving.
@@ -201,26 +229,44 @@ func beds_near(point: Vector2, range: float) -> Array[KelpBed]:
 	return list
 
 
-## Food for otters around `point`: its urchins, plus the other food healthy kelp shelters
+## Food for otters on the whole island: urchins, plus the other food healthy kelp shelters
 ## (crabs, snails, clams).
-func food_at(point: Vector2, species: AnimalData) -> float:
-	var food := 0.0
-	for bed in beds_near(point, species.forage_range):
-		food += bed.urchins + species.kelp_food * bed.health
-	return food
+func food(species: AnimalData) -> float:
+	var total := 0.0
+	for bed in beds():
+		total += bed.urchins + species.kelp_food * bed.health
+	return total
 
 
-## Every morning: otters settle at habitats where the forest can feed them (a newcomer,
-## or a pup born on the island), and move away from ones where it can't. Habitats only
-## offer the conditions; the ecosystem decides. At most one change per habitat a day.
-func settle() -> void:
-	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+## Otters the island's food can support.
+func otters_supported(species: AnimalData) -> int:
+	return floori(food(species) / species.food_needed)
+
+
+func _habitats(species: AnimalData) -> Array[Building]:
 	var homes: Array[Building] = []
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if building.data.hosts == species.id and Regions.nearest(building.global_position).id == region_id \
 				and not building.is_queued_for_deletion():
 			homes.append(building)
+	return homes
+
+
+## Right away after the ranger builds or takes down something here.
+func settle_now() -> void:
+	if Regions.is_discovered(region()):
+		settle()
+
+
+## Otters settle at habitats with room while the island's food can support another (a
+## newcomer, or a pup born here), and move away when it can't. Habitats only offer the
+## conditions; the ecosystem decides. At most one change per habitat each time. Then fish
+## follow the kelp, and cormorants the fish.
+func settle() -> void:
+	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var homes := _habitats(species)
 	var all := otters()
+	var before := all.size()
 	# Otters whose home was taken down find another with room, or move away.
 	for otter in all:
 		if not is_instance_valid(otter.home_area) or otter.home_area.is_queued_for_deletion():
@@ -231,21 +277,19 @@ func settle() -> void:
 					break
 			if not otter.home_area:
 				_move_away(otter, "its habitat was taken down and there's no other with room")
-	for home in homes:
-		var living := all.filter(func(o: Animal) -> bool: return o.home_area == home and not o.leaving)
-		var crowd := all.filter(func(o: Animal) -> bool:
-			return not o.leaving and o.home().distance_to(home.global_position) <= crowd_range).size()
-		var food := food_at(home.global_position, species)
-		if not living.is_empty() and food / maxf(crowd, 1) < species.food_needed * leave_below:
-			_move_away(living.back(), "there isn't enough food in the kelp around the %s" % home.data.display_name)
-			continue
-		if home.damaged or not home.upkeep_paid or home.room_for_animals() <= 0 or crowd >= crowd_max:
-			continue
-		if food / (crowd + 1) < species.food_needed:
-			continue
-		_new_otter(species, home, all)
-		all = otters()
-	# Fish follow the kelp, and cormorants the fish: one arrives or moves away a morning.
+	all = otters()
+	var fed := food(species)
+	if not all.is_empty() and fed / all.size() < species.food_needed * leave_below:
+		_move_away(all.back(), "there isn't enough food in the kelp for so many otters")
+	else:
+		for home in homes:
+			if home.damaged or not home.upkeep_paid or home.room_for_animals() <= 0:
+				continue
+			if otters().size() + 1 > otters_supported(species):
+				break
+			_new_otter(species, home, otters())
+	if otters().size() != before:
+		nudge()  # the first effects show straight away
 	_follow(FISH, fish_supported())
 	_follow(CORMORANT, cormorants_supported())
 
@@ -320,7 +364,7 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
-	animal.born_at = GameClock.now() - species.grow_days  # grown: saved like the island's own
+	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)  # grown: saved like the island's own
 	var world := get_tree().get_first_node_in_group("player").get_parent()
 	var n := 1
 	while world.has_node("%s%d" % [species.id.to_pascal_case(), n]):
@@ -367,7 +411,7 @@ func _new_otter(species: AnimalData, home: Building, all: Array[Animal]) -> void
 		otter.born_at = GameClock.now()
 		otter.position = parent.global_position
 	else:
-		otter.born_at = GameClock.now() - species.grow_days  # grown: counted and saved like the island's own
+		otter.born_at = maxf(GameClock.now() - species.grow_days, 0.0)  # grown: counted and saved like the island's own
 		otter.position = Terrain.nearest(get_tree(), home.global_position, ["water", ""])
 	var world := get_tree().get_first_node_in_group("player").get_parent()
 	world.add_child(otter)
@@ -420,11 +464,11 @@ func run_mission(mission: MissionData) -> Dictionary:
 		&"urchin_survey":
 			var heavy := list.filter(func(b: KelpBed) -> bool: return b.urchins >= overgrazed_at * 0.6)
 			heavy.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.urchins > b.urchins)
-			var far := heavy.filter(func(b: KelpBed) -> bool: return _nearest_otter_home(b.global_position) > 260.0)
+			var otter_count := otters().size()
 			return {"found": heavy, "detail": "%d bed(s) are overgrazed by urchins (marked)%s. %s" % [
 				heavy.size(), ", the worst with %d" % heavy[0].urchin_count() if heavy else "",
-				("%d of them have no otters foraging nearby. Otters eat urchins: check their conditions (otter monitoring)." % far.size()) if far
-				else ("Otters are foraging near them already; urchin relocation can ease the worst." if heavy else "Grazing is in balance.")]}
+				("With %d otter(s) on the island, nothing keeps them in check. Otters eat urchins: check their conditions (otter monitoring)." % otter_count) if heavy and otter_count < 4
+				else ("Urchin relocation can ease the worst beds for a while." if heavy else "Grazing is in balance.")]}
 		&"otter_monitoring":
 			return {"found": otters(), "detail": _otter_report()}
 		&"balance_survey":
@@ -469,30 +513,32 @@ func _nearest_otter_home(point: Vector2) -> float:
 	return best
 
 
-## Each Otter Habitat: its otters, the food around it, and what's holding it back.
+## The island's otters, what the forest can feed, and what each habitat is doing.
 func _otter_report() -> String:
 	var species: AnimalData = load("res://data/animals/sea_otter.tres")
-	var lines: Array[String] = []
-	var all := otters()
-	var n := 0
-	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.hosts != species.id or Regions.nearest(building.global_position).id != region_id:
-			continue
-		n += 1
-		var here := building.animals_here()
-		var crowd := all.filter(func(o: Animal) -> bool: return o.home().distance_to(building.global_position) <= crowd_range).size()
-		var feeds := floori(food_at(building.global_position, species) / species.food_needed)
-		var why := "room for more" if here < building.capacity() else "full"
-		if not building.upkeep_paid:
-			why = "not looked after today (upkeep unpaid)"
-		elif feeds <= here:
-			why = "not enough food nearby: the kelp around it is thin"
-		elif crowd >= crowd_max:
-			why = "crowded: it shares its stretch of coast with another habitat"
-		lines.append("Habitat %d: %d otter(s), food for %d; %s." % [n, here, feeds, why])
-	if n == 0:
-		return "No otters without a quiet place to rest: build an Otter Habitat on the shore near kelp."
-	return "%d otter(s) on the island. %s" % [all.size(), " ".join(lines)]
+	var homes := _habitats(species)
+	if homes.is_empty():
+		return "No otters without a quiet place to rest: build an Otter Habitat on the shore."
+	var room := 0
+	var idle := 0
+	for home in homes:
+		room += home.capacity()
+		if not home.upkeep_paid or home.damaged:
+			idle += 1
+	var all := otters().size()
+	var can_feed := otters_supported(species)
+	var line := "%d otter(s) at %d habitat(s) with room for %d; the forest can feed %d." % [all, homes.size(), room, can_feed]
+	if idle > 0:
+		line += " %d habitat(s) aren't looked after today (upkeep unpaid or damaged)." % idle
+	elif all < room and all >= can_feed:
+		line += " Not enough food for more: the kelp is too thin."
+	elif all >= room and urchin_total() > beds().size() * 3:
+		line += " The habitats are full but urchins are still too many: another habitat would help."
+	elif urchin_total() < beds().size() * 0.2:
+		line += " So many otters have eaten nearly all the urchins: fewer habitats would keep them in balance."
+	else:
+		line += " Otters and urchins are in balance."
+	return line
 
 
 ## The food web in one line: otters → urchins → kelp → fish → cormorants, and where it breaks.
@@ -507,7 +553,7 @@ func balance_report() -> String:
 	var advice := ""
 	if overgrazed > beds().size() / 3:
 		advice = "Too many urchins: few otters to keep them in check, so the kelp is being eaten faster than it grows."
-	elif urchin_total() < beds().size() / 2:
+	elif urchin_total() < beds().size() * 0.2:
 		advice = "Almost no urchins left: otters may be eating them faster than they breed. A healthy forest keeps some; fewer habitats may balance it."
 	elif kelp_health() > 0.6 and fish < fish_supported():
 		advice = "The kelp is recovering: fish are returning."

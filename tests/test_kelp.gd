@@ -34,33 +34,47 @@ func _initialize() -> void:
 	await process_frame
 	_expect(is_equal_approx(ecosystem.kelp_health(), before), "nothing happens before the island is found")
 
-	# --- Overgrazing: urchins multiply and the kelp thins to a barren ---
+	# --- No otters: urchins build up and graze the kelp down, mostly within a day or two ---
 	var bed: Node2D = beds[0]
 	bed.health = 0.8
-	bed.urchins = 8.0
-	for i in 40:  # 10 days
+	bed.urchins = 2.0
+	var urchin_goal: float = ecosystem.urchin_target(bed, 0.0)
+	ecosystem.tick(0.25)
+	ecosystem.tick(0.25)
+	ecosystem.tick(0.25)
+	ecosystem.tick(0.25)
+	var day_one: float = (bed.urchins - 2.0) / (urchin_goal - 2.0)
+	_expect(day_one > 0.45 and day_one < 0.6, "about half the change happens in the first day (%.0f%%)" % (day_one * 100.0))
+	for i in 12:  # 3 more days
 		ecosystem.tick(0.25)
-	_expect(bed.urchins > 10.0 and bed.health < 0.2, "many urchins: they multiply (%.0f) and graze it bare (%.2f)" % [bed.urchins, bed.health])
+	_expect(bed.urchins > urchin_goal * 0.9 and bed.health < 0.3,
+		"within 4 days it has settled: many urchins (%.0f), kelp grazed down (%.2f)" % [bed.urchins, bed.health])
 
 	# --- Restoration alone can't fix it while urchins are too many ---
 	bed.restored_until = 1000.0
-	for i in 40:
+	for i in 16:
 		ecosystem.tick(0.25)
-	_expect(bed.health < 0.5, "restoring kelp alone doesn't last against overgrazing (%.2f)" % bed.health)
+	_expect(bed.health < 0.3, "restoring kelp alone doesn't last against overgrazing (%.2f)" % bed.health)
 	bed.restored_until = -1.0
 
-	# --- Few urchins: the kelp grows back (but some urchins always drift in) ---
-	bed.urchins = 1.0
-	var other: Node2D = beds[1]
-	other.urchins = 0.0
-	for i in 8:
-		ecosystem.tick(0.25)
-		bed.urchins = minf(bed.urchins, 2.0)  # (otters would keep them down)
-	_expect(other.urchins > 0.0, "a bed never stays without urchins: a few drift in")
-	for i in 32:
-		ecosystem.tick(0.25)
-		bed.urchins = minf(bed.urchins, 2.0)
-	_expect(bed.health > 0.6, "with few urchins the kelp grows back (%.2f)" % bed.health)
+	# --- Otters anywhere on the island keep urchins down everywhere, and the kelp grows back ---
+	var otter_nodes: Array = []
+	for i in 6:
+		var otter: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+		otter.set("data", load("res://data/animals/sea_otter.tres"))
+		otter.position = beds[beds.size() - 1].global_position  # all at one end
+		world.add_child(otter)
+		otter_nodes.append(otter)
+	var far_bed: Node2D = beds.reduce(func(a: Node2D, b: Node2D) -> Node2D:
+		return a if a.global_position.distance_to(otter_nodes[0].global_position) > b.global_position.distance_to(otter_nodes[0].global_position) else b)
+	ecosystem.nudge()
+	_expect(bed.urchins < urchin_goal * 0.85, "a change shows straight away (%.1f urchins)" % bed.urchins)
+	for i in 16:  # 4 days of the food web (these otters have no habitat, so not settle())
+		ecosystem._approach(1.0 - pow(0.5, 0.25))
+	_expect(far_bed.urchins < 2.5 and far_bed.health > 0.7,
+		"even the bed furthest from the otters recovers within 4 days (%.1f urchins, kelp %.2f)" % [far_bed.urchins, far_bed.health])
+	for otter: Node in otter_nodes:
+		otter.free()
 
 	# --- Fish follow the kelp, cormorants follow the fish (one change a morning) ---
 	var regions: GDScript = load("res://scripts/world/regions.gd")
@@ -105,29 +119,39 @@ func _initialize() -> void:
 	probe.urchins = 0.0
 	ecosystem.tick(1.0)
 	var dirty_gain: float = probe.health - 0.2
-	_expect(clean_gain > dirty_gain * 1.3, "kelp grows back faster while the Starting Island's water is clean (%.3f vs %.3f)" % [clean_gain, dirty_gain])
+	_expect(clean_gain > dirty_gain * 1.2, "kelp grows back faster while the Starting Island's water is clean (%.3f vs %.3f)" % [clean_gain, dirty_gain])
 	_expect(ecosystem.balance_report().contains("connected"), "the balance survey says why")
 	for d in get_nodes_in_group("debris"):
 		d.free()
 
-	# --- A Kelp Restoration Site helps the beds near it grow back faster ---
-	var near_bed: Node2D = beds[2]
-	var far_bed: Node2D = beds.reduce(func(a: Node2D, b: Node2D) -> Node2D:
-		return a if a.position.distance_to(near_bed.position) > b.position.distance_to(near_bed.position) else b)
-	var site: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_restoration_site.tres"),
-		Vector2i((near_bed.global_position / 32.0).floor()))
-	for b: Node2D in [near_bed, far_bed]:
-		b.health = 0.2
-		b.urchins = 1.0
+	# --- A Kelp Restoration Site restores the island's most damaged beds, wherever it stands ---
+	for b: Node2D in beds:
+		b.health = 0.5
+		b.urchins = 5.0
 	for i in 8:
-		ecosystem.tick(0.25)
-		near_bed.urchins = 1.0
-		far_bed.urchins = 1.0
-	_expect(near_bed.health > far_bed.health + 0.1, "a restoration site speeds up kelp near it (%.2f vs %.2f far away)" % [near_bed.health, far_bed.health])
-	near_bed.urchins = 12.0
-	for i in 40:
-		ecosystem.tick(0.25)
-	_expect(near_bed.health < 0.5, "but it can't beat overgrazing (%.2f)" % near_bed.health)
+		ecosystem._approach(1.0 - pow(0.5, 0.25))
+		for b: Node2D in beds:
+			b.urchins = 5.0  # (a few otters about)
+	var without: float = ecosystem.kelp_health()
+	for b: Node2D in beds:
+		b.health = 0.5
+		b.urchins = 5.0
+	var site: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_restoration_site.tres"),
+		Vector2i((beds[0].global_position / 32.0).floor()))
+	_expect(ecosystem._restored_by_sites().size() == 3, "it looks after 3 of the most damaged beds, anywhere on the island")
+	for i in 8:
+		ecosystem._approach(1.0 - pow(0.5, 0.25))
+		for b: Node2D in beds:
+			b.urchins = 5.0
+	_expect(ecosystem.kelp_health() > without + 0.03, "the forest recovers further with it (%.2f vs %.2f)" % [ecosystem.kelp_health(), without])
+	var worst_bed: Node2D = ecosystem._restored_by_sites()[0]
+	for b: Node2D in beds:
+		b.urchins = 12.0
+	for i in 16:
+		ecosystem._approach(1.0 - pow(0.5, 0.25))
+		for b: Node2D in beds:
+			b.urchins = 12.0
+	_expect(worst_bed.health < 0.3, "but it can't beat overgrazing (%.2f)" % worst_bed.health)
 	site.free()
 
 	# --- The Build menu there offers the Kelp Forest's buildings, not the Starting Island's ---

@@ -658,9 +658,13 @@ See "Island by island → Kelp Forest" for the design. Build order (each a playa
    denser / sparser) and its urchins; the daily food-web model: urchins graze and multiply, kelp
    regrows where grazing is low.
 3. **Sea otters + Otter Habitat** (hard max 6): otters settle and breed only while habitats offer
-   room *and* the forest can feed them; they eat urchins near their habitat; they move away (never
-   die) when food runs short. Each habitat has daily upkeep and uses shore space; habitats
-   crowded together share the same stretch of coast, so extra ones add upkeep, not otters.
+   room *and* the forest can feed them; they move away (never die) when food runs short. The
+   food web is island-wide: **how many** habitats matters, never where they are (a player can
+   keep wildlife on one side and people and boats on the other). 2–4 habitats can all reach
+   100 % (2 with some restoration); 5–6 let otters eat nearly every urchin (out of balance, and
+   the upkeep adds up). **Response time:** every change moves 20 % of the way at once and half
+   of the rest each day, so it has mostly settled within 3–4 days and the player sees what
+   their choice did.
 4. **Kelp fish and cormorants** follow kelp and fish (arrive / move away day by day);
    cormorants nest in full-grown coastal trees.
 5. **Kelp Research Platform** (signature, 1) with its missions: kelp health survey, urchin

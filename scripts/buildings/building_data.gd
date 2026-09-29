@@ -49,6 +49,7 @@ extends Resource
 @export var health_bonus := 1.0
 ## Species visitors come to watch (counted within `watch_range`), e.g. dolphins.
 @export var watches: StringName
+## How far it can see them (0 = the whole island).
 @export var watch_range := 480.0
 ## Offers "Move" (palm trees don't: cut them down and plant a sapling instead).
 @export var movable := true
@@ -77,9 +78,10 @@ extends Resource
 ## Funding it costs to look after, every morning (0 = none). Unpaid, it isn't looked after
 ## that day (see Building.upkeep_paid).
 @export var upkeep := 0
-## Kelp beds this close grow back faster while it stands (a Kelp Restoration Site; 0 = none).
-## Planting can't beat overgrazing: where urchins are too many, the kelp still declines.
-@export var restore_range := 0.0
+## Kelp beds it restores while it stands (a Kelp Restoration Site; 0 = none): the island's
+## most damaged ones, wherever it's placed. Planting can't beat overgrazing: where urchins
+## are too many, the kelp still declines.
+@export var restores_beds := 0
 ## Offers "Demolish" (conservation structures that can unbalance an island), returning
 ## half its wood.
 @export var demolishable := false

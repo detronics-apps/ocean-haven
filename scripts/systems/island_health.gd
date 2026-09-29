@@ -39,7 +39,7 @@ static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 				return 0.0
 			var beds: int = maxi(eco.beds().size(), 1)
 			var overgrazed := 1.0 - 2.0 * float(count(tree, region, factor)) / beds
-			var some := clampf(eco.urchin_total() / (beds * 0.5), 0.0, 1.0)  # a healthy forest keeps some
+			var some := clampf(eco.urchin_total() / (beds * 0.2), 0.0, 1.0)  # a healthy forest keeps some
 			return clampf(minf(overgrazed, some), 0.0, 1.0)
 	return 0.0
 

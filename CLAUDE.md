@@ -263,9 +263,12 @@ research leads to action). Built so far:
    "ecosystems" group): urchins graze and multiply, kelp regrows where grazing is low; ticks every
    `tick_days` of game time (sleep catches up); only once the island is discovered
 3. ✅ Sea otters + Otter Habitat (BuildingData.hosts / animal_capacity 2 / upkeep / demolishable,
-   max 6): each morning otters settle (newcomer or pup) only while `food_at` the habitat supports
-   them, crowded habitats share a stretch (`crowd_max`), they move away (never die) below
-   `leave_below` of their food; they eat urchins near their home
+   max 6): every tick otters settle (newcomer or pup) while the island's `food` supports them and
+   move away (never die) below `leave_below`. Island-wide, never placement-based: urchins and
+   kelp approach the balance the otter count allows (`urchin_target` / `kelp_target`), half the
+   way per `half_life_days` plus an `instant_share` nudge on every change (settles in 3–4 days).
+   Restoration Sites restore the most damaged beds anywhere (`restores_beds`); the Discovery
+   Centre counts all the island's otters (watch_range 0)
 4. ✅ Blue rockfish follow healthy beds; double-crested cormorants follow fish and need full-grown
    trees to nest in (one change a morning)
 5. ✅ Kelp Research Platform (signature) and its 7 missions (MissionData.effect handled by

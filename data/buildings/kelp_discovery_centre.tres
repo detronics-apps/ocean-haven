@@ -7,7 +7,7 @@
 script = ExtResource("1_kdc")
 id = &"kelp_discovery_centre"
 display_name = "Kelp Discovery Centre"
-description = "Visitors learn about kelp forests, otters and food webs, and watch the forest through a big window. More otters in view and a healthier forest, more visitors."
+description = "Visitors learn about kelp forests, otters and food webs, and watch the forest through a big window. More otters on the island and a healthier forest, more visitors."
 order = 4
 texture = ExtResource("2_kdc")
 terrain = PackedStringArray("sand", "grass")
@@ -18,7 +18,7 @@ facility = &"funding"
 visitors = 20
 visitors_per_animal = 8
 watches = &"sea_otter"
-watch_range = 420.0
+watch_range = 0.0
 max_count = 2
 only_on = &"kelp_forest"
 placement_hint = "on the shore, looking over the kelp"

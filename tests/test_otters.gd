@@ -1,9 +1,10 @@
 extends SceneTree
 ## Sea otters and Otter Habitats (Kelp Forest): a habitat offers conditions, not otters.
-## Otters settle only while the kelp around it can feed them, at most 2 a habitat and 3 in
-## one stretch of coast (so crowded habitats add upkeep, not otters); they eat urchins, so
-## the kelp near them recovers; they move away (never die) when food runs short or their
-## habitat is taken down. Otters are saved.
+## Otters settle (2 a habitat) while the island's kelp can feed them — the first straight
+## away — and keep urchins down across the whole island, wherever the habitats are. Too many
+## habitats and the otters eat nearly every urchin (out of balance, and the upkeep adds up);
+## taking some down fixes it within a few days. Otters move away (never die) when food runs
+## short or their habitat goes. They're saved.
 ## Run: godot --headless --path . --script res://tests/test_otters.gd --quit-after 200000
 
 const PATH := "user://test_otters.json"
@@ -17,63 +18,73 @@ func _initialize() -> void:
 	root.add_child(world)
 	await process_frame
 	var regions: GDScript = load("res://scripts/world/regions.gd")
+	var health: GDScript = load("res://scripts/systems/island_health.gd")
 	var kelp_region: Resource = load("res://data/regions/kelp_forest.tres")
 	regions.discover(kelp_region)
 	var funding := root.get_node("Funding")
-	var clock := root.get_node("GameClock")
 	var ecosystem: Node = world.get_node("KelpIsland/Ecosystem")
 	var build_mode: Node = world.get_node("BuildMode")
 	var habitat_data: Resource = load("res://data/buildings/otter_habitat.tres")
 	_expect(habitat_data.max_count == 6 and habitat_data.demolishable and habitat_data.upkeep > 0,
 		"Otter Habitats: up to 6, with upkeep, and they can be demolished")
-
-	# --- A habitat on the shore by the kelp ---
-	funding.restore({"balance": 1000})
-	root.get_node("Inventory").restore({"plastic_bottle": 50}, {"wood": 50})
-	var cell := _shore_cell_near_kelp(build_mode, habitat_data, ecosystem)
-	_expect(cell != Vector2i.MAX, "there's shore next to the kelp to build on (%s)" % cell)
-	var home: Node2D = build_mode.add_building(habitat_data, cell)
-	await process_frame
-	var near: Array = ecosystem.beds_near(home.global_position, 260.0)
-	var urchins_before: float = near.reduce(func(sum: float, b: Node) -> float: return sum + b.urchins, 0.0)
+	funding.restore({"balance": 5000})
+	root.get_node("Inventory").restore({"plastic_bottle": 100}, {"wood": 100})
 	var otter_count := func() -> int: return ecosystem.otters().size()
-	_expect(otter_count.call() == 0, "building it brings no otter by itself")
+	var days := func(n: float) -> void:
+		for i in roundi(n / ecosystem.tick_days):
+			ecosystem.tick(ecosystem.tick_days)
 
-	# --- Mornings: otters settle while the forest can feed them ---
-	funding.restore({"balance": 1000})
-	for i in 4:
-		clock.time_of_day = 0.9
-		clock.sleep_until_morning()
-		await process_frame
-	_expect(otter_count.call() == 2 and home.animals_here() == 2, "otters settle at it, up to its 2 (%d)" % otter_count.call())
-	_expect(funding.balance < 1000, "and it costs upkeep every morning (%d left)" % funding.balance)
+	# --- One habitat: the first otter comes straight away, it's full within a day ---
+	var cells := _free_cells(build_mode, habitat_data, ecosystem, 6)
+	_expect(cells.size() == 6, "room for 6 habitats round the Kelp Forest (%d)" % cells.size())
+	var homes: Array = [build_mode.add_building(habitat_data, cells[0])]
+	ecosystem.settle_now()
+	_expect(otter_count.call() == 1, "the first otter settles straight away (%d)" % otter_count.call())
+	days.call(1.0)
+	_expect(otter_count.call() == 2 and homes[0].animals_here() == 2, "within a day the habitat has its 2 otters (%d)" % otter_count.call())
 
-	# --- A Kelp Discovery Centre: visitors come to see the otters ---
-	var centre_data: Resource = load("res://data/buildings/kelp_discovery_centre.tres")
-	var centre: Node2D = build_mode.add_building(centre_data, _free_cell_near(build_mode, centre_data, cell))
+	# --- 3 habitats: 6 otters keep the urchins down island-wide; kelp recovers in 3-4 days ---
+	for i in range(1, 3):
+		homes.append(build_mode.add_building(habitat_data, cells[i]))
+	ecosystem.settle_now()
+	days.call(4.0)
+	var balanced: float = health.of(self, kelp_region)
+	_expect(otter_count.call() == 6, "3 habitats: 6 otters (%d)" % otter_count.call())
+	_expect(ecosystem.kelp_health() > 0.7 and ecosystem.urchin_total() > ecosystem.beds().size() * 0.2,
+		"within 4 days the kelp has recovered (%d%%) with some urchins left (%d)" % [roundi(ecosystem.kelp_health() * 100), ecosystem.urchin_total()])
+
+	# --- Overbuilt: 6 habitats, 12 otters eat nearly every urchin; out of balance ---
+	for i in range(3, 6):
+		homes.append(build_mode.add_building(habitat_data, cells[i]))
+	ecosystem.settle_now()
+	days.call(4.0)
+	_expect(otter_count.call() > 6 and ecosystem.urchin_total() < ecosystem.beds().size() * 0.2,
+		"6 habitats: %d otters leave almost no urchins (%d)" % [otter_count.call(), ecosystem.urchin_total()])
+	_expect(health.of(self, kelp_region) < balanced, "more isn't better: the island is less healthy (%.2f vs %.2f)" % [
+		health.of(self, kelp_region), balanced])
+	var monitoring: Dictionary = ecosystem.run_mission(load("res://data/missions/otter_monitoring.tres"))
+	_expect(monitoring.detail.contains("fewer habitats"), "otter monitoring says so (%s)" % monitoring.detail)
+
+	# --- Taking three down: back in balance within a few days ---
+	var player: Node2D = world.get_node("Player")
+	for i in range(3, 6):
+		player.global_position = homes[i].global_position + Vector2(0, 40)
+		homes[i].demolish()
+		homes[i].demolish()
 	await process_frame
-	_expect(centre.animals_in_view() >= 1 and centre.visitors_today() > centre_data.visitors,
-		"a Kelp Discovery Centre earns more with otters in view (%d otters, %d funding)" % [centre.animals_in_view(), centre.visitors_today()])
+	await process_frame
+	days.call(4.0)
+	_expect(otter_count.call() == 6 and ecosystem.urchin_total() > ecosystem.beds().size() * 0.2,
+		"after demolishing 3, their otters move away and urchins come back into balance (%d otters, %d urchins)" % [
+		otter_count.call(), ecosystem.urchin_total()])
+
+	# --- A Kelp Discovery Centre counts the island's otters, wherever it stands ---
+	var centre_data: Resource = load("res://data/buildings/kelp_discovery_centre.tres")
+	var centre: Node2D = build_mode.add_building(centre_data, cells[5])
+	await process_frame
+	_expect(centre.animals_in_view() == otter_count.call() and centre.visitors_today() > centre_data.visitors,
+		"a Kelp Discovery Centre earns more with otters on the island (%d otters, %d funding)" % [centre.animals_in_view(), centre.visitors_today()])
 	centre.free()
-
-	# --- A second habitat right beside it: more upkeep, not more otters than the coast can hold ---
-	var beside := _free_cell_near(build_mode, habitat_data, cell)
-	var second: Node2D = build_mode.add_building(habitat_data, beside)
-	for i in 4:
-		clock.time_of_day = 0.9
-		clock.sleep_until_morning()
-		await process_frame
-	_expect(otter_count.call() <= ecosystem.crowd_max, "crowded habitats share one stretch of coast: at most %d otters there (%d)" % [
-		ecosystem.crowd_max, otter_count.call()])
-
-	# --- They eat the urchins, and the kelp near them grows back ---
-	var kelp_before: float = near.reduce(func(sum: float, b: Node) -> float: return sum + b.health, 0.0)
-	for i in 40:
-		ecosystem.tick(0.25)
-	var urchins_after: float = near.reduce(func(sum: float, b: Node) -> float: return sum + b.urchins, 0.0)
-	var kelp_after: float = near.reduce(func(sum: float, b: Node) -> float: return sum + b.health, 0.0)
-	_expect(urchins_after < urchins_before * 0.5, "the otters eat the urchins near them (%.0f -> %.0f)" % [urchins_before, urchins_after])
-	_expect(kelp_after > kelp_before, "and the kelp there grows back (%.2f -> %.2f)" % [kelp_before, kelp_after])
 
 	# --- Saved and loaded ---
 	var save := root.get_node("SaveGame")
@@ -90,25 +101,13 @@ func _initialize() -> void:
 	_expect(ecosystem.otters().size() == before and ecosystem.otters().all(func(o: Node) -> bool: return o.home_area != null),
 		"the otters are back, each at its habitat (%d)" % ecosystem.otters().size())
 
-	# --- No food: an otter moves away (it never dies) ---
+	# --- No food: otters move away (they never die) ---
 	for bed: Node2D in ecosystem.beds():
 		bed.urchins = 0.0
 		bed.health = 0.0
-	clock.time_of_day = 0.9
-	clock.sleep_until_morning()
-	await process_frame
+	ecosystem.settle()
 	var leaving := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.id == &"sea_otter" and a.leaving)
-	_expect(leaving.size() >= 1, "with no food around, an otter moves away (%d)" % leaving.size())
-
-	# --- Demolished: its otters move out ---
-	var habitats := get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"otter_habitat")
-	var gone: Node = habitats[0]
-	var player: Node2D = world.get_node("Player")
-	player.global_position = gone.global_position + Vector2(0, 40)
-	gone.demolish()
-	_expect(gone.is_in_group("buildings"), "demolishing asks you to tap again")
-	gone.demolish()
-	_expect(not gone.is_in_group("buildings"), "then it's taken down")
+	_expect(leaving.size() >= 1, "with no food, an otter moves away (%d)" % leaving.size())
 
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 	if not _failed:
@@ -116,26 +115,27 @@ func _initialize() -> void:
 	quit(1 if _failed else 0)
 
 
-## A sand cell on the Kelp Forest where a habitat fits, next to a kelp bed.
-func _shore_cell_near_kelp(build_mode: Node, data: Resource, ecosystem: Node) -> Vector2i:
+## Up to `count` places for habitats on the Kelp Forest, spread round it.
+func _free_cells(build_mode: Node, data: Resource, ecosystem: Node, count: int) -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
 	for bed: Node2D in ecosystem.beds():
+		if cells.size() >= count:
+			break
 		var start := Vector2i((bed.global_position / 32.0).floor())
-		for r in range(1, 5):
+		var found := false
+		for r in range(1, 8):
 			for dx in range(-r, r + 1):
 				for dy in range(-r, r + 1):
 					var c := start + Vector2i(dx, dy)
-					if build_mode.placement_problem(data, c) == "":
-						return c
-	return Vector2i.MAX
-
-
-func _free_cell_near(build_mode: Node, data: Resource, from: Vector2i) -> Vector2i:
-	for r in range(2, 6):
-		for dx in range(-r, r + 1):
-			for dy in range(-r, r + 1):
-				if build_mode.placement_problem(data, from + Vector2i(dx, dy)) == "":
-					return from + Vector2i(dx, dy)
-	return from + Vector2i(3, 0)
+					if found or build_mode.placement_problem(data, c) != "":
+						continue
+					var clear := true
+					for o in cells:
+						clear = clear and not Rect2i(o, data.size).grow(1).intersects(Rect2i(c, data.size))
+					if clear:
+						cells.append(c)
+						found = true
+	return cells
 
 
 func _expect(ok: bool, what: String) -> void:
