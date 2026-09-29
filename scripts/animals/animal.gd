@@ -296,6 +296,7 @@ func _physics_process(delta: float) -> void:
 	if _tree_nesting(delta):
 		return
 
+	_pose()
 	var speed := data.swim_speed * (0.5 if tangled or injured else 1.0)
 	match _state:
 		State.REST:
@@ -771,6 +772,19 @@ func _lives_on_land() -> bool:
 
 
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
+## Walkers with more than one picture: standing still, walking, or flying off when startled.
+func _pose() -> void:
+	if not data.resting_sprite and not data.flying_sprite:
+		return
+	var texture := data.sprite
+	if _state == State.FLEE and data.flying_sprite:
+		texture = data.flying_sprite
+	elif _state == State.REST and data.resting_sprite:
+		texture = data.resting_sprite
+	if _sprite.texture != texture:
+		_sprite.texture = texture
+
+
 func _face(motion: Vector2) -> void:
 	if data.faces_movement:
 		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle(), 0.1)

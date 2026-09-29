@@ -41,6 +41,22 @@ func _initialize() -> void:
 	var start: float = health.of(self, mangrove)
 	_expect(start >= 0.0 and start < 0.12, "island health starts near 0 (%d%%)" % roundi(start * 100.0))
 
+	# --- The flamingo walks upright (never rotates), stands on one leg, flies off when startled ---
+	var flamingo: Node2D = eco.living(load("res://data/animals/american_flamingo.tres"))[0]
+	var bird_sprite: Sprite2D = flamingo.get_node("Sprite2D")
+	var pictures := {}
+	for state in [flamingo.State.SWIM, flamingo.State.REST, flamingo.State.FLEE]:
+		flamingo.set("_state", state)
+		flamingo.set("_target", flamingo.global_position + Vector2(-80, 40))
+		flamingo.set("_rest_left", 5.0)
+		flamingo.set("_flee_left", 5.0)
+		for i in 10:
+			await physics_frame
+		pictures[state] = bird_sprite.texture
+	_expect(bird_sprite.rotation == 0.0, "the flamingo never tips over as it walks")
+	_expect(pictures[flamingo.State.SWIM] == flamingo.data.sprite and pictures[flamingo.State.REST] == flamingo.data.resting_sprite
+		and pictures[flamingo.State.FLEE] == flamingo.data.flying_sprite, "walking, standing on one leg, and flying pictures")
+
 	# --- Digging through the silt links a pool to the sea ---
 	var shovel: Node = world.get_node("SandShovel")
 	var plug := _plug(eco, ground)

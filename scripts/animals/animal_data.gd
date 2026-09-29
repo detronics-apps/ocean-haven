@@ -24,6 +24,9 @@ extends Resource
 @export var habitat_terrain: PackedStringArray = ["", "water"]
 ## Swimmers turn to face where they're going; crabs scuttle sideways (just flip).
 @export var faces_movement := true
+## Walkers' other pictures (optional): standing still, and flying off when startled.
+@export var resting_sprite: Texture2D
+@export var flying_sprite: Texture2D
 @export var swim_speed := 40.0
 ## Seconds spent resting between swims (random in this range).
 @export var rest_min := 2.0

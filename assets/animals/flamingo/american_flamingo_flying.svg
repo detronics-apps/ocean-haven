@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="18" viewBox="0 0 36 18" shape-rendering="crispEdges">
+  <!-- Placeholder American flamingo flying (faces right): neck stretched forward, legs trailing behind, wings up with black flight feathers -->
+  <rect x="0" y="9" width="9" height="1" fill="#e07a8a"/>
+  <rect x="9" y="7" width="10" height="5" fill="#f26f86"/>
+  <rect x="10" y="1" width="8" height="6" fill="#ff8fa3"/><rect x="10" y="0" width="4" height="2" fill="#2a2a2a"/>
+  <rect x="11" y="12" width="7" height="3" fill="#ff8fa3"/><rect x="11" y="15" width="3" height="2" fill="#2a2a2a"/>
+  <rect x="19" y="8" width="10" height="2" fill="#f26f86"/>
+  <rect x="29" y="7" width="4" height="3" fill="#f26f86"/>
+  <rect x="31" y="7" width="1" height="1" fill="#1e1a14"/>
+  <rect x="33" y="8" width="2" height="2" fill="#f0e8e0"/><rect x="34" y="10" width="1" height="1" fill="#1e1a14"/>
+</svg>

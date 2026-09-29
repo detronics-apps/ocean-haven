@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo.svg" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo_resting.svg" id="3_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo_flying.svg" id="4_t"]
 
 [resource]
 script = ExtResource("1_s")
@@ -14,7 +16,9 @@ fact = "Flamingos feed with their heads upside down, filtering food out of the s
 photo_fact = "Flamingos build nests of mud: a little mound with a hollow on top for a single egg."
 help_fact = "Flamingos need the water on the flats to be just right: too deep and they cannot feed, too dry and there is no food."
 habitat_terrain = PackedStringArray("mud", "water")
-faces_movement = true
+faces_movement = false
+resting_sprite = ExtResource("3_t")
+flying_sprite = ExtResource("4_t")
 swim_speed = 26.0
 rest_min = 3.0
 rest_max = 7.0
