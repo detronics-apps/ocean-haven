@@ -683,7 +683,7 @@ See "Island by island → Kelp Forest" for the design. Build order (each a playa
    Forest Exploration Ship; Deep-Water Equipment opens the Deep Sea.
 10. **First cross-island link:** Starting Island water quality speeds the kelp's recovery.
 
-### Step 4 — Mangrove Coast (warmer, 1st) — DRAFT 2, awaiting the user's OK
+### Step 4 — Mangrove Coast (warmer, 1st) — draft 2, approved and built (first version)
 Design against `docs/ISLAND_RULES.md`. Lesson: **the land and ocean are connected: water is
 the transport system.** A different game from the Kelp Forest: there the player balances
 populations; here they **shape the land and steer the water**, and the animals follow.

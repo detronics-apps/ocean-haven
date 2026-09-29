@@ -126,7 +126,7 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	if not has_requirement(data):
 		return "Build a %s first." % data.requires
 	if at_limit(data, island):
-		return "This island already has as many as you can build." if data.limit_per_island else "You've built as many as you can."
+		return "This island already has as many as you can build."
 	if not _free and not can_afford(data):
 		return "Not enough to build another. " + data.cost_text()
 	return ""
@@ -189,19 +189,18 @@ func _touches_walkable(footprint: Rect2i) -> bool:
 	return false
 
 
-## Whether as many of `data` exist as are allowed.
-## Whether no more of `data` can be built (on `island` for per-island limits; default: the
-## island the ranger is on).
+## Whether no more of `data` can be built on `island` (default: the island the ranger is on).
+## Every limit counts per island.
 func at_limit(data: BuildingData, island: RegionData = null) -> bool:
 	var limit := 1 if data.unique else data.max_count
 	if limit <= 0:
 		return false
-	if data.limit_per_island and not island:
+	if not island:
 		var ranger := ControlledBody.active(get_tree())
 		island = Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
 	return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
 		return (b.data.id == data.id and not b.is_queued_for_deletion()
-			and (not data.limit_per_island or Regions.nearest(b.global_position) == island))).size() >= limit
+			and Regions.nearest(b.global_position) == island)).size() >= limit
 
 
 ## Whether whatever `data` depends on (e.g. a dock) has been built.

@@ -63,11 +63,8 @@ extends Resource
 @export var needs_objective := false
 ## Pictures by fleet equipment level (Fleet.level(): 1 = first entry); `texture` below level 1.
 @export var fleet_textures: Array[Texture2D] = []
-## At most this many can exist (0 = no limit).
+## At most this many on each island (0 = no limit); `unique` = one on each island.
 @export var max_count := 0
-## `max_count` (and `unique`) count on each island, not the whole game: e.g. a tent and up
-## to 2 Ranger Houses on every island.
-@export var limit_per_island := false
 ## Rare events (storms) can't damage it (docks, boats, trees).
 @export var storm_proof := false
 ## Nesting beaches need quiet: another building within this many tiles (not docks, not
@@ -117,6 +114,10 @@ extends Resource
 @export var open_texture: Texture2D
 ## Water gates (action "gate"): the picture while closed (`texture` while open).
 @export var closed_texture: Texture2D
+## Signature facilities: a "how it works" card at the top of its missions screen.
+@export_multiline var guide: String
+## Boats keep this far out (px): patrol boats won't patrol there (Crocodile Protection Zones).
+@export var keeps_boats_out := 0.0
 ## Only across a narrow channel: land on both sides (left and right, or above and below).
 @export var needs_banks := false
 ## Must touch the shore or another deck, so walkways grow out from the land.

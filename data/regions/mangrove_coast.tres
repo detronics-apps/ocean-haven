@@ -2,12 +2,80 @@
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_kvp4x"]
 [ext_resource type="Texture2D" path="res://assets/ui/maps/mangrove_island.png" id="1_xdssp"]
+[ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="4_goal"]
+
+[sub_resource type="Resource" id="Health_clean"]
+script = ExtResource("3_health")
+kind = &"clean"
+amount = 10
+weight = 5.0
+text = "Litter in the water and on the mud"
+
+[sub_resource type="Resource" id="Health_water"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"water"
+scales_all = true
+scale_floor = 0.3
+text = "Water in balance"
+
+[sub_resource type="Resource" id="Health_mangroves"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"mangroves"
+amount = 12
+weight = 2.0
+text = "Mangrove trees"
+
+[sub_resource type="Resource" id="Health_fish"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"juvenile_snapper"
+amount = 10
+weight = 2.0
+text = "Young snappers in the nursery"
+
+[sub_resource type="Resource" id="Health_nests"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"nests"
+amount = 3
+text = "Flamingo nests"
+
+[sub_resource type="Resource" id="Health_crabs"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"mangrove_crab"
+amount = 4
+too_many = 8
+text = "Mangrove crabs"
+
+[sub_resource type="Resource" id="Health_crocodiles"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"american_crocodile"
+amount = 2
+text = "Crocodiles in quiet water"
+
+[sub_resource type="Resource" id="Goal_flowing"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"mangrove_flowing"
+text = "Get the water flowing: link 4 nursery pools to the sea (island health 70 %)"
+
+[sub_resource type="Resource" id="Goal_resin"]
+script = ExtResource("4_goal")
+kind = &"count"
+target = &"mangrove_resin"
+amount = 5
+text = "Gather resin from fallen mangrove branches"
 
 [resource]
 script = ExtResource("1_kvp4x")
 id = &"mangrove_coast"
 display_name = "Mangrove Coast"
-description = "A maze of grassy fingers and muddy channels. (Mangroves and their wildlife coming soon.)"
+description = "A maze of grassy fingers and muddy channels. Silt has cut the mangrove pools off from the sea: can you get the water flowing again?"
 order = 3
 direction = &"warmer"
 theme = "The land and ocean connection"
@@ -18,3 +86,6 @@ boat_mooring = Vector2(9680, 80)
 map_icon = ExtResource("1_xdssp")
 requires = &"salvaged_sonar_core"
 discovery = &"mangrove_resin"
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_water"), SubResource("Health_mangroves"), SubResource("Health_fish"), SubResource("Health_nests"), SubResource("Health_crabs"), SubResource("Health_crocodiles")])
+objective = "Get the water flowing through the mangroves again"
+goals = Array[ExtResource("4_goal")]([SubResource("Goal_flowing"), SubResource("Goal_resin")])

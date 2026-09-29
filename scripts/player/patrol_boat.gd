@@ -109,6 +109,16 @@ static func free_water_share(tree: SceneTree, region: RegionData) -> float:
 
 func _is_water(local_point: Vector2) -> bool:
 	var point := to_global(local_point)
-	# Docks are walkways over the water: patrol boats go round them.
-	return Terrain.at(get_tree(), point) in ["", "water"] and not Terrain.walkable(get_tree(), point)
+	# Docks are walkways over the water: patrol boats go round them, and keep out of protected
+	# zones (e.g. a crocodile's quiet water).
+	return Terrain.at(get_tree(), point) in ["", "water"] and not Terrain.walkable(get_tree(), point) \
+		and not in_protected_zone(get_tree(), point)
+
+
+## Inside a zone boats keep out of (BuildingData.keeps_boats_out).
+static func in_protected_zone(tree: SceneTree, point: Vector2) -> bool:
+	for building: Building in tree.get_nodes_in_group("buildings"):
+		if building.data.keeps_boats_out > 0.0 and building.global_position.distance_to(point) <= building.data.keeps_boats_out:
+			return true
+	return false
 

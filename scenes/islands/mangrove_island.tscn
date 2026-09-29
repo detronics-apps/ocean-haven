@@ -2,6 +2,7 @@
 
 [ext_resource type="TileSet" path="res://assets/tilesets/placeholder_tileset.tres" id="1_poitu"]
 [ext_resource type="PackedScene" path="res://scenes/world/mangrove_tree.tscn" id="2_mtree"]
+[ext_resource type="Script" path="res://scripts/world/mangrove_ecosystem.gd" id="3_meco"]
 
 [node name="MangroveIsland" type="Node2D" unique_id=579526730]
 y_sort_enabled = true
@@ -28,3 +29,6 @@ position = Vector2(144, 176)
 
 [node name="Mangrove6" parent="." instance=ExtResource("2_mtree")]
 position = Vector2(368, 208)
+
+[node name="Ecosystem" type="Node2D" parent="."]
+script = ExtResource("3_meco")

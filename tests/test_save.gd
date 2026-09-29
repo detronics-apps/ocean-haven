@@ -105,6 +105,7 @@ func _initialize() -> void:
 	var arctic: Resource = load("res://data/regions/arctic_ocean.tres")
 	regions.discover(arctic)  # without the Cargo Module: locked again on loading
 	missions._done["home_island/rescue_boat"] = 3
+	world.get_node("MangroveIsland/Ecosystem").set("_silt", {Vector2i(6, 1): 0.6})
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
@@ -139,6 +140,7 @@ func _initialize() -> void:
 	_expect(not regions.is_discovered(arctic), "an island found without the upgrade it needs is locked again")
 	_expect(missions.active != null and missions.active.id == &"turtle_monitoring", "a mission that's out is still out")
 	_expect(missions.times_done(load("res://data/missions/rescue_boat.tres"), home) == 3, "how often each mission has run is restored")
+	_expect(is_equal_approx(world.get_node("MangroveIsland/Ecosystem").silt_of(Vector2i(6, 1)), 0.6), "silt in the Mangrove Coast's channels is restored")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

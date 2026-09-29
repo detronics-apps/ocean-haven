@@ -306,7 +306,18 @@ floating litter near them ashore (AnimalData.carries_litter_ashore). Rare events
 (EventData.min_gap_days / max_gap_days), warned 3–4 days ahead, never in the ranger's first 2 days
 back on an island (RareEvents.calm_days).
 
-Next: MVP 0.6 Mangrove Coast (Step 4; design in MASTER_PLAN).
+**MVP 0.6 — "Mangrove Coast" (current).** Design: `docs/MASTER_PLAN.md` Step 4 (draft 2, approved).
+Built so far: the shovel digs mud (carry 3, storable; mud on shallows makes flats); red mangroves
+(propagules, only in mud); `MangroveEcosystem` (island child "Ecosystem"): 5 inland nursery pools
+cut off by silt (flood fill from the open sea; closed Water Gates block it), silt settling in dug
+channels (fast where water stands, slow where it flows, less beside full-grown mangroves and with
+a few crabs, faster with too many), water level from open/closed gates (flamingos feed and build
+mud-mound nests when it's right), young snappers per nursery pool (linked + mangroves), Crab
+Habitats (runaway crabs), Crocodile Protection Zones (patrol boats keep out:
+BuildingData.keeps_boats_out), Eco-Lodge; Waterworks Station with 6 missions and a "How it
+works" card (BuildingData.guide); HealthFactor kind "eco" (the ecosystem scores it); Flash Flood
+(EventData.flood_silt); objective: water flowing (4 pools linked, 70 %) -> 5 resin -> Mangrove
+Resin. All building limits count per island.
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

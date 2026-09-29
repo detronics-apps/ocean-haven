@@ -119,8 +119,8 @@ func _initialize() -> void:
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	_expect(build_mode.placement_problem(ship, kelp_cell).begins_with("First: restore the kelp forest"),
 		"no ship before the island's objective is done (%s)" % build_mode.placement_problem(ship, kelp_cell))
-	var mangrove_cell := Vector2i((region.call("mangrove_coast").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
-	_expect(build_mode.placement_problem(ship, mangrove_cell).contains("coming soon"),
+	var reef_cell := Vector2i((region.call("tropical_reef").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
+	_expect(build_mode.placement_problem(ship, reef_cell).contains("coming soon"),
 		"none on an island whose objective isn't made yet")
 	build_mode.add_building(ship, kelp_cell)
 	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")

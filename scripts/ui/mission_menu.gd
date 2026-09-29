@@ -32,6 +32,10 @@ func _fill() -> void:
 			status.text += "\n%s: going on for %s more." % ["Boat patrol" if effect == &"boat_patrol" else "Visiting dolphin",
 				Missions.real_time((Missions._until[effect] - GameClock.now()) * GameClock.DAY_LENGTH)]
 	_content.add_child(status)
+	if station and station.data.guide != "":
+		var guide := card(null, ["How it works", station.data.guide])
+		guide.name = "Guide"
+		_content.add_child(guide)
 	if Missions.last_report != "" and not Missions.active:
 		var last := card(null, ["Last report", Missions.last_report])
 		last.name = "LastReport"

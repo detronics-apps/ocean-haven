@@ -24,3 +24,4 @@ only_on = &"mangrove_coast"
 category = &"sea"
 placement_hint = "on quiet water, away from your boats"
 fact = "Protecting quiet nesting areas has helped the American crocodile recover in Florida and the Caribbean."
+keeps_boats_out = 112.0

@@ -33,6 +33,9 @@ static func built(tree: SceneTree, id: StringName) -> bool:
 static func score(tree: SceneTree, region: RegionData, factor: HealthFactor, projected := {}) -> float:
 	var amount := float(maxi(factor.amount, 1))
 	match factor.kind:
+		&"eco":  # the island's ecosystem scores it (e.g. the Mangrove Coast's water)
+			var eco := ecosystem(tree, region)
+			return eco.eco_score(factor, projected) if eco else 0.0
 		&"clean":
 			return clampf(1.0 - count(tree, region, factor) / amount, 0.0, 1.0)
 		&"help", &"kelp":
@@ -72,6 +75,9 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor, pro
 	if factor.kind == &"animals" and projected.has(factor.target):
 		return projected[factor.target]
 	match factor.kind:
+		&"eco":
+			var eco := ecosystem(tree, region)
+			return roundi(eco.eco_count(factor.target, projected)) if eco else 0
 		&"clean":
 			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
 				# Only litter the rowboat can reach counts (drifting litter further out doesn't).
@@ -98,6 +104,9 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor, pro
 ## "Litter in the water: 4" / "Turtles living here: 3 / 6" / "Turtles living here: 18
 ## (6 for full health)" for the Journal: animals are counted in full, not capped.
 static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) -> String:
+	if factor.kind == &"eco":
+		var eco := ecosystem(tree, region)
+		return eco.eco_describe(factor) if eco else factor.text
 	var n := count(tree, region, factor)
 	if factor.kind == &"clean":
 		return "%s: %s" % [factor.text, "none" if n == 0 else str(n)]

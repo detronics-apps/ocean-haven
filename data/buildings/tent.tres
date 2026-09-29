@@ -13,4 +13,3 @@ terrain = PackedStringArray("sand", "grass")
 unique = true
 action = &"sleep"
 fact = "Many conservation rangers live at remote field camps, close to the wildlife they protect."
-limit_per_island = true

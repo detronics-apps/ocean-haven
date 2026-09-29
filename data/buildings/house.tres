@@ -26,4 +26,3 @@ max_tier = 3
 upgrade_funding = 80
 upgrade_items = Dictionary[StringName, int]({&"wood": 3})
 tier_textures = Array[Texture2D]([ExtResource("2_22yc1"), ExtResource("9_h2"), ExtResource("9_h3")])
-limit_per_island = true
