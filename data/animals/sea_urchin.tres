@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_urch"]
+[ext_resource type="Texture2D" path="res://assets/animals/urchin/sea_urchin.svg" id="2_urch"]
+
+[resource]
+script = ExtResource("1_urch")
+id = &"sea_urchin"
+display_name = "Purple Sea Urchin"
+sprite = ExtResource("2_urch")
+habitat = "Rocky sea floors of cool kelp forests"
+diet = "Kelp and other seaweed"
+fact = "Urchins aren't the enemy: a healthy kelp forest has some. But when their predators disappear, they multiply and can eat a forest down to bare rock, an 'urchin barren'."
+photo_fact = "A sea urchin walks on hundreds of tiny tube feet, and its mouth, called Aristotle's lantern, has five teeth."
+habitat_terrain = PackedStringArray("", "water")

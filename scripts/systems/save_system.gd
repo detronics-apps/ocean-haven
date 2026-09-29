@@ -155,6 +155,7 @@ func save_to(world: Node, path: String) -> bool:
 		"young_animals": young,
 		"nest_days": nest_days,
 		"tree_nests": _tree_nests(),
+		"ecosystems": _ecosystems(world),
 		"buildings": buildings,
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
@@ -406,6 +407,11 @@ func load_from(world: Node, path: String) -> bool:
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
 			animal.link_to_nearest_area()
+	var ecosystems: Dictionary = state.get("ecosystems", {})
+	for eco_path: String in ecosystems:
+		var ecosystem := world.get_node_or_null(eco_path)
+		if ecosystem and ecosystem.has_method("restore"):
+			ecosystem.restore(ecosystems[eco_path])
 	# Seabirds' nests stay in the palms they were in (or moved to).
 	var tree_nests: Dictionary = state.get("tree_nests", {})
 	for bird_name: String in tree_nests:
@@ -421,6 +427,14 @@ func load_from(world: Node, path: String) -> bool:
 	if not Regions.is_discovered(here):
 		VoyageMap.arrive(get_tree(), Regions.all()[0])
 	return true
+
+
+## Each island's ecosystem (e.g. the Kelp Forest's beds), by its path in the world.
+func _ecosystems(world: Node) -> Dictionary:
+	var saved := {}
+	for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+		saved[String(world.get_path_to(ecosystem))] = ecosystem.to_dict()
+	return saved
 
 
 ## Bird name -> where its nest tree stands.

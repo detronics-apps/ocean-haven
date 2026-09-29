@@ -75,6 +75,9 @@ func _initialize() -> void:
 	root.get_node("Funding").restore({"balance": 77})
 	world.get_node("Dolphin1").tangle(load("res://data/items/fishing_line.tres"))  # caught by litter left about
 	world.get_node("GreenTurtle").injure()  # hurt by a storm
+	var kelp_bed: Node2D = world.get_node("KelpIsland/Ecosystem/Kelp3")
+	kelp_bed.health = 0.77
+	kelp_bed.urchins = 4.0
 	var cut_tree: Node = world.get_node("StarterIsland/Palm3")
 	_save.mark_cut(cut_tree)
 	cut_tree.free()
@@ -153,6 +156,8 @@ func _initialize() -> void:
 		"nest restored")
 	_expect(is_equal_approx(nests[0].protected_until, 5.5) and nests[0].storm_hit, "its protection and storm damage restored")
 	_expect(world.get_node("GreenTurtle").injured, "a hurt animal is still hurt after loading (until rescued)")
+	var kelp_back: Node2D = world.get_node("KelpIsland/Ecosystem/Kelp3")
+	_expect(is_equal_approx(kelp_back.health, 0.77) and is_equal_approx(kelp_back.urchins, 4.0), "the Kelp Forest's beds are restored")
 	var babies := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.young)
 	_expect(babies.size() == 1 and babies[0].position.distance_to(Vector2(-500, 100)) < 1.0, "hatchling restored")
 	var grown_ups := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return not a.young and is_equal_approx(a.born_at, 1.5))

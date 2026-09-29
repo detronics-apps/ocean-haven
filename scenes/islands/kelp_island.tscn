@@ -2,6 +2,7 @@
 
 [ext_resource type="TileSet" path="res://assets/tilesets/placeholder_tileset.tres" id="1_hnop6"]
 [ext_resource type="PackedScene" path="res://scenes/world/coastal_tree.tscn" id="2_wvljg"]
+[ext_resource type="Script" path="res://scripts/world/kelp_ecosystem.gd" id="3_kelpeco"]
 
 [node name="KelpIsland" type="Node2D" unique_id=1935725137]
 y_sort_enabled = true
@@ -25,3 +26,6 @@ position = Vector2(112, 568)
 
 [node name="Tree5" parent="." unique_id=1908128783 instance=ExtResource("2_wvljg")]
 position = Vector2(-304, -360)
+
+[node name="Ecosystem" type="Node2D" parent="."]
+script = ExtResource("3_kelpeco")
