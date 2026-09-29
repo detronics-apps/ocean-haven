@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/coastal_sapling.svg" id="1_csap"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"coastal_sapling"
+display_name = "Coastal Sapling"
+icon = ExtResource("1_csap")
+is_litter = false
+fact = "Along cool coasts, spruce and pine trees grow right down to the shore; their roots hold the soil so it doesn't wash into the sea."
+carry_limit = 5

@@ -137,6 +137,21 @@ and restore balance. So:
 - **Research always leads to an action** (observe → understand → intervene → observe again),
   never just a report.
 - Mission effects use real elapsed time where it matters, not "until midnight".
+- **Animals are functional, not resources:** never currency, collectible cards, production
+  units or bare population counters. Buildings create habitat, protection, access, research,
+  restoration, water management or funding — never wildlife.
+- **The player can overbuild and can always correct it:** every major conservation structure
+  that can create imbalance can be demolished or moved.
+- **Cascading consequences:** a change in one part can affect the others (kelp: otters ↓ →
+  urchins ↑ → kelp ↓ → fish ↓ → cormorants ↓; mangroves: poor flow → mangroves degrade → nursery
+  disrupted → juvenile fish ↓ → fewer fish reach the ocean).
+- **Conservation isn't "more":** more habitats, zones, tourism, restoration or infrastructure
+  doesn't automatically make a better island.
+- The intended shift: from "what building gives me more animals?" to "what is causing the
+  ecosystem to change?" — learned through cause and effect, not textbook explanations. BlueHaven
+  is a simplified ecosystem simulation inside an accessible management game: build → observe →
+  decide → see consequences → adapt → restore balance. The goal isn't to maximise every animal,
+  but an ecosystem that can sustain itself.
 
 ### 1. 🏝️ Starting Island — Human impact
 Pollution isn't one score; each kind hits a different system, and the player chooses what to clean
@@ -227,8 +242,29 @@ right water and sediment.
 - **Crocodile Protection Zone** (hard max): protects territory but restricts boats, visitor routes
   and access. More protected area ≠ automatically better.
 - 💰 **Mangrove Eco-Lodge** (max 3): visitors, education, kayak / boat tours, wildlife viewing →
-  funding; but more tourism also means more boat traffic, disturbance and pressure… *(the design
-  notes were cut off here — the rest of the Mangrove spec is still to come)*
+  funding; but more tourism also means more boat traffic, more disturbance, more pressure on
+  wildlife: tourism income ↔ ecological protection. Not just a money generator — part of the
+  island's management problem.
+
+**Missions** (from the Waterworks Station; always information → action): Water Flow Survey
+(current flow, blocked / unhealthy areas), Nursery Connectivity Survey (can juvenile fish get
+through to the ocean?), Water Level Adjustment (redistribute freshwater to restore shallow
+habitat), Channel Restoration (clear / restore blocked nursery channels), Sediment Management
+(excess sediment), Mangrove Recovery (restore mangroves damaged by flow problems), Wildlife
+Monitoring (crab activity, nursery health, flamingo feeding areas, crocodile territory).
+
+**Rare event — Flash Flood:** heavy rain sends a surge of freshwater and sediment through the
+mangroves: water levels change fast, sediment is dumped, channels block, nursery connectivity
+breaks, parts of the mangrove are damaged. Warned where appropriate. Response: Waterworks
+Station → survey flow → find blocked areas → redirect water → restore channels → recover the
+nursery. It tests that changing flow in one place affects the whole system — not random damage.
+
+**Core loops:** water flow changes → a mangrove area becomes unhealthy → a nursery channel is
+restricted → juvenile fish recruitment falls → investigate at the Waterworks Station → find the
+blocked / poorly connected channel → restore it → water flows again → mangroves recover → nursery
+improves → more fish reach the ocean. And alongside: more tourism → more boat traffic → more
+disturbance → crocodile protection matters more → protected zones → too many restrict tourism →
+reposition / remove zones. Two interlocking decision systems, not one linear puzzle.
 
 **Discovery:** restore the channels, then collect resin from fallen branches → **Mangrove Resin**.
 

@@ -43,7 +43,7 @@ func _initialize() -> void:
 	var first: Node2D = get_nodes_in_group("plants")[0]
 	player.global_position = first.global_position + Vector2(-30, 10)
 	var labels: Array = first.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Cut down palm tree" in labels, "a tree next to you can be cut down")
+	_expect("Cut down tree" in labels, "a tree next to you can be cut down")
 	var count_before := get_nodes_in_group("plants").size()
 	first.actions()[0].do.call()
 	await process_frame
@@ -131,10 +131,29 @@ func _initialize() -> void:
 	_expect(not nest_palm.has_nest() and bird.nest_tree != nest_palm and bird.nest_tree.nest_of == bird and not bird.perched,
 		"the nest moves to another full-grown palm (the bird takes off)")
 	tree_labels = nest_palm.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(tree_labels == ["Cut down palm tree"], "then the tree can be cut down (%s)" % [tree_labels])
+	_expect(tree_labels == ["Cut down tree"], "then the tree can be cut down (%s)" % [tree_labels])
 	_expect(root.get_node("SaveGame")._tree_nests().get("TestBooby", []) == [bird.nest_tree.global_position.x, bird.nest_tree.global_position.y],
 		"which tree has its nest is saved")
 	bird.free()
+	player.global_position = Vector2.ZERO
+
+	# --- The Kelp Forest has coastal trees: their own saplings, planted only there ---
+	var coastal: Node2D = world.get_node("KelpIsland/Tree1")
+	var kelp_inventory := root.get_node("Inventory")
+	kelp_inventory.restore({}, {})
+	player.global_position = coastal.global_position + Vector2(-30, 10)
+	await process_frame
+	_expect(coastal.sapling.id == &"coastal_sapling", "the Kelp Forest's trees are coastal trees")
+	var kelp_cell := Vector2i((coastal.global_position / 32.0).floor())
+	coastal.cut_down()
+	await process_frame
+	_expect(kelp_inventory.count(&"coastal_sapling") >= 1 and kelp_inventory.count(&"sapling") == 0,
+		"cutting one gives coastal saplings (not palm saplings)")
+	var bm: Node = world.get_node("BuildMode")
+	var coastal_data: Resource = load("res://data/buildings/coastal_tree.tres")
+	var palm_data: Resource = load("res://data/buildings/palm_tree.tres")
+	_expect(bm.placement_problem(coastal_data, kelp_cell) == "", "a coastal sapling can be planted back there (%s)" % bm.placement_problem(coastal_data, kelp_cell))
+	_expect(bm.placement_problem(palm_data, kelp_cell) != "", "palms belong on the Starting Island")
 	player.global_position = Vector2.ZERO
 
 	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---

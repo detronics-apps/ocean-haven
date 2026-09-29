@@ -1,7 +1,8 @@
 class_name PalmTree
 extends StaticBody2D
-## A palm tree. The ranger can cut it down (action bar); new ones are planted from
-## the Build menu (a "palm_tree" building that holds one of these). A planted palm
+## A land tree: the Starting Island's palms, the Kelp Forest's coastal trees (a scene each,
+## with its own picture and `sapling`). The ranger can cut it down (action bar); new ones are
+## planted from the Build menu (a "palm_tree" / "coastal_tree" building that holds one). A planted palm
 ## grows a stage a day: small -> medium -> full grown; the island's own are full grown.
 ## A full-grown palm can hold one seabird's nest (shown in its crown): a tree with a nest
 ## can't be cut down until the ranger moves the nest to another full-grown palm.
@@ -24,8 +25,11 @@ var nest_of: Node2D:
 			_nest.visible = has_nest()
 var _nest: Sprite2D
 
+## The sapling it grows from and gives back (each island's land trees have their own).
+@export var sapling: ItemData
+
 var _wood: ItemData = load("res://data/items/wood.tres")
-var _sapling: ItemData = load("res://data/items/sapling.tres")
+@onready var _sapling: ItemData = sapling if sapling else load("res://data/items/sapling.tres")
 
 
 func _enter_tree() -> void:
@@ -92,7 +96,7 @@ func actions() -> Array:
 	if Inventory.room_for(_wood) <= 0:
 		return [{"label": "Arms full of wood", "do": get_tree().call_group.bind("hud", "show_toast",
 			"You can carry %d wood. Build with it, or store it in your Ranger House." % _wood.carry_limit)}]
-	return [{"label": "Cut down palm tree", "do": cut_down}]
+	return [{"label": "Cut down tree", "do": cut_down}]
 
 
 ## Small: the sapling back. Medium: 1 wood + 1 sapling. Full grown: 1-2 of each.

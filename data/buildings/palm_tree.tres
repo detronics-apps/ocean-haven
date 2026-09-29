@@ -18,6 +18,7 @@ draw_texture = false
 fact = "Trees along the coast hold the sand together with their roots and give shade to people and wildlife."
 cost_items = Dictionary[StringName, int]({&"sapling": 1})
 category = &"land"
+only_on = &"home_island"
 movable = false
 build_verb = "Plant"
 storm_proof = true
