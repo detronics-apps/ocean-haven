@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"kelp_health_survey"
+display_name = "Kelp health survey"
+description = "Divers check every kelp bed: where the forest is healthy, damaged or recovering."
+order = 1
+facility = &"kelp_research_platform"
+cost = 15
+minutes = 2.0
+effect = &"kelp_survey"
+effect_days = 0.0
+marker_colour = Color(0.36, 0.8, 0.4, 1)
+report = "{detail}"
+report_none = "{detail}"

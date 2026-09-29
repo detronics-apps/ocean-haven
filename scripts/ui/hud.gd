@@ -357,7 +357,7 @@ func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> vo
 
 func _on_mission_returned(mission: MissionData, found: int) -> void:
 	var report := mission.report if found > 0 else mission.report_none
-	show_toast("%s is back!\n%s" % [mission.display_name, report % found if "%d" in report else report])
+	show_toast("%s is back!\n%s" % [mission.display_name, Missions.last_report])
 
 
 func _on_built(building: Building) -> void:
@@ -391,7 +391,7 @@ func show_toast(text: String) -> void:
 	_toast_label.text = text
 	_toast.modulate.a = 1.0
 	_toast_tween = create_tween()
-	_toast_tween.tween_interval(3.0)
+	_toast_tween.tween_interval(clampf(2.5 + text.length() / 45.0, 3.0, 10.0))  # time to read it
 	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.6)
 	_toast_tween.finished.connect(_show_next_toast)
 

@@ -24,6 +24,10 @@ var _marks_from: MissionData
 var _until := {}
 ## Tries without success so far: mission id -> count (the coastal survey is sure by its 5th).
 var _tries := {}
+## What the last mission found out, in words (put into its report as "{detail}").
+var detail := ""
+## The last mission's report (also shown at the facility, to read again).
+var last_report := ""
 
 
 func _ready() -> void:
@@ -92,6 +96,35 @@ func _finish() -> void:
 	var mission := active
 	active = null
 	_marked.clear()
+	detail = ""
+	var found: Array[Node2D] = []
+	var ecosystem := _ecosystem()
+	if ecosystem and ecosystem.handles(mission.effect):
+		var result: Dictionary = ecosystem.run_mission(mission)
+		found.assign(result.get("found", []))
+		detail = result.get("detail", "")
+	else:
+		found = _run(mission)
+	for node in found:
+		if node.has_method("reveal"):
+			node.reveal()  # found by the mission (e.g. the wreck)
+	_marked = found
+	_marks_from = mission
+	var report := mission.report if found.size() > 0 or detail != "" else mission.report_none
+	last_report = (report % found.size() if "%d" in report else report).replace("{detail}", detail)
+	returned.emit(mission, found.size())
+
+
+## The island's own ecosystem (e.g. the Kelp Forest's), if it has one.
+func _ecosystem() -> Node:
+	for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+		if ecosystem.region_id == _region.id:
+			return ecosystem
+	return null
+
+
+## The Marine Rescue & Research Station's missions (and plain "find" missions).
+func _run(mission: MissionData) -> Array[Node2D]:
 	var found: Array[Node2D] = []
 	match mission.effect:
 		&"rescue":
@@ -124,12 +157,7 @@ func _finish() -> void:
 				_tries[mission.id] = tries
 		_:
 			found.assign(_finds(mission))
-	for node in found:
-		if node.has_method("reveal"):
-			node.reveal()  # found by the mission (e.g. the wreck)
-	_marked = found
-	_marks_from = mission
-	returned.emit(mission, found.size())
+	return found
 
 
 ## What `mission` finds on its island (MissionData.finds_group / species / tangled).

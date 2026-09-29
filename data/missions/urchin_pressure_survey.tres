@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"urchin_pressure_survey"
+display_name = "Urchin pressure survey"
+description = "Divers count sea urchins on each bed, to find where grazing is getting dangerous."
+order = 2
+facility = &"kelp_research_platform"
+cost = 15
+minutes = 2.0
+effect = &"urchin_survey"
+effect_days = 0.0
+marker_colour = Color(0.62, 0.35, 0.8, 1)
+report = "{detail}"
+report_none = "{detail}"

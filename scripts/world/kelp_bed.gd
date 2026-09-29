@@ -23,6 +23,10 @@ var urchins := 0.0:
 		queue_redraw()
 ## Kelp restoration planted here: extra regrowth until then (GameClock.now()).
 var restored_until := -1.0
+## Its health yesterday morning (to tell recovering beds from declining ones).
+var health_yesterday := -1.0
+## Damaged by heavy swell and not yet recovered.
+var storm_hit := false
 var _sway := randf() * TAU
 
 

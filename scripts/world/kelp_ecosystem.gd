@@ -62,7 +62,9 @@ func _ready() -> void:
 	_place_beds()
 	GameClock.new_day.connect(func(_d: int) -> void:
 		if Regions.is_discovered(region()):
-			settle())
+			settle()
+		for bed in beds():
+			bed.health_yesterday = bed.health)
 
 
 func region() -> RegionData:
@@ -323,6 +325,134 @@ func _new_otter(species: AnimalData, home: Building, all: Array[Animal]) -> void
 	world.move_child(otter, world.get_node("Player").get_index())
 	get_tree().call_group("hud", "show_toast", ("A sea otter pup was born near your %s!" if pup
 		else "A sea otter has settled at your %s: the kelp around it can feed it.") % home.data.display_name)
+
+
+## The Kelp Research Platform's missions (MissionData.effect) this ecosystem runs.
+const MISSIONS := [&"kelp_survey", &"urchin_survey", &"otter_monitoring", &"balance_survey",
+	&"kelp_restoration", &"urchin_relocation", &"storm_survey"]
+## Beds under this health count as damaged; kelp restoration helps this many beds.
+@export var damaged_below := 0.4
+@export var restore_beds := 3
+@export var restore_now := 0.15
+## Urchin relocation moves at most this many, from the worst bed to the least grazed ones.
+@export var relocate_max := 8
+
+
+func handles(effect: StringName) -> bool:
+	return effect in MISSIONS
+
+
+## Runs a research mission: {found: nodes to mark on the minimap, detail: what it learned
+## and what the ranger can do about it}. Observe → understand → intervene → observe again.
+func run_mission(mission: MissionData) -> Dictionary:
+	var list := beds()
+	match mission.effect:
+		&"kelp_survey":
+			var damaged := list.filter(func(b: KelpBed) -> bool: return b.health < damaged_below)
+			var recovering := list.filter(func(b: KelpBed) -> bool:
+				return b.health_yesterday >= 0.0 and b.health > b.health_yesterday + 0.01)
+			var healthy := list.size() - damaged.size()
+			return {"found": damaged, "detail": "%d of %d kelp beds are healthy, %d damaged (marked)%s. %s" % [
+				healthy, list.size(), damaged.size(),
+				", %d recovering" % recovering.size() if recovering else "",
+				"Find out why with an urchin pressure survey." if damaged else "The forest is in good shape."]}
+		&"urchin_survey":
+			var heavy := list.filter(func(b: KelpBed) -> bool: return b.urchins >= overgrazed_at * 0.6)
+			heavy.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.urchins > b.urchins)
+			var far := heavy.filter(func(b: KelpBed) -> bool: return _nearest_otter_home(b.global_position) > 260.0)
+			return {"found": heavy, "detail": "%d bed(s) are overgrazed by urchins (marked)%s. %s" % [
+				heavy.size(), ", the worst with %d" % heavy[0].urchin_count() if heavy else "",
+				("%d of them have no otters foraging nearby. Otters eat urchins: check their conditions (otter monitoring)." % far.size()) if far
+				else ("Otters are foraging near them already; urchin relocation can ease the worst." if heavy else "Grazing is in balance.")]}
+		&"otter_monitoring":
+			return {"found": otters(), "detail": _otter_report()}
+		&"balance_survey":
+			return {"found": list.filter(func(b: KelpBed) -> bool: return b.urchins >= overgrazed_at), "detail": balance_report()}
+		&"kelp_restoration":
+			var worst := list.duplicate()
+			worst.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.health < b.health)
+			worst = worst.slice(0, restore_beds)
+			for bed: KelpBed in worst:
+				bed.health += restore_now
+				bed.restored_until = GameClock.now() + mission.effect_days
+			var grazed := worst.filter(func(b: KelpBed) -> bool: return b.urchins >= overgrazed_at * 0.6)
+			return {"found": worst, "detail": "Divers replanted kelp at the %d most damaged beds (marked); it grows faster there for %d days. %s" % [
+				worst.size(), roundi(mission.effect_days),
+				"But %d of them are overgrazed: unless urchins there come down, the new kelp won't last." % grazed.size() if grazed
+				else "Urchins there are few, so it should hold."]}
+		&"urchin_relocation":
+			var by_pressure := list.duplicate()
+			by_pressure.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.urchins > b.urchins)
+			var from: KelpBed = by_pressure[0]
+			var moved := minf(relocate_max, floorf(from.urchins / 2.0))
+			if moved < 1.0:
+				return {"found": [], "detail": "No bed has too many urchins to move."}
+			var to := by_pressure.slice(by_pressure.size() - 3)
+			from.urchins -= moved
+			for bed: KelpBed in to:
+				bed.urchins += moved / to.size()
+			return {"found": [from] + to, "detail": "Divers moved %d urchins from the most overgrazed bed to 3 lightly grazed ones (marked). The urchins aren't the enemy: there were just too many in the wrong place. Without more otters, they'll build up again." % roundi(moved)}
+		&"storm_survey":
+			var hit := list.filter(func(b: KelpBed) -> bool: return b.storm_hit)
+			hit.sort_custom(func(a: KelpBed, b: KelpBed) -> bool: return a.urchins < b.urchins)
+			var first := hit.slice(0, restore_beds)
+			return {"found": first, "detail": ("%d bed(s) were damaged by the swell. Restore these %d first (marked): they have the fewest urchins, so new kelp will last there." % [
+				hit.size(), first.size()]) if hit else "No storm damage to survey."}
+	return {}
+
+
+func _nearest_otter_home(point: Vector2) -> float:
+	var best := INF
+	for otter in otters():
+		best = minf(best, otter.home().distance_to(point))
+	return best
+
+
+## Each Otter Habitat: its otters, the food around it, and what's holding it back.
+func _otter_report() -> String:
+	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var lines: Array[String] = []
+	var all := otters()
+	var n := 0
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.hosts != species.id or Regions.nearest(building.global_position).id != region_id:
+			continue
+		n += 1
+		var here := building.animals_here()
+		var crowd := all.filter(func(o: Animal) -> bool: return o.home().distance_to(building.global_position) <= crowd_range).size()
+		var feeds := floori(food_at(building.global_position, species) / species.food_needed)
+		var why := "room for more" if here < building.capacity() else "full"
+		if not building.upkeep_paid:
+			why = "not looked after today (upkeep unpaid)"
+		elif feeds <= here:
+			why = "not enough food nearby: the kelp around it is thin"
+		elif crowd >= crowd_max:
+			why = "crowded: it shares its stretch of coast with another habitat"
+		lines.append("Habitat %d: %d otter(s), food for %d; %s." % [n, here, feeds, why])
+	if n == 0:
+		return "No otters without a quiet place to rest: build an Otter Habitat on the shore near kelp."
+	return "%d otter(s) on the island. %s" % [all.size(), " ".join(lines)]
+
+
+## The food web in one line: otters → urchins → kelp → fish → cormorants, and where it breaks.
+func balance_report() -> String:
+	var otter_count := otters().size()
+	var eaten := roundi(otters().reduce(func(sum: float, o: Animal) -> float: return sum + o.data.urchins_per_day, 0.0))
+	var overgrazed := beds().filter(func(b: KelpBed) -> bool: return b.urchins >= overgrazed_at).size()
+	var fish := living(FISH).size()
+	var birds := living(CORMORANT).size()
+	var chain := "Otters: %d (eating about %d urchins a day) → urchins: %d, overgrazing %d of %d beds → kelp: %d%% → fish: %d → cormorants: %d." % [
+		otter_count, eaten, urchin_total(), overgrazed, beds().size(), roundi(kelp_health() * 100.0), fish, birds]
+	var advice := ""
+	if overgrazed > beds().size() / 3:
+		advice = "Too many urchins: few otters to keep them in check, so the kelp is being eaten faster than it grows."
+	elif urchin_total() < beds().size() / 2:
+		advice = "Almost no urchins left: otters may be eating them faster than they breed. A healthy forest keeps some; fewer habitats may balance it."
+	elif kelp_health() > 0.6 and fish < fish_supported():
+		advice = "The kelp is recovering: fish are returning."
+	else:
+		advice = "The food web is close to balance."
+	return chain + " " + advice
 
 
 ## Everything about the forest, 0..1 on average (the kelp's condition).

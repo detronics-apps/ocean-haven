@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"storm_damage_survey"
+display_name = "Storm damage survey"
+description = "After heavy swell, divers find the damaged kelp beds and which to restore first."
+order = 7
+facility = &"kelp_research_platform"
+cost = 20
+minutes = 2.0
+effect = &"storm_survey"
+effect_days = 0.0
+marker_colour = Color(1, 0.6, 0.3, 1)
+report = "{detail}"
+report_none = "{detail}"

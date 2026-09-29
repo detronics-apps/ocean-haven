@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="64" viewBox="0 0 96 64" shape-rendering="crispEdges">
+  <!-- Placeholder Kelp Research Platform (3/4 view): a research hut on stilts at the shore, dive ladder, crane with a submersible, kelp flag. -->
+  <rect x="4" y="44" width="88" height="16" fill="#8a6a44"/>
+  <rect x="4" y="42" width="88" height="3" fill="#a8844a"/>
+  <g fill="#5a3e22"><rect x="8" y="45" width="3" height="15"/><rect x="46" y="45" width="3" height="15"/><rect x="85" y="45" width="3" height="15"/></g>
+  <rect x="10" y="18" width="40" height="24" fill="#e8e2d2"/>
+  <rect x="8" y="14" width="44" height="6" fill="#3f8a6a"/>
+  <rect x="16" y="26" width="8" height="8" fill="#6fb2c8"/><rect x="30" y="26" width="8" height="8" fill="#6fb2c8"/>
+  <rect x="42" y="30" width="6" height="12" fill="#7a5a36"/>
+  <rect x="64" y="6" width="3" height="36" fill="#d8a23a"/>
+  <rect x="64" y="6" width="22" height="3" fill="#d8a23a"/>
+  <rect x="84" y="9" width="1" height="14" fill="#3a3a3a"/>
+  <rect x="78" y="23" width="12" height="8" fill="#f2c94c"/><rect x="81" y="25" width="4" height="4" fill="#6fb2c8"/>
+  <rect x="56" y="44" width="2" height="18" fill="#c9ced4"/><rect x="60" y="44" width="2" height="18" fill="#c9ced4"/>
+  <rect x="56" y="48" width="6" height="1" fill="#c9ced4"/><rect x="56" y="54" width="6" height="1" fill="#c9ced4"/>
+  <rect x="28" y="4" width="1" height="10" fill="#6b4428"/><rect x="29" y="4" width="7" height="5" fill="#58b85c"/>
+</svg>

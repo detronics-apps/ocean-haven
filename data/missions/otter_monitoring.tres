@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"otter_monitoring"
+display_name = "Otter monitoring"
+description = "Researchers watch the otters: how many, which habitats they use, and whether the forest around them can support more."
+order = 3
+facility = &"kelp_research_platform"
+cost = 15
+minutes = 3.0
+effect = &"otter_monitoring"
+effect_days = 0.0
+marker_colour = Color(0.75, 0.55, 0.35, 1)
+report = "{detail}"
+report_none = "{detail}"

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_krp"]
+[ext_resource type="Texture2D" path="res://assets/buildings/kelp_research_platform/kelp_research_platform.svg" id="2_krp"]
+
+[resource]
+script = ExtResource("1_krp")
+id = &"kelp_research_platform"
+display_name = "Kelp Research Platform"
+description = "The Kelp Forest's special building: divers and a small submersible study the forest. Surveys show what's going wrong and why; restoration and urchin relocation let you act on it."
+order = 0
+texture = ExtResource("2_krp")
+size = Vector2i(3, 2)
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 300
+cost_litter = 15
+cost_items = Dictionary[StringName, int]({&"wood": 8})
+facility = &"signature"
+one_per_island = true
+only_on = &"kelp_forest"
+action = &"missions"
+placement_hint = "on the shore"
+fact = "Scientists dive in kelp forests to count urchins, otters and fish, and to measure how fast the kelp grows back."
