@@ -56,6 +56,8 @@ static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 	else:
 		animal.remove_from_group("animals")
 		animal.remove_from_group("interactables")
+		if animal.has_method("set_nest_tree"):
+			animal.set_nest_tree(null)  # its nest tree is free again
 	world.get_tree().call_group("hud", "show_toast", "A %s is back, nesting in your palm trees!" % arrival.species.display_name if stays
 		else "A %s has flown off: it needs more full-grown trees to nest in." % arrival.species.display_name)
 

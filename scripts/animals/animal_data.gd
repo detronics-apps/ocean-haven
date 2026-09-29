@@ -65,6 +65,12 @@ extends Resource
 @export var boat_shy_distance := 0.0
 ## Flies (seabirds): goes over land and sea alike, above everything.
 @export var flies := false
+## Nests in a full-grown tree (one tree each, shown with a nest) and spends time standing
+## on it (`perched_sprite`): flies for `fly_seconds`, then perches for `perch_seconds`.
+@export var nests_in_trees := false
+@export var perched_sprite: Texture2D
+@export var fly_seconds := Vector2(12.0, 25.0)
+@export var perch_seconds := Vector2(15.0, 30.0)
 ## Circles over floating litter this close to its home, showing the ranger where it is.
 @export var circles_litter := false
 @export var circle_range := 420.0

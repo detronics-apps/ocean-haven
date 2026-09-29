@@ -150,6 +150,7 @@ func save_to(world: Node, path: String) -> bool:
 		"nests": nests,
 		"young_animals": young,
 		"nest_days": nest_days,
+		"tree_nests": _tree_nests(),
 		"buildings": buildings,
 		"player": [player.global_position.x, player.global_position.y],
 		"boat": [boat.global_position.x, boat.global_position.y],
@@ -394,12 +395,30 @@ func load_from(world: Node, path: String) -> bool:
 	for animal: Animal in get_tree().get_nodes_in_group("animals"):
 		if (animal.young or animal.born_at >= 0.0 or animal.last_nest_day >= 0) and animal.data.nest_building != &"":
 			animal.link_to_nearest_area()
+	# Seabirds' nests stay in the palms they were in (or moved to).
+	var tree_nests: Dictionary = state.get("tree_nests", {})
+	for bird_name: String in tree_nests:
+		var bird := world.get_node_or_null(bird_name)
+		var at: Array = tree_nests[bird_name]
+		if bird and bird.has_method("set_nest_tree") and at.size() == 2:
+			var palm := PalmTree.free_grown_near(get_tree(), Vector2(at[0], at[1]))
+			if palm and palm.global_position.distance_to(Vector2(at[0], at[1])) < 8.0:
+				bird.set_nest_tree(palm)
 	# On an island that isn't discovered any more: back home.
 	var ranger := ControlledBody.active(get_tree())
 	var here := Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
 	if not Regions.is_discovered(here):
 		VoyageMap.arrive(get_tree(), Regions.all()[0])
 	return true
+
+
+## Bird name -> where its nest tree stands.
+func _tree_nests() -> Dictionary:
+	var nests := {}
+	for animal: Animal in get_tree().get_nodes_in_group("animals"):
+		if animal.data.nests_in_trees and is_instance_valid(animal.nest_tree) and animal.nest_tree.nest_of == animal:
+			nests[String(animal.name)] = [animal.nest_tree.global_position.x, animal.nest_tree.global_position.y]
+	return nests
 
 
 func _species(id: String) -> AnimalData:

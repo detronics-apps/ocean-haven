@@ -67,6 +67,13 @@ var played := false
 ## Day the ranger last photographed this animal: one photo per animal per day.
 ## ponytail: not saved, so reloading allows another photo that day.
 var photo_day := -1
+## Tree nesters: the palm with its nest, standing on it right now, flying there, and
+## seconds left of flying / perching.
+var nest_tree: Node2D
+var perched := false
+var _to_nest := false
+var _fly_left := 0.0
+var _perch_left := 0.0
 ## Day the "growing up" note was last shown (one a day).
 static var _grow_note_day := -1
 ## Diggers: litter dug up today by each species (all of them together): id -> [day, count].
@@ -104,6 +111,7 @@ func _ready() -> void:
 		collision_mask = 0
 		z_index = 2  # over the trees
 	_land_mask = collision_mask
+	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
 
@@ -228,6 +236,8 @@ func _physics_process(delta: float) -> void:
 	_avoid_busy_boats()
 	_maybe_nest()
 	_maybe_guide()
+	if _tree_nesting(delta):
+		return
 
 	var speed := data.swim_speed * (0.5 if tangled else 1.0)
 	match _state:
@@ -258,6 +268,80 @@ func _physics_process(delta: float) -> void:
 	# Blocked by land (e.g. fled towards the beach): rest, then pick somewhere else.
 	if get_real_velocity().length() < 1.0:
 		_rest(data.rest_min)
+
+
+## Tree nesters fly about for a while, then fly back to their nest and stand on it (easy
+## to photograph). Rushing at them makes them take off. Returns true while it's handling
+## the movement (flying to the nest, perched).
+func _tree_nesting(delta: float) -> bool:
+	if not data.nests_in_trees:
+		return false
+	if tangled or _state == State.FLEE or _guide_to:
+		if perched or _to_nest:
+			take_off()
+		return false
+	if not _has_nest_tree():
+		var palm := PalmTree.free_grown_near(get_tree(), _home)
+		if palm:
+			set_nest_tree(palm)
+		elif perched or _to_nest:
+			take_off()
+	if perched:
+		velocity = Vector2.ZERO
+		global_position = nest_tree.perch_point()
+		_perch_left -= delta
+		if _perch_left <= 0.0:
+			take_off()
+		return perched
+	if not _to_nest:
+		_fly_left -= delta
+		if _fly_left > 0.0 or not _has_nest_tree():
+			return false
+		_to_nest = true
+	var to_nest: Vector2 = nest_tree.perch_point() - global_position
+	if to_nest.length() < 3.0:
+		_perch()
+		return true
+	velocity = to_nest.normalized() * data.swim_speed
+	move_and_slide()
+	_face(velocity)
+	return true
+
+
+func _has_nest_tree() -> bool:
+	return is_instance_valid(nest_tree) and not nest_tree.is_queued_for_deletion() and nest_tree.nest_of == self
+
+
+## Its nest is now in `palm` (null = no nest: flown off). Moving a nest makes it take off.
+func set_nest_tree(palm: Node2D) -> void:
+	if is_instance_valid(nest_tree) and nest_tree.nest_of == self:
+		nest_tree.nest_of = null
+	nest_tree = palm
+	if palm:
+		palm.nest_of = self
+	if perched or _to_nest:
+		take_off()
+
+
+func _perch() -> void:
+	perched = true
+	_to_nest = false
+	_perch_left = randf_range(data.perch_seconds.x, data.perch_seconds.y)
+	global_position = nest_tree.perch_point()
+	velocity = Vector2.ZERO
+	_sprite.rotation = 0.0
+	_sprite.flip_h = randf() < 0.5
+	if data.perched_sprite:
+		_sprite.texture = data.perched_sprite
+
+
+func take_off() -> void:
+	perched = false
+	_to_nest = false
+	_fly_left = randf_range(data.fly_seconds.x, data.fly_seconds.y)
+	_sprite.texture = data.sprite
+	_sprite.flip_h = false
+	_rest(0.1)
 
 
 ## Boat-shy animals swim off from a patrol boat that comes close.
@@ -331,6 +415,8 @@ func _react_to_ranger(delta: float) -> void:
 			info = "%s: it's caught - free it!" % name
 		elif photographed_today():
 			info = "%s: photographed today - see you tomorrow." % name
+		elif perched:
+			info = "%s: standing on its nest. Take a photo!" % name
 		else:
 			info = "%s: relaxed. Take a photo!" % name
 

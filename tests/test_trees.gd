@@ -95,6 +95,48 @@ func _initialize() -> void:
 		_expect(inventory.count(&"sapling") == saplings + 1 and inventory.count(&"wood") == grown_days,
 			"%s palm gives %d wood and its sapling back" % ["small" if grown_days == 0 else "medium", grown_days])
 
+	# --- Seabirds nest in full-grown palms: one tree each, and stand on their nest ---
+	var bird: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	bird.set("data", load("res://data/animals/red_footed_booby.tres"))
+	bird.name = "TestBooby"
+	bird.set("home_radius", 300.0)
+	var palms := get_nodes_in_group("plants").filter(func(p: Node) -> bool: return p is StaticBody2D and p.stage() == 2)
+	bird.position = palms[0].global_position + Vector2(60, -60)
+	world.add_child(bird)
+	bird.set("_fly_left", 0.0)
+	player.global_position = Vector2(-1500, 0)  # out of the way: nothing startles it
+	var perched := false
+	for i in 600:
+		await physics_frame
+		if bird.perched:
+			perched = true
+			break
+	var nest_palm: Node2D = bird.nest_tree
+	_expect(nest_palm != null and nest_palm.nest_of == bird and nest_palm.get_node("Nest").visible,
+		"the booby picks a full-grown palm for its nest, and the nest shows in the tree")
+	_expect(perched and bird.global_position.distance_to(nest_palm.perch_point()) < 1.0
+		and bird.get_node("Sprite2D").texture == bird.data.perched_sprite, "it flies to its nest and stands on it (a standing picture)")
+	var nests := get_nodes_in_group("plants").filter(func(p: Node) -> bool: return p is StaticBody2D and p.has_nest())
+	var birds := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data.nests_in_trees)
+	_expect(nests.size() == birds.size() and nests.filter(func(p: Node) -> bool: return p.nest_of == bird).size() == 1,
+		"one nest per bird (%d nests, %d birds)" % [nests.size(), birds.size()])
+	player.global_position = nest_palm.global_position + Vector2(-30, 10)
+	await process_frame
+	var tree_labels: Array = nest_palm.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(tree_labels == ["Move the nest"], "a tree with a nest can't be cut: move the nest first (%s)" % [tree_labels])
+	nest_palm.cut_down()
+	await process_frame
+	_expect(is_instance_valid(nest_palm) and not nest_palm.is_queued_for_deletion(), "cutting it doesn't work while the nest is there")
+	nest_palm.move_nest()
+	_expect(not nest_palm.has_nest() and bird.nest_tree != nest_palm and bird.nest_tree.nest_of == bird and not bird.perched,
+		"the nest moves to another full-grown palm (the bird takes off)")
+	tree_labels = nest_palm.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(tree_labels == ["Cut down palm tree"], "then the tree can be cut down (%s)" % [tree_labels])
+	_expect(root.get_node("SaveGame")._tree_nests().get("TestBooby", []) == [bird.nest_tree.global_position.x, bird.nest_tree.global_position.y],
+		"which tree has its nest is saved")
+	bird.free()
+	player.global_position = Vector2.ZERO
+
 	# --- Minimap: things nearby are on the map; a far-away home is pinned to the rim ---
 	var minimap: Node = world.get_node("HUD/Minimap")
 	var near: Array = minimap.map_point(Vector2(100, 0), Vector2.ZERO)

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" shape-rendering="crispEdges">
+  <!-- Placeholder red-footed booby standing (side view, facing right): white body, folded wings with black tips, pink face, pale blue bill, red feet. Feet at the bottom middle. -->
+  <rect x="6" y="1" width="4" height="4" fill="#ffffff"/>
+  <rect x="9" y="2" width="1" height="1" fill="#1c1c1c"/>
+  <rect x="9" y="3" width="1" height="1" fill="#f2a0b4"/>
+  <rect x="10" y="2" width="3" height="2" fill="#8fc8e8"/>
+  <rect x="5" y="5" width="5" height="7" fill="#ffffff"/>
+  <rect x="3" y="6" width="4" height="5" fill="#e8ecef"/>
+  <rect x="1" y="10" width="3" height="2" fill="#1c1c1c"/>
+  <rect x="6" y="12" width="1" height="2" fill="#e8413a"/>
+  <rect x="8" y="12" width="1" height="2" fill="#e8413a"/>
+  <rect x="5" y="14" width="3" height="1" fill="#e8413a"/>
+  <rect x="8" y="14" width="2" height="1" fill="#e8413a"/>
+</svg>
