@@ -253,7 +253,34 @@ for the Deep Sea's Deep-Ocean Outpost; Journal tabs (This island / Animals); Bui
 this island's buildings (`only_on`); shovel digs up litter 10 %; patrol-boat pickup count; action
 button dead zone; portrait-phone bottom margin.
 
-Next: MVP 0.5 Kelp Forest (Step 3), then MVP 0.6 Mangrove Coast (Step 4).
+**MVP 0.5 — "Kelp Forest" (current).** Design: `docs/MASTER_PLAN.md` → "Kelp Forest" and the
+ecosystem principle (buildings create conditions, animals respond; limits aren't targets;
+research leads to action). Built so far:
+
+1. ✅ Coastal trees (own scene + `coastal_sapling`, same growth/cutting; `PalmTree` script with a
+   `sapling` export); palms `only_on` the Starting Island
+2. ✅ Kelp beds (`KelpBed`, placed by `KelpEcosystem` on the island's water tiles, saved via the
+   "ecosystems" group): urchins graze and multiply, kelp regrows where grazing is low; ticks every
+   `tick_days` of game time (sleep catches up); only once the island is discovered
+3. ✅ Sea otters + Otter Habitat (BuildingData.hosts / animal_capacity 2 / upkeep / demolishable,
+   max 6): each morning otters settle (newcomer or pup) only while `food_at` the habitat supports
+   them, crowded habitats share a stretch (`crowd_max`), they move away (never die) below
+   `leave_below` of their food; they eat urchins near their home
+4. ✅ Blue rockfish follow healthy beds; double-crested cormorants follow fish and need full-grown
+   trees to nest in (one change a morning)
+5. ✅ Kelp Research Platform (signature) and its 7 missions (MissionData.effect handled by
+   `KelpEcosystem.run_mission`; `Missions.last_report` shown at the facility)
+6. ✅ Kelp Restoration Site (BuildingData.restore_range, max 4) and Kelp Discovery Centre (funding,
+   watches otters, max 2)
+7. ✅ Island health: HealthFactor "kelp" (condition %) and "balance" (no overgrazing, some urchins),
+   otters 4, fish 8, cormorants 3, clean water
+8. ✅ Heavy Swell (EventData.kelp_damage / visibility_days: missions 1.5× slower); events are warned
+   only for discovered islands, and "Secure" only shows on the island it's heading for
+9. ✅ Objective: balance (flag at 70 % health) → gather 5 shed kelp (ItemData.counts_as, ObjectiveGoal
+   "count") → Kelp Fibre
+10. ✅ Cross-island: clean Starting Island water speeds kelp regrowth (`upstream_boost`)
+
+Next: MVP 0.6 Mangrove Coast (Step 4; design in MASTER_PLAN).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

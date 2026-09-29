@@ -90,6 +90,26 @@ func _initialize() -> void:
 		b.health = 0.7
 		b.urchins = 1.0
 
+	# --- Cross-island: clean water at the Starting Island speeds the kelp's regrowth ---
+	var spawner: Node = world.get_node("LitterSpawner")
+	for d in get_nodes_in_group("debris"):
+		d.free()
+	var probe: Node2D = beds[3]
+	probe.health = 0.2
+	probe.urchins = 0.0
+	ecosystem.tick(1.0)
+	var clean_gain: float = probe.health - 0.2
+	for i in 20:
+		spawner.spawn_at(load("res://data/items/plastic_bottle.tres"), Vector2(-500 + i * 20, -300), true)
+	probe.health = 0.2
+	probe.urchins = 0.0
+	ecosystem.tick(1.0)
+	var dirty_gain: float = probe.health - 0.2
+	_expect(clean_gain > dirty_gain * 1.3, "kelp grows back faster while the Starting Island's water is clean (%.3f vs %.3f)" % [clean_gain, dirty_gain])
+	_expect(ecosystem.balance_report().contains("connected"), "the balance survey says why")
+	for d in get_nodes_in_group("debris"):
+		d.free()
+
 	# --- A Kelp Restoration Site helps the beds near it grow back faster ---
 	var near_bed: Node2D = beds[2]
 	var far_bed: Node2D = beds.reduce(func(a: Node2D, b: Node2D) -> Node2D:

@@ -30,6 +30,10 @@ const SPOT_RANGE := 72.0
 ## Kelp regrowth towards full (restoration adds `restore_boost`).
 @export var regrow := 0.15
 @export var restore_boost := 0.25
+## Cross-island link: clean water at this island (its first "clean" health factor) makes
+## kelp here grow back up to `upstream_boost` faster.
+@export var upstream_region: StringName = &"home_island"
+@export var upstream_boost := 0.5
 ## Urchins drift in from nearby reefs now and then, so there are always a few.
 @export var urchin_drift_in := 0.3
 ## A bed counts as overgrazed at this many urchins.
@@ -151,6 +155,7 @@ func tick(days: float) -> void:
 	_otters_eat(days)
 	var sites := get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
 		return b.data.restore_range > 0.0 and not b.damaged and b.upkeep_paid)
+	var boost := 1.0 + upstream_boost * upstream_clean()
 	for bed in beds():
 		var restoring := 1.0 if bed.restored_until > GameClock.now() or sites.any(func(s: Building) -> bool:
 			return s.global_position.distance_to(bed.global_position) <= s.data.restore_range) else 0.0
@@ -158,7 +163,7 @@ func tick(days: float) -> void:
 		var growth := urchin_growth * bed.urchins * (1.0 - bed.urchins / urchin_cap) * food
 		bed.urchins += (growth + urchin_drift_in * (1.0 if bed.urchins < 1.0 else 0.0)) * days
 		var eaten := graze * bed.urchins
-		var grown := (regrow + restore_boost * restoring) * (1.0 - bed.health)
+		var grown := (regrow * boost + restore_boost * restoring) * (1.0 - bed.health)
 		bed.health += (grown - eaten) * days
 		if bed.storm_hit and bed.health >= 0.6:
 			bed.storm_hit = false  # recovered
@@ -508,7 +513,23 @@ func balance_report() -> String:
 		advice = "The kelp is recovering: fish are returning."
 	else:
 		advice = "The food web is close to balance."
-	return chain + " " + advice
+	var link := ""
+	if upstream_clean() >= 0.5:
+		link = " Clean water from the %s is helping the kelp grow back faster." % (load("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
+	else:
+		link = " Litter around the %s is slowing the kelp's recovery here: the ocean is connected." % (load("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
+	return chain + " " + advice + link
+
+
+## How clean the upstream island's water is, 0..1 (1 = no litter about it).
+func upstream_clean() -> float:
+	if upstream_region == &"":
+		return 0.0
+	var upstream: RegionData = load("res://data/regions/%s.tres" % upstream_region)
+	for factor: HealthFactor in upstream.health:
+		if factor.kind == &"clean" and factor.target == &"":
+			return IslandHealth.score(get_tree(), upstream, factor)
+	return 0.0
 
 
 ## Everything about the forest, 0..1 on average (the kelp's condition).
