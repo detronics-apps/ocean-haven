@@ -638,6 +638,51 @@ func kelp_health() -> float:
 	return list.reduce(func(sum: float, b: KelpBed) -> float: return sum + b.health, 0.0) / list.size()
 
 
+## Where the food web settles if the ranger leaves everything as it is now: the same model
+## run forward on copies (habitats, restoration and hurt or caught otters as they are).
+## Returns counts for IslandHealth.of's `projected`: "kelp" (%), "urchins", and animals by id.
+func project() -> Dictionary:
+	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var list := beds()
+	var health: Array[float] = []
+	var urchins: Array[float] = []
+	for bed in list:
+		health.append(bed.health)
+		urchins.append(bed.urchins)
+	var room := 0
+	for home in _habitats(species):
+		if not home.damaged and home.upkeep_paid:
+			room += home.capacity()
+	var working := otters().filter(func(o: Animal) -> bool: return not o.injured and not o.tangled).size()
+	var restored := 0
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.restores_beds > 0 and not building.damaged and building.upkeep_paid \
+				and Regions.nearest(building.global_position).id == region_id:
+			restored += building.data.restores_beds
+	var otter_count := mini(working, 1) if room == 0 else room
+	for step in 60:
+		var fed := 0.0
+		for i in list.size():
+			fed += urchins[i] + species.kelp_food * health[i]
+		if room > 0:
+			otter_count = clampi(floori(fed / species.food_needed), 1, room)
+		var order := range(list.size())
+		order.sort_custom(func(a: int, b: int) -> bool: return health[a] < health[b])
+		for i in list.size():
+			var food_share := urchin_starved + (1.0 - urchin_starved) * health[i]
+			urchins[i] = lerpf(urchins[i], maxf(urchin_max * list[i].urchin_share * food_share * exp(-otter_count / otter_scale), urchin_min), 0.3)
+			var target := clampf(1.0 - urchins[i] / bare_at, 0.0, 1.0)
+			if order.find(i) < restored:
+				target = clampf(target + restore_bonus * (overgrazed_restore if urchins[i] >= overgrazed_at else 1.0), 0.0, 1.0)
+			health[i] = lerpf(health[i], target, 0.3)
+	var kelp_sum: float = health.reduce(func(sum: float, h: float) -> float: return sum + h, 0.0)
+	var fish := maxi(floori(kelp_sum * fish_per_bed), 1)
+	var birds := maxi(mini(mini(roundi(float(fish) / fish_per_cormorant), cormorant_max), Arrivals.grown_trees(get_tree(), region())), 1)
+	return {"kelp": roundi(kelp_sum / maxf(list.size(), 1) * 100.0),
+		"urchins": urchins.reduce(func(sum: float, u: float) -> float: return sum + u, 0.0),
+		species.id: otter_count, FISH.id: fish, CORMORANT.id: birds}
+
+
 ## Urchins on the island, not rounded (a few scattered ones still count).
 func urchin_amount() -> float:
 	return beds().reduce(func(sum: float, b: KelpBed) -> float: return sum + b.urchins, 0.0)

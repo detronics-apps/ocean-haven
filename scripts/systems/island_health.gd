@@ -9,7 +9,7 @@ const DAMAGED_TINT := Color(0.66, 0.7, 0.78)
 
 
 ## `region`'s health 0..1, or -1 if it has no health factors yet.
-static func of(tree: SceneTree, region: RegionData) -> float:
+static func of(tree: SceneTree, region: RegionData, projected := {}) -> float:
 	if region.health.is_empty():
 		return -1.0
 	var total := 0.0
@@ -17,9 +17,9 @@ static func of(tree: SceneTree, region: RegionData) -> float:
 	var scale := 1.0
 	for factor: HealthFactor in region.health:
 		if factor.scales_all:
-			scale *= lerpf(factor.scale_floor, 1.0, score(tree, region, factor))
+			scale *= lerpf(factor.scale_floor, 1.0, score(tree, region, factor, projected))
 			continue
-		total += score(tree, region, factor) * factor.weight
+		total += score(tree, region, factor, projected) * factor.weight
 		weights += factor.weight
 	return total / weights * scale if weights > 0.0 else -1.0
 
@@ -30,15 +30,15 @@ static func built(tree: SceneTree, id: StringName) -> bool:
 
 
 ## How far along one factor is, 0..1.
-static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> float:
+static func score(tree: SceneTree, region: RegionData, factor: HealthFactor, projected := {}) -> float:
 	var amount := float(maxi(factor.amount, 1))
 	match factor.kind:
 		&"clean":
 			return clampf(1.0 - count(tree, region, factor) / amount, 0.0, 1.0)
 		&"help", &"kelp":
-			return clampf(count(tree, region, factor) / amount, 0.0, 1.0)
+			return clampf(count(tree, region, factor, projected) / amount, 0.0, 1.0)
 		&"animals":
-			var n := count(tree, region, factor)
+			var n := count(tree, region, factor, projected)
 			if factor.too_many > 0 and n > factor.too_many:  # one species crowding out the rest
 				return clampf(1.0 - float(n - factor.too_many) / factor.too_many, 0.0, 1.0)
 			return clampf(n / amount, 0.0, 1.0)
@@ -49,7 +49,7 @@ static func score(tree: SceneTree, region: RegionData, factor: HealthFactor) -> 
 			# In balance: up to `amount` urchins a bed (none at twice that), and at least a few
 			# (a healthy forest keeps some).
 			var beds: int = maxi(eco.beds().size(), 1)
-			var urchins: float = eco.urchin_amount()
+			var urchins: float = projected.get("urchins", eco.urchin_amount())
 			var not_too_many := clampf(2.0 - urchins / beds / amount, 0.0, 1.0)
 			# Fewer than 0.2 a bed: each time they fall tenfold, the score falls to nothing.
 			var some := clampf(1.0 + log(maxf(urchins / beds, 0.0001) / 0.2) / log(10.0), 0.0, 1.0)
@@ -66,7 +66,11 @@ static func ecosystem(tree: SceneTree, region: RegionData) -> Node:
 
 
 ## The raw number behind a factor: litter pieces about, times helped, animals living there.
-static func count(tree: SceneTree, region: RegionData, factor: HealthFactor) -> int:
+static func count(tree: SceneTree, region: RegionData, factor: HealthFactor, projected := {}) -> int:
+	if factor.kind == &"kelp" and projected.has("kelp"):
+		return projected.kelp
+	if factor.kind == &"animals" and projected.has(factor.target):
+		return projected[factor.target]
 	match factor.kind:
 		&"clean":
 			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
@@ -109,6 +113,15 @@ static func describe(tree: SceneTree, region: RegionData, factor: HealthFactor) 
 	if factor.kind == &"animals" and n >= factor.amount:
 		return "%s: %d (%d for full health)" % [factor.text, n, factor.amount]
 	return "%s: %d / %d" % [factor.text, mini(n, factor.amount), factor.amount]
+
+
+## Where `region`'s health is heading if the ranger leaves everything as it is: its
+## ecosystem's settled state (islands without one: as it is now).
+static func heading(tree: SceneTree, region: RegionData) -> float:
+	var eco := ecosystem(tree, region)
+	if eco and eco.has_method("project") and Regions.is_discovered(region):
+		return of(tree, region, eco.project())
+	return of(tree, region)
 
 
 ## Colours every island's ground by its health.

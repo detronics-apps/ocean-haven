@@ -53,8 +53,15 @@ func _initialize() -> void:
 	for i in range(1, 3):
 		homes.append(build_mode.add_building(habitat_data, cells[i]))
 	ecosystem.settle_now()
-	days.call(4.0)
+	for d in get_nodes_in_group("debris"):
+		if d.global_position.distance_to(kelp_region.center) < kelp_region.waters_radius:
+			d.free()
+	var predicted: float = health.heading(self, kelp_region)
+	var start_health: float = health.of(self, kelp_region)
+	days.call(6.0)
 	var balanced: float = health.of(self, kelp_region)
+	_expect(absf(balanced - predicted) < 0.08 and predicted > start_health + 0.1,
+		"the gauge showed where it was heading: %d%% predicted, %d%% reached (from %d%%)" % [roundi(predicted * 100), roundi(balanced * 100), roundi(start_health * 100)])
 	_expect(otter_count.call() == 6, "3 habitats: 6 otters (%d)" % otter_count.call())
 	_expect(ecosystem.kelp_health() > 0.7 and ecosystem.urchin_total() > ecosystem.beds().size() * 0.2,
 		"within 4 days the kelp has recovered (%d%%) with some urchins left (%d)" % [roundi(ecosystem.kelp_health() * 100), ecosystem.urchin_total()])

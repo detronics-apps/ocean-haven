@@ -81,7 +81,7 @@ func _ready() -> void:
 	_event_note.anchor_right = 1.0
 	_event_note.offset_left = -420
 	_event_note.offset_right = -16
-	_event_note.offset_top = 132
+	_event_note.offset_top = 170
 	_event_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_event_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_event_note.add_theme_color_override("font_color", Color("ffd27a"))
@@ -90,6 +90,15 @@ func _ready() -> void:
 	_event_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_event_note)
 	%JournalButton.add_sibling(map_button)
+	# The island's health now and where it's heading, under the menu bar.
+	var gauge := HealthGauge.new()
+	gauge.name = "HealthGauge"
+	gauge.anchor_left = 1.0
+	gauge.anchor_right = 1.0
+	gauge.offset_left = -12.0 - HealthGauge.BAR.x
+	gauge.offset_right = -12.0
+	gauge.offset_top = 110.0
+	add_child(gauge)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
 	# Which version this is (written by tools/publish_pages.sh), tiny, under the minimap.
@@ -170,7 +179,7 @@ func _flash_saved() -> void:
 		_saved_note.anchor_right = 1.0
 		_saved_note.offset_left = -80
 		_saved_note.offset_right = -16
-		_saved_note.offset_top = 106
+		_saved_note.offset_top = 146
 		_saved_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_saved_note.add_theme_constant_override("outline_size", 4)
 		_saved_note.add_theme_color_override("font_outline_color", Color.BLACK)
