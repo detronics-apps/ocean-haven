@@ -486,7 +486,7 @@ func _spot_for(species: AnimalData) -> Vector2:
 	var reach := connected()
 	match species:
 		FISH:
-			var best := region().center
+			var best := Terrain.nearest(get_tree(), region().center + Vector2(-260, 60), ["water"])
 			for i in _pools.size():
 				if _pool_linked(i, reach) and _pool_has_mangroves(i):
 					best = _pool_marks[i].global_position

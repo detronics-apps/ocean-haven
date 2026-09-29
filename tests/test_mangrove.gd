@@ -57,6 +57,20 @@ func _initialize() -> void:
 	_expect(pictures[flamingo.State.SWIM] == flamingo.data.sprite and pictures[flamingo.State.REST] == flamingo.data.resting_sprite
 		and pictures[flamingo.State.FLEE] == flamingo.data.flying_sprite, "walking, standing on one leg, and flying pictures")
 
+	# --- A young snapper that ends up on land goes back to the water; one moving away from an
+	# inland pool slips away there rather than crossing land ---
+	var snapper: Node2D = eco.living(load("res://data/animals/juvenile_snapper.tres"))[0]
+	snapper.global_position = mangrove.arrival  # on land
+	for i in 90:
+		await physics_frame
+	_expect(snapper.in_habitat(snapper.global_position), "a snapper on land goes back to the water")
+	var pool_centre: Vector2 = eco.get("_pool_marks")[0].global_position
+	snapper.global_position = pool_centre
+	snapper.leaving = true
+	for i in 120:
+		await physics_frame
+	_expect(not is_instance_valid(snapper) or snapper.global_position.distance_to(pool_centre) < 4.0, "leaving an inland pool, it slips away there, never over land")
+
 	# --- Digging through the silt links a pool to the sea ---
 	var shovel: Node = world.get_node("SandShovel")
 	var plug := _plug(eco, ground)

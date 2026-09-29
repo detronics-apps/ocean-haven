@@ -288,6 +288,7 @@ func _physics_process(delta: float) -> void:
 	if leaving:
 		_swim_out_to_sea()
 		return
+	_keep_in_habitat(delta)
 	_react_to_ranger(delta)
 	_avoid_busy_boats()
 	_maybe_nest()
@@ -785,6 +786,32 @@ func _pose() -> void:
 		_sprite.texture = texture
 
 
+## Water animals that find themselves on land (their channel silted up, or mud was put on
+## their water) go back to the nearest water, checked about once a second.
+func _keep_in_habitat(delta: float) -> void:
+	_habitat_check -= delta
+	if _habitat_check > 0.0:
+		return
+	_habitat_check = 1.0
+	if not _water_only() or _state == State.CRAWL or _state == State.LAY or in_habitat(global_position):
+		return
+	var water := Terrain.nearest(get_tree(), global_position, Array(data.habitat_terrain))
+	if not in_habitat(water):
+		return
+	global_position = water
+	if not in_habitat(_home):
+		_home = water
+	_rest(0.5)
+
+
+var _habitat_check := randf()
+
+
+## Lives only in water (fish, turtles, dolphins, otters, crocodiles), never on land.
+func _water_only() -> bool:
+	return not data.flies and not Array(data.habitat_terrain).any(func(t: String) -> bool: return t in ["sand", "grass", "mud", "rock", "ice"])
+
+
 func _face(motion: Vector2) -> void:
 	if data.faces_movement:
 		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle(), 0.1)
@@ -894,6 +921,14 @@ func _swim_out_to_sea() -> void:
 		var region := Regions.nearest(global_position)
 		_leave_from = region.center
 		_leave_distance = maxf(region.waters_radius, OPEN_OCEAN_DISTANCE)
+		# A sea animal with no open water between it and the sea (e.g. a fish in an inland
+		# pool) slips away where it is, rather than swimming over land.
+		var out := global_position + (global_position - _leave_from).normalized() * 200.0
+		if _water_only() and not _clear_route(global_position, out):
+			create_tween().tween_property(self, "modulate:a", 0.0, 1.0).finished.connect(queue_free)
+			_leave_distance = INF
+	if _leave_distance == INF:
+		return
 	var away := global_position - _leave_from
 	if away.length() > _leave_distance:
 		queue_free()
