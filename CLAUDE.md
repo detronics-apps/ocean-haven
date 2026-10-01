@@ -354,8 +354,9 @@ Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or
 needs) and that the island is still under development, and the Map doesn't sail there. Clear
 the flag when an island is finished.
 
-Planned (not built): rounded terrain edges, a visual-only overlay per island; plan and proposal in
-`docs/TERRAIN_EDGES.md`, waiting for the user's OK.
+Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
+(`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
+its corners update (loading rebuilds them).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

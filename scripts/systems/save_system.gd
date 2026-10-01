@@ -78,6 +78,7 @@ func record_tile(ground: TileMapLayer, local_cell: Vector2i, atlas: Vector2i) ->
 	if not _tile_edits.has(key):
 		_tile_edits[key] = {}
 	_tile_edits[key]["%d,%d" % [local_cell.x, local_cell.y]] = [atlas.x, atlas.y]
+	get_tree().call_group("terrain_edges", "cell_changed", ground, local_cell)  # rounded corners
 	_dirty = true
 
 
@@ -310,6 +311,7 @@ func load_from(world: Node, path: String) -> bool:
 			var xy := key.split(",")
 			var atlas: Array = _tile_edits[ground_path][key]
 			ground.set_cell(Vector2i(int(xy[0]), int(xy[1])), 0, Vector2i(int(atlas[0]), int(atlas[1])))
+	get_tree().call_group("terrain_edges", "rebuild")  # the changed tiles' rounded corners
 	Inventory.restore(state.get("inventory", {}), state.get("stored", {}))
 	Inventory.litter_collected = int(state.get("litter_collected", 0))
 	Funding.restore(state.get("funding", {}))

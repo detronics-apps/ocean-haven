@@ -151,10 +151,11 @@ func _initialize() -> void:
 	eco.call("_hide_gear")
 	var gear_at: Vector2 = eco.hidden_gear()
 	_expect(gear_at != Vector2.INF, "a shark has found lost gear and circles it")
-	var debris_before := get_nodes_in_group("debris").size()
-	player.global_position = gear_at + Vector2(10, 0)
+	player.global_position = gear_at + Vector2(60, 0)  # close enough to see it, not touching it
 	await process_frame
-	_expect(eco.hidden_gear() == Vector2.INF and get_nodes_in_group("debris").size() == debris_before + 1, "following it, the ranger finds the gear")
+	var found := get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+		return d.item.id in [&"ghost_net", &"fishing_line"] and d.global_position.distance_to(gear_at) < 1.0)
+	_expect(eco.hidden_gear() == Vector2.INF and found.size() == 1, "following it, the ranger finds the gear (%d)" % found.size())
 
 	# --- Seahorses: freed, they live in a Protection Area once its seagrass has grown ---
 	seahorse.restore_freed()

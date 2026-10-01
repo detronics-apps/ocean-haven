@@ -1,4 +1,4 @@
-# Terrain edges — rounded coastlines (planned, not built yet)
+# Terrain edges — rounded coastlines
 
 **Goal (the user's request):** keep BlueHaven's simple grid exactly as it is, but make the edges
 between different terrain look rounded and natural instead of perfect squares, by looking only
@@ -67,4 +67,4 @@ Keep it simple: no new terrain architecture, no Marching Squares, no procedural 
 - **Placeholder art:** the shapes are drawn in the same colours as the placeholder tiles; with
   real art they'd become small corner and edge pictures from a tileset.
 
-**Status:** proposed, waiting for the user's OK before building.
+**Status:** built (scripts/world/terrain_edges.gd, a TerrainEdges node after Ground in every island scene; tests/test_terrain_edges.gd). Tile changes notify it through SaveGame.record_tile; loading a save rebuilds it.
