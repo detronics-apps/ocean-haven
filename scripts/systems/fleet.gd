@@ -99,7 +99,19 @@ func mark(flag: StringName) -> void:
 	if _flags.has(flag):
 		return
 	_flags[flag] = true
+	if flag in [GLASS_MADE, CLEAN_WATER_MADE] and reusable_bottles():
+		get_tree().call_group("hud", "show_toast", "Reusable glass bottles unlocked!\nGlass from the reef's sand and clean water from the clams: BlueHaven's facilities no longer use plastic drinking bottles, so no new ones drift in on any island.")
 	check()
+
+
+## The Tropical Reef's circular system: once the first glass and the first clean water have been
+## made, reusable glass bottles replace plastic ones everywhere (no new plastic bottles drift in).
+const GLASS_MADE := &"glass_made"
+const CLEAN_WATER_MADE := &"clean_water_made"
+
+
+func reusable_bottles() -> bool:
+	return has_flag(GLASS_MADE) and has_flag(CLEAN_WATER_MADE)
 
 
 func has_flag(flag: StringName) -> bool:

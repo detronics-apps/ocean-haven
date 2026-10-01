@@ -18,6 +18,7 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 ## ... while there are fewer than this many oil patches in the area.
 @export var max_oil := 2
 const OIL := preload("res://data/items/oil_patch.tres")
+const PLASTIC_BOTTLE := &"plastic_bottle"
 ## Area searched for spots (the waters around the home island). Spots are also always
 ## within its island's rowboat waters (less `reach_margin`), so every piece can be reached.
 @export var area := Rect2(-900, -600, 1800, 1200)
@@ -160,6 +161,14 @@ func fill(count: int) -> void:
 ## Adds one piece of litter somewhere suitable. Returns it, or null if there's
 ## already enough litter or no spot was found.
 func spawn_one() -> Debris:
+	var item: ItemData = _items.pick_random()
+	if Fleet.reusable_bottles():
+		# No new plastic bottles drift in, so there's less litter overall (old ones can still be
+		# dug up or washed ashore by a storm: those use the full mix).
+		if item.id == PLASTIC_BOTTLE:
+			return null
+		if _litter_in_area() >= roundi(max_litter * (1.0 - 1.0 / _items.size())):
+			return null
 	if _litter_in_area() >= max_litter:
 		return null
 	var at_sea := randf() < at_sea_chance
@@ -167,7 +176,7 @@ func spawn_one() -> Debris:
 	if spot == null:
 		return null
 	var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
-	return spawn_at(OIL if oil else _items.pick_random(), spot, at_sea)
+	return spawn_at(OIL if oil else item, spot, at_sea)
 
 
 ## A pollution survey searches further than the ranger can see: `count` more pieces of
