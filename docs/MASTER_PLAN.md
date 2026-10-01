@@ -768,7 +768,7 @@ crocodiles + zones (block boats) → Eco-Lodge → health and projection → Fla
 objective → simulate → publish.
 
 
-### Step 5 — Tropical Reef (warmer, 2nd) — DRAFT 2 (the user's specification), open points below
+### Step 5 — Tropical Reef (warmer, 2nd) — the user's specification, built (first version)
 Lesson: **everything in an ecosystem is connected, and a healthy ecosystem can provide
 sustainable resources for people.** Animals perform useful functions, and instead of endlessly
 cleaning up, people build systems that stop the pollution being made. The Reef is the game's

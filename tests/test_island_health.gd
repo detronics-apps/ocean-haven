@@ -16,7 +16,7 @@ func _initialize() -> void:
 	await process_frame
 	var health: GDScript = load("res://scripts/systems/island_health.gd")
 	var home: Resource = load("res://data/regions/home_island.tres")
-	var kelp: Resource = load("res://data/regions/tropical_reef.tres")  # (no health factors yet)
+	var kelp: Resource = load("res://data/regions/deep_sea.tres")  # (no health factors yet)
 	var journal := root.get_node("Journal")
 	_expect(health.of(self, kelp) < 0.0, "no health on islands without factors yet")
 

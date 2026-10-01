@@ -330,7 +330,23 @@ old litter cost added as 3 funding a piece). A recycling centre opens a menu (Re
 recycle 25 / 50 / 75 / 100 % of the carried litter. Mangrove gate spots (narrow channels) are
 marked with posts and offer "Build a water gate here". Menu scroll bars are finger-wide.
 
-Playable islands: Starting Island, Kelp Forest, Mangrove Coast. The Tropical Reef, Deep Sea and
+**MVP 0.7 — "Tropical Reef" (current).** Design: `docs/MASTER_PLAN.md` Step 5 (the user's spec,
+draft 2). `ReefEcosystem` (island child "Ecosystem"): 10 `ReefPatch`es whose coral grows back as
+far as it's planted (coral fragments from Coral Restoration Sites, planted by hand from the boat)
+and as fast as clear water (litter, giant clams) and grazing parrotfish allow. Each animal has a
+job: parrotfish build the sea floor up (deep → mid → shallow → sand, max 3 a day / 40 ever) for
+the Glassworks; giant clams in a Marine Water Treatment Facility make Clean Water each morning
+(BuildingData.makes / makes_per_morning); a reef shark circles hidden ghost gear until the ranger
+comes close; seahorses live in Seahorse & Seagrass Protection Areas once the seagrass has grown.
+The Glassworks is a capability, not an item: 3 sand once (BuildingData.makes_from / made_flag
+"glass_made"), then extra sand sells for funding. Glass + clean water made = reusable bottles
+(`Fleet.reusable_bottles()`): no new plastic bottles drift in on any island. Clean Water given to
+funding facilities (+25 % visitors), signature facilities (missions 25 % faster) and houses (well
+rested: faster until noon). Coral Restoration Laboratory with 8 missions; Reef Diving Centre;
+Shark Protection Zones; Hurricane; objective: 70 % → 5 dead coral rubble → Reef Limestone
+(Underwater Habitat Mapping System).
+
+Playable islands: Starting Island, Kelp Forest, Mangrove Coast, Tropical Reef. The Deep Sea and
 Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or what it still
 needs) and that the island is still under development, and the Map doesn't sail there. Clear
 the flag when an island is finished.

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/seagrass_protection_area.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"seagrass_protection_area"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Seahorse & Seagrass Protection Area"
+description = "A marked, boat-free patch of shallow water where seagrass can grow back and seahorses can live. Seahorses settle once the seagrass has grown."
+order = 2
+terrain = PackedStringArray("water")
+category = &"sea"
+cost_funding = 70
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 4
+animal_capacity = 2
+hosts = &"seahorse"
+keeps_boats_out = 40.0
+demolishable = true
+storm_proof = true
+placement_hint = "on shallow water"
+fact = "Seagrass meadows shelter young fish and seahorses, hold the sand in place and take in carbon from the water."

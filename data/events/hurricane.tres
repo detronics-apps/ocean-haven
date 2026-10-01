@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+
+[resource]
+script = ExtResource("1_evt")
+id = &"hurricane"
+display_name = "Hurricane"
+region = &"tropical_reef"
+min_gap_days = 30
+max_gap_days = 60
+warning_days = 3
+warning_days_max = 4
+warning = "A hurricane is coming to the Tropical Reef {when}! Secure your buildings there. Big waves will break coral: afterwards a storm damage assessment from the Coral Restoration Laboratory shows where to plant first."
+banner = "Hurricane {when} on the Tropical Reef"
+aftermath = "The hurricane has passed. %d building(s) need repairing, coral has been broken and litter has washed up."
+damage_chance = 0.5
+litter_washed = 10
+repair_wood = 1
+kelp_damage = 0.4
+kelp_damaged_share = 0.5

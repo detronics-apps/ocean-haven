@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/items/clean_water.tres" id="3_m"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/water_treatment_facility.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"water_treatment_facility"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Marine Water Treatment Facility"
+description = "Protected giant clam beds filter seawater into Clean Water: 1 a morning for each clam living here. Clams settle once it's built."
+order = 4
+terrain = PackedStringArray("water")
+category = &"sea"
+cost_funding = 150
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+max_count = 2
+animal_capacity = 2
+hosts = &"giant_clam"
+max_tier = 3
+upgrade_funding = 80
+upgrade_items = Dictionary[StringName, int]({&"wood": 3})
+makes = ExtResource("3_m")
+makes_per_morning = 1
+stock_max = 10
+made_flag = &"clean_water_made"
+demolishable = true
+placement_hint = "on the water by the shore"
+fact = "Filter-feeding animals like clams and oysters are used in some places to help clean coastal water."

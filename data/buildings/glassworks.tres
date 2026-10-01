@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/glassworks.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"glassworks"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Glassworks"
+description = "Melts sand into glass. Put in 3 sand from the parrotfish once, and glass-making is set up for good. After that, drop off any extra sand to be made into glass for 6 funding a piece. Glass is needed for glass buildings later (like an underwater research dome), and with clean water it replaces plastic bottles everywhere."
+order = 5
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 160
+cost_items = Dictionary[StringName, int]({&"wood": 5})
+max_count = 1
+makes_from = &"sand"
+makes_from_count = 3
+make_minutes = 2.0
+made_flag = &"glass_made"
+capability_note = "The Glassworks is making glass from the reef's sand! Glass buildings can now be built (like the Deep Sea's research dome, later)."
+placement_hint = "on the land"
+fact = "Glass is made from sand heated to about 1,700 °C. It can be reused and recycled over and over without wearing out."
+makes_from_value = 6

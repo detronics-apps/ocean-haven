@@ -124,7 +124,8 @@ func save_to(world: Node, path: String) -> bool:
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		var entry := {"id": building.data.id, "cell": [building.cell.x, building.cell.y],
 			"funds": building.pending_funds, "tier": building.tier, "built_day": building.built_day,
-			"damaged": building.damaged, "secured": building.secured, "closed": building.gate_closed}
+			"damaged": building.damaged, "secured": building.secured, "closed": building.gate_closed,
+			"stock": building.stock, "water": building.water, "watered": building.watered, "loaded": building.loaded, "batch_done_at": building.batch_done_at}
 		var extra := building.boat()
 		if extra:  # an extra rowboat stays where the ranger left it
 			entry["boat"] = [extra.global_position.x, extra.global_position.y]
@@ -393,6 +394,11 @@ func load_from(world: Node, path: String) -> bool:
 			building.damaged = bool(entry.get("damaged", false))
 			building.secured = bool(entry.get("secured", false))
 			building.gate_closed = bool(entry.get("closed", false))
+			building.stock = int(entry.get("stock", 0))
+			building.water = int(entry.get("water", 0))
+			building.watered = bool(entry.get("watered", false))
+			building.loaded = int(entry.get("loaded", 0))
+			building.batch_done_at = float(entry.get("batch_done_at", -1.0))
 			var left: Array = entry.get("boat", [])
 			if building.boat() and left.size() == 2:
 				building.boat().global_position = Vector2(left[0], left[1])

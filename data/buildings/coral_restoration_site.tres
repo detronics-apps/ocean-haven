@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/items/coral_fragment.tres" id="3_m"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/coral_restoration_site.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"coral_restoration_site"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Coral Restoration Site"
+description = "An underwater coral nursery: it grows 1 coral fragment a morning (more per level). Take them out by boat and plant them on reef that needs it. Coral grows back best where the water is clean and parrotfish keep the algae down."
+order = 1
+size = Vector2i(1, 1)
+terrain = PackedStringArray("water")
+category = &"sea"
+cost_funding = 80
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 3
+max_tier = 3
+upgrade_funding = 60
+upgrade_items = Dictionary[StringName, int]({&"wood": 2})
+makes = ExtResource("3_m")
+makes_per_morning = 1
+stock_max = 6
+demolishable = true
+storm_proof = true
+placement_hint = "in the lagoon water"
+fact = "Coral nurseries often hang fragments on underwater frames like coral \"trees\", where they grow fast before being planted out."

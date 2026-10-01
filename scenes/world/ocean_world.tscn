@@ -175,6 +175,11 @@ script = ExtResource("25_swpth")
 max_litter = 10
 area = Rect2(4138, -982, 1964, 1964)
 
+[node name="ReefLitter" type="Node" parent="."]
+script = ExtResource("25_swpth")
+max_litter = 10
+area = Rect2(19418, -1062, 2124, 2124)
+
 [node name="MangroveLitter" type="Node" parent="."]
 script = ExtResource("25_swpth")
 max_litter = 10

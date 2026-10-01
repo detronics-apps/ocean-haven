@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/coral_restoration_lab.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"coral_restoration_lab"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Coral Restoration Laboratory"
+description = "The Tropical Reef's special building. Surveys show what the reef, its animals and its seagrass need; restoration missions help it recover."
+order = 0
+size = Vector2i(3, 2)
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 345
+cost_items = Dictionary[StringName, int]({&"wood": 8})
+facility = &"signature"
+one_per_island = true
+action = &"missions"
+placement_hint = "on the land"
+fact = "Coral scientists grow coral in nurseries and plant it back on damaged reefs, then watch how well it survives."

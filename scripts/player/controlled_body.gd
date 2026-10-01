@@ -4,6 +4,15 @@ extends CharacterBody2D
 ## (keyboard / controller) or tap/click a spot to head there.
 
 @export var speed: float = 110.0
+## Slept in a house with clean water: faster until then (GameClock.now()).
+static var rested_until := -1.0
+const WELL_RESTED := 1.25
+
+
+## (The clock is looked up at runtime: tests compile this without autoloads.)
+func _rested() -> bool:
+	var clock := get_tree().root.get_node_or_null("GameClock")
+	return clock != null and clock.now() < rested_until
 ## Only the body the player is currently steering responds to input.
 @export var controlled := true
 
@@ -45,7 +54,7 @@ func _physics_process(_delta: float) -> void:
 		else:
 			dir = to_target.normalized()
 
-	velocity = dir * speed
+	velocity = dir * speed * (WELL_RESTED if _rested() else 1.0)
 	move_and_slide()
 
 	# Tapped somewhere unreachable: stop instead of pushing against the shore forever.

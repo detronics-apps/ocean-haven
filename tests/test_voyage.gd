@@ -120,7 +120,7 @@ func _initialize() -> void:
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	_expect(build_mode.placement_problem(ship, kelp_cell).begins_with("First: restore the kelp forest"),
 		"no ship before the island's objective is done (%s)" % build_mode.placement_problem(ship, kelp_cell))
-	var reef_cell := Vector2i((region.call("tropical_reef").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
+	var reef_cell := Vector2i((region.call("deep_sea").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	_expect(build_mode.placement_problem(ship, reef_cell).contains("coming soon"),
 		"none on an island whose objective isn't made yet")
 	build_mode.add_building(ship, kelp_cell)
@@ -156,18 +156,21 @@ func _initialize() -> void:
 	fleet.install(&"mangrove_resin")
 	_expect(regions.next_undiscovered(&"warmer") == region.call("tropical_reef"), "then warmer is the Tropical Reef")
 	explore.open()
-	_expect(explore.find_child("ExploreWarmer", true, false).disabled and _texts(explore).contains("Tropical Reef, is still under development"),
-		"it's still under development too")
+	_expect(not explore.find_child("ExploreWarmer", true, false).disabled, "the Tropical Reef is ready to explore")
 	explore.close()
+	explore.explore(&"warmer")
+	for i in 240:
+		await process_frame
+	_expect(regions.is_discovered(region.call("tropical_reef")), "the Tropical Reef is found")
 
 	# --- The Map sails to discovered islands (no ship needed), not to undiscovered ones ---
 	map.open()
 	_expect(map.find_child("Entry_kelp_forest", true, false).find_child("Sail", true, false) != null, "sail back to the Kelp Forest")
 	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null, "not to the undiscovered Polar Ocean")
 	map.close()
-	regions.discover(region.call("tropical_reef"))  # (e.g. an older save)
+	regions.discover(region.call("deep_sea"))  # (e.g. an older save)
 	map.open()
-	_expect(map.find_child("Entry_tropical_reef", true, false).find_child("Sail", true, false) == null
+	_expect(map.find_child("Entry_deep_sea", true, false).find_child("Sail", true, false) == null
 		and _texts(map).contains("Still under development"), "the Map doesn't sail to an island under development")
 	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
 	for i in 240:

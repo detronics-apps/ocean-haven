@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/reef/reef_diving_centre.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"reef_diving_centre"
+texture = ExtResource("2_t")
+only_on = &"tropical_reef"
+display_name = "Reef Diving Centre"
+description = "Visitors snorkel and dive to see the reef and its parrotfish. More parrotfish and a healthier reef, more visitors and funding."
+order = 6
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 150
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+facility = &"funding"
+visitors = 20
+visitors_per_animal = 8
+watches = &"parrotfish"
+watch_range = 0.0
+max_count = 3
+placement_hint = "on the land, by the lagoon"
+fact = "Reef tourism brings in money that helps pay for protecting the reef: a healthy reef is worth more alive."

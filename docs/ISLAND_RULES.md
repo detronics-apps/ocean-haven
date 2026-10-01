@@ -72,6 +72,12 @@ foundations the mechanics sit on, not the mechanics themselves.
 
 - **Buildings create conditions; animals respond.** A building never manufactures animals.
   Not every animal needs a building.
+- **Animals do real jobs, not passive bonuses** (the Reef: parrotfish make sand, clams filter
+  water, sharks find ghost gear, seahorses show the seagrass is working).
+- **Solving a problem at its source ends it.** Once the player builds the alternative (reusable
+  glass bottles), the game stops generating that pollution: restoration has an end state.
+- **Capabilities aren't items.** Glass-making is unlocked at the Glassworks, not carried as glass;
+  it unlocks later buildings. Keep new items to what the player really handles.
 - **Every animal has a role** that changes a decision (needs help, helps others, or drives the
   island's mechanic). No background animals.
 - **Animals never die, and no species ever disappears** from an island. Each keeps at least

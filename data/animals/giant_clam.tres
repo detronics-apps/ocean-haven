@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/clam/giant_clam.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"giant_clam"
+display_name = "Giant Clam"
+sprite = ExtResource("2_t")
+habitat = "Shallow coral reefs"
+diet = "Sugars from algae living in its body, and plankton it filters from the water"
+fact = "Giant clams are the biggest clams in the world and can live for over 100 years. They filter seawater, cleaning it as they feed."
+photo_fact = "A giant clam's blue and green colours come from tiny algae living in its body, which make food from sunlight."
+help_fact = "Giant clams need clean, calm water and protection: a treatment facility gives them a safe bed."
+habitat_terrain = PackedStringArray("water")
+swim_speed = 2.0
+rest_min = 20.0
+rest_max = 40.0
+shy_distance = 10.0
+curious = false
+discover_distance = 100.0
+interact_distance = 70.0
+lives_at = &"water_treatment_facility"

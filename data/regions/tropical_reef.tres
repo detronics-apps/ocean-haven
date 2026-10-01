@@ -2,12 +2,71 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/maps/reef_island.png" id="1_cueq0"]
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_opv3m"]
+[ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="4_goal"]
+
+[sub_resource type="Resource" id="Health_clean"]
+script = ExtResource("3_health")
+kind = &"clean"
+amount = 10
+weight = 4.0
+text = "Litter in the lagoon and on the beaches"
+
+[sub_resource type="Resource" id="Health_coral"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"coral"
+amount = 70
+weight = 3.0
+text = "Coral reef"
+
+[sub_resource type="Resource" id="Health_fish"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"parrotfish"
+amount = 8
+weight = 2.0
+text = "Parrotfish grazing the reef"
+
+[sub_resource type="Resource" id="Health_clams"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"giant_clam"
+amount = 4
+text = "Giant clams"
+
+[sub_resource type="Resource" id="Health_seahorses"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"seahorse"
+amount = 4
+text = "Seahorses in the seagrass"
+
+[sub_resource type="Resource" id="Health_sharks"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"reef_shark"
+amount = 2
+text = "Reef sharks"
+
+[sub_resource type="Resource" id="Goal_restored"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"reef_restored"
+text = "Bring the reef back to life (island health 70 %)"
+
+[sub_resource type="Resource" id="Goal_rubble"]
+script = ExtResource("4_goal")
+kind = &"count"
+target = &"reef_limestone"
+amount = 5
+text = "Collect dead coral rubble: each morning up to 2 pieces lie on the sea floor by the reef (pick them up by boat, then sleep for the next)"
 
 [resource]
 script = ExtResource("1_opv3m")
 id = &"tropical_reef"
 display_name = "Tropical Reef"
-description = "A broken ring of islands round a huge shallow lagoon. (The reef and its wildlife coming soon.)"
+description = "A broken ring of islands round a huge shallow lagoon, its coral reef broken and bare. Its animals each do a job: can you get the reef working again?"
 order = 4
 direction = &"warmer"
 theme = "Ecosystem complexity and restoration"
@@ -18,4 +77,6 @@ boat_mooring = Vector2(19888, 16)
 map_icon = ExtResource("1_cueq0")
 requires = &"mangrove_resin"
 discovery = &"reef_limestone"
-in_development = true
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_coral"), SubResource("Health_fish"), SubResource("Health_clams"), SubResource("Health_seahorses"), SubResource("Health_sharks")])
+objective = "Bring the coral reef back to life"
+goals = Array[ExtResource("4_goal")]([SubResource("Goal_restored"), SubResource("Goal_rubble")])

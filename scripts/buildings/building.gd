@@ -52,6 +52,18 @@ var gate_closed := false:
 const BRIDGE_OPEN_RANGE := 64.0
 ## Decks: the tiles they replaced, to put back if moved. World cell -> [ground, local cell, source, atlas, alt].
 var _deck_tiles: Dictionary = {}
+## Production: made and waiting to be taken, put in and still being made, and when the one
+## being made is ready (GameClock.now()).
+var stock := 0
+## Clean Water given to it (houses, visitor and research facilities): a funding facility uses
+## 1 a morning for +25 % visitors, a signature facility for missions 25 % faster, and a house
+## 1 a night for a well-rested morning (the ranger moves faster until noon).
+var water := 0
+var watered := false
+const WATER_MAX := 5
+const WATER_BONUS := 1.25
+var loaded := 0
+var batch_done_at := -1.0
 
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _hint: Label = $Hint
@@ -77,6 +89,10 @@ func _ready() -> void:
 		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
 	if data.spawns:
 		add_child(data.spawns.instantiate())
+	if data.facility != &"":
+		GameClock.new_day.connect(func(_d: int) -> void: _use_water_morning())
+	if data.makes and data.makes_per_morning > 0:
+		GameClock.new_day.connect(func(_d: int) -> void: _make_morning())
 	_coin.visible = false
 
 
@@ -147,7 +163,10 @@ func actions() -> Array:
 	elif RareEvents.is_coming_to(Regions.nearest(global_position).id) and not secured and not data.storm_proof:
 		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
-		list.append({"label": "Sleep until morning", "do": get_tree().call_group.bind("hud", "sleep_through_night")})
+		list.append({"label": "Sleep until morning", "do": sleep})
+	if takes_water() and water < WATER_MAX and Inventory.count(&"clean_water") > 0:
+		var give := mini(Inventory.count(&"clean_water"), WATER_MAX - water)
+		list.append({"label": "Give %d clean water (%s)" % [give, _water_use()], "do": give_water})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
@@ -162,6 +181,8 @@ func actions() -> Array:
 	if recycle_value() > 0 and Inventory.total() > 0 and not damaged:
 		list.append({"label": "Recycle litter (%d carried)" % Inventory.total(),
 			"do": get_tree().call_group.bind("recycle_menu", "open_for", self)})
+	if (data.makes or data.makes_from != &"") and not damaged:
+		list.append_array(_production_actions())
 	if tier < data.max_tier:
 		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
 	if storage() > 0:
@@ -187,6 +208,101 @@ func boat() -> Boat:
 		if child is Boat:
 			return child
 	return null
+
+
+func _production_actions() -> Array:
+	var list := []
+	if data.makes_from != &"" and loaded == 0 and not Fleet.has_flag(data.made_flag):
+		var input: ItemData = load("res://data/items/%s.tres" % data.makes_from)
+		var have := Inventory.available(data.makes_from)
+		list.append({"label": ("Put in %d %s" % [data.makes_from_count, input.display_name.to_lower()]) if have >= data.makes_from_count
+			else "Needs %d %s (%d now)" % [data.makes_from_count, input.display_name.to_lower(), have], "do": start_capability})
+	if data.makes_from_value > 0 and Fleet.has_flag(data.made_flag) and Inventory.available(data.makes_from) > 0:
+		var n := Inventory.available(data.makes_from)
+		list.append({"label": "Drop off %d %s (+%d funding)" % [n, data.makes_from, n * data.makes_from_value], "do": sell_input})
+	if data.makes:
+		var take := mini(stock, Inventory.room_for(data.makes))
+		if take > 0:
+			list.append({"label": "Take %d %s" % [take, data.makes.display_name.to_lower()], "do": take_stock})
+	return list
+
+
+## Extra input (sand) dropped off once the capability is running: made into glass and sold.
+func sell_input() -> void:
+	var n := Inventory.available(data.makes_from)
+	if n <= 0 or not Inventory.use(data.makes_from, n):
+		return
+	Funding.earn(n * data.makes_from_value, "Your %s made glass from %d sand." % [data.display_name, n])
+
+
+## A capability (Glassworks): puts the sand in; make_minutes later it's established for good.
+func start_capability() -> void:
+	if loaded > 0 or not Inventory.use(data.makes_from, data.makes_from_count):
+		return
+	loaded = 1
+	batch_done_at = GameClock.now() + data.make_minutes * 60.0 / GameClock.DAY_LENGTH
+	get_tree().call_group("hud", "show_toast", "The %s is firing up: ready in %s." % [data.display_name, Missions.real_time(data.make_minutes * 60.0)])
+
+
+func take_stock() -> void:
+	var take := mini(stock, Inventory.room_for(data.makes))
+	if take <= 0:
+		return
+	Inventory.add(data.makes, take)
+	stock -= take
+
+
+func _produce(amount: int) -> void:
+	if amount <= 0:
+		return
+	if data.makes:
+		stock = mini(stock + amount, data.stock_max)
+	if data.made_flag != &"" and not Fleet.has_flag(data.made_flag):
+		Fleet.mark(data.made_flag)
+
+
+func _make_morning() -> void:
+	if damaged or not is_inside_tree() or not Regions.ranger_on(get_tree(), Regions.nearest(global_position)):
+		return
+	var workers := tier
+	if data.hosts != &"":
+		workers = get_tree().get_nodes_in_group("animals").filter(func(a: Node) -> bool:
+			return a.get("home_area") == self and not a.get("leaving") and not a.get("tangled") and not a.get("injured")).size()
+	_produce(workers * data.makes_per_morning)
+
+
+## Houses, visitor and research facilities can use Clean Water.
+func takes_water() -> bool:
+	return data.facility != &"" or data.action == &"sleep"
+
+
+func _water_use() -> String:
+	if data.action == &"sleep":
+		return "a well-rested morning"
+	return "faster missions" if data.facility == &"signature" else "more visitors"
+
+
+func give_water() -> void:
+	var give := mini(Inventory.count(&"clean_water"), WATER_MAX - water)
+	if give <= 0 or not Inventory.take_item(&"clean_water", give):
+		return
+	water += give
+	get_tree().call_group("hud", "show_toast", "Your %s has %d clean water. It uses 1 %s for %s." % [
+		data.display_name, water, "a night" if data.action == &"sleep" else "a morning", _water_use()])
+
+
+func _use_water_morning() -> void:
+	watered = water > 0 and not damaged
+	if watered:
+		water -= 1
+
+
+## Sleeps until morning; with clean water in the house, the ranger wakes well rested.
+func sleep() -> void:
+	if water > 0:
+		water -= 1
+		ControlledBody.rested_until = floorf(GameClock.now()) + 1.5  # noon tomorrow
+	get_tree().call_group("hud", "sleep_through_night")
 
 
 ## Opens or closes a water gate: the island's water and flow change straight away.
@@ -299,7 +415,7 @@ func visitors_today() -> int:
 		return 0  # closed until it's repaired
 	var base := data.visitors + data.visitors_per_animal * (animals_here() + animals_in_view())
 	var health := maxf(IslandHealth.of(get_tree(), Regions.nearest(global_position)), 0.0)
-	return roundi(base * (1.0 + health * data.health_bonus))
+	return roundi(base * (1.0 + health * data.health_bonus) * (WATER_BONUS if watered else 1.0))
 
 
 ## How many more animals can join this area.
@@ -370,6 +486,11 @@ func rect() -> Rect2i:
 
 
 func _process(delta: float) -> void:
+	if loaded > 0 and GameClock.now() >= batch_done_at:
+		loaded = 0
+		_produce(1)
+		if data.capability_note != "":
+			get_tree().call_group("hud", "show_toast", data.capability_note)
 	if data.open_texture and visible:  # not while being moved (hidden, deck lifted)
 		_update_drawbridge()
 	if pending_funds > 0:
@@ -394,6 +515,8 @@ func stats() -> String:
 	var numbers := _numbers()
 	if numbers:
 		lines.append(numbers)
+	if water > 0:
+		lines.append("Clean water: %d" % water)
 	if secured and RareEvents.is_coming_to(Regions.nearest(global_position).id):
 		lines.append("Secured")
 	return "\n".join(lines)
@@ -409,6 +532,10 @@ func _numbers() -> String:
 		return "%ss: %d" % [kind.get_slice(" ", kind.get_slice_count(" ") - 1), animals_in_view()]
 	if data.action == &"missions":
 		return "Back in %s" % Missions.time_left() if Missions.active else ""
+	if data.makes:
+		return "%s ready: %d" % [data.makes.display_name, stock]
+	if data.makes_from != &"":
+		return "Running" if Fleet.has_flag(data.made_flag) else ("Firing up" if loaded > 0 else "Needs %d %s" % [data.makes_from_count, data.makes_from])
 	if data.action == &"explore":
 		return "Level %d" % Fleet.level()
 	var lines: Array[String] = []

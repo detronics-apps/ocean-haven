@@ -116,6 +116,23 @@ extends Resource
 @export var open_texture: Texture2D
 ## Water gates (action "gate"): the picture while closed (`texture` while open).
 @export var closed_texture: Texture2D
+## Production (Water Treatment Facility): it makes `makes` every morning (`makes_per_morning` per
+## hosted animal that's well, or per level if it hosts none); it waits here (up to `stock_max`)
+## until the ranger takes it. A capability (Glassworks, no `makes`): the ranger puts in
+## `makes_from_count` of `makes_from` once; `make_minutes` later `made_flag` is marked for good.
+@export var makes: ItemData
+@export var makes_from: StringName
+@export var makes_from_count := 1
+@export var make_minutes := 1.0
+@export var makes_per_morning := 0
+@export var stock_max := 10
+## Fleet flag marked the first time it makes something (e.g. glass_made).
+@export var made_flag: StringName
+## Once established, extra `makes_from` dropped off is turned into this much funding a piece
+## (the Glassworks sells the glass from extra sand).
+@export var makes_from_value := 0
+## Shown when a capability is established.
+@export var capability_note: String
 ## Signature facilities: a "how it works" card at the top of its missions screen.
 @export_multiline var guide: String
 ## Boats keep this far out (px): patrol boats won't patrol there (Crocodile Protection Zones).

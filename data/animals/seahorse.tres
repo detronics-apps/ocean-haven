@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/seahorse/seahorse.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"seahorse"
+display_name = "Seahorse"
+sprite = ExtResource("2_t")
+habitat = "Seagrass beds in shallow water"
+diet = "Tiny shrimp, sucked up through its snout"
+fact = "Seahorses hold on to seagrass with their curly tails so the current doesn't carry them away. The father seahorse carries the eggs in a pouch."
+photo_fact = "Seahorses are slow swimmers: their little back fin beats up to 50 times a second."
+help_fact = "Debris tangled in seagrass can trap seahorses. Rescue them, and protect seagrass for them to live in."
+habitat_terrain = PackedStringArray("water")
+swim_speed = 10.0
+rest_min = 4.0
+rest_max = 9.0
+shy_distance = 40.0
+discover_distance = 90.0
+curious = false
+interact_distance = 70.0
+can_tangle = true
+lives_at = &"seagrass_protection_area"

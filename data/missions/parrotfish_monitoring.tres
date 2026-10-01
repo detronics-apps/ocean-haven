@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/parrotfish_monitoring.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"parrotfish_monitoring"
+display_name = "Parrotfish monitoring"
+icon = ExtResource("2_icon")
+description = "Counts the parrotfish and where they are building up sand."
+order = 3
+facility = &"coral_restoration_lab"
+cost = 15
+minutes = 2.0
+effect = &"parrotfish_monitoring"
+effect_days = 0.0
+marker_colour = Color(0.95, 0.55, 0.6, 1)
+report = "{detail}"
+report_none = "{detail}"

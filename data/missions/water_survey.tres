@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/water_survey.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"water_survey"
+display_name = "Water quality test"
+icon = ExtResource("2_icon")
+description = "Measures how clear the lagoon is, and how much the litter and the clams change it."
+order = 2
+facility = &"coral_restoration_lab"
+cost = 10
+minutes = 1.0
+effect = &"water_survey"
+effect_days = 0.0
+marker_colour = Color(0.95, 0.55, 0.6, 1)
+report = "{detail}"
+report_none = "{detail}"

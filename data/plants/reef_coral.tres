@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"reef_coral"
+display_name = "Reef-building Coral"
+picture = ExtResource("2_plant")
+habitat = "Warm, clear, shallow tropical water (the Tropical Reef)"
+fact = "Corals are animals: tiny polyps that build stony skeletons and live with algae that feed them through sunlight. Over thousands of years they build whole reefs."
+role = "The reef itself: parrotfish graze it (and make sand), fish shelter in it. Grown in nurseries and planted back as fragments."

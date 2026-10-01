@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/parrotfish/parrotfish.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"parrotfish"
+display_name = "Parrotfish"
+sprite = ExtResource("2_t")
+habitat = "Coral reefs"
+diet = "Algae scraped off coral and rock"
+fact = "Parrotfish bite off bits of coral rock with their beak-like teeth and grind them up. What comes out is fine white sand: a big parrotfish can make hundreds of kilos of sand a year."
+photo_fact = "At night some parrotfish wrap themselves in a bubble of mucus, like a sleeping bag."
+help_fact = "Litter smothers the reef that parrotfish feed on. Clean water keeps them feeding, and their sand building up."
+habitat_terrain = PackedStringArray("", "water")
+swim_speed = 34.0
+curious = false
+discover_distance = 120.0
+interact_distance = 90.0
