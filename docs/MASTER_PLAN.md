@@ -795,9 +795,11 @@ sand can go to other islands; later, glass builds the Deep Sea's underwater rese
 first. Once the player has established sand production (parrotfish), built the Glassworks and
 established clean-water production (the treatment facility), **Reusable Glass Bottles** unlock
 (glass + clean water → bottles at the Glassworks): "Reusable bottles unlocked: plastic drinking
-bottles are no longer made by BlueHaven's facilities." From then on, routine plastic-bottle wash-in
-stops on every island. Existing pollution stays in the world and can still be found and cleaned
-(old bottles, storm debris, accidents). No per-building delivery.
+bottles are no longer made by BlueHaven's facilities." Both have to be in place: the first glass made
+**and** the first clean water made. From then on, plastic bottles no longer drift in on any
+island, so there is less litter overall everywhere. Bottles still turn up when crabs dig up old
+buried ones or a storm washes them ashore, and the bottles already out there stay until cleaned.
+No per-building delivery.
 
 **Clean Water** keeps its own uses in houses, research and visitor facilities after that (see
 open points).
