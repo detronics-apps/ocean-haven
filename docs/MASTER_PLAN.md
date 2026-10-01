@@ -791,11 +791,16 @@ to preventing pollution. (No crown-of-thorns starfish.)
 clams → Clean Water. Glass + Clean Water → Reusable Bottle (made at the Glassworks). Glass and
 sand can go to other islands; later, glass builds the Deep Sea's underwater research domes.
 
-**Prevention — the long-term pollution progression:** plastic bottles wash in normally at first.
-Reusable bottles are supplied to facilities (houses, visitor facilities, research facilities,
-tourism buildings); as more facilities switch, fewer plastic bottles are made, until preventable
-plastic-bottle pollution stops. Old bottles, storm debris and accidents can still turn up, but
-the game stops creating a problem the player has solved: an end-state for restoration.
+**Prevention — reusable bottles, a world-wide technology:** plastic bottles wash in normally at
+first. Once the player has established sand production (parrotfish), built the Glassworks and
+established clean-water production (the treatment facility), **Reusable Glass Bottles** unlock
+(glass + clean water → bottles at the Glassworks): "Reusable bottles unlocked: plastic drinking
+bottles are no longer made by BlueHaven's facilities." From then on, routine plastic-bottle wash-in
+stops on every island. Existing pollution stays in the world and can still be found and cleaned
+(old bottles, storm debris, accidents). No per-building delivery.
+
+**Clean Water** keeps its own uses in houses, research and visitor facilities after that (see
+open points).
 
 **Buildings:**
 - ⭐ **Coral Restoration Laboratory** (exactly 1): missions, observe → identify → act → observe
@@ -824,7 +829,6 @@ System**: maps underwater terrain, reef edges, shallow and deep areas, habitats.
 1. Moving things between islands: the ranger's carried items and Ranger House storage are
    already shared by every island. Keep that, or make sand/glass need ship cargo (the Deep Sea's
    Cargo Module)?
-2. Clean Water and bottles: what supplying a facility does, which buildings count, and how many
-   bottles each needs.
+2. Clean Water's own uses in houses, research and visitor facilities.
 3. "Workshop" and "Storage": storage is the Ranger House; there's no workshop yet.
-4. Tourism pressure vs the rule "tourism is never a runaway": a trade-off here, not a runaway.
+4. The Reef Diving Centre: kept simple, a funding building like the Eco-Lodge.
