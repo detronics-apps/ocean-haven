@@ -65,6 +65,8 @@ var _gear_at := Vector2.INF
 var _gear_item := &"ghost_net"
 var _gear_shark: Animal
 var _sand_note_day := -1
+## The lagoon's water tiles as the island was made (sand there now = parrotfish sand).
+var _base_water := {}
 
 
 func _enter_tree() -> void:
@@ -73,6 +75,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_ground = get_parent().get_node("Ground")
+	for cell in _ground.get_used_cells():
+		if _terrain(cell) in ["water", ""]:
+			_base_water[cell] = true
 	_place_patches()
 	GameClock.new_day.connect(func(_d: int) -> void:
 		if Regions.is_discovered(region()) and Regions.ranger_on(get_tree(), region()):
@@ -525,7 +530,25 @@ func hurricane(damage: float, share: float) -> int:
 	for patch: ReefPatch in hit:
 		patch.coral -= damage * randf_range(0.5, 1.0) * (1.0 - 0.5 * patch.coral)
 		patch.storm_hit = true
+	# Seagrass in a battered Protection Area is torn up: it grows back in a day once repaired.
+	for area in _homes(SEAHORSE):
+		if area.damaged:
+			area.built_day = GameClock.day
+	_wash_sand(0.5)
+	settle()
 	return hit.size()
+
+
+## Waves wash `share` of the parrotfish's sand back into shallow water (they can build it again).
+func _wash_sand(share: float) -> int:
+	var washed := 0
+	for cell: Vector2i in _base_water:
+		if _terrain(cell) == "sand" and not _occupied(cell) and randf() < share:
+			_ground.set_cell(cell, 0, SHALLOW_TILE)
+			SaveGame.record_tile(_ground, cell, SHALLOW_TILE)
+			washed += 1
+	_sand_made = maxi(_sand_made - washed, 0)
+	return washed
 
 
 @export_group("Objective")

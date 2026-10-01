@@ -19,3 +19,4 @@ litter_washed = 10
 repair_wood = 1
 injures = PackedStringArray("green_turtle", "red_footed_booby")
 injured_max = 3
+weather = &"storm"

@@ -21,3 +21,4 @@ kelp_damage = 0.4
 kelp_damaged_share = 0.5
 visibility_days = 2.0
 slow_missions = 1.5
+weather = &"swell"

@@ -7,6 +7,7 @@ const LAND := [Vector2i(1, 0), Vector2i(2, 0)]  # sand, grass atlas coords
 var _world: Node
 var _player: Node2D
 var _frames := 0
+var _animated := false
 
 
 func _initialize() -> void:
@@ -18,6 +19,9 @@ func _initialize() -> void:
 
 func _physics_process(_delta: float) -> bool:
 	_frames += 1
+	if _frames == 40:
+		var look: Node2D = _player.get_node("Look")
+		_animated = _player.walking and (look.position.y != 0.0 or look.rotation != 0.0)
 	if _frames < 300:
 		return false
 	Input.action_release("move_right")
@@ -26,7 +30,10 @@ func _physics_process(_delta: float) -> bool:
 	var on_land := ground.get_cell_atlas_coords(cell) in LAND
 	var moved := _player.global_position.x > 200.0
 	print("player at %s, cell %s, on land: %s" % [_player.global_position, cell, on_land])
-	if not (on_land and moved):
+	if not _animated:
+		printerr("FAIL: expected the ranger to animate (bob and sway) while walking")
+		quit(1)
+	elif not (on_land and moved):
 		printerr("FAIL: expected player to walk right and stop on land at the shore")
 		quit(1)
 	else:

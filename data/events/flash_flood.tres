@@ -18,3 +18,4 @@ damage_chance = 0.3
 litter_washed = 8
 repair_wood = 1
 flood_silt = 0.7
+weather = &"flood"

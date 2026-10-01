@@ -68,6 +68,9 @@ func _ready() -> void:
 	var explore := ExploreMenu.new()  # opened only from the Exploration Ship, never from here
 	explore.name = "ExploreMenu"
 	get_parent().add_child.call_deferred(explore)
+	var weather := StormWeather.new()  # a storm's weather when it strikes
+	weather.name = "StormWeather"
+	add_child(weather)
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)

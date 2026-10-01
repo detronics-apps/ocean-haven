@@ -20,6 +20,5 @@ animal_capacity = 2
 hosts = &"seahorse"
 keeps_boats_out = 40.0
 demolishable = true
-storm_proof = true
 placement_hint = "on shallow water"
 fact = "Seagrass meadows shelter young fish and seahorses, hold the sand in place and take in carbon from the water."

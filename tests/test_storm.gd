@@ -52,6 +52,10 @@ func _initialize() -> void:
 	clock.time_of_day = 0.9
 	clock.sleep_until_morning()
 	_expect(not events.is_coming(), "the storm has passed")
+	var weather: Node = world.get_node("HUD/StormWeather")
+	_expect(weather.is_playing() and weather.get("_kind").rain > 0, "the storm's weather shows: driving rain and a dark sky, not just a black screen")
+	_expect(load("res://data/events/hurricane.tres").weather == &"hurricane" and load("res://data/events/underwater_storm.tres").weather == &"swell"
+		and load("res://data/events/flash_flood.tres").weather == &"flood", "each island's event has its own weather")
 	_expect(not area.damaged and not area.secured, "the secured protection area is fine")
 	_expect(viewing.damaged and viewing.visitors_today() == 0 and viewing.stats() == "Damaged",
 		"the unsecured viewing area is damaged and closed to visitors")

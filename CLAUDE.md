@@ -344,12 +344,18 @@ The Glassworks is a capability, not an item: 3 sand once (BuildingData.makes_fro
 funding facilities (+25 % visitors), signature facilities (missions 25 % faster) and houses (well
 rested: faster until noon). Coral Restoration Laboratory with 8 missions; Reef Diving Centre;
 Shark Protection Zones; Hurricane; objective: 70 % → 5 dead coral rubble → Reef Limestone
-(Underwater Habitat Mapping System).
+(Underwater Habitat Mapping System). The Hurricane also tears up seagrass in battered
+Protection Areas and washes parrotfish sand back into the lagoon. Every rare event shows its own
+weather when it strikes (StormWeather; EventData.weather: storm / swell / flood / hurricane). The
+ranger has a walking animation (bob, sway, stepping boots).
 
 Playable islands: Starting Island, Kelp Forest, Mangrove Coast, Tropical Reef. The Deep Sea and
 Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or what it still
 needs) and that the island is still under development, and the Map doesn't sail there. Clear
 the flag when an island is finished.
+
+Planned (not built): rounded terrain edges, a visual-only overlay per island; plan and proposal in
+`docs/TERRAIN_EDGES.md`, waiting for the user's OK.
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).

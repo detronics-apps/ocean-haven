@@ -184,7 +184,12 @@ func _initialize() -> void:
 	# --- Hurricane, objective, saved ---
 	var hurricane: Resource = load("res://data/events/hurricane.tres")
 	_expect(hurricane.region == &"tropical_reef", "the Hurricane hits the Tropical Reef")
+	var sand_before := ground.get_used_cells().filter(func(c: Vector2i) -> bool: return ground.get_cell_tile_data(c).get_custom_data("terrain") == "sand").size()
+	area.damaged = true
 	_expect(eco.hurricane(0.4, 0.5) >= patches.size() / 2, "it breaks coral on half the patches")
+	var sand_after := ground.get_used_cells().filter(func(c: Vector2i) -> bool: return ground.get_cell_tile_data(c).get_custom_data("terrain") == "sand").size()
+	_expect(sand_after < sand_before, "waves wash some of the parrotfish's sand away (%d -> %d)" % [sand_before, sand_after])
+	_expect(area.built_day == clock.day and eco.seahorses_supported() == 0, "and tear up the seagrass in a battered Protection Area (it regrows once repaired)")
 	fleet.mark(&"reef_restored")
 	eco.call("_objective")
 	var rubble := get_nodes_in_group("debris").filter(func(d: Node) -> bool: return d.item.id == &"coral_rubble")

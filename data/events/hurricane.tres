@@ -19,3 +19,4 @@ litter_washed = 10
 repair_wood = 1
 kelp_damage = 0.4
 kelp_damaged_share = 0.5
+weather = &"hurricane"

@@ -68,8 +68,11 @@ func _on_new_day(day: int) -> void:
 					_coming[event.id] = day + 1
 		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)):
-			var lead := randi_range(event.warning_days, event.warning_days_max)
-			var gap: int = day + lead - _last_day.get(event.id, 0)
+			var since: int = day - _last_day.get(event.id, 0)
+			# Warned 3-4 days ahead, but never so late that it strikes after max_gap_days.
+			var lead := clampi(randi_range(event.warning_days, event.warning_days_max), event.warning_days,
+				maxi(event.max_gap_days - since, event.warning_days))
+			var gap: int = since + lead
 			# Evenly spread between min_gap_days and max_gap_days (certain once it's overdue).
 			if gap >= event.min_gap_days and _can_strike(event, day + lead) \
 					and randf() < 1.0 / maxf(event.max_gap_days - gap + 1, 1.0):
