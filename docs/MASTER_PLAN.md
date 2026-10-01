@@ -768,87 +768,63 @@ crocodiles + zones (block boats) → Eco-Lodge → health and projection → Fla
 objective → simulate → publish.
 
 
-### Step 5 — Tropical Reef (warmer, 2nd) — DRAFT 1, awaiting the user's OK
-Design against `docs/ISLAND_RULES.md`. Lesson: **an ecosystem is many systems working together.**
-A different game from the other islands: the Starting Island is cleaning up, the Kelp Forest
-balances populations, the Mangrove Coast shapes land and water. Here the player **grows and
-plants coral**, and a reef patch only thrives when **all of its conditions are met at once**
-(the weakest one holds it back), so they learn to look at the whole system, not one number.
+### Step 5 — Tropical Reef (warmer, 2nd) — DRAFT 2 (the user's specification), open points below
+Lesson: **everything in an ecosystem is connected, and a healthy ecosystem can provide
+sustainable resources for people.** Animals perform useful functions, and instead of endlessly
+cleaning up, people build systems that stop the pollution being made. The Reef is the game's
+first **circular resource system**, and the place where BlueHaven moves from cleaning the ocean
+to preventing pollution. (No crown-of-thorns starfish.)
 
-**The reef:** about 12 reef patches in the lagoon (sea plants, like kelp beds; movable). Each
-patch is at a visible stage: bare rock → algae-covered → recovering coral → structured reef →
-diverse reef. A patch moves up a stage when it has coral planted and its conditions are good,
-and down when one of them fails. Conditions are island-wide (never layout-based):
-- **Clean, clear water:** nutrients from litter and land run-off feed algae and starfish.
-  Seagrass beds and giant clams filter the water.
-- **Grazing:** parrotfish eat the algae that would smother young coral.
-- **Coral:** the player plants coral fragments grown in the Coral Restoration Lab's nursery.
-- **No starfish outbreak** (below).
+**The four animals, each with its own job (never a passive bonus):**
+- 🐠 **Parrotfish → sand.** Grazing on healthy reef, they slowly build the sea floor up around
+  where they feed: deep water → mid water → shallow water → occasionally sand. Slow, local,
+  only in suitable spots, visibly obvious, never spammable. The ranger collects the sand
+  (shovel) for beaches, shoreline habitat, other islands and the Glassworks.
+- 🐚 **Giant clam → clean water.** Clam beds inside the Marine Water Treatment Facility filter
+  seawater into Clean Water, a real item. The ranger establishes, protects and inspects the beds.
+- 🦈 **Reef shark → ghost gear.** Now and then a shark circles somewhere unusual: follow it and
+  it leads to lost fishing gear (nets, line) hidden underwater, which the ranger removes.
+- 🐴 **Seahorse → seagrass.** Seahorses caught in debris are rescued and resettled; the ranger
+  restores seagrass, and seahorses are visibly seen living in the restored beds.
 
-**What the player does:**
-- **Grow and plant coral:** the lab's nursery grows coral fragments over time (more per level).
-  Carry them out by boat (up to 3) and plant them on bare or algae patches. Nothing is wasted: a
-  fragment on a patch with too much algae or starfish just grows slowly until that's fixed.
-- **Plant seagrass:** seagrass shoots (from healthy beds, like propagules) planted on shallow
-  sandy water make new beds that filter the water and shelter seahorses.
-- **Mooring buoys:** boats tie up to a buoy instead of dropping anchor. Without enough buoys for
-  the boats on the island (rowboats, patrol boats, dive boats), anchors scar the seagrass a little.
+**Resources and production:** Sand (parrotfish) → Glassworks (takes time) → Glass. Seawater +
+clams → Clean Water. Glass + Clean Water → Reusable Bottle (made at the Glassworks). Glass and
+sand can go to other islands; later, glass builds the Deep Sea's underwater research domes.
 
-**Species and their roles:**
-- **Crown-of-thorns starfish** (the runaway species): native, but booms when nutrients are high,
-  and an outbreak eats coral fast. Never killed: divers move them off priority coral
-  (relocation), cutting the nutrients ends the boom, and giant triton snails (a natural predator)
-  settle on healthy reef and keep a few in check. A few always remain: they belong on a reef.
-- **Parrotfish:** follow coral structure (more reef, more parrotfish) and graze the algae. They
-  also grind dead coral into sand: the white beaches.
-- **Giant clam:** settles on healthy reef patches and filters the water (fewer nutrients).
-  Slow to come back.
-- **Seahorse:** lives only in seagrass (holds on with its tail): shows how the seagrass is doing.
-  Anchor scars and storms hurt its beds.
-- **Reef shark:** the top predator, capped: comes when there are enough fish and keeps away from
-  busy boats. One arrives caught in fishing line and needs freeing. Healthy reefs have sharks.
+**Prevention — the long-term pollution progression:** plastic bottles wash in normally at first.
+Reusable bottles are supplied to facilities (houses, visitor facilities, research facilities,
+tourism buildings); as more facilities switch, fewer plastic bottles are made, until preventable
+plastic-bottle pollution stops. Old bottles, storm debris and accidents can still turn up, but
+the game stops creating a problem the player has solved: an end-state for restoration.
 
-**Buildings** (3 levels only where they do something):
-- ⭐ **Coral Restoration Lab:** missions, and its coral nursery (levels: more fragments a day).
-- **Seagrass:** planted, not built (like trees).
-- **Mooring Buoy:** max 6.
-- **Reef Protection Zone:** max 3; no boats or divers (sharks, spawning coral). A trade-off with
-  diving income, like the crocodile zones.
-- 💰 **Reef Diving Centre:** max 3; levels add visitors; more funding on a healthier reef. Its
-  dive boat needs a mooring buoy.
+**Buildings:**
+- ⭐ **Coral Restoration Laboratory** (exactly 1): missions, observe → identify → act → observe
+  recovery: coral health survey, reef condition survey, parrotfish monitoring, shark / ghost gear
+  survey, giant clam monitoring, seagrass survey, coral restoration, seagrass restoration, reef
+  damage assessment, storm damage assessment. Reef Limestone comes through its progression.
+- 🪸 **Coral Restoration Site:** restores damaged coral over time; works better the healthier
+  the surrounding reef. (Coral fragments are planted by hand from the boat.)
+- 🐴 **Seahorse & Seagrass Protection Area:** protected seagrass, less boat disturbance,
+  seahorse habitat; hard limit, demolishable, movable.
+- 🦈 **Shark Protection Zone:** shark habitat; limits boats, fishing, tourism and access.
+- 🐚 **Marine Water Treatment Facility:** on the water; holds the clam beds; Clean Water out.
+- 🔥 **Glassworks:** sand → glass; glass + clean water → reusable bottles.
+- 🤿 **Reef Diving Centre** (about 3): morning funding; more tourism also means more boat and
+  habitat pressure, which the player balances.
+- Plus the shared buildings (Ranger House, recycling centre, Exploration Ship…).
 
-**Missions** (each ends in an action):
-1. **Reef health survey:** marks every patch by stage, and what's holding each one back.
-2. **Water quality test:** the nutrient level, where it comes from (litter, run-off), what filters it.
-3. **Starfish survey:** marks outbreak patches, says why (nutrients) and what to do.
-4. **Starfish relocation:** divers move starfish off the 3 most valuable patches (they come back
-   while nutrients stay high).
-5. **Coral outplanting:** a dive team plants nursery fragments at the worst patches.
-6. **Seagrass survey:** anchor scars, seahorse beds, where buoys are needed.
-7. **Hurricane damage survey:** after the storm, which patches and beds to restore first.
+**Hurricane:** at most once a month (the usual 30–60 days), warned ahead: secure equipment,
+protect vulnerable areas. After it: coral and seagrass damage, debris, damaged buildings, the
+beaches and sand disturbed; the lab assesses and repairs.
 
-**Starting state:** every species present but struggling: patches mostly bare or algae, a
-starfish outbreak just past its peak, 1 parrotfish, 1 giant clam, 1 seahorse in a thin bed, a
-reef shark caught in fishing line, and a litter surge. Health about 5 %.
+**Discovery:** Reef Limestone (through the lab's progression) → **Underwater Habitat Mapping
+System**: maps underwater terrain, reef edges, shallow and deep areas, habitats.
 
-**Health:** clean water, coral (patch stages), seagrass, parrotfish, clams, seahorses and sharks,
-all scaled by **reef in balance** (nutrients low, no outbreak, algae under control). 100 % is
-reachable different ways (more seagrass and fewer clams, more grazers and less planting…). A
-starfish outbreak with litter left lands around 20 %.
-
-**Rare event — Hurricane:** warned 3–4 days ahead. Damages coral (less on structured reef) and
-seagrass (less where beds are healthy and boats are kept out); diving closes for a while.
-Response: hurricane damage survey → replant → seagrass recovers.
-
-**Cross-island link:** every linked nursery pool on the Mangrove Coast sends young fish here, so
-parrotfish come back faster ("they came from the nursery I restored").
-
-**Objective → Reef Limestone:** restore the reef (70 % health, most patches "structured" or
-better), then collect 5 pieces of dead coral rubble from the seabed by boat (never living coral)
-→ biological scanner and reef mapping for the fleet.
-
-**Build order:** reef patches + stages → coral nursery, fragments and planting → nutrients and
-algae → parrotfish → starfish (boom and bust, relocation) → seagrass planting + seahorses →
-mooring buoys and anchor scars → clams, tritons, sharks → Coral Restoration Lab missions →
-Reef Diving Centre, protection zones → health and projection → Hurricane → objective →
-simulate → publish.
+**Open points (to agree before building):**
+1. Moving things between islands: the ranger's carried items and Ranger House storage are
+   already shared by every island. Keep that, or make sand/glass need ship cargo (the Deep Sea's
+   Cargo Module)?
+2. Clean Water and bottles: what supplying a facility does, which buildings count, and how many
+   bottles each needs.
+3. "Workshop" and "Storage": storage is the Ranger House; there's no workshop yet.
+4. Tourism pressure vs the rule "tourism is never a runaway": a trade-off here, not a runaway.
