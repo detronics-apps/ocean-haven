@@ -767,3 +767,88 @@ Station + survey missions → juvenile fish → flamingos with mud nests → cra
 crocodiles + zones (block boats) → Eco-Lodge → health and projection → Flash Flood →
 objective → simulate → publish.
 
+
+### Step 5 — Tropical Reef (warmer, 2nd) — DRAFT 1, awaiting the user's OK
+Design against `docs/ISLAND_RULES.md`. Lesson: **an ecosystem is many systems working together.**
+A different game from the other islands: the Starting Island is cleaning up, the Kelp Forest
+balances populations, the Mangrove Coast shapes land and water. Here the player **grows and
+plants coral**, and a reef patch only thrives when **all of its conditions are met at once**
+(the weakest one holds it back), so they learn to look at the whole system, not one number.
+
+**The reef:** about 12 reef patches in the lagoon (sea plants, like kelp beds; movable). Each
+patch is at a visible stage: bare rock → algae-covered → recovering coral → structured reef →
+diverse reef. A patch moves up a stage when it has coral planted and its conditions are good,
+and down when one of them fails. Conditions are island-wide (never layout-based):
+- **Clean, clear water:** nutrients from litter and land run-off feed algae and starfish.
+  Seagrass beds and giant clams filter the water.
+- **Grazing:** parrotfish eat the algae that would smother young coral.
+- **Coral:** the player plants coral fragments grown in the Coral Restoration Lab's nursery.
+- **No starfish outbreak** (below).
+
+**What the player does:**
+- **Grow and plant coral:** the lab's nursery grows coral fragments over time (more per level).
+  Carry them out by boat (up to 3) and plant them on bare or algae patches. Nothing is wasted: a
+  fragment on a patch with too much algae or starfish just grows slowly until that's fixed.
+- **Plant seagrass:** seagrass shoots (from healthy beds, like propagules) planted on shallow
+  sandy water make new beds that filter the water and shelter seahorses.
+- **Mooring buoys:** boats tie up to a buoy instead of dropping anchor. Without enough buoys for
+  the boats on the island (rowboats, patrol boats, dive boats), anchors scar the seagrass a little.
+
+**Species and their roles:**
+- **Crown-of-thorns starfish** (the runaway species): native, but booms when nutrients are high,
+  and an outbreak eats coral fast. Never killed: divers move them off priority coral
+  (relocation), cutting the nutrients ends the boom, and giant triton snails (a natural predator)
+  settle on healthy reef and keep a few in check. A few always remain: they belong on a reef.
+- **Parrotfish:** follow coral structure (more reef, more parrotfish) and graze the algae. They
+  also grind dead coral into sand: the white beaches.
+- **Giant clam:** settles on healthy reef patches and filters the water (fewer nutrients).
+  Slow to come back.
+- **Seahorse:** lives only in seagrass (holds on with its tail): shows how the seagrass is doing.
+  Anchor scars and storms hurt its beds.
+- **Reef shark:** the top predator, capped: comes when there are enough fish and keeps away from
+  busy boats. One arrives caught in fishing line and needs freeing. Healthy reefs have sharks.
+
+**Buildings** (3 levels only where they do something):
+- ⭐ **Coral Restoration Lab:** missions, and its coral nursery (levels: more fragments a day).
+- **Seagrass:** planted, not built (like trees).
+- **Mooring Buoy:** max 6.
+- **Reef Protection Zone:** max 3; no boats or divers (sharks, spawning coral). A trade-off with
+  diving income, like the crocodile zones.
+- 💰 **Reef Diving Centre:** max 3; levels add visitors; more funding on a healthier reef. Its
+  dive boat needs a mooring buoy.
+
+**Missions** (each ends in an action):
+1. **Reef health survey:** marks every patch by stage, and what's holding each one back.
+2. **Water quality test:** the nutrient level, where it comes from (litter, run-off), what filters it.
+3. **Starfish survey:** marks outbreak patches, says why (nutrients) and what to do.
+4. **Starfish relocation:** divers move starfish off the 3 most valuable patches (they come back
+   while nutrients stay high).
+5. **Coral outplanting:** a dive team plants nursery fragments at the worst patches.
+6. **Seagrass survey:** anchor scars, seahorse beds, where buoys are needed.
+7. **Hurricane damage survey:** after the storm, which patches and beds to restore first.
+
+**Starting state:** every species present but struggling: patches mostly bare or algae, a
+starfish outbreak just past its peak, 1 parrotfish, 1 giant clam, 1 seahorse in a thin bed, a
+reef shark caught in fishing line, and a litter surge. Health about 5 %.
+
+**Health:** clean water, coral (patch stages), seagrass, parrotfish, clams, seahorses and sharks,
+all scaled by **reef in balance** (nutrients low, no outbreak, algae under control). 100 % is
+reachable different ways (more seagrass and fewer clams, more grazers and less planting…). A
+starfish outbreak with litter left lands around 20 %.
+
+**Rare event — Hurricane:** warned 3–4 days ahead. Damages coral (less on structured reef) and
+seagrass (less where beds are healthy and boats are kept out); diving closes for a while.
+Response: hurricane damage survey → replant → seagrass recovers.
+
+**Cross-island link:** every linked nursery pool on the Mangrove Coast sends young fish here, so
+parrotfish come back faster ("they came from the nursery I restored").
+
+**Objective → Reef Limestone:** restore the reef (70 % health, most patches "structured" or
+better), then collect 5 pieces of dead coral rubble from the seabed by boat (never living coral)
+→ biological scanner and reef mapping for the fleet.
+
+**Build order:** reef patches + stages → coral nursery, fragments and planting → nutrients and
+algae → parrotfish → starfish (boom and bust, relocation) → seagrass planting + seahorses →
+mooring buoys and anchor scars → clams, tritons, sharks → Coral Restoration Lab missions →
+Reef Diving Centre, protection zones → health and projection → Hurricane → objective →
+simulate → publish.
