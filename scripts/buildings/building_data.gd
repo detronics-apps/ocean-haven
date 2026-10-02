@@ -30,6 +30,9 @@ extends Resource
 ## Which items it keeps (item ids): a Ranger House keeps wood and saplings, an Exploration Ship
 ## everything else. What all of one kind hold is shared by every island.
 @export var stores: PackedStringArray = []
+## A fleet discovery that must be installed before it stores anything (the Exploration Ship's
+## hold opens with the Deep Sea's Cargo Module).
+@export var storage_needs: StringName = &""
 ## Upgrades: how many tiers it has (1 = can't be upgraded). Each tier adds 1 to what
 ## it does: +1 turtle (animal_capacity), +1 funding per recycled piece, or the full `storage`
 ## again (a Ranger House stores 10 / 20 / 30).

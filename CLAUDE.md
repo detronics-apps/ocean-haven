@@ -355,8 +355,9 @@ needs) and that the island is still under development, and the Map doesn't sail 
 the flag when an island is finished.
 
 Storage (BuildingData.stores, shared by every island): Ranger Houses keep only wood and
-saplings (4 / 8 / 10 of each), so islands without trees can still build; Exploration Ships keep
-everything else (sand, mud, clean water, coral fragments: 10 of each per ship). Both open a
+saplings (4 / 8 / 10 of each), so islands without trees can still build; nothing else is stored
+until the fleet has the Deep Sea's Cargo Module, which opens a hold on every Exploration Ship
+(sand, mud, clean water, coral fragments: 10 of each; BuildingData.storage_needs). Both open a
 Storage menu (StorageMenu) instead of a line of text; more stored than there's room for can be
 taken out at any store.
 

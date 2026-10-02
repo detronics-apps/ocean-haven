@@ -424,6 +424,8 @@ func capacity() -> int:
 ## What it stores of each item: `storage_per_tier` (a Ranger House: 4, 8, 10), or the full
 ## amount again for each tier.
 func storage() -> int:
+	if data.storage_needs != &"" and not Fleet.is_installed(data.storage_needs):
+		return 0
 	if not data.storage_per_tier.is_empty():
 		return data.storage_per_tier[clampi(tier, 1, data.storage_per_tier.size()) - 1]
 	return data.storage * tier

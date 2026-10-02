@@ -1,5 +1,6 @@
 extends SceneTree
-## Storage: Ranger Houses keep wood and saplings, Exploration Ships keep everything else (sand,
+## Storage: Ranger Houses keep wood and saplings, Exploration Ships (once the fleet has the
+## Cargo Module) keep everything else (sand,
 ## mud, clean water, coral fragments); every storable item has a home; each store opens a
 ## Storage menu (store / take per item) instead of a long line of text; stored items are shared
 ## by every island; sand stored in a house before ships held it can still be taken out.
@@ -61,8 +62,10 @@ func _initialize() -> void:
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "stored 3 wood from the menu")
 	menu.close()
 
-	# A ship keeps sand: room for 10, shared with every island.
+	# A ship keeps sand once the fleet has the Cargo Module: room for 10, shared with every island.
 	var ship: Node2D = build_mode.add_building(ship_data, Vector2i(-30, 30))
+	_expect(building_script.storage_space(tree, &"sand") == 0, "no ship hold before the Cargo Module")
+	root.get_node("Fleet").restore({"found": ["cargo_module"], "installed": ["cargo_module"]})
 	_expect(building_script.storage_space(tree, &"sand") == 10 and building_script.storage_space(tree, &"wood") == 4,
 		"an Exploration Ship: room for 10 sand (and no wood)")
 	player.global_position = ship.global_position + Vector2(0, 40)

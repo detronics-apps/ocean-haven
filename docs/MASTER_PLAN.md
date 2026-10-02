@@ -835,7 +835,7 @@ System**: maps underwater terrain, reef edges, shallow and deep areas, habitats.
 3. "Workshop" and "Storage": storage is the Ranger House; there's no workshop yet.
 4. The Reef Diving Centre: kept simple, a funding building like the Eco-Lodge.
 
-### Step 6 — Deep Sea (colder, 2nd) — draft 1, for approval
+### Step 6 — Deep Sea (colder, 2nd) — draft 1, approved
 Lesson: **we can't protect what we don't understand.** A different game from the other islands.
 On the other islands the player *sees* the problem and fixes it. Here most of the island is
 **dark and unknown**: the player builds up understanding first, and only then can they act.
@@ -948,13 +948,9 @@ gives the ship a cargo hold.
   in on any island. This is the same "fix it at the source" idea as the Reef's bottles.
 - **The Reef's Habitat Mapping System** (already in the fleet) makes dives 25 % faster.
 
-**Open points (to agree before building):**
-1. **Storage — decided:** Ranger Houses keep only wood and saplings, shared by every island
-   (the Reef has no way to get wood, so it can't wait for cargo); everything else is kept in
-   the Exploration Ships' hold (10 of each per ship), with a storage menu. Built. Still open:
-   what the Cargo Module then adds. Proposal: a bigger hold (10 → 25 of each) and room for
-   things the hold can't keep yet.
-2. **How often the oil spill comes.** The plan says every 2–3 years (240–360 days), which most
-   players would never see. Proposal: a random 60–90 days apart, rarer than the other events.
-3. **Building the cargo hold itself** (load and unload wood at a ship) could come here or with
-   the Polar Ocean. Proposal: with the Polar Ocean, since that's where it's needed.
+**Decided:**
+1. **Storage:** Ranger Houses keep only wood and saplings, shared by every island (the Reef has
+   no way to get wood). Nothing else is stored until the fleet has the **Cargo Module**: it
+   opens a hold on every Exploration Ship (10 of each: sand, mud, clean water, coral fragments),
+   with a storage menu. So the Cargo Module *is* the hold.
+2. **Oil spill:** a random 30–60 days apart, like every other rare event.
