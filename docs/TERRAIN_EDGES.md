@@ -67,4 +67,4 @@ Keep it simple: no new terrain architecture, no Marching Squares, no procedural 
 - **Placeholder art:** the shapes are drawn in the same colours as the placeholder tiles; with
   real art they'd become small corner and edge pictures from a tileset.
 
-**Status:** built (scripts/world/terrain_edges.gd, a TerrainEdges node after Ground in every island scene; tests/test_terrain_edges.gd). Tile changes notify it through SaveGame.record_tile; loading a save rebuilds it.
+**Status:** built (scripts/world/terrain_edges.gd, a TerrainEdges node after Ground in every island scene; tests/test_terrain_edges.gd). Tile changes notify it through SaveGame.record_tile; loading a save rebuilds it. Corners are rounded with a radius of 8 px (a quarter of a tile): the first version used the full half tile, which made blobs and pointed gaps where three terrains met.

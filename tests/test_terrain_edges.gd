@@ -47,7 +47,7 @@ func _initialize() -> void:
 	await process_frame
 	var pool := [sand_cell, sand_cell + Vector2i(1, 0), sand_cell + Vector2i(0, 1), sand_cell + Vector2i(1, 1)].filter(
 		func(corner: Vector2i) -> bool: return edges.pieces_at(corner).size() == 1)
-	_expect(pool.size() == 4 and edges.piece_count() == before + 4, "a lone water cell in sand becomes a round pool (4 corners)")
+	_expect(pool.size() == 4 and edges.piece_count() == before + 4, "a lone water cell in sand becomes a rounded pool (4 corners)")
 	_expect(edges.terrain_at(sand_cell) == "water", "the grid cell itself is still plain water: only the look changed")
 	ground.set_cell(sand_cell, 0, atlas)
 	save.record_tile(ground, sand_cell, atlas)

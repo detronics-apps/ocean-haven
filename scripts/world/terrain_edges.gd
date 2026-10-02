@@ -6,12 +6,12 @@ extends Node2D
 ##
 ## Each corner point of the grid is shared by 4 cells. Where one of those 4 is different from
 ## the other 3 (its two neighbours beside it and the one diagonally across are the same terrain),
-## that cell's quarter at the corner is rounded off: the area outside a quarter circle is painted
-## in the neighbours' colour. So a lone water cell in sand becomes a round pool, a lone sand cell
-## in water a round islet, and every L-shaped coast corner gets a curve. Because each shape is
+## that cell's corner is rounded off: the area outside a small quarter circle (RADIUS) is painted
+## in the neighbours' colour. So a lone water cell in sand gets rounded corners, a lone sand cell
+## in water a rounded islet, and every L-shaped coast corner gets a curve. Because each shape is
 ## decided at the shared corner and stays inside one cell's own quarter, the cells on both sides
-## always agree: no gaps, overlaps or seams. The arc meets each cell edge at its middle, at a
-## right angle to the straight edges, so curves and straight coast join smoothly.
+## always agree: no gaps, overlaps or seams. The arc meets the cell edges at right angles, so
+## curves and straight coast join smoothly.
 ##
 ## Worked out once when the island loads (and after loading a save), and again only around
 ## cells that change (every gameplay tile change goes through SaveGame.record_tile, which calls
@@ -19,6 +19,8 @@ extends Node2D
 
 const HALF := 16.0
 const ARC_STEPS := 6
+## How far a rounded corner reaches into its cell (half of the half-cell: a gentle curve).
+const RADIUS := 8.0
 ## Edge styles by terrain pair (both orders); anything not listed is "soft". Room for later:
 ## rock and ice could get harder, more broken edges.
 const STYLES := {}
@@ -119,19 +121,18 @@ func _shape_corner(corner: Vector2i) -> void:
 		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill]])
 
 
-## The polygon filling `cell`'s quarter towards `towards` outside a quarter circle.
+## The polygon filling `cell`'s corner towards `towards` outside a rounded corner of radius
+## RADIUS (half a cell's half, so curves stay small and neighbouring corners never run together).
 func _quarter(cell: Vector2i, towards: Vector2, kind: StringName) -> PackedVector2Array:
-	var centre := _ground.map_to_local(cell)
-	var point := centre + towards * HALF
-	var radius := HALF * (0.85 if kind == &"hard" else 1.0)
+	var point := _ground.map_to_local(cell) + towards * HALF
+	var radius := RADIUS * (0.85 if kind == &"hard" else 1.0)
+	var centre := point - towards * radius
 	var start := Vector2(towards.x, 0.0)
 	var end := Vector2(0.0, towards.y)
-	var shape := PackedVector2Array([point, centre + start * HALF])
+	var shape := PackedVector2Array([point])
 	for i in range(ARC_STEPS + 1):
 		var t := float(i) / ARC_STEPS
-		var direction := start.slerp(end, t).normalized()
-		shape.append(centre + direction * radius)
-	shape.append(centre + end * HALF)
+		shape.append(centre + start.slerp(end, t).normalized() * radius)
 	return shape
 
 
