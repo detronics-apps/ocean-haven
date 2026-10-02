@@ -349,8 +349,24 @@ Protection Areas and washes parrotfish sand back into the lagoon. Every rare eve
 weather when it strikes (StormWeather; EventData.weather: storm / swell / flood / hurricane). The
 ranger has a walking animation (bob, sway, stepping boots).
 
-Playable islands: Starting Island, Kelp Forest, Mangrove Coast, Tropical Reef. The Deep Sea and
-Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or what it still
+**MVP 0.8 — "Deep Sea" (current).** Design: `docs/MASTER_PLAN.md` Step 6 (draft 1, approved).
+`DeepEcosystem` (island child "Ecosystem"): 8 dark areas (`DeepSector`, a veil over their deep
+water) mapped island-wide by instruments: Hydrophone Buoys (quiet; whales' clicks boost them),
+Deep Cameras (lamps light the dark; anglerfish let them use less; "Bait the camera" draws
+sixgill sharks: too many) and submarine dives from the Deep-Ocean Outpost (mark an area from the
+boat; noisy for a day; faster with the Reef's mapping system: MissionData.faster_with). Light and
+noise make the quiet water (`quiet()`, HealthFactor "quiet" scales_all): whales and anglerfish
+move away (never below 1), the giant squid only shows to a camera watching the mapped canyon in
+quiet water for 2 days. Mapped areas show their habitat and lost gear (lost longline / ghost net
+items, counts_as "deep_gear"); a sixgill with a hook surfaces some early; 3 recovered = gear
+marking (`Fleet` flag "gear_marking": no new nets or fishing line drift in anywhere). Deep-Sea
+Sanctuaries (+1 of the area's animals, no new gear), Deep-Sea Discovery Centre (watches whales),
+shore pines (`pine_sapling`). Oil Spill (EventData.oil_patches / needs_building): spreads each
+morning until the Outpost's "Contain" mission. Objective: 6 areas mapped at 70 % -> Cargo search
+-> tow the module in -> Cargo Module (the ships' cargo hold).
+
+Playable islands: Starting Island, Kelp Forest, Mangrove Coast, Tropical Reef, Deep Sea. The
+Polar Ocean is `RegionData.in_development`: Explore says the fleet is ready (or what it still
 needs) and that the island is still under development, and the Map doesn't sail there. Clear
 the flag when an island is finished.
 

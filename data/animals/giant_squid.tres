@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/squid/giant_squid.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"giant_squid"
+display_name = "Giant Squid"
+sprite = ExtResource("2_t")
+habitat = "Dark, deep water hundreds of metres down"
+diet = "Deep-sea fish and other squid"
+fact = "Giant squid have the biggest eyes of any animal, as big as dinner plates. For centuries nobody had seen a living one: it was first filmed alive in its deep home in 2012."
+photo_fact = "In 2019 scientists filmed one using a camera with no bright lights and a glowing lure: quiet, dim equipment lets shy deep animals come close."
+help_fact = "It stays hidden while the deep is noisy or brightly lit. Keep the water quiet and know where it lives, and a patient camera may catch it."
+habitat_terrain = PackedStringArray("")
+swim_speed = 28.0
+shy_distance = 70.0
+discover_distance = 160.0
+curious = false
+interact_distance = 110.0
+dives = true
+surface_seconds = Vector2(4, 6)
+dive_seconds = Vector2(10, 16)
+adult_home_radius = 120.0

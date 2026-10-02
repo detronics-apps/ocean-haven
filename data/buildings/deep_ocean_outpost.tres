@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/deep_ocean_outpost.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"deep_ocean_outpost"
+texture = ExtResource("2_t")
+only_on = &"deep_sea"
+display_name = "Deep-Ocean Outpost"
+description = "The Deep Sea's special building: a research platform that sends a submarine down into the dark. Dives reveal what's hidden fast (mark a dark area from your boat to choose where); surveys show what the deep needs. Its oil-spill response equipment means oil from passing ships can now be found and cleaned up around every island."
+order = 0
+size = Vector2i(2, 2)
+terrain = PackedStringArray("", "water")
+category = &"sea"
+cost_funding = 400
+cost_items = Dictionary[StringName, int]({&"wood": 10})
+facility = &"signature"
+one_per_island = true
+action = &"missions"
+storm_proof = true
+placement_hint = "on the water, off the coast"
+guide = "Nobody knows what lives in the dark water round the hook: 8 dark areas wait to be mapped. Hydrophone Buoys listen quietly (more sperm whales, more they hear); Deep Cameras learn faster, but their lamps light up the dark, and baited ones draw sixgill sharks in. A submarine dive maps one area fast: sail close to a dark area and mark it first. Too much light and noise and the whales and anglerfish move away: once an area is mapped you can take instruments out again. Mapped areas show their habitat and any lost gear to collect; make the best ones Deep-Sea Sanctuaries."
+fact = "Most of the deep sea has never been seen by people: research submarines and robots explore it a little at a time."

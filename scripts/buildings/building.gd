@@ -42,7 +42,8 @@ var built_day := -1
 var _bob := 0.0
 ## Drawbridges: raised right now (boats pass, the ranger can't cross).
 var is_open := false
-## Water gates: closed (holds water on the flats, blocks fish and flow) or open.
+## Water gates: closed (holds water on the flats, blocks fish and flow) or open. Deep cameras:
+## baited (see baited()); both switch to BuildingData.closed_texture.
 var gate_closed := false:
 	set(value):
 		gate_closed = value
@@ -171,6 +172,8 @@ func actions() -> Array:
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
 		list.append({"label": "Open the gate" if gate_closed else "Close the gate", "do": toggle_gate})
+	if data.action == &"bait":
+		list.append({"label": "Take the bait out" if gate_closed else "Bait the camera", "do": toggle_bait})
 	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
 	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:
@@ -305,6 +308,18 @@ func toggle_gate() -> void:
 	get_tree().call_group("hud", "show_toast", "Gate %s. %s" % ["closed" if gate_closed else "opened",
 		"It holds water on the flats, but fish and flowing water can't get through." if gate_closed
 		else "Fish and water flow through, flushing silt out, but the flats drain a little."])
+
+
+## A deep camera with bait: it learns faster, but draws sixgill sharks in.
+func baited() -> bool:
+	return data.action == &"bait" and gate_closed
+
+
+func toggle_bait() -> void:
+	gate_closed = not gate_closed
+	get_tree().call_group("ecosystems", "settle_now")
+	get_tree().call_group("hud", "show_toast", "Camera baited: it learns faster, but the bait draws sixgill sharks in from far away." if gate_closed
+		else "Bait taken out: the camera learns more slowly, and visiting sharks drift away again.")
 
 
 ## Takes it down (tap twice), giving back half its wood. Animals living here move out
@@ -529,6 +544,8 @@ func _numbers() -> String:
 		return "Running" if Fleet.has_flag(data.made_flag) else ("Firing up" if loaded > 0 else "Needs %d %s" % [data.makes_from_count, data.makes_from])
 	if data.action == &"explore":
 		return "Level %d" % Fleet.level()
+	if data.action == &"bait":
+		return "Baited: draws sharks" if baited() else "Lamp on"
 	var lines: Array[String] = []
 	if capacity() > 0:
 		var kind := "Turtles"

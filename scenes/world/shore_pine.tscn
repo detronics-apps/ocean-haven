@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/shore_pine.svg" id="1_spine"]
+[ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="2_spine"]
+[ext_resource type="Resource" path="res://data/items/pine_sapling.tres" id="3_spine"]
+[ext_resource type="Resource" path="res://data/plants/shore_pine.tres" id="4_spine"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_spine"]
+radius = 5.0
+
+[node name="ShorePine" type="StaticBody2D" groups=["plants"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_spine")
+sapling = ExtResource("3_spine")
+plant = ExtResource("4_spine")
+
+[node name="Trunk" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_spine")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_spine")
+offset = Vector2(0, -28)

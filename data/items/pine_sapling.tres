@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/items/pine_sapling.svg" id="1_psap"]
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+id = &"pine_sapling"
+display_name = "Pine Sapling"
+icon = ExtResource("1_psap")
+is_litter = false
+fact = "Shore pines grow on windy, rocky coasts where few other trees can, bent and twisted by the sea wind."
+carry_limit = 5

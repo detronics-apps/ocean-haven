@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/deep_sanctuary.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"deep_sanctuary"
+texture = ExtResource("2_t")
+only_on = &"deep_sea"
+display_name = "Deep-Sea Sanctuary"
+description = "Marks a mapped area of the deep as a sanctuary: no fishing, so no more lost gear sinks there, and one more of the animals living there can settle. Place it in an area you've already mapped."
+order = 3
+size = Vector2i(1, 1)
+terrain = PackedStringArray("", "water")
+category = &"sea"
+cost_funding = 100
+cost_items = Dictionary[StringName, int]({&"wood": 1})
+max_count = 3
+demolishable = true
+storm_proof = true
+placement_hint = "in a mapped area of the deep"
+fact = "Marine protected areas where fishing isn't allowed let deep-sea animals, which grow slowly and live long, recover."

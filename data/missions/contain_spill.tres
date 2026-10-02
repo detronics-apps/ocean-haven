@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/contain_spill.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"contain_spill"
+display_name = "Contain the oil spill"
+icon = ExtResource("2_icon")
+description = "Seals the source of an oil spill so no more oil comes up. Then clean the patches up with your boat."
+order = 8
+facility = &"deep_ocean_outpost"
+cost = 50
+minutes = 2.0
+effect = &"contain_spill"
+effect_days = 0.0
+marker_colour = Color(0.6, 0.4, 0.8, 1)
+report = "{detail}"
+report_none = "{detail}"

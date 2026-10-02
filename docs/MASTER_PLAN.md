@@ -835,7 +835,7 @@ System**: maps underwater terrain, reef edges, shallow and deep areas, habitats.
 3. "Workshop" and "Storage": storage is the Ranger House; there's no workshop yet.
 4. The Reef Diving Centre: kept simple, a funding building like the Eco-Lodge.
 
-### Step 6 — Deep Sea (colder, 2nd) — draft 1, approved
+### Step 6 — Deep Sea (colder, 2nd) — draft 1, approved and built (first version)
 Lesson: **we can't protect what we don't understand.** A different game from the other islands.
 On the other islands the player *sees* the problem and fixes it. Here most of the island is
 **dark and unknown**: the player builds up understanding first, and only then can they act.
@@ -947,6 +947,11 @@ gives the ship a cargo hold.
   That unlocks **Gear marking & recovery** world-wide: no new ghost nets or fishing line drift
   in on any island. This is the same "fix it at the source" idea as the Reef's bottles.
 - **The Reef's Habitat Mapping System** (already in the fleet) makes dives 25 % faster.
+
+**Built differently from the draft:** lost gear is its own items (lost longline, lost ghost net),
+so it can't be mixed up with ordinary litter; the Discovery Centre's visitors grow with the
+sperm whales (like the other islands' watched animals); instruments are placed anywhere (the
+knowledge goes to the best-known dark area first, so areas open one by one).
 
 **Decided:**
 1. **Storage:** Ranger Houses keep only wood and saplings, shared by every island (the Reef has

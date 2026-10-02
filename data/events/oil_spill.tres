@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+
+[resource]
+script = ExtResource("1_evt")
+id = &"oil_spill"
+display_name = "Oil Spill"
+region = &"deep_sea"
+min_gap_days = 30
+max_gap_days = 60
+warning_days = 3
+warning_days_max = 4
+warning = "Sensors have picked up oil far out in the deep, drifting towards the Deep Sea {when}! Have the Deep-Ocean Outpost ready: once it arrives, a submarine dive finds where it's coming from and the Outpost can contain it."
+banner = "Oil spill {when} at the Deep Sea"
+aftermath = "Oil is coming up in the deep! Send a submarine dive to trace its source, then contain it from the Deep-Ocean Outpost: the longer it runs, the further it spreads. Sail your boat through the patches to clean them up."
+damage_chance = 0.0
+litter_washed = 0
+repair_wood = 1
+oil_patches = 4
+needs_building = &"deep_ocean_outpost"
+weather = &"oil"

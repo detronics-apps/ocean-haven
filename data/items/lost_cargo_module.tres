@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/items/lost_cargo_module.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"lost_cargo_module"
+display_name = "Lost cargo module"
+icon = ExtResource("2_t")
+is_litter = false
+ranger_cleans = true
+flag = &"cargo_recovered"
+pickup_note = "You towed the lost cargo module in! Animals had made a home on it down in the dark: it's been cleaned and refitted as a cargo hold."
+fact = "Ships lose thousands of cargo containers at sea every year. Many sink to the deep seabed, where they stay for decades."

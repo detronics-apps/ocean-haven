@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/hydrophone_buoy.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"hydrophone_buoy"
+texture = ExtResource("2_t")
+only_on = &"deep_sea"
+display_name = "Hydrophone Buoy"
+description = "An underwater microphone that listens to the deep. Quiet and slow: it adds a little knowledge every day, more for each sperm whale on the island (their clicks map the water round them). Levels listen further."
+order = 1
+size = Vector2i(1, 1)
+terrain = PackedStringArray("", "water")
+category = &"sea"
+cost_funding = 60
+cost_items = Dictionary[StringName, int]({&"wood": 1})
+max_count = 6
+max_tier = 3
+upgrade_funding = 40
+upgrade_items = Dictionary[StringName, int]({&"wood": 1})
+demolishable = true
+storm_proof = true
+placement_hint = "on the water"
+fact = "Hydrophones are underwater microphones. Scientists use them to follow whales by their calls without disturbing them."

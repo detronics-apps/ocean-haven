@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/deep_dive.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"deep_dive"
+display_name = "Submarine dive"
+icon = ExtResource("2_icon")
+description = "The submarine dives into a dark area and reveals it fast: the one you marked from your boat (sail close to a dark area to mark it), or else the best-known one. Dives are noisy: the deep is less quiet for a day."
+order = 1
+facility = &"deep_ocean_outpost"
+cost = 40
+minutes = 2.0
+effect = &"deep_dive"
+effect_days = 0.0
+marker_colour = Color(1, 0.85, 0.3, 1)
+faster_with = &"reef_limestone"
+report = "{detail}"
+report_none = "{detail}"

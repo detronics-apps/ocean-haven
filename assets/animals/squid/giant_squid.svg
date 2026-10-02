@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="16" viewBox="0 0 44 16" shape-rendering="crispEdges">
+  <!-- placeholder: giant squid (mantle on the left, long arms trailing to the right, big eye) -->
+  <polygon points="0,8 4,4 4,12" fill="#8a3a32"/>
+  <rect x="4" y="4" width="16" height="8" fill="#b24a3e"/>
+  <rect x="6" y="5" width="12" height="2" fill="#c8685a"/>
+  <rect x="20" y="5" width="4" height="6" fill="#a8463a"/>
+  <rect x="21" y="6" width="2" height="2" fill="#f0f0e0"/><rect x="22" y="7" width="1" height="1" fill="#111111"/>
+  <g fill="#9c4236"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
+</svg>

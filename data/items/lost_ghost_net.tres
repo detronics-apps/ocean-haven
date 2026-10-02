@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"lost_ghost_net"
+display_name = "Lost ghost net"
+icon = ExtResource("2_t")
+is_litter = false
+counts_as = &"deep_gear"
+pickup_note = "Lost ghost net hauled up from the deep (%d recovered)."
+fact = "Ghost nets are fishing nets lost at sea. Drifting or snagged on the seabed, they keep trapping animals until someone removes them."

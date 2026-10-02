@@ -50,3 +50,7 @@ extends Resource
 @export var report: String
 ## Report when it found nothing.
 @export var report_none: String
+## A fleet discovery that, once installed, makes this mission `faster_share` quicker (dives
+## with the Reef's Habitat Mapping System).
+@export var faster_with: StringName = &""
+@export var faster_share := 0.25

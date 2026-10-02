@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_dvrnw"]
+[ext_resource type="PackedScene" path="res://scenes/world/shore_pine.tscn" id="2_kh4ij"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/shore_pine.svg" id="3_islgd"]
+
+[resource]
+script = ExtResource("1_dvrnw")
+id = &"shore_pine"
+display_name = "Shore Pine"
+description = "Plant a pine sapling on sand, grass or rock. It grows a stage a day; a full-grown tree gives 1-2 wood and 1-2 saplings."
+order = 6
+texture = ExtResource("3_islgd")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("sand", "grass", "rock")
+spawns = ExtResource("2_kh4ij")
+draw_texture = false
+fact = "Trees on rocky coasts hold the thin soil in place, so less of it washes into the sea."
+cost_items = Dictionary[StringName, int]({&"pine_sapling": 1})
+only_on = &"deep_sea"
+category = &"land"
+movable = false
+build_verb = "Plant"
+storm_proof = true

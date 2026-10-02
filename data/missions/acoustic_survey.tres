@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/acoustic_survey.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"acoustic_survey"
+display_name = "Acoustic survey"
+icon = ExtResource("2_icon")
+description = "Listens to the deep: how many sperm whales there are, and whether it's too noisy for more."
+order = 2
+facility = &"deep_ocean_outpost"
+cost = 15
+minutes = 2.0
+effect = &"acoustic_survey"
+effect_days = 0.0
+marker_colour = Color(0.6, 0.9, 1, 1)
+report = "{detail}"
+report_none = "{detail}"

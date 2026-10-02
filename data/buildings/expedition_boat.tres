@@ -32,4 +32,4 @@ fleet_textures = Array[Texture2D]([ExtResource("2_br52n"), ExtResource("3_lv2"),
 storm_proof = true
 storage = 99
 storage_needs = &"cargo_module"
-stores = PackedStringArray("wood", "sapling", "coastal_sapling", "mangrove_propagule", "sand", "mud", "clean_water", "coral_fragment")
+stores = PackedStringArray("wood", "sapling", "coastal_sapling", "pine_sapling", "mangrove_propagule", "sand", "mud", "clean_water", "coral_fragment")

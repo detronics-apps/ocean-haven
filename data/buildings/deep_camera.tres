@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/deep_camera.svg" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/deep_camera_baited.svg" id="3_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"deep_camera"
+texture = ExtResource("2_t")
+closed_texture = ExtResource("3_t")
+only_on = &"deep_sea"
+display_name = "Deep Camera"
+description = "A camera lowered into the dark: it learns faster than a hydrophone, but its lamp disturbs the deep (anglerfish make it need less light). Bait it to learn faster still, but bait draws sixgill sharks in from far away. Levels need less light."
+order = 2
+size = Vector2i(1, 1)
+terrain = PackedStringArray("", "water")
+category = &"sea"
+cost_funding = 120
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 4
+max_tier = 3
+upgrade_funding = 60
+upgrade_items = Dictionary[StringName, int]({&"wood": 1})
+action = &"bait"
+demolishable = true
+storm_proof = true
+placement_hint = "on the water"
+fact = "Baited underwater cameras are a real way scientists count deep-sea sharks and fish: the bait brings them into view."

@@ -2,12 +2,91 @@
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_l7stf"]
 [ext_resource type="Texture2D" path="res://assets/ui/maps/hook_island.png" id="1_vsim8"]
+[ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="4_goal"]
+
+[sub_resource type="Resource" id="Health_clean"]
+script = ExtResource("3_health")
+kind = &"clean"
+amount = 10
+weight = 6.0
+text = "Litter in the water and on the shore"
+
+[sub_resource type="Resource" id="Health_knowledge"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"knowledge"
+amount = 100
+weight = 3.0
+text = "The deep mapped"
+
+[sub_resource type="Resource" id="Health_gear"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"gear"
+weight = 2.0
+text = "Lost fishing gear in the deep"
+
+[sub_resource type="Resource" id="Health_whales"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"sperm_whale"
+amount = 3
+weight = 2.0
+text = "Sperm whales"
+
+[sub_resource type="Resource" id="Health_anglers"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"anglerfish"
+amount = 4
+text = "Anglerfish in the dark"
+
+[sub_resource type="Resource" id="Health_sharks"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"sixgill_shark"
+amount = 2
+too_many = 3
+text = "Sixgill sharks"
+
+[sub_resource type="Resource" id="Health_squid"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"giant_squid"
+amount = 1
+text = "Giant squid seen"
+
+[sub_resource type="Resource" id="Health_quiet"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"quiet"
+text = "Quiet, dark water"
+scales_all = true
+
+[sub_resource type="Resource" id="Goal_mapped"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"deep_mapped"
+text = "Map the deep (6 of the 8 dark areas) and bring the island to 70 %"
+
+[sub_resource type="Resource" id="Goal_located"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"cargo_located"
+text = "Find the lost cargo module (a Cargo Search from the Deep-Ocean Outpost)"
+
+[sub_resource type="Resource" id="Goal_recovered"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"cargo_recovered"
+text = "Tow the cargo module in with your boat"
 
 [resource]
 script = ExtResource("1_l7stf")
 id = &"deep_sea"
 display_name = "Deep Sea"
-description = "A rocky hook curling round deep water. (Its wildlife coming soon.)"
+description = "A rocky hook curling round deep, dark water. Nobody knows what lives down there: listen, watch and dive to find out, without disturbing it."
 order = 5
 direction = &"colder"
 theme = "Scientific discovery"
@@ -17,5 +96,7 @@ arrival = Vector2(15632, 16)
 boat_mooring = Vector2(15600, 16)
 map_icon = ExtResource("1_vsim8")
 requires = &"kelp_fibre"
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_knowledge"), SubResource("Health_gear"), SubResource("Health_whales"), SubResource("Health_anglers"), SubResource("Health_sharks"), SubResource("Health_squid"), SubResource("Health_quiet")])
+objective = "Understand the deep, and recover what was lost there"
+goals = Array[ExtResource("4_goal")]([SubResource("Goal_mapped"), SubResource("Goal_located"), SubResource("Goal_recovered")])
 discovery = &"cargo_module"
-in_development = true

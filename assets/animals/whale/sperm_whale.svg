@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="20" viewBox="0 0 64 20" shape-rendering="crispEdges">
+  <!-- placeholder: sperm whale seen from above at the surface (huge square head on the right) -->
+  <polygon points="0,4 6,9 0,16 3,10" fill="#4a4f5a"/>
+  <polygon points="5,8 20,5 20,15 5,12" fill="#5c626e"/>
+  <rect x="20" y="4" width="20" height="12" fill="#646a77"/>
+  <rect x="40" y="3" width="22" height="14" fill="#6c7280"/>
+  <rect x="61" y="5" width="2" height="10" fill="#5c626e"/>
+  <rect x="58" y="4" width="2" height="2" fill="#2a2d33"/>
+  <rect x="24" y="6" width="12" height="1" fill="#7c8290"/><rect x="44" y="5" width="14" height="1" fill="#7c8290"/>
+  <polygon points="28,16 32,16 30,19" fill="#4a4f5a"/>
+</svg>

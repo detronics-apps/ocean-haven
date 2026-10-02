@@ -2,12 +2,13 @@ class_name StormWeather
 extends Control
 ## The weather of a rare event, shown over the game when it strikes (EventData.weather): a
 ## coastal storm's driving rain and dark sky, heavy swell's rolling waves and spray, a flash
-## flood's muddy downpour, a hurricane's wind, rain and flying leaves. A few seconds, then it clears.
+## flood's muddy downpour, a hurricane's wind, rain and flying leaves, an oil spill's dark sheen on the swell. A few seconds, then it clears.
 
 const KINDS := {
 	&"storm": {"sky": Color(0.18, 0.22, 0.3, 0.55), "rain": 140, "slant": 0.35, "wind": 6, "waves": 0, "leaves": 0, "flash": true},
 	&"swell": {"sky": Color(0.15, 0.3, 0.38, 0.4), "rain": 30, "slant": 0.2, "wind": 10, "waves": 7, "leaves": 0, "flash": false},
 	&"flood": {"sky": Color(0.32, 0.26, 0.18, 0.5), "rain": 220, "slant": 0.08, "wind": 2, "waves": 3, "leaves": 0, "flash": false},
+	&"oil": {"sky": Color(0.12, 0.08, 0.14, 0.45), "rain": 0, "slant": 0.0, "wind": 2, "waves": 6, "leaves": 0, "flash": false},
 	&"hurricane": {"sky": Color(0.16, 0.2, 0.26, 0.6), "rain": 260, "slant": 1.2, "wind": 26, "waves": 5, "leaves": 24, "flash": true},
 }
 const SECONDS := 7.0

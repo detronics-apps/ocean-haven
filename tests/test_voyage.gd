@@ -120,7 +120,7 @@ func _initialize() -> void:
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	_expect(build_mode.placement_problem(ship, kelp_cell).begins_with("First: restore the kelp forest"),
 		"no ship before the island's objective is done (%s)" % build_mode.placement_problem(ship, kelp_cell))
-	var reef_cell := Vector2i((region.call("deep_sea").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
+	var reef_cell := Vector2i((region.call("arctic_ocean").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
 	_expect(build_mode.placement_problem(ship, reef_cell).contains("coming soon"),
 		"none on an island whose objective isn't made yet")
 	build_mode.add_building(ship, kelp_cell)
@@ -139,13 +139,11 @@ func _initialize() -> void:
 	fleet.install(&"kelp_fibre")
 	_expect(fleet.level() == 2 and home_ship.get_node("Sprite2D").texture == ship.fleet_textures[1],
 		"Kelp Fibre installed: Level 2, every ship upgraded")
-	# The Deep Sea is still under development: the fleet is ready, but it can't be found yet.
+	# The Deep Sea is ready to explore now (exploring it is tested in test_deep_sea.gd).
 	explore.open()
-	_expect(explore.find_child("ExploreColder", true, false).disabled and _texts(explore).contains("under development"),
-		"with Kelp Fibre installed: 'you've done everything needed', the Deep Sea is still under development")
+	_expect(not explore.find_child("ExploreColder", true, false).disabled and regions.next_undiscovered(&"colder") == region.call("deep_sea"),
+		"with Kelp Fibre installed the Deep Sea can be explored")
 	explore.close()
-	explore.explore(&"colder")
-	_expect(not regions.is_discovered(region.call("deep_sea")), "so it isn't discovered yet")
 	# Warmer from the Kelp Forest: the Mangrove Coast.
 	_expect(regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "warmer from the Kelp Forest: Mangrove Coast")
 	explore.explore(&"warmer")
@@ -168,9 +166,9 @@ func _initialize() -> void:
 	_expect(map.find_child("Entry_kelp_forest", true, false).find_child("Sail", true, false) != null, "sail back to the Kelp Forest")
 	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null, "not to the undiscovered Polar Ocean")
 	map.close()
-	regions.discover(region.call("deep_sea"))  # (e.g. an older save)
+	regions.discover(region.call("arctic_ocean"))  # (e.g. an older save)
 	map.open()
-	_expect(map.find_child("Entry_deep_sea", true, false).find_child("Sail", true, false) == null
+	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null
 		and _texts(map).contains("Still under development"), "the Map doesn't sail to an island under development")
 	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
 	for i in 240:

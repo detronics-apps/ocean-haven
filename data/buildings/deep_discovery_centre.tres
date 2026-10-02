@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/deep/deep_discovery_centre.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"deep_discovery_centre"
+texture = ExtResource("2_t")
+only_on = &"deep_sea"
+display_name = "Deep-Sea Discovery Centre"
+description = "Visitors watch the submarine's live feed and learn about the deep. More sperm whales and a healthier deep, more visitors and funding."
+order = 6
+size = Vector2i(2, 1)
+terrain = PackedStringArray("sand", "grass", "rock")
+cost_funding = 150
+cost_items = Dictionary[StringName, int]({&"wood": 4})
+facility = &"funding"
+visitors = 20
+visitors_per_animal = 8
+watches = &"sperm_whale"
+watch_range = 0.0
+max_count = 2
+placement_hint = "on the land"
+fact = "Live video from deep-sea research submarines is streamed online, so anyone can watch scientists discover new animals."

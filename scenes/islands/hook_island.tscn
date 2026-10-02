@@ -2,6 +2,8 @@
 
 [ext_resource type="TileSet" path="res://assets/tilesets/placeholder_tileset.tres" id="1_4vngq"]
 [ext_resource type="Script" path="res://scripts/world/terrain_edges.gd" id="9_edges"]
+[ext_resource type="PackedScene" path="res://scenes/world/shore_pine.tscn" id="10_pine"]
+[ext_resource type="Script" path="res://scripts/world/deep_ecosystem.gd" id="11_deep"]
 
 [node name="HookIsland" type="Node2D" unique_id=1706261147]
 y_sort_enabled = true
@@ -13,3 +15,33 @@ tile_set = ExtResource("1_4vngq")
 
 [node name="TerrainEdges" type="Node2D" parent="."]
 script = ExtResource("9_edges")
+
+[node name="Ecosystem" type="Node2D" parent="."]
+script = ExtResource("11_deep")
+
+[node name="Tree1" parent="." instance=ExtResource("10_pine")]
+position = Vector2(336, -80)
+
+[node name="Tree2" parent="." instance=ExtResource("10_pine")]
+position = Vector2(-240, -144)
+
+[node name="Tree3" parent="." instance=ExtResource("10_pine")]
+position = Vector2(400, -336)
+
+[node name="Tree4" parent="." instance=ExtResource("10_pine")]
+position = Vector2(-176, -400)
+
+[node name="Tree5" parent="." instance=ExtResource("10_pine")]
+position = Vector2(208, -400)
+
+[node name="Tree6" parent="." instance=ExtResource("10_pine")]
+position = Vector2(16, -464)
+
+[node name="Tree7" parent="." instance=ExtResource("10_pine")]
+position = Vector2(-112, 16)
+
+[node name="Tree8" parent="." instance=ExtResource("10_pine")]
+position = Vector2(-112, -240)
+
+[node name="Tree9" parent="." instance=ExtResource("10_pine")]
+position = Vector2(464, -176)

@@ -67,7 +67,8 @@ func _on_new_day(day: int) -> void:
 				else:
 					_coming[event.id] = day + 1
 		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
-				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)):
+				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
+				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
 			var since: int = day - _last_day.get(event.id, 0)
 			# Warned 3-4 days ahead, but never so late that it strikes after max_gap_days.
 			var lead := clampi(randi_range(event.warning_days, event.warning_days_max), event.warning_days,
@@ -143,6 +144,10 @@ func strike(event: EventData) -> int:
 		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
 			if ecosystem.region_id == event.region and ecosystem.has_method("flood"):
 				torn += ecosystem.flood(event.flood_silt)
+	if event.oil_patches > 0:
+		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+			if ecosystem.region_id == event.region and ecosystem.has_method("oil_spill"):
+				ecosystem.oil_spill(event.oil_patches)
 	if event.visibility_days > 0.0:
 		_murky[event.region] = GameClock.now() + event.visibility_days
 	struck.emit(event, damaged)

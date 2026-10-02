@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/cargo_search.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"cargo_search"
+display_name = "Cargo search"
+icon = ExtResource("2_icon")
+description = "Searches the old shipping lane for the lost cargo module, once 6 dark areas are mapped and the island is at 70 %, and floats it up for you to tow in."
+order = 7
+facility = &"deep_ocean_outpost"
+cost = 60
+minutes = 3.0
+effect = &"cargo_search"
+effect_days = 0.0
+marker_colour = Color(1, 0.6, 0.3, 1)
+hide_flag = &"cargo_located"
+report = "{detail}"
+report_none = "{detail}"

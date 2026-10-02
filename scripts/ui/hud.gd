@@ -83,7 +83,7 @@ func _ready() -> void:
 	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back in %s." % [m.display_name, Missions.time_left()]))
 	Missions.returned.connect(_on_mission_returned)
 	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s!\n%s" % [e.display_name, e.warning.replace("{when}", RareEvents.when(e.id))]))
-	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged))
+	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged if "%d" in e.aftermath else e.aftermath))
 	# What's coming (a storm warning), under the clock until it arrives.
 	_event_note = Label.new()
 	_event_note.name = "EventNote"

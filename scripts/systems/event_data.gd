@@ -39,7 +39,13 @@ extends Resource
 ## for this many days.
 @export var visibility_days := 0.0
 @export var slow_missions := 1.5
-## The weather shown when it strikes (StormWeather): "storm", "swell", "flood" or "hurricane".
+## The weather shown when it strikes (StormWeather): "storm", "swell", "flood", "hurricane" or "oil".
 @export var weather: StringName = &"storm"
 ## Flash floods: silt dumped in the island's channels (1 = a channel tile silts up).
 @export var flood_silt := 0.0
+## Oil spills: patches of oil that come up at once (the island's ecosystem spreads them each
+## morning until the source is contained).
+@export var oil_patches := 0
+## Only comes once a building with this id exists (the oil spill: the Deep-Ocean Outpost that
+## can respond to it).
+@export var needs_building: StringName = &""

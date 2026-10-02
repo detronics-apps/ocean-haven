@@ -76,6 +76,9 @@ foundations the mechanics sit on, not the mechanics themselves.
   water, sharks find ghost gear, seahorses show the seagrass is working).
 - **Solving a problem at its source ends it.** Once the player builds the alternative (reusable
   glass bottles), the game stops generating that pollution: restoration has an end state.
+- **Learning has a cost, and it can be undone** (the Deep Sea): instruments that reveal things
+  also disturb (light, noise, bait). Once an area is mapped the player can take them out again,
+  so a careful, quiet setup and a fast, noisy one followed by tidying up both reach 100 %.
 - **Capabilities aren't items.** Glass-making is unlocked at the Glassworks, not carried as glass;
   it unlocks later buildings. Keep new items to what the player really handles.
 - **Every animal has a role** that changes a decision (needs help, helps others, or drives the

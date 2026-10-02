@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/shore_pine.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"shore_pine"
+display_name = "Shore Pine"
+picture = ExtResource("2_plant")
+habitat = "Windy, rocky coasts (the Deep Sea)"
+fact = "Shore pines grow on rocky headlands and sand dunes, bent into twisted shapes by the sea wind."
+role = "Gives wood and saplings for building the research stations."

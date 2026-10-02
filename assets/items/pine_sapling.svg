@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- placeholder: shore pine sapling in a little root ball -->
+  <rect x="7" y="8" width="2" height="5" fill="#5e3d24"/>
+  <ellipse cx="8" cy="7" rx="5" ry="3" fill="#37643f"/>
+  <ellipse cx="9" cy="4" rx="3" ry="2" fill="#4d8455"/>
+  <rect x="4" y="12" width="8" height="3" fill="#6b4a2c"/>
+</svg>
