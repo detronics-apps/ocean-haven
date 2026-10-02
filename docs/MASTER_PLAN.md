@@ -951,6 +951,6 @@ gives the ship a cargo hold.
 **Decided:**
 1. **Storage:** Ranger Houses keep only wood and saplings, shared by every island (the Reef has
    no way to get wood). Nothing else is stored until the fleet has the **Cargo Module**: it
-   opens a hold on every Exploration Ship (10 of each: sand, mud, clean water, coral fragments),
-   with a storage menu. So the Cargo Module *is* the hold.
+   opens a cargo hold on every Exploration Ship: 99 of everything, wood and saplings too (the
+   house's storage stays small), with a storage menu. So the Cargo Module *is* the hold.
 2. **Oil spill:** a random 30–60 days apart, like every other rare event.

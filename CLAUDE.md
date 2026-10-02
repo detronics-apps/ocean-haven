@@ -356,8 +356,8 @@ the flag when an island is finished.
 
 Storage (BuildingData.stores, shared by every island): Ranger Houses keep only wood and
 saplings (4 / 8 / 10 of each), so islands without trees can still build; nothing else is stored
-until the fleet has the Deep Sea's Cargo Module, which opens a hold on every Exploration Ship
-(sand, mud, clean water, coral fragments: 10 of each; BuildingData.storage_needs). Both open a
+until the fleet has the Deep Sea's Cargo Module, which opens a cargo hold on every Exploration
+Ship: 99 of everything, wood and saplings too (BuildingData.storage_needs). Both open a
 Storage menu (StorageMenu) instead of a line of text; more stored than there's room for can be
 taken out at any store.
 

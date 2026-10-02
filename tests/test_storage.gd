@@ -1,6 +1,6 @@
 extends SceneTree
 ## Storage: Ranger Houses keep wood and saplings, Exploration Ships (once the fleet has the
-## Cargo Module) keep everything else (sand,
+## Cargo Module) keep 99 of everything (sand,
 ## mud, clean water, coral fragments); every storable item has a home; each store opens a
 ## Storage menu (store / take per item) instead of a long line of text; stored items are shared
 ## by every island; sand stored in a house before ships held it can still be taken out.
@@ -29,8 +29,8 @@ func _initialize() -> void:
 	_expect(homeless.is_empty(), "every storable item has a store (%s)" % [homeless.map(func(i: Resource) -> StringName: return i.id)])
 	_expect(not ("sand" in house_data.stores) and "wood" in house_data.stores and "sapling" in house_data.stores,
 		"Ranger Houses keep wood and saplings only")
-	_expect("sand" in ship_data.stores and "mud" in ship_data.stores and not ("wood" in ship_data.stores),
-		"Exploration Ships keep sand, mud and the rest")
+	_expect("sand" in ship_data.stores and "mud" in ship_data.stores and "wood" in ship_data.stores,
+		"Exploration Ships' cargo hold keeps everything")
 
 	var house: Node2D = build_mode.add_building(house_data, Vector2i(2, 2))
 	var tree := house.get_tree()
@@ -62,18 +62,18 @@ func _initialize() -> void:
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "stored 3 wood from the menu")
 	menu.close()
 
-	# A ship keeps sand once the fleet has the Cargo Module: room for 10, shared with every island.
+	# A ship's cargo hold opens with the Cargo Module: room for 99 of everything, shared with every island.
 	var ship: Node2D = build_mode.add_building(ship_data, Vector2i(-30, 30))
 	_expect(building_script.storage_space(tree, &"sand") == 0, "no ship hold before the Cargo Module")
 	root.get_node("Fleet").restore({"found": ["cargo_module"], "installed": ["cargo_module"]})
-	_expect(building_script.storage_space(tree, &"sand") == 10 and building_script.storage_space(tree, &"wood") == 4,
-		"an Exploration Ship: room for 10 sand (and no wood)")
+	_expect(building_script.storage_space(tree, &"sand") == 99 and building_script.storage_space(tree, &"wood") == 4 + 99,
+		"an Exploration Ship's cargo hold: room for 99 of everything, wood too")
 	player.global_position = ship.global_position + Vector2(0, 40)
 	_expect(ship.actions().any(func(a: Dictionary) -> bool: return a.label == "Storage"), "the ship offers its Storage")
 	ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Storage")[0].do.call()
 	content = menu.get("_content")
-	_expect(content.has_node("sand") and content.has_node("mud") and not content.has_node("wood"),
-		"the ship's menu lists sand and mud, not wood")
+	_expect(content.has_node("sand") and content.has_node("mud") and content.has_node("wood"),
+		"the ship's menu lists everything")
 	content.get_node("sand/Store").pressed.emit()
 	await process_frame
 	_expect(inventory.count(&"sand") == 0 and inventory.stored(&"sand") == 2, "sand stored in the ship")

@@ -9,5 +9,5 @@ display_name = "Cargo Module"
 order = 5
 description = "An abandoned cargo module, found on the deep seabed with sonar and cameras, and recovered."
 upgrade_name = "Cargo Hold"
-capability = "a cargo hold on every ship: keep sand, mud, clean water and coral fragments (10 of each per ship)"
+capability = "a cargo hold on every ship: 99 of everything (wood, saplings, sand, mud, clean water, coral fragments)"
 fact = "Ships lose cargo containers overboard every year. Scientists who studied one on the deep seabed found sea stars, snails and other animals had made it their home."
