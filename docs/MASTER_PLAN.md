@@ -1090,9 +1090,9 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   mini-game).
 
 **Look and feel (the user's list, for later)**
-- A very subtle texture on sand, grass and rock tiles, so they aren't flat colour.
-- A new colour for rock: it looks too much like water now.
-- A gentle wave animation on the sea.
+- ✅ A very subtle texture on sand, grass and rock tiles.
+- ✅ Rock is warm stone now, no longer water-like (tiles, minimap, island maps).
+- ✅ Gentle wave crests on the water (`SeaWaves`).
 - Terrain edges: soften straight edges, and give each pair of terrains its own edge style
   (`docs/TERRAIN_EDGES.md`).
 - Real art to replace the placeholders.
