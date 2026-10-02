@@ -834,3 +834,126 @@ System**: maps underwater terrain, reef edges, shallow and deep areas, habitats.
 2. Clean Water's own uses in houses, research and visitor facilities.
 3. "Workshop" and "Storage": storage is the Ranger House; there's no workshop yet.
 4. The Reef Diving Centre: kept simple, a funding building like the Eco-Lodge.
+
+### Step 6 — Deep Sea (colder, 2nd) — draft 1, for approval
+Lesson: **we can't protect what we don't understand.** A different game from the other islands.
+On the other islands the player *sees* the problem and fixes it. Here most of the island is
+**dark and unknown**: the player builds up understanding first, and only then can they act.
+The tension is **learning versus disturbing**: every instrument that teaches you something also
+adds light or noise to a place that has always been dark and quiet.
+
+**What the player does:**
+- **The deep is split into 8 dark sectors** around the hook (and the deep water inside it).
+  - Each sector starts unknown, drawn as a dark veil over the water and the minimap.
+  - Each has 0–100 % *knowledge*. At 100 % the veil lifts and the sector's contents show:
+    - its habitat (whale feeding ground, squid canyon, anglerfish slope, shark ledge);
+    - any hidden problems in it (lost longlines, ghost nets);
+    - in one sector, the lost cargo module.
+- **Instruments add knowledge every day, island-wide.** How many the player builds matters,
+  not where they go. Knowledge goes first to the sector that is least known.
+  - **Hydrophone Buoy:** quiet and slow. Each sperm whale on the island makes its output
+    bigger, because whale clicks map the water around them.
+  - **Deep Camera:** faster, but its lights disturb. Anglerfish make it better: their glow
+    lets cameras see without lights.
+  - **Baited camera:** a camera can be switched to "baited" (a real research method). That
+    is faster still, but it draws deep-sea sharks in.
+- **Submarine dives** from the Deep-Ocean Outpost are the one thing the player aims. They pick
+  a sector, and the dive reveals it fast. Dives cost funding and are noisy for a while.
+- **Then the player acts on what's found:**
+  - lost gear surfaces at a marker buoy, and the ranger hauls it up from the rowboat (hold
+    the action, like the wreck);
+  - an understood habitat sector can be made a **Deep-Sea Sanctuary**: no fishing, quiet.
+- **Disturbance is island-wide.** Lit cameras, baited cameras, dives and patrol boats add up,
+  measured against the share of quiet water left. This works like the patrol-boat rule.
+  Whales, squid and anglerfish need enough quiet. Too little quiet and they move away (never
+  below 1). With enough quiet they come back.
+
+**Species and their roles:**
+- **Sperm whale (helper, needs help).** Its clicks speed up the hydrophones. It starts
+  tangled in a lost longline at the surface, so the ranger frees it from the boat. It is
+  noise-shy.
+- **Giant squid (the rare discovery, the indicator).** It is never seen until a quiet,
+  well-known squid canyon has had a camera running there for 2 days with low disturbance.
+  - Photographing it brings a large research grant.
+  - It is the island's sign that the deep is understood *and* undisturbed.
+  - It counts towards full health. (Real: the first deep-sea video of a live giant squid was
+    filmed in 2012 with a dim, quiet camera rig.)
+- **Anglerfish (helper).** Its bioluminescence (its lure glows with bacteria) lets cameras work
+  with less light: each one cuts camera disturbance. It needs dark water and leaves when there
+  is too much light.
+- **Bluntnose sixgill shark (the runaway, and the gear finder).**
+  - A shark seen with a hook in its jaw reveals a lost longline in its sector, so sharks find
+    hidden gear.
+  - Too many baited cameras draw extra sharks in from elsewhere. They crowd round the bait
+    (`too_many`), stop ranging, so stop finding gear, and the anglerfish hide.
+  - Switch cameras back from baited and the visitors leave within a few days.
+
+**Buildings** (3 levels only where they do something):
+- ⭐ **Deep-Ocean Outpost** (exactly 1, on deep water): submarine dives and missions. It comes
+  with the oil-spill response equipment, so from then on oil patches drift in around every
+  island, as already planned.
+- **Hydrophone Buoy:** max 6. Levels add output. It is cheap and quiet.
+- **Deep Camera:** max 4. Levels add output and use less light. It has a baited / unbaited
+  switch.
+- **Deep-Sea Sanctuary marker:** max 3. Placed beside a revealed habitat sector, it makes the
+  sector quiet and fishing-free. Lost gear stops turning up there, and its animals recover
+  faster. It can be demolished.
+- 💰 **Deep-Sea Discovery Centre:** max 2. It shows live submarine feeds. Its visitors grow
+  with how many deep species the Journal has photographed, times island health.
+- **Shore pines** are this island's trees. They are a different conifer from the Kelp
+  Forest's Sitka spruce, with the same 3 growth stages, wood and saplings.
+
+**Missions** at the Outpost. Each ends in an action:
+1. **Submarine dive** (the player picks a sector): reveals it.
+2. **Acoustic survey:** how many whales are here, and which sectors are too noisy.
+3. **Gear search:** marks lost gear in the known sectors for hauling up.
+4. **Disturbance check:** which instruments disturb the most (lights, bait, dives).
+5. **Habitat survey:** which revealed sectors would gain the most as a Sanctuary.
+6. **Rescue:** frees and treats tangled or injured animals.
+7. **Cargo search:** once 6 sectors are known, it locates the module (a sure find, with no
+   chance roll).
+
+**Starting state:** every species is present but struggling:
+- every sector dark;
+- 1 sperm whale tangled at the surface, 1 anglerfish, 1 sixgill shark, and the giant squid
+  hidden;
+- 2 lost longlines and 1 ghost net hidden in sectors;
+- a litter surge.
+
+Health starts around 5 %.
+
+**Health:** clean water, knowledge (sectors known), no lost gear left in known sectors, whales
+(3), anglerfish (4), sharks (2, `too_many`), and the giant squid found. All of these are scaled
+by **quiet water** (`scales_all`), so an over-instrumented deep pulls everything down.
+- Unknown sectors are shown as "not yet known", never as a problem. Hidden gear lowers health
+  quietly, like any hurt animal.
+- 100 % is reachable in different ways: many quiet hydrophones and few cameras (slow but
+  calm), or more cameras and dives followed by switching them off once the sectors are known.
+
+**Rare event — Oil Spill:** detected, not forecast.
+- **Detection:** the fleet's Environment Sensors (the Mangrove discovery) give a 1-day
+  warning.
+- **During:** each day oil patches spread from a source sector, and dives are suspended in
+  oily sectors.
+- **Response:** search with a dive, then the "Contain source" mission, then the ranger cleans
+  the patches from the boat.
+
+**Objective → Cargo Module:** know 6 of the 8 sectors and get the island to 70 %. Then the Cargo
+Search locates the module, and the ranger winches it up from the rowboat. The Cargo Module
+gives the ship a cargo hold.
+
+**Cross-island link:**
+- **Recovering the island's lost longlines and nets** shows where the fishing gear comes from.
+  That unlocks **Gear marking & recovery** world-wide: no new ghost nets or fishing line drift
+  in on any island. This is the same "fix it at the source" idea as the Reef's bottles.
+- **The Reef's Habitat Mapping System** (already in the fleet) makes dives 25 % faster.
+
+**Open points (to agree before building):**
+1. **Cargo needs a real reason.** Today stored items are shared by every island, so wood
+   stored at any Ranger House can be used anywhere, and the Polar Ocean wouldn't really need
+   cargo. Proposal: from the Polar Ocean on, building there may only use what the ranger
+   carries or what the ship's cargo hold brought. Other islands keep working as they do now.
+2. **How often the oil spill comes.** The plan says every 2–3 years (240–360 days), which most
+   players would never see. Proposal: a random 60–90 days apart, rarer than the other events.
+3. **Building the cargo hold itself** (load and unload wood at a ship) could come here or with
+   the Polar Ocean. Proposal: with the Polar Ocean, since that's where it's needed.
