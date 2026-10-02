@@ -33,6 +33,7 @@
 [ext_resource type="Resource" path="res://data/items/plastic_bag.tres" id="44_bag"]
 [ext_resource type="Resource" path="res://data/items/old_sonar_unit.tres" id="45_sonar"]
 [ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="46_itemdata"]
+[ext_resource type="Script" path="res://scripts/world/sea_waves.gd" id="47_waves"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -41,6 +42,9 @@ colors = PackedColorArray(0.5411765, 0.5882353, 0.8, 1, 0.5411765, 0.5882353, 0.
 [node name="OceanWorld" type="Node2D" unique_id=122976242]
 y_sort_enabled = true
 script = ExtResource("1_0ob8n")
+
+[node name="SeaWaves" type="Node2D" parent="."]
+script = ExtResource("47_waves")
 
 [node name="DayNight" type="CanvasModulate" parent="." unique_id=1188207057]
 script = ExtResource("2_4aha6")

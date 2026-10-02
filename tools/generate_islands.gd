@@ -16,7 +16,7 @@ const INFO := "res://build/islands.json"
 ## Coral, kelp and mangroves will be plants on top, not ground.
 enum { SHALLOW, SAND, GRASS, ROCK, ICE, MUD, MID }
 ## The same tiles' colours, for the region maps.
-const COLOURS := ["528b93", "e6d5a4", "7f9a52", "7c858c", "e8f1f5", "7a5e3c", "3a6478"]
+const COLOURS := ["528b93", "e6d5a4", "7f9a52", "8e8477", "e8f1f5", "7a5e3c", "3a6478"]
 ## Islands sit in a row east of home, one every SPACING pixels.
 const SPACING := 5120
 
