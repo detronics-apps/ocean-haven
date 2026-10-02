@@ -59,6 +59,17 @@ static func next_undiscovered(direction: StringName) -> RegionData:
 	return null
 
 
+## How many islands have been found (the Starting Island included).
+static func discovered_count() -> int:
+	return all().filter(func(r: RegionData) -> bool: return is_discovered(r)).size()
+
+
+## Whether the fleet may find another island: one more than its level (Level 1 finds the 2nd
+## island, Level 2 the 3rd...), so every island found has been helped before the next.
+static func can_find_more() -> bool:
+	return Fleet.level() >= discovered_count()
+
+
 ## The island next to `from` in `direction` (discovered or not; null = none that way). The
 ## islands lie in a line: Polar Ocean, Deep Sea, Kelp Forest, Starting Island, Mangrove Coast,
 ## Tropical Reef. An Exploration Ship only finds the island next to its own, so each step out

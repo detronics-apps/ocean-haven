@@ -193,7 +193,9 @@ caring for animals". Build in this order, placeholder art:
     offers Explore warmer / colder → the island next to the ship's own island that way
     (`Regions.next_from`: the islands lie in a line Polar, Deep Sea, Kelp, Starting, Mangrove, Reef;
     RegionData.direction + order), which is then discovered for good (saved) and reachable from the
-    Map. To go further you need a ship on that island (no skipping ahead from one ship). The Map only sails to discovered islands; undiscovered ones are greyed out; a 🧭 marks islands
+    Map. To go further you need a ship on that island (no skipping ahead from one ship). And the fleet
+    finds only one more island than its level (`Regions.can_find_more`: Level 1 finds the 2nd island,
+    Level 2 the 3rd...), so every island found is helped before the next. The Map only sails to discovered islands; undiscovered ones are greyed out; a 🧭 marks islands
     with an Exploration Ship. One ship per island (built by the player; `one_per_island`).
 25. ✅ Island objectives & the fleet (MASTER_PLAN Step 1): each island's objective (RegionData.goals:
     ObjectiveGoal "help" a species / "litter" collected ever) must be done before its Exploration Ship

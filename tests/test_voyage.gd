@@ -132,6 +132,7 @@ func _initialize() -> void:
 	explore.open()
 	_expect(explore.find_child("ExploreColder", true, false).disabled and _texts(explore).contains("Kelp Fibre"),
 		"the Deep Sea needs the Kelp Forest's discovery")
+	_expect(not regions.can_find_more() and fleet.level() == 1, "Level 1 with 2 islands found: no 3rd yet")
 	explore.close()
 	explore.explore(&"colder")
 	_expect(not regions.is_discovered(region.call("deep_sea")), "no way through without it")
@@ -155,10 +156,16 @@ func _initialize() -> void:
 	explore.close()
 	explore.explore(&"colder")
 	_expect(not regions.is_discovered(region.call("deep_sea")), "exploring colder from home doesn't skip ahead to the Deep Sea")
+	# One more island than the fleet's level: at Level 2 with 2 islands found, a 3rd is fine.
+	_expect(regions.can_find_more(), "Level 2 with 2 islands found: a 3rd can be found")
 	explore.explore(&"warmer")
 	for i in 240:
 		await process_frame
 	_expect(regions.is_discovered(region.call("mangrove_coast")), "the Mangrove Coast is found")
+	explore.open()
+	_expect(explore.find_child("ExploreWarmer", true, false).disabled and not regions.can_find_more(),
+		"Level 2 with 3 islands found: help them before finding a 4th")
+	explore.close()
 	fleet.complete(region.call("mangrove_coast"))
 	fleet.install(&"mangrove_resin")
 	_expect(explore.next_island(&"warmer") == region.call("tropical_reef"), "from the Mangrove Coast, warmer is the Tropical Reef")

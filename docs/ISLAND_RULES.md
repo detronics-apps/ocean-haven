@@ -184,6 +184,8 @@ foundations the mechanics sit on, not the mechanics themselves.
   Buildings for other islands don't appear, not even greyed out.
 - **Exploring goes one island at a time:** a ship only finds the island next to its own, so
   every step out needs that island's objective done and its own Exploration Ship.
+  The fleet also finds only one more island than its level (Level 1: the 2nd island, Level 2:
+  the 3rd...), so there's never more than one island that hasn't been helped yet.
 - **Nothing moves on its own:** every island has its own rowboat; boats stay where the ranger
   left them and never sail along on voyages.
 - **Buildings can be used from the rowboat as well as on foot** (e.g. moving an offshore buoy).

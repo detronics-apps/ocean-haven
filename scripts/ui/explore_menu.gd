@@ -27,11 +27,12 @@ func _fill() -> void:
 		var next := next_island(direction)
 		var found := next != null and Regions.is_discovered(next)
 		var needs := Fleet.missing_for(next) if next and not found else null
+		var help_first := next != null and not found and needs == null and not Regions.can_find_more()
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)
 		var button := BuildMode._big_button("Explore %s" % direction, Color("2a78a8") if direction == Regions.COLDER else Color("c9772e"))
 		button.name = "Explore" + direction.capitalize()
-		button.disabled = next == null or found or needs != null or next.in_development
+		button.disabled = next == null or found or needs != null or help_first or next.in_development
 		button.pressed.connect(explore.bind(direction))
 		row.add_child(button)
 		var hint := Label.new()
@@ -39,6 +40,9 @@ func _fill() -> void:
 			hint.text = "No more islands lie in %s waters from here." % direction
 		elif found:
 			hint.text = "The %s lies that way: you've found it already. Sail there with the Map, and establish its own Exploration Ship to explore beyond it." % next.display_name
+		elif help_first:
+			hint.text = "First help the islands you've already found: you've found %d and the fleet is Level %d. Finish an island's objective and install its discovery at a ship to explore one island further." % [
+				Regions.discovered_count(), Fleet.level()]
 		elif next.in_development and needs:
 			hint.text = "To find the way into %s waters, the fleet will need %s (from the %s). The next island that way, the %s, is still under development." % [
 				direction, needs.upgrade_name, needs.display_name, next.display_name]
@@ -100,7 +104,8 @@ func next_island(direction: StringName) -> RegionData:
 ## Discovers the island next to this one in `direction` and sails there.
 func explore(direction: StringName) -> void:
 	var region := next_island(direction)
-	if not region or Regions.is_discovered(region) or Fleet.missing_for(region) or region.in_development:
+	if not region or Regions.is_discovered(region) or Fleet.missing_for(region) or region.in_development \
+			or not Regions.can_find_more():
 		return
 	close()
 	Regions.discover(region)
