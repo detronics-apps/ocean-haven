@@ -959,3 +959,101 @@ knowledge goes to the best-known dark area first, so areas open one by one).
    opens a cargo hold on every Exploration Ship: 99 of everything, wood and saplings too (the
    house's storage stays small), with a storage menu. So the Cargo Module *is* the hold.
 2. **Oil spill:** a random 30–60 days apart, like every other rare event.
+
+### Step 7 — Polar Ocean (colder, 3rd) — draft 1, for approval
+Lesson: **the ocean connects the whole planet, and polar life follows the seasons.** A different
+game from the other islands. Here nothing can be fixed once. The ice comes and goes, and the
+player **plans around change**: what works in the freeze is wrong in the thaw.
+
+**The ice season:** a cycle of 8 days, shown on the HUD gauge ("Polar: freezing / thawing").
+- **The ice has three kinds:**
+  - Old, thick ice stays all year (the floes' cores).
+  - Seasonal ice forms and melts every cycle.
+  - Rock never changes, and it's the only place for buildings that must stay put.
+- **The cycle:**
+  1. Freezing (days 1–3): the water between floes freezes, and ice corridors join the floes.
+  2. Frozen (day 4).
+  3. Thawing (days 5–7): seasonal ice melts back and the corridors break.
+  4. Open water (day 8).
+- **Boats break thin ice.** A rowboat or patrol boat moving through freezing water keeps it open.
+  Boats parked in the wrong channel stop a corridor forming, so the player moves them each
+  season. Nothing moves on its own.
+- **No trees.** Everything is built with wood from Ranger House storage or the ships' cargo hold.
+
+**Species and their roles** (Arctic: see open point 1):
+- **Ringed seal (needs help, the runaway).**
+  - Pups are raised on ice in Seal Pupping Zones.
+  - A zone on seasonal ice that melts too soon sends its pups into the water early. They never
+    die, but fewer seals settle.
+  - Zones on old ice work.
+  - Too many zones and seals crowd the ice (`too_many`).
+  - One seal starts caught in a lost net.
+- **Polar bear (needs connectivity).**
+  - It dens on rock and needs an ice corridor at freeze-up to reach the seal areas.
+  - Corridors are counted island-wide with a flood fill over ice, like the Mangrove's pools.
+  - Fed bears stay. Cut-off bears wait on the rock and move away after a while (never below 1).
+  - Hunting is never shown, only "it reached its hunting grounds".
+- **Arctic cod (food for everyone).** It lives under the ice edge, so more ice edge in the freeze
+  means more cod. Seals and terns follow the cod.
+- **Arctic tern (global connectivity).**
+  - It arrives in the thaw to nest on rock (Tern Nesting Areas) and leaves in the freeze.
+  - On its migration it turns up on other healthy islands as a visitor. Arctic terns really fly
+    pole to pole, the longest migration of any animal.
+- **Skua (early warning).** It circles over trouble: a zone on ice about to melt, a bear cut off,
+  litter. It shows the player where to look.
+
+**Buildings** (3 levels only where they do something):
+- ⭐ **Polar Research Station** (on rock, exactly 1): runs the missions.
+- **Seal Pupping Zone:** on ice, max 4. Levels add pups. It can be moved and demolished.
+- **Quiet Den Area:** on rock, max 2. Boats keep out (`keeps_boats_out`).
+- **Tern Nesting Area:** on rock, max 3. Levels add nests.
+- **Ice Core Drill Site:** for the objective, on old ice.
+- 💰 **Polar Research Centre:** max 2. Visitors grow with seals in view, times health.
+
+**Missions** (each ends in an action):
+1. **Ice survey:** marks old and seasonal ice, and what melts next.
+2. **Corridor check:** which floes are joined, and which boats are in the way.
+3. **Seal count:** pups, and zones on ice that won't last.
+4. **Tern tracking:** where the terns are on their migration.
+5. **Breakup survey:** after the rare event.
+6. **Rescue.**
+7. **Drill planning:** where old ice will last long enough to drill.
+
+**Starting state:**
+- open water (day 8 of the cycle);
+- 1 seal caught in a net;
+- 1 polar bear cut off on the rock;
+- a few cod, 1 skua;
+- terns away;
+- a litter surge.
+
+Health starts around 5 %.
+
+**Health:** clean water, a corridor at freeze-up, seals (`too_many`), bears, terns (in their
+season), cod. All of these are scaled by **planning for the season** (`scales_all`): the share of
+zones that are on ice lasting until their pups are grown. Several setups reach 100 %: fewer zones
+on the best old ice, or more zones moved between seasons.
+
+**Rare event — Major Ice Breakup:** warned 3–4 days ahead, 30–60 days apart like the others.
+- **During:** a big piece of ice breaks off (tiles turn to water). Corridors are cut, and zones
+  on it go into the water and need moving (never lost).
+- **After:** ice survey, then move the zones; the corridors form again at the next freeze.
+
+**Objective → Ice Core:** bring the island to 70 %, then build the Ice Core Drill Site on old ice
+(wood brought in) and keep it on ice for 3 days. A drill site on ice that melts stops and can be
+moved. The result is the **Ice Core** (climate history). With all six discoveries the ship
+becomes the **Ocean Research Vessel** (Step 9).
+
+**Cross-island link:** the terns' migration. A protected Polar Ocean sends terns to visit every
+healthy island in the polar thaw ("they came from the Polar Ocean"), and the visitors count
+towards those islands' wildlife.
+
+**Open points (to agree before building):**
+1. **Arctic or Antarctic?** Penguins and polar bears never live together (penguins are southern,
+   polar bears northern), and the game's facts must be accurate.
+   - Proposal: Arctic (the island's id is already arctic_ocean): polar bear, ringed seal, Arctic
+     tern, Arctic cod, skua.
+   - The other way: Antarctic, with penguins, Weddell seal, skua and krill, and no polar bear.
+2. **The ice cycle's length:** 8 days, so the player sees a whole cycle in a couple of hours.
+3. **The runaway species:** seals crowding too many pupping zones.
+4. **Boats breaking thin ice:** is that a fun reason to move boats each season, or too fiddly?
