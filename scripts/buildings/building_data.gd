@@ -25,8 +25,11 @@ extends Resource
 ## Items needed, by item id (e.g. {wood: 2}, or a sapling for a palm tree).
 ## Paid from what the ranger carries, then from Ranger House storage.
 @export var cost_items: Dictionary[StringName, int] = {}
-## How much of each storable item (wood, sand) it can keep (0 = not a store).
+## How much of each storable item it can keep (0 = not a store).
 @export var storage := 0
+## Which items it keeps (item ids): a Ranger House keeps wood and saplings, an Exploration Ship
+## everything else. What all of one kind hold is shared by every island.
+@export var stores: PackedStringArray = []
 ## Upgrades: how many tiers it has (1 = can't be upgraded). Each tier adds 1 to what
 ## it does: +1 turtle (animal_capacity), +1 funding per recycled piece, or the full `storage`
 ## again (a Ranger House stores 10 / 20 / 30).

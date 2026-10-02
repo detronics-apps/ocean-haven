@@ -9,7 +9,7 @@
 script = ExtResource("1_gjtea")
 id = &"house"
 display_name = "Ranger House"
-description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night. Stores 4 of each (wood, sand, mud, saplings), 8 at level 2 and 10 at level 3. You can build 2 on each island."
+description = "A proper ranger's home, with solar power. Replaces your tent; sleep here at night. Stores 4 of each wood and sapling, 8 at level 2 and 10 at level 3 (sand, mud and the rest go in the Exploration Ship). You can build 2 on each island."
 order = 2
 texture = ExtResource("2_22yc1")
 terrain = PackedStringArray("sand", "grass")
@@ -20,6 +20,7 @@ action = &"sleep"
 fact = "Solar panels let remote ranger stations run without noisy, polluting generators."
 cost_items = Dictionary[StringName, int]({&"wood": 3})
 storage = 4
+stores = PackedStringArray("wood", "sapling", "coastal_sapling", "mangrove_propagule")
 storage_per_tier = PackedInt32Array(4, 8, 10)
 max_count = 2
 max_tier = 3

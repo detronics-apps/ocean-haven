@@ -354,6 +354,12 @@ Polar Ocean are `RegionData.in_development`: Explore says the fleet is ready (or
 needs) and that the island is still under development, and the Map doesn't sail there. Clear
 the flag when an island is finished.
 
+Storage (BuildingData.stores, shared by every island): Ranger Houses keep only wood and
+saplings (4 / 8 / 10 of each), so islands without trees can still build; Exploration Ships keep
+everything else (sand, mud, clean water, coral fragments: 10 of each per ship). Both open a
+Storage menu (StorageMenu) instead of a line of text; more stored than there's room for can be
+taken out at any store.
+
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).

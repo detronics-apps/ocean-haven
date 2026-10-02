@@ -12,7 +12,7 @@
 script = ExtResource("1_k7kwi")
 id = &"expedition_boat"
 display_name = "Exploration Ship"
-description = "Makes this island Exploration Ready. Can be built once the island's objective is done. Moor it next to 2 dock planks, then walk up to it to upgrade the fleet with island discoveries and explore warmer or colder waters. One per island."
+description = "Makes this island Exploration Ready. Can be built once the island's objective is done. Moor it next to 2 dock planks, then walk up to it to upgrade the fleet with island discoveries and explore warmer or colder waters. Its hold stores 10 of each sand, mud, clean water and coral fragments. One per island."
 order = 5
 texture = ExtResource("2_br52n")
 size = Vector2i(2, 1)
@@ -30,3 +30,5 @@ action = &"explore"
 needs_objective = true
 fleet_textures = Array[Texture2D]([ExtResource("2_br52n"), ExtResource("3_lv2"), ExtResource("3_lv3"), ExtResource("3_lv4"), ExtResource("3_lv5"), ExtResource("3_lv6")])
 storm_proof = true
+storage = 10
+stores = PackedStringArray("sand", "mud", "clean_water", "coral_fragment")

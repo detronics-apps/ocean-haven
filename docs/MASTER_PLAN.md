@@ -949,10 +949,11 @@ gives the ship a cargo hold.
 - **The Reef's Habitat Mapping System** (already in the fleet) makes dives 25 % faster.
 
 **Open points (to agree before building):**
-1. **Cargo needs a real reason.** Today stored items are shared by every island, so wood
-   stored at any Ranger House can be used anywhere, and the Polar Ocean wouldn't really need
-   cargo. Proposal: from the Polar Ocean on, building there may only use what the ranger
-   carries or what the ship's cargo hold brought. Other islands keep working as they do now.
+1. **Storage — decided:** Ranger Houses keep only wood and saplings, shared by every island
+   (the Reef has no way to get wood, so it can't wait for cargo); everything else is kept in
+   the Exploration Ships' hold (10 of each per ship), with a storage menu. Built. Still open:
+   what the Cargo Module then adds. Proposal: a bigger hold (10 → 25 of each) and room for
+   things the hold can't keep yet.
 2. **How often the oil spill comes.** The plan says every 2–3 years (240–360 days), which most
    players would never see. Proposal: a random 60–90 days apart, rarer than the other events.
 3. **Building the cargo hold itself** (load and unload wood at a ship) could come here or with

@@ -74,6 +74,9 @@ func _ready() -> void:
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
+	var storage := StorageMenu.new()  # opened from a Ranger House or an Exploration Ship
+	storage.name = "StorageMenu"
+	get_parent().add_child.call_deferred(storage)
 	var missions := MissionMenu.new()  # opened from a signature facility
 	missions.name = "MissionMenu"
 	get_parent().add_child.call_deferred(missions)

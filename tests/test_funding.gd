@@ -94,8 +94,8 @@ func _initialize() -> void:
 	player.global_position = home.global_position + Vector2(-50, 20)
 	inventory.add(load("res://data/items/wood.tres"), 3)
 	var labels: Array = home.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Store 3 wood" in labels, "offers to store wood (%s)" % [labels])
-	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Store 3 wood")[0].do.call()
+	_expect("Storage" in labels, "offers its storage (%s)" % [labels])
+	inventory.store(load("res://data/items/wood.tres"), 3)  # (the storage menu: tests/test_storage.gd)
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "wood stored in the house")
 	_expect(home.storage() == 4, "a house stores 4 of each")
 	home.tier = 2
@@ -106,7 +106,7 @@ func _initialize() -> void:
 	inventory.add(load("res://data/items/wood.tres"), 1)
 	_expect(inventory.use(&"wood", 2) and inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 2,
 		"building uses carried wood first, then stored")
-	home.actions().filter(func(a: Dictionary) -> bool: return a.label == "Take 2 wood")[0].do.call()
+	inventory.take_out(load("res://data/items/wood.tres"), 2)
 	_expect(inventory.count(&"wood") == 2 and inventory.stored(&"wood") == 0, "took the wood back out")
 
 	# --- Dock: shallows only, costs funding ---

@@ -158,6 +158,10 @@ foundations the mechanics sit on, not the mechanics themselves.
   what each level does, is worked out per island.
 - **Shared buildings stay modest**, so they don't make other choices pointless: a Ranger House
   stores 4 / 8 / 10 of each (by level), and there's one recycling centre per island.
+- **Wood is shared; everything else is kept on the ship.** Ranger Houses store only wood and
+  saplings, and what they hold can be used on every island, because some islands (the Reef)
+  have no way to get wood. Every other item goes in an Exploration Ship's hold. A store opens a
+  menu listing what it keeps, never a long line of text above it.
 - **Every building limit counts per island** (`max_count`, `unique`): e.g. 6 patrol boats on
   each island, not 6 in the whole game.
 - **Hard limits are not targets** (`max_count`). Overbuilding is allowed and has consequences:

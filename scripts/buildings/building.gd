@@ -186,14 +186,7 @@ func actions() -> Array:
 	if tier < data.max_tier:
 		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
 	if storage() > 0:
-		for item: ItemData in storable_items():
-			var name := item.display_name.to_lower()
-			var give := mini(Inventory.count(item.id), storage_space(get_tree()) - Inventory.stored(item.id))
-			if give > 0:
-				list.append({"label": "Store %d %s" % [give, name], "do": Inventory.store.bind(item, give)})
-			var take := mini(Inventory.stored(item.id), Inventory.room_for(item))
-			if take > 0:
-				list.append({"label": "Take %d %s" % [take, name], "do": Inventory.take_out.bind(item, take)})
+		list.append({"label": "Storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
 	if data.movable:
 		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	if data.demolishable:
@@ -523,10 +516,6 @@ func stats() -> String:
 
 
 func _numbers() -> String:
-	if data.action == &"sleep":
-		return "  ".join(storable_items().map(func(item: ItemData) -> String:
-			return "%s %d/%d" % [item.display_name, Inventory.stored(item.id), storage_space(get_tree())])) \
-			if storage() > 0 else ""
 	if data.watches != &"":
 		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
 		return "%ss: %d" % [kind.get_slice(" ", kind.get_slice_count(" ") - 1), animals_in_view()]
@@ -559,18 +548,26 @@ func _numbers() -> String:
 static var _storable: Array = []
 
 
-## Items that can be kept in a Ranger House: those with a carry limit (wood, sand).
+## Items that can be kept in storage at all: those with a carry limit (wood, sand...).
 static func storable_items() -> Array:
 	if _storable.is_empty():
 		_storable = DataFiles.load_all("res://data/items").filter(func(item: ItemData) -> bool: return item.carry_limit > 0)
 	return _storable
 
 
-## How much of each storable item all the ranger's houses hold together.
-static func storage_space(tree: SceneTree) -> int:
+## The items this building keeps (BuildingData.stores): wood and saplings in a Ranger House,
+## everything else in an Exploration Ship.
+func kept_items() -> Array:
+	return storable_items().filter(func(item: ItemData) -> bool: return String(item.id) in data.stores) \
+		if storage() > 0 else []
+
+
+## How much of `id` all the ranger's buildings that keep it hold together (every island).
+static func storage_space(tree: SceneTree, id: StringName) -> int:
 	var space := 0
 	for building: Building in tree.get_nodes_in_group("buildings"):
-		space += building.storage()
+		if String(id) in building.data.stores:
+			space += building.storage()
 	return space
 
 

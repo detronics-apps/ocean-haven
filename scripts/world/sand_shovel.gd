@@ -4,7 +4,7 @@ extends Node
 ## the ranger are outlined: sand or mud that can be dug up, and (while carrying some)
 ## shallow water that can be filled. Tap one to select it; the action bar then
 ## offers "Dig up sand / mud" or "Place sand / mud" for exactly that tile. The ranger carries
-## one sand or 3 mud (storable in Ranger Houses: dug mud is never lost, so a channel can
+## one sand or 3 mud (storable in the Exploration Ship: dug mud is never lost, so a channel can
 ## always be filled back in); now and then sand hides buried litter. Digging mud makes a
 ## channel (shallow water); mud on shallow water makes a mud flat. Filling deep water takes 2.
 ## "Put shovel away" (an action button) ends it. Every changed tile is saved.

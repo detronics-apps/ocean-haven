@@ -110,10 +110,14 @@ func _shape_corner(corner: Vector2i) -> void:
 		# The colour that rounds into this corner: the neighbours' terrain if they agree; where
 		# three terrains meet, the one diagonally across if it's one of them, else the higher.
 		var fill := beside_x
-		if beside_x != beside_y:
+		if across == mine:
+			# The same terrain diagonally across: the two stay joined through the point and the
+			# other two cells round into them. In a pure checkerboard the higher terrain stays
+			# joined up and only the lower rounds.
+			if beside_x != beside_y or PRIORITY.get(mine, 0) > PRIORITY.get(fill, 0):
+				continue
+		elif beside_x != beside_y:
 			fill = across if across in [beside_x, beside_y] else (beside_x if PRIORITY.get(beside_x, 0) >= PRIORITY.get(beside_y, 0) else beside_y)
-		elif across == mine and PRIORITY.get(mine, 0) > PRIORITY.get(fill, 0):
-			continue  # a checkerboard: the higher terrain stays joined up, only the lower rounds
 		if fill == "sea" or not _colours.has(fill):
 			continue
 		if not _pieces.has(corner):
