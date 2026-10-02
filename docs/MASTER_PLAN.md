@@ -960,24 +960,27 @@ knowledge goes to the best-known dark area first, so areas open one by one).
    house's storage stays small), with a storage menu. So the Cargo Module *is* the hold.
 2. **Oil spill:** a random 30–60 days apart, like every other rare event.
 
-### Step 7 — Polar Ocean (colder, 3rd) — draft 1, for approval
+### Step 7 — Polar Ocean (colder, 3rd) — draft 1, approved (Arctic) and built (first version)
 Lesson: **the ocean connects the whole planet, and polar life follows the seasons.** A different
 game from the other islands. Here nothing can be fixed once. The ice comes and goes, and the
 player **plans around change**: what works in the freeze is wrong in the thaw.
 
-**The ice season:** a cycle of 8 days, shown on the HUD gauge ("Polar: freezing / thawing").
+**The ice season:** a cycle of 3 days (the user's choice; 8 was too long), shown on the HUD gauge
+("Freezing (frozen in 2 minutes)").
 - **The ice has three kinds:**
   - Old, thick ice stays all year (the floes' cores).
   - Seasonal ice forms and melts every cycle.
   - Rock never changes, and it's the only place for buildings that must stay put.
 - **The cycle:**
-  1. Freezing (days 1–3): the water between floes freezes, and ice corridors join the floes.
-  2. Frozen (day 4).
-  3. Thawing (days 5–7): seasonal ice melts back and the corridors break.
-  4. Open water (day 8).
-- **Boats break thin ice.** A rowboat or patrol boat moving through freezing water keeps it open.
-  Boats parked in the wrong channel stop a corridor forming, so the player moves them each
-  season. Nothing moves on its own.
+  1. Freezing (the first 3/8 of the cycle): the water between floes freezes ring by ring, and
+     ice corridors join the floes.
+  2. Frozen (to half-way).
+  3. Thawing (to 3/4): seasonal ice melts back and the corridors break.
+  4. Open water (the last quarter).
+- **Boats break thin ice.** Water near a boat doesn't freeze, and while it freezes a boat leaves a
+  lane of broken ice behind it for the rest of the season. Rowing across the channels in the
+  freeze cuts the corridor, so the player plans their trips and parks boats out of the way.
+  Nothing moves on its own.
 - **No trees.** Everything is built with wood from Ranger House storage or the ships' cargo hold.
 
 **Species and their roles** (Arctic: see open point 1):
@@ -1048,7 +1051,10 @@ becomes the **Ocean Research Vessel** (Step 9).
 healthy island in the polar thaw ("they came from the Polar Ocean"), and the visitors count
 towards those islands' wildlife.
 
-**Open points (to agree before building):**
+**Built as:** crowded seals also eat the cod down and raise fewer pups (planning falls), so the
+runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day cycle.
+
+**Open points (decided):**
 1. **Arctic or Antarctic?** Penguins and polar bears never live together (penguins are southern,
    polar bears northern), and the game's facts must be accurate.
    - Proposal: Arctic (the island's id is already arctic_ocean): polar bear, ringed seal, Arctic

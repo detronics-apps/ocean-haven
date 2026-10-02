@@ -365,10 +365,24 @@ shore pines (`pine_sapling`). Oil Spill (EventData.oil_patches / needs_building)
 morning until the Outpost's "Contain" mission. Objective: 6 areas mapped at 70 % -> Cargo search
 -> tow the module in -> Cargo Module (the ships' cargo hold).
 
-Playable islands: Starting Island, Kelp Forest, Mangrove Coast, Tropical Reef, Deep Sea. The
-Polar Ocean is `RegionData.in_development`: Explore says the fleet is ready (or what it still
-needs) and that the island is still under development, and the Map doesn't sail there. Clear
-the flag when an island is finished.
+**MVP 0.9 — "Polar Ocean" (current).** Design: `docs/MASTER_PLAN.md` Step 7 (Arctic, approved).
+`PolarEcosystem` (island child "Ecosystem"): a 3-day ice season (`cycle_days`; freezing,
+frozen, thawing, open water, shown on the HUD gauge via `status_note()`): rings of water round
+the old ice freeze and melt (`apply_ice`, every change through `SaveGame.record_tile`); boats keep
+water near them open and, while it freezes, leave a lane of broken ice (`_wake`) that can cut the
+corridor between floes. Ringed seals need Seal Pupping Zones on old ice (zones on seasonal ice
+lose their pups when it melts; `planning()` scales all health; crowded seals eat the cod down);
+polar bears stay with a Quiet Den Area and a joined freeze (`corridor_score`); Arctic cod follow
+the ice; Arctic terns nest on rock in the thaw and visit the ranger's other healthy islands in
+the freeze (visiting); the Arctic skua circles trouble. No trees: wood comes from storage.
+Polar Research Station with 7 missions and a "How it works" card; Polar Research Centre; Major
+Ice Breakup (EventData.ice_breakup: old ice broken off until the next freeze). Objective: 70 %
+-> Ice Core Drill Site on old ice for 3 days -> Ice Core. Tents, houses and recycling centres can
+go on rock.
+
+Playable islands: all six. An unfinished island would be `RegionData.in_development`: Explore
+says the fleet is ready (or what it still needs) and that the island is still under
+development, and the Map doesn't sail there.
 
 Storage (BuildingData.stores, shared by every island): Ranger Houses keep only wood and
 saplings (4 / 8 / 10 of each), so islands without trees can still build; nothing else is stored

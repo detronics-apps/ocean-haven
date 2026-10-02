@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="56" viewBox="0 0 64 56" shape-rendering="crispEdges">
+  <!-- placeholder: Polar Research Station: a red insulated hut on stilts with a weather mast and a satellite dish -->
+  <g fill="#5a6470"><rect x="8" y="40" width="3" height="14"/><rect x="52" y="40" width="3" height="14"/><rect x="30" y="40" width="3" height="14"/></g>
+  <rect x="4" y="20" width="56" height="22" fill="#d0503a"/><rect x="4" y="16" width="56" height="5" fill="#f2f4f6"/>
+  <g fill="#9fd8f0"><rect x="10" y="26" width="8" height="6"/><rect x="24" y="26" width="8" height="6"/></g>
+  <rect x="44" y="28" width="8" height="14" fill="#8a3020"/>
+  <rect x="14" y="2" width="2" height="14" fill="#d8dde2"/><rect x="10" y="4" width="10" height="2" fill="#d8dde2"/><rect x="18" y="2" width="3" height="3" fill="#f2c230"/>
+  <ellipse cx="46" cy="11" rx="7" ry="4" fill="#e8ecef"/><rect x="45" y="11" width="2" height="5" fill="#a8b0ba"/>
+</svg>

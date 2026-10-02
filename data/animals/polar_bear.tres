@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"polar_bear"
+display_name = "Polar Bear"
+sprite = ExtResource("2_t")
+habitat = "Arctic sea ice, coasts and islands"
+diet = "Mostly seals, hunted from the sea ice"
+fact = "Polar bears hunt from the sea ice, so they need the ice to join their resting places to the seals' waters. When the ice breaks up they wait on land until it freezes again."
+photo_fact = "Under its white fur a polar bear's skin is black, which soaks up the sun's warmth."
+help_fact = "Give it quiet rock to rest on (a Quiet Den Area), and keep boats out of the channels while the ice freezes, so a corridor of ice forms."
+habitat_terrain = PackedStringArray("ice", "rock")
+faces_movement = false
+swim_speed = 26.0
+shy_distance = 90.0
+discover_distance = 200.0
+curious = false
+interact_distance = 140.0
+lives_at = &"quiet_den_area"
+adult_home_radius = 160.0

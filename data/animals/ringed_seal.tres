@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"ringed_seal"
+display_name = "Ringed Seal"
+sprite = ExtResource("2_t")
+habitat = "Arctic sea ice and the water beneath it"
+diet = "Arctic cod, shrimp and other small animals"
+fact = "Ringed seals raise their pups in snow dens on the sea ice, so they need ice that lasts until the pups can swim. They keep breathing holes open through the ice with the claws on their flippers."
+photo_fact = "The pale rings on its fur give it its name."
+help_fact = "Pups need ice that lasts: a pupping zone on thin seasonal ice melts away before they're ready."
+habitat_terrain = PackedStringArray("ice", "water", "")
+swim_speed = 30.0
+shy_distance = 60.0
+discover_distance = 130.0
+curious = false
+interact_distance = 90.0
+can_tangle = true
+lives_at = &"seal_pupping_zone"
+adult_home_radius = 120.0

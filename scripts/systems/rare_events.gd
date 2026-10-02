@@ -144,6 +144,10 @@ func strike(event: EventData) -> int:
 		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
 			if ecosystem.region_id == event.region and ecosystem.has_method("flood"):
 				torn += ecosystem.flood(event.flood_silt)
+	if event.ice_breakup > 0.0:
+		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+			if ecosystem.region_id == event.region and ecosystem.has_method("ice_breakup"):
+				ecosystem.ice_breakup(event.ice_breakup)
 	if event.oil_patches > 0:
 		for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
 			if ecosystem.region_id == event.region and ecosystem.has_method("oil_spill"):

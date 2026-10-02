@@ -49,3 +49,5 @@ extends Resource
 ## Only comes once a building with this id exists (the oil spill: the Deep-Ocean Outpost that
 ## can respond to it).
 @export var needs_building: StringName = &""
+## Ice breakups: the share of one floe's old ice that breaks away (it freezes back next freeze).
+@export var ice_breakup := 0.0

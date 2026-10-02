@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/polar_research_station.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"polar_research_station"
+texture = ExtResource("2_t")
+only_on = &"arctic_ocean"
+display_name = "Polar Research Station"
+description = "The Polar Ocean's special building, on solid rock. Surveys show which ice will last, where the floes join, how the seals and terns are doing, and where to drill."
+order = 0
+size = Vector2i(2, 2)
+terrain = PackedStringArray("rock")
+cost_funding = 400
+cost_items = Dictionary[StringName, int]({&"wood": 10})
+facility = &"signature"
+one_per_island = true
+action = &"missions"
+placement_hint = "on rock (ice comes and goes)"
+guide = "The ice here comes and goes every 3 days: it freezes, joining the floes with corridors of ice, then thaws back to the old, thick ice at the floes' cores, then the water is open. Seals raise pups in Seal Pupping Zones, which need ice that lasts: old ice works, seasonal ice melts too soon. Polar bears rest on rock and need an ice corridor in the freeze to reach the seals: boats in a freezing channel keep it open, so move them out of the way. Terns nest on rock in the thaw and fly south in the freeze. The skua circles where something needs help. There are no trees: bring wood from other islands."
+fact = "Polar research stations are built on rock or on stilts: sea ice moves, melts and breaks up every year."

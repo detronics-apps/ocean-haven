@@ -121,8 +121,8 @@ func _initialize() -> void:
 	_expect(build_mode.placement_problem(ship, kelp_cell).begins_with("First: restore the kelp forest"),
 		"no ship before the island's objective is done (%s)" % build_mode.placement_problem(ship, kelp_cell))
 	var reef_cell := Vector2i((region.call("arctic_ocean").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
-	_expect(build_mode.placement_problem(ship, reef_cell).contains("coming soon"),
-		"none on an island whose objective isn't made yet")
+	_expect(build_mode.placement_problem(ship, reef_cell).begins_with("First:"),
+		"none on an island whose objective isn't done yet (%s)" % build_mode.placement_problem(ship, reef_cell))
 	build_mode.add_building(ship, kelp_cell)
 	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")
 
@@ -167,9 +167,11 @@ func _initialize() -> void:
 	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null, "not to the undiscovered Polar Ocean")
 	map.close()
 	regions.discover(region.call("arctic_ocean"))  # (e.g. an older save)
+	region.call("arctic_ocean").in_development = true  # (pretend it's unfinished)
 	map.open()
 	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null
 		and _texts(map).contains("Still under development"), "the Map doesn't sail to an island under development")
+	region.call("arctic_ocean").in_development = false
 	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
 	for i in 240:
 		await process_frame

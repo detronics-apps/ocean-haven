@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/cod/arctic_cod.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"arctic_cod"
+display_name = "Arctic Cod"
+sprite = ExtResource("2_t")
+habitat = "Under the edge of the sea ice"
+diet = "Tiny shrimp-like animals that live on the underside of the ice"
+fact = "Arctic cod shelter under the sea ice and feed on the tiny animals living on it. Seals, seabirds, whales and, through the seals, polar bears all depend on them."
+photo_fact = "Its blood holds a natural antifreeze, so it can live in water colder than 0 C."
+help_fact = "The more ice edge there is in the freeze, the more cod, and the more food for everyone."
+habitat_terrain = PackedStringArray("", "water")
+swim_speed = 34.0
+shy_distance = 50.0
+discover_distance = 110.0
+curious = false

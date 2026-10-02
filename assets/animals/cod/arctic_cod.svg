@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="7" viewBox="0 0 16 7" shape-rendering="crispEdges">
+  <!-- placeholder: small Arctic cod (facing right), silvery brown with a forked tail -->
+  <polygon points="0,1 3,3 0,6" fill="#8a7a5a"/>
+  <rect x="3" y="2" width="10" height="3" fill="#b8a888"/><rect x="3" y="4" width="10" height="1" fill="#e0d8c8"/>
+  <rect x="13" y="2" width="2" height="3" fill="#b8a888"/><rect x="13" y="3" width="1" height="1" fill="#111111"/>
+</svg>

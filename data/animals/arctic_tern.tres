@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AnimalData" format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"arctic_tern"
+display_name = "Arctic Tern"
+sprite = ExtResource("2_t")
+habitat = "Rocky Arctic shores in summer; the Antarctic in the southern summer"
+diet = "Small fish such as Arctic cod, caught by diving from the air"
+fact = "Arctic terns fly from the Arctic to the Antarctic and back every year, the longest migration of any animal: they see two summers a year."
+photo_fact = "Over its life an Arctic tern can fly as far as to the Moon and back, more than once."
+help_fact = "It needs quiet rock to nest on in the thaw (a Tern Nesting Area) and cod to feed its chicks."
+habitat_terrain = PackedStringArray("rock", "ice", "water", "")
+swim_speed = 70.0
+shy_distance = 70.0
+discover_distance = 150.0
+curious = false
+flies = true
+lives_at = &"tern_nesting_area"
+adult_home_radius = 140.0

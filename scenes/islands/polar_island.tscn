@@ -2,6 +2,7 @@
 
 [ext_resource type="TileSet" path="res://assets/tilesets/placeholder_tileset.tres" id="1_bck7r"]
 [ext_resource type="Script" path="res://scripts/world/terrain_edges.gd" id="9_edges"]
+[ext_resource type="Script" path="res://scripts/world/polar_ecosystem.gd" id="10_polar"]
 
 [node name="PolarIsland" type="Node2D" unique_id=1093347847]
 y_sort_enabled = true
@@ -13,3 +14,6 @@ tile_set = ExtResource("1_bck7r")
 
 [node name="TerrainEdges" type="Node2D" parent="."]
 script = ExtResource("9_edges")
+
+[node name="Ecosystem" type="Node2D" parent="."]
+script = ExtResource("10_polar")

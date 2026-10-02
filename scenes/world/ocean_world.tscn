@@ -190,6 +190,11 @@ script = ExtResource("25_swpth")
 max_litter = 10
 area = Rect2(14375, -985, 1970, 1970)
 
+[node name="PolarLitter" type="Node" parent="."]
+script = ExtResource("25_swpth")
+max_litter = 10
+area = Rect2(24669, -931, 1862, 1862)
+
 [node name="VoyageMap" parent="." unique_id=231089713 instance=ExtResource("30_j1yad")]
 
 [node name="SandShovel" type="Node" parent="." unique_id=356299371]

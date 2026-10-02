@@ -79,6 +79,8 @@ foundations the mechanics sit on, not the mechanics themselves.
 - **Learning has a cost, and it can be undone** (the Deep Sea): instruments that reveal things
   also disturb (light, noise, bait). Once an area is mapped the player can take them out again,
   so a careful, quiet setup and a fast, noisy one followed by tidying up both reach 100 %.
+- **Seasons must be quick** (the Polar Ocean): a whole ice season is 3 game days, so the player
+  sees the freeze and thaw, and the result of their planning, within a short session.
 - **Capabilities aren't items.** Glass-making is unlocked at the Glassworks, not carried as glass;
   it unlocks later buildings. Keep new items to what the player really handles.
 - **Every animal has a role** that changes a decision (needs help, helps others, or drives the

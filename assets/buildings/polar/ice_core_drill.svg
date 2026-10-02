@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40" shape-rendering="crispEdges">
+  <!-- placeholder: ice core drill site: a small drilling tower on the ice with a hut -->
+  <rect x="2" y="26" width="14" height="10" fill="#d0503a"/><rect x="2" y="24" width="14" height="3" fill="#f2f4f6"/>
+  <polygon points="20,36 23,4 26,4 29,36" fill="none" stroke="#e0b030" stroke-width="2"/>
+  <rect x="23" y="4" width="3" height="4" fill="#5a6470"/><rect x="24" y="8" width="1" height="28" fill="#3a3e46"/>
+  <rect x="18" y="35" width="13" height="3" fill="#a8d8f0"/>
+</svg>

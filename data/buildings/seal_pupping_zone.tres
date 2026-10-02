@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone.svg" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_2.svg" id="3_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_3.svg" id="4_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"seal_pupping_zone"
+texture = ExtResource("2_t")
+only_on = &"arctic_ocean"
+display_name = "Seal Pupping Zone"
+description = "A quiet place on the ice where ringed seals raise their pups. It needs ice that lasts: on old, thick ice it works every season; on seasonal ice it melts away before the pups are ready. Levels give room for more seals."
+order = 1
+size = Vector2i(1, 1)
+terrain = PackedStringArray("ice")
+cost_funding = 90
+cost_items = Dictionary[StringName, int]({&"wood": 2})
+max_count = 4
+animal_capacity = 2
+hosts = &"ringed_seal"
+max_tier = 3
+upgrade_funding = 60
+upgrade_items = Dictionary[StringName, int]({&"wood": 1})
+tier_textures = Array[Texture2D]([ExtResource("2_t"), ExtResource("3_t"), ExtResource("4_t")])
+demolishable = true
+storm_proof = true
+placement_hint = "on ice that lasts (old ice at a floe's core)"
+fact = "Ringed seal pups are born in snow dens on the sea ice and need it to last about six weeks, until they can swim and feed on their own."

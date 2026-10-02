@@ -2,12 +2,79 @@
 
 [ext_resource type="Script" path="res://scripts/world/region_data.gd" id="1_2asjv"]
 [ext_resource type="Texture2D" path="res://assets/ui/maps/polar_island.png" id="1_pu2hy"]
+[ext_resource type="Script" path="res://scripts/systems/health_factor.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="4_goal"]
+
+[sub_resource type="Resource" id="Health_clean"]
+script = ExtResource("3_health")
+kind = &"clean"
+amount = 10
+weight = 6.0
+text = "Litter in the water and on the ice"
+
+[sub_resource type="Resource" id="Health_corridor"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"corridor"
+amount = 100
+weight = 3.0
+text = "Ice joining the floes in the freeze"
+
+[sub_resource type="Resource" id="Health_seals"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"ringed_seal"
+amount = 6
+too_many = 9
+weight = 2.0
+text = "Ringed seals"
+
+[sub_resource type="Resource" id="Health_bears"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"polar_bear"
+amount = 2
+weight = 2.0
+text = "Polar bears"
+
+[sub_resource type="Resource" id="Health_cod"]
+script = ExtResource("3_health")
+kind = &"animals"
+target = &"arctic_cod"
+amount = 6
+text = "Arctic cod under the ice"
+
+[sub_resource type="Resource" id="Health_terns"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"terns"
+amount = 4
+text = "Arctic terns nesting in the thaw"
+
+[sub_resource type="Resource" id="Health_planning"]
+script = ExtResource("3_health")
+kind = &"eco"
+target = &"planning"
+text = "Zones on ice that lasts"
+scales_all = true
+
+[sub_resource type="Resource" id="Goal_balanced"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"polar_balanced"
+text = "Help the Polar Ocean through the seasons (island health 70 %)"
+
+[sub_resource type="Resource" id="Goal_core"]
+script = ExtResource("4_goal")
+kind = &"flag"
+target = &"ice_core_drilled"
+text = "Drill an ice core: build the Ice Core Drill Site on old ice and keep it there for 3 days"
 
 [resource]
 script = ExtResource("1_2asjv")
 id = &"arctic_ocean"
 display_name = "Polar Ocean"
-description = "Floes of ice and bare rock in cold, quiet water. (Its wildlife coming soon.)"
+description = "Floes of ice and bare rock in cold water. The ice comes and goes with the seasons: what works in the freeze is wrong in the thaw. No trees grow here: bring wood with you."
 order = 6
 direction = &"colder"
 theme = "Global connectivity"
@@ -17,5 +84,7 @@ arrival = Vector2(25136, 16)
 boat_mooring = Vector2(25104, 16)
 map_icon = ExtResource("1_pu2hy")
 requires = &"cargo_module"
+health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_corridor"), SubResource("Health_seals"), SubResource("Health_bears"), SubResource("Health_cod"), SubResource("Health_terns"), SubResource("Health_planning")])
+objective = "Live with the seasons, and drill an ice core"
+goals = Array[ExtResource("4_goal")]([SubResource("Goal_balanced"), SubResource("Goal_core")])
 discovery = &"ice_core"
-in_development = true

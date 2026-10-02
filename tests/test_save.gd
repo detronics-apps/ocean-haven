@@ -108,6 +108,7 @@ func _initialize() -> void:
 	world.get_node("MangroveIsland/Ecosystem").set("_silt", {Vector2i(6, 1): 0.6})
 	world.get_node("HookIsland/Ecosystem/Sector3").knowledge = 0.45
 	world.get_node("HookIsland/Ecosystem/Sector5").dive_marked = true
+	world.get_node("PolarIsland/Ecosystem").set("_season", 1.25)
 	_expect(_save.save_to(world, PATH), "saved")
 	world.free()
 
@@ -145,6 +146,7 @@ func _initialize() -> void:
 	_expect(is_equal_approx(world.get_node("MangroveIsland/Ecosystem").silt_of(Vector2i(6, 1)), 0.6), "silt in the Mangrove Coast's channels is restored")
 	_expect(is_equal_approx(world.get_node("HookIsland/Ecosystem/Sector3").knowledge, 0.45) and world.get_node("HookIsland/Ecosystem/Sector5").dive_marked,
 		"how well the Deep Sea's dark areas are known, and the area marked for a dive, are restored")
+	_expect(is_equal_approx(world.get_node("PolarIsland/Ecosystem").get("_season"), 1.25), "the Polar Ocean's ice season is restored")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

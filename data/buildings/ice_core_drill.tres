@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/ice_core_drill.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"ice_core_drill"
+texture = ExtResource("2_t")
+only_on = &"arctic_ocean"
+display_name = "Ice Core Drill Site"
+description = "Drills a core from ancient ice: layers that record the climate long ago. It needs old, thick ice that lasts for 3 days while it drills, and the island at 70 % health. On ice that melts it stops: move it."
+order = 4
+size = Vector2i(1, 1)
+terrain = PackedStringArray("ice")
+cost_funding = 300
+cost_items = Dictionary[StringName, int]({&"wood": 8})
+one_per_island = true
+demolishable = true
+storm_proof = true
+placement_hint = "on old ice at a floe's core"
+fact = "Ice cores hold tiny bubbles of air trapped long ago, so scientists can measure what the air was like hundreds of thousands of years ago."

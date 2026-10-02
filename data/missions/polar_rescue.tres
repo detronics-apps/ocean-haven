@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/polar_rescue.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"polar_rescue"
+display_name = "Rescue"
+icon = ExtResource("2_icon")
+description = "The station's team helps injured animals recover and marks any caught in litter for you to free."
+order = 6
+facility = &"polar_research_station"
+cost = 20
+minutes = 2.0
+finds_group = &"animals"
+finds_species = &""
+finds_tangled = true
+marker_colour = Color(1, 0.4196, 0.2902, 1)
+report = "The rescue team is back: %d animal(s) found. Injured ones are recovering and back in the wild; any caught in litter are marked in red on your minimap."
+report_none = "The rescue team found no animals in distress. Everyone is safe and well!"
+effect = &"rescue"

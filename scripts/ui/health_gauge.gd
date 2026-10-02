@@ -44,6 +44,9 @@ func _process(delta: float) -> void:
 	var arrow := "steady" if absf(heading - now) < 0.02 else ("heading up to %d%%" % roundi(heading * 100.0) if heading > now
 		else "heading down to %d%%" % roundi(heading * 100.0))
 	_label.text = "%s: %d%%, %s" % [island, roundi(now * 100.0), arrow]
+	var eco := IslandHealth.ecosystem(get_tree(), region)
+	if eco and eco.has_method("status_note"):
+		_label.text += "\n" + eco.status_note()  # e.g. the Polar Ocean's ice season
 	queue_redraw()
 
 
