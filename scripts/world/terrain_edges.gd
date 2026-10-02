@@ -22,6 +22,8 @@ const ARC_STEPS := 6
 ## Edge styles by terrain pair (both orders); anything not listed is "soft". Room for later:
 ## rock and ice could get harder, more broken edges.
 const STYLES := {}
+## Which terrain stays joined up where two cross diagonally (land above water, shallow above deep).
+const PRIORITY := {"rock": 6, "grass": 5, "mud": 4, "ice": 4, "sand": 3, "water": 2, "": 1, "sea": 0}
 
 var _ground: TileMapLayer
 ## Terrain of every cell last time it was looked at, and the pieces to draw per corner point.
@@ -101,9 +103,20 @@ func _shape_corner(corner: Vector2i) -> void:
 		var beside_x := terrain_at(cell + Vector2i(int(towards.x), 0))
 		var beside_y := terrain_at(cell + Vector2i(0, int(towards.y)))
 		var across := terrain_at(cell + Vector2i(int(towards.x), int(towards.y)))
-		if beside_x == beside_y and beside_y == across and beside_x != mine and beside_x != "sea" and _colours.has(beside_x):
-			_pieces[corner] = [_quarter(cell, towards, style(mine, beside_x)), _colours[beside_x]]
-			return  # only one cell of the 4 can be the odd one out
+		if beside_x == mine or beside_y == mine:
+			continue  # a straight edge or an inside corner: nothing to round here
+		# The colour that rounds into this corner: the neighbours' terrain if they agree; where
+		# three terrains meet, the one diagonally across if it's one of them, else the higher.
+		var fill := beside_x
+		if beside_x != beside_y:
+			fill = across if across in [beside_x, beside_y] else (beside_x if PRIORITY.get(beside_x, 0) >= PRIORITY.get(beside_y, 0) else beside_y)
+		elif across == mine and PRIORITY.get(mine, 0) > PRIORITY.get(fill, 0):
+			continue  # a checkerboard: the higher terrain stays joined up, only the lower rounds
+		if fill == "sea" or not _colours.has(fill):
+			continue
+		if not _pieces.has(corner):
+			_pieces[corner] = []
+		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill]])
 
 
 ## The polygon filling `cell`'s quarter towards `towards` outside a quarter circle.
@@ -129,7 +142,10 @@ static func style(a: String, b: String) -> StringName:
 
 ## How many rounded corners there are (for tests and the editor).
 func piece_count() -> int:
-	return _pieces.size()
+	var n := 0
+	for corner: Vector2i in _pieces:
+		n += (_pieces[corner] as Array).size()
+	return n
 
 
 func pieces_at(corner: Vector2i) -> Array:
@@ -143,5 +159,5 @@ func _process(_delta: float) -> void:
 
 func _draw() -> void:
 	for corner: Vector2i in _pieces:
-		var piece: Array = _pieces[corner]
-		draw_colored_polygon(piece[0], piece[1])
+		for piece: Array in _pieces[corner]:
+			draw_colored_polygon(piece[0], piece[1])

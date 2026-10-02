@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+faces_movement = false
 id = &"seahorse"
 display_name = "Seahorse"
 sprite = ExtResource("2_t")
