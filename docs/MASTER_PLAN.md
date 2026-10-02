@@ -1063,3 +1063,36 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
 2. **The ice cycle's length:** 8 days, so the player sees a whole cycle in a couple of hours.
 3. **The runaway species:** seals crowding too many pupping zones.
 4. **Boats breaking thin ice:** is that a fun reason to move boats each season, or too fiddly?
+
+---
+
+## Action list (what's still to do)
+
+**Next steps in the plan**
+- **Step 8: Connected ocean.** Show the cross-island effects in the world. Built so far: clean
+  Starting Island water speeds kelp regrowth, reusable bottles and gear marking work everywhere,
+  and terns visit other islands. Still to show: mangrove nursery fish reaching the Reef, and
+  safer migration routes.
+- **Step 9: Ocean Research Vessel and Global Ocean Observatory.** With all six discoveries the
+  ship becomes the Ocean Research Vessel, and the Map gains the whole ocean's health and how the
+  islands affect each other.
+
+**Gameplay still open**
+- Levels for the buildings that don't have them yet:
+  - Otter Habitat, Kelp Restoration Site, Kelp Discovery Centre, Kelp Research Platform;
+  - Dolphin Viewing Area, Marine Rescue & Research Station, tent/house;
+  - a picture per level for the patrol buoy.
+- Reef: the hurricane only washes sand back. Moving sand around properly, and planting seagrass
+  by hand, are still to come.
+- Polar: make overbuilt seal zones cost more. A crowded island is still about 80 % clean, where
+  the island rules aim for about 20 % when one species takes over and litter is left.
+- More animals (more seabirds, reef fish), net boats, and sanctuary interiors (the turtle rehab
+  mini-game).
+
+**Look and feel (the user's list, for later)**
+- A very subtle texture on sand, grass and rock tiles, so they aren't flat colour.
+- A new colour for rock: it looks too much like water now.
+- A gentle wave animation on the sea.
+- Terrain edges: soften straight edges, and give each pair of terrains its own edge style
+  (`docs/TERRAIN_EDGES.md`).
+- Real art to replace the placeholders.
