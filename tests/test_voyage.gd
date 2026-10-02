@@ -126,9 +126,9 @@ func _initialize() -> void:
 	build_mode.add_building(ship, kelp_cell)
 	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")
 
-	# --- From the Kelp Forest: colder is the Deep Sea (needs Kelp Fibre), warmer still the Mangrove Coast ---
-	_expect(regions.next_undiscovered(&"colder") == region.call("deep_sea")
-		and regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "next: Deep Sea colder, Mangrove Coast warmer")
+	# --- From the Kelp Forest: colder is the Deep Sea (needs Kelp Fibre), warmer leads back home ---
+	_expect(regions.next_from(kelp, &"colder") == region.call("deep_sea")
+		and regions.next_from(kelp, &"warmer") == region.call("home_island"), "next to the Kelp Forest: the Deep Sea colder, home warmer")
 	explore.open()
 	_expect(explore.find_child("ExploreColder", true, false).disabled and _texts(explore).contains("Kelp Fibre"),
 		"the Deep Sea needs the Kelp Forest's discovery")
@@ -141,18 +141,27 @@ func _initialize() -> void:
 		"Kelp Fibre installed: Level 2, every ship upgraded")
 	# The Deep Sea is ready to explore now (exploring it is tested in test_deep_sea.gd).
 	explore.open()
-	_expect(not explore.find_child("ExploreColder", true, false).disabled and regions.next_undiscovered(&"colder") == region.call("deep_sea"),
+	_expect(not explore.find_child("ExploreColder", true, false).disabled and explore.next_island(&"colder") == region.call("deep_sea"),
 		"with Kelp Fibre installed the Deep Sea can be explored")
+	_expect(explore.find_child("ExploreWarmer", true, false).disabled and _texts(explore).contains("found it already"),
+		"warmer from the Kelp Forest is home: already found")
 	explore.close()
-	# Warmer from the Kelp Forest: the Mangrove Coast.
-	_expect(regions.next_undiscovered(&"warmer") == region.call("mangrove_coast"), "warmer from the Kelp Forest: Mangrove Coast")
+	# A ship only finds the island next to its own: from home, colder is the Kelp Forest (found),
+	# so the Deep Sea can't be reached from there; warmer is the Mangrove Coast.
+	player.global_position = home_ship.global_position + Vector2(0, -40)
+	explore.open()
+	_expect(explore.find_child("ExploreColder", true, false).disabled and explore.next_island(&"warmer") == region.call("mangrove_coast"),
+		"from home: the Kelp Forest is already found (no skipping on to the Deep Sea); warmer is the Mangrove Coast")
+	explore.close()
+	explore.explore(&"colder")
+	_expect(not regions.is_discovered(region.call("deep_sea")), "exploring colder from home doesn't skip ahead to the Deep Sea")
 	explore.explore(&"warmer")
 	for i in 240:
 		await process_frame
 	_expect(regions.is_discovered(region.call("mangrove_coast")), "the Mangrove Coast is found")
 	fleet.complete(region.call("mangrove_coast"))
 	fleet.install(&"mangrove_resin")
-	_expect(regions.next_undiscovered(&"warmer") == region.call("tropical_reef"), "then warmer is the Tropical Reef")
+	_expect(explore.next_island(&"warmer") == region.call("tropical_reef"), "from the Mangrove Coast, warmer is the Tropical Reef")
 	explore.open()
 	_expect(not explore.find_child("ExploreWarmer", true, false).disabled, "the Tropical Reef is ready to explore")
 	explore.close()

@@ -182,6 +182,8 @@ foundations the mechanics sit on, not the mechanics themselves.
   materials back.
 - **The Build menu only lists what can be built on the island the ranger is on** (`only_on`).
   Buildings for other islands don't appear, not even greyed out.
+- **Exploring goes one island at a time:** a ship only finds the island next to its own, so
+  every step out needs that island's objective done and its own Exploration Ship.
 - **Nothing moves on its own:** every island has its own rowboat; boats stay where the ranger
   left them and never sail along on voyages.
 - **Buildings can be used from the rowboat as well as on foot** (e.g. moving an offshore buoy).

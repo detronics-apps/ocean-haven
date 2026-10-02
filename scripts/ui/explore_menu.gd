@@ -2,9 +2,10 @@ class_name ExploreMenu
 extends OverlayScreen
 ## The Exploration Ship's screen (only opened from the ship itself, never from the Map):
 ## the fleet's equipment (install island discoveries to upgrade every ship), and explore
-## warmer or colder. Each finds the next undiscovered island that way, once the fleet has
-## the upgrade it needs (RegionData.requires); it's then discovered for good (the Map can
-## sail there from then on). To explore on from there, establish an Exploration Ship on it.
+## warmer or colder. Each finds the island next to the ship's own island that way
+## (Regions.next_from), once the fleet has the upgrade it needs (RegionData.requires); it's then
+## discovered for good (the Map can sail there from then on). To explore on beyond it,
+## establish an Exploration Ship on it.
 
 
 func _enter_tree() -> void:
@@ -23,18 +24,21 @@ func _fill() -> void:
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_content.add_child(note)
 	for direction in [Regions.WARMER, Regions.COLDER]:
-		var next := Regions.next_undiscovered(direction)
-		var needs := Fleet.missing_for(next)
+		var next := next_island(direction)
+		var found := next != null and Regions.is_discovered(next)
+		var needs := Fleet.missing_for(next) if next and not found else null
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)
 		var button := BuildMode._big_button("Explore %s" % direction, Color("2a78a8") if direction == Regions.COLDER else Color("c9772e"))
 		button.name = "Explore" + direction.capitalize()
-		button.disabled = next == null or needs != null or next.in_development
+		button.disabled = next == null or found or needs != null or next.in_development
 		button.pressed.connect(explore.bind(direction))
 		row.add_child(button)
 		var hint := Label.new()
 		if not next:
-			hint.text = "You've discovered every island in the %s waters." % direction
+			hint.text = "No more islands lie in %s waters from here." % direction
+		elif found:
+			hint.text = "The %s lies that way: you've found it already. Sail there with the Map, and establish its own Exploration Ship to explore beyond it." % next.display_name
 		elif next.in_development and needs:
 			hint.text = "To find the way into %s waters, the fleet will need %s (from the %s). The next island that way, the %s, is still under development." % [
 				direction, needs.upgrade_name, needs.display_name, next.display_name]
@@ -87,10 +91,16 @@ func install(discovery: DiscoveryData) -> void:
 		Fleet.level(), discovery.upgrade_name, discovery.capability])
 
 
-## Discovers the next island `direction` and sails there.
+## The island next to the ranger's (where this ship is) in `direction`.
+func next_island(direction: StringName) -> RegionData:
+	var ranger := ControlledBody.active(get_tree())
+	return Regions.next_from(Regions.nearest(ranger.global_position if ranger else Vector2.ZERO), direction)
+
+
+## Discovers the island next to this one in `direction` and sails there.
 func explore(direction: StringName) -> void:
-	var region := Regions.next_undiscovered(direction)
-	if not region or Fleet.missing_for(region) or region.in_development:
+	var region := next_island(direction)
+	if not region or Regions.is_discovered(region) or Fleet.missing_for(region) or region.in_development:
 		return
 	close()
 	Regions.discover(region)

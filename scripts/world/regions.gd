@@ -59,6 +59,27 @@ static func next_undiscovered(direction: StringName) -> RegionData:
 	return null
 
 
+## The island next to `from` in `direction` (discovered or not; null = none that way). The
+## islands lie in a line: Polar Ocean, Deep Sea, Kelp Forest, Starting Island, Mangrove Coast,
+## Tropical Reef. An Exploration Ship only finds the island next to its own, so each step out
+## needs a ship on the island before it.
+static func next_from(from: RegionData, direction: StringName) -> RegionData:
+	var line: Array[RegionData] = []
+	for region: RegionData in all():  # sorted by order: nearest home first
+		if region.direction == COLDER:
+			line.push_front(region)
+		elif region.direction == &"":
+			line.append(region)
+	for region: RegionData in all():
+		if region.direction == WARMER:
+			line.append(region)
+	var at := line.find(from)
+	if at < 0:
+		return null
+	var step := 1 if direction == WARMER else -1
+	return line[at + step] if at + step >= 0 and at + step < line.size() else null
+
+
 ## Has an Exploration Ship established on its island (so you can explore on from there).
 static func exploration_ready(tree: SceneTree, region: RegionData) -> bool:
 	for building: Building in tree.get_nodes_in_group("buildings"):
