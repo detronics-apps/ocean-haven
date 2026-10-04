@@ -1,9 +1,16 @@
 class_name Boat
 extends ControlledBody
 ## The ranger's boat: board it from the shore, sail on water, go ashore next to land.
-## Board / go ashore with the interact action or by tapping the boat.
+## Board / go ashore with the interact action or by tapping the boat. From a boat the ranger
+## can also take another boat in tow (it follows behind) and let it go somewhere else.
 
 @export var board_range := 64.0
+## How close another boat must be to take it in tow, and how far behind it follows.
+@export var tow_reach := 56.0
+@export var tow_gap := 30.0
+
+## The boat this one is towing (null = none).
+var towing: Boat
 
 var _player: Player
 var _driver: Node2D
@@ -49,6 +56,10 @@ func _physics_process(delta: float) -> void:
 				"This little boat can't go that far.\nBuild an Exploration Ship at your dock to discover other islands.")
 	elif from_centre.length() < region.waters_radius - 150.0:
 		_warned_far = false
+	if is_instance_valid(towing):
+		var behind := towing.global_position - global_position
+		if behind.length() > tow_gap:
+			towing.global_position = global_position + behind.normalized() * tow_gap
 
 
 func _process(_delta: float) -> void:
@@ -62,11 +73,46 @@ func _process(_delta: float) -> void:
 
 ## What the ranger can do with the boat right now, for the action bar: [{label, do}].
 func actions() -> Array:
-	if controlled and _shore_spot() != null:
-		return [{"label": "Go ashore", "do": _go_ashore}]
+	if controlled:
+		var list := []
+		if _shore_spot() != null:
+			list.append({"label": "Go ashore", "do": _go_ashore})
+		if is_instance_valid(towing):
+			list.append({"label": "Let go of the towed boat", "do": let_go})
+		else:
+			var other := _boat_to_tow()
+			if other:
+				list.append({"label": "Tow the other boat", "do": tow.bind(other)})
+		return list
 	if not controlled and _player_in_range() and _nearest_boat():
 		return [{"label": "Board boat", "do": _board}]
 	return []
+
+
+## The nearest other boat close enough to take in tow (null = none).
+func _boat_to_tow() -> Boat:
+	var best: Boat = null
+	for boat: Boat in get_tree().get_nodes_in_group("boat"):
+		var reach := boat.global_position.distance_to(global_position)
+		if boat != self and not boat.controlled and reach <= tow_reach \
+				and (not best or reach < best.global_position.distance_to(global_position)):
+			best = boat
+	return best
+
+
+## Takes `other` in tow: it follows behind this boat until it's let go.
+func tow(other: Boat) -> void:
+	towing = other
+	get_tree().call_group("hud", "show_toast", "The other boat is in tow. Sail to where you want it, then let it go.")
+
+
+## Leaves the towed boat where it is now (it stays there, and is saved there).
+func let_go() -> void:
+	if is_instance_valid(towing):
+		towing.stop()
+		if not Terrain.at(get_tree(), towing.global_position) in ["water", ""]:
+			towing.global_position = Terrain.nearest(get_tree(), towing.global_position, ["water", ""])
+	towing = null
 
 
 func _toggle() -> bool:
@@ -106,6 +152,7 @@ func _go_ashore() -> bool:
 func restore_ashore() -> void:
 	if not controlled:
 		return
+	let_go()
 	stop()
 	controlled = false
 	_driver.queue_free()

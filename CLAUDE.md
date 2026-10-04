@@ -174,7 +174,7 @@ caring for animals". Build in this order, placeholder art:
     to scoop up beach sand and place it on shallows (sand isn't litter: ItemData.is_litter)
 18. ✅ Save code (Journal): copy progress as text, paste it back; GitHub Pages site (installable)
 19. ✅ Wood: cutting a palm gives 1 wood + 1-2 saplings (planting needs a sapling); buildings cost
-    wood + litter + funding; carry 3 wood / 1 sand; Ranger Houses (up to 2) store 10 each; up to 3
+    wood + litter + funding; carry 3 wood / 3 sand; Ranger Houses (up to 2) store 10 each; up to 3
     recycling centres; sand on deep water makes shallows (2 sand to make beach)
 20. ✅ Building upgrades, 3 tiers each (buildings, not the player — no player levels): protection area
     +1 turtle per tier, Ranger House +1 storage per tier, recycling centre +1 funding per piece per tier
@@ -325,7 +325,10 @@ Resin. All building limits count per island.
 Boats: every island starts with its own rowboat (world nodes Boat, KelpBoat, MangroveBoat…);
 nothing sails along on voyages and every boat stays where it was left (saved). Up to 2 extra
 Rowboats per island (building holding a Boat), each needing 2 dock planks on the island
-(BuildingData.requires_each); the ranger boards the nearest boat.
+(BuildingData.requires_each); the ranger boards the nearest boat. From a boat the ranger can take
+another boat in tow ("Tow the other boat" / "Let go"; Boat.towing) and use the shovel (dig a
+beach or fill water from the boat). The bottom UI keeps clear of a phone's corners in portrait
+and landscape, and the web page re-measures the window after the phone is turned.
 
 Litter: only tents, Ranger Houses and recycling centres (6 litter, and 6 per upgrade:
 BuildingData.upgrade_litter) are built with litter; everything else costs funding and wood (its

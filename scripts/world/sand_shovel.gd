@@ -1,10 +1,10 @@
 class_name SandShovel
 extends Node
 ## Moving sand and mud. With the shovel picked up (Build menu -> Shovel), the 8 tiles around
-## the ranger are outlined: sand or mud that can be dug up, and (while carrying some)
+## the ranger (on foot or in a boat) are outlined: sand or mud that can be dug up, and (while carrying some)
 ## shallow water that can be filled. Tap one to select it; the action bar then
 ## offers "Dig up sand / mud" or "Place sand / mud" for exactly that tile. The ranger carries
-## one sand or 3 mud (storable in the Exploration Ship: dug mud is never lost, so a channel can
+## 3 sand or 3 mud (storable in the Exploration Ship: dug mud is never lost, so a channel can
 ## always be filled back in); now and then sand hides buried litter. Digging mud makes a
 ## channel (shallow water); mud on shallow water makes a mud flat. Filling deep water takes 2.
 ## "Put shovel away" (an action button) ends it. Every changed tile is saved.
@@ -78,13 +78,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()  # a tile pick, not a walk
 
 
-## The 8 tiles around the ranger (on foot), or none.
+## The 8 tiles around the ranger (on foot, or in a boat: dig the beach or fill the water from
+## it), or none.
 func tiles_around() -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
-	var player := ControlledBody.active(get_tree()) as Player
-	if not player:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
 		return tiles
-	var here := Terrain.cell_of(player.global_position)
+	var here := Terrain.cell_of(ranger.global_position)
 	for dx in range(-1, 2):
 		for dy in range(-1, 2):
 			if dx != 0 or dy != 0:

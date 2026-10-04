@@ -39,7 +39,7 @@ func _initialize() -> void:
 	_expect(house.stats().find("Wood") == -1, "no long line of stored items above the house")
 
 	# An older save with sand in storage and no ship yet: it can still be taken out at the house.
-	inventory.restore({}, {"sand": 2})
+	inventory.restore({}, {"sand": 5})
 	var menu: Node = world.get_node("../StorageMenu") if world.has_node("../StorageMenu") else root.find_child("StorageMenu", true, false)
 	_expect(menu != null, "the HUD adds a Storage menu")
 	var player: Node2D = world.get_node("Player")
@@ -53,7 +53,7 @@ func _initialize() -> void:
 		"the house menu lists wood, saplings, and the sand left over from before")
 	content.get_node("sand/Take").pressed.emit()
 	await process_frame
-	_expect(inventory.count(&"sand") == 1 and inventory.stored(&"sand") == 1, "took 1 sand (the ranger carries 1)")
+	_expect(inventory.count(&"sand") == 3 and inventory.stored(&"sand") == 2, "took 3 sand (the ranger carries 3)")
 	inventory.add(wood, 3)
 	menu.refresh()  # (the game is paused while it's open: nothing else changes what's carried)
 	content = menu.get("_content")
@@ -76,8 +76,8 @@ func _initialize() -> void:
 		"the ship's menu lists everything")
 	content.get_node("sand/Store").pressed.emit()
 	await process_frame
-	_expect(inventory.count(&"sand") == 0 and inventory.stored(&"sand") == 2, "sand stored in the ship")
-	_expect(inventory.available(&"sand") == 2, "stored sand can be used for building anywhere")
+	_expect(inventory.count(&"sand") == 0 and inventory.stored(&"sand") == 5, "sand stored in the ship")
+	_expect(inventory.available(&"sand") == 5, "stored sand can be used for building anywhere")
 	menu.close()
 
 	if not _failed:

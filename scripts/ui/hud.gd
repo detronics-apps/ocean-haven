@@ -2,10 +2,13 @@ extends CanvasLayer
 ## On-screen inventory counts, clock, the menu bar (Build / Journal / Look), and a
 ## short non-blocking note with a fact when something is collected, discovered or built.
 
-## Portrait phones have rounded corners: the bottom UI (minimap, revision, action buttons)
-## moves up (and a little in) by this much when the screen is taller than it is wide.
+## Phones have rounded corners: the bottom UI (minimap, revision, action buttons) moves up
+## (and a little in) by this much when the screen is taller than it is wide...
 @export var portrait_lift := 40.0
 @export var portrait_inset := 10.0
+## ... and in landscape, where the corners and the home bar sit at the bottom-left and right.
+@export var landscape_lift := 28.0
+@export var landscape_inset := 40.0
 ## Taps this close around the action buttons (and in the gaps between them) never walk
 ## the ranger: a missed button is just a missed button.
 @export var action_dead_zone := 28.0
@@ -155,12 +158,14 @@ func _ready() -> void:
 	_action_bar.add_child(_info)
 
 
-## Keeps the bottom UI clear of a portrait phone's rounded corners.
+## Keeps the bottom UI clear of a phone's rounded corners and home bar (portrait or landscape;
+## not on a computer).
 func _layout_bottom() -> void:
 	var size := get_viewport().get_visible_rect().size
 	var portrait := size.y > size.x
-	var lift := portrait_lift if portrait else 0.0
-	var inset := portrait_inset if portrait else 0.0
+	var phone := OS.has_feature("web_ios") or OS.has_feature("web_android") or OS.has_feature("mobile")
+	var lift := portrait_lift if portrait else (landscape_lift if phone else 0.0)
+	var inset := portrait_inset if portrait else (landscape_inset if phone else 0.0)
 	var minimap: Control = $Minimap
 	minimap.offset_left = 16.0 + inset
 	minimap.offset_right = 144.0 + inset

@@ -58,6 +58,32 @@ func _initialize() -> void:
 	for i in 30:
 		await physics_frame
 	_expect(second.boat().global_position.distance_to(left_at) < 1.0, "it stays where it was left")
+
+	# --- From one boat, tow another somewhere else ---
+	var towed: Node2D = first.boat()
+	var tug: Node2D = second.boat()
+	tug.global_position = Vector2(600, 260)
+	towed.global_position = Vector2(640, 260)
+	player.global_position = tug.global_position + Vector2(0, -20)
+	tug.call("_board", false)
+	var labels: Array = tug.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Tow the other boat" in labels, "in a boat, another boat close by can be taken in tow (%s)" % [labels])
+	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Tow the other boat")[0].do.call()
+	tug.global_position = Vector2(700, 380)
+	await physics_frame
+	await physics_frame
+	_expect(towed.global_position.distance_to(tug.global_position) <= tug.tow_gap + 1.0, "the towed boat follows behind")
+	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Let go of the towed boat")[0].do.call()
+	var towed_to: Vector2 = towed.global_position
+	tug.global_position = Vector2(500, 380)
+	await physics_frame
+	_expect(towed.global_position == towed_to and towed_to.distance_to(Vector2(640, 260)) > 60.0, "let go, it stays where it was towed to")
+
+	# --- Sand: carry 3, and dig or fill from the boat ---
+	_expect(load("res://data/items/sand.tres").carry_limit == 3, "the ranger carries up to 3 sand")
+	var shovel: Node = world.get_node("SandShovel")
+	_expect(shovel.tiles_around().size() == 8, "in a boat, the shovel reaches the 8 tiles around it")
+	tug.restore_ashore()
 	var kelp_boat: Node2D = world.get_node("KelpBoat")
 	kelp_boat.global_position += Vector2(40, 0)
 	var kelp_left: Vector2 = kelp_boat.global_position
@@ -71,8 +97,8 @@ func _initialize() -> void:
 	_expect(root.get_node("SaveGame").load_from(world, PATH), "loaded")
 	await process_frame
 	var boats := get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"rowboat")
-	_expect(boats.size() == 2 and boats.any(func(b: Node) -> bool: return b.boat().global_position.distance_to(left_at) < 1.0),
-		"after loading, the built rowboat is still where it was left")
+	_expect(boats.size() == 2 and boats.any(func(b: Node) -> bool: return b.boat().global_position.distance_to(towed_to) < 1.0),
+		"after loading, the built rowboat is still where it was towed to")
 	_expect(world.get_node("KelpBoat").global_position.distance_to(kelp_left) < 1.0, "and so is the Kelp Forest's own")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 

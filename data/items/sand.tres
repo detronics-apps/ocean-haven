@@ -9,5 +9,5 @@ id = &"sand"
 display_name = "Sand"
 icon = ExtResource("1_dly5u")
 is_litter = false
-carry_limit = 1
+carry_limit = 3
 fact = "Beach sand is made of tiny bits of rock and shell, worn down by the sea over thousands of years."
