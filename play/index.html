@@ -109,6 +109,21 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then
 	});
 	reg.update();
 });
+// iPhone home-screen apps can keep the old size for a moment after the phone is turned, so the
+// bottom of the game (minimap, action buttons) ends up off screen: ask the game to measure the
+// window again a few times after every turn or resize.
+(function () {
+	function remeasure() {
+		[60, 250, 600, 1200].forEach(function (ms) {
+			setTimeout(function () { window.dispatchEvent(new Event('resize')); }, ms);
+		});
+	}
+	window.addEventListener('orientationchange', remeasure);
+	if (window.visualViewport) window.visualViewport.addEventListener('resize', function () {
+		if (Math.abs(window.visualViewport.height - window.innerHeight) > 1) remeasure();
+	});
+	document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') remeasure(); });
+})();
 </script>
 	</head>
 	<body>
@@ -128,7 +143,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":911296,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":912464,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
