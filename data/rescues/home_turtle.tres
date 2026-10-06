@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="2_t"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"home_turtle"
+region = &"home_island"
+species = ExtResource("2_t")
+building = &"marine_rescue_station"
+person = &"maya"
+offer_when = PackedStringArray("built:marine_rescue_station")
+found_note = "Maya: \"A young turtle was found tangled in fishing line, and it's very weak. It needs care before it can go back to sea. Come to the rescue station!\""
+intro = "Maya: \"This young green turtle was caught in old fishing line. It's weak, but with care it will get better. It isn't a pet: we're helping it get home. Would you give it a name?\""
+days = 30
+stage_days = PackedInt32Array(0, 4, 8, 14, 20, 30)
+stage_names = PackedStringArray("Critical care", "Eating on its own", "Swimming strongly", "Exploring", "Wild again", "Ready")
+stage_texts = PackedStringArray("Found weak and tangled in fishing line. {name} is resting in a shallow, quiet pool.", "{name} has started to eat on its own.", "{name} swims laps of the pool now.", "{name} keeps hiding in a corner of the pool.", "{name} is behaving more like a wild turtle every day.", "Strong, healthy and wild again.")
+care_questions = PackedStringArray("What does {name} need most right now?", "What should we feed {name}?", "How can we help {name} get strong?", "Why do you think {name} is hiding?", "How should {name} find food now?", "")
+care_right = PackedStringArray("Quiet, clean, shallow water", "Seagrass and algae", "A longer swim in the big pool", "It needs shelter: add some rocks", "Hide food in the seagrass to search for", "")
+care_wrong = PackedStringArray("Lots of visitors to cheer it up", "Bread", "Pick it up and hold it often", "It wants a bare, empty pool", "Feed it by hand", "")
+care_right_result = PackedStringArray("{name} rests quietly. Rest is the first medicine.", "Crunch! As young green turtles grow, they eat more and more seagrass and algae.", "{name} swims and swims: strong flippers for the open sea!", "{name} tucks under the new rocks, then comes out to explore. Turtles like shelter to rest under.", "{name} noses through the seagrass and finds it. In the wild it will have to search for food.", "")
+care_wrong_result = PackedStringArray("Crowds would frighten {name}. Wild animals heal best somewhere calm.", "Bread isn't turtle food: it's nothing like what they eat in the sea.", "Being held stresses wild animals. The less we handle {name}, the wilder it stays.", "A bare pool gives {name} nowhere to rest.", "If {name} learns that food comes from hands, it may swim up to boats. Better to let it search.", "")
+ready_text = "Maya: \"{name} is ready to go home. Shall we take it down to the sea?\""
+release_text = "You carry {name} down to the water. A moment's pause... and {name} swims off into the waves. Maya: \"We hope we never need to see {name} here again: that means it's doing well out there.\""
+fact = "Sea turtle rescue centres care for turtles hurt by fishing gear, boats and plastic, and release them once they're healthy again."

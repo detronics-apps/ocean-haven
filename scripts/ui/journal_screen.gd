@@ -81,7 +81,28 @@ func _fill() -> void:
 	if region.health.is_empty() and region.goals.is_empty():
 		_content.add_child(card(region.map_icon, [region.display_name, region.description,
 			"Nothing to measure here yet: more is coming to this island soon."]))
+	var rescues := _rescues()
+	if rescues:
+		_content.add_child(rescues)
 	_content.add_child(_backup_card())
+
+
+## The young animal in the ranger's care, and the ones they've released (their own stories).
+func _rescues() -> Control:
+	var lines: Array[String] = ["Rescues"]
+	var caring := Rescues.in_care()
+	if caring and Rescues.is_named():
+		lines.append("In your care: %s, %s (day %d of %d)" % [Rescues.pet_name(), caring.species.display_name.to_lower(),
+			mini(int(Rescues.days_in()) + 1, caring.days), caring.days])
+	for id in Rescues.done:
+		var rescue := Rescues.rescue(id)
+		if rescue:
+			lines.append("Released: %s, %s, on day %d" % [Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower(),
+				int(Rescues.done[id].get("day", 0))])
+	if lines.size() == 1:
+		return null
+	var picture: Texture2D = caring.species.sprite if caring else null
+	return card(picture, lines)
 
 
 ## Backing up progress as a save code (see SaveGame.export_code).

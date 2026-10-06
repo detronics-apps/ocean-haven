@@ -28,6 +28,7 @@ Missions="*res://scripts/systems/missions.gd"
 RareEvents="*res://scripts/systems/rare_events.gd"
 People="*res://scripts/systems/people.gd"
 Activities="*res://scripts/systems/activities.gd"
+Rescues="*res://scripts/systems/rescues.gd"
 
 [display]
 

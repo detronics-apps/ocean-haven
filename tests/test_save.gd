@@ -114,6 +114,7 @@ func _initialize() -> void:
 	people.restore({})
 	people.talk(load("res://data/people/tom.tres"))
 	people.finish_talk()
+	root.get_node("Rescues").restore({"current": {"id": "home_turtle", "name": "Milo", "since": 2.0, "stage": 1, "cared": -1}})
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
 	world.free()
@@ -124,6 +125,7 @@ func _initialize() -> void:
 	missions.restore({})
 	events.restore({})
 	root.get_node("People").restore({})
+	root.get_node("Rescues").restore({})
 	_inventory.restore({})
 	_inventory.litter_collected = 0
 	_journal.restore([])
@@ -156,6 +158,7 @@ func _initialize() -> void:
 	_expect(is_equal_approx(world.get_node("PolarIsland/Ecosystem").get("_season"), 1.25), "the Polar Ocean's ice season is restored")
 	_expect(is_equal_approx(load("res://scripts/player/controlled_body.gd").water_until, 7.5), "the ranger's water is restored")
 	_expect(root.get_node("People").has_met(load("res://data/people/tom.tres")), "the people the ranger has met are remembered")
+	_expect(root.get_node("Rescues").pet_name() == "Milo", "the young animal in the ranger's care is remembered")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

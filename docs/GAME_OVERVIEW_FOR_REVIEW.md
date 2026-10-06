@@ -632,7 +632,7 @@ the shared foundations first.
 | **1. People (Starting Island)** ✅ built | People, talking, the Notebook, Maya's story worked out from game state, Tom's hints, micro-stories and world reactions; the Tip button goes | Every later feature is delivered through people |
 | **2. Calendar + turtles** ✅ built | Seasons on the HUD; turtle growth and the nesting season (simulated first) | Small; the rescue's 30 days and seasons need it |
 | **3. Sonar Sweep** ✅ built | The Grid framework, personal bests, Maya introduces it, the survey point | The first ranger activity, and it proves the activity rules |
-| **4. Rescue companion #1** | The turtle at the Starting Island: naming, stages, care moments, the release, its Journal story | The emotional hook, early in the game |
+| **4. Rescue companion #1** ✅ built | The turtle at the Starting Island: naming, stages, care moments, the release, its Journal story | The emotional hook, early in the game |
 | **5. People on the other islands** | Ten more people, from the existing objectives (state-based); the hint chain; arc lines by progress | Uses phase 1's system |
 | **6. The other activities** | Mover (Otter Dive, Echo Dive), more Grid (Channel Flow, Floe Fit), Sort (Glass Sort), one at a time | Each reuses a framework |
 | **7. Rescue companions 2–6** | Once the species are decided | Reuses phase 4 |

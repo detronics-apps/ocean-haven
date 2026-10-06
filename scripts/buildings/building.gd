@@ -164,6 +164,12 @@ func actions() -> Array:
 		list.append({"label": "Open the gate" if gate_closed else "Close the gate", "do": toggle_gate})
 	if data.action == &"bait":
 		list.append({"label": "Take the bait out" if gate_closed else "Bait the camera", "do": toggle_bait})
+	var rescue := Rescues.in_care()  # the young animal in the ranger's care is looked after here
+	if rescue and rescue.building == data.id and Regions.nearest(global_position).id == rescue.region:
+		var who := Rescues.pet_name() if Rescues.is_named() else "the young %s" % rescue.species.display_name.to_lower().get_slice(" ", rescue.species.display_name.get_slice_count(" ") - 1)
+		list.append({"label": ("Release %s" if Rescues.is_ready() else "Care for %s") % who,
+			"do": get_tree().call_group.bind("rescue_screen", "open_rescue"),
+			"helps": Rescues.can_care() or Rescues.is_ready() or not Rescues.is_named()})
 	for activity: ActivityData in Activities.at(data.id):  # ranger activities played here
 		list.append({"label": activity.verb, "do": get_tree().call_group.bind("activity_" + activity.id, "open_activity", activity),
 			"helps": not Activities.story_done(activity)})

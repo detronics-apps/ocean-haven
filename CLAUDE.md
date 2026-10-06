@@ -420,6 +420,13 @@ personal bests per level, saved; ActivityScreen base: start page, timer, levels,
 Sonar Sweep (Grid; SonarSweep): opens at the Marine Search & Rescue Station once Maya asks about
 the wreck (or it's found); the story play finds the wreck (reward_group "wreck_sites" /
 "reveal"); replays are for fun only (5 levels, pings +1 s, wrong marks +5 s, best times).
+Phase 4: rescue companions (data/rescues/, RescueData; `Rescues` autoload, saved): one young
+animal at a time, one per island, found once RescueData.offer_when holds (Starting Island:
+a young green turtle once the rescue station is built). The ranger names it at the station
+(RescueScreen); a care moment a day (two choices: the other only explains why not); stages
+over 30 days, also while the ranger is away; never gets worse. Released, it lives on its
+island with its name (world node "Rescued_<id>", respawned on load) and is listed in the
+Journal's This island tab.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

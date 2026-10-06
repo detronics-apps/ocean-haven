@@ -81,6 +81,15 @@ func _ready() -> void:
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
+	var rescue_screen := RescueScreen.new()  # the rescue companion (Rescues)
+	rescue_screen.name = "RescueScreen"
+	get_parent().add_child.call_deferred(rescue_screen)
+	Rescues.found.connect(func(r: RescueData) -> void: show_toast(r.found_note))
+	Rescues.stage_reached.connect(func(r: RescueData, stage: int) -> void:
+		show_toast("%s is doing well: %s.\n%s" % [Rescues.pet_name(), r.stage_names[stage].to_lower(),
+			r.stage_texts[stage].replace("{name}", Rescues.pet_name())]))
+	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
+		show_toast("%s is back in the wild!\n%s" % [animal_name, r.fact]))
 	var sweep := SonarSweep.new()  # ranger activities (data/activities/)
 	sweep.name = "SonarSweep"
 	get_parent().add_child.call_deferred(sweep)
