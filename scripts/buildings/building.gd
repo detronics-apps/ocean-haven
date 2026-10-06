@@ -156,8 +156,8 @@ func actions() -> Array:
 		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": sleep})
-	if data.action == &"sleep" and Inventory.count(&"clean_water") > 0 and ControlledBody.water_level(get_tree()) < 0.95:
-		list.append({"label": "Drink clean water (fill up your water)", "do": drink_water})
+	if data.action == &"sleep" and Inventory.count(&"clean_water") > 0:
+		list.append({"label": "Store %d clean water (move faster while it lasts)" % Inventory.count(&"clean_water"), "do": store_water})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
@@ -257,13 +257,19 @@ func _make_morning() -> void:
 	_produce(workers * data.makes_per_morning)
 
 
-## At the tent or house: drinks a clean water, so the ranger's water is full (they move faster
-## on foot and by boat until it runs out).
-func drink_water() -> void:
-	if not Inventory.take_item(&"clean_water", 1):
+## At the tent or house: stores the clean water the ranger carries. While bottles are stored
+## the ranger moves faster, on foot and by boat; each lasts half a day (2 a day).
+func store_water() -> void:
+	var bottles := Inventory.count(&"clean_water")
+	if bottles <= 0 or not Inventory.take_item(&"clean_water", bottles):
 		return
-	ControlledBody.fill_water(get_tree())
-	get_tree().call_group("hud", "show_toast", "Water full! While you have water you move faster, on foot and by boat. It runs out over %d days: drink more clean water at your tent or house." % roundi(ControlledBody.WATER_DAYS))
+	ControlledBody.store_water(get_tree(), bottles)
+	var left := ControlledBody.water_bottles(get_tree())
+	get_tree().call_group("hud", "show_toast", "%d clean water stored at home. While there's water at home you move faster, on foot and by boat. It uses 2 bottles a day: %d left (%s)." % [bottles, left, _days_text(left * ControlledBody.BOTTLE_DAYS)])
+
+
+static func _days_text(days: float) -> String:
+	return "half a day" if days <= 0.5 else "1 day" if days <= 1.0 else "%s days" % String.num(days, 1).trim_suffix(".0")
 
 
 ## Sleeps until morning.

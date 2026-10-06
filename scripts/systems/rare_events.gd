@@ -48,11 +48,27 @@ func _process(delta: float) -> void:
 		for region: Resource in Regions.all():
 			if Regions.is_discovered(region) and not _first_on.has(region.id):
 				_first_on[region.id] = GameClock.day
-	if not _first_on.has(here):
-		_first_on[here] = GameClock.day
+	_arrived_day(here)
 	if here != _current and _current != &"?":
 		_back_on[here] = GameClock.day  # back on this island: calm for a couple of days
 	_current = here
+
+
+## The first day the ranger was on `region_id` (today, if they never were: its timer starts
+## now). Any warning that came too soon after it is called off.
+func _arrived_day(region_id: StringName) -> int:
+	if not _first_on.has(region_id):
+		_first_on[region_id] = GameClock.day
+		for event: EventData in all():
+			if event.region == region_id and _coming.has(event.id) and _too_soon(event, _coming[event.id]):
+				_coming.erase(event.id)
+	return _first_on[region_id]
+
+
+## Whether `day` is within min_gap_days of the ranger first coming to `event`'s island: each
+## island's storm timer starts when the ranger first gets there.
+func _too_soon(event: EventData, day: int) -> bool:
+	return day < int(_first_on.get(event.region, day)) + event.min_gap_days
 
 
 ## Whether `event` may strike on `day`: the ranger is on its island and has been for calm_days.
@@ -72,7 +88,9 @@ func _on_new_day(day: int) -> void:
 	for event: EventData in all():
 		# Only on the island the ranger is on, and not in their first calm_days back: a warned
 		# event waits until then; none is warned for an island they're not on.
-		if _coming.has(event.id):
+		if _coming.has(event.id) and _too_soon(event, _coming[event.id]):
+			_coming.erase(event.id)  # (warned before the island's timer started: called off)
+		elif _coming.has(event.id):
 			if day >= _coming[event.id]:
 				if _can_strike(event, day):
 					strike(event)
@@ -81,13 +99,13 @@ func _on_new_day(day: int) -> void:
 		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
-			var since: int = day - maxi(_last_day.get(event.id, 0), _first_on.get(event.region, 0))
+			var since: int = day - maxi(_last_day.get(event.id, 0), _arrived_day(event.region))
 			# Warned 3-4 days ahead, but never so late that it strikes after max_gap_days.
 			var lead := clampi(randi_range(event.warning_days, event.warning_days_max), event.warning_days,
 				maxi(event.max_gap_days - since, event.warning_days))
 			var gap: int = since + lead
 			# Evenly spread between min_gap_days and max_gap_days (certain once it's overdue).
-			if gap >= event.min_gap_days and _can_strike(event, day + lead) \
+			if gap >= event.min_gap_days and not _too_soon(event, day + lead) and _can_strike(event, day + lead) \
 					and randf() < 1.0 / maxf(event.max_gap_days - gap + 1, 1.0):
 				warn(event, lead)
 

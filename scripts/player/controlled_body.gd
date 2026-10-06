@@ -4,26 +4,36 @@ extends CharacterBody2D
 ## (keyboard / controller) or tap/click a spot to head there.
 
 @export var speed: float = 110.0
-## The ranger's water: clean water drunk at their tent or house fills it up, and it runs out
-## over WATER_DAYS (GameClock.now() when it's empty). While there's water in it, the ranger
-## moves faster, on foot and in the boat.
+## The ranger's water supply: clean water bottles stored at their tent or house. While any
+## are left, the ranger moves faster, on foot and in the boat; each bottle lasts half a day, so
+## the supply drops by 2 a day (kept as the GameClock.now() when it runs dry).
 static var water_until := -1.0
-const WATER_DAYS := 2.0
+const BOTTLE_DAYS := 0.5
+## The water bar is full at this many bottles.
+const FULL_BOTTLES := 10.0
 const WATER_SPEED := 1.3
 
 
-## How full the ranger's water is, 0..1. (The clock is looked up at runtime: tests compile
-## this without autoloads.)
+## Bottles of clean water left at home (part of one counts as one). (The clock is looked up at
+## runtime: tests compile this without autoloads.)
+static func water_bottles(tree: SceneTree) -> int:
+	var clock := tree.root.get_node_or_null("GameClock")
+	return maxi(ceili((water_until - clock.now()) / BOTTLE_DAYS - 0.001), 0) if clock else 0
+
+
+## How full the water bar is, 0..1 (FULL_BOTTLES or more: full).
 static func water_level(tree: SceneTree) -> float:
 	var clock := tree.root.get_node_or_null("GameClock")
-	return clampf((water_until - clock.now()) / WATER_DAYS, 0.0, 1.0) if clock else 0.0
+	return clampf((water_until - clock.now()) / (BOTTLE_DAYS * FULL_BOTTLES), 0.0, 1.0) if clock else 0.0
 
 
-## Drinks clean water: the ranger's water is full again.
-static func fill_water(tree: SceneTree) -> void:
+## Stores `bottles` of clean water at home: half a day of water each.
+static func store_water(tree: SceneTree, bottles: int) -> void:
 	var clock := tree.root.get_node_or_null("GameClock")
 	if clock:
-		water_until = clock.now() + WATER_DAYS
+		water_until = maxf(water_until, clock.now()) + bottles * BOTTLE_DAYS
+
+
 ## Only the body the player is currently steering responds to input.
 @export var controlled := true
 

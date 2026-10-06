@@ -128,7 +128,7 @@ func _initialize() -> void:
 	_expect(facility.stock == 2 and fleet.has_flag(&"clean_water_made"), "each clam filters 1 clean water a morning")
 	_expect(fleet.reusable_bottles(), "glass + clean water: reusable bottles everywhere")
 
-	# --- Clean Water fills the ranger's water at their tent or house: faster while it lasts ---
+	# --- Clean Water stored at the tent or house: faster while it lasts (2 bottles a day) ---
 	player.global_position = facility.global_position + Vector2(30, 0)
 	facility.take_stock()
 	_expect(inventory.count(&"clean_water") == 2, "the ranger takes the clean water")
@@ -138,11 +138,14 @@ func _initialize() -> void:
 	var body: GDScript = load("res://scripts/player/controlled_body.gd")
 	body.water_until = -1.0
 	labels = house.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Drink clean water (fill up your water)" in labels, "at the house the ranger can drink clean water (%s)" % [labels])
-	house.drink_water()
-	_expect(inventory.count(&"clean_water") == 1 and body.water_level(self) > 0.99, "drinking fills the ranger's water")
-	clock.advance(clock.DAY_LENGTH * body.WATER_DAYS * 0.5)
-	_expect(absf(body.water_level(self) - 0.5) < 0.05, "it runs out slowly (half after %d day)" % roundi(body.WATER_DAYS * 0.5))
+	_expect("Store 2 clean water (move faster while it lasts)" in labels, "at the house the ranger can store clean water (%s)" % [labels])
+	house.store_water()
+	_expect(inventory.count(&"clean_water") == 0 and body.water_bottles(self) == 2, "2 bottles stored at home")
+	_expect(body.water_level(self) > 0.0, "while there's water at home, the boost is on")
+	clock.advance(clock.DAY_LENGTH * 0.6)
+	_expect(body.water_bottles(self) == 1, "a bottle lasts half a day (%d left)" % body.water_bottles(self))
+	clock.advance(clock.DAY_LENGTH * 0.5)
+	_expect(body.water_bottles(self) == 0 and body.water_level(self) == 0.0, "2 bottles a day: gone after a day")
 	var lodge: Node = _place_on_land(build_mode, load("res://data/buildings/reef_diving_centre.tres"), reef)
 	player.global_position = lodge.global_position + Vector2(0, 40)
 	labels = lodge.actions().map(func(a: Dictionary) -> String: return a.label)

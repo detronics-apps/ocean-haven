@@ -39,7 +39,7 @@ func _initialize() -> void:
 
 	# --- Storms: none start there, and a warned one waits for the ranger ---
 	var swell: Resource = load("res://data/events/underwater_storm.tres")
-	events.restore({})
+	events.restore({"first_on": {"kelp_forest": -100, "home_island": -100}})
 	events.call("_on_new_day", 999)  # long overdue: it would be certain on the island
 	_expect(not events.is_coming_to(&"kelp_forest"), "no storm starts on an island the ranger isn't on")
 	events.warn(swell)
@@ -69,7 +69,8 @@ func _initialize() -> void:
 	_expect(not events.is_coming_to(&"kelp_forest"), "then the warned storm strikes")
 
 	# --- The time between storms kept counting while away: a new one can come soon after ---
-	events.restore({"last_day": {"underwater_storm": back + 2}, "back_on": {"kelp_forest": back + 100}})
+	events.restore({"last_day": {"underwater_storm": back + 2}, "back_on": {"kelp_forest": back + 100},
+		"first_on": {"kelp_forest": -100, "home_island": -100}})
 	events.call("_process", 2.0)
 	clock.day = back + 100
 	events.call("_on_new_day", back + 100)

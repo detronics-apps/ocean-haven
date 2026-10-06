@@ -28,7 +28,7 @@ func _initialize() -> void:
 		clock.time_of_day = 0.9
 		clock.sleep_until_morning()
 	_expect(not events.is_coming(), "no storm in the first 30 days")
-	events.restore({})
+	events.restore({"first_on": {"home_island": 1}})
 
 	# --- Warned days ahead: secure what you can ---
 	clock.day = 40
@@ -86,7 +86,7 @@ func _initialize() -> void:
 	var leads := []
 	for run in 20:
 		var last: int = clock.day
-		events.restore({"last_day": {"coastal_storm": last}})
+		events.restore({"last_day": {"coastal_storm": last}, "first_on": {"home_island": 1}})
 		for i in 70:
 			clock.day += 1
 			events.call("_on_new_day", clock.day)
@@ -105,8 +105,21 @@ func _initialize() -> void:
 	# --- An island's first event never comes within min_gap_days of first arriving there ---
 	events.restore({"first_on": {"home_island": 55}})
 	for day in range(56, 81):
+		clock.day = day
 		events.call("_on_new_day", day)
 	_expect(not events.is_coming_to(&"home_island"), "arriving on day 55: no storm warned before day 81 (so none strikes before day 85)")
+	events.restore({"first_on": {"home_island": 55}, "coming": {"coastal_storm": 60}})
+	events.call("_on_new_day", 56)
+	_expect(not events.is_coming_to(&"home_island"), "a warning from before the island's timer started is called off")
+	events.restore({"first_on": {"home_island": 55}})
+	var first_strike := -1
+	for day in range(56, 130):
+		if events._coming.get(&"coastal_storm", -1) == day:
+			first_strike = day
+			break
+		clock.day = day
+		events.call("_on_new_day", day)
+	_expect(first_strike >= 85, "the first storm comes at least 30 days after arriving (day %d)" % first_strike)
 
 	if not _failed:
 		print("PASS")

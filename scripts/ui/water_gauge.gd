@@ -1,8 +1,8 @@
 class_name WaterGauge
 extends Control
-## The ranger's water (ControlledBody.water_level), a blue bar under the island's health bar.
-## It shows once the ranger can make clean water (the Tropical Reef's Marine Water Treatment
-## Facility); drinking clean water at the tent or house fills it, and it slowly runs out.
+## The clean water stored at home (ControlledBody.water_bottles), a blue bar under the island's
+## health bar. It shows once the ranger can make clean water (the Tropical Reef's Marine Water
+## Treatment Facility); storing bottles at the tent or house fills it, and it uses 2 a day.
 
 const BAR := Vector2(220, 8)
 const REFRESH := 0.5
@@ -33,8 +33,10 @@ func _process(delta: float) -> void:
 		return
 	_wait = REFRESH
 	level = ControlledBody.water_level(get_tree())
-	visible = Fleet.has_flag(UNLOCK) or level > 0.0
-	_label.text = "Water: faster while it lasts" if level > 0.0 else "Water: drink clean water at your tent or house"
+	var bottles := ControlledBody.water_bottles(get_tree())
+	visible = Fleet.has_flag(UNLOCK) or bottles > 0
+	_label.text = ("Water at home: %d bottle%s (faster)" % [bottles, "" if bottles == 1 else "s"]) if bottles > 0 \
+		else "Water: store clean water at your tent or house"
 	queue_redraw()
 
 
