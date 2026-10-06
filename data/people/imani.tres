@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
 [ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
 [ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
-[ext_resource type="Texture2D" path="res://assets/buildings/people/field_camp.svg" id="4_place"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/dive_control.svg" id="4_place"]
 
 [sub_resource type="Resource" id="Topic_0"]
 script = ExtResource("2_t")
@@ -131,10 +131,10 @@ job = "Pilot"
 region = &"deep_sea"
 role = &"objective"
 spot = Vector2(15728, -72)
-where = "by her equipment"
-moves_to = &"deep_ocean_outpost"
-moved_where = "by the outpost"
-place_offset = Vector2(-54, 6)
+where = "at dive control"
+moves_to = &""
+moved_where = "at dive control"
+place_offset = Vector2(-68, 6)
 skin = Color(0.33, 0.2, 0.12, 1)
 hair = 2
 hair_colour = Color(0.08, 0.06, 0.05, 1)

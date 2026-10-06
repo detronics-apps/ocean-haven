@@ -85,7 +85,9 @@ func _settle() -> void:
 			if building.data.id == data.moves_to and not building.is_queued_for_deletion() \
 					and Regions.nearest(building.global_position).id == data.region:
 				var rect := building.rect()
-				at = Terrain.centre_of(Vector2i(rect.position.x - 1, rect.end.y - 1))
+				var beside := Terrain.centre_of(Vector2i(rect.position.x - 1, rect.end.y - 1))
+				if Terrain.walkable(get_tree(), _free_spot(beside)):
+					at = beside  # (never out on the water: then they stay at their own place)
 				break
 	if _place:
 		_place.visible = at == data.spot

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64" shape-rendering="crispEdges">
   <!-- Placeholder ranger house (3/4 view): blue roof, wooden walls, door, window, solar panel -->
   <ellipse cx="32" cy="59" rx="28" ry="4" fill="#000000" fill-opacity="0.18"/>
   <rect x="8" y="30" width="48" height="28" fill="#c49a6c"/>
