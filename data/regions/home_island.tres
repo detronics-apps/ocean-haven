@@ -116,7 +116,7 @@ text = "Litter in the water and on the beaches"
 script = ExtResource("3_health")
 kind = &"animals"
 target = &"red_footed_booby"
-amount = 3
+amount = 4
 text = "Seabirds nesting in the palms"
 
 [sub_resource type="Resource" id="Health_turtles"]

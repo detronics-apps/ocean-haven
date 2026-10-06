@@ -14,6 +14,9 @@ var _stored: Dictionary[StringName, int] = {}
 var litter_collected := 0
 ## Litter ever picked up, per kind (where it comes from becomes a question). Saved.
 var picked: Dictionary[StringName, int] = {}
+## Litter ever picked up on each island (region id; where the ranger was): an island's animals
+## only start coming back once the ranger has helped there (Regions.helped). Saved.
+var picked_on: Dictionary[StringName, int] = {}
 
 
 ## Adds as much of `amount` as the ranger can carry (see ItemData.carry_limit).
@@ -24,6 +27,10 @@ func add(item: ItemData, amount := 1, announce := true) -> void:
 	if item.is_litter:
 		litter_collected += amount
 		picked[item.id] = picked.get(item.id, 0) + amount
+		var ranger := ControlledBody.active(get_tree()) if is_inside_tree() else null
+		if ranger:
+			var here := Regions.nearest(ranger.global_position).id
+			picked_on[here] = picked_on.get(here, 0) + amount
 	_set_count(item, count(item.id) + amount)
 	if announce:
 		item_added.emit(item, _counts[item.id])

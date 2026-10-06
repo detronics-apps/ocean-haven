@@ -512,6 +512,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if now.size() >= target:
 		return
+	if not Regions.helped(get_tree(), region()):
+		return  # nothing new comes until the ranger has helped the island (Regions.helped)
 	var animal := _spawn(species, _spot_for(species))
 	get_tree().call_group("hud", "show_toast", "A %s has come to the Mangrove Coast: %s" % [species.display_name.to_lower(), _why_coming(species)])
 	if species == CRAB:

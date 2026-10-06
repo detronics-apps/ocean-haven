@@ -202,6 +202,7 @@ func save_to(world: Node, path: String) -> bool:
 		"rescues": Rescues.to_dict(),
 		"litter_collected": Inventory.litter_collected,
 		"litter_picked": Inventory.picked.duplicate(),
+		"litter_picked_on": Inventory.picked_on.duplicate(),
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	# Web: write the save itself — the browser's storage is only updated when a file is
@@ -333,6 +334,10 @@ func load_from(world: Node, path: String) -> bool:
 	var picked: Dictionary = state.get("litter_picked", {})
 	for id in picked:
 		Inventory.picked[StringName(id)] = int(picked[id])
+	Inventory.picked_on.clear()
+	var picked_on: Dictionary = state.get("litter_picked_on", {})
+	for id in picked_on:
+		Inventory.picked_on[StringName(id)] = int(picked_on[id])
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	Arrivals.restore(world, state.get("arrived_animals", []))  # before anything refers to them by name

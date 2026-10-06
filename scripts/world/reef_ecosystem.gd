@@ -308,6 +308,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if now.size() >= target:
 		return
+	if not Regions.helped(get_tree(), region()):
+		return  # nothing new comes until the ranger has helped the island (Regions.helped)
 	var homes := _homes(species)
 	var spot := _patch_water(patches().pick_random()) if homes.is_empty() else Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["water", ""])
 	_spawn(species, spot)

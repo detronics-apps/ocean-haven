@@ -34,6 +34,7 @@
 [ext_resource type="Resource" path="res://data/items/old_sonar_unit.tres" id="45_sonar"]
 [ext_resource type="Script" path="res://scripts/systems/item_data.gd" id="46_itemdata"]
 [ext_resource type="Script" path="res://scripts/world/sea_waves.gd" id="47_waves"]
+[ext_resource type="Resource" path="res://data/animals/red_footed_booby.tres" id="50_booby"]
 
 [sub_resource type="Gradient" id="Gradient_1xntt"]
 offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.7, 0.78, 0.85, 1)
@@ -125,6 +126,13 @@ data = ExtResource("12_swpth")
 home_radius = 220.0
 tangled = true
 tangle_item = ExtResource("5_tch0r")
+
+[node name="Seabird0" parent="." instance=ExtResource("7_tch0r")]
+position = Vector2(-120, -40)
+data = ExtResource("50_booby")
+home_radius = 420.0
+tangled = true
+tangle_item = ExtResource("6_elm8k")
 
 [node name="Dolphin2" parent="." unique_id=1147795936 instance=ExtResource("7_tch0r")]
 position = Vector2(-360, 512.687)

@@ -31,6 +31,8 @@ static func check(world: Node) -> Array[Node2D]:
 				continue  # one new arrival a day on each island
 			if health < arrival.island_health or trees < arrival.needs_trees or planted < arrival.needs_planted:
 				continue
+			if not Regions.helped(tree, region):
+				continue  # only because of something the ranger did
 			if healthy.filter(func(r: RegionData) -> bool: return r != region).size() < arrival.healthy_islands:
 				continue
 			came.append(_bring(world, arrival))

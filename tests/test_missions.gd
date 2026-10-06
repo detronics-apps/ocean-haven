@@ -81,11 +81,11 @@ func _initialize() -> void:
 	_expect(_card_text(menu, "rescue_boat").contains("Run once so far.") and _card_text(menu, "pollution_survey").contains("Not run yet."),
 		"once it's back: 'Run once so far' (per mission)")
 	menu.close()
-	_expect(missions.active == null and marked.size() == 3 and marked.all(func(a: Node) -> bool: return a.tangled),
-		"back after 2 minutes: marks the 3 animals in distress (%d)" % marked.size())
+	_expect(missions.active == null and marked.size() == 4 and marked.all(func(a: Node) -> bool: return a.tangled),
+		"back after 2 minutes: marks the 4 animals in distress (turtle, crab, dolphin, seabird) (%d)" % marked.size())
 	var dolphin: Node = world.get_node("Dolphin2")
 	dolphin.restore_freed()
-	_expect(missions.marked().size() == 2 and not dolphin in missions.marked(), "a freed animal drops off the map")
+	_expect(missions.marked().size() == 3 and not dolphin in missions.marked(), "a freed animal drops off the map")
 
 	# --- Fishing gear left in the water catches an animal again (one a morning) ---
 	dolphin.global_position = Vector2(950, -700)  # away from the other animals

@@ -34,6 +34,23 @@ static func ranger_on(tree: SceneTree, region: RegionData) -> bool:
 	return not ranger or not region or nearest(ranger.global_position) == region
 
 
+## Pieces of litter the ranger must pick up on an island before its animals start coming back
+## (or anything built there: a save from before this rule counts as helped).
+const HELPED_AFTER := 10
+
+
+## Whether the ranger has done something for `region` yet: picked up HELPED_AFTER pieces of
+## litter there, or built something there (not counting the tent the game starts with). Until
+## then no new animals arrive or settle: populations only grow because of the ranger.
+static func helped(tree: SceneTree, region: RegionData) -> bool:
+	if int(Inventory.picked_on.get(region.id, 0)) >= HELPED_AFTER:
+		return true
+	for building: Node in tree.get_nodes_in_group("buildings"):
+		if building.data.id != &"tent" and not building.is_queued_for_deletion() and nearest(building.global_position) == region:
+			return true
+	return false
+
+
 static func in_reach(region: RegionData, point: Vector2, margin := 0.0) -> bool:
 	return point.distance_to(region.center) <= region.waters_radius - margin
 

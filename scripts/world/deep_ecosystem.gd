@@ -383,6 +383,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if now.size() >= target:
 		return
+	if not Regions.helped(get_tree(), region()):
+		return  # nothing new comes until the ranger has helped the island (Regions.helped)
 	_spawn(species, _home_spot(species))
 	get_tree().call_group("hud", "show_toast", "A %s has come to the deep: %s" % [species.display_name.to_lower(), _why(species)])
 

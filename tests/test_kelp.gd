@@ -12,6 +12,8 @@ func _initialize() -> void:
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
 	await process_frame
+	for island in [&"home_island", &"kelp_forest", &"mangrove_coast", &"tropical_reef", &"deep_sea", &"arctic_ocean"]:
+		root.get_node("Inventory").picked_on[island] = 10  # the ranger has helped every island (Regions.helped)
 	var ecosystem: Node = world.get_node("KelpIsland/Ecosystem")
 	var beds: Array = ecosystem.beds()
 	var terrain: GDScript = load("res://scripts/world/terrain.gd")
