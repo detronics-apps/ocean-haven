@@ -118,6 +118,7 @@ func _initialize() -> void:
 	root.get_node("Rescues").restore({"current": {"id": "home_turtle", "name": "Milo", "since": 2.0, "stage": 1, "cared": -1}})
 	_inventory.picked[&"foam_box"] = 4
 	_inventory.picked_on[&"kelp_forest"] = 12
+	load("res://scripts/ui/camera_zoom.gd").set_level(1.44)
 	var picked_before: Dictionary = _inventory.picked.duplicate()
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
@@ -134,6 +135,7 @@ func _initialize() -> void:
 	_inventory.litter_collected = 0
 	_inventory.picked.clear()
 	_inventory.picked_on.clear()
+	load("res://scripts/ui/camera_zoom.gd").set_level(1.0)
 	_journal.restore([])
 	clock.day = 1
 	clock.time_of_day = 0.3
@@ -152,6 +154,8 @@ func _initialize() -> void:
 		"discovered islands restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")
 	_expect(_inventory.litter_collected == 7, "litter collected ever restored (%d)" % _inventory.litter_collected)
+	_expect(is_equal_approx(load("res://scripts/ui/camera_zoom.gd").level, 1.44), "the zoom is restored")
+	load("res://scripts/ui/camera_zoom.gd").set_level(1.0)
 	_expect(_inventory.picked_on.get(&"kelp_forest", 0) == 12, "litter picked up per island restored (Regions.helped)")
 	_expect(_inventory.picked == picked_before, "litter picked up per kind restored (%s)" % [_inventory.picked])
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")

@@ -81,6 +81,7 @@ func _ready() -> void:
 	var observatory := ObservatoryScreen.new()  # the whole ocean (from the Map)
 	observatory.name = "ObservatoryScreen"
 	get_parent().add_child.call_deferred(observatory)
+	add_child(CameraZoom.new())  # pinch / wheel / + − buttons
 	var season_show := SeasonShow.new()  # seasonal moments' sights (SeasonEvent)
 	season_show.name = "SeasonShow"
 	get_parent().add_child.call_deferred(season_show)
@@ -232,6 +233,20 @@ func _layout_bottom() -> void:
 	_action_zone.offset_bottom = 0.0
 
 
+## Notes sit bottom middle, but never over the action buttons (a narrow phone screen in
+## portrait): then they go up above them.
+func _place_toast() -> void:
+	var bottom := -112.0
+	var view := get_viewport().get_visible_rect().size
+	var buttons := _action_bar.get_children().filter(func(c: Node) -> bool: return c is Button and c.visible)
+	if not buttons.is_empty():
+		var bar := _action_bar.get_global_rect()
+		if (view.x + _toast.size.x) / 2.0 > bar.position.x - 8.0:
+			bottom = minf(bottom, bar.position.y - view.y - 12.0)
+	_toast.offset_bottom = bottom
+	_toast.offset_top = bottom - _toast.size.y
+
+
 ## A small "Saved" that fades in and out after every save, so you know progress is kept.
 func _flash_saved() -> void:
 	if not _saved_note:
@@ -371,6 +386,7 @@ func _update_action_bar() -> void:
 
 func _process(delta: float) -> void:
 	_update_action_bar()
+	_place_toast()
 	_event_note.text = RareEvents.warning_text()
 	_event_note.visible = _event_note.text != ""
 	_unlock_check -= delta
