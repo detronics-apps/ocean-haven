@@ -19,29 +19,35 @@ lines = PackedStringArray("Something's caught out there. Go gently: you can free
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
+id = &"whales"
+when = PackedStringArray("soon:whales_passing")
+lines = PackedStringArray("Autumn's when the sperm whales pass. You'll know them by their blow: it slants forward and to the left.")
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
 id = &"quiet"
 when = PackedStringArray("!flag:deep_mapped")
 lines = PackedStringArray("Whales talk in clicks. Make noise and they go quiet, and then they go away.", "Lamps light the dark, but they scare things too. Listen first, look later.")
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"gear"
 when = PackedStringArray("flag:deep_mapped", "!flag:gear_marking")
 lines = PackedStringArray("Now that the deep's mapped, you'll find the old gear down there. Every net you bring up is one less catching fish.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"litter"
 when = PackedStringArray("litter>12")
 lines = PackedStringArray("The currents bring rubbish from all over. Clear what you can reach.")
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"on"
 when = PackedStringArray("installed:cargo_module")
 lines = PackedStringArray("Up north on the ice there's Erik. He's written down the weather every day for thirty years.")
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Forty years at sea, and I never knew what was under me. Now I do.")
@@ -65,4 +71,4 @@ trousers = Color(0.25, 0.25, 0.28, 1)
 hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])

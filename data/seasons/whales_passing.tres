@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SeasonEvent" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/season_event.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"whales_passing"
+title = "Whales passing"
+region = &"deep_sea"
+season = &"autumn"
+from_day = 10
+to_day = 14
+night = false
+note = "Sperm whales are passing the Deep Sea! Watch for their blows: they slant forward and to the left."
+fact = "Sperm whales travel huge distances across the oceans. Their blow slants forward and to the left, because the blowhole is on the left of the head."
+show = &"spouts"
+species = &"sperm_whale"

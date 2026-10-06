@@ -19,17 +19,23 @@ lines = PackedStringArray("Something's caught out there. Go gently: you can free
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
+id = &"terns"
+when = PackedStringArray("soon:terns_arriving")
+lines = PackedStringArray("The terns come back early each spring, all the way from the far south. Thirty years, and they've never missed one.")
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
 id = &"old_ice"
 when = PackedStringArray("!flag:polar_balanced")
 lines = PackedStringArray("Pups need ice that lasts. The white ice in the middle never melts: that's the old ice.", "And boats break the thin ice while it freezes. Keep them out of the channels then.")
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"on"
 when = PackedStringArray("installed:ice_core")
 lines = PackedStringArray("Go back to the Starting Island some time. Old Tom will want to hear all about it.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("The ice remembers everything. So do my notebooks.")
@@ -53,4 +59,4 @@ trousers = Color(0.25, 0.25, 0.3, 1)
 hat = 2
 hat_colour = Color(0.6, 0.2, 0.2, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5")])

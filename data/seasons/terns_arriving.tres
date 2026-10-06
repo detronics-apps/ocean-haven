@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SeasonEvent" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/season_event.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"terns_arriving"
+title = "The terns arrive"
+region = &"arctic_ocean"
+season = &"spring"
+from_day = 2
+to_day = 6
+night = false
+note = "The Arctic terns are arriving from the far south! They have flown from one end of the world to the other."
+fact = "Arctic terns make the longest migration of any animal: every year they fly from the Arctic to the Antarctic and back."
+show = &"flock"
+species = &"arctic_tern"

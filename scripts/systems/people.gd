@@ -28,6 +28,10 @@ var _heard := {}
 ## "person/topic" -> Time.get_ticks_msec() when the question shows as an objective (not saved:
 ## after loading, asked questions are objectives straight away).
 var _reveal := {}
+## "person/topic" -> the ranger's guess (predictions: TalkTopic.outcome).
+var _guesses := {}
+## "person/topic" -> what really happened has been told.
+var _outcomes := {}
 ## The topic each person last talked about.
 var _last := {}
 ## Questions asked in the talk going on now: [person, topic].
@@ -128,16 +132,33 @@ func talk(person: PersonData) -> Array[Dictionary]:
 				if is_given(person, topic) and Fleet.goal_met(topic.objective):
 					_thanked[_key(person, topic)] = true
 		var question := current_question(person)
+		var happened := _outcome_to_tell(person)
+		if happened:
+			said.append("Remember your guess? You said: \"%s\"" % _guesses[_key(person, happened)])
+			said.append(happened.outcome)
+			_outcomes[_key(person, happened)] = true
+		var predict: TalkTopic = null
+		var predict_from := 0
 		if question and is_given(person, question):
 			if not done:
 				var stuck := not question.stuck.is_empty() and question.stuck_when.size() > 0 \
 					and Array(question.stuck_when).all(func(c: String) -> bool: return check(c, person))
 				said.append_array(question.stuck if stuck else question.reminder)
+				predict = _prediction(person)
+				if predict:
+					predict_from = said.size()
+					said.append_array(predict.lines)
 		elif question:
 			said.append_array(question.lines)
 			_give(person, question)
 		if not said.is_empty():
-			return _lines(person, said)
+			var lines := _lines(person, said)
+			if predict:
+				for i in range(predict_from, lines.size()):
+					if lines[i].has("options"):
+						lines[i].predict = _key(person, predict)
+						_guesses[lines[i].predict] = lines[i].options[0]  # (until the ranger picks)
+			return lines
 	if not greeting:
 		var topic := _chat(person, first, false)
 		if topic:
@@ -146,11 +167,60 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	return _lines(person, said)
 
 
+## The ranger picked reply `index` of talk line `line` (a prediction's guess is kept).
+func chose(line: Dictionary, index: int) -> void:
+	if line.has("predict") and index < (line.options as Array).size():
+		_guesses[line.predict] = line.options[index]
+
+
+## A prediction to ask now: its conditions hold, it isn't guessed yet, and what it predicts
+## hasn't happened yet (a far-along save isn't asked about what it's already seen).
+func _prediction(person: PersonData) -> TalkTopic:
+	for topic: TalkTopic in person.topics:
+		if topic.outcome == "" or _guesses.has(_key(person, topic)):
+			continue
+		if _holds(topic, person, false) and not _outcome_holds(topic, person):
+			return topic
+	return null
+
+
+func _outcome_holds(topic: TalkTopic, person: PersonData) -> bool:
+	return Array(topic.outcome_when).all(func(c: String) -> bool: return check(c, person))
+
+
+## A guess whose outcome has happened and hasn't been told yet.
+func _outcome_to_tell(person: PersonData) -> TalkTopic:
+	for topic: TalkTopic in person.topics:
+		var key := _key(person, topic)
+		if topic.outcome != "" and _guesses.has(key) and not _outcomes.has(key) and _outcome_holds(topic, person):
+			return topic
+	return null
+
+
+## The ranger's predictions on island `region_id`, for the Journal: [{"question", "guess",
+## "outcome" ("" while still to see)}].
+func predictions(region_id: StringName) -> Array[Dictionary]:
+	var list: Array[Dictionary] = []
+	for person: PersonData in on(region_id):
+		for topic: TalkTopic in person.topics:
+			var key := _key(person, topic)
+			if topic.outcome == "" or not _guesses.has(key):
+				continue
+			var question := ""
+			for line in topic.lines:
+				if line.begins_with("> "):
+					break
+				question = _fill(line, person)
+			list.append({"who": person.short_name, "question": question, "guess": _guesses[key],
+				"outcome": topic.outcome if _outcome_holds(topic, person) else ""})
+	return list
+
+
 ## The first story, hint or reaction that fits now (`greeting`: only "first" topics, for
 ## meeting them), skipping stories already told.
 func _chat(person: PersonData, first: bool, greeting: bool) -> TalkTopic:
 	for topic: TalkTopic in person.topics:
-		if topic.objective or (topic.once and _heard.has(_key(person, topic))):
+		if topic.objective or topic.outcome != "" or (topic.once and _heard.has(_key(person, topic))):
 			continue
 		if ("first" in topic.when) != greeting:
 			continue
@@ -270,6 +340,7 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ## - "first" (meeting them for the first time), "flag:X", "built:X", "installed:X", "met:X",
 ##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), "season:X", "here" (the ranger is on their
 ##   island), "found:X" (island X discovered), "stopped:X" (litter X stopped at its source),
+##   "soon:X" (seasonal moment X on or within a week),
 ##   each with "!" in
 ##   front for "not";
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
@@ -305,6 +376,9 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"season": result = GameClock.season() == arg
 		"found": result = Regions.is_discovered(load("res://data/regions/%s.tres" % arg))
 		"stopped": result = Fleet.stopped(arg)
+		"soon":  # seasonal moment `arg` is on, or starts within a week
+			var event := SeasonEvent.find(arg)
+			result = event != null and event.days_until() <= 7
 		"here":  # the ranger is on their island
 			var ranger := ControlledBody.active(get_tree())
 			result = ranger != null and Regions.nearest(ranger.global_position).id == person.region
@@ -369,11 +443,12 @@ func _built(person: PersonData, id: StringName) -> int:
 # --- Saving ---
 
 func to_dict() -> Dictionary:
-	return {"met": _met.keys(), "given": _given.keys(), "thanked": _thanked.keys(), "heard": _heard.keys()}
+	return {"met": _met.keys(), "given": _given.keys(), "thanked": _thanked.keys(), "heard": _heard.keys(),
+		"guesses": _guesses.duplicate(), "outcomes": _outcomes.keys()}
 
 
 func restore(saved: Dictionary) -> void:
-	for into: Dictionary in [_met, _given, _thanked, _heard, _reveal, _last]:
+	for into: Dictionary in [_met, _given, _thanked, _heard, _reveal, _last, _guesses, _outcomes]:
 		into.clear()
 	for id in saved.get("met", []):
 		_met[StringName(id)] = true
@@ -383,3 +458,8 @@ func restore(saved: Dictionary) -> void:
 		_thanked[String(key)] = true
 	for key in saved.get("heard", []):
 		_heard[String(key)] = true
+	var guesses: Dictionary = saved.get("guesses", {})
+	for key in guesses:
+		_guesses[String(key)] = String(guesses[key])
+	for key in saved.get("outcomes", []):
+		_outcomes[String(key)] = true

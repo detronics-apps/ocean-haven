@@ -650,7 +650,7 @@ the shared foundations first.
 | **7. Rescue companions 2–6** ✅ Kelp, Mangrove, Polar built (Reef, Deep wait for species) | Once the species are decided | Reuses phase 4 |
 | **8. Photo moments + tagged animals** ✅ built | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
 | **9. Litter at its source** ✅ built (Glass Sort still to come) | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
-| **10. Predict-then-watch + seasonal moments** | — | Polish on top |
+| **10. Predict-then-watch + seasonal moments** ✅ built | One prediction per island (turtle nest, kelp, nursery pools, parrotfish, whales, seal pups); coral spawning, whales passing, terns arriving | Polish on top |
 | **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
 
 ### Phase 1 in detail (built)

@@ -469,6 +469,16 @@ gear (gear marking). Sanna: the threads in the ice core -> Look at the fibres ->
 Workshop on the Reef ("microfibres", not an item). A question that can't be asked yet never
 counts as done, so a problem solved early (reusable bottles, gear marking) doesn't skip an
 island's story.
+Phase 10: seasonal moments (data/seasons/, SeasonEvent: the coral spawns on summer nights 8-10
+on the Reef, sperm whales pass the Deep Sea in autumn 10-14, the Arctic terns arrive in spring
+2-6): the HUD says so once a year on that island (Fleet flag "seen_<id>"), SeasonShow draws it
+round the species (pink spawn, slanted blows, a flock), a photo moment ("event:X": the giant
+clam, the whale, the tern), the island's hint-giver mentions it a week ahead (condition
+"soon:X") and the Journal's This island tab lists them ("Through the year"). Predict, then
+watch: an objective-giver's topic with `outcome` / `outcome_when` is a prediction, asked along
+with a reminder (never once what it predicts has happened); the ranger's reply is kept as the
+guess (People.chose from the TalkBox; saved "guesses"/"outcomes"), and once it happens they say
+what really happened. The Journal shows "Your predictions" beside the guesses. No score.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

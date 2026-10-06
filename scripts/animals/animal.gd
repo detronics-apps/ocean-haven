@@ -746,6 +746,9 @@ func moment_holds(condition: String) -> bool:
 		"visiting": return visiting
 	if condition.begins_with("on:"):
 		return ground == condition.trim_prefix("on:")
+	if condition.begins_with("event:"):  # a seasonal moment on its island (SeasonEvent)
+		var event := SeasonEvent.find(StringName(condition.trim_prefix("event:")))
+		return event != null and event.is_on() and Regions.nearest(global_position).id == event.region
 	return false
 
 

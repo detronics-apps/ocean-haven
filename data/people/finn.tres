@@ -46,72 +46,80 @@ objective = SubResource("Goal_3")
 thanks = PackedStringArray("Look at that patch! The kelp is growing back. I didn't understand what else depended on it.")
 reminder = PackedStringArray("How's the forest doing? The platform's surveys show what's out of balance.")
 
-[sub_resource type="Resource" id="Goal_4"]
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"guess_kelp"
+when = PackedStringArray("asked:balance")
+lines = PackedStringArray("Here's something to watch. If the otters come back, what do you think happens to the kelp?", "> It grows back! | The otters eat it.", "We'll see. I've put your guess in your Journal.")
+outcome_when = PackedStringArray("flag:kelp_balanced")
+outcome = "The otters ate the urchins, not the kelp, and the kelp grew back. One animal coming back changed the whole forest."
+
+[sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")
 kind = &"count"
 target = &"shed_kelp"
 amount = 5
 text = "Gather 5 pieces of shed kelp"
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"shed"
 lines = PackedStringArray("Healthy kelp sheds old fronds. They float up by the best beds every morning.", "Could you gather five? I've got an idea for them.")
-objective = SubResource("Goal_4")
+objective = SubResource("Goal_5")
 thanks = PackedStringArray("Five! Kelp fibre is tough stuff: strong enough to help your ships work under water.")
 reminder = PackedStringArray("Shed kelp floats up by the healthiest beds each morning: pick it up, then sleep for more.")
 
-[sub_resource type="Resource" id="Goal_5"]
+[sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
 kind = &"installed"
 target = &"kelp_fibre"
 text = "Build this island's Exploration Ship and fit the Kelp Fibre"
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"ship"
 lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Kelp Fibre to it. Then we'd find out.")
-objective = SubResource("Goal_5")
+objective = SubResource("Goal_6")
 thanks = PackedStringArray("Off you go, {name}. And the fish are back: I saw them myself.")
 reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Kelp Fibre at the ship (Explore).")
 
-[sub_resource type="Resource" id="Goal_6"]
+[sub_resource type="Resource" id="Goal_7"]
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"rings_traced"
 text = "Find out where the plastic rings come from"
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"rings"
 when = PackedStringArray("installed:kelp_fibre", "picked:six_pack_rings>=12")
 lines = PackedStringArray("{name}, I keep cutting plastic rings off the rocks where the otters rest. You've picked up {picked:six_pack_rings} yourself.", "Where do you think they come from?", "> The harbour? | Passing ships?", "Let's find out. The divers at the platform can follow the currents back: send Trace the rings.")
-objective = SubResource("Goal_6")
+objective = SubResource("Goal_7")
 thanks = PackedStringArray("The harbour cafe! Every drink comes in a can, and the cans come in rings.")
 reminder = PackedStringArray("Send Trace the rings from the research platform.")
 marks = &"rings_asked"
 
-[sub_resource type="Resource" id="Goal_7"]
+[sub_resource type="Resource" id="Goal_8"]
 script = ExtResource("3_g")
 kind = &"stopped"
 target = &"six_pack_rings"
 text = "Stop the plastic rings at their source"
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"refill"
 lines = PackedStringArray("Picking them up won't stop them coming. What could the cafe do instead?", "> No more cans? | Ask Ines!", "Ines has an idea, she told me. Talk to her: the Harbour Refill Bar is in your Build menu now.")
-objective = SubResource("Goal_7")
+objective = SubResource("Goal_8")
 thanks = PackedStringArray("No new rings on the otters' rocks. Drinks from kegs that go back to be filled, and cups that get washed.", "I used to think the problem was out here in the water. Some of it starts on land.")
 reminder = PackedStringArray("The Harbour Refill Bar is in your Build menu. Ines knows how it works.")
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"fish_back"
 when = PackedStringArray("animals:blue_rockfish>=8")
 lines = PackedStringArray("The fish are back. I swam right through a school of rockfish this morning.")
 
-[sub_resource type="Resource" id="Topic_9"]
+[sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Something underwater not right? Come and tell me. I'll go and look.")
@@ -135,4 +143,4 @@ hair_colour = Color(0.85, 0.72, 0.42, 1)
 shirt = Color(0.2, 0.28, 0.35, 1)
 trousers = Color(0.15, 0.17, 0.2, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])

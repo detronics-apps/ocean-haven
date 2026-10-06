@@ -81,10 +81,48 @@ func _fill() -> void:
 	if region.health.is_empty() and region.goals.is_empty():
 		_content.add_child(card(region.map_icon, [region.display_name, region.description,
 			"Nothing to measure here yet: more is coming to this island soon."]))
+	var guesses := _predictions(region)
+	if guesses:
+		_content.add_child(guesses)
+	var seasons := _seasons(region)
+	if seasons:
+		_content.add_child(seasons)
 	var rescues := _rescues()
 	if rescues:
 		_content.add_child(rescues)
 	_content.add_child(_backup_card())
+
+
+## Predict, then watch: the ranger's guesses here, and what really happened (no score).
+func _predictions(region: RegionData) -> Control:
+	var list := People.predictions(region.id)
+	if list.is_empty():
+		return null
+	var lines: Array[String] = ["Your predictions"]
+	for one in list:
+		lines.append("%s asked: %s" % [one.who, one.question])
+		lines.append("  You guessed: %s" % one.guess)
+		lines.append("  What happened: %s" % one.outcome if one.outcome != "" else "  Still watching...")
+	var card_node := card(null, lines)
+	card_node.name = "Predictions"
+	return card_node
+
+
+## The island's seasonal moments (data/seasons/): when, and whether the ranger has seen one.
+func _seasons(region: RegionData) -> Control:
+	var lines: Array[String] = ["Through the year"]
+	for event in SeasonEvent.all():
+		if event.region != region.id:
+			continue
+		var seen := Fleet.has_flag(StringName("seen_%s" % event.id))
+		lines.append("%s (%s)%s" % [event.title, event.when_text(), ": on now!" if event.is_on() else (": seen" if seen else "")])
+		if seen:
+			lines.append("  " + event.fact)
+	if lines.size() == 1:
+		return null
+	var card_node := card(null, lines)
+	card_node.name = "Seasons"
+	return card_node
 
 
 ## The young animal in the ranger's care, and the ones they've released (their own stories).

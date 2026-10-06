@@ -17,6 +17,12 @@ id = &"diving"
 title = "Diving into the deep"
 when = PackedStringArray("underwater")
 
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"passing"
+title = "Passing by in autumn"
+when = PackedStringArray("event:whales_passing")
+
 [resource]
 script = ExtResource("1_s")
 id = &"sperm_whale"
@@ -39,4 +45,4 @@ dive_seconds = Vector2(8, 14)
 boat_shy_distance = 120.0
 can_tangle = true
 adult_home_radius = 260.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

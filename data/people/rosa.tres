@@ -46,72 +46,80 @@ objective = SubResource("Goal_3")
 thanks = PackedStringArray("Look! Tiny snappers in the channels. When these pools fill with young fish, my nets aren't empty any more.")
 reminder = PackedStringArray("How are the channels coming along? The station's water survey shows which pools are cut off.")
 
-[sub_resource type="Resource" id="Goal_4"]
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"guess_pools"
+when = PackedStringArray("asked:flowing")
+lines = PackedStringArray("When the pools join the sea again, who do you think will come in first?", "> Little fish! | Flamingos!", "Let's watch. Your guess is in your Journal.")
+outcome_when = PackedStringArray("flag:mangrove_flowing")
+outcome = "Young snappers came in with the tide first. The pools are a nursery: shallow, safe from big fish, full of food."
+
+[sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")
 kind = &"count"
 target = &"mangrove_resin"
 amount = 5
 text = "Gather 5 pieces of mangrove resin"
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"resin"
 lines = PackedStringArray("Full-grown mangroves drop old branches, sticky with resin. My mother sealed her boat with it.", "Could you gather five? It could protect your ships' instruments too.")
-objective = SubResource("Goal_4")
+objective = SubResource("Goal_5")
 thanks = PackedStringArray("Five! That's enough to seal a whole set of instruments against the salt.")
 reminder = PackedStringArray("Fallen branches lie by full-grown mangroves each morning.")
 
-[sub_resource type="Resource" id="Goal_5"]
+[sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
 kind = &"installed"
 target = &"mangrove_resin"
 text = "Build this island's Exploration Ship and fit the Mangrove Resin"
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"ship"
 lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Mangrove Resin to it. Then we'd find out.")
-objective = SubResource("Goal_5")
+objective = SubResource("Goal_6")
 thanks = PackedStringArray("Fair winds, {name}. There are more fish here than when I was young.")
 reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Mangrove Resin at the ship (Explore).")
 
-[sub_resource type="Resource" id="Goal_6"]
+[sub_resource type="Resource" id="Goal_7"]
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"bags_traced"
 text = "Find out where the plastic bags come from"
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"bags"
 when = PackedStringArray("installed:mangrove_resin", "picked:plastic_bag>=12")
 lines = PackedStringArray("The bags catch in the mangrove roots like leaves in a fence. You've pulled out {picked:plastic_bag} of them.", "Where do you think they come from?", "> The market? | The tide?", "The waterworks station can follow the water back up the channels: send Trace the bags.")
-objective = SubResource("Goal_6")
+objective = SubResource("Goal_7")
 thanks = PackedStringArray("The fish market! Every fish goes home in a new bag, used once.")
 reminder = PackedStringArray("Send Trace the bags from the waterworks station.")
 marks = &"bags_asked"
 
-[sub_resource type="Resource" id="Goal_7"]
+[sub_resource type="Resource" id="Goal_8"]
 script = ExtResource("3_g")
 kind = &"stopped"
 target = &"plastic_bag"
 text = "Stop the plastic bags at their source"
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"weaving"
 lines = PackedStringArray("What do you think people carried their fish in before plastic?", "> Baskets? | Ask Samuel!", "Samuel's family wove baskets. Ask him, then build a Weaving Workshop: it's in your Build menu now.")
-objective = SubResource("Goal_7")
+objective = SubResource("Goal_8")
 thanks = PackedStringArray("Baskets at the market! One basket lasts for years of market days, and when it wears out it rots away like a leaf.")
 reminder = PackedStringArray("The Weaving Workshop is in your Build menu. Samuel knows the leaves to use.")
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"full_nets"
 when = PackedStringArray("animals:juvenile_snapper>=10")
 lines = PackedStringArray("My nets are full again. There are more fish than when I was young.")
 
-[sub_resource type="Resource" id="Topic_9"]
+[sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Something happening to the fish? You come and tell me.")
@@ -137,4 +145,4 @@ trousers = Color(0.2, 0.3, 0.45, 1)
 hat = 2
 hat_colour = Color(0.9, 0.85, 0.7, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])

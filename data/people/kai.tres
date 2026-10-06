@@ -46,57 +46,65 @@ objective = SubResource("Goal_3")
 thanks = PackedStringArray("Colour! Real colour on the reef again.")
 reminder = PackedStringArray("How's the reef? The lab's surveys show what it still needs.")
 
-[sub_resource type="Resource" id="Goal_4"]
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"guess_parrotfish"
+when = PackedStringArray("asked:reef")
+lines = PackedStringArray("Something to watch: what do you think parrotfish do to a reef?", "> Eat it up! | Make sand!", "Keep an eye on them. Your guess is in your Journal.")
+outcome_when = PackedStringArray("flag:reef_restored")
+outcome = "They scrape algae off the coral so young coral can grow, and grind up dead coral as they go. A lot of a reef's white sand has been through a parrotfish!"
+
+[sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")
 kind = &"count"
 target = &"reef_limestone"
 amount = 5
 text = "Collect 5 pieces of dead coral rubble"
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"rubble"
 lines = PackedStringArray("Dead coral rubble lies on the sea floor by the reef. Never break living coral, but the rubble we can use.", "Could you collect five pieces from your boat?")
-objective = SubResource("Goal_4")
+objective = SubResource("Goal_5")
 thanks = PackedStringArray("Five! Reef limestone: perfect for a mapping system that can see the sea floor.")
 reminder = PackedStringArray("Rubble lies by the reef each morning: pick it up from your boat.")
 
-[sub_resource type="Resource" id="Goal_5"]
+[sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
 kind = &"installed"
 target = &"reef_limestone"
 text = "Build this island's Exploration Ship and fit the Reef Limestone"
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"ship"
 lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Reef Limestone to it. Then we'd find out.")
-objective = SubResource("Goal_5")
+objective = SubResource("Goal_6")
 thanks = PackedStringArray("Off you go, {name}. Maybe the best design is the one that doesn't create the problem.")
 reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Reef Limestone at the ship (Explore).")
 
-[sub_resource type="Resource" id="Goal_6"]
+[sub_resource type="Resource" id="Goal_7"]
 script = ExtResource("3_g")
 kind = &"stopped"
 target = &"plastic_bottle"
 text = "Stop the plastic bottles at their source"
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"bottles"
 when = PackedStringArray("installed:reef_limestone", "picked:plastic_bottle>=12")
 lines = PackedStringArray("{picked:plastic_bottle} plastic bottles you've picked up! Each one was used once, and could last hundreds of years out there.", "What if nobody needed a new one?", "> Make our own? | Refill them?", "Glass lasts, and you can fill it again and again. Glass from the Glassworks, and clean water from the giant clams: reusable bottles.")
-objective = SubResource("Goal_6")
+objective = SubResource("Goal_7")
 thanks = PackedStringArray("No new bottles drifting in, on any island! The best design is the one that doesn't create the problem.")
 reminder = PackedStringArray("Make glass at the Glassworks (3 sand), and clean water at the Marine Water Treatment Facility.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"filters"
 when = PackedStringArray("asked:filters")
 lines = PackedStringArray("Sanna sent you about the fibres? A filter in a washing machine catches them before they go down the drain.", "Some countries are starting to require them. I've drawn the plans: the Filter Workshop is in your Build menu here.")
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Want to know how we could make something differently? That's what I'm here for.")
@@ -120,4 +128,4 @@ hair_colour = Color(0.1, 0.08, 0.06, 1)
 shirt = Color(0.95, 0.8, 0.3, 1)
 trousers = Color(0.25, 0.35, 0.45, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])

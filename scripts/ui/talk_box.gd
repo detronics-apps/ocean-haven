@@ -131,7 +131,8 @@ func _show() -> void:
 
 
 ## Picks the ranger's reply `index` and goes on.
-func choose(_index: int) -> void:
+func choose(index: int) -> void:
+	People.chose(_lines[_at], index)
 	next()
 
 

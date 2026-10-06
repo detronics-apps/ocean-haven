@@ -9,5 +9,6 @@ extends Resource
 @export var title: String
 ## What must be true of the animal (Animal.moment_holds): "young", "adult", "day", "night",
 ## "on:water", "on:land", "on:sand", "on:ice", "on:rock", "nesting", "perched", "flying",
-## "surfaced", "underwater", "guiding", "carrying", "digging", "near_boat", "visiting".
+## "surfaced", "underwater", "guiding", "carrying", "digging", "near_boat", "visiting",
+## "event:X" (seasonal moment X is on, on its island: data/seasons/).
 @export var when: PackedStringArray = []

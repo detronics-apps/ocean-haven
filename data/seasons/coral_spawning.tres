@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SeasonEvent" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/season_event.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"coral_spawning"
+title = "The coral spawns"
+region = &"tropical_reef"
+season = &"summer"
+from_day = 8
+to_day = 10
+night = true
+note = "Tonight the coral spawns! Look over the reef: clouds of tiny pink bundles are rising to the surface."
+fact = "Many corals spawn together on just a few nights a year, a few nights after a full moon, filling the water with bundles of eggs and sperm. Giant clams spawn into the water too."
+show = &"spawn"
+species = &"giant_clam"

@@ -142,17 +142,25 @@ reminder = PackedStringArray("The Box Return Depot is in your Build menu: sturdy
 
 [sub_resource type="Resource" id="Topic_11"]
 script = ExtResource("2_t")
+id = &"guess_nest"
+when = PackedStringArray("built:turtle_protection_area", "nested:green_turtle<1")
+lines = PackedStringArray("Your turtle area is ready. What do you think will happen on that quiet sand?", "> A turtle will nest! | Nothing, yet.", "Let's watch and see. I'll write your guess down in your Journal.")
+outcome_when = PackedStringArray("nested:green_turtle>=1")
+outcome = "A turtle came ashore at night and laid her eggs in the quiet sand. The first nest on this beach in years."
+
+[sub_resource type="Resource" id="Topic_12"]
+script = ExtResource("2_t")
 id = &"album"
 when = PackedStringArray("installed:salvaged_sonar_core", "missing_moments>0")
 lines = PackedStringArray("I'm putting together a photo record of every island's animals: not just who lives there, but what they do.", "You have {moments} of {moments_total} photo moments so far. The ones still missing are in your Journal, if you're passing by.")
 
-[sub_resource type="Resource" id="Topic_12"]
+[sub_resource type="Resource" id="Topic_13"]
 script = ExtResource("2_t")
 id = &"out_there"
 when = PackedStringArray("installed:salvaged_sonar_core")
 lines = PackedStringArray("What do you think is happening out there? Come back and tell me everything you find.")
 
-[sub_resource type="Resource" id="Topic_13"]
+[sub_resource type="Resource" id="Topic_14"]
 script = ExtResource("2_t")
 id = &"watch"
 lines = PackedStringArray("What do you think is happening on this island? Keep watching: the animals will show you.")
@@ -176,4 +184,4 @@ hair_colour = Color(0.1, 0.07, 0.06, 1)
 shirt = Color(0.18, 0.56, 0.51, 1)
 trousers = Color(0.54, 0.48, 0.33, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14")])

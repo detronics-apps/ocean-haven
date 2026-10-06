@@ -31,3 +31,8 @@ extends Resource
 ## A Fleet flag marked once it's been told or asked (e.g. "tracks_noticed": the ranger now sees
 ## tracks; "bags_asked": the research it needs is offered now).
 @export var marks: StringName
+## A prediction ("predict, then watch"): the ranger's reply to its question is kept as their
+## guess, and once these conditions hold the person tells what really happened (`outcome`),
+## next to the guess in the Journal. No score: it's about watching.
+@export var outcome_when: PackedStringArray = []
+@export var outcome: String

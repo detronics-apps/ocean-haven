@@ -78,6 +78,9 @@ func _ready() -> void:
 	var weather := StormWeather.new()  # a storm's weather when it strikes
 	weather.name = "StormWeather"
 	add_child(weather)
+	var season_show := SeasonShow.new()  # seasonal moments' sights (SeasonEvent)
+	season_show.name = "SeasonShow"
+	get_parent().add_child.call_deferred(season_show)
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
@@ -385,6 +388,7 @@ const HEALTH_FLAG := &"health_gauge"
 
 
 func _check_unlocks() -> void:
+	_check_season_moment()
 	var minimap: Control = $Minimap
 	minimap.visible = Fleet.is_installed(MINIMAP_NEEDS)
 	if minimap.visible and not Fleet.has_flag(&"minimap_shown"):
@@ -412,6 +416,27 @@ const SEASON_NOTES := {
 	&"autumn": "Autumn has begun.",
 	&"winter": "Winter has begun. Next spring the turtles come back to nest.",
 }
+
+
+## A seasonal moment starting on the ranger's island (data/seasons/): said once a year, and
+## marked seen ("seen_<id>") for the Journal.
+var _season_told := {}
+
+
+func _check_season_moment() -> void:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return
+	var here := Regions.nearest(ranger.global_position).id
+	for event in SeasonEvent.all():
+		if event.region != here or not event.is_on():
+			continue
+		var key := "%s/%d" % [event.id, GameClock.year()]
+		if _season_told.has(key):
+			continue
+		_season_told[key] = true
+		Fleet.mark(StringName("seen_%s" % event.id))
+		show_toast(event.note)
 
 
 func _on_new_day(day: int) -> void:
