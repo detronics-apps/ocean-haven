@@ -34,6 +34,21 @@ static func store_water(tree: SceneTree, bottles: int) -> void:
 		water_until = maxf(water_until, clock.now()) + bottles * BOTTLE_DAYS
 
 
+## Hands the view over to `camera` (boarding / going ashore) without a jump: it starts where
+## the old view was and glides to its own spot.
+static func switch_camera(camera: Camera2D, glide := 0.3) -> void:
+	var old := camera.get_viewport().get_camera_2d()
+	var from := old.get_screen_center_position() if old and old.is_inside_tree() else camera.global_position
+	camera.make_current()
+	camera.reset_smoothing()
+	camera.offset = from - camera.global_position
+	if camera.offset.length() < 0.5 or not camera.is_inside_tree():
+		camera.offset = Vector2.ZERO
+		return
+	camera.create_tween().tween_property(camera, "offset", Vector2.ZERO, glide) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+
 ## Only the body the player is currently steering responds to input.
 @export var controlled := true
 

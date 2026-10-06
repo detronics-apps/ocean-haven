@@ -51,6 +51,21 @@ func _initialize() -> void:
 	player.global_position = second.global_position + Vector2(0, -30)
 	await process_frame
 	_expect(second.boat().actions().size() == 1 and first.boat().actions().is_empty(), "only the nearest boat offers 'Board boat'")
+	# Boarding and going ashore hand the view over without a jump: it glides from where it was.
+	var stood_at: Vector2 = player.global_position
+	second.boat().call("_board")
+	var beach: Vector2 = load("res://scripts/world/terrain.gd").nearest(self, stood_at, ["sand"])
+	second.boat().global_position = beach + Vector2(0, 24)  # (just off a beach)
+	for i in 30:
+		await process_frame
+	var boat_view: Vector2 = root.get_viewport().get_camera_2d().get_screen_center_position()
+	_expect(second.boat().call("_go_ashore"), "goes ashore beside the boat")
+	var camera: Camera2D = root.get_viewport().get_camera_2d()
+	_expect(camera == player.get_node("Camera2D") and (camera.global_position + camera.offset).distance_to(boat_view) < 2.0,
+		"going ashore: the ranger's view starts where the boat's was (no jump)")
+	await create_timer(0.5).timeout
+	_expect(camera.offset.length() < 0.5, "and glides to the ranger")
+	player.global_position = second.global_position + Vector2(0, -30)
 	second.boat().call("_board")
 	second.boat().global_position = Vector2(700, 200)
 	second.boat().restore_ashore()

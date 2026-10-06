@@ -135,7 +135,7 @@ func _board(check_range := true) -> bool:
 	_look.add_child(_driver)
 	_look.move_child(_driver, 0)
 	controlled = true
-	_camera.make_current()
+	ControlledBody.switch_camera(_camera)
 	return true
 
 
@@ -143,8 +143,8 @@ func _go_ashore() -> bool:
 	var spot: Variant = _shore_spot()
 	if spot == null:
 		return false
+	_player.global_position = spot  # (before its camera takes over, so the view doesn't jump)
 	restore_ashore()
-	_player.global_position = spot
 	return true
 
 

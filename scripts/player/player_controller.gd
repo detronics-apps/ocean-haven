@@ -55,4 +55,4 @@ func set_aboard(aboard: bool) -> void:
 	visible = not aboard
 	process_mode = PROCESS_MODE_DISABLED if aboard else PROCESS_MODE_INHERIT
 	if not aboard:
-		_camera.make_current()
+		ControlledBody.switch_camera(_camera)
