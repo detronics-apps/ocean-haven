@@ -20,6 +20,11 @@ var _murky := {}
 @export var calm_days := 2
 ## Region id -> day the ranger last came back to it.
 var _back_on := {}
+## Region id -> the first day the ranger was ever on it: an island's first event never comes
+## sooner than min_gap_days after that (arriving late in the game is no reason for a storm).
+var _first_on := {}
+## Loaded from a save made before _first_on existed: count the islands found so far from now.
+var _fill_first_on := false
 ## The island the ranger is on (&"?" = not checked yet: loading isn't coming back).
 var _current: StringName = &"?"
 var _check := 0.0
@@ -38,6 +43,13 @@ func _process(delta: float) -> void:
 	if not ranger:
 		return
 	var here := Regions.nearest(ranger.global_position).id
+	if _fill_first_on:
+		_fill_first_on = false
+		for region: Resource in Regions.all():
+			if Regions.is_discovered(region) and not _first_on.has(region.id):
+				_first_on[region.id] = GameClock.day
+	if not _first_on.has(here):
+		_first_on[here] = GameClock.day
 	if here != _current and _current != &"?":
 		_back_on[here] = GameClock.day  # back on this island: calm for a couple of days
 	_current = here
@@ -69,7 +81,7 @@ func _on_new_day(day: int) -> void:
 		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
-			var since: int = day - _last_day.get(event.id, 0)
+			var since: int = day - maxi(_last_day.get(event.id, 0), _first_on.get(event.region, 0))
 			# Warned 3-4 days ahead, but never so late that it strikes after max_gap_days.
 			var lead := clampi(randi_range(event.warning_days, event.warning_days_max), event.warning_days,
 				maxi(event.max_gap_days - since, event.warning_days))
@@ -205,7 +217,7 @@ static func for_region(region_id: StringName) -> EventData:
 ## For the save file.
 func to_dict() -> Dictionary:
 	return {"last_day": _last_day.duplicate(), "coming": _coming.duplicate(), "murky": _murky.duplicate(),
-		"back_on": _back_on.duplicate()}
+		"back_on": _back_on.duplicate(), "first_on": _first_on.duplicate()}
 
 
 func restore(saved: Dictionary) -> void:
@@ -221,6 +233,11 @@ func restore(saved: Dictionary) -> void:
 	var back: Dictionary = saved.get("back_on", {})
 	for id in back:
 		_back_on[StringName(id)] = int(back[id])
+	_first_on.clear()
+	var first: Dictionary = saved.get("first_on", {})
+	for id in first:
+		_first_on[StringName(id)] = int(first[id])
+	_fill_first_on = not saved.has("first_on")
 	_current = &"?"
 	_murky.clear()
 	var murky: Dictionary = saved.get("murky", {})

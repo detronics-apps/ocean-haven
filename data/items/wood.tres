@@ -9,5 +9,5 @@ id = &"wood"
 display_name = "Wood"
 icon = ExtResource("1_wood")
 is_litter = false
-carry_limit = 3
+carry_limit = 6
 fact = "Wood from a fallen palm is light but strong. Island people have built homes and boats from it for thousands of years."

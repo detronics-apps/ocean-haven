@@ -8,7 +8,7 @@
 script = ExtResource("1_dvrnw")
 id = &"palm_tree"
 display_name = "Palm Tree"
-description = "Plant a palm sapling on sand or grass. Cutting a tree down gives 1 wood and 1-2 saplings."
+description = "Plant a palm sapling on sand or grass. It grows a stage a day; a full-grown palm gives 2-3 wood and 1-2 saplings."
 order = 6
 texture = ExtResource("3_islgd")
 size = Vector2i(1, 1)

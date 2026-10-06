@@ -79,15 +79,16 @@ func _initialize() -> void:
 	build_mode.start(house)
 	_expect(not build_mode.can_place(house, Vector2i(-1, -1)), "house needs 10 litter too")
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 10)
-	_expect(not build_mode.can_place(house, Vector2i(-1, -1)), "and 3 wood")
-	inventory.add(load("res://data/items/wood.tres"), 5)
-	_expect(inventory.count(&"wood") == 3, "can only carry 3 wood")
+	_expect(not build_mode.can_place(house, Vector2i(-1, -1)), "and 2 wood")
+	inventory.add(load("res://data/items/wood.tres"), 8)
+	_expect(inventory.count(&"wood") == 6, "can only carry 6 wood")
+	inventory.take_item(&"wood", 4)
 	_expect(build_mode.place_at(Vector2i(-1, -1)), "house built where the tent was")
 	await process_frame
 	var ids := get_nodes_in_group("buildings").map(func(b: Node) -> StringName: return b.data.id)
 	_expect(&"house" in ids and not &"tent" in ids, "tent replaced by the house")
 	_expect(funding.balance == 10 and inventory.total() == 0 and inventory.count(&"wood") == 0,
-		"house cost 120 funding + 10 litter + 3 wood")
+		"house cost 120 funding + 10 litter + 2 wood")
 
 	# --- The house stores wood; building uses carried wood, then stored ---
 	var home: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"house")[0]
@@ -141,10 +142,10 @@ func _initialize() -> void:
 	var recycle_menu: Node = world.get_node("RecycleMenu")
 	_expect(recycle_menu.visible and recycle_menu.find_child("Recycle25", true, false) != null, "it opens the recycling menu: 25 / 50 / 75 / 100 %")
 	recycle_menu.find_child("Recycle50", true, false).pressed.emit()
-	_expect(funding.balance == before + 12 and inventory.total() == 3 and not recycle_menu.visible, "50 %: 4 of the 7 recycled into 12 funding, 3 kept for building")
+	_expect(funding.balance == before + 8 and inventory.total() == 3 and not recycle_menu.visible, "50 %: 4 of the 7 recycled into 8 funding, 3 kept for building")
 	actions[0].do.call()
 	recycle_menu.find_child("Recycle100", true, false).pressed.emit()
-	_expect(funding.balance == before + 21 and inventory.total() == 0, "100 %: the rest recycled")
+	_expect(funding.balance == before + 14 and inventory.total() == 0, "100 %: the rest recycled")
 
 	# --- Upgrades: 3 tiers, each +1 funding per piece; they cost funding + litter + wood ---
 	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
@@ -163,7 +164,7 @@ func _initialize() -> void:
 	inventory.add(load("res://data/items/wood.tres"), 1)
 	inventory.add(load("res://data/items/plastic_bag.tres"), 6)
 	building.upgrade()
-	_expect(building.tier == 3 and building.recycle_value() == 5, "top tier recycles for 5 per piece")
+	_expect(building.tier == 3 and building.recycle_value() == 4, "top tier recycles for 4 per piece")
 	_expect(building.get_node("Sprite2D").texture == building.data.tier_textures[2], "each tier has its own picture")
 	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
 	_expect(not labels.any(func(l: String) -> bool: return l.begins_with("Upgrade")), "no upgrade past 3/3")

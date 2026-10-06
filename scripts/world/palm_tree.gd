@@ -102,7 +102,7 @@ func actions() -> Array:
 	return [{"label": "Cut down tree", "do": cut_down}]
 
 
-## Small: the sapling back. Medium: 1 wood + 1 sapling. Full grown: 1-2 of each.
+## Small: the sapling back. Medium: 1-2 wood + 1 sapling. Full grown: 2-3 wood + 1-2 saplings.
 func cut_down() -> void:
 	if has_nest():
 		return  # move the nest first
@@ -110,10 +110,10 @@ func cut_down() -> void:
 		SMALL:
 			Inventory.add(_sapling, 1)
 		MEDIUM:
-			Inventory.add(_wood, 1)
+			Inventory.add(_wood, randi_range(1, 2))
 			Inventory.add(_sapling, 1)
 		GROWN:
-			Inventory.add(_wood, randi_range(1, 2))
+			Inventory.add(_wood, randi_range(2, 3))
 			Inventory.add(_sapling, randi_range(1, 2))
 	var planted := get_parent() as Building
 	if planted:

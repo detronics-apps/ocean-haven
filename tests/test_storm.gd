@@ -102,6 +102,12 @@ func _initialize() -> void:
 	events.restore(saved)
 	_expect(events.is_coming(), "a coming storm is saved")
 
+	# --- An island's first event never comes within min_gap_days of first arriving there ---
+	events.restore({"first_on": {"home_island": 55}})
+	for day in range(56, 81):
+		events.call("_on_new_day", day)
+	_expect(not events.is_coming_to(&"home_island"), "arriving on day 55: no storm warned before day 81 (so none strikes before day 85)")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

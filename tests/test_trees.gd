@@ -49,12 +49,12 @@ func _initialize() -> void:
 	await process_frame
 	_expect(get_nodes_in_group("plants").size() == count_before - 1, "the tree is gone")
 	var inventory := root.get_node("Inventory")
-	_expect(inventory.count(&"wood") in [1, 2] and inventory.count(&"sapling") in [1, 2],
-		"a full-grown island palm gives 1-2 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
-	inventory.add(load("res://data/items/wood.tres"), 2)
+	_expect(inventory.count(&"wood") in [2, 3] and inventory.count(&"sapling") in [1, 2],
+		"a full-grown island palm gives 2-3 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
+	inventory.add(load("res://data/items/wood.tres"), 6)
 	player.global_position = get_nodes_in_group("plants")[0].global_position + Vector2(-30, 10)
-	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full of wood", "can't cut with 3 wood in your arms")
-	inventory.take_item(&"wood", 3)
+	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full of wood", "can't cut with 6 wood in your arms")
+	inventory.take_item(&"wood", 6)
 	var palm: Resource = load("res://data/buildings/palm_tree.tres")
 	build_mode.start(palm)
 	_expect(build_mode.place_at(Vector2i(-12, -3)), "planted a new palm")
@@ -78,8 +78,8 @@ func _initialize() -> void:
 	trunk.actions()[0].do.call()
 	await process_frame
 	_expect(not is_instance_valid(planted) or planted.is_queued_for_deletion(), "a planted palm can be cut down too")
-	_expect(inventory.count(&"wood") in [1, 2] and inventory.count(&"sapling") - saplings in [1, 2],
-		"a full-grown palm gives 1-2 wood and 1-2 saplings")
+	_expect(inventory.count(&"wood") in [2, 3] and inventory.count(&"sapling") - saplings in [1, 2],
+		"a full-grown palm gives 2-3 wood and 1-2 saplings")
 
 	# --- Small gives the sapling back; medium 1 wood + 1 sapling ---
 	inventory.take_item(&"wood", inventory.count(&"wood"))
@@ -92,8 +92,9 @@ func _initialize() -> void:
 		saplings = inventory.count(&"sapling")
 		young.get_child(young.get_child_count() - 1).cut_down()
 		await process_frame
-		_expect(inventory.count(&"sapling") == saplings + 1 and inventory.count(&"wood") == grown_days,
-			"%s palm gives %d wood and its sapling back" % ["small" if grown_days == 0 else "medium", grown_days])
+		_expect(inventory.count(&"sapling") == saplings + 1 and (inventory.count(&"wood") == 0 if grown_days == 0 else inventory.count(&"wood") in [1, 2]),
+			"%s palm gives %s wood and its sapling back" % ["small" if grown_days == 0 else "medium", "no" if grown_days == 0 else "1-2"])
+		inventory.take_item(&"wood", inventory.count(&"wood"))
 
 	# --- Seabirds nest in full-grown palms: one tree each, and stand on their nest ---
 	var bird: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
