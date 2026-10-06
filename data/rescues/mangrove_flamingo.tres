@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/american_flamingo.tres" id="2_t"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"mangrove_flamingo"
+region = &"mangrove_coast"
+species = ExtResource("2_t")
+building = &"waterworks_station"
+person = &"rosa"
+offer_when = PackedStringArray("built:waterworks_station", "here")
+found_note = "Rosa: \"I found a flamingo egg rolled out of its mud nest, all alone. It's still warm! Come to the waterworks station, quick!\""
+intro = "Rosa: \"The egg was left behind when the water rose over the nest. If we keep it warm, it might hatch. It isn't a pet: we're helping it join its flock. Will you give it a name?\""
+days = 30
+stage_days = PackedInt32Array(0, 4, 8, 14, 20, 30)
+stage_names = PackedStringArray("Hatching", "Feeding", "Walking", "Learning to feed", "Turning pink", "Ready")
+stage_texts = PackedStringArray("The egg is warm in a nest of soft sand. Something is tapping inside...", "{name} is a fluffy grey chick with a straight beak.", "{name} wobbles about on long legs.", "{name}'s beak is starting to curve.", "{name}'s feathers are turning pink.", "Pink, strong and ready to fly.")
+care_questions = PackedStringArray("How do we keep the egg safe?", "What does a flamingo chick eat?", "How can {name} get stronger?", "How do flamingos feed?", "Why is {name} turning pink?", "")
+care_right = PackedStringArray("Warm and turned gently, like a parent would", "A special formula, like the crop milk parents make", "Walks in the shallow water", "Head down in the shallows, beak upside down", "Its food: the algae and shrimp it eats", "")
+care_wrong = PackedStringArray("Cool it down in the water", "Bread", "Keep it in a small box", "Pecking seeds on land", "It's getting too much sun", "")
+care_right_result = PackedStringArray("Tap, tap... {name} hatches: a fluffy grey chick!", "{name} gulps it down. Flamingo parents feed their chicks a milk they make in their throat.", "Splash, splash! {name} strides through the shallows.", "{name} dips its head and sweeps its beak through the water, upside down, just like a grown flamingo.", "Right! Flamingos get their pink from the pigments in the algae and tiny shrimp they eat.", "")
+care_wrong_result = PackedStringArray("A cold egg won't hatch. Flamingo parents keep their egg warm on a mud-mound nest.", "Bread isn't food for a chick. Its parents would feed it crop milk.", "A chick that can't walk can't keep up with its flock.", "Flamingos filter tiny animals and algae from shallow water, with their heads upside down.", "It's not the sun: flamingos turn pink from the food they eat.", "")
+ready_text = "Rosa: \"{name} is ready to join the flock on the flats. Shall we let it go?\""
+release_text = "You walk {name} out to the flats. {name} looks at the flock, honks... and runs to join them. Rosa: \"Look at that. You can't even tell which one is {name} any more. That's how it should be.\""
+fact = "Rescued flamingo chicks have been hand-raised by people and returned to the wild, for example when their nests were left behind."

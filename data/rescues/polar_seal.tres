@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/ringed_seal.tres" id="2_t"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"polar_seal"
+region = &"arctic_ocean"
+species = ExtResource("2_t")
+building = &"polar_research_station"
+person = &"sanna"
+offer_when = PackedStringArray("built:polar_research_station", "here")
+found_note = "Sanna: \"A ringed seal pup is alone on the ice. Its snow den melted early and its mother hasn't come back. Come to the station!\""
+intro = "Sanna: \"This pup was left on the ice when its den melted. Ringed seal pups normally grow up in a snow den. It isn't a pet: we're helping it get back to the ice. Will you give it a name?\""
+days = 30
+stage_days = PackedInt32Array(0, 4, 8, 14, 20, 30)
+stage_names = PackedStringArray("Critical care", "Feeding", "Swimming", "Catching fish", "Wild again", "Ready")
+stage_texts = PackedStringArray("{name} is a fluffy white pup, resting in a cool, quiet pen.", "{name} is hungry.", "{name} has lost its white baby fur.", "{name} is ready to learn to hunt.", "{name} hides from people now, like a wild seal should.", "Sleek, strong and shy of people: ready.")
+care_questions = PackedStringArray("What does {name} need most?", "What should we feed {name}?", "How can {name} get ready for the sea?", "How should {name} get its fish now?", "{name} hides when you come near. Is that good?", "")
+care_right = PackedStringArray("A cool, quiet place to rest", "A fish formula made for seal pups", "Swims in a cold pool", "Whole fish dropped in the pool to catch", "Yes: wild seals keep away from people", "")
+care_wrong = PackedStringArray("A warm room by the stove", "Cow's milk", "Keep it on dry land", "Fed by hand", "No: it should want to play", "")
+care_right_result = PackedStringArray("{name} sleeps. Seal pups are built for the cold: a warm room would be far too hot.", "{name} drinks it all. Seal milk is very rich: pups grow fast on it.", "{name} dives and twists in the cold water. A natural!", "{name} chases the fish around the pool and catches it. That's how it'll eat on its own.", "Exactly. A seal that's shy of people is safer out on the ice.", "")
+care_wrong_result = PackedStringArray("Too warm! Seal pups are made for the cold, under their fluffy coat.", "Cow's milk isn't right for seals: their milk is much richer.", "A seal that never swims can't learn to catch fish.", "If food always comes from hands, {name} won't learn to catch fish under the ice.", "A wild seal should keep away from people: it's safer that way.", "")
+ready_text = "Sanna: \"{name} is ready for the ice. Shall we take it to the edge of the old ice?\""
+release_text = "At the edge of the old ice, {name} sniffs the air, slides into the water... and is gone. Sanna: \"Out there it'll keep a breathing hole open in the ice all winter, all by itself.\""
+fact = "Seal pups that are orphaned or stranded are cared for at rescue centres and released once they can hunt for themselves."

@@ -84,7 +84,21 @@ func _initialize() -> void:
 	screen.close()
 	rescues.call("_offer")
 	_expect(rescues.in_care() == null, "no second rescue on the same island")
-	_expect(world.get_node("HUD") != null, "(HUD)")
+	# --- The next island's rescue: only once the ranger is there and its research building is up ---
+	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
+	load("res://scripts/world/regions.gd").discover(kelp)
+	var platform: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_research_platform.tres"),
+		load("res://scripts/world/terrain.gd").cell_of(kelp.arrival) + Vector2i(-3, 4))
+	rescues.call("_offer")
+	_expect(rescues.in_care() == null, "not while the ranger is on another island")
+	player.global_position = kelp.arrival
+	rescues.call("_offer")
+	_expect(rescues.in_care() != null and rescues.in_care().species.id == &"sea_otter", "on the Kelp Forest: a sea otter pup needs care")
+	_expect(rescues.in_care().stage_names.size() == rescues.in_care().care_questions.size()
+		and rescues.in_care().care_right.size() == rescues.in_care().stage_days.size(), "every stage has its care moment")
+	for id in ["kelp_otter", "mangrove_flamingo", "polar_seal"]:
+		var one: Resource = load("res://data/rescues/%s.tres" % id)
+		_expect(one.stage_days.size() == 6 and one.care_wrong_result.size() == 6 and one.species != null, "%s is complete" % id)
 
 	if not _failed:
 		print("PASS")

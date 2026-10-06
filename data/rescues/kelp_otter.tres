@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/sea_otter.tres" id="2_t"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"kelp_otter"
+region = &"kelp_forest"
+species = ExtResource("2_t")
+building = &"kelp_research_platform"
+person = &"finn"
+offer_when = PackedStringArray("built:kelp_research_platform", "here")
+found_note = "Finn: \"A sea otter pup washed up on the beach on its own, crying for its mother. It can't look after itself yet. Come to the platform!\""
+intro = "Finn: \"This little otter got separated from its mother in a storm. Pups need months of care to learn everything. It isn't a pet: we're helping it get home. Will you give it a name?\""
+days = 30
+stage_days = PackedInt32Array(0, 4, 8, 14, 20, 30)
+stage_names = PackedStringArray("Critical care", "Eating", "Swimming", "Learning from otters", "Wild again", "Ready")
+stage_texts = PackedStringArray("{name} is small and tired, curled up in a warm, quiet pool.", "{name} is hungry all the time now.", "{name} paddles about on its back.", "{name} needs to learn what otters know.", "{name} is behaving more like a wild otter every day.", "Strong, warm and wild again.")
+care_questions = PackedStringArray("What does a sea otter pup need to stay warm?", "What should we feed {name}?", "How can {name} learn to dive?", "Who should teach {name}?", "How should {name} find food now?", "")
+care_right = PackedStringArray("Clean, fluffy fur: groom it", "Clams, crabs and urchins", "Practise in the deep pool", "A grown-up otter at the platform", "Hide shellfish among the rocks to find", "")
+care_wrong = PackedStringArray("A warm blanket on land", "Bread", "Keep it out of the water", "People who want to cuddle it", "Hand it its food", "")
+care_right_result = PackedStringArray("{name}'s fur fluffs up again. Sea otters have no blubber: clean fur that traps air keeps them warm.", "Crunch! Sea otters eat a quarter of their own weight in food a day.", "{name} dives and pops up again, over and over. Practice makes a diver!", "{name} watches the older otter crack a shell on its belly with a stone, and tries it too.", "{name} searches the rocks and finds every one. Ready for the kelp forest!", "")
+care_wrong_result = PackedStringArray("A blanket would leave {name} damp and cold. Otters stay warm with clean, fluffy fur.", "Bread isn't otter food: in the wild {name} will eat clams, crabs and urchins.", "An otter that never swims can't learn to find food under water.", "Too much time with people makes an otter trust boats and humans. Otters learn best from otters.", "If food always comes from hands, {name} won't learn to search.", "")
+ready_text = "Finn: \"{name} is ready for the kelp forest. Shall we take it to the water?\""
+release_text = "You carry {name} to the edge of the kelp. {name} floats on its back for a moment, looks at you... and dives. Finn: \"Every otter out there keeps the urchins in check. {name} has a job to do now.\""
+fact = "Aquariums really do raise stranded sea otter pups, sometimes with adult otters as surrogate mothers, and release them into the wild."

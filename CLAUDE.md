@@ -441,6 +441,12 @@ Station; water flow survey; boards built with a way through), Echo Dive (Imani, 
 Outpost; cargo search; extends OtterDive), Floe Fit (Sanna, Polar Research Station; drill
 planning; floes cut from a real filling, placed floes can be taken back). Glass Sort waits for
 phase 9 (Kai's bottle story).
+Phase 7: rescue companions on the Kelp Forest (an otter pup separated from its mother; Finn,
+Kelp Research Platform), the Mangrove Coast (a flamingo egg left behind; Rosa, Waterworks
+Station) and the Polar Ocean (an orphaned ringed seal pup; Sanna, Polar Research Station):
+data only (data/rescues/), each found once its building is up and the ranger is there
+(condition "here"); still one at a time. The Reef's and the Deep Sea's wait for the owner's
+choice of species.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

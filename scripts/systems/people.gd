@@ -260,7 +260,8 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 
 ## Whether `condition` holds now for `person`'s island:
 ## - "first" (meeting them for the first time), "flag:X", "built:X", "installed:X", "met:X",
-##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), "season:X", each with "!" in
+##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), "season:X", "here" (the ranger is on their
+##   island), each with "!" in
 ##   front for "not";
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
@@ -291,6 +292,9 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"installed": result = Fleet.is_installed(arg)
 		"met": result = _met.has(arg)
 		"season": result = GameClock.season() == arg
+		"here":  # the ranger is on their island
+			var ranger := ControlledBody.active(get_tree())
+			result = ranger != null and Regions.nearest(ranger.global_position).id == person.region
 		"asked":  # someone asked question `arg` and it isn't done yet
 			for someone: PersonData in all():
 				for topic: TalkTopic in questions(someone):
