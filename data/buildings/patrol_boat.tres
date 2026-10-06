@@ -8,7 +8,7 @@
 script = ExtResource("1_h2gec")
 id = &"patrol_boat"
 display_name = "Patrol Boat"
-description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Upgrade it to patrol a bigger area. Dolphins keep away from busy boats: patrol away from their waters."
+description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Upgrade it to patrol a bigger area. Dolphins keep away from busy boats, and whales from their noise: patrol away from where the animals live. You can take a patrol boat down again."
 summary = "A boat that collects litter in an area."
 order = 4
 texture = ExtResource("3_1iptj")
@@ -22,6 +22,7 @@ fact = "Stopping litter before it breaks into tiny pieces is far easier than cle
 cost_items = Dictionary[StringName, int]({&"wood": 2})
 category = &"sea"
 storm_proof = true
+demolishable = true
 max_count = 6
 max_tier = 3
 upgrade_funding = 80

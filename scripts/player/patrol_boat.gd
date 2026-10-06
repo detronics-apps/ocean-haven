@@ -9,6 +9,8 @@ extends Node2D
 @export var speed := 70.0
 
 var _target := Vector2.ZERO
+var _check := 0.0
+var _working := true
 
 @onready var _hull: Sprite2D = $Hull
 
@@ -26,6 +28,12 @@ func hull_position() -> Vector2:
 
 
 func _process(delta: float) -> void:
+	_check -= delta
+	if _check <= 0.0:
+		_check = 1.0
+		_working = Regions.ranger_on(get_tree(), Regions.nearest(global_position))
+	if not _working:
+		return  # islands the ranger isn't on are paused: no pickups (or notes) from far away
 	var buoy := get_parent() as Building
 	if buoy and not buoy.data.range_per_tier.is_empty():
 		var reach := buoy.data.range_per_tier[clampi(buoy.tier, 1, buoy.data.range_per_tier.size()) - 1]

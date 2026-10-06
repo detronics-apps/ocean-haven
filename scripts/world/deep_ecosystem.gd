@@ -39,7 +39,10 @@ extends Node2D
 @export var light_floor := 0.4
 @export var dive_noise := 1.5
 @export var dive_noise_days := 1.0
-@export var patrol_noise := 1.0
+## A patrol boat working over a dark area (where the animals are), and one kept away from
+## them (near the shore, outside every dark area).
+@export var patrol_noise := 0.75
+@export var patrol_noise_away := 0.15
 @export var outpost_noise := 0.5
 
 @export_group("Animals")
@@ -302,10 +305,20 @@ func disturbance() -> float:
 	var total := light() + hydrophone_noise * _of(&"hydrophone_buoy").size()
 	total += bait_noise * _of(&"deep_camera").filter(func(c: Building) -> bool: return c.baited()).size()
 	total += outpost_noise * _of(&"deep_ocean_outpost").size()
-	total += patrol_noise * _buildings(func(b: Building) -> bool: return b.has_node("PatrolBoat")).size()
+	for boat in _buildings(func(b: Building) -> bool: return b.has_node("PatrolBoat")):
+		total += patrol_noise if _over_dark_area(boat.global_position) else patrol_noise_away
 	if _dive_noise_until > GameClock.now():
 		total += dive_noise
 	return total
+
+
+## Whether `point` is over one of the dark areas' deep water (where the animals live).
+func _over_dark_area(point: Vector2) -> bool:
+	for sector in sectors():
+		for cell in sector.cells:
+			if sector.to_global(cell).distance_to(point) < 24.0:
+				return true
+	return false
 
 
 ## The share of the deep that is still quiet and dark, 0..1.
