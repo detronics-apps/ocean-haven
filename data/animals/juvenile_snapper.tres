@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/snapper/juvenile_snapper.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"day"
+title = "In a nursery pool by day"
+when = PackedStringArray("day")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "In a nursery pool at night"
+when = PackedStringArray("night")
+
 [resource]
 script = ExtResource("1_s")
 id = &"juvenile_snapper"
@@ -20,3 +34,4 @@ discover_distance = 110.0
 curious = false
 interact_distance = 80.0
 grow_days = 2.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

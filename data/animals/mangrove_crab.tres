@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/crab/mangrove_crab.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"mud"
+title = "On the mud by day"
+when = PackedStringArray("day")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "Out at night"
+when = PackedStringArray("night")
+
 [resource]
 script = ExtResource("1_s")
 id = &"mangrove_crab"
@@ -26,3 +40,4 @@ can_tangle = true
 lives_at = &"crab_habitat"
 grow_days = 2.0
 adult_home_radius = 80.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

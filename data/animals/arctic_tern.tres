@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"flying"
+title = "In flight"
+when = PackedStringArray("flying")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"visiting"
+title = "Visiting another island"
+when = PackedStringArray("visiting")
+
 [resource]
 script = ExtResource("1_s")
 id = &"arctic_tern"
@@ -21,3 +35,4 @@ curious = false
 flies = true
 lives_at = &"tern_nesting_area"
 adult_home_radius = 140.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

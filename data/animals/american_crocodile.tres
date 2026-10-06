@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/crocodile/american_crocodile.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"basking"
+title = "Basking by day"
+when = PackedStringArray("day")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "Out at night"
+when = PackedStringArray("night")
+
 [resource]
 script = ExtResource("1_s")
 id = &"american_crocodile"
@@ -24,3 +38,4 @@ curious = false
 interact_distance = 110.0
 boat_shy_distance = 120.0
 adult_home_radius = 160.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

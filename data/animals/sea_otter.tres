@@ -3,6 +3,26 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_otter"]
 [ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="2_otter"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"carrying"
+title = "Carrying litter ashore"
+when = PackedStringArray("carrying")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"pup"
+title = "A pup"
+when = PackedStringArray("young")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"floating"
+title = "Floating in the kelp"
+when = PackedStringArray("on:water", "day")
+
 [resource]
 script = ExtResource("1_otter")
 id = &"sea_otter"
@@ -29,3 +49,4 @@ forage_range = 260.0
 food_needed = 4.0
 kelp_food = 3.0
 carries_litter_ashore = true
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

@@ -3,6 +3,26 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"ice"
+title = "Resting on the ice"
+when = PackedStringArray("on:ice")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"swimming"
+title = "Swimming"
+when = PackedStringArray("on:water")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"pup"
+title = "A pup"
+when = PackedStringArray("young")
+
 [resource]
 script = ExtResource("1_s")
 id = &"ringed_seal"
@@ -22,3 +42,4 @@ interact_distance = 90.0
 can_tangle = true
 lives_at = &"seal_pupping_zone"
 adult_home_radius = 120.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

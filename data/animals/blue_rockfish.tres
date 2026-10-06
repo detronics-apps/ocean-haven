@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_rock"]
 [ext_resource type="Texture2D" path="res://assets/animals/rockfish/blue_rockfish.svg" id="2_rock"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"day"
+title = "In the kelp by day"
+when = PackedStringArray("day")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "In the kelp at night"
+when = PackedStringArray("night")
+
 [resource]
 script = ExtResource("1_rock")
 id = &"blue_rockfish"
@@ -18,3 +32,4 @@ shy_distance = 50.0
 curious = false
 discover_distance = 110.0
 settles_near = &"kelp_beds"
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

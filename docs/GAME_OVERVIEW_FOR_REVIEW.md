@@ -636,7 +636,7 @@ the shared foundations first.
 | **5. People on the other islands** ✅ built | Ten more people, from the existing objectives (state-based); the hint chain; arc lines by progress | Uses phase 1's system |
 | **6. The other activities** ✅ built (Glass Sort with phase 9) | Mover (Otter Dive, Echo Dive), more Grid (Channel Flow, Floe Fit), Sort (Glass Sort), one at a time | Each reuses a framework |
 | **7. Rescue companions 2–6** ✅ Kelp, Mangrove, Polar built (Reef, Deep wait for species) | Once the species are decided | Reuses phase 4 |
-| **8. Photo moments + tagged animals** | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
+| **8. Photo moments + tagged animals** ✅ built | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
 | **9. Litter at its source** | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
 | **10. Predict-then-watch + seasonal moments** | — | Polish on top |
 | **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |

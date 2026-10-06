@@ -9,6 +9,13 @@ extends Node
 signal stage_reached(rescue: RescueData, stage: int)
 signal found(rescue: RescueData)
 signal released(rescue: RescueData, animal_name: String)
+## A released one turned up on another island (it's there for the day).
+signal sighted(rescue: RescueData, animal_name: String, region: RegionData)
+
+## An island counts as healthy for a visit at this health (both its own and the one it visits).
+const HEALTHY := 0.7
+## Days between visits of the same one.
+const VISIT_GAP := 6
 
 ## The one in care: {"id", "name", "since" (GameClock.now()), "stage", "cared" (day of the last
 ## care moment)}; empty = none.
@@ -66,6 +73,38 @@ func stage_now() -> int:
 func is_ready() -> bool:
 	var one := in_care()
 	return one != null and days_in() >= one.days
+
+
+func _ready() -> void:
+	GameClock.new_day.connect(func(_day: int) -> void: check_visits())
+
+
+## A morning: a released one may turn up on the ranger's island, if it travels there and both
+## islands are healthy. Yesterday's visitors have gone on.
+func check_visits() -> void:
+	get_tree().call_group("rescue_visitors", "queue_free")
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return
+	var here := Regions.nearest(ranger.global_position)
+	for id in done:
+		var one := rescue(id)
+		if not one or not String(here.id) in one.visits:
+			continue
+		var record: Dictionary = done[id]
+		if GameClock.day - int(record.get("last_seen", -99)) < VISIT_GAP:
+			continue
+		var home: RegionData = load(one.region_path())
+		if IslandHealth.of(get_tree(), home) < HEALTHY or IslandHealth.of(get_tree(), here) < HEALTHY:
+			continue
+		record.last_seen = GameClock.day
+		var seen: Array = record.get("seen", [])
+		if not String(here.id) in seen:
+			seen.append(String(here.id))
+		record.seen = seen
+		get_tree().call_group("ocean_world", "visit_animal", one, String(record.get("name", "")), here)
+		sighted.emit(one, String(record.get("name", "")), here)
+		return
 
 
 func _process(delta: float) -> void:

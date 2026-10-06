@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/squid/giant_squid.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"dark"
+title = "In the dark"
+when = PackedStringArray("underwater")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"rising"
+title = "Near the surface"
+when = PackedStringArray("surfaced")
+
 [resource]
 script = ExtResource("1_s")
 id = &"giant_squid"
@@ -23,3 +37,4 @@ dives = true
 surface_seconds = Vector2(4, 6)
 dive_seconds = Vector2(10, 16)
 adult_home_radius = 120.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

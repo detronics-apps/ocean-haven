@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="2_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"surface"
+title = "Resting at the surface"
+when = PackedStringArray("surfaced")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"diving"
+title = "Diving into the deep"
+when = PackedStringArray("underwater")
+
 [resource]
 script = ExtResource("1_s")
 id = &"sperm_whale"
@@ -25,3 +39,4 @@ dive_seconds = Vector2(8, 14)
 boat_shy_distance = 120.0
 can_tangle = true
 adult_home_radius = 260.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

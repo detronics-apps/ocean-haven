@@ -124,4 +124,6 @@ extends Resource
 ## How far a grown-up wanders around its own spot.
 @export var adult_home_radius := 200.0
 @export_multiline var nest_fact: String
+## Special situations to photograph it in (the Journal keeps the first photo of each).
+@export var moments: Array[PhotoMoment] = []
 @export_multiline var hatch_fact: String

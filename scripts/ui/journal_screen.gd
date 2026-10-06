@@ -99,6 +99,10 @@ func _rescues() -> Control:
 		if rescue:
 			lines.append("Released: %s, %s, on day %d" % [Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower(),
 				int(Rescues.done[id].get("day", 0))])
+			var seen: Array = Rescues.done[id].get("seen", [])
+			if not seen.is_empty():
+				lines.append("  Seen since near: %s" % ", ".join(seen.map(func(r: String) -> String:
+					return (load("res://data/regions/%s.tres" % r) as RegionData).display_name)))
 	if lines.size() == 1:
 		return null
 	var picture: Texture2D = caring.species.sprite if caring else null
@@ -202,7 +206,39 @@ func _entry(animal: AnimalData) -> Control:
 	lines.append(progress)
 	var entry := card(animal.sprite, lines)
 	entry.name = "Entry_" + animal.id
+	if not animal.moments.is_empty():
+		entry.get_child(0).get_child(1).add_child(_album(animal))
 	return entry
+
+
+## Its photo moments: the kept photo of each one caught, and a hint for the ones still to find.
+func _album(animal: AnimalData) -> Control:
+	var row := HBoxContainer.new()
+	row.name = "Album"
+	row.add_theme_constant_override("separation", 10)
+	for moment: PhotoMoment in animal.moments:
+		var cell := VBoxContainer.new()
+		var caught := Journal.has_moment(animal.id, moment.id)
+		var picture := TextureRect.new()
+		picture.texture = Journal.moment_picture(animal.id, moment.id) if caught else animal.sprite
+		if not picture.texture:
+			picture.texture = animal.sprite
+		picture.custom_minimum_size = Vector2(96, 72)
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if not caught:
+			picture.modulate = Color(0, 0, 0, 0.45)  # a silhouette: still to find
+		cell.add_child(picture)
+		var label := Label.new()
+		label.text = moment.title if caught else moment.title + "?"
+		label.custom_minimum_size.x = 96
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.add_theme_font_size_override("font_size", 13)
+		label.modulate = Color.WHITE if caught else Color(1, 1, 1, 0.6)
+		cell.add_child(label)
+		row.add_child(cell)
+	return row
 
 
 func _plant_entry(plant: PlantData) -> Control:

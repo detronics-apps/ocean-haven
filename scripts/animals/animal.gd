@@ -622,6 +622,7 @@ func _maybe_dig() -> void:
 		return
 	var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
 	if spawner and spawner.wash_up_at(_dig_spot(), false):
+		_dug_at = GameClock.now()
 		today[1] += 1
 		Journal.record_gift(data)
 	_digs[data.id] = today
@@ -710,6 +711,59 @@ func _interact() -> void:
 	elif not photographed_today():
 		photo_day = GameClock.day
 		Journal.photograph(data)
+		_photo_moment()
+
+
+## A new photo moment (the first of its kind for this species): the photo is kept in the Journal.
+func _photo_moment() -> void:
+	for moment: PhotoMoment in data.moments:
+		if not Journal.has_moment(data.id, moment.id) and Array(moment.when).all(moment_holds):
+			Journal.add_moment(data, moment, _snapshot())
+			return
+
+
+## Whether the animal is in situation `condition` now (PhotoMoment.when).
+func moment_holds(condition: String) -> bool:
+	var ground := Terrain.at(get_tree(), global_position)
+	match condition:
+		"young": return young
+		"adult": return not young
+		"day": return not GameClock.is_night()
+		"night": return GameClock.is_night()
+		"on:water": return ground in ["water", ""]
+		"on:land": return not ground in ["water", ""]
+		"nesting": return _state == State.LAY or (_state == State.CRAWL and _crawl_then.is_valid() and not young)
+		"perched": return perched
+		"flying": return data.flies and not perched
+		"surfaced": return data.dives and not underwater
+		"underwater": return data.dives and underwater
+		"guiding": return _state == State.GUIDE
+		"carrying": return _carry != null
+		"digging": return _dug_at >= 0.0 and GameClock.now() - _dug_at < 0.05
+		"near_boat":
+			var ranger := ControlledBody.active(get_tree())
+			return ranger is Boat and ranger.global_position.distance_to(global_position) < 120.0
+		"visiting": return visiting
+	if condition.begins_with("on:"):
+		return ground == condition.trim_prefix("on:")
+	return false
+
+
+## A small picture of the animal where it is now (the screen around it).
+func _snapshot() -> Image:
+	var viewport := get_viewport()
+	if not viewport or not viewport.get_texture() or DisplayServer.get_name() == "headless":
+		return null  # (no pictures without a screen)
+	var frame := viewport.get_texture().get_image()
+	if not frame or frame.is_empty():
+		return null
+	var at := get_global_transform_with_canvas().origin
+	var size := Vector2i(200, 150)
+	var corner := Vector2i(clampi(int(at.x) - size.x / 2, 0, maxi(frame.get_width() - size.x, 0)),
+		clampi(int(at.y) - size.y / 2, 0, maxi(frame.get_height() - size.y, 0)))
+	var crop := frame.get_region(Rect2i(corner, Vector2i(mini(size.x, frame.get_width()), mini(size.y, frame.get_height()))))
+	crop.resize(160, 120, Image.INTERPOLATE_NEAREST)
+	return crop
 
 
 func photographed_today() -> bool:
@@ -805,6 +859,8 @@ func _keep_in_habitat(delta: float) -> void:
 
 
 var _habitat_check := randf()
+## When it last dug up litter (a photo moment).
+var _dug_at := -1.0
 
 
 ## Lives only in water (fish, turtles, dolphins, otters, crocodiles), never on land.

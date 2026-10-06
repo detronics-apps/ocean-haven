@@ -3,6 +3,26 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_2r22d"]
 [ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="2_t780o"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"surfacing"
+title = "Coming up for air"
+when = PackedStringArray("surfaced")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"guiding"
+title = "Leading you to litter"
+when = PackedStringArray("guiding")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"boat"
+title = "Swimming beside your boat"
+when = PackedStringArray("near_boat")
+
 [resource]
 script = ExtResource("1_2r22d")
 id = &"bottlenose_dolphin"
@@ -26,3 +46,4 @@ dives = true
 guides_to_litter = true
 can_tangle = true
 boat_shy_distance = 200.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

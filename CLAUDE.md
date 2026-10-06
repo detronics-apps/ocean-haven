@@ -447,6 +447,14 @@ Station) and the Polar Ocean (an orphaned ringed seal pup; Sanna, Polar Research
 data only (data/rescues/), each found once its building is up and the ranger is there
 (condition "here"); still one at a time. The Reef's and the Deep Sea's wait for the owner's
 choice of species.
+Phase 8: photo moments (AnimalData.moments: PhotoMoment, 2-3 per species, conditions checked
+by Animal.moment_holds: young, nesting, digging, guiding, perched, surfaced, on:ice...): the
+first photo of each is kept (a 160x120 crop of the screen, user://photos; Journal.photos_dir,
+tests point it elsewhere) and shown in the species' Journal page, missing ones as hints; Maya
+mentions the collection. Released rescue companions that travel (RescueData.visits: the turtle
+to the Mangrove Coast and the Reef, the flamingo to the Reef) turn up for a day on the
+ranger's island, only while both islands are healthy (70 %), at most every 6 days; sightings
+are listed in the Journal.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

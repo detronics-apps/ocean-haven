@@ -3,6 +3,26 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_chj40"]
 [ext_resource type="Texture2D" path="res://assets/animals/crab/ghost_crab.svg" id="2_btkom"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"digging"
+title = "Digging up the beach"
+when = PackedStringArray("digging")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "Out on the beach at night"
+when = PackedStringArray("night", "on:land")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"day"
+title = "On the sand by day"
+when = PackedStringArray("day", "on:sand")
+
 [resource]
 script = ExtResource("1_chj40")
 id = &"ghost_crab"
@@ -25,3 +45,4 @@ curious = false
 interact_distance = 70.0
 digs_up_litter = true
 can_tangle = true
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

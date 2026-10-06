@@ -14,6 +14,7 @@ const TOUCH_SCALE := 1.5
 
 
 func _ready() -> void:
+	add_to_group("ocean_world")
 	for person: PersonData in People.all():  # the people of the islands (data/people/)
 		var someone := Person.new()
 		someone.data = person
@@ -78,6 +79,29 @@ func release_animal(rescue: RescueData, animal_name: String, just_now: bool) -> 
 	move_child(animal, $Player.get_index())
 	if animal.has_method("link_to_nearest_area"):
 		animal.link_to_nearest_area()
+	return animal
+
+
+## A released rescue companion turning up on another island for the day (a visitor: it
+## doesn't count as living there), with its name.
+func visit_animal(rescue: RescueData, animal_name: String, region: RegionData) -> Node2D:
+	var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	animal.name = "Visiting_%s" % rescue.id
+	animal.set("data", rescue.species)
+	animal.set("visiting", true)
+	animal.add_to_group("rescue_visitors")
+	animal.position = Terrain.nearest(get_tree(), region.arrival, ["water", ""], 12) + Vector2(randf_range(-80, 80), randf_range(-60, 60))
+	var tag := Label.new()
+	tag.text = animal_name
+	tag.add_theme_font_size_override("font_size", 14)
+	tag.add_theme_constant_override("outline_size", 5)
+	tag.add_theme_color_override("font_outline_color", Color.BLACK)
+	tag.scale = Vector2(0.5, 0.5)
+	tag.position = Vector2(-16, -26)
+	tag.z_index = 100
+	animal.add_child(tag)
+	add_child(animal)
+	move_child(animal, $Player.get_index())
 	return animal
 
 

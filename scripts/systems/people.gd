@@ -202,6 +202,7 @@ func _lines(person: PersonData, said: Array[String]) -> Array[Dictionary]:
 ## "{name}" -> the ranger's name; "{count:green_turtle}" -> how many live on their island now.
 func _fill(line: String, person: PersonData) -> String:
 	line = line.replace("{name}", RangerProfile.call_name())
+	line = line.replace("{moments}", str(Journal.moments_caught())).replace("{moments_total}", str(Journal.moments_total()))
 	var regex := RegEx.create_from_string("\\{count:([a-z_]+)\\}")
 	for found in regex.search_all(line):
 		line = line.replace(found.get_string(), str(_animals(person, StringName(found.get_string(1)))))
@@ -266,7 +267,8 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
 ##   "tangled" (animals caught or hurt), "busy:X" (nesting areas too busy), "species"
-##   (species photographed), "health" (percent), "built:X".
+##   (species photographed), "missing_moments" (photo moments still to catch), "health"
+##   (percent), "built:X".
 func check(condition: String, person: PersonData, first := false) -> bool:
 	var negate := condition.begins_with("!")
 	var text := condition.trim_prefix("!")
@@ -326,6 +328,7 @@ func _number(name: String, person: PersonData) -> float:
 			return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
 				return b.data.id == arg and b.too_busy() != null and Regions.nearest(b.global_position) == region).size()
 		"species": return Journal.photographed_species()
+		"missing_moments": return Journal.moments_total() - Journal.moments_caught()
 		"health": return IslandHealth.of(get_tree(), region) * 100.0
 		"built": return _built(person, arg)
 	push_warning("People: unknown number '%s'" % name)

@@ -3,6 +3,26 @@
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_6nm75"]
 [ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_5ypsb"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"swimming"
+title = "Swimming in the sea"
+when = PackedStringArray("adult", "on:water")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"nesting"
+title = "Nesting on the beach"
+when = PackedStringArray("nesting")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"hatchling"
+title = "A hatchling"
+when = PackedStringArray("young")
+
 [resource]
 script = ExtResource("1_6nm75")
 id = &"green_turtle"
@@ -24,3 +44,4 @@ off_season_interval_days = 40
 nests_from_next_season = true
 stay_per_nest = 1
 grow_days = 8.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])

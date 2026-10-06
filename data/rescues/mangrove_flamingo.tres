@@ -25,3 +25,4 @@ care_wrong_result = PackedStringArray("A cold egg won't hatch. Flamingo parents 
 ready_text = "Rosa: \"{name} is ready to join the flock on the flats. Shall we let it go?\""
 release_text = "You walk {name} out to the flats. {name} looks at the flock, honks... and runs to join them. Rosa: \"Look at that. You can't even tell which one is {name} any more. That's how it should be.\""
 fact = "Rescued flamingo chicks have been hand-raised by people and returned to the wild, for example when their nests were left behind."
+visits = PackedStringArray("tropical_reef")

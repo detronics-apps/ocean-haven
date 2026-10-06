@@ -40,6 +40,9 @@ extends Resource
 @export_multiline var release_text: String
 ## A fact for the Journal when it's released.
 @export_multiline var fact: String
+## Islands it may turn up on later, once released (it travels, as real ones do): only while
+## both its own island and that island are healthy.
+@export var visits: PackedStringArray = []
 
 
 func region_path() -> String:

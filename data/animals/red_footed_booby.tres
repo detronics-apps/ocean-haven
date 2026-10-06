@@ -4,6 +4,20 @@
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby.svg" id="2_boo"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_perched.svg" id="3_boo"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"flying"
+title = "In flight"
+when = PackedStringArray("flying")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"nest"
+title = "On its nest"
+when = PackedStringArray("perched")
+
 [resource]
 script = ExtResource("1_boo")
 id = &"red_footed_booby"
@@ -28,3 +42,4 @@ nests_in_trees = true
 perched_sprite = ExtResource("3_boo")
 circles_litter = true
 can_tangle = true
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])

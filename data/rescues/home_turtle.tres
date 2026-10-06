@@ -25,3 +25,4 @@ care_wrong_result = PackedStringArray("Crowds would frighten {name}. Wild animal
 ready_text = "Maya: \"{name} is ready to go home. Shall we take it down to the sea?\""
 release_text = "You carry {name} down to the water. A moment's pause... and {name} swims off into the waves. Maya: \"We hope we never need to see {name} here again: that means it's doing well out there.\""
 fact = "Sea turtle rescue centres care for turtles hurt by fishing gear, boats and plastic, and release them once they're healthy again."
+visits = PackedStringArray("mangrove_coast", "tropical_reef")

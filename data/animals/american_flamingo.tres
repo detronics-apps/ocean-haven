@@ -5,6 +5,20 @@
 [ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo_resting.svg" id="3_t"]
 [ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo_flying.svg" id="4_t"]
 
+[ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+
+[sub_resource type="Resource" id="Moment_0"]
+script = ExtResource("pm_script")
+id = &"feeding"
+title = "Feeding in the shallows"
+when = PackedStringArray("on:water", "day")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
+id = &"night"
+title = "Resting at night"
+when = PackedStringArray("night")
+
 [resource]
 script = ExtResource("1_s")
 id = &"american_flamingo"
@@ -27,3 +41,4 @@ discover_distance = 140.0
 curious = false
 interact_distance = 100.0
 boat_shy_distance = 80.0
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
