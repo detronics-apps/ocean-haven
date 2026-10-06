@@ -42,7 +42,21 @@ func ship_problem(region: RegionData) -> String:
 		return ""
 	if region.goals.is_empty():
 		return "%s's objective is coming soon: no Exploration Ship here yet." % region.display_name
-	return "First: %s (see the Journal)." % region.objective.to_lower()
+	var done := 0
+	var next: ObjectiveGoal = null
+	for goal: ObjectiveGoal in region.goals:
+		if goal_met(goal):
+			done += 1
+		elif next == null:
+			next = goal
+	var who := ""
+	for person: PersonData in People.on(region.id):
+		if person.role == &"objective":
+			who = " %s knows more." % person.short_name
+	if next == null:
+		return "First: %s (see the Journal).%s" % [region.objective.to_lower(), who]
+	return "This island's Exploration Ship comes once its story is done (%d of %d steps). Next: %s.%s" % [
+		done, region.goals.size(), next.text, who]
 
 
 ## Marks `region`'s objective done and finds its discovery. `announce`: say so.

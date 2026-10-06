@@ -61,7 +61,7 @@ func _initialize() -> void:
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
 	build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-2, 5))
 	build_mode.start(ship)
-	_expect(build_mode.placement_problem(ship, Vector2i(-3, 6)).begins_with("First: find and clear"),
+	_expect(build_mode.placement_problem(ship, Vector2i(-3, 6)).begins_with("This island's Exploration Ship comes once"),
 		"no ship before the island's objective (%s)" % build_mode.placement_problem(ship, Vector2i(-3, 6)))
 	build_mode.cancel()
 	var journal_screen: Node = world.get_node("JournalScreen")
@@ -118,10 +118,10 @@ func _initialize() -> void:
 	_expect(build_mode.placement_problem(ship, Vector2i(-3, 8)).contains("already has"), "one Exploration Ship per island")
 	# Establish a ship at the Kelp Forest (in the water by the landing spot) once its objective is done.
 	var kelp_cell := Vector2i((kelp.boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
-	_expect(build_mode.placement_problem(ship, kelp_cell).begins_with("First: restore the kelp forest"),
+	_expect(build_mode.placement_problem(ship, kelp_cell).contains("Finn knows more"),
 		"no ship before the island's objective is done (%s)" % build_mode.placement_problem(ship, kelp_cell))
 	var reef_cell := Vector2i((region.call("arctic_ocean").boat_mooring / 32.0).floor()) + Vector2i(-2, 1)
-	_expect(build_mode.placement_problem(ship, reef_cell).begins_with("First:"),
+	_expect(build_mode.placement_problem(ship, reef_cell).contains("Exploration Ship comes once"),
 		"none on an island whose objective isn't done yet (%s)" % build_mode.placement_problem(ship, reef_cell))
 	build_mode.add_building(ship, kelp_cell)
 	_expect(regions.exploration_ready(self, kelp), "a ship there makes it Exploration Ready")

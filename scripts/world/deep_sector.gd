@@ -89,10 +89,20 @@ func _explain() -> void:
 
 
 func _draw() -> void:
-	var dark := 0.62 * (1.0 - knowledge)
-	if dark > 0.0:
+	if not known():
+		# Still dark (even when it's nearly known): a veil, an outline and how much is known, so the
+		# last unmapped areas are always easy to find.
+		var dark := maxf(0.62 * (1.0 - knowledge), 0.28)
 		for cell in cells:
 			draw_rect(Rect2(cell - Vector2(16, 16), Vector2(32, 32)), Color(VEIL, dark))
+		for i in 24:
+			var a := TAU * i / 24.0
+			draw_arc(Vector2.ZERO, radius * 0.6, a, a + TAU / 48.0, 4, Color(1.0, 0.85, 0.3, 0.7), 2.0)
+		var font := ThemeDB.fallback_font
+		var text := "%s: %d%% known" % [label(), floori(knowledge * 100.0)]
+		var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
+		draw_string_outline(font, Vector2(-width / 2.0, 5.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, 4, Color(0, 0, 0, 0.8))
+		draw_string(font, Vector2(-width / 2.0, 5.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(1.0, 0.92, 0.6))
 	if dive_marked:
 		draw_arc(Vector2.ZERO, radius * 0.6, 0.0, TAU, 48, Color(1.0, 0.85, 0.3, 0.8), 2.0)
 	elif known():
