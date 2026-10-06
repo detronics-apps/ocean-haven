@@ -1,27 +1,24 @@
-# BlueHaven: the full game layout, decisions and plans (for outside review)
+# BlueHaven: the full game layout, decisions and plans
+
+**Version 2**, updated after an outside AI review and the owner's follow-up decisions.
 
 **What this document is.** BlueHaven is a game being built by one developer (the owner) with an
-AI coding assistant. This document is self-contained. It describes:
+AI coding assistant. This document is self-contained, so it can be given to another AI or person
+for review. It describes:
 - what the game is and who it's for;
 - what is already built and playable;
 - the design rules learned so far;
-- the next layer we have been planning (characters, litter sources, mini-games, seasons);
-- every decision already made, and what is still open.
+- the story and the next layer: people, ranger activities, rescue companions, litter sources and
+  seasons;
+- every decision made, what is still open, and the build plan (section 16).
 
-**What we'd like from you (the reviewing AI):**
-1. Evaluate the plan. Is it fun for a 7-year-old, does it have depth for an adult, and does it
-   get the real-world message across without preaching?
-2. Point out risks: overload, confusing flows, balance problems, scope that's too big.
-3. Check the facts marked **[verify]** and flag any other claim that may be wrong.
-4. Suggest improvements and alternatives, especially for the mini-games, the character story
-   and the litter chain.
-5. Answer the open questions in section 10 with a recommendation.
-6. Respect the **non-negotiable rules** (section 2) and the **rejected ideas** (section 9).
-   Don't bring rejected ideas back without a new reason.
-
-Your feedback goes back to the owner, then to the coding assistant as step-by-step tasks.
+**For a reviewer:**
+- Respect the non-negotiable rules (section 2) and the rejected ideas (section 14).
+- Check the facts marked **[verify]**.
+- Recommend answers to the open questions (section 15).
 
 ---
+
 
 ## 1. The game in short
 
@@ -259,338 +256,428 @@ Every island is its own game with its own lesson:
 | The goal should be about turtle numbers and exploring; one tip at a time, only when asked | Done for now (Tip button); to be replaced by the people system |
 | Explore found 2 islands at once / too far ahead | Done: one island at a time, at most one more than the fleet level |
 
-## 6. The next layer: people, story and objectives (agreed direction, details still open)
+## 6. The story: wonder → discovery → stewardship (decided, from the review)
 
-### 6.1 The owner's requirements (decided)
+The reviewer's main finding: the game's systems are excellent, but it needs a stronger emotional
+reason to care about what they do. **People, ranger activities and rescue companions are the way
+the player experiences the story, not features bolted on.**
 
-1. **Objectives never just appear on screen.** They come only from talking to people in the
-   game. There must be a proper story reason to go and talk to someone.
-2. **People ask the questions that need asking; they don't give the answers.** That way the game
-   helps the player think. The flow:
-   1. a person asks a question ("Don't you think there's an alternative to plastic bags?");
-   2. a bit later, the objective appears ("Find an alternative to plastic bags");
-   3. when it's done, it drops away and a new one comes.
-3. **Two kinds of people on every island:**
-   - **an objective-giver.** They have a *general* job title (Researcher, Diver, Fisher…), never
-     a narrow one like "turtle researcher" that would leave them stuck on one island. You keep
-     going back to them from later islands for tasks in their field.
-   - **a hint-giver** (like an old lighthouse keeper). You go to them for advice and opinions.
-     They can't give objectives, but they can send you to another island's hint-giver. **This
-     replaces the Tip button.**
-4. **On the Starting Island, all objectives come from the Researcher until the Sonar Core** is
-   found. Each new island introduces its own objective-giver for that island. Earlier people
-   stay available for more tasks in their field.
-5. **The first hint:** the old lighthouse keeper remembers many more turtles on the beach, so it
-   might be good to protect them. That's the "shifting baseline": each generation thinks the
-   ocean it grew up with is normal.
-6. **Existing saves (decided):** players who are already far into the game get all the
-   characters. Nothing they say depends on past conversations: every objective and hint is
-   worked out from the current state of the game, so it's always up to date.
-   - Example: a player already at the Deep Sea goes to the Researcher. She doesn't say "start
-     taking photos". She greets them for what they've done and mentions the photo collection
-     they don't have yet ("9 of 30 moments; the crab digging is still missing").
-   - Story objectives they've already got past are skipped.
-   - Collections (photo moments) are side tasks that never block the story.
-7. **Names must be easy to change**, so they live in data files.
-8. **Don't overpopulate the Journal or cards.**
+### 6.1 The core loop
 
-### 6.2 The characters (draft names; jobs and roles proposed)
+> **Meet someone → hear their story or question → explore → do something → discover
+> something → make a change → watch nature respond → become curious about the next place.**
 
-One objective-giver and one hint-giver per island. Each stands at a fixed spot near the
-island's arrival, by the building their work uses (or a small camp until it exists).
+This replaces "an objective appears → complete it → unlock an island". Each discovery should
+move the player through three thoughts:
 
-| Island | Objective-giver (job) | Backstory | Keeps coming back for | Hint-giver (job) | Backstory and style of hints |
-|---|---|---|---|---|---|
-| Starting | **Dr. Maya Okafor** (Researcher) | Came to find out why the island's wildlife has dwindled | Photo moments on every island; research questions | **Tom Pieters** (Lighthouse keeper) | 50 years at the light; remembers beaches covered in turtle tracks. "They need a quiet stretch of sand." Comments as things recover. Sends you to Ines |
-| Kelp Forest | **Finn Larsen** (Diver) | Used to dive for urchins to sell; watched the kelp vanish into urchin barrens; now restores it | All underwater work: coral planting, gear recovery | **Ines Moreau** (Harbour cook) | Her grandmother saw otters hunted nearly to extinction for fur **[verify wording]**. "Bring the otters back and the kelp looks after itself." Sends you to Samuel |
-| Mangrove | **Rosa Mendes** (Fisher) | Her catch depends on the young fish from the nursery pools; silt emptied her nets | Fishing gear, markets, food boxes | **Samuel Achebe** (Boat builder) | Built boats from these channels all his life. "Water that stands still drops its mud." Sends you to Leilani |
-| Tropical Reef | **Kai Nakoa** (Engineer) | Runs the water treatment and the Glassworks; asks "how could we make this differently?" | How things are made: bottles, filters | **Leilani Kahale** (Dive guide) | Knows where every current dumps litter. "Follow the shark: it's circling something caught down there." Sends you to Bram |
-| Deep Sea | **Dr. Imani Osei** (Pilot) | Pilots the Outpost's submarine | The fleet, navigation, exploring | **Bram de Vries** (Retired captain) | 40 years on a trawler; admits he lost nets out here. "Whales talk in clicks; make noise and they go quiet." Sends you to Erik |
-| Polar | **Dr. Sanna Lind** (Expedition leader) | Leads the station's expedition | Final, ocean-wide questions | **Erik Holm** (Weather watcher) | Has written down the ice every day for 30 years. "Pups need ice that lasts." Sends you back to Tom (the circle closes) |
+> "I wonder what's happening here?" → "Oh! That's why." → "What can I do about it?"
 
-**Open:** the Arctic is home to Inuit communities, and Inuit knowledge is part of real Arctic
-research. An Inuit character would need careful research and respectful portrayal. Until that's
-decided, the draft has two station staff.
+**The emotional journey, the game's unofficial philosophy:**
 
-**Maya's story objectives on the Starting Island**, in order. Each is skipped if it's already
-done:
-1. Photograph 3 different animals. This is a new game only; for later players it becomes the
-   photo collection side task.
-2. Build the research station → survey the coast.
-3. Clear the wreck → lift the sonar.
-4. Build an Exploration Ship and install the sonar.
+1. Wonder ("Look at that turtle!")
+2. Curiosity ("Why does it do that?")
+3. Understanding ("It affects this.")
+4. Responsibility ("Something is wrong.")
+5. Action ("What can I do?")
+6. Restoration ("It's getting better!")
+7. Connection ("What I did here affects that island.")
+8. Stewardship ("I need to look after the whole thing.")
 
-The objectives of the other islands map onto their objective-giver the same way: the existing
-objectives (section 3.1) become their conversations.
+### 6.2 Six acts, one per island (in the warmer-first order; the acts follow the islands)
 
-**How talking works:**
-- You talk to a person with the action button, like an animal.
-- A talk is 2–3 short speech bubbles.
-- The current objective shows on the HUD goal line and in a short Notebook list.
-- The only things saved: who you've met, and which questions have been asked. Everything else is
-  checked live.
+| Act | Island | The player's discovery |
+|---|---|---|
+| 1. Wonder | Starting Island | "Look what's here." Animals aren't collectibles: every one has a role. Maya asks for photos; Tom tells how it used to be. |
+| 2. Everything is connected | Kelp Forest | "Why are there so many urchins? …Oh, the otters eat them." The player watches the food web work: otters ↑ → urchins ↓ → kelp ↑ → fish ↑ → cormorants ↑. |
+| 3. Land and sea are connected | Mangrove Coast | Rain → water → silt → channels → nursery pools → young fish → ocean. Through Rosa: healthy ecosystems support people too ("When these pools fill with young fish, my nets aren't empty any more"). Not "animals good, humans bad". |
+| 4. Astonishingly intricate | Tropical Reef | "There are so many things happening here": parrotfish make sand, clams clean water, the shark points to ghost gear. The "everything has a job" island. |
+| 5. We don't know everything | Deep Sea | Learn before acting. Even helping takes wisdom: the instruments themselves disturb. A major story moment. |
+| 6. One ocean | Polar Ocean | Terns visit your other islands, microfibres in the ice came from far away. There isn't an "island ocean"; there's one connected ocean. |
 
-### 6.3 Photo moments (the album) (decided in principle)
+The acts follow the islands, whatever order the player finds them in. The colder route meets
+Kelp (Act 2) first. Each island's people tell its act, so the order can vary.
 
-- **2–3 photo moments per species**, each one a *specific situation*. For example, the ghost crab:
-  digging on the sand · in the water · out at night.
-- An image is saved only the first time you catch a new moment, never one a day.
-- Ordinary photos still earn research funding, but aren't kept.
-- Missing moments show as silhouettes with a hint, so there's always something to look for.
-- The album sits inside each animal's existing Journal page (no new tab).
-- **Tagged, named animals (agreed idea, not yet detailed):** you can tag an animal and give it a
-  name. A tagged migrating animal (e.g. "Steve" the turtle from the Starting Island) can turn up
-  on another island, **but only while both islands are in good condition**. Its Journal page
-  shows its photos over time.
+### 6.3 Balance is the central concept (decided)
 
-### 6.4 Stopping litter at its source (decided in principle; details open)
+- Not "save the ocean" but **"find the balance"**: doing too little is bad, and so is doing too
+  much.
+- Already in the design: overbuilding has consequences, limits aren't targets, and several
+  setups reach 100 %.
+- The message for adults (still clear to children): **conservation isn't about controlling
+  nature; it's about understanding it and giving it room to work.**
 
-**Decided:**
-- **At most six litter problems**, chosen for the best real story and a real reusable
-  alternative.
-- **Solving all six takes all six islands.**
-- The research station does *not* send a "trace the source" mission. Instead, each litter type
-  counts how many you've picked up over the whole game. At its threshold the question comes up,
-  and each next threshold is a bit higher.
-- The flow follows section 6.1: a person asks → an objective → a hint-giver says where to
-  look → an "Investigate" mission on that island → the report explains the alternative →
-  building or doing it stops that litter on every island.
-- **Honesty:** a fix is never a swap from one throwaway thing to another. The owner's example:
-  paper straws turned out badly (studies found PFAS in many paper straws **[verify]**, and they
-  make drinks taste bad). Fixes are reuse, refill, return, or designing the problem out.
-- **Don't overwhelm the start:** the chain doesn't begin on the Starting Island.
+### 6.4 Faith and wonder (the owner's perspective, decided approach)
 
-**Proposed six problems:**
+- The owner's family is Christian, and the owner wants the game to leave room for "look what God
+  created".
+- **No preaching.** Characters never say "God made this animal". Instead, the game's identity is
+  **wonder**: after many hours of seeing parrotfish make sand, otters protect kelp, mangroves raise
+  fish and terns cross the world, the player's own reaction is "wow".
+- The underlying message: **creation is wonderfully intricate, beautiful and worth caring for.**
+  We aren't here to own it or control it; we're here to understand it, care for it, and give it
+  the chance to flourish.
 
-| # | Litter | Washes up most at | Asked by | Researched at | The real fix |
-|---|---|---|---|---|---|
-| 1 | Plastic bottles (already in the game) | Tropical Reef | Kai | Reef: Glassworks + clean water | Reusable bottles and refills (already built) |
-| 2 | Plastic bags (already in the game) | Mangrove Coast: bags snag in mangrove roots **[verify]** | Rosa | Starting Island: Maya's station; Tom remembers woven bags | Reusable bags woven from palm leaves (a tradition in many Pacific and Southeast Asian places **[verify]**) |
-| 3 | Six-pack rings (new; they tangle animals) | Kelp Forest | Finn | Reef: Kai designs it out | Packs that don't need rings: returnable crates |
-| 4 | Foam food boxes (new; they crumble) | Starting Island (picnics) | Maya | Mangrove: the Eco-Lodge | A return-and-reuse box scheme |
-| 5 | Fishing line and ghost nets (already in the game) | Deep Sea | Imani | Deep Sea, with Rosa's help | Gear marking (built) + old nets recycled into nylon yarn **[verify]** |
-| 6 | Microfibres (can't be picked up) | Polar: found in the Ice Core (microplastics concentrate in Arctic sea ice **[verify]**) | Sanna | Reef: Kai builds a filter | Washing-machine filters (France requires them on new machines from 2025 **[verify]**) |
+### 6.5 The ending: not "You won"
 
-**Fact corrections already found:**
-- The owner's example of kelp making reusable bags isn't realistic. Seaweed makes compostable
-  films and coatings, not strong reusable bags.
-- The existing Glassworks says parrotfish sand makes glass. Parrotfish sand is coral sand
-  (calcium carbonate), but glass is mostly silica (quartz) sand plus lime. The honest version:
-  beach quartz sand + lime from parrotfish sand → glass **[verify]**.
+- Collecting everything (all six discoveries, all six source problems) is the **beginning of the
+  final chapter**, not a victory screen.
+- **The Global Ocean Observatory** asks: **"You've helped every island. What have you learned?"**
+  - It shows observations from the player's own game: "Turtles returned because…", "Kelp
+    recovered because…", "Fish returned because…".
+  - Then: **"One ocean. Many places. Everything connected."**
+- The camera pulls back to a panorama of all six islands: animals moving between them, boats, the
+  research vessel, vibrant water.
+- Each person is seen at their work with one line about what the player helped them discover.
+  Maya: "When we started, we thought we were helping six islands." Another: "There was only ever
+  one ocean." The player sees that the people were connected too.
+- Then play continues: the world stays open.
 
-**Proposed thresholds:** 20 / 30 / 40 / 55 / 70 pieces, rising with each question. The
-microfibres come with the Ice Core.
+## 7. People (decided structure; names in data, easy to change)
 
-**Open: where the chain starts.**
-- The owner suggested the Tropical Reef, because its fresh-water story is a good first problem.
-- The catch: the Reef can be your 3rd island or your 6th, depending on the way you explore.
-- So there are two options:
-  - **A:** start on the Reef. On a colder-first route the whole chain comes late.
-  - **B (assistant's recommendation):** start when you reach your 2nd island, with each question
-    only asked once its research island has been found.
+### 7.1 Rules (decided)
 
-### 6.5 Mini-games: one per island (decided in principle; picks open)
+1. **Objectives only come from people**, with a real story reason to talk to them.
+   - The player can still do anything freely; objectives never block actions.
+   - Until the first talk, the goal line says "Talk to Dr. Maya".
+2. **People ask questions; they don't give answers.**
+   1. A person asks ("Don't you think there's an alternative to plastic bags?").
+   2. A moment later the objective appears ("Find an alternative to plastic bags").
+   3. When it's done it drops away and the next one comes.
+3. **Two people per island:**
+   - an **objective-giver** with a general job title. You keep coming back to them from any island
+     for things in their field.
+   - a **hint-giver**. You go to them when you're stuck; they can't give objectives, and they send
+     you on to the next island's hint-giver.
+   - The hint-givers **replace the Tip button**.
+4. **Every person is a way of understanding the ocean**, and the player learns who to visit:
 
-**The owner's requirements:**
-- *fun* games, one per island;
-- replayable, never only hard the first time (no hidden-object games);
-- inspired by popular games (Flappy Bird, Mario-style diving levels, Tetris, memory card pairs,
-  sorting coloured sand or liquid between bottles, puzzles);
-- the effect on the main game should be clear: funding, or the research one of the missions
-  needs (e.g. finding the sonar).
+   | Person | Go to them when… |
+   |---|---|
+   | Maya (Researcher) | "I want to understand something." Her recurring question: *"What do you think is happening?"* |
+   | Tom (Lighthouse keeper) | "I don't know what to do." He's the game's memory. |
+   | Finn (Diver) | "Something underwater isn't right." |
+   | Rosa (Fisher) | "Something is happening to fish or fishing." |
+   | Kai (Engineer) | "How could we make or change something?" Kai asks "why are we making something we throw away after one use?", never "here's the answer". |
+   | Imani (Pilot) | "Where should we explore?" |
+   | Sanna (Expedition leader) | "What does this mean for the whole ocean?" |
 
-**Proposed rules:**
-- Nobody loses: bumping into something only slows you down.
-- Numbered levels get harder.
-- You can play as often as you like, but each one **affects the island once per game day**.
-- The effect is research or an ecosystem effect, or a small research grant. Never money from
-  rescuing an animal.
+5. **People have lives, not just missions.**
+   - **Micro-stories** sometimes come with no objective and no reward. Example: Tom says "My
+     father could tell where turtles had been just by looking at the sand." "How?" "Tracks." Then
+     the player notices turtle tracks on the beach for the first time.
+6. **People remember what you've done** through world reactions, not friendship meters, gifts
+   or XP.
+   - Tom: "I haven't seen many turtle tracks lately" → "Three nests this morning" → "Come and
+     look at this" (hatchlings).
+   - Finn: "The kelp is struggling" → "Look at this patch" → "The fish are back".
+7. **Everything they say is worked out from the current game state**, never from past talks.
+   - Players far into the game meet everyone, are greeted for what they've done, and skip
+     what's done.
+   - Example: a ranger at the Deep Sea visits Maya. She doesn't say "start taking photos"; she
+     mentions the photo moments they're still missing.
+   - Saved: who you've met and which questions were asked. Everything else is checked live.
+8. **Keep the Journal small:** one People page, a short Notebook of current objectives, no
+   extra cards.
 
-**Styles we could borrow from:**
+### 7.2 The cast and their arcs (draft names)
 
-| Style | Popular example |
-|---|---|
-| Tap to fly / swim through gaps | Flappy Bird, Jetpack Joyride |
-| Swim-and-collect levels | Mario underwater levels, Ecco |
-| Falling blocks | Tetris |
-| Match-3 | Candy Crush |
-| Memory pairs | Concentration |
-| Sort and pour | Water Sort Puzzle |
-| Connect the pipes | Flow Free, Pipe Mania |
-| Clues on a grid | Minesweeper (without bombs) |
-| Draw the path | Flight Control |
+| Island | Objective-giver | Arc (beginning → end) | Hint-giver | Arc |
+|---|---|---|---|---|
+| Starting | **Dr. Maya Okafor**, Researcher: came to find out why the wildlife dwindled; curious and analytical | "We need to understand what happened" → "Understanding never really ends" | **Tom Pieters**, Lighthouse keeper: 50 years at the light | "I remember when there were more turtles" → "Now I have something new to remember" |
+| Kelp | **Finn Larsen**, Diver: used to dive for urchins to sell, and watched the kelp collapse | "I thought I was only taking urchins" → "Now I know what I'm part of" | **Ines Moreau**, Harbour cook: her grandmother's stories of otters hunted for fur **[verify wording]** | The old harbour comes back to life |
+| Mangrove | **Rosa Mendes**, Fisher: her catch depends on the nursery pools | "The fish are disappearing" → "There are more fish than when I was young" | **Samuel Achebe**, Boat builder: knows the channels and tides | — |
+| Reef | **Kai Nakoa**, Engineer: runs the water treatment and the Glassworks | "How can we make this differently?" → "Maybe the best design is the one that doesn't create the problem" | **Leilani Kahale**, Dive guide: knows where currents dump litter | — |
+| Deep Sea | **Dr. Imani Osei**, Pilot: the Outpost's submarine pilot | — | **Bram de Vries**, Retired captain: lost nets out here himself | Honest regret → seeing the gear recovered |
+| Polar | **Dr. Sanna Lind**, Expedition leader | — | **Erik Holm**, Weather watcher: 30 years of ice records | — |
 
-**Proposed picks:**
+- **Hint chain:** Tom → Ines → Samuel → Leilani → Bram → Erik → Tom.
+- **Open:** an Inuit character on the Polar Ocean (needs careful research first).
 
-| Island | Game (style) | How it plays | Effect in the main game |
-|---|---|---|---|
-| Starting | **Sonar Sweep** (Minesweeper without bombs) | Tap ocean squares to ping; numbers show how many hidden objects are next to it; work out where the wreck and lost litter are. Random grids, bigger each level. | The coastal survey's research: the first win finds the wreck. Afterwards it marks hidden litter on the minimap for that day. |
-| Kelp | **Otter Dive** (Mario-style swim levels) | Hold to dive, let go to rise; grab urchins, come up for air; the otter cracks shells on its belly with a rock (real tool use). | An urchin survey: urchins go down a little that day. |
-| Mangrove | **Channel Flow** (Flow Free / pipes) | Turn channel pieces until every pool is linked to the sea before the tide turns. | Shows the best channels to dig that day. |
-| Reef | **Glass Sort** (Water Sort Puzzle) | Pour layers of coloured sand from jar to jar until each jar holds one colour (glass colour really comes from minerals **[verify]**). | A batch of reusable bottles (bottle story progress) + a small grant. |
-| Deep Sea | **Echo Dive** (cave flyer in the dark) | Steer the submarine through a black canyon; each sonar ping lights the walls for a moment; pick up lost gear. | Maps part of a dark area. |
-| Polar | **Floe Fit** (Tetris) | Ice floes drift down and freeze into place; full rows join the bears' corridor. | Repairs lanes broken by boats for that freeze. |
+**Starting Island, Maya's story** (each step skipped if it's already done):
+1. Photograph animals (a new game only; for later players this becomes the photo collection).
+2. Build the station.
+3. Find the wreck. This is her first ranger activity, Sonar Sweep (section 8).
+4. Clear the wreck → lift the sonar.
+5. Build the Exploration Ship.
 
-**Alternatives:**
-- Flamingo Flight (Flappy Bird style migration; the owner's own example) for the Mangrove;
-- Tern Journey (Flappy Bird style; the Arctic tern's migration is the longest of any animal
-  **[verify]**) for the Polar Ocean;
-- Coral Match (match-3) for the Reef;
-- a memory card game for animal or fish identification.
+**The first 10 minutes of a new game:** walk → meet Maya → photograph an animal → meet Tom →
+discover the turtles → a simple cleanup. Sonar Sweep comes later.
 
-### 6.6 Seasons and turtles
+## 8. Ranger activities (the mini-games; decided structure)
 
-**Decided:**
-- Show the time of year on the HUD, next to the time of day and the day count, e.g.
-  **"Year 1 · Spring, day 12 · Evening"**. That's four 30-day seasons in the 120-day year.
-- **Turtles should take longer to grow up**, and nesting is seasonal:
-  - in the first season (30 days) the turtles should reach a good number;
-  - after that, egg-laying drops until the next nesting season.
+### 8.1 Rules (decided)
 
-**Today:** turtles nest every 2 days, eggs hatch in 1 day, hatchlings grow up in 2 days.
+- **In the player's world they're ranger activities, not mini-games.** You go diving with Finn;
+  you don't "play Otter Dive".
+- **Introduced by a person, as part of the story.** Finn: "I've got ten minutes before I head
+  back up. Want to help me check the kelp?"
+- **Only the first, story play gives something:** one unique item or piece of information the
+  island's progress needs.
+  - It's a story or world item, never a power-up for the activity itself.
+- **After that, a permanent location in the world** (for example a jetty on the beach for
+  diving).
+  - The location is visible from the first visit (an old jetty) but inactive, and opens after
+    the first story play.
+- **Replays are purely for fun:**
+  - harder levels;
+  - a timer or score, with the **personal best** saved, arcade style ("NEW PERSONAL BEST:
+    19.8 s");
+  - no progress, items, funding, daily rewards or ecosystem effects, and no penalty for
+    ignoring it;
+  - no global leaderboards.
+- **Understood in 10 seconds.** Nobody loses: bumping something only slows you down.
+- **Not overloaded:** one activity per island, unlocked in the story, never all at once.
+- **Scope rule:** six themes on only **3 shared frameworks**, so it stays buildable by one
+  developer.
 
-**Proposal** (to be simulated before building):
-- hatchlings take **8 days** to grow up;
-- nesting season is Spring (days 1–30), with a nest every 3 days per turtle;
-- the rest of the year, about one nest a season per turtle;
-- real basis: green turtles nest seasonally, each female only every 2–4 years **[verify]**.
+### 8.2 The six activities
 
-**The target:**
-- with 3 Turtle Protection Areas, about **6–8 turtles by day 30**;
-- **10 early in year 2**.
+| Island | Activity (introduced by) | Framework | Like | First story play gives | Permanent location | Replay |
+|---|---|---|---|---|---|---|
+| Starting | **Sonar Sweep** (Maya) | Grid | Minesweeper without bombs | **Locates the wreck** (instead of the survey's chance) | Survey point on the station's jetty | Bigger grids, more pieces; best time |
+| Kelp | **Otter Dive** (Finn) | Mover | Mario-style swim levels | **The urchin survey**: shows where grazing is too heavy | The old jetty / dive spot | Currents, deeper levels; best time |
+| Mangrove | **Channel Flow** (Rosa or Samuel) | Grid | Flow Free / Pipe Mania | **The channel layout**: marks which silted channels to dig | Waterworks control table | Bigger networks; best time |
+| Reef | **Glass Sort** (Kai) | Sort | Water Sort Puzzle | **The first batch of glass**: opens glass-making | The Glassworks' sorting bench | More colours and jars; fewest moves / best time |
+| Deep Sea | **Echo Dive** (Imani) | Mover | Cave flyer in the dark | **Finds the lost cargo module** (the Cargo search step) | Submarine dock | Longer canyons; best time |
+| Polar | **Floe Fit** (Sanna) | Grid | Block Blast / polyomino fitting | **The drill-site plan**: shows the old ice that's safe for 3 days of drilling | Station planning table | More pieces, odd shapes; best time |
 
-**Existing saves:**
-- the season comes from the day number;
-- grown turtles stay grown.
+**Frameworks:**
+- **Grid:** reveal, rotate or place tiles (Sonar Sweep, Channel Flow, Floe Fit).
+- **Mover:** tap or hold to swim, collect, avoid (Otter Dive, Echo Dive).
+- **Sort:** jars and layers (Glass Sort).
 
-**Caveats:**
-- Tropical islands don't have four real seasons. Their events can follow their own real timing.
-- The Polar Ocean keeps its quick 3-day ice cycle for gameplay.
+**Alternatives:** Flamingo Flight (Mover, Flappy Bird style) for the Mangrove, Tern Journey
+(Mover) for the Polar Ocean.
 
-**Seasonal moments (liked, details to come):** nesting season, hatchling runs, whale migration
-passing, terns arriving, a coral spawning night after a full moon **[verify]**.
-- Each comes with a note the evening before and is a special photo chance.
-- Nothing is lost if you miss one; it comes back next year.
+**Existing saves:** if the story step is already done, the person mentions the activity and its
+location is open straight away.
 
-### 6.7 Predict, then watch (liked)
+## 9. Rescue companions (decided structure; species partly open)
 
-- Before some missions, the Researcher (or another objective-giver) asks a question with 2–3
-  picture answers: "What happens to the kelp if the otters come back?"
-- Days later, the Notebook shows what really happened next to your guess. There's no score: a
-  surprise counts as much as a right guess.
-- The ecosystems already compute where they're heading, so the result is always true to the
-  game.
+The owner's idea, built from Tamagotchi's emotional structure: a specific little individual you
+check on, watch develop, get attached to, and let go. **But none of its pressure:** no death, no
+hunger or sickness that gets worse, no timers, no "feed me", no streaks.
 
-### 6.8 The real-world message (agreed aim)
+### 9.1 Rules (decided)
 
-- The game should make people care about the real ocean, so the next generation still sees these
-  animals.
-- Tools agreed so far:
-  - the "shifting baseline" through Tom and Erik (what used to be normal);
-  - real success stories (e.g. sea otters and humpback whales recovering under protection
-    **[verify]**);
-  - the honest, evidence-based litter fixes.
+- **You don't own an animal; you're helping one get home.**
+  - The word is "rescue companion" / "My Rescue", never "adopt" or "pet".
+  - "You don't own an animal. You're helping one get home."
+- **One per island, one at a time.** Each island has one animal that needs human help: an injured
+  or caught young animal, or an egg that won't make it alone.
+- **You name it.**
+- **30 game days of care** at the island's rescue habitat, by its signature facility. Then it's
+  released: a special **Release Moment**, a milestone. Its name and story stay in the Journal.
+- **You can leave.**
+  - The station staff keep caring for it while you're away. This is an exception to "islands you
+    aren't on are paused".
+  - A note now and then: "Shelly is doing well. She's started swimming on her own."
+  - You must be there for the release itself.
+- **The next one comes when the previous one has been released** and you're on an island that
+  hasn't had one yet. So six rescues take about 180 game days, about a year and a half (four
+  30-day seasons in a 120-day year).
+- **Recovery is a journey of stages you can see**, never bars that drop. For example:
+  1. critical care;
+  2. eating on its own;
+  3. moving normally;
+  4. exploring;
+  5. natural behaviour;
+  6. ready.
 
-## 7. Characters and objectives through the whole game (the intended flow)
+  The animal visibly changes: it hides at first, gets braver, follows you, and finally behaves
+  like a wild animal.
+- **Care activities are 30-second interactions:** choosing the right food, enrichment, a swim
+  course, cleaning, a behaviour check. They're built on the activity frameworks.
+- **They teach through behaviour, not lessons.** Maya: "It keeps hiding." "Why?" "Perhaps it needs
+  somewhere quiet." The player adds a quiet shelter, and the animal uses it.
+- **It works by visiting:** each visit shows progress and a care moment. Not visiting is fine.
+- **After release it's a tagged animal** (section 10.2). Later sightings are the big payoff,
+  for example a photo of Shelly near the Mangrove Coast.
+- **It teaches the difference between individuals and ecosystems:** "I care about Milo" → "Milo
+  is one turtle" → "turtles are part of this ecosystem" → "Milo is part of the ocean".
 
-1. **New game, Starting Island.**
-   - The goal line says "Talk to Dr. Maya". She gives the first objective.
-   - Tom (lighthouse) is there for advice: the turtle memory, quiet beaches.
-   - Maya's chain leads to the wreck and the Sonar Core.
-   - Building the Exploration Ship and exploring is her last Starting Island objective.
-2. **2nd island (Kelp or Mangrove).**
-   - Its objective-giver gives that island's objective.
-   - Its hint-giver gives advice, and Tom has pointed you there.
-   - From here the litter chain may begin (option B): a question about one litter type.
-3. **Later islands.**
-   - Each adds its two people.
-   - You go back to earlier objective-givers for tasks in their field: Maya for photos and
-     research questions on every island, Finn for underwater work, Rosa about fishing gear,
-     Kai about how things are made, Imani about the fleet.
-   - Hint-givers link up: Tom → Ines → Samuel → Leilani → Bram → Erik → Tom.
-4. **The end.**
-   - All six litter problems solved, all six discoveries installed.
-   - Then the Ocean Research Vessel and the Global Ocean Observatory (already planned): a view of
-     the whole connected ocean.
+### 9.2 The six (species to finalise; realism checked first)
 
-## 8. The existing plan beyond this (already agreed earlier)
+| Island | Proposed rescue | Real basis |
+|---|---|---|
+| Starting | **Green turtle**, a juvenile caught in fishing line or floating weakly | Rescue centres really rehabilitate injured and floating turtles **[verify]**. Better than raising from an egg: head-starting hatchlings is a debated practice **[verify]**. |
+| Kelp | **Sea otter pup**, stranded without its mother | Aquariums really raise stranded pups with surrogate mothers and release them **[verify]** |
+| Mangrove | **Flamingo chick** from an abandoned egg | Mass hand-rearing of abandoned flamingo chicks has happened **[verify]** |
+| Reef | *Open:* seahorse (captive breeding for release exists in places **[verify]**), or a juvenile turtle of another species, or a seabird | — |
+| Deep Sea | *Open:* a sixgill shark with a hook (short care), or a stranded young whale (rare but real cases **[verify]**) | — |
+| Polar | **Ringed seal pup**, orphaned | Seal pup rehabilitation is common **[verify]** |
 
-- **Connected ocean:** cross-island effects seen in the world, e.g. mangrove nursery fish
-  reaching the Reef, and safer migration routes.
-- **Ocean Research Vessel and Global Ocean Observatory:** the end-game view.
-- **Smaller items:**
-  - levels for some buildings that don't have them yet;
-  - planting seagrass by hand;
-  - more animals;
-  - a turtle rehab care mini-game (an earlier idea; it could become part of section 6.5);
-  - real art.
+## 10. Photos, tagged animals and the Journal
 
-## 9. Ideas considered and rejected or parked (and why)
+### 10.1 Photo moments (decided)
+
+- **2–3 per species**, each a specific situation. For example, ghost crab: digging on the sand ·
+  in the water · out at night.
+- An image is kept only the first time you catch a new moment. Ordinary photos still earn research
+  funding but aren't kept.
+- Missing moments show as silhouettes with a hint.
+- Kept inside each animal's existing Journal page.
+
+### 10.2 Tagged, named animals (decided)
+
+- **Rare: about 3–5 named animals active at once.** Rescue companions are the first ones.
+- A tagged migrating animal can turn up on another island **only while both islands are
+  healthy**.
+- Its Journal entry: "Steve, green turtle: first seen Starting Island · seen Mangrove Coast ·
+  wild."
+- The world remembers: "Look at this photograph" (the tag number is visible). That's how the
+  connected ocean becomes personal.
+
+## 11. Stopping litter at its source (decided in principle)
+
+- **Secondary to the ecosystem story.** The story is: "You came to help an island; while helping
+  it, you learned how the ocean works; and you found that some problems begin far away." It's
+  not "the game about picking up rubbish".
+- **Six problems, six "aha!" moments, solved across all six islands.** Seeing a problem stop
+  appearing is the reward: "I didn't just clean this beach; I changed what was happening."
+- **It starts on the 2nd island (option B, decided).** The player first learns "I can help
+  nature", then "prevent it at the source".
+- **Trigger:** each litter type counts every piece picked up over the whole game. At its
+  threshold (rising: 20, 30, 40, 55, 70) the right person asks the question. A question is only
+  asked once its research island has been found.
+- **The flow:** question → objective → a hint-giver suggests where to look → an "Investigate"
+  mission → the report → the fix → that litter stops everywhere.
+- **Honesty rule:** never a swap to another throwaway thing. The owner's paper-straw example:
+  PFAS were found in many paper straws **[verify]**, and they ruin the drink. Fixes are reuse,
+  refill, return, or designing the problem out.
+
+| # | Litter | Asked by | Researched at | The real fix |
+|---|---|---|---|---|
+| 1 | Plastic bottles (exists) | Kai | Reef: Glassworks + clean water | Reusable bottles and refills (built) |
+| 2 | Plastic bags (exists; snag in mangrove roots **[verify]**) | Rosa | Starting Island: Maya + Tom's memory | Reusable bags woven from palm leaves **[verify the tradition]** |
+| 3 | Six-pack rings (**new**, tangle animals) | Finn | Reef: Kai designs it out | Returnable crates, no rings |
+| 4 | Foam food boxes (**new**) | Maya | Mangrove: the Eco-Lodge | A return-and-reuse box scheme |
+| 5 | Fishing line and nets (exists) | Imani | Deep Sea, with Rosa | Gear marking (built) + net recycling **[verify]** |
+| 6 | Microfibres (can't be picked up) | Sanna, after the Ice Core | Reef: Kai builds a filter | Washing-machine filters (France, 2025 **[verify]**) |
+
+- **The microfibre lesson:** "cleaning isn't always enough."
+- **Fact fixes:**
+  - seaweed doesn't make strong reusable bags;
+  - glass is quartz sand plus lime, and the lime can come from parrotfish (coral) sand. The
+    existing Glassworks text must say that **[verify]**.
+
+## 12. Seasons, turtles and other agreed layers
+
+- **Calendar:** the HUD shows "Year 1 · Spring, day 12 · Evening": four 30-day seasons.
+- **Turtles (proposed, to be simulated):**
+  - hatchlings take 8 days to grow up (now 2);
+  - nesting season is Spring, with a nest every 3 days; little nesting the rest of the year;
+  - the target is 6–8 turtles by day 30, and 10 early in year 2;
+  - existing saves take the season from the day number.
+- **Seasonal moments (liked, details later):** nesting, hatchling runs, whales passing, terns
+  arriving, coral spawning **[verify timing]**. Each is a photo chance; nothing is lost by
+  missing one.
+- **Predict, then watch (liked):** Maya asks a picture question before some missions ("What
+  happens to the kelp if the otters return?"). The Notebook later shows what really happened next
+  to your guess. No score.
+- **Already planned:** the connected ocean (cross-island effects seen in the world), then the
+  Ocean Research Vessel and Global Ocean Observatory (now the ending, section 6.5).
+
+## 13. Design principles to add to the rules (decided)
+
+1. **The player discovers; the game doesn't lecture.** Let the player observe, choose, act and
+   see the result before the Journal explains the science.
+2. **Every person is a way of understanding the ocean** (research, memory, diving, fishing,
+   engineering, navigation, observation).
+3. **Every ranger activity is real work in the world**, done with a person, never an unrelated
+   arcade game.
+4. **The greatest reward is seeing creation recover.** Funding, items and unlocks support
+   progress; the emotional reward is animals returning, habitats recovering and people reacting.
+5. **Reward curiosity; never demand repetition.**
+6. **Every new feature serves the one loop:** meet → wonder → investigate → understand → act →
+   watch → connect.
+
+## 14. Rejected or parked ideas (and why)
 
 | Idea | Status | Why |
 |---|---|---|
-| Climate change via solar panels / electric boats / "green energy" buildings | **Rejected for now** | The owner won't tell kids that solar or electric is good without a full life-cycle assessment: mining, manufacturing, lifespan, efficiency, infrastructure, disposal. Ocean effects that are well established (warming water bleaching coral) are fine to show; tech fixes aren't. |
-| A real-world "Ocean Pledge" checklist | **Rejected** | Too preachy, and pledges can push bad swaps (paper straws). |
-| A "Real Ocean" tab / "Spot it for real" list / parent links | **Parked** | The owner didn't like these ideas; set aside for now. |
-| The research station sending a "trace the source" mission | **Rejected** | Replaced by the pickup-count threshold that raises a question. |
-| One character (Kai) handing out the solution ideas | **Rejected** | People must ask questions, not give answers, so the player thinks. |
-| Vague characters ("a visiting child") | **Rejected** | Each person needs a clear job and a reason to visit. |
-| Narrow job titles ("turtle researcher") | **Rejected** | They would tie the person to one island. |
-| Hidden-object style mini-games | **Rejected** | Only a challenge the first time. |
-| Daily streaks / daily rewards | **Rejected** | Pressure doesn't suit a kids' game. |
-| Kelp-made reusable bags | **Corrected** | Not realistic (see 6.4). |
-| A Tip button | **To be replaced** | The hint-givers take over. |
+| Climate via solar / electric / "green tech" buildings | Rejected for now | No tech claims without a full life-cycle assessment. Well-established ocean effects are fine. |
+| A real-world pledge checklist | Rejected | Preachy; can push bad swaps |
+| "Real Ocean" tab / "spot it for real" / parent links | Parked | The owner didn't like these |
+| Research station "trace the source" mission | Rejected | Pickup thresholds raise the question instead |
+| Characters handing out answers | Rejected | People ask questions; the player thinks |
+| Vague characters ("a visiting child") or narrow titles ("turtle researcher") | Rejected | Each needs a clear job usable on every island |
+| Hidden-object games | Rejected | Only a challenge the first time |
+| Mini-game replays giving progress / daily effects | **Rejected (changed)** | Replays are only for fun and personal bests |
+| Daily streaks, Tamagotchi-style decay, "feed me" timers | Rejected | Pressure and anxiety don't suit the game |
+| One permanent pet all game | Rejected | One rescue per island, released after 30 days |
+| "Adopting" an animal | Rejected wording | "You're helping one get home" |
+| NPCs saying "God made this" | Rejected | Wonder carries the message |
+| A "You won!" ending | Rejected | The Observatory reflection instead |
+| Kelp-made reusable bags | Corrected | Not realistic |
+| Tip button | Replaced | By the hint-givers |
 
-## 10. Open questions (the owner hasn't decided yet; recommendations welcome)
+## 15. Open questions
 
-1. Are the character names, jobs and backstories in 6.2 right? Should there be an Inuit
-   character on the Polar Ocean, with research first?
-2. The litter chain: does it start on the 2nd island (B) or on the Reef (A)? Are the six
-   problems and the 20 / 30 / 40 / 55 / 70 thresholds right?
-3. Mini-games: are these six picks right, or should Flamingo Flight or Tern Journey come in? Is
-   "affects the island once per game day; research or ecosystem effect, never animal money" the
-   right rule? Should a mini-game ever *replace* a mission's waiting time (like Sonar Sweep finding
-   the wreck)?
-4. Turtles: 8 days to grow up and a Spring nesting season? Are 6–8 turtles by day 30 the right
-   target?
-5. Should the Tip button stay until the first hint-giver has been met, then go?
-6. Tagged animals: how does tagging work (after a rescue? a photo moment?), and how many named
-   animals at most?
-7. Photo moments: 2 or 3 per species? Which situations per species?
-8. Predict-then-watch: how often, so it never interrupts play?
+1. Final names, and an Inuit character on the Polar Ocean?
+2. The Reef and Deep Sea rescue species.
+3. Who introduces Channel Flow: Rosa (the fisher's pools) or Samuel (the channels)?
+4. 2 or 3 photo moments per species, and which situations?
+5. The turtle numbers (8 days to grow up; Spring nesting), after the simulation.
+6. How often predict-then-watch questions come.
 
-## 11. Suggested build order (a draft, to become step-by-step tasks)
+## 16. Build plan: phases (each one small, playable, tested, saved and published)
 
-Each step is small, playable, tested and saved, and balance changes are simulated first.
+The scope is the biggest risk, so every phase delivers something you can play, and the order puts
+the shared foundations first.
 
-1. **People: the foundation.**
-   - Person data files (name, job, island, spot, lines).
-   - Talking with the action button.
-   - Speech bubbles.
-   - The Notebook with current objectives.
-   - The first people: Maya and Tom on the Starting Island.
-   - Objectives from Maya, worked out from the game state.
-   - Remove the Tip button once Tom exists.
-2. **People on the other five islands.** Their objectives come from the existing ones, worked out
-   from the game state for existing saves. Hint-giver chains.
-3. **Seasons on the HUD + the turtle growth / nesting rework** (simulated).
-4. **Photo moments and the album** (2–3 per species).
-5. **Litter chain:** pickup counters, thresholds, the questions, the "Investigate" missions, two
-   new litter items (six-pack rings, foam boxes), the fixes. Microfibres with the Ice Core.
-6. **Mini-games, one at a time**, starting with Sonar Sweep (Starting Island).
-7. **Predict-then-watch questions.**
-8. **Tagged, named animals visiting healthy islands.**
-9. **Seasonal moments.**
-10. **Connected ocean, then the Ocean Research Vessel / Observatory.**
+| Phase | What | Why here |
+|---|---|---|
+| **0. Rules** | This document; the principles (section 13) added to ISLAND_RULES | Done now |
+| **1. People (Starting Island)** | People, talking, the Notebook, Maya's story worked out from game state, Tom's hints, micro-stories and world reactions; the Tip button goes | Every later feature is delivered through people |
+| **2. Calendar + turtles** | Seasons on the HUD; turtle growth and the nesting season (simulated first) | Small; the rescue's 30 days and seasons need it |
+| **3. Sonar Sweep** | The Grid framework, personal bests, Maya introduces it, the survey point | The first ranger activity, and it proves the activity rules |
+| **4. Rescue companion #1** | The turtle at the Starting Island: naming, stages, care moments, the release, its Journal story | The emotional hook, early in the game |
+| **5. People on the other islands** | Ten more people, from the existing objectives (state-based); the hint chain; arc lines by progress | Uses phase 1's system |
+| **6. The other activities** | Mover (Otter Dive, Echo Dive), more Grid (Channel Flow, Floe Fit), Sort (Glass Sort), one at a time | Each reuses a framework |
+| **7. Rescue companions 2–6** | Once the species are decided | Reuses phase 4 |
+| **8. Photo moments + tagged animals** | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
+| **9. Litter at its source** | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
+| **10. Predict-then-watch + seasonal moments** | — | Polish on top |
+| **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
 
-## 12. Glossary (names used in the code, in case a reply refers to them)
+### Phase 1 in detail: the starting point
+
+1. **People as data:**
+   - `data/people/maya.tres` and `tom.tres`, with name, job, island, spot and role
+     (objective / hint);
+   - a placeholder chibi sprite built from the avatar layers;
+   - a "Talk to Dr. Maya" action, like the animals.
+2. **Places:** Maya at a small field camp near the start (later by her station), and Tom at a
+   lighthouse on the island's point (a new placeholder building).
+3. **Talking:**
+   - speech bubbles, tapped through, 2–3 lines;
+   - each person's lines are data: topics with conditions on the game state (flags, objective
+     steps, counts, health);
+   - the first topic that fits is the one shown.
+4. **Questions → objectives:** a question is asked, and a moment later it becomes the objective on
+   the goal line and in the Notebook. It's removed when done.
+5. **Maya's story, worked out from game state,** with every step skipped when it's done:
+   photos → station → wreck → sonar → ship. Existing saves get their current step.
+6. **Tom:**
+   - hints for where the player is (the turtles, quiet beaches, litter on the tide);
+   - one micro-story (the tracks);
+   - world reactions as the turtles return (tracks → nests → hatchlings).
+7. **The Tip button is removed** once Tom exists. The goal line reads "Talk to …" or the current
+   objective.
+8. **Saved:** people met and questions asked. Tests, including an existing far-along save.
+9. Publish, then you try it on the phone.
+
+**Before phase 1 can start:** OK the plan, and decide whether the draft names stay for now (they
+live in data, so they can change any time).
+
+## 17. Glossary (names used in the code)
 
 - **RegionData:** an island's data (health factors, objective goals, arrivals, flagship animal).
-- **ObjectiveGoal:** one step of an island's objective (kinds: help, litter, flag, count; with a
-  hint).
-- **Fleet:** the discoveries found and installed, flags, counts; fleet level = installed.
+- **ObjectiveGoal:** one step of an island's objective (help, litter, flag, count; with a hint).
+- **Fleet:** discoveries found and installed, flags, counts; fleet level = installed.
 - **IslandHealth / HealthFactor:** health scoring per island.
-- **Ecosystem:** each island's own simulation node (kelp, mangrove, reef, deep, polar).
+- **Ecosystem:** each island's own simulation node.
 - **Missions / MissionData:** the signature facility's missions.
-- **RareEvents / EventData:** the storms and other events.
+- **RareEvents / EventData:** storms and other events.
 - **BuildingData:** building content (cost, limits, levels, storage, hosting).

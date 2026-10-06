@@ -239,7 +239,34 @@ foundations the mechanics sit on, not the mechanics themselves.
 - **No emoji in game text** (the font can't draw them); use drawn pictures instead.
 - Long notes get more time on screen.
 
-## 9. Code habits that avoided bugs
+## 9. Story, people and activities (from the outside review, agreed by the owner)
+
+Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
+
+- **The player discovers; the game doesn't lecture.** Let the player observe, choose, act and
+  see the result before the Journal explains it.
+- **The loop every feature serves:** meet → wonder → investigate → understand → act → watch →
+  connect.
+- **Objectives only come from people.**
+  - People ask questions; they never hand out answers.
+  - Everything they say is worked out from the current game state, never from past talks.
+  - Objectives never block actions.
+- **Every person is a way of understanding the ocean**, with a general job title so they're
+  useful on every island.
+- **Hint-givers give advice, never objectives.**
+- **Ranger activities (mini-games) are real work, done with a person.**
+  - Only the first, story play gives something.
+  - Afterwards the activity is at a permanent place, replayed only for fun and personal bests:
+    no progress, items, money or daily effects.
+  - Each must be understood in 10 seconds, built on 3 shared frameworks (Grid, Mover, Sort).
+- **Rescue companions:** one per island, one at a time, named, 30 days of care, then released.
+  - Recovery only moves forward; no decay, timers or "feed me".
+  - Staff care for it while the ranger is away.
+  - Never "adopt" or "pet": "you're helping one get home".
+- **No preaching.** Wonder carries the message; balance is the central concept. The greatest
+  reward is seeing creation recover.
+
+## 10. Code habits that avoided bugs
 
 - New `class_name` scripts need `godot --headless --path . --import` before tests find them.
 - Tests can't name autoloads or classes that use them; load scripts at runtime. Advance
