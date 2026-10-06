@@ -16,7 +16,7 @@ var _label: Label
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(BAR.x, BAR.y + 20)
+	custom_minimum_size = Vector2(BAR.x, BAR.y + 36)  # room for two lines under the bar
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_label = Label.new()
 	_label.add_theme_font_size_override("font_size", 13)
@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	var ranger := ControlledBody.active(get_tree())
 	var region := Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)
 	now = IslandHealth.of(get_tree(), region)
-	visible = now >= 0.0
+	visible = now >= 0.0 and Fleet.has_flag(&"health_gauge")  # with the 2nd island's research station
 	if not visible:
 		return
 	heading = IslandHealth.heading(get_tree(), region)

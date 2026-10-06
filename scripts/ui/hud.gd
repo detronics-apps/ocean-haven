@@ -36,6 +36,9 @@ var _patrol_note: Label
 var _patrol_count := 0
 var _patrol_tween: Tween
 var _event_note: Label
+## The island's objective: the next goal and a pointer on how to go about it.
+var _objective: Label
+var _unlock_check := 0.0
 
 
 func _enter_tree() -> void:
@@ -90,28 +93,44 @@ func _ready() -> void:
 	# What's coming (a storm warning), under the clock until it arrives.
 	_event_note = Label.new()
 	_event_note.name = "EventNote"
-	_event_note.anchor_left = 1.0
-	_event_note.anchor_right = 1.0
-	_event_note.offset_left = -420
-	_event_note.offset_right = -16
-	_event_note.offset_top = 170
 	_event_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_event_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_event_note.add_theme_color_override("font_color", Color("ffd27a"))
 	_event_note.add_theme_constant_override("outline_size", 5)
 	_event_note.add_theme_color_override("font_outline_color", Color.BLACK)
 	_event_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_event_note)
 	%JournalButton.add_sibling(map_button)
-	# The island's health now and where it's heading, under the menu bar.
+	# Under the menu bar, top right, one under the other: the island's health (once there's a
+	# research station on the 2nd island), the ranger's water (once clean water can be made),
+	# the island's objective with a pointer, and a coming storm. Hidden ones take no room.
+	var column := VBoxContainer.new()
+	column.name = "StatusColumn"
+	column.anchor_left = 1.0
+	column.anchor_right = 1.0
+	column.offset_left = -12.0 - 320.0
+	column.offset_right = -12.0
+	column.offset_top = 110.0
+	column.add_theme_constant_override("separation", 8)
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(column)
 	var gauge := HealthGauge.new()
 	gauge.name = "HealthGauge"
-	gauge.anchor_left = 1.0
-	gauge.anchor_right = 1.0
-	gauge.offset_left = -12.0 - HealthGauge.BAR.x
-	gauge.offset_right = -12.0
-	gauge.offset_top = 110.0
-	add_child(gauge)
+	gauge.size_flags_horizontal = Control.SIZE_SHRINK_END
+	column.add_child(gauge)
+	var water := WaterGauge.new()
+	water.name = "WaterGauge"
+	water.size_flags_horizontal = Control.SIZE_SHRINK_END
+	column.add_child(water)
+	_objective = Label.new()
+	_objective.name = "Objective"
+	_objective.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_objective.add_theme_font_size_override("font_size", 14)
+	_objective.add_theme_constant_override("outline_size", 5)
+	_objective.add_theme_color_override("font_outline_color", Color.BLACK)
+	_objective.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_child(_objective)
+	column.add_child(_event_note)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
 	# Which version this is (written by tools/publish_pages.sh), tiny, under the minimap.
@@ -320,12 +339,58 @@ func _update_action_bar() -> void:
 	_action_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE if actions.is_empty() else Control.MOUSE_FILTER_STOP
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	_update_action_bar()
 	_event_note.text = RareEvents.warning_text()
+	_event_note.visible = _event_note.text != ""
+	_unlock_check -= delta
+	if _unlock_check <= 0.0:
+		_unlock_check = 1.0
+		_check_unlocks()
+		_objective.text = objective_text()
+		_objective.visible = _objective.text != ""
 	_info.text = nearest_animal_info()
 	_info.visible = _info.text != ""
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
+
+
+## The HUD grows with the game: the minimap comes with the Salvaged Sonar Core (the end of the
+## first island), the island health bar with the research station on the second island.
+const MINIMAP_NEEDS := &"salvaged_sonar_core"
+const HEALTH_FLAG := &"health_gauge"
+
+
+func _check_unlocks() -> void:
+	var minimap: Control = $Minimap
+	minimap.visible = Fleet.is_installed(MINIMAP_NEEDS)
+	if minimap.visible and not Fleet.has_flag(&"minimap_shown"):
+		Fleet.mark(&"minimap_shown")
+		show_toast("The salvaged sonar gives you a map of the waters round you (bottom left): your home and what your missions find are marked on it.")
+	if not Fleet.has_flag(HEALTH_FLAG):
+		for building: Building in get_tree().get_nodes_in_group("buildings"):
+			if building.data.facility == &"signature" and Regions.nearest(building.global_position).id != &"home_island":
+				Fleet.mark(HEALTH_FLAG)
+				show_toast("Your research station measures how healthy each island is: the bar at the top right shows it now, and where it's heading.")
+				break
+
+
+## "Goal: <the island's next goal> / Tip: <how>", "" when there's nothing to say.
+func objective_text() -> String:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return ""
+	var region := Regions.nearest(ranger.global_position)
+	if region.goals.is_empty():
+		return ""
+	if Fleet.objective_done(region):
+		if Regions.exploration_ready(get_tree(), region):
+			return ""
+		return "Goal done! Build this island's Exploration Ship (next to 2 dock planks) and install its discovery to explore further."
+	for goal: ObjectiveGoal in region.goals:
+		if not Fleet.goal_met(goal):
+			var line := "Goal: " + Fleet.goal_line(region, goal)
+			return line + ("\nTip: " + goal.hint if goal.hint != "" else "")
+	return ""
 
 
 func _on_earned(amount: int, reason: String) -> void:

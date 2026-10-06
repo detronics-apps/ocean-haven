@@ -346,9 +346,10 @@ the Glassworks; giant clams in a Marine Water Treatment Facility make Clean Wate
 comes close; seahorses live in Seahorse & Seagrass Protection Areas once the seagrass has grown.
 The Glassworks is a capability, not an item: 3 sand once (BuildingData.makes_from / made_flag
 "glass_made"), then extra sand sells for funding. Glass + clean water made = reusable bottles
-(`Fleet.reusable_bottles()`): no new plastic bottles drift in on any island. Clean Water given to
-funding facilities (+25 % visitors), signature facilities (missions 25 % faster) and houses (well
-rested: faster until noon). Coral Restoration Laboratory with 8 missions; Reef Diving Centre;
+(`Fleet.reusable_bottles()`): no new plastic bottles drift in on any island. Clean Water fills the ranger's water
+gauge when drunk at the tent or house (`ControlledBody.water_until`: full lasts 2 days, saved):
+while there's water the ranger and boat move 30 % faster; a blue WaterGauge under the health bar
+once clean water can be made. Coral Restoration Laboratory with 8 missions; Reef Diving Centre;
 Shark Protection Zones; Hurricane; objective: 70 % → 5 dead coral rubble → Reef Limestone
 (Underwater Habitat Mapping System). The Hurricane also tears up seagrass in battered
 Protection Areas and washes parrotfish sand back into the lagoon. Every rare event shows its own
@@ -385,6 +386,15 @@ Polar Research Station with 7 missions and a "How it works" card; Polar Research
 Ice Breakup (EventData.ice_breakup: old ice broken off until the next freeze). Objective: 70 %
 -> Ice Core Drill Site on old ice for 3 days -> Ice Core. Tents, houses and recycling centres can
 go on rock.
+
+Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
+Core, the island health bar with a research station on the 2nd island: Fleet flag
+"health_gauge"); a StatusColumn top right stacks the health bar, water bar, the objective line
+(the island's next goal + ObjectiveGoal.hint) and a storm warning; every first visit says what the
+island is about; oil patches and other boat-only things explain themselves close up. An island's
+first rare event never comes within min_gap_days of first arriving there (RareEvents._first_on).
+Economy: full-grown trees give 2-3 wood, the ranger carries 6, buildings need about a third less
+wood than before, recycling pays 2 a piece.
 
 Playable islands: all six. An unfinished island would be `RegionData.in_development`: Explore
 says the fleet is ready (or what it still needs) and that the island is still under

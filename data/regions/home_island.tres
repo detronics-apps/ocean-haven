@@ -143,18 +143,21 @@ script = ExtResource("2_goal")
 kind = &"flag"
 target = &"wreck_found"
 text = "Find what's hidden off the coast (a coastal survey from your Marine Rescue & Research Station)"
+hint = "Build the Marine Rescue & Research Station (Build menu), then send its Coastal survey mission."
 
 [sub_resource type="Resource" id="Goal_cleared"]
 script = ExtResource("2_goal")
 kind = &"flag"
 target = &"wreck_cleared"
 text = "Clear the litter caught around the old wreck"
+hint = "Row out to the wreck marked on your map and pick up the litter caught around it."
 
 [sub_resource type="Resource" id="Goal_recovered"]
 script = ExtResource("2_goal")
 kind = &"flag"
 target = &"sonar_recovered"
 text = "Recover the wreck's old sonar unit"
+hint = "Sail your boat over the wreck to lift its old sonar unit."
 
 [resource]
 script = ExtResource("1_t5gy4")

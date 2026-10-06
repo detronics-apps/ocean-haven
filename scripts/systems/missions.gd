@@ -72,18 +72,10 @@ func send(mission: MissionData, region: RegionData) -> bool:
 	active = mission
 	_region = region
 	# After heavy swell the water is murky: missions there take longer.
-	_back_at = GameClock.now() + mission.minutes * 60.0 / GameClock.DAY_LENGTH * RareEvents.mission_slowdown(region.id) * _water_speedup(mission) \
+	_back_at = GameClock.now() + mission.minutes * 60.0 / GameClock.DAY_LENGTH * RareEvents.mission_slowdown(region.id) \
 		* (1.0 - mission.faster_share if mission.faster_with != &"" and Fleet.is_installed(mission.faster_with) else 1.0)
 	sent.emit(mission)
 	return true
-
-
-## A signature facility with clean water this morning sends its missions out faster.
-func _water_speedup(mission: MissionData) -> float:
-	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == mission.facility and building.watered:
-			return 1.0 / Building.WATER_BONUS
-	return 1.0
 
 
 ## Whether a lasting effect ("boat_patrol", "dolphin_tracking") is going on now.

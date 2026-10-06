@@ -20,6 +20,17 @@ var _drift_check := randf()
 
 func _enter_tree() -> void:
 	add_to_group("debris")
+	if item and item.ranger_cleans:
+		add_to_group("interactables")  # oil and things only a boat can take: they explain themselves
+
+
+## Close by, things only the ranger's boat can clean up or take (oil, a lost module) say so.
+func actions() -> Array:
+	var ranger := ControlledBody.active(get_tree())
+	if not item.ranger_cleans or not ranger or ranger.global_position.distance_to(global_position) > 90.0:
+		return []
+	return [{"label": "%s: sail your boat into it" % item.display_name, "do": get_tree().call_group.bind("hud", "show_toast",
+		"%s: only your boat can take it. Sail into it.\n%s" % [item.display_name, item.fact])}]
 
 
 func _ready() -> void:

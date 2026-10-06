@@ -33,9 +33,9 @@ func _initialize() -> void:
 	# --- Warned days ahead: secure what you can ---
 	clock.day = 40
 	events.warn(storm, 3)
-	_expect(events.is_coming() and world.get_node("HUD/EventNote").text == "", "warned (the HUD note shows next frame)")
+	_expect(events.is_coming() and world.get_node("HUD/StatusColumn/EventNote").text == "", "warned (the HUD note shows next frame)")
 	await process_frame
-	_expect((world.get_node("HUD/EventNote") as Label).text.contains("Storm in 3 days on the Starting Island"), "the HUD says a storm is coming, when, and where")
+	_expect((world.get_node("HUD/StatusColumn/EventNote") as Label).text.contains("Storm in 3 days on the Starting Island"), "the HUD says a storm is coming, when, and where")
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(0, 50)
 	var secure: Array = area.actions().filter(func(a: Dictionary) -> bool: return a.label == "Secure for the storm")

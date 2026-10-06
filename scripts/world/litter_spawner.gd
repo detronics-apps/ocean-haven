@@ -185,6 +185,9 @@ func spawn_one() -> Debris:
 	if spot == null:
 		return null
 	var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
+	if oil and not Fleet.has_flag(&"oil_seen"):
+		Fleet.mark(&"oil_seen")
+		get_tree().call_group("hud", "show_toast", "Oil from passing ships has started drifting in: dark patches on the water. Sail your boat through them to clean them up (your Deep-Ocean Outpost's equipment makes that possible).")
 	return spawn_at(OIL if oil else item, spot, at_sea)
 
 

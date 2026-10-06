@@ -56,13 +56,6 @@ var _deck_tiles: Dictionary = {}
 ## Production: made and waiting to be taken, put in and still being made, and when the one
 ## being made is ready (GameClock.now()).
 var stock := 0
-## Clean Water given to it (houses, visitor and research facilities): a funding facility uses
-## 1 a morning for +25 % visitors, a signature facility for missions 25 % faster, and a house
-## 1 a night for a well-rested morning (the ranger moves faster until noon).
-var water := 0
-var watered := false
-const WATER_MAX := 5
-const WATER_BONUS := 1.25
 var loaded := 0
 var batch_done_at := -1.0
 
@@ -90,8 +83,6 @@ func _ready() -> void:
 		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
 	if data.spawns:
 		add_child(data.spawns.instantiate())
-	if data.facility != &"":
-		GameClock.new_day.connect(func(_d: int) -> void: _use_water_morning())
 	if data.makes and data.makes_per_morning > 0:
 		GameClock.new_day.connect(func(_d: int) -> void: _make_morning())
 	_coin.visible = false
@@ -165,9 +156,8 @@ func actions() -> Array:
 		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": sleep})
-	if takes_water() and water < WATER_MAX and Inventory.count(&"clean_water") > 0:
-		var give := mini(Inventory.count(&"clean_water"), WATER_MAX - water)
-		list.append({"label": "Give %d clean water (%s)" % [give, _water_use()], "do": give_water})
+	if data.action == &"sleep" and Inventory.count(&"clean_water") > 0 and ControlledBody.water_level(get_tree()) < 0.95:
+		list.append({"label": "Drink clean water (fill up your water)", "do": drink_water})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
@@ -267,37 +257,17 @@ func _make_morning() -> void:
 	_produce(workers * data.makes_per_morning)
 
 
-## Houses, visitor and research facilities can use Clean Water.
-func takes_water() -> bool:
-	return data.facility != &"" or data.action == &"sleep"
-
-
-func _water_use() -> String:
-	if data.action == &"sleep":
-		return "a well-rested morning"
-	return "faster missions" if data.facility == &"signature" else "more visitors"
-
-
-func give_water() -> void:
-	var give := mini(Inventory.count(&"clean_water"), WATER_MAX - water)
-	if give <= 0 or not Inventory.take_item(&"clean_water", give):
+## At the tent or house: drinks a clean water, so the ranger's water is full (they move faster
+## on foot and by boat until it runs out).
+func drink_water() -> void:
+	if not Inventory.take_item(&"clean_water", 1):
 		return
-	water += give
-	get_tree().call_group("hud", "show_toast", "Your %s has %d clean water. It uses 1 %s for %s." % [
-		data.display_name, water, "a night" if data.action == &"sleep" else "a morning", _water_use()])
+	ControlledBody.fill_water(get_tree())
+	get_tree().call_group("hud", "show_toast", "Water full! While you have water you move faster, on foot and by boat. It runs out over %d days: drink more clean water at your tent or house." % roundi(ControlledBody.WATER_DAYS))
 
 
-func _use_water_morning() -> void:
-	watered = water > 0 and not damaged
-	if watered:
-		water -= 1
-
-
-## Sleeps until morning; with clean water in the house, the ranger wakes well rested.
+## Sleeps until morning.
 func sleep() -> void:
-	if water > 0:
-		water -= 1
-		ControlledBody.rested_until = floorf(GameClock.now()) + 1.5  # noon tomorrow
 	get_tree().call_group("hud", "sleep_through_night")
 
 
@@ -423,7 +393,7 @@ func visitors_today() -> int:
 		return 0  # closed until it's repaired
 	var base := data.visitors + data.visitors_per_animal * (animals_here() + animals_in_view())
 	var health := maxf(IslandHealth.of(get_tree(), Regions.nearest(global_position)), 0.0)
-	return roundi(base * (1.0 + health * data.health_bonus) * (WATER_BONUS if watered else 1.0))
+	return roundi(base * (1.0 + health * data.health_bonus))
 
 
 ## How many more animals can join this area.
@@ -525,8 +495,6 @@ func stats() -> String:
 	var numbers := _numbers()
 	if numbers:
 		lines.append(numbers)
-	if water > 0:
-		lines.append("Clean water: %d" % water)
 	if secured and RareEvents.is_coming_to(Regions.nearest(global_position).id):
 		lines.append("Secured")
 	return "\n".join(lines)

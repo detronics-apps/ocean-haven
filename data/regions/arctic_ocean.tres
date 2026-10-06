@@ -63,12 +63,14 @@ script = ExtResource("4_goal")
 kind = &"flag"
 target = &"polar_balanced"
 text = "Help the Polar Ocean through the seasons (island health 70 %)"
+hint = "Build Seal Pupping Zones on the old ice (the ice that's there even in open water), a Quiet Den Area on rock, and keep boats out of the channels while it freezes."
 
 [sub_resource type="Resource" id="Goal_core"]
 script = ExtResource("4_goal")
 kind = &"flag"
 target = &"ice_core_drilled"
 text = "Drill an ice core: build the Ice Core Drill Site on old ice and keep it there for 3 days"
+hint = "A Drill planning mission from the Polar Research Station shows the best old ice."
 
 [resource]
 script = ExtResource("1_2asjv")

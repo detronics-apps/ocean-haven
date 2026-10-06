@@ -56,6 +56,7 @@ script = ExtResource("4_goal")
 kind = &"flag"
 target = &"kelp_balanced"
 text = "Bring the food web back into balance (island health 70 %)"
+hint = "Urchins are eating the kelp. Build 2-4 Otter Habitats: otters eat urchins and the kelp grows back. The Kelp Research Platform's surveys show what's out of balance."
 
 [sub_resource type="Resource" id="Goal_gather"]
 script = ExtResource("4_goal")
@@ -63,6 +64,7 @@ kind = &"count"
 target = &"shed_kelp"
 amount = 5
 text = "Gather shed kelp: each morning up to 2 pieces float up by the healthiest kelp beds (pick them up, then sleep for the next)"
+hint = "Shed kelp floats up by the healthiest kelp beds each morning."
 
 [resource]
 script = ExtResource("1_4kmir")

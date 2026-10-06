@@ -12,3 +12,5 @@ extends Resource
 @export var amount := 1
 ## What to do, for the Journal and the Build menu ("Free the tangled turtle").
 @export var text: String
+## A pointer for the HUD's objective line: how to go about it ("Build the ... then send a ...").
+@export var hint: String

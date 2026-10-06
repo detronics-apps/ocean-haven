@@ -4,15 +4,26 @@ extends CharacterBody2D
 ## (keyboard / controller) or tap/click a spot to head there.
 
 @export var speed: float = 110.0
-## Slept in a house with clean water: faster until then (GameClock.now()).
-static var rested_until := -1.0
-const WELL_RESTED := 1.25
+## The ranger's water: clean water drunk at their tent or house fills it up, and it runs out
+## over WATER_DAYS (GameClock.now() when it's empty). While there's water in it, the ranger
+## moves faster, on foot and in the boat.
+static var water_until := -1.0
+const WATER_DAYS := 2.0
+const WATER_SPEED := 1.3
 
 
-## (The clock is looked up at runtime: tests compile this without autoloads.)
-func _rested() -> bool:
-	var clock := get_tree().root.get_node_or_null("GameClock")
-	return clock != null and clock.now() < rested_until
+## How full the ranger's water is, 0..1. (The clock is looked up at runtime: tests compile
+## this without autoloads.)
+static func water_level(tree: SceneTree) -> float:
+	var clock := tree.root.get_node_or_null("GameClock")
+	return clampf((water_until - clock.now()) / WATER_DAYS, 0.0, 1.0) if clock else 0.0
+
+
+## Drinks clean water: the ranger's water is full again.
+static func fill_water(tree: SceneTree) -> void:
+	var clock := tree.root.get_node_or_null("GameClock")
+	if clock:
+		water_until = clock.now() + WATER_DAYS
 ## Only the body the player is currently steering responds to input.
 @export var controlled := true
 
@@ -54,7 +65,7 @@ func _physics_process(_delta: float) -> void:
 		else:
 			dir = to_target.normalized()
 
-	velocity = dir * speed * (WELL_RESTED if _rested() else 1.0)
+	velocity = dir * speed * (WATER_SPEED if water_level(get_tree()) > 0.0 else 1.0)
 	move_and_slide()
 
 	# Tapped somewhere unreachable: stop instead of pushing against the shore forever.

@@ -54,6 +54,7 @@ script = ExtResource("4_goal")
 kind = &"flag"
 target = &"reef_restored"
 text = "Bring the reef back to life (island health 70 %)"
+hint = "Build a Coral Restoration Site to grow coral fragments, then plant them on the reef patches from your boat. Keep the lagoon clean, and give parrotfish and clams a home."
 
 [sub_resource type="Resource" id="Goal_rubble"]
 script = ExtResource("4_goal")
@@ -61,6 +62,7 @@ kind = &"count"
 target = &"reef_limestone"
 amount = 5
 text = "Collect dead coral rubble: each morning up to 2 pieces lie on the sea floor by the reef (pick them up by boat, then sleep for the next)"
+hint = "Rubble lies by the reef each morning: pick it up from your boat."
 
 [resource]
 script = ExtResource("1_opv3m")

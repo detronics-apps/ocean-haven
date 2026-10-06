@@ -128,23 +128,25 @@ func _initialize() -> void:
 	_expect(facility.stock == 2 and fleet.has_flag(&"clean_water_made"), "each clam filters 1 clean water a morning")
 	_expect(fleet.reusable_bottles(), "glass + clean water: reusable bottles everywhere")
 
-	# --- Clean Water has its own uses: visitors, missions, a well-rested morning ---
+	# --- Clean Water fills the ranger's water at their tent or house: faster while it lasts ---
 	player.global_position = facility.global_position + Vector2(30, 0)
 	facility.take_stock()
 	_expect(inventory.count(&"clean_water") == 2, "the ranger takes the clean water")
-	var lodge: Node = _place_on_land(build_mode, load("res://data/buildings/reef_diving_centre.tres"), reef)
-	player.global_position = lodge.global_position + Vector2(0, 40)
-	var plain: int = lodge.visitors_today()
-	labels = lodge.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Give 2 clean water (more visitors)" in labels, "visitor facilities take clean water (%s)" % [labels])
-	lodge.give_water()
-	lodge.call("_use_water_morning")
-	_expect(lodge.watered and lodge.water == 1 and lodge.visitors_today() > plain, "a morning with water: more visitors (%d -> %d)" % [plain, lodge.visitors_today()])
 	inventory.add(load("res://data/items/plastic_bottle.tres"), 10)  # a house is built with litter
 	var house: Node = _place_on_land(build_mode, load("res://data/buildings/house.tres"), reef)
-	house.water = 1
-	house.sleep()
-	_expect(house.water == 0 and load("res://scripts/player/controlled_body.gd").rested_until > clock.now(), "sleeping in a house with water: well rested")
+	player.global_position = house.global_position + Vector2(0, 40)
+	var body: GDScript = load("res://scripts/player/controlled_body.gd")
+	body.water_until = -1.0
+	labels = house.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect("Drink clean water (fill up your water)" in labels, "at the house the ranger can drink clean water (%s)" % [labels])
+	house.drink_water()
+	_expect(inventory.count(&"clean_water") == 1 and body.water_level(self) > 0.99, "drinking fills the ranger's water")
+	clock.advance(clock.DAY_LENGTH * body.WATER_DAYS * 0.5)
+	_expect(absf(body.water_level(self) - 0.5) < 0.05, "it runs out slowly (half after %d day)" % roundi(body.WATER_DAYS * 0.5))
+	var lodge: Node = _place_on_land(build_mode, load("res://data/buildings/reef_diving_centre.tres"), reef)
+	player.global_position = lodge.global_position + Vector2(0, 40)
+	labels = lodge.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(not labels.any(func(l: String) -> bool: return l.contains("clean water")), "other buildings don't take water any more")
 
 	# --- A shark circles lost gear; going there finds it ---
 	shark.restore_freed()
