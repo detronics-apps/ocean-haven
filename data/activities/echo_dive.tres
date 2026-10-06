@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ActivityData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/activity_data.gd" id="1_a"]
+[ext_resource type="Resource" path="res://data/missions/cargo_search.tres" id="2_m"]
+
+[resource]
+script = ExtResource("1_a")
+id = &"echo_dive"
+display_name = "Echo Dive"
+verb = "Echo Dive"
+building = &"deep_ocean_outpost"
+person = &"imani"
+unlock_any = PackedStringArray("asked:cargo", "flag:cargo_located")
+story_intro = "Imani: \"Take the controls! Down there it's pitch dark, so we steer by sound: every ping lights up the canyon for a moment. Pick up the old gear on the way, and follow the echoes to the cargo module.\""
+story_done = "Imani: \"There it is, the lost cargo module! I've floated it up on lifting bags. Sail out and tow it in.\""
+practice_intro = "Fly the submarine through the dark canyon for fun: each level is narrower and faster. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(3, 0, 1), Vector3i(5, 0, 2), Vector3i(7, 0, 3), Vector3i(9, 0, 4), Vector3i(11, 0, 5)])
+reward_mission = ExtResource("2_m")
+region = &"deep_sea"

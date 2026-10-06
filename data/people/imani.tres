@@ -55,10 +55,10 @@ text = "Find the lost cargo module"
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"cargo"
-lines = PackedStringArray("Something big shows up on the old shipping records: a cargo module lost down here years ago.", "Could we find it? A Cargo search from the outpost might.")
+lines = PackedStringArray("Something big shows up on the old shipping records: a cargo module lost down here years ago.", "Could we find it? Take the submarine down with me: an Echo Dive from the outpost. A Cargo search mission might find it too.")
 objective = SubResource("Goal_4")
 thanks = PackedStringArray("There it is! Now we need to bring it up.")
-reminder = PackedStringArray("Send a Cargo search from the Deep-Ocean Outpost.")
+reminder = PackedStringArray("Try an Echo Dive at the outpost, or send a Cargo search from it.")
 
 [sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")
