@@ -1,0 +1,110 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/field_camp.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello_far"
+when = PackedStringArray("first", "flag:mangrove_flowing")
+lines = PackedStringArray("{name}! You're the one who got the water flowing again. I'm Rosa. I fish these waters.", "My nets aren't empty any more.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Hello, {name}. I'm Rosa. I fish here, like my mother did.", "My nets come up nearly empty these days.")
+
+[sub_resource type="Resource" id="Goal_2"]
+script = ExtResource("3_g")
+kind = &"built"
+target = &"waterworks_station"
+island = &"mangrove_coast"
+text = "Build the Mangrove Waterworks Station"
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"station"
+lines = PackedStringArray("The young fish used to grow up in the pools back in the mangroves. Why do you think they've gone?", "> The pools are cut off? | The water's bad?", "Maybe both. A waterworks station could show us where the water goes, and where it doesn't.")
+objective = SubResource("Goal_2")
+thanks = PackedStringArray("Now we can see the water! Some of those pools haven't had fresh sea water in years.")
+reminder = PackedStringArray("The Waterworks Station is in your Build menu. Then we'll see where the water flows.")
+
+[sub_resource type="Resource" id="Goal_3"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"mangrove_flowing"
+text = "Get the water flowing: link 4 nursery pools to the sea (island health 70 %)"
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"flowing"
+lines = PackedStringArray("The pools are full of silt, cut off from the sea. How do you think the little fish get in and out?", "> They can't! | Through channels?", "Then let's give them a way. Samuel the boat builder knows these channels better than anyone.")
+objective = SubResource("Goal_3")
+thanks = PackedStringArray("Look! Tiny snappers in the channels. When these pools fill with young fish, my nets aren't empty any more.")
+reminder = PackedStringArray("How are the channels coming along? The station's water survey shows which pools are cut off.")
+
+[sub_resource type="Resource" id="Goal_4"]
+script = ExtResource("3_g")
+kind = &"count"
+target = &"mangrove_resin"
+amount = 5
+text = "Gather 5 pieces of mangrove resin"
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"resin"
+lines = PackedStringArray("Full-grown mangroves drop old branches, sticky with resin. My mother sealed her boat with it.", "Could you gather five? It could protect your ships' instruments too.")
+objective = SubResource("Goal_4")
+thanks = PackedStringArray("Five! That's enough to seal a whole set of instruments against the salt.")
+reminder = PackedStringArray("Fallen branches lie by full-grown mangroves each morning.")
+
+[sub_resource type="Resource" id="Goal_5"]
+script = ExtResource("3_g")
+kind = &"installed"
+target = &"mangrove_resin"
+text = "Build this island's Exploration Ship and fit the Mangrove Resin"
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"ship"
+lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Mangrove Resin to it. Then we'd find out.")
+objective = SubResource("Goal_5")
+thanks = PackedStringArray("Fair winds, {name}. There are more fish here than when I was young.")
+reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Mangrove Resin at the ship (Explore).")
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"full_nets"
+when = PackedStringArray("animals:juvenile_snapper>=10")
+lines = PackedStringArray("My nets are full again. There are more fish than when I was young.")
+
+[sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("Something happening to the fish? You come and tell me.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"rosa"
+display_name = "Rosa Mendes"
+short_name = "Rosa"
+job = "Fisher"
+region = &"mangrove_coast"
+role = &"objective"
+spot = Vector2(9776, 120)
+where = "by her boat on the shore"
+moves_to = &"waterworks_station"
+moved_where = "by the waterworks station"
+place_offset = Vector2(-54, 6)
+skin = Color(0.6, 0.4, 0.26, 1)
+hair = 2
+hair_colour = Color(0.12, 0.08, 0.06, 1)
+shirt = Color(0.9, 0.62, 0.2, 1)
+trousers = Color(0.2, 0.3, 0.45, 1)
+hat = 2
+hat_colour = Color(0.9, 0.85, 0.7, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])

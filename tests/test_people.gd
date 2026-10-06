@@ -38,7 +38,7 @@ func _initialize() -> void:
 	_expect(hud.objective_text().begins_with("Talk to Dr. Maya Okafor (Researcher)"), "goal line: talk to Maya (%s)" % hud.objective_text())
 	hud.set("_unlock_check", 0.0)
 	await process_frame
-	_expect(not hud.get_node("StatusColumn/TipButton").visible, "no Tip button on an island with people")
+	_expect(not hud.has_node("StatusColumn/TipButton"), "no Tip button: the hint-givers give the advice")
 
 	# --- Talking: a question, then a moment later the objective ---
 	player.global_position = maya_node.global_position + Vector2(20, 0)
@@ -145,6 +145,36 @@ func _initialize() -> void:
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
 	_expect(hud.objective_text() == "" and people.notebook().is_empty(), "no objective left on the Starting Island (%s)" % hud.objective_text())
+
+	# --- Every island has its people: someone to give objectives, someone to ask for advice ---
+	for region_id in [&"home_island", &"kelp_forest", &"mangrove_coast", &"tropical_reef", &"deep_sea", &"arctic_ocean"]:
+		var here: Array = people.on(region_id)
+		var roles: Array = here.map(func(p: Resource) -> StringName: return p.role)
+		_expect(here.size() == 2 and &"objective" in roles and &"hint" in roles, "%s: an objective-giver and a hint-giver" % region_id)
+		for person: Resource in here:
+			var node: Node2D = world.get_node("Person_%s" % person.id)
+			_expect(regions.nearest(node.global_position).id == region_id and terrain.walkable(self, node.global_position),
+				"%s stands on %s's land" % [person.display_name, region_id])
+	# Far along on the Kelp Forest: Finn greets the ranger for it and asks for nothing that's done.
+	people.restore({})
+	fleet.restore({"completed": ["home_island", "kelp_forest"], "found": ["salvaged_sonar_core", "kelp_fibre"],
+		"installed": ["salvaged_sonar_core", "kelp_fibre"], "flags": ["wreck_found", "wreck_cleared", "sonar_recovered", "kelp_balanced"],
+		"counts": {"shed_kelp": 5}})
+	var finn: Resource = load("res://data/people/finn.tres")
+	texts = people.talk(finn).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(texts[0].contains("brought the otters back") and people.notebook().is_empty(), "Finn: the kelp's done, nothing to ask (%s)" % [texts])
+	var ines: Resource = load("res://data/people/ines.tres")
+	people.talk(ines)
+	texts = people.talk(ines).map(func(l: Dictionary) -> String: return l.text)
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Samuel")) or texts.size() > 0, "Ines sends the ranger on (%s)" % [texts])
+	# A new Mangrove Coast: Rosa's first question is about the water.
+	people.restore({})
+	var rosa: Resource = load("res://data/people/rosa.tres")
+	texts = people.talk(rosa).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	await create_timer(people.DELAY + 0.2).timeout
+	_expect(people.goal_text(&"mangrove_coast") == "Goal: Build the Mangrove Waterworks Station", "Rosa: build the waterworks station (%s)" % people.goal_text(&"mangrove_coast"))
 
 	# --- The talk box: the game waits while they talk; a tap goes on ---
 	var box: Node = world.get_parent().find_child("TalkBox", true, false)

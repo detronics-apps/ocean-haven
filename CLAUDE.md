@@ -400,8 +400,7 @@ skipped and old saves meet everyone where they are; only met / asked / thanked /
 Person nodes (spawned by the world, group "people") block building on them and their place;
 TalkBox shows the talk (tap through; the game waits). Tom's tracks story (`marks`
 "tracks_noticed") makes turtle tracks show from nests to the sea. On islands with people the goal
-line is `People.goal_text` and there's no Tip button (other islands keep the old line + Tip
-until their people come, phase 5).
+line is `People.goal_text`.
 Then: the ranger has a name (avatar creator; RangerProfile.ranger_name, saved) that people use
 ("{name}" in lines); the ranger's replies are 2 options to pick ("> A | B"); a question can be
 `stuck` (e.g. Build menu opened, nothing built: Maya sends the ranger to Tom, who says to cut
@@ -427,6 +426,13 @@ a young green turtle once the rescue station is built). The ranger names it at t
 over 30 days, also while the ranger is away; never gets worse. Released, it lives on its
 island with its name (world node "Rescued_<id>", respawned on load) and is listed in the
 Journal's This island tab.
+Phase 5: people on every island (data/people/, 12 in all), each island an objective-giver whose
+questions are its existing objectives, ending with "build the Exploration Ship and fit the
+discovery" (Finn, Diver; Rosa, Fisher; Kai, Engineer; Dr. Imani Osei, Pilot; Dr. Sanna Lind,
+Expedition leader) and a hint-giver (Ines, Harbour cook; Samuel, Boat builder; Leilani, Dive
+guide; Bram, Retired captain; Erik, Weather watcher) whose hints send the ranger on round the
+chain Tom → Ines → Samuel → Leilani → Bram → Erik → Tom. The Tip button and the old flagship
+goal line are gone: the goal line is always People.goal_text.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

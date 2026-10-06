@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/hut.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Aloha, {name}! I'm Leilani. I take people diving here.", "I know where every current goes, and where it dumps its rubbish.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"caught"
+when = PackedStringArray("tangled>=1")
+lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"shark"
+when = PackedStringArray("animals:reef_shark>=1")
+lines = PackedStringArray("The shark isn't the trouble. Follow it: it's circling something caught down there.")
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"coral"
+when = PackedStringArray("!flag:reef_restored")
+lines = PackedStringArray("Parrotfish graze the algae off the reef so young coral can grow. And giant clams clean the water.", "Grow coral fragments, plant them on the reef from your boat, and give the reef animals a home.")
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"litter"
+when = PackedStringArray("litter>12")
+lines = PackedStringArray("The lagoon keeps catching litter. Clear water lets the coral grow faster.")
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"on"
+when = PackedStringArray("installed:reef_limestone")
+lines = PackedStringArray("If you ever go to the Deep Sea, look for Bram. He's an old captain with a lot of stories.")
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("Every dive here is different. That's what I love about it.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"leilani"
+display_name = "Leilani Kahale"
+short_name = "Leilani"
+job = "Dive guide"
+region = &"tropical_reef"
+role = &"hint"
+spot = Vector2(19952, 152)
+where = "at the dive shack"
+place_offset = Vector2(-40, 8)
+skin = Color(0.72, 0.5, 0.35, 1)
+hair = 1
+hair_colour = Color(0.15, 0.1, 0.08, 1)
+shirt = Color(0.2, 0.65, 0.7, 1)
+trousers = Color(0.95, 0.9, 0.8, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])

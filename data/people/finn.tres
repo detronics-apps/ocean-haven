@@ -1,0 +1,108 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/field_camp.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello_far"
+when = PackedStringArray("first", "flag:kelp_balanced")
+lines = PackedStringArray("You're {name}? The one who brought the otters back? I'm Finn. I dive these waters.", "I used to dive for urchins to sell. I thought I was only taking urchins. Now I know what I'm part of.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Hi! You must be {name}. I'm Finn: I dive these waters.", "When I was a boy the kelp was so thick the sunlight came through green. Now it's mostly bare rock and urchins.")
+
+[sub_resource type="Resource" id="Goal_2"]
+script = ExtResource("3_g")
+kind = &"built"
+target = &"kelp_research_platform"
+island = &"kelp_forest"
+text = "Build the Kelp Research Platform"
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"platform"
+lines = PackedStringArray("What do you think happened to the kelp?", "> Something ate it? | A storm?", "That's what I want to find out. A research platform out on the water would let us dive and study it. It's in your Build menu.")
+objective = SubResource("Goal_2")
+thanks = PackedStringArray("A platform! Now we can see what's really going on down there.")
+reminder = PackedStringArray("The Kelp Research Platform is in your Build menu. From there we can survey the whole forest.")
+
+[sub_resource type="Resource" id="Goal_3"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"kelp_balanced"
+text = "Bring the food web back into balance (island health 70 %)"
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"balance"
+lines = PackedStringArray("I used to dive for urchins to sell. I thought I was only taking urchins.", "Look at them now: they've eaten the kelp down to the rock. What do you think used to keep them in check?", "> Something that eats them? | I'm not sure.", "The platform's surveys will show what's out of balance. Ines at the harbour might remember too.")
+objective = SubResource("Goal_3")
+thanks = PackedStringArray("Look at that patch! The kelp is growing back. I didn't understand what else depended on it.")
+reminder = PackedStringArray("How's the forest doing? The platform's surveys show what's out of balance.")
+
+[sub_resource type="Resource" id="Goal_4"]
+script = ExtResource("3_g")
+kind = &"count"
+target = &"shed_kelp"
+amount = 5
+text = "Gather 5 pieces of shed kelp"
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"shed"
+lines = PackedStringArray("Healthy kelp sheds old fronds. They float up by the best beds every morning.", "Could you gather five? I've got an idea for them.")
+objective = SubResource("Goal_4")
+thanks = PackedStringArray("Five! Kelp fibre is tough stuff: strong enough to help your ships work under water.")
+reminder = PackedStringArray("Shed kelp floats up by the healthiest beds each morning: pick it up, then sleep for more.")
+
+[sub_resource type="Resource" id="Goal_5"]
+script = ExtResource("3_g")
+kind = &"installed"
+target = &"kelp_fibre"
+text = "Build this island's Exploration Ship and fit the Kelp Fibre"
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"ship"
+lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Kelp Fibre to it. Then we'd find out.")
+objective = SubResource("Goal_5")
+thanks = PackedStringArray("Off you go, {name}. And the fish are back: I saw them myself.")
+reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Kelp Fibre at the ship (Explore).")
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"fish_back"
+when = PackedStringArray("animals:blue_rockfish>=8")
+lines = PackedStringArray("The fish are back. I swam right through a school of rockfish this morning.")
+
+[sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("Something underwater not right? Come and tell me. I'll go and look.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"finn"
+display_name = "Finn Larsen"
+short_name = "Finn"
+job = "Diver"
+region = &"kelp_forest"
+role = &"objective"
+spot = Vector2(4592, -72)
+where = "on the beach by his dive gear"
+moves_to = &"kelp_research_platform"
+moved_where = "by the research platform"
+place_offset = Vector2(-54, 6)
+skin = Color(0.93, 0.76, 0.62, 1)
+hair = 1
+hair_colour = Color(0.85, 0.72, 0.42, 1)
+shirt = Color(0.2, 0.28, 0.35, 1)
+trousers = Color(0.15, 0.17, 0.2, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])

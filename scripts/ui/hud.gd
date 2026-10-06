@@ -149,15 +149,6 @@ func _ready() -> void:
 	_objective.add_theme_color_override("font_outline_color", Color.BLACK)
 	_objective.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(_objective)
-	# One tip at a time, only when the player asks for it.
-	var tip := Button.new()
-	tip.name = "TipButton"
-	tip.text = "Tip"
-	tip.custom_minimum_size = Vector2(72, 40)
-	tip.size_flags_horizontal = Control.SIZE_SHRINK_END
-	tip.focus_mode = Control.FOCUS_NONE
-	tip.pressed.connect(func() -> void: show_toast("Tip: " + tip_text(), true))
-	column.add_child(tip)
 	column.add_child(_event_note)
 	for build_mode: BuildMode in get_tree().get_nodes_in_group("build_mode"):
 		build_mode.built.connect(_on_built)
@@ -377,10 +368,6 @@ func _process(delta: float) -> void:
 		_check_unlocks()
 		_objective.text = objective_text()
 		_objective.visible = _objective.text != ""
-		# Islands with people: they give the objectives, and their hint-giver replaces the tip.
-		var region := _ranger_region()
-		($StatusColumn/TipButton as Control).visible = _objective.visible \
-			and not (region and People.has_people(region.id))
 	_info.text = nearest_animal_info()
 	_info.visible = _info.text != ""
 	_clock.text = "%s · %s    Funding: %d" % [GameClock.calendar(), GameClock.period(), Funding.balance]
@@ -406,78 +393,11 @@ func _check_unlocks() -> void:
 				break
 
 
-## The island's goal: bring its headline animal back ("Goal: Bring the sea turtles back:
-## 3 / 10"), and then explore to find more islands. "" when there's nothing to say.
-## On an island with people, objectives only come from them (People.goal_text).
+## The goal line: objectives only come from the island's people (People.goal_text); their
+## hint-givers give the advice.
 func objective_text() -> String:
-	var region := _ranger_region()
-	if not region:
-		return ""
-	if People.has_people(region.id):
-		return People.goal_text(region.id)
-	var lines: Array[String] = []
-	var factor := _flagship_factor(region)
-	if factor and IslandHealth.count(get_tree(), region, factor) < factor.amount:
-		lines.append("Goal: %s: %d / %d" % [region.flagship_goal, IslandHealth.count(get_tree(), region, factor), factor.amount])
-	if _undiscovered() > 0:
-		lines.append(("then " if not lines.is_empty() else "Goal: ") + "explore to find a new island")
-	if lines.is_empty():
-		return "Goal: keep %s thriving" % region.display_name
-	return "\n".join(lines)
-
-
-## One tip, for where the player is in the game on this island (asked for with the Tip button):
-## the objective's next step first (it opens up exploring), then the Exploration Ship, its
-## discovery, exploring, and how to bring the island's animal back.
-func tip_text() -> String:
-	var region := _ranger_region()
-	if not region:
-		return "Sail to one of your islands."
-	if not region.goals.is_empty() and not Fleet.objective_done(region):
-		for goal: ObjectiveGoal in region.goals:
-			if not Fleet.goal_met(goal):
-				return "Next step towards exploring: " + (goal.hint if goal.hint != "" else Fleet.goal_line(region, goal))
-	if Fleet.objective_done(region) and not Regions.exploration_ready(get_tree(), region):
-		return "Build this island's Exploration Ship (Build menu, next to 2 dock planks)."
-	if not Fleet.ready_to_install().is_empty():
-		return "Install the %s at an Exploration Ship (Explore): it upgrades your whole fleet." % Fleet.ready_to_install().front().display_name
-	if Regions.exploration_ready(get_tree(), region) and Regions.can_find_more() and _next_here(region):
-		return "Use Explore at this island's Exploration Ship to find the next island, %s." % ("warmer" if _next_here(region).direction == Regions.WARMER else "colder")
-	var factor := _flagship_factor(region)
-	if factor and IslandHealth.count(get_tree(), region, factor) < factor.amount and region.flagship_tip != "":
-		return region.flagship_tip
-	if _undiscovered() > 0 and not Regions.can_find_more():
-		return "Help the islands you've found: each one's discovery, installed, lets the fleet find one more island."
-	if _undiscovered() > 0:
-		return "Sail (Map) to an island at the edge of what you've found, and explore on from its Exploration Ship."
-	return "%s is doing well. Visit your other islands (Map) and see how they're doing." % region.display_name
-
-
-func _ranger_region() -> RegionData:
 	var ranger := ControlledBody.active(get_tree())
-	return Regions.nearest(ranger.global_position) if ranger else null
-
-
-## The "animals" health factor for the island's headline animal (null = none).
-func _flagship_factor(region: RegionData) -> HealthFactor:
-	for factor: HealthFactor in region.health:
-		if factor.kind == &"animals" and factor.target == region.flagship and region.flagship != &"":
-			return factor
-	return null
-
-
-## Playable islands not found yet.
-func _undiscovered() -> int:
-	return Regions.all().filter(func(r: RegionData) -> bool: return not Regions.is_discovered(r) and not r.in_development).size()
-
-
-## The undiscovered island next to `region` (warmer or colder), or null.
-func _next_here(region: RegionData) -> RegionData:
-	for direction: StringName in [Regions.WARMER, Regions.COLDER]:
-		var next := Regions.next_from(region, direction)
-		if next and not Regions.is_discovered(next) and not next.in_development:
-			return next
-	return null
+	return People.goal_text(Regions.nearest(ranger.global_position).id) if ranger else ""
 
 
 ## A new season: what it means for the island's animals (data: SEASON_NOTES).

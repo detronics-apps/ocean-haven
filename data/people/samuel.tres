@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/hut.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Welcome, {name}. I'm Samuel. I've built boats from these channels all my life.", "Water is like a road here. When the road is blocked, nothing gets through: not boats, not fish.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"caught"
+when = PackedStringArray("tangled>=1")
+lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"silt"
+when = PackedStringArray("!flag:mangrove_flowing")
+lines = PackedStringArray("Water that stands still drops its mud. Keep it moving.", "Dig a channel with your shovel from the sea to a pool, and see how the water rushes in.")
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"trees"
+when = PackedStringArray("built:waterworks_station")
+lines = PackedStringArray("Mangrove roots hold the mud in place. Plant a propagule beside a channel and it slows the silting.")
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"litter"
+when = PackedStringArray("litter>12")
+lines = PackedStringArray("The roots catch everything the tide brings in, rubbish too. Clear it and the water runs cleaner.")
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"on"
+when = PackedStringArray("installed:mangrove_resin")
+lines = PackedStringArray("At the Tropical Reef, find Leilani, the dive guide. She knows where every current goes.")
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("A boat is only as good as the water under it.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"samuel"
+display_name = "Samuel Achebe"
+short_name = "Samuel"
+job = "Boat builder"
+region = &"mangrove_coast"
+role = &"hint"
+spot = Vector2(9712, 152)
+where = "at his boat shed"
+place_offset = Vector2(-40, 8)
+skin = Color(0.36, 0.22, 0.13, 1)
+hair = 0
+hair_colour = Color(0.7, 0.7, 0.7, 1)
+shirt = Color(0.45, 0.55, 0.35, 1)
+trousers = Color(0.35, 0.28, 0.2, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])

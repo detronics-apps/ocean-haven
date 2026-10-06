@@ -1,0 +1,115 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/field_camp.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello_far"
+when = PackedStringArray("first", "flag:deep_mapped")
+lines = PackedStringArray("You're {name}! You've mapped more of the deep than anyone. I'm Imani, the submarine pilot.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Hello, {name}. I'm Imani: I pilot the research submarine.", "Down there it's darker than any night you've ever seen.")
+
+[sub_resource type="Resource" id="Goal_2"]
+script = ExtResource("3_g")
+kind = &"built"
+target = &"deep_ocean_outpost"
+island = &"deep_sea"
+text = "Build the Deep-Ocean Outpost"
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"outpost"
+lines = PackedStringArray("What do you think lives in the dark?", "> Monsters? | Nothing at all?", "Ha! Let's find out. An outpost would let me take the submarine down. It's in your Build menu.")
+objective = SubResource("Goal_2")
+thanks = PackedStringArray("The outpost is up! Now we can go down.")
+reminder = PackedStringArray("The Deep-Ocean Outpost is in your Build menu.")
+
+[sub_resource type="Resource" id="Goal_3"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"deep_mapped"
+text = "Map the deep (6 of the 8 dark areas) and bring the island to 70 %"
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"mapped"
+lines = PackedStringArray("The dark patches are deep water nobody has ever mapped. We can't protect what we don't understand.", "But lights and noise disturb the animals down there. How do you think we could learn without scaring them?", "> Quietly? | Very carefully?", "Exactly. Even helping takes wisdom. Bram the old captain knows these waters.")
+objective = SubResource("Goal_3")
+thanks = PackedStringArray("We've seen it! The deep is full of life we didn't know was there.")
+reminder = PackedStringArray("How's the mapping going? Quiet buoys, careful cameras, or a dive from the outpost.")
+
+[sub_resource type="Resource" id="Goal_4"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"cargo_located"
+text = "Find the lost cargo module"
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"cargo"
+lines = PackedStringArray("Something big shows up on the old shipping records: a cargo module lost down here years ago.", "Could we find it? A Cargo search from the outpost might.")
+objective = SubResource("Goal_4")
+thanks = PackedStringArray("There it is! Now we need to bring it up.")
+reminder = PackedStringArray("Send a Cargo search from the Deep-Ocean Outpost.")
+
+[sub_resource type="Resource" id="Goal_5"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"cargo_recovered"
+text = "Tow the cargo module in with your boat"
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"tow"
+lines = PackedStringArray("Can you tow the module in with your boat? Gently: it's been down there a long time.")
+objective = SubResource("Goal_5")
+thanks = PackedStringArray("A cargo hold! Your ships can carry supplies between the islands now.")
+reminder = PackedStringArray("Sail to the marked cargo module and tow it in.")
+
+[sub_resource type="Resource" id="Goal_6"]
+script = ExtResource("3_g")
+kind = &"installed"
+target = &"cargo_module"
+text = "Build this island's Exploration Ship and fit the Cargo Module"
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"ship"
+lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Cargo Module to it. Then we'd find out.")
+objective = SubResource("Goal_6")
+thanks = PackedStringArray("Where next, {name}? North, maybe. The ice holds secrets too.")
+reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Cargo Module at the ship (Explore).")
+
+[sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("Where should we explore? I'm always ready for another dive.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"imani"
+display_name = "Dr. Imani Osei"
+short_name = "Imani"
+job = "Pilot"
+region = &"deep_sea"
+role = &"objective"
+spot = Vector2(15728, -72)
+where = "by her equipment"
+moves_to = &"deep_ocean_outpost"
+moved_where = "by the outpost"
+place_offset = Vector2(-54, 6)
+skin = Color(0.33, 0.2, 0.12, 1)
+hair = 2
+hair_colour = Color(0.08, 0.06, 0.05, 1)
+shirt = Color(0.85, 0.45, 0.2, 1)
+trousers = Color(0.2, 0.22, 0.26, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])

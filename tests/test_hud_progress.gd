@@ -25,27 +25,15 @@ func _initialize() -> void:
 	water.set("_wait", 0.0)
 	await process_frame
 	_expect(not minimap.visible and not gauge.visible and not water.visible, "a new game: no minimap, health bar or water bar yet")
-	# On the Starting Island, Maya gives the objectives (no Tip button: Tom gives the hints).
+	# Objectives come from the island's people; no Tip button (the hint-givers give the advice).
 	var text: String = hud.objective_text()
 	_expect(text.begins_with("Talk to Dr. Maya"), "the Starting Island: talk to Maya first (%s)" % text)
-	hud.set("_unlock_check", 0.0)
-	await process_frame
-	_expect(not hud.get_node("StatusColumn/TipButton").visible, "no Tip button where there are people")
-
-	# An island without its people yet keeps the goal line and the Tip button.
+	_expect(not hud.has_node("StatusColumn/TipButton"), "no Tip button")
 	var otters: Resource = load("res://data/regions/kelp_forest.tres")
 	load("res://scripts/world/regions.gd").discover(otters)
 	world.get_node("Player").global_position = otters.arrival
 	text = hud.objective_text()
-	_expect(text.begins_with("Goal: Bring the sea otters back: ") and text.contains("then explore to find a new island"),
-		"an island without people yet: bring its animal back, then explore (%s)" % text)
-	var tip: String = hud.tip_text()
-	_expect(tip.begins_with("Next step towards exploring:"), "one tip, only when asked: the objective's next step (%s)" % tip)
-	hud.set("_unlock_check", 0.0)
-	await process_frame
-	_expect(hud.get_node("StatusColumn/TipButton").visible, "and a Tip button under the goal")
-	fleet.complete(otters, false)
-	_expect(hud.tip_text().contains("Exploration Ship"), "objective done: the tip is to build the Exploration Ship (%s)" % hud.tip_text())
+	_expect(text.begins_with("Talk to Finn Larsen (Diver)"), "the Kelp Forest: talk to Finn (%s)" % text)
 	world.get_node("Player").global_position = Vector2.ZERO
 
 	# The Sonar Core brings the minimap.

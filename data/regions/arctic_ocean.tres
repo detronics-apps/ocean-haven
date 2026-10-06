@@ -90,6 +90,3 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Live with the seasons, and drill an ice core"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_balanced"), SubResource("Goal_core")])
 discovery = &"ice_core"
-flagship = &"ringed_seal"
-flagship_goal = "Bring the ringed seals back"
-flagship_tip = "Ringed seals raise their pups on old ice (the ice that stays all year): build Seal Pupping Zones there, not on ice that melts, and not too many close together."

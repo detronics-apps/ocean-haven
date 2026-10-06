@@ -45,13 +45,6 @@ extends Resource
 ## Still being designed and built: exploring can't find it yet, and the Map doesn't sail there.
 @export var in_development := false
 
-@export_group("Goal")
-## The island's headline animal (the HUD's goal: bring it back to its full-health number,
-## RegionData.health's "animals" factor for it), how the goal says it, and the tip on how.
-@export var flagship: StringName
-@export var flagship_goal: String
-@export_multiline var flagship_tip: String
-
 @export_group("Objective")
 ## The island's objective: done once every goal is met; then its Exploration Ship can be
 ## built and `discovery` is found. No goals = not made yet (no ship there yet).

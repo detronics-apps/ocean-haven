@@ -85,6 +85,3 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Restore the kelp forest's food web"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_balance"), SubResource("Goal_gather")])
 discovery_text = "Woven from the kelp you gathered, the Kelp Fibre is strong and light. Build an Exploration Ship here and install it: Deep-Water Equipment for rougher, deeper seas."
-flagship = &"sea_otter"
-flagship_goal = "Bring the sea otters back"
-flagship_tip = "Sea otters settle at Otter Habitats while the kelp gives them enough to eat: Kelp Restoration Sites help the most damaged kelp beds grow back."

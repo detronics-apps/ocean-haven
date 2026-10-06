@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="PersonData" format=3]
+
+[ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
+[ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
+[ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/hut.svg" id="4_place"]
+
+[sub_resource type="Resource" id="Topic_0"]
+script = ExtResource("2_t")
+id = &"hello"
+when = PackedStringArray("first")
+lines = PackedStringArray("Ahoy, {name}. Bram's the name. I fished these waters on a trawler for forty years.", "I lost nets out here myself. They're still down there, catching things. I think about that.")
+
+[sub_resource type="Resource" id="Topic_1"]
+script = ExtResource("2_t")
+id = &"caught"
+when = PackedStringArray("tangled>=1")
+lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"quiet"
+when = PackedStringArray("!flag:deep_mapped")
+lines = PackedStringArray("Whales talk in clicks. Make noise and they go quiet, and then they go away.", "Lamps light the dark, but they scare things too. Listen first, look later.")
+
+[sub_resource type="Resource" id="Topic_3"]
+script = ExtResource("2_t")
+id = &"gear"
+when = PackedStringArray("flag:deep_mapped", "!flag:gear_marking")
+lines = PackedStringArray("Now that the deep's mapped, you'll find the old gear down there. Every net you bring up is one less catching fish.")
+
+[sub_resource type="Resource" id="Topic_4"]
+script = ExtResource("2_t")
+id = &"litter"
+when = PackedStringArray("litter>12")
+lines = PackedStringArray("The currents bring rubbish from all over. Clear what you can reach.")
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
+id = &"on"
+when = PackedStringArray("installed:cargo_module")
+lines = PackedStringArray("Up north on the ice there's Erik. He's written down the weather every day for thirty years.")
+
+[sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"chat"
+lines = PackedStringArray("Forty years at sea, and I never knew what was under me. Now I do.")
+
+[resource]
+script = ExtResource("1_p")
+id = &"bram"
+display_name = "Bram de Vries"
+short_name = "Bram"
+job = "Retired captain"
+region = &"deep_sea"
+role = &"hint"
+spot = Vector2(15696, 56)
+where = "at his old hut"
+place_offset = Vector2(-40, 8)
+skin = Color(0.9, 0.72, 0.6, 1)
+hair = 0
+hair_colour = Color(0.85, 0.85, 0.85, 1)
+shirt = Color(0.25, 0.3, 0.42, 1)
+trousers = Color(0.25, 0.25, 0.28, 1)
+hat = 2
+hat_colour = Color(0.15, 0.18, 0.3, 1)
+place = ExtResource("4_place")
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
