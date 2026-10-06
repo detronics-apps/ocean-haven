@@ -44,11 +44,15 @@ func _initialize() -> void:
 	player.global_position = maya_node.global_position + Vector2(20, 0)
 	var labels: Array = maya_node.actions().map(func(a: Dictionary) -> String: return a.label)
 	_expect("Talk to Maya" in labels, "the ranger can talk to Maya (%s)" % [labels])
+	root.get_node("RangerProfile").set_ranger_name("Sam")
 	var lines: Array = people.talk(maya)
 	var texts: Array = lines.map(func(l: Dictionary) -> String: return l.text)
 	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("three different kinds of animal")),
 		"Maya introduces herself and asks who still lives here")
-	_expect(lines.any(func(l: Dictionary) -> bool: return l.who == "You"), "the ranger answers too")
+	_expect(texts[0].contains("Sam, the new ranger"), "she calls the ranger by their name (%s)" % texts[0])
+	var replies: Array = lines.filter(func(l: Dictionary) -> bool: return l.has("options"))
+	_expect(replies.size() == 1 and replies[0].who == "Sam" and replies[0].options.size() == 2,
+		"the ranger picks one of 2 replies (%s)" % [replies])
 	_expect(not hud.objective_text().begins_with("Goal:"), "the objective doesn't show while she's still talking")
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
@@ -65,17 +69,35 @@ func _initialize() -> void:
 	_expect(hud.objective_text().begins_with("Done! Go back to Maya"), "photos done: go back to Maya (%s)" % hud.objective_text())
 	_expect(people.has_news(maya), "a '!' above her")
 	texts = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts[0].contains("Every one of them does something") and texts.any(func(t: String) -> bool: return t.contains("research station")),
-		"she thanks the ranger and asks about a research station")
+	_expect(texts[0].contains("Every one of them does something") and texts.any(func(t: String) -> bool: return t.contains("search and rescue station")),
+		"she thanks the ranger and asks about a search and rescue station")
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
-	_expect(hud.objective_text() == "Goal: Build the Marine Rescue & Research Station", "the next objective (%s)" % hud.objective_text())
+	_expect(hud.objective_text() == "Goal: Build the Marine Search & Rescue Station", "the next objective (%s)" % hud.objective_text())
+
+	# --- Looked in the Build menu but built nothing: Maya sends the ranger to Tom, who says to gather wood ---
+	fleet.mark(&"build_menu_opened")
+	texts = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Tom at the lighthouse")), "Maya sends the ranger to Tom (%s)" % [texts])
+	people.finish_talk()
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Sam, isn't it") and t.contains("fifty years")), "Tom meets the ranger (%s)" % [texts])
+	_expect(texts.any(func(t: String) -> bool: return t.contains("turtle tracks every summer")), "and remembers the beach full of turtle tracks")
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	_expect(texts.any(func(t: String) -> bool: return t.contains("caught out there")), "an animal caught in litter comes first (%s)" % [texts])
+	for animal: Node in get_nodes_in_group("animals"):
+		if animal.tangled:
+			animal.restore_freed()
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Cut down a full-grown palm") and t.contains("Plant a sapling")),
+		"then: gather wood by cutting palms, and plant a sapling for each (%s)" % [texts])
+	people.finish_talk()
 
 	# --- Built: Maya moves beside her station ---
 	var station: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/marine_rescue_station.tres"), Vector2i(-6, -6))
 	maya_node.call("_settle")
 	_expect(maya_node.global_position.distance_to(station.global_position) < 90.0, "Maya moves in by her station")
-	_expect(hud.objective_text().begins_with("Done! Go back to Maya by the research station"), "and says where she is now (%s)" % hud.objective_text())
+	_expect(hud.objective_text().begins_with("Done! Go back to Maya by the rescue station"), "and says where she is now (%s)" % hud.objective_text())
 	people.talk(maya)
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
@@ -91,14 +113,6 @@ func _initialize() -> void:
 
 	# --- Tom: hints and stories, never objectives ---
 	player.global_position = tom_node.global_position + Vector2(20, 0)
-	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts.any(func(t: String) -> bool: return t.contains("turtle tracks every summer")), "Tom remembers the beach full of turtle tracks")
-	people.finish_talk()
-	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts.any(func(t: String) -> bool: return t.contains("caught out there")), "an animal caught in litter: that comes first (%s)" % [texts])
-	for animal: Node in get_nodes_in_group("animals"):
-		if animal.tangled:
-			animal.restore_freed()
 	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
 	_expect(texts.any(func(t: String) -> bool: return t.contains("Turtle Protection Area")), "with no turtle area, his hint is a quiet stretch of sand (%s)" % [texts])
 	_expect(people.notebook().size() == 1, "Tom gives no objectives")

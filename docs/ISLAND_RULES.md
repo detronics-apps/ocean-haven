@@ -263,6 +263,12 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   - Recovery only moves forward; no decay, timers or "feed me".
   - Staff care for it while the ranger is away.
   - Never "adopt" or "pet": "you're helping one get home".
+- **The ranger has a name, and people use it.** The ranger's replies are 2 options to pick from,
+  never words put in their mouth.
+- **Animals come back because of what the ranger did**, gradually: at most one new arrival a
+  day per island, and arrivals need the ranger's own work (seabirds: palms the ranger planted),
+  not only what the island already had.
+- **The Build menu is short:** name, one line on what it does, cost.
 - **No preaching.** Wonder carries the message; balance is the central concept. The greatest
   reward is seeing creation recover.
 
@@ -280,4 +286,4 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 
 - **Levels for the functional buildings that don't have them yet** (Otter Habitat, Kelp
   Restoration Site, Kelp Discovery Centre, Kelp Research Platform, Dolphin Viewing Area,
-  Marine Rescue & Research Station, tent/house), and a picture per level for the patrol buoy.
+  Marine Search & Rescue Station, tent/house), and a picture per level for the patrol buoy.

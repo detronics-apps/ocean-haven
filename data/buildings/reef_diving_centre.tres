@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Reef Diving Centre"
 description = "Visitors snorkel and dive to see the reef and its parrotfish. More parrotfish and a healthier reef, more visitors and funding."
+summary = "Visitors dive the reef: funding each morning."
 order = 6
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 150

@@ -108,7 +108,7 @@ Every island is its own game with its own lesson:
   - dolphins: lead you to floating litter after you play with them;
   - ghost crabs: dig up buried litter;
   - red-footed boobies: nest in full-grown palms, so you can't cut every tree.
-- **Buildings:** Marine Rescue & Research Station (missions), Turtle Protection Areas, Dolphin
+- **Buildings:** Marine Search & Rescue Station (missions), Turtle Protection Areas, Dolphin
   Viewing Areas.
 - **Rare event:** Coastal Storm.
 - **Objective:** a station survey finds an old wreck → clear its litter → lift its sonar →

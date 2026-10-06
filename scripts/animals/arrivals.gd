@@ -8,6 +8,9 @@ const ANIMAL_SCENE := preload("res://scenes/animals/animal.tscn")
 
 ## Node names of the animals that have arrived.
 static var _arrived := {}
+## Region id -> the day an animal last arrived there: at most one a day per island, so the
+## animals come back gradually as the ranger works.
+static var _last_day := {}
 
 
 ## Brings in every animal whose island (and ocean) is now healthy enough. Returns them.
@@ -18,15 +21,20 @@ static func check(world: Node) -> Array[Node2D]:
 	for region: RegionData in Regions.all():
 		var health := IslandHealth.of(tree, region)
 		var trees := grown_trees(tree, region)
+		var planted := grown_trees(tree, region, true)
+		var today: int = tree.root.get_node("GameClock").day
 		for arrival: ArrivalData in region.arrivals:
 			if _arrived.has(arrival.node_name):
 				_stay_or_go(world, arrival, trees)
 				continue
-			if health < arrival.island_health or trees < arrival.needs_trees:
+			if int(_last_day.get(region.id, -1)) == today:
+				continue  # one new arrival a day on each island
+			if health < arrival.island_health or trees < arrival.needs_trees or planted < arrival.needs_planted:
 				continue
 			if healthy.filter(func(r: RegionData) -> bool: return r != region).size() < arrival.healthy_islands:
 				continue
 			came.append(_bring(world, arrival))
+			_last_day[region.id] = today
 			tree.call_group("hud", "show_toast", arrival.note)
 	return came
 
@@ -62,10 +70,12 @@ static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 		else "A %s has flown off: it needs more full-grown trees to nest in." % arrival.species.display_name)
 
 
-## Full-grown trees on `region`'s island (seabirds nest in them).
-static func grown_trees(tree: SceneTree, region: RegionData) -> int:
+## Full-grown trees on `region`'s island (seabirds nest in them); `planted`: only those the
+## ranger planted.
+static func grown_trees(tree: SceneTree, region: RegionData, planted := false) -> int:
 	return tree.get_nodes_in_group("plants").filter(func(p: Node2D) -> bool:
 		return (not p.is_queued_for_deletion() and p.has_method("stage") and p.stage() == 2
+			and (not planted or p.get_parent() is Building)
 			and Regions.nearest(p.global_position) == region)).size()
 
 

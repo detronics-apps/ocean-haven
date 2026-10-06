@@ -26,6 +26,19 @@ var options: AvatarOptions = load("res://data/avatar/avatar_options.tres")
 var look: Dictionary = DEFAULT_LOOK.duplicate()
 ## Has the player been through the avatar creator yet?
 var created := false
+## The ranger's name, chosen in the creator (people call them by it).
+var ranger_name := ""
+const NAME_LENGTH := 16
+
+
+## What people call the ranger ("Ranger" until they've chosen a name).
+func call_name() -> String:
+	return ranger_name.strip_edges() if ranger_name.strip_edges() != "" else "Ranger"
+
+
+func set_ranger_name(value: String) -> void:
+	ranger_name = value.left(NAME_LENGTH)  # (spaces kept while typing; call_name trims)
+	look_changed.emit()
 
 
 ## How many options there are for a look key.
@@ -61,8 +74,9 @@ func finish_creation() -> void:
 
 
 ## From a save file. Unknown keys are ignored, out-of-range choices clamped.
-func restore(saved_look: Dictionary, was_created: bool) -> void:
+func restore(saved_look: Dictionary, was_created: bool, saved_name := "") -> void:
 	look = DEFAULT_LOOK.duplicate()
+	ranger_name = saved_name.left(NAME_LENGTH)
 	for key in saved_look:
 		if CHOICES.has(key):
 			look[key] = clampi(int(saved_look[key]), 0, count(key) - 1)

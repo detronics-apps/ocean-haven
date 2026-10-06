@@ -1,14 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32" shape-rendering="crispEdges">
-  <!-- a small research tent and a folding table with a notebook -->
-  <rect x="2" y="28" width="24" height="2" fill="#000" opacity="0.18"/>
-  <polygon points="3,28 14,9 25,28" fill="#5f8f6b"/>
-  <polygon points="14,9 25,28 19,28" fill="#4b7556"/>
-  <polygon points="11,28 14,20 17,28" fill="#2d3b33"/>
-  <rect x="13" y="7" width="2" height="3" fill="#7a5a3a"/>
-  <rect x="27" y="22" width="11" height="2" fill="#a07848"/>
-  <rect x="28" y="24" width="1" height="5" fill="#7a5a3a"/>
-  <rect x="36" y="24" width="1" height="5" fill="#7a5a3a"/>
-  <rect x="29" y="20" width="5" height="2" fill="#f2efe4"/>
-  <rect x="30" y="20" width="1" height="2" fill="#3f7fbf"/>
-  <rect x="35" y="19" width="2" height="3" fill="#d9c27a"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="36" viewBox="0 0 50 36" shape-rendering="crispEdges">
+  <!-- Maya's field camp: a one-tile research tent and a folding table with her notebook -->
+  <ellipse cx="16" cy="32" rx="14" ry="3" fill="#000000" fill-opacity="0.18"/>
+  <rect x="1" y="24" width="1" height="8" fill="#e8dcb8"/>
+  <rect x="30" y="24" width="1" height="8" fill="#e8dcb8"/>
+  <polygon points="2,32 16,8 30,32" fill="#5f8f6b"/>
+  <polygon points="16,8 30,32 16,32" fill="#4b7556"/>
+  <polygon points="12,32 16,20 20,32" fill="#2d3b33"/>
+  <rect x="15" y="4" width="2" height="5" fill="#7a5a3a"/>
+  <rect x="2" y="31" width="28" height="2" fill="#3f5a45"/>
+  <rect x="34" y="24" width="14" height="2" fill="#a07848"/>
+  <rect x="35" y="26" width="1" height="7" fill="#7a5a3a"/>
+  <rect x="46" y="26" width="1" height="7" fill="#7a5a3a"/>
+  <rect x="36" y="22" width="6" height="2" fill="#f2efe4"/>
+  <rect x="37" y="22" width="1" height="2" fill="#3f7fbf"/>
+  <rect x="44" y="21" width="2" height="3" fill="#d9c27a"/>
 </svg>

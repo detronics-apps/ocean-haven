@@ -8,6 +8,7 @@ script = ExtResource("1_ohab")
 id = &"otter_habitat"
 display_name = "Otter Habitat"
 description = "A quiet, protected stretch of shore where sea otters can rest, feed and raise pups, if the kelp forest around it can feed them. It doesn't bring otters by itself."
+summary = "A quiet shore where sea otters can live."
 order = 2
 texture = ExtResource("2_ohab")
 terrain = PackedStringArray("sand", "grass")

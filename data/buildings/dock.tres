@@ -8,6 +8,7 @@ script = ExtResource("1_2xdux")
 id = &"dock"
 display_name = "Dock"
 description = "Wooden planks you can walk on. Build a row of them to make a jetty out into the sea; boats moor alongside. Patrol boats and Exploration Ships need one."
+summary = "Planks to walk on and moor boats beside."
 order = 3
 texture = ExtResource("2_y8nj1")
 size = Vector2i(1, 1)

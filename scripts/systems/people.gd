@@ -128,7 +128,9 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		var question := current_question(person)
 		if question and is_given(person, question):
 			if not done:
-				said.append_array(question.reminder)
+				var stuck := not question.stuck.is_empty() and question.stuck_when.size() > 0 \
+					and Array(question.stuck_when).all(func(c: String) -> bool: return check(c, person))
+				said.append_array(question.stuck if stuck else question.reminder)
 		elif question:
 			said.append_array(question.lines)
 			_give(person, question)
@@ -185,14 +187,21 @@ func _lines(person: PersonData, said: Array[String]) -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	for line in said:
 		var ranger := line.begins_with("> ")
-		list.append({"who": "You" if ranger else person.display_name,
-			"job": "" if ranger else person.job,
-			"text": _fill(line.trim_prefix("> "), person)})
+		var entry := {"who": RangerProfile.call_name() if ranger else person.display_name,
+			"job": "" if ranger else person.job, "text": _fill(line.trim_prefix("> "), person)}
+		if ranger:  # the ranger picks one of 2 replies ("> A rock? | Treasure!")
+			var options: Array[String] = []
+			for option in entry.text.split("|"):
+				options.append(option.strip_edges())
+			entry.options = options
+			entry.text = options[0]
+		list.append(entry)
 	return list
 
 
-## "{count:green_turtle}" -> how many live on their island now.
+## "{name}" -> the ranger's name; "{count:green_turtle}" -> how many live on their island now.
 func _fill(line: String, person: PersonData) -> String:
+	line = line.replace("{name}", RangerProfile.call_name())
 	var regex := RegEx.create_from_string("\\{count:([a-z_]+)\\}")
 	for found in regex.search_all(line):
 		line = line.replace(found.get_string(), str(_animals(person, StringName(found.get_string(1)))))
@@ -251,7 +260,8 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 
 ## Whether `condition` holds now for `person`'s island:
 ## - "first" (meeting them for the first time), "flag:X", "built:X", "installed:X", "met:X",
-##   "heard:X" (a story told), each with "!" in front for "not";
+##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), each with "!" in
+##   front for "not";
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
 ##   "tangled" (animals caught or hurt), "busy:X" (nesting areas too busy), "species"
@@ -280,6 +290,11 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"built": result = _built(person, arg) > 0
 		"installed": result = Fleet.is_installed(arg)
 		"met": result = _met.has(arg)
+		"asked":  # someone asked question `arg` and it isn't done yet
+			for someone: PersonData in all():
+				for topic: TalkTopic in questions(someone):
+					if topic.id == arg and is_given(someone, topic) and not Fleet.goal_met(topic.objective):
+						result = true
 		"heard": result = _heard.keys().any(func(k: String) -> bool: return k.ends_with("/" + arg))
 		_: push_warning("People: unknown condition '%s'" % condition)
 	return result != negate

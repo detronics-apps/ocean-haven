@@ -9,19 +9,19 @@
 script = ExtResource("2_t")
 id = &"hello_far"
 when = PackedStringArray("first", "animals:green_turtle>=6")
-lines = PackedStringArray("So you're the ranger who brought the turtles back. I'm Tom. I've kept this light for fifty years.", "I watch the beach every night from up there. It hasn't looked like this since I was a boy.")
+lines = PackedStringArray("So you're {name}, the ranger who brought the turtles back. I'm Tom. I've kept this light for fifty years.", "I watch the beach every night from up there. It hasn't looked like this since I was a boy.")
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")
 id = &"hello"
 when = PackedStringArray("first")
-lines = PackedStringArray("A new ranger! I'm Tom. I've kept this lighthouse for fifty years.", "When I was a boy, this beach was covered in turtle tracks every summer. Now I hardly see any.", "Turtles need a quiet stretch of sand to nest. Maybe you could give them one?")
+lines = PackedStringArray("A new ranger! {name}, isn't it? I'm Tom. I've kept this lighthouse for fifty years.", "When I was a boy, this beach was covered in turtle tracks every summer. Now I hardly see any.", "Turtles need a quiet stretch of sand to nest. Maybe you could give them one?")
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
 id = &"tracks"
 when = PackedStringArray("nests>=1")
-lines = PackedStringArray("My father could tell where turtles had been just by looking at the sand.", "> How?", "Tracks! A turtle crawls up from the sea to lay her eggs and leaves a trail behind her. Go and look by your turtle area.")
+lines = PackedStringArray("My father could tell where turtles had been just by looking at the sand.", "> How? | Footprints?", "Tracks! A turtle crawls up from the sea to lay her eggs and leaves a trail behind her. Go and look by your turtle area.")
 once = true
 marks = &"tracks_noticed"
 
@@ -33,59 +33,65 @@ lines = PackedStringArray("I saw something caught out there from the top of the 
 
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
+id = &"wood"
+when = PackedStringArray("asked:station", "!built:marine_rescue_station")
+lines = PackedStringArray("Maya sent you? Building takes wood, and this island is full of palms.", "Cut down a full-grown palm and you'll get wood and saplings. Plant a sapling for every tree you cut: the birds nest in them.")
+
+[sub_resource type="Resource" id="Topic_5"]
+script = ExtResource("2_t")
 id = &"no_area"
 when = PackedStringArray("!built:turtle_protection_area")
 lines = PackedStringArray("Turtles need a quiet stretch of sand. When I was young, the top of the beach was theirs.", "Somewhere nobody builds right next to. A Turtle Protection Area, maybe?")
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"busy"
 when = PackedStringArray("busy:turtle_protection_area>=1")
 lines = PackedStringArray("Your turtle area is too busy. A turtle won't come ashore with buildings right beside her.", "Give her a couple of tiles of quiet sand all round.")
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"litter"
 when = PackedStringArray("litter>12")
 lines = PackedStringArray("The litter always comes in on the same tide. Catch it out on the water, before it reaches the beach.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"wreck"
 when = PackedStringArray("built:marine_rescue_station", "!flag:wreck_found")
 lines = PackedStringArray("Maya's been staring at her old charts again.", "When I was young, the beam of this light used to catch something out west, past the point.")
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"turtles_full"
 when = PackedStringArray("animals:green_turtle>=10")
 lines = PackedStringArray("{count:green_turtle} turtles. I didn't think I'd see this again.", "Now I have something new to remember.")
 
-[sub_resource type="Resource" id="Topic_9"]
+[sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")
 id = &"turtles_many"
 when = PackedStringArray("animals:green_turtle>=6")
 lines = PackedStringArray("{count:green_turtle} turtles! I haven't seen that many since my father's day.")
 
-[sub_resource type="Resource" id="Topic_10"]
+[sub_resource type="Resource" id="Topic_11"]
 script = ExtResource("2_t")
 id = &"nests_back"
 when = PackedStringArray("nests>=1")
 lines = PackedStringArray("Nests on the beach again. I counted them from up there this morning.")
 
-[sub_resource type="Resource" id="Topic_11"]
+[sub_resource type="Resource" id="Topic_12"]
 script = ExtResource("2_t")
 id = &"few_turtles"
 when = PackedStringArray("animals:green_turtle<3")
 lines = PackedStringArray("I haven't seen many turtle tracks lately. They need quiet sand, and clean water to come back to.")
 
-[sub_resource type="Resource" id="Topic_12"]
+[sub_resource type="Resource" id="Topic_13"]
 script = ExtResource("2_t")
 id = &"far_waters"
 when = PackedStringArray("installed:salvaged_sonar_core")
 lines = PackedStringArray("Wherever you sail, look for the people who've watched those waters longest. They remember what they used to be.")
 
-[sub_resource type="Resource" id="Topic_13"]
+[sub_resource type="Resource" id="Topic_14"]
 script = ExtResource("2_t")
 id = &"light"
 lines = PackedStringArray("The light's still turning. Come by any time.")
@@ -109,4 +115,4 @@ trousers = Color(0.23, 0.25, 0.28, 1)
 hat = 2
 hat_colour = Color(0.17, 0.24, 0.4, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14")])

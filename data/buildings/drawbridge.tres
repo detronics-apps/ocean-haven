@@ -9,6 +9,7 @@ script = ExtResource("2_8l4ks")
 id = &"drawbridge"
 display_name = "Drawbridge"
 description = "A jetty piece you can walk across that swings up when your boat comes by, so you can sail through."
+summary = "A jetty piece that lifts to let boats through."
 order = 4
 texture = ExtResource("3_4cw1c")
 size = Vector2i(1, 1)

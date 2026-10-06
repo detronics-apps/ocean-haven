@@ -8,6 +8,7 @@ script = ExtResource("1_s")
 id = &"eco_lodge"
 display_name = "Mangrove Eco-Lodge"
 description = "Visitors walk the boardwalks and watch the flamingos. More flamingos and a healthier coast, more visitors and funding."
+summary = "Visitors watch flamingos: funding each morning."
 order = 4
 texture = ExtResource("2_t")
 terrain = PackedStringArray("sand", "grass")

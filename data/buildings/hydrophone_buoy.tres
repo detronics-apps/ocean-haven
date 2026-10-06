@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"deep_sea"
 display_name = "Hydrophone Buoy"
 description = "An underwater microphone that listens to the deep. Quiet and slow: it adds a little knowledge every day, more for each sperm whale on the island (their clicks map the water round them). Levels listen further."
+summary = "Listens to the deep and maps it quietly."
 order = 1
 size = Vector2i(1, 1)
 terrain = PackedStringArray("", "water")

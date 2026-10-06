@@ -15,6 +15,7 @@ var _done: Button
 var _layout: BoxContainer
 var _left: VBoxContainer
 var _title: Label
+var _name: LineEdit
 var _preview_box: Control
 var _preview: Node2D
 var _grid: GridContainer
@@ -33,6 +34,7 @@ func _ready() -> void:
 
 
 func open() -> void:
+	_name.text = RangerProfile.ranger_name
 	visible = true
 	get_tree().paused = true
 	_done.grab_focus()
@@ -68,6 +70,15 @@ func _build() -> void:
 	_title.text = "Create your ranger"
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_left.add_child(_title)
+	_name = LineEdit.new()
+	_name.name = "Name"
+	_name.placeholder_text = "Your ranger's name"
+	_name.max_length = RangerProfile.NAME_LENGTH
+	_name.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_name.custom_minimum_size = Vector2(0, 48)  # big enough for fingers
+	_name.text_changed.connect(RangerProfile.set_ranger_name)
+	_name.text_submitted.connect(func(_t: String) -> void: _name.release_focus())
+	_left.add_child(_name)
 	_preview_box = Control.new()
 	_left.add_child(_preview_box)
 	_preview = load("res://scenes/player/avatar.tscn").instantiate()

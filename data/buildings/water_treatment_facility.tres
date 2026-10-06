@@ -11,6 +11,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Marine Water Treatment Facility"
 description = "Protected giant clam beds filter seawater into Clean Water: 1 a morning for each clam living here. Clams settle once it's built. Drink clean water at your tent or house: while your water lasts you move faster, on foot and by boat."
+summary = "Giant clams make clean water here."
 order = 4
 terrain = PackedStringArray("water")
 category = &"sea"

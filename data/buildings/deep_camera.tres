@@ -12,6 +12,7 @@ closed_texture = ExtResource("3_t")
 only_on = &"deep_sea"
 display_name = "Deep Camera"
 description = "A camera lowered into the dark: it learns faster than a hydrophone, but its lamp disturbs the deep (anglerfish make it need less light). Bait it to learn faster still, but bait draws sixgill sharks in from far away. Levels need less light."
+summary = "Maps the dark fast, but its lamp disturbs."
 order = 2
 size = Vector2i(1, 1)
 terrain = PackedStringArray("", "water")

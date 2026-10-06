@@ -9,6 +9,7 @@ script = ExtResource("1_dvrnw")
 id = &"coastal_tree"
 display_name = "Coastal Tree"
 description = "Plant a coastal sapling on sand or grass. It grows a stage a day; a full-grown tree gives 2-3 wood and 1-2 saplings."
+summary = "Grows into a tree for wood and saplings."
 order = 6
 texture = ExtResource("3_islgd")
 size = Vector2i(1, 1)

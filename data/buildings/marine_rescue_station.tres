@@ -6,8 +6,9 @@
 [resource]
 script = ExtResource("1_mrs")
 id = &"marine_rescue_station"
-display_name = "Marine Rescue & Research Station"
+display_name = "Marine Search & Rescue Station"
 description = "The Starting Island's special building. Spend funding to send out missions: a rescue boat to find animals in distress, and surveys of the island's litter, turtles and dolphins."
+summary = "Missions to rescue animals and search the coast."
 order = 0
 texture = ExtResource("2_mrs")
 size = Vector2i(3, 2)

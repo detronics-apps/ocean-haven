@@ -15,9 +15,10 @@ species = ExtResource("7_noddy")
 node_name = "Seabird1"
 position = Vector2(-200, -80)
 home_radius = 420.0
-island_health = 0.0
+island_health = 0.3
 needs_trees = 5
-note = "Red-footed boobies have come to nest in your palm trees! They circle over floating litter, showing you where it is."
+needs_planted = 1
+note = "A red-footed booby has come to nest in the palm you planted! Boobies circle over floating litter, showing you where it is."
 
 [sub_resource type="Resource" id="Arrival_Seabird2"]
 script = ExtResource("4_arr")
@@ -25,8 +26,9 @@ species = ExtResource("7_noddy")
 node_name = "Seabird2"
 position = Vector2(150, -150)
 home_radius = 420.0
-island_health = 0.3
+island_health = 0.5
 needs_trees = 10
+needs_planted = 3
 note = "Another red-footed booby is nesting in your palms."
 
 [sub_resource type="Resource" id="Arrival_Seabird3"]
@@ -35,8 +37,9 @@ species = ExtResource("7_noddy")
 node_name = "Seabird3"
 position = Vector2(-80, 150)
 home_radius = 420.0
-island_health = 0.5
+island_health = 0.7
 needs_trees = 14
+needs_planted = 5
 note = "A third red-footed booby has joined them: your palms make a fine seabird colony."
 
 [sub_resource type="Resource" id="Arrival_Crab2"]
@@ -142,8 +145,8 @@ text = "Dolphins in the pod"
 script = ExtResource("2_goal")
 kind = &"flag"
 target = &"wreck_found"
-text = "Find what's hidden off the coast (a coastal survey from your Marine Rescue & Research Station)"
-hint = "Build the Marine Rescue & Research Station (Build menu), then send its Coastal survey mission."
+text = "Find what's hidden off the coast (a coastal survey from your Marine Search & Rescue Station)"
+hint = "Build the Marine Search & Rescue Station (Build menu), then send its Coastal survey mission."
 
 [sub_resource type="Resource" id="Goal_cleared"]
 script = ExtResource("2_goal")

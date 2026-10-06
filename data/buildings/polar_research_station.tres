@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"arctic_ocean"
 display_name = "Polar Research Station"
 description = "The Polar Ocean's special building, on solid rock. Surveys show which ice will last, where the floes join, how the seals and terns are doing, and where to drill."
+summary = "Missions to study the ice and its animals."
 order = 0
 size = Vector2i(2, 2)
 terrain = PackedStringArray("rock")

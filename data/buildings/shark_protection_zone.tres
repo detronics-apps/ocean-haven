@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Shark Protection Zone"
 description = "Quiet water for reef sharks: no boats, fishing or diving. Each zone gives a shark a home, but takes water away from your boats and divers."
+summary = "Quiet water for reef sharks. No boats."
 order = 3
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water", "")

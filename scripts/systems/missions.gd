@@ -138,7 +138,7 @@ func _ecosystem() -> Node:
 	return null
 
 
-## The Marine Rescue & Research Station's missions (and plain "find" missions).
+## The Marine Search & Rescue Station's missions (and plain "find" missions).
 func _run(mission: MissionData) -> Array[Node2D]:
 	var found: Array[Node2D] = []
 	match mission.effect:

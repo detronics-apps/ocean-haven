@@ -12,6 +12,7 @@ texture = ExtResource("2_t")
 only_on = &"arctic_ocean"
 display_name = "Seal Pupping Zone"
 description = "A quiet place on the ice where ringed seals raise their pups. It needs ice that lasts: on old, thick ice it works every season; on seasonal ice it melts away before the pups are ready. Levels give room for more seals."
+summary = "Ice where ringed seals raise their pups."
 order = 1
 size = Vector2i(1, 1)
 terrain = PackedStringArray("ice")

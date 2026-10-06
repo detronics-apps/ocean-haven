@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Glassworks"
 description = "Melts sand into glass. Put in 3 sand from the parrotfish once, and glass-making is set up for good. After that, drop off any extra sand to be made into glass for 6 funding a piece. Glass is needed for glass buildings later (like an underwater research dome), and with clean water it replaces plastic bottles everywhere."
+summary = "Turns sand into glass for reusable bottles."
 order = 5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 160

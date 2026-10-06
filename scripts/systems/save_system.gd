@@ -186,6 +186,7 @@ func save_to(world: Node, path: String) -> bool:
 		"time_of_day": GameClock.time_of_day,
 		"avatar": RangerProfile.look,
 		"avatar_created": RangerProfile.created,
+		"ranger_name": RangerProfile.ranger_name,
 		"discovered_regions": Regions.discovered_ids(),
 		"arrived_animals": Arrivals.arrived_names(),
 		"fleet": Fleet.to_dict(),
@@ -298,7 +299,7 @@ func load_from(world: Node, path: String) -> bool:
 		DirAccess.rename_absolute(path, path + ".bad")
 		return false
 
-	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false))
+	RangerProfile.restore(state.get("avatar", {}), state.get("avatar_created", false), str(state.get("ranger_name", "")))
 	Regions.restore(state.get("discovered_regions", []))
 	Fleet.restore(state.get("fleet", {}))
 	Missions.restore(state.get("mission", {}))

@@ -221,7 +221,7 @@ Step 2. Build in this order:
 2. ✅ Wildlife Conservation Parks (funding facilities, BuildingData.facility = "funding", shown in
    gold in the Build menu): up to 3 Turtle Protection Areas + 1 Dolphin Viewing Area (visitors per
    dolphin in view: `watches`). Morning funding (Building.visitors_today) × (1 + island health).
-3. ✅ Marine Rescue & Research Station (signature facility, one per island, `only_on` the Starting
+3. ✅ Marine Search & Rescue Station (signature facility, one per island, `only_on` the Starting
    Island): sends missions (data/missions/, MissionData; `Missions` autoload, one at a time, saved)
    for funding — rescue boat (animals in distress), pollution survey, turtle monitoring, dolphin
    tracking. Back after a few hours; what it found is marked on the minimap until the next morning.
@@ -402,6 +402,13 @@ TalkBox shows the talk (tap through; the game waits). Tom's tracks story (`marks
 "tracks_noticed") makes turtle tracks show from nests to the sea. On islands with people the goal
 line is `People.goal_text` and there's no Tip button (other islands keep the old line + Tip
 until their people come, phase 5).
+Then: the ranger has a name (avatar creator; RangerProfile.ranger_name, saved) that people use
+("{name}" in lines); the ranger's replies are 2 options to pick ("> A | B"); a question can be
+`stuck` (e.g. Build menu opened, nothing built: Maya sends the ranger to Tom, who says to cut
+palms for wood and plant a sapling for each); the station is the Marine Search & Rescue
+Station; the tent is one tile; the Build menu shows only name, BuildingData.summary and cost;
+new animals arrive at most one a day per island, and seabirds need palms the ranger planted
+(ArrivalData.needs_planted 1 / 3 / 5, health 30 / 50 / 70 %).
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

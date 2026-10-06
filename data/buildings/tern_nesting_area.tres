@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"arctic_ocean"
 display_name = "Tern Nesting Area"
 description = "Quiet rock where Arctic terns lay their eggs in the thaw, when they come back from the far south. Levels give room for more terns."
+summary = "Rock where Arctic terns nest."
 order = 3
 size = Vector2i(1, 1)
 terrain = PackedStringArray("rock")

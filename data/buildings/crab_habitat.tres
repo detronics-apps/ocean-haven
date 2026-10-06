@@ -8,6 +8,7 @@ script = ExtResource("1_s")
 id = &"crab_habitat"
 display_name = "Crab Habitat"
 description = "A protected patch of soft mud where mangrove crabs can dig their burrows. Crab burrows drain the mud and slow the silting, but too many crabs undercut the banks."
+summary = "Soft mud where mangrove crabs dig burrows."
 order = 2
 texture = ExtResource("2_t")
 size = Vector2i(1, 1)

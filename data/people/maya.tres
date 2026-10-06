@@ -9,19 +9,19 @@
 script = ExtResource("2_t")
 id = &"hello_far"
 when = PackedStringArray("first", "flag:sonar_recovered")
-lines = PackedStringArray("You must be the ranger who pulled the old sonar out of that wreck! I'm Maya, a researcher.", "I came to find out why so few animals live here. It looks like you've already started answering that.")
+lines = PackedStringArray("You must be {name}, the ranger who pulled the old sonar out of that wreck! I'm Maya, a researcher.", "I came to find out why so few animals live here. It looks like you've already started answering that.")
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")
 id = &"hello_station"
 when = PackedStringArray("first", "built:marine_rescue_station")
-lines = PackedStringArray("You built the research station already? Then we'll work well together. I'm Maya, a researcher.", "I came to find out why so few animals live on this island now.")
+lines = PackedStringArray("{name}, you built the rescue station already? Then we'll work well together. I'm Maya, a researcher.", "I came to find out why so few animals live on this island now.")
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
 id = &"hello"
 when = PackedStringArray("first")
-lines = PackedStringArray("Oh, hello! You must be the new ranger. I'm Maya, a researcher.", "I came to find out why so few animals live on this island now. I could use someone who knows the water.")
+lines = PackedStringArray("Oh, hello! You must be {name}, the new ranger. I'm Maya, a researcher.", "I came to find out why so few animals live on this island now. I could use someone who knows the water.")
 
 [sub_resource type="Resource" id="Goal_3"]
 script = ExtResource("3_g")
@@ -32,9 +32,9 @@ text = "Photograph 3 different kinds of animal"
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"photos"
-lines = PackedStringArray("Who do you think still lives on this island?", "> I'm not sure.", "Neither am I! Could you photograph three different kinds of animal for me? Walk up slowly, so they stay calm.")
+lines = PackedStringArray("Who do you think still lives on this island?", "> Turtles, maybe? | I'm not sure.", "Let's find out together! Could you photograph three different kinds of animal for me? Walk up slowly, so they stay calm.")
 objective = SubResource("Goal_3")
-thanks = PackedStringArray("Look at these! Every one of them does something for this island, even the little ones.", "Now I want to know what changed for them.")
+thanks = PackedStringArray("Look at these, {name}! Every one of them does something for this island, even the little ones.", "Now I want to know what changed for them.")
 reminder = PackedStringArray("Any luck with the photos? Walk up slowly and the animals stay calm.")
 
 [sub_resource type="Resource" id="Goal_4"]
@@ -42,15 +42,17 @@ script = ExtResource("3_g")
 kind = &"built"
 target = &"marine_rescue_station"
 island = &"home_island"
-text = "Build the Marine Rescue & Research Station"
+text = "Build the Marine Search & Rescue Station"
 
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"station"
-lines = PackedStringArray("How do you think we'd see what's happening out on the water?", "> From a boat?", "From lots of boats! With a rescue and research station we could send them out. Could you build one? It's in your Build menu.")
+lines = PackedStringArray("How do you think we'd see what's happening out on the water?", "> From a boat? | From up high?", "Good thinking! With a search and rescue station we could send boats out to look, and to help animals in trouble. Could you build one? It's in your Build menu.")
 objective = SubResource("Goal_4")
 thanks = PackedStringArray("A real station! I'm moving my notes in right away.")
-reminder = PackedStringArray("The Marine Rescue & Research Station is in your Build menu. I'll move my notes in as soon as it's up.")
+reminder = PackedStringArray("The Marine Search & Rescue Station is in your Build menu. I'll move my notes in as soon as it's up.")
+stuck_when = PackedStringArray("flag:build_menu_opened")
+stuck = PackedStringArray("You've looked in the Build menu? Building takes more than funding.", "Tom at the lighthouse has watched this island for fifty years. Ask him where to start.")
 
 [sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")
@@ -61,7 +63,7 @@ text = "Find what's hidden off the coast"
 [sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"wreck"
-lines = PackedStringArray("Look at this old chart. There's a mark off the west coast that isn't on any map today.", "What do you think it could be?", "> A rock? A reef?", "Let's find out! A Coastal survey from the station could search for it.")
+lines = PackedStringArray("Look at this old chart. There's a mark off the west coast that isn't on any map today.", "What do you think it could be?", "> A rock? | Treasure!", "Let's find out! A Coastal survey from the station could search for it.")
 objective = SubResource("Goal_5")
 thanks = PackedStringArray("A wreck! So that's what the old chart was marking.")
 reminder = PackedStringArray("Has the coastal survey found it yet? It can take a few tries: the sea is big.")
@@ -75,7 +77,7 @@ text = "Clear the litter around the old wreck"
 [sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"clear"
-lines = PackedStringArray("The wreck is tangled with old nets and rubbish. What do you think that does to the animals swimming past?", "> They could get caught.", "That's what worries me. Could you row out and clear it?")
+lines = PackedStringArray("The wreck is tangled with old nets and rubbish. What do you think that does to the animals swimming past?", "> They could get caught. | Let's clean it up!", "That's what I was hoping you'd say. Could you row out and clear it?")
 objective = SubResource("Goal_6")
 thanks = PackedStringArray("It's clear! Fish are already hiding in it again.")
 reminder = PackedStringArray("Is the wreck clear yet? You can pick up everything around it from your boat.")
@@ -103,9 +105,9 @@ text = "Build an Exploration Ship and fit the sonar"
 [sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"ship"
-lines = PackedStringArray("What do you think is out there, past our waters?", "> Other islands?", "Maybe! An Exploration Ship goes by the dock, next to two planks. Fit the sonar to it, and we'll know.")
+lines = PackedStringArray("What do you think is out there, past our waters?", "> Other islands? | Let's go and see!", "Maybe! An Exploration Ship goes by the dock, next to two planks. Fit the sonar to it, and we'll know.")
 objective = SubResource("Goal_8")
-thanks = PackedStringArray("Your ship can find its way now. Wherever you go, look for the people who know those waters best.", "And take photos for me! Every island has its own story.")
+thanks = PackedStringArray("Your ship can find its way now, {name}. Wherever you go, look for the people who know those waters best.", "And take photos for me! Every island has its own story.")
 reminder = PackedStringArray("Build the Exploration Ship beside two dock planks, then fit the sonar at the ship.")
 
 [sub_resource type="Resource" id="Topic_9"]
@@ -130,8 +132,8 @@ role = &"objective"
 spot = Vector2(144, -72)
 where = "at her field camp"
 moves_to = &"marine_rescue_station"
-moved_where = "by the research station"
-place_offset = Vector2(-44, 6)
+moved_where = "by the rescue station"
+place_offset = Vector2(-54, 6)
 skin = Color(0.55, 0.33, 0.14, 1)
 hair = 3
 hair_colour = Color(0.1, 0.07, 0.06, 1)

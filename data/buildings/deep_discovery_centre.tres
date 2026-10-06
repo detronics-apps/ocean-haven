@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"deep_sea"
 display_name = "Deep-Sea Discovery Centre"
 description = "Visitors watch the submarine's live feed and learn about the deep. More sperm whales and a healthier deep, more visitors and funding."
+summary = "Visitors watch the deep: funding each morning."
 order = 6
 size = Vector2i(2, 1)
 terrain = PackedStringArray("sand", "grass", "rock")

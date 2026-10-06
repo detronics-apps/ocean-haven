@@ -12,10 +12,6 @@ func _enter_tree() -> void:
 const TABS := {"All": &"", "Buildings": &"buildings", "Land": &"land", "Sea": &"sea"}
 
 ## Island facilities stand out: funding facilities earn, the signature facility spends.
-const FACILITY_LINES := {
-	&"funding": "Funding facility: visitors donate every morning (more with a healthier island).",
-	&"signature": "Signature facility: the island's one special building. Spend funding here to make progress.",
-}
 const FACILITY_COLOURS := {&"funding": Color("f2c94c"), &"signature": Color("c9a4ff")}
 
 var _tab: StringName = &""
@@ -51,6 +47,7 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	Fleet.mark(&"build_menu_opened")  # (Maya then sends a ranger who hasn't built yet to Tom)
 	# What you have, once, at the top (wood and saplings include what's stored).
 	_have.text = "You have: %d funding, %d litter, %d wood, %d saplings" % [
 		Funding.balance, Inventory.total(), Inventory.available(&"wood"), Inventory.available(&"sapling")]
@@ -79,20 +76,14 @@ func _entry(data: BuildingData) -> Control:
 	elif data.one_per_island and _on_island(data.id):
 		status = "This island already has one."
 	elif data.needs_objective and Fleet.ship_problem(_island()) != "":
-		var island := _island()
-		status = Fleet.ship_problem(island)
-		for goal: ObjectiveGoal in island.goals:
-			status += "\n  - " + Fleet.goal_line(island, goal)
+		status = "Not yet: first help this island."
 	elif data.requires and not _exists(data.requires):
 		status = "Build a %s first." % data.requires
 	else:
 		can_build = get_tree().get_first_node_in_group("build_mode").can_afford(data)
 		status = data.cost_text()
-	if data.replaces and not data.locked:
-		status += "  Replaces your %s." % data.replaces
-	var lines: Array[String] = [data.display_name, data.description, status]
-	if FACILITY_LINES.has(data.facility):
-		lines.insert(1, FACILITY_LINES[data.facility])
+	# Only the name, what it does (one short line) and what it costs.
+	var lines: Array[String] = [data.display_name, data.summary if data.summary != "" else data.description, status]
 	var entry := card(data.texture, lines, data.locked)
 	entry.name = "Entry_" + data.id
 	if FACILITY_COLOURS.has(data.facility):

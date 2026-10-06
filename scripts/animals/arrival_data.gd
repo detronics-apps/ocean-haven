@@ -18,5 +18,8 @@ extends Resource
 ## Nests in trees: stays only while the island has at least this many full-grown trees
 ## (away while there are fewer, back when they regrow). 0 = doesn't need trees.
 @export var needs_trees := 0
+## Only arrives once the ranger has planted (and grown) this many full-grown trees on the
+## island: new seabirds come because of something the ranger did, not the trees already there.
+@export var needs_planted := 0
 ## Said when it arrives.
 @export var note: String

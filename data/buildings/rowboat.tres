@@ -9,6 +9,7 @@ script = ExtResource("1_s")
 id = &"rowboat"
 display_name = "Rowboat"
 description = "Another small wooden boat for this island, so there's one where you need it. It stays where you leave it. Each needs 2 dock planks on the island first. Up to 2 on each island, besides the rowboat every island starts with."
+summary = "Another rowboat for this island."
 order = 4
 texture = ExtResource("2_t")
 size = Vector2i(1, 1)

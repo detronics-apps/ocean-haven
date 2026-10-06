@@ -8,6 +8,7 @@ script = ExtResource("1_dva")
 id = &"dolphin_viewing_area"
 display_name = "Dolphin Viewing Area"
 description = "A shady deck on the shore where visitors watch the dolphins from a respectful distance. More dolphins in view, more visitors."
+summary = "Visitors watch dolphins: funding each morning."
 order = 2
 texture = ExtResource("2_dva")
 terrain = PackedStringArray("sand")

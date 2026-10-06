@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"deep_sea"
 display_name = "Deep-Ocean Outpost"
 description = "The Deep Sea's special building: a research platform that sends a submarine down into the dark. Dives reveal what's hidden fast (mark a dark area from your boat to choose where); surveys show what the deep needs. Its oil-spill response equipment means oil from passing ships can now be found and cleaned up around every island."
+summary = "Submarine dives and missions into the deep."
 order = 0
 size = Vector2i(2, 2)
 terrain = PackedStringArray("", "water")

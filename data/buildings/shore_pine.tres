@@ -9,6 +9,7 @@ script = ExtResource("1_dvrnw")
 id = &"shore_pine"
 display_name = "Shore Pine"
 description = "Plant a pine sapling on sand, grass or rock. It grows a stage a day; a full-grown tree gives 2-3 wood and 1-2 saplings."
+summary = "Grows into a pine for wood and saplings."
 order = 6
 texture = ExtResource("3_islgd")
 size = Vector2i(1, 1)

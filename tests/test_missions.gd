@@ -1,5 +1,5 @@
 extends SceneTree
-## The Marine Rescue & Research Station (the Starting Island's signature facility): one per
+## The Marine Search & Rescue Station (the Starting Island's signature facility): one per
 ## island, only on the Starting Island. It sends missions for funding, one at a time; each is
 ## back a few real minutes later and responds to what's happening: rescue (hurt animals
 ## recover), boat patrol, pollution survey (hidden litter), turtle monitoring (protects

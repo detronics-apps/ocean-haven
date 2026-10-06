@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"deep_sea"
 display_name = "Deep-Sea Sanctuary"
 description = "Marks a mapped area of the deep as a sanctuary: no fishing, so no more lost gear sinks there, and one more of the animals living there can settle. Place it in an area you've already mapped."
+summary = "No fishing: no lost gear, room for one more animal."
 order = 3
 size = Vector2i(1, 1)
 terrain = PackedStringArray("", "water")

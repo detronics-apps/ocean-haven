@@ -8,6 +8,7 @@ script = ExtResource("1_krp")
 id = &"kelp_research_platform"
 display_name = "Kelp Research Platform"
 description = "The Kelp Forest's special building: divers and a small submersible study the forest. Surveys show what's going wrong and why; restoration and urchin relocation let you act on it."
+summary = "Missions to study and restore the kelp."
 order = 0
 texture = ExtResource("2_krp")
 size = Vector2i(3, 2)

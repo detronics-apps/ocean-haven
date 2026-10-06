@@ -9,6 +9,7 @@ script = ExtResource("1_dvrnw")
 id = &"mangrove_tree"
 display_name = "Red Mangrove"
 description = "Plant a mangrove propagule in the mud. It grows a stage a day; a full-grown mangrove gives 2-3 wood and 1-2 propagules. Mangroves trap mud, so channels silt up more slowly, and shelter young fish."
+summary = "Grows in mud into a mangrove for wood."
 order = 6
 texture = ExtResource("3_islgd")
 size = Vector2i(1, 1)

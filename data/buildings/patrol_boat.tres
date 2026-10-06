@@ -9,6 +9,7 @@ script = ExtResource("1_h2gec")
 id = &"patrol_boat"
 display_name = "Patrol Boat"
 description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Upgrade it to patrol a bigger area. Dolphins keep away from busy boats: patrol away from their waters."
+summary = "A boat that collects litter in an area."
 order = 4
 texture = ExtResource("3_1iptj")
 size = Vector2i(1, 1)

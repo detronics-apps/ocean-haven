@@ -8,6 +8,7 @@ script = ExtResource("1_kdc")
 id = &"kelp_discovery_centre"
 display_name = "Kelp Discovery Centre"
 description = "Visitors learn about kelp forests, otters and food webs, and watch the forest through a big window. More otters on the island and a healthier forest, more visitors."
+summary = "Visitors learn about kelp: funding each morning."
 order = 4
 texture = ExtResource("2_kdc")
 terrain = PackedStringArray("sand", "grass")

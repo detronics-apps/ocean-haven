@@ -8,6 +8,7 @@ script = ExtResource("1_akqsv")
 id = &"shovel"
 display_name = "Shovel"
 description = "Move sand and mud: dig up a beach or mud tile (it becomes shallow water: dig mud to make channels) and place it on shallow water to make new beach or mud flats."
+summary = "Digs and moves sand and mud."
 order = 7
 texture = ExtResource("2_okw24")
 terrain = PackedStringArray("sand", "grass", "mud")

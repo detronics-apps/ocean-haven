@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"arctic_ocean"
 display_name = "Ice Core Drill Site"
 description = "Drills a core from ancient ice: layers that record the climate long ago. It needs old, thick ice that lasts for 3 days while it drills, and the island at 70 % health. On ice that melts it stops: move it."
+summary = "Drills a core from old ice."
 order = 4
 size = Vector2i(1, 1)
 terrain = PackedStringArray("ice")

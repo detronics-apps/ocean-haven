@@ -29,23 +29,23 @@ func _initialize() -> void:
 	world.get_node("LitterSpawner").fill(30)
 	_expect(get_nodes_in_group("debris").size() >= 30, "a new game starts with about 30 pieces of litter (%d)" % get_nodes_in_group("debris").size())
 	var names := func(list: Array) -> Array: return list.map(func(a: Node) -> String: return String(a.name))
+	var clock := root.get_node("GameClock")
 	var first: Array = names.call(arrivals.check(world))
-	_expect(first == ["Seabird1"], "while it's polluted only a seabird comes (it needs palms, not a clean beach) (%s)" % [first])
+	_expect(first.is_empty(), "while it's polluted and nothing's been planted, no new animals come (%s)" % [first])
 	var start: float = health.of(self, home)
-	_expect(start > 0.0 and start < 0.5, "the Starting Island starts in poor health (%.2f)" % start)
+	_expect(start >= 0.0 and start < 0.3, "the Starting Island starts in poor health (%.2f)" % start)
 	# Clean up all its litter.
 	for debris: Node in get_nodes_in_group("debris"):
 		debris.free()
 	var cleaned: float = health.of(self, home)
 	_expect(cleaned > start, "cleaning up raises its health (%.2f)" % cleaned)
-	var came: Array = names.call(arrivals.check(world))
-	_expect("Crab2" in came and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives (%s)" % [came])
-	_expect(not "Crab2" in names.call(arrivals.check(world)), "and only once")
 	# Caught animals don't count as living there until they're freed.
 	for animal_name in ["GreenTurtle", "Crab1", "Dolphin2"]:
 		world.get_node(animal_name).restore_freed()
 	var helped: float = health.of(self, home)
 	_expect(helped > cleaned, "freeing animals raises it (%.2f)" % helped)
+	var came: Array = names.call(arrivals.check(world))
+	_expect("Crab2" in came and count.call(&"ghost_crab") == 2, "a cleaner beach: a second crab arrives (%s)" % [came])
 	for i in 11:  # more than full health needs (10): the Journal counts them all
 		var turtle: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 		turtle.set("data", load("res://data/animals/green_turtle.tres"))
@@ -53,9 +53,22 @@ func _initialize() -> void:
 		turtle.position = Vector2(-500 + i * 20, 100)
 		world.add_child(turtle)
 	came = names.call(arrivals.check(world))
+	_expect(came.is_empty(), "one new arrival a day on each island (%s)" % [came])
+	clock.day += 1
+	came = names.call(arrivals.check(world))
 	_expect("Dolphin1" in came and not "Dolphin3" in came and count.call(&"bottlenose_dolphin") == 2,
-		"cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
-	_expect(count.call(&"red_footed_booby") == 3, "three seabirds nest in the palms of a healthy island")
+		"the next day, cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
+	clock.day += 1
+	_expect(arrivals.check(world).is_empty() and count.call(&"red_footed_booby") == 0,
+		"no seabirds from the island's own palms alone")
+	# Seabirds come once the ranger has planted palms (and they've grown): 1, 3, 5.
+	for i in 5:
+		var sapling: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), Vector2i(-8 + i * 2, -5))
+		sapling.built_day = -10  # full grown
+	for i in 3:
+		clock.day += 1
+		arrivals.check(world)
+	_expect(count.call(&"red_footed_booby") == 3, "the palms the ranger planted bring three seabirds, one a day")
 	_expect(is_equal_approx(health.of(self, home), 1.0), "no litter, no hurt or caught animals, fully populated (12 turtles, 3 seabirds, 2 crabs, 2 dolphins): 100 %")
 	var hurt: Node = world.get_node("Crab1")
 	hurt.injure()
@@ -64,12 +77,12 @@ func _initialize() -> void:
 
 	# Seabirds need full-grown palms: cut too many and one flies off (back when they regrow).
 	var palms: Array = world.get_node("StarterIsland").get_children().filter(func(n: Node) -> bool: return n.is_in_group("plants"))
-	for i in 4:
-		palms[i].free()
+	while arrivals.grown_trees(self, home) >= 14:
+		palms.pop_back().free()
 	arrivals.check(world)
 	var seabird3: Node2D = world.get_node("Seabird3")
 	_expect(not seabird3.visible and not seabird3.is_in_group("animals") and count.call(&"red_footed_booby") == 2,
-		"13 palms left: the third seabird flies off")
+		"fewer than 14 palms: the third seabird flies off")
 	_expect(health.of(self, home) < 1.0, "and the island is a little less healthy")
 	var planted: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), Vector2i(-2, -8))
 	planted.built_day = -10  # full grown

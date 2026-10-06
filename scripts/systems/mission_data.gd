@@ -1,7 +1,7 @@
 class_name MissionData
 extends Resource
 ## A mission a signature facility can send out for funding (data/missions/), e.g. the
-## Marine Rescue & Research Station's rescue team. It's away for `minutes` (real time), then
+## Marine Search & Rescue Station's rescue team. It's away for `minutes` (real time), then
 ## comes back, does its `effect` on the island and marks what it found on the minimap for the
 ## rest of the day (see Missions). Missions respond to what's happening on the island.
 

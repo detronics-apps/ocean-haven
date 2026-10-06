@@ -366,7 +366,7 @@ income grow.
 
 | Island | ⭐ Signature facility (1) | What it does | 💰 Funding facility | Max |
 |---|---|---|---|---|
-| 🏝️ Starting Island | Marine Rescue & Research Station | Funds rescue-boat missions, finding wildlife in distress and coastal surveys | Wildlife Conservation Parks: Turtle Protection Area + Dolphin Viewing Area | 3 + 1 |
+| 🏝️ Starting Island | Marine Search & Rescue Station | Funds rescue-boat missions, finding wildlife in distress and coastal surveys | Wildlife Conservation Parks: Turtle Protection Area + Dolphin Viewing Area | 3 + 1 |
 | 🌿 Kelp Forest | Kelp Research Platform | Sends divers / submersibles into the kelp forest to check its health and food-web balance | Kelp Discovery Centre | 2 |
 | 🌱 Mangrove Coast | Mangrove Waterworks Station | Runs gates and pumps to manage freshwater flow through the mangroves | Mangrove Eco-Lodge | 3 |
 | 🪸 Tropical Reef | Coral Restoration Laboratory | Grows and prepares coral and deploys restoration projects | Reef Diving Centre | 3 |
@@ -377,7 +377,7 @@ Shared infrastructure on any island, in neither category: Ranger Houses (storage
 centres, docks, the workshop, the Exploration Ship.
 
 ### 🏝️ Starting Island
-- ⭐ **Marine Rescue & Research Station** — the first signature facility, which introduces the
+- ⭐ **Marine Search & Rescue Station** — the first signature facility, which introduces the
   idea. Spend funding to send out missions: wildlife rescue boat, coastal survey equipment,
   dolphin tracking, turtle monitoring, pollution surveys.
 - 💰 **Wildlife Conservation Parks** — up to 3 Turtle Protection Areas (✅ exist) alongside a
@@ -570,7 +570,7 @@ Each step ends with a playable build. ✅ = done.
 - **Step 2 — Starting Island complete ✅** Pollution types (plastic, oil/chemicals, fishing debris,
   boat disturbance, beach use) each affecting its own system; seabirds nesting in vegetation (a
   reason not to cut every tree); turtle nesting zones kept clear; the underwater wreck / debris
-  field → Salvaged Sonar Core. Buildings: ⭐ Marine Rescue & Research Station
+  field → Salvaged Sonar Core. Buildings: ⭐ Marine Search & Rescue Station
   (funded missions) and 💰 Wildlife Conservation Parks (up to 3 Turtle Protection Areas + a Dolphin
   Viewing Area). Rare event: 🌪️ Coastal Storm.
 - **Step 3 — Kelp Forest.** Kelp as plants; otters, urchins, kelp fish, cormorants; the food-web
@@ -614,7 +614,7 @@ tested commit. Placeholder art throughout.
 2. **Funding facilities → Wildlife Conservation Parks.** Up to 3 Turtle Protection Areas (✅
    exist) alongside a Dolphin Viewing Area (on the shore, near the pod). Both marked as funding
    facilities; morning funding grows with island health.
-3. **Signature facility → Marine Rescue & Research Station (exactly 1).** The island's active
+3. **Signature facility → Marine Search & Rescue Station (exactly 1).** The island's active
    conservation response tool, not a source of permanent upgrades: spend funding to send a
    mission (one at a time, back after a few real minutes) that responds to what's happening:
 
@@ -1080,7 +1080,7 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
 **Gameplay still open**
 - Levels for the buildings that don't have them yet:
   - Otter Habitat, Kelp Restoration Site, Kelp Discovery Centre, Kelp Research Platform;
-  - Dolphin Viewing Area, Marine Rescue & Research Station, tent/house;
+  - Dolphin Viewing Area, Marine Search & Rescue Station, tent/house;
   - a picture per level for the patrol buoy.
 - Reef: the hurricane only washes sand back. Moving sand around properly, and planting seagrass
   by hand, are still to come.

@@ -10,6 +10,8 @@ var _panel: PanelContainer
 var _who: Label
 var _text: Label
 var _more: Label
+## The ranger's two replies to pick from (on their lines).
+var _choices: HBoxContainer
 ## The frame it opened on (the key press that opened it doesn't also skip the first line).
 var _opened_at := -1
 
@@ -59,6 +61,11 @@ func _ready() -> void:
 	_text.add_theme_font_size_override("font_size", 22)
 	_text.add_theme_color_override("font_color", Color("23262c"))
 	column.add_child(_text)
+	_choices = HBoxContainer.new()
+	_choices.name = "Choices"
+	_choices.add_theme_constant_override("separation", 16)
+	_choices.alignment = BoxContainer.ALIGNMENT_CENTER
+	column.add_child(_choices)
 	_more = Label.new()
 	_more.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_more.add_theme_font_size_override("font_size", 15)
@@ -102,13 +109,42 @@ func close() -> void:
 func _show() -> void:
 	var line: Dictionary = _lines[_at]
 	_who.text = line.who if line.job == "" else "%s · %s" % [line.who, line.job]
+	for child in _choices.get_children():
+		child.queue_free()
+	var options: Array = line.get("options", [])
+	_choices.visible = not options.is_empty()
+	_text.visible = options.is_empty()
+	_more.visible = options.is_empty()
 	_text.text = line.text
 	_more.text = "Tap to close" if _at == _lines.size() - 1 else "Tap to go on"
+	for i in options.size():  # the ranger's reply: pick one
+		var pick := Button.new()
+		pick.name = "Choice%d" % i
+		pick.text = options[i]
+		pick.custom_minimum_size = Vector2(220, 64)
+		pick.add_theme_font_size_override("font_size", 22)
+		pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pick.pressed.connect(choose.bind(i))
+		_choices.add_child(pick)
+		if i == 0:
+			pick.grab_focus.call_deferred()  # (controller and keyboard: pick with the arrows)
+
+
+## Picks the ranger's reply `index` and goes on.
+func choose(_index: int) -> void:
+	next()
+
+
+## Whether the ranger is picking a reply (a tap elsewhere doesn't skip it).
+func is_choosing() -> bool:
+	return visible and not _lines.is_empty() and not (_lines[_at].get("options", []) as Array).is_empty()
 
 
 func _on_input(event: InputEvent) -> void:
 	if Engine.get_process_frames() == _opened_at:
 		return
+	if is_choosing():
+		return  # pick one of the replies
 	# (a tap on a phone arrives as a mouse click, like everywhere else in the game)
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		get_viewport().set_input_as_handled()
@@ -116,6 +152,7 @@ func _on_input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if visible and Engine.get_process_frames() != _opened_at and (event.is_action_pressed("interact") or event.is_action_pressed("ui_accept")):
+	if visible and not is_choosing() and Engine.get_process_frames() != _opened_at \
+			and (event.is_action_pressed("interact") or event.is_action_pressed("ui_accept")):
 		get_viewport().set_input_as_handled()
 		next()

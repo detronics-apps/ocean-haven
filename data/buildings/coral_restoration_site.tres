@@ -11,6 +11,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Coral Restoration Site"
 description = "An underwater coral nursery: it grows 1 coral fragment a morning (more per level). Take them out by boat and plant them on reef that needs it. Coral grows back best where the water is clean and parrotfish keep the algae down."
+summary = "Grows coral fragments to plant on the reef."
 order = 1
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water")

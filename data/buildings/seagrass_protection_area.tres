@@ -10,6 +10,7 @@ texture = ExtResource("2_t")
 only_on = &"tropical_reef"
 display_name = "Seahorse & Seagrass Protection Area"
 description = "A marked, boat-free patch of shallow water where seagrass can grow back and seahorses can live. Seahorses settle once the seagrass has grown."
+summary = "Boat-free shallows for seagrass and seahorses."
 order = 2
 terrain = PackedStringArray("water")
 category = &"sea"

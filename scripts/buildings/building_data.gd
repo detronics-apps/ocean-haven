@@ -6,6 +6,8 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export_multiline var description: String
+## What it does, in one short line (the Build menu shows only the name, this and the cost).
+@export var summary: String
 ## Position in the Build menu.
 @export var order := 0
 ## The Build menu's button for it: "Build", or "Plant" for trees.

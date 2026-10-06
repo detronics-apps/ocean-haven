@@ -8,6 +8,7 @@ script = ExtResource("1_krs")
 id = &"kelp_restoration_site"
 display_name = "Kelp Restoration Site"
 description = "Young kelp grown on ropes under a marker buoy restores 3 of the island's most damaged kelp beds while it stands. It can't win against overgrazing: where urchins are too many, the kelp still declines."
+summary = "Restores the most damaged kelp beds."
 order = 3
 texture = ExtResource("2_krs")
 size = Vector2i(1, 1)
