@@ -455,6 +455,20 @@ mentions the collection. Released rescue companions that travel (RescueData.visi
 to the Mangrove Coast and the Reef, the flamingo to the Reef) turn up for a day on the
 ranger's island, only while both islands are healthy (70 %), at most every 6 days; sightings
 are listed in the Journal.
+Phase 9: litter at its source. Inventory.picked counts litter picked up per kind (saved,
+"litter_picked"); two new kinds: six-pack rings (entangle) and foam boxes. After each island's
+story its objective-giver asks where one kind comes from (TalkTopic.when "picked:X>=12",
+"installed>=2"...; `marks` e.g. "rings_asked"), an Investigate mission (MissionData.effect
+"investigate", show_flag / marks_flag) finds out, and a fix building appears in the Build menu
+(BuildingData.needs_flag) that stops it on every island (BuildingData.stops_litter;
+`Fleet.stopped(id)`, ObjectiveGoal kind "stopped"; the LitterSpawner skips stopped kinds).
+Finn: rings -> Trace the rings -> Harbour Refill Bar (Ines: kegs). Rosa: bags -> Trace the bags
+-> Weaving Workshop (Samuel: nipa palm baskets). Maya: foam boxes -> Trace the foam boxes ->
+Box Return Depot (Tom: crates that go back). Kai: bottles (reusable bottles). Imani: fishing
+gear (gear marking). Sanna: the threads in the ice core -> Look at the fibres -> Kai's Filter
+Workshop on the Reef ("microfibres", not an item). A question that can't be asked yet never
+counts as done, so a problem solved early (reusable bottles, gear marking) doesn't skip an
+island's story.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

@@ -44,6 +44,10 @@ extends Resource
 @export var sure_by := 0
 ## Not offered any more once this Fleet flag is set (e.g. the survey, once the wreck is found).
 @export var hide_flag: StringName
+## Only offered once this flag is set (e.g. "bags_asked": someone asked the question), and the
+## flag it marks when it comes back ("investigate" missions: what was worked out).
+@export var show_flag: StringName
+@export var marks_flag: StringName
 ## Its marks stay until what they mark is gone, not just until the next morning.
 @export var keep_marks := false
 ## Report when it's back: "%d" is how many it found.

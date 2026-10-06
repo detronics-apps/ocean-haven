@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/study_fibres.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"study_fibres"
+display_name = "Look at the fibres"
+icon = ExtResource("2_icon")
+description = "Melts a slice of the ice core and looks at the coloured threads under a microscope."
+order = 9
+facility = &"polar_research_station"
+cost = 20
+minutes = 2.0
+marker_colour = Color(0.8, 0.5, 0.9, 1)
+report = "Under the microscope: plastic microfibres. Fleece and other plastic clothes shed them in every wash; they go down the drain and out to sea, and freezing sea ice traps them. Talk to Sanna."
+report_none = "Under the microscope: plastic microfibres. Fleece and other plastic clothes shed them in every wash; they go down the drain and out to sea, and freezing sea ice traps them. Talk to Sanna."
+effect = &"investigate"
+show_flag = &"fibres_asked"
+hide_flag = &"fibres_traced"
+marks_flag = &"fibres_traced"

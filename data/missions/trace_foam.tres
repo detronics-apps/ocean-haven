@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/trace_foam.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"trace_foam"
+display_name = "Trace the foam boxes"
+icon = ExtResource("2_icon")
+description = "A rescue boat follows the foam back along the coast: where do the boxes come from?"
+order = 9
+facility = &"marine_rescue_station"
+cost = 20
+minutes = 2.0
+marker_colour = Color(0.95, 0.95, 0.9, 1)
+report = "The foam boxes come from the fishing boats: they pack their catch in foam boxes and throw the boxes away after one trip. Talk to Maya."
+report_none = "The foam boxes come from the fishing boats: they pack their catch in foam boxes and throw the boxes away after one trip. Talk to Maya."
+effect = &"investigate"
+show_flag = &"foam_asked"
+hide_flag = &"foam_traced"
+marks_flag = &"foam_traced"

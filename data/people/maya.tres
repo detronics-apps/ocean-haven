@@ -110,19 +110,49 @@ objective = SubResource("Goal_8")
 thanks = PackedStringArray("Your ship can find its way now, {name}. Wherever you go, look for the people who know those waters best.", "And take photos for me! Every island has its own story.")
 reminder = PackedStringArray("Build the Exploration Ship beside two dock planks, then fit the sonar at the ship.")
 
+[sub_resource type="Resource" id="Goal_9"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"foam_traced"
+text = "Find out where the foam boxes come from"
+
 [sub_resource type="Resource" id="Topic_9"]
+script = ExtResource("2_t")
+id = &"foam"
+when = PackedStringArray("installed>=2", "picked:foam_box>=15")
+lines = PackedStringArray("These white foam boxes keep breaking into tiny beads on the beach. You've picked up {picked:foam_box} of them, {name}.", "Where do you think they come from?", "> Fishing boats? | The beach?", "Let's find out. A rescue boat can follow the foam back along the coast: send Trace the foam boxes from the station.")
+objective = SubResource("Goal_9")
+thanks = PackedStringArray("So it's the fishing boats: one trip, and the box is thrown away.")
+reminder = PackedStringArray("Send Trace the foam boxes from the rescue station, and we'll know where they come from.")
+marks = &"foam_asked"
+
+[sub_resource type="Resource" id="Goal_10"]
+script = ExtResource("3_g")
+kind = &"stopped"
+target = &"foam_box"
+text = "Stop the foam boxes at their source"
+
+[sub_resource type="Resource" id="Topic_10"]
+script = ExtResource("2_t")
+id = &"boxes"
+lines = PackedStringArray("What could the boats pack their fish in instead?", "> Stronger boxes? | Ask Tom!", "Tom remembers how they did it in his father's day. A Box Return Depot by the dock could do the same: it's in your Build menu.")
+objective = SubResource("Goal_10")
+thanks = PackedStringArray("No more foam! The same boxes go out on the boats, trip after trip.", "We didn't just clean the beach this time. We stopped it getting dirty.")
+reminder = PackedStringArray("The Box Return Depot is in your Build menu: sturdy boxes that come back to be washed and used again.")
+
+[sub_resource type="Resource" id="Topic_11"]
 script = ExtResource("2_t")
 id = &"album"
 when = PackedStringArray("installed:salvaged_sonar_core", "missing_moments>0")
 lines = PackedStringArray("I'm putting together a photo record of every island's animals: not just who lives there, but what they do.", "You have {moments} of {moments_total} photo moments so far. The ones still missing are in your Journal, if you're passing by.")
 
-[sub_resource type="Resource" id="Topic_10"]
+[sub_resource type="Resource" id="Topic_12"]
 script = ExtResource("2_t")
 id = &"out_there"
 when = PackedStringArray("installed:salvaged_sonar_core")
 lines = PackedStringArray("What do you think is happening out there? Come back and tell me everything you find.")
 
-[sub_resource type="Resource" id="Topic_11"]
+[sub_resource type="Resource" id="Topic_13"]
 script = ExtResource("2_t")
 id = &"watch"
 lines = PackedStringArray("What do you think is happening on this island? Keep watching: the animals will show you.")
@@ -146,4 +176,4 @@ hair_colour = Color(0.1, 0.07, 0.06, 1)
 shirt = Color(0.18, 0.56, 0.51, 1)
 trousers = Color(0.54, 0.48, 0.33, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13")])

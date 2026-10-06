@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/trace_rings.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"trace_rings"
+display_name = "Trace the rings"
+icon = ExtResource("2_icon")
+description = "Divers follow the currents back: where do the plastic rings come from?"
+order = 9
+facility = &"kelp_research_platform"
+cost = 20
+minutes = 2.0
+marker_colour = Color(0.9, 0.9, 0.9, 1)
+report = "The rings drift out from the harbour: the cafe gets its drinks in cans held together by plastic rings, six at a time. Talk to Finn."
+report_none = "The rings drift out from the harbour: the cafe gets its drinks in cans held together by plastic rings, six at a time. Talk to Finn."
+effect = &"investigate"
+show_flag = &"rings_asked"
+hide_flag = &"rings_traced"
+marks_flag = &"rings_traced"

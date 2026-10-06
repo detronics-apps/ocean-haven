@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/source/filter_workshop.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"filter_workshop"
+display_name = "Filter Workshop"
+description = "Kai's workshop makes filters for washing machines that catch plastic fibres before they go down the drain. No new microfibres reach the sea from the islands' laundry."
+summary = "Washing-machine filters: microfibres stopped before the sea."
+order = 8
+texture = ExtResource("2_t")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 160
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+max_count = 1
+only_on = &"tropical_reef"
+needs_flag = &"fibres_traced"
+stops_litter = PackedStringArray("microfibres")
+placement_hint = "on the land, by the workbench"
+fact = "Clothes made of plastic fibres shed tiny threads in every wash. Some countries are starting to require filters in new washing machines."

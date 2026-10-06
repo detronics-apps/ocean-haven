@@ -8,6 +8,10 @@ extends Resource
 @export_multiline var description: String
 ## What it does, in one short line (the Build menu shows only the name, this and the cost).
 @export var summary: String
+## Only in the Build menu once this Fleet flag is set (e.g. once the research says what to build).
+@export var needs_flag: StringName
+## Kinds of litter (item ids) it stops at their source: no more drift in on any island.
+@export var stops_litter: PackedStringArray = []
 ## Position in the Build menu.
 @export var order := 0
 ## The Build menu's button for it: "Build", or "Plant" for trees.

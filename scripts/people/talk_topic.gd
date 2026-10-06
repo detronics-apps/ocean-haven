@@ -28,5 +28,6 @@ extends Resource
 @export var stuck: PackedStringArray = []
 ## Only ever told once (a story).
 @export var once := false
-## A Fleet flag marked once it's been told (e.g. "tracks_noticed": the ranger now sees tracks).
+## A Fleet flag marked once it's been told or asked (e.g. "tracks_noticed": the ranger now sees
+## tracks; "bags_asked": the research it needs is offered now).
 @export var marks: StringName

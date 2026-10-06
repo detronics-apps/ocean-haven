@@ -88,7 +88,22 @@ objective = SubResource("Goal_6")
 thanks = PackedStringArray("Where next, {name}? North, maybe. The ice holds secrets too.")
 reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Cargo Module at the ship (Explore).")
 
+[sub_resource type="Resource" id="Goal_7"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"gear_marking"
+text = "Bring up 3 pieces of lost fishing gear"
+
 [sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"gear"
+when = PackedStringArray("installed:cargo_module")
+lines = PackedStringArray("Every lost net we've seen down there had no name on it. Nobody could tell whose it was, or where it was lost.", "What if every net carried its boat's mark?", "> They'd be found! | They'd come back!", "Then lost gear could be reported and fetched. Bring up three pieces from the mapped areas, and we'll show the fishers.")
+objective = SubResource("Goal_7")
+thanks = PackedStringArray("Marked gear! The fishers report what they lose now, and no new nets or line drift in, anywhere.")
+reminder = PackedStringArray("Lost gear shows up in the mapped areas: bring up three pieces with your boat.")
+
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Where should we explore? I'm always ready for another dive.")
@@ -112,4 +127,4 @@ hair_colour = Color(0.08, 0.06, 0.05, 1)
 shirt = Color(0.85, 0.45, 0.2, 1)
 trousers = Color(0.2, 0.22, 0.26, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])

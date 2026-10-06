@@ -201,6 +201,7 @@ func save_to(world: Node, path: String) -> bool:
 		"activities": Activities.to_dict(),
 		"rescues": Rescues.to_dict(),
 		"litter_collected": Inventory.litter_collected,
+		"litter_picked": Inventory.picked.duplicate(),
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	# Web: write the save itself — the browser's storage is only updated when a file is
@@ -328,6 +329,10 @@ func load_from(world: Node, path: String) -> bool:
 	get_tree().call_group("terrain_edges", "rebuild")  # the changed tiles' rounded corners
 	Inventory.restore(state.get("inventory", {}), state.get("stored", {}))
 	Inventory.litter_collected = int(state.get("litter_collected", 0))
+	Inventory.picked.clear()
+	var picked: Dictionary = state.get("litter_picked", {})
+	for id in picked:
+		Inventory.picked[StringName(id)] = int(picked[id])
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	Arrivals.restore(world, state.get("arrived_animals", []))  # before anything refers to them by name

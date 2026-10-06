@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/source/box_return_depot.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"box_return_depot"
+display_name = "Box Return Depot"
+description = "The fishing boats pack their catch in sturdy boxes that come back here to be washed and used again, trip after trip. No foam boxes: none drift in on any island."
+summary = "Reusable fish boxes: no new foam boxes anywhere."
+order = 8
+texture = ExtResource("2_t")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 120
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+max_count = 1
+only_on = &"home_island"
+needs_flag = &"foam_traced"
+stops_litter = PackedStringArray("foam_box")
+placement_hint = "near the dock"
+fact = "Sturdy reusable boxes can make hundreds of trips, where a foam box is usually thrown away after one."

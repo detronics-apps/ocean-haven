@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Placeholder: plastic six-pack rings -->
+  <g fill="none" stroke="#e8e8e8" stroke-width="1.5">
+    <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
+    <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
+  </g>
+</svg>

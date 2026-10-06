@@ -74,7 +74,37 @@ objective = SubResource("Goal_5")
 thanks = PackedStringArray("Your fleet has all six now, {name}. When we started, we thought we were helping six islands.")
 reminder = PackedStringArray("Fit the Ice Core at any Exploration Ship: walk up to it and choose Explore.")
 
+[sub_resource type="Resource" id="Goal_6"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"fibres_traced"
+text = "Find out what the threads in the ice are"
+
 [sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"fibres"
+when = PackedStringArray("installed:ice_core")
+lines = PackedStringArray("The ice core shows something strange: tiny coloured threads, in the newer layers.", "What do you think they are?", "> Plastic? | Bits of seaweed?", "Let's look closer. Send Look at the fibres from the station.")
+objective = SubResource("Goal_6")
+thanks = PackedStringArray("Plastic microfibres from washing clothes, all the way out here. The freezing ice traps them.")
+reminder = PackedStringArray("Send Look at the fibres from the research station.")
+marks = &"fibres_asked"
+
+[sub_resource type="Resource" id="Goal_7"]
+script = ExtResource("3_g")
+kind = &"stopped"
+target = &"microfibres"
+text = "Catch the microfibres before they reach the sea"
+
+[sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"filters"
+lines = PackedStringArray("The fibres come from laundry far away. How could we catch them before they reach the sea?", "> A filter? | Ask Kai!", "Kai the engineer at the Tropical Reef has been drawing a filter for washing machines. Build his Filter Workshop there.")
+objective = SubResource("Goal_7")
+thanks = PackedStringArray("Filters! The fibres are caught in every wash, before they reach the sea.", "It only works because so many people help. That's true of everything we've done.")
+reminder = PackedStringArray("Kai's Filter Workshop is in the Build menu on the Tropical Reef.")
+
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("What does this mean for the whole ocean? That's the question I can't stop asking.")
@@ -100,4 +130,4 @@ trousers = Color(0.2, 0.2, 0.25, 1)
 hat = 1
 hat_colour = Color(0.85, 0.85, 0.9, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])

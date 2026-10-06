@@ -48,7 +48,8 @@ func _process(_delta: float) -> void:
 static func offered_by(facility: StringName) -> Array[MissionData]:
 	var list: Array[MissionData] = []
 	for mission: MissionData in DataFiles.load_all("res://data/missions"):
-		if mission.facility == facility and (mission.hide_flag == &"" or not Fleet.has_flag(mission.hide_flag)):
+		if mission.facility == facility and (mission.hide_flag == &"" or not Fleet.has_flag(mission.hide_flag)) \
+				and (mission.show_flag == &"" or Fleet.has_flag(mission.show_flag)):
 			list.append(mission)
 	list.sort_custom(func(a: MissionData, b: MissionData) -> bool: return a.order < b.order)
 	return list
@@ -164,6 +165,9 @@ func _run(mission: MissionData) -> Array[Node2D]:
 					found.append(animal)
 		&"boat_patrol":
 			_until[mission.effect] = GameClock.now() + mission.effect_days
+		&"investigate":  # the research behind a question: what to do about it (the report)
+			if mission.marks_flag != &"":
+				Fleet.mark(mission.marks_flag)
 		&"pollution_survey":
 			var spawner := _spawner()
 			if spawner:

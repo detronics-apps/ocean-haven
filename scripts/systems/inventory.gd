@@ -12,6 +12,8 @@ var _items: Dictionary[StringName, ItemData] = {}
 var _stored: Dictionary[StringName, int] = {}
 ## Pieces of litter ever collected (island objectives), not what's carried now. Saved.
 var litter_collected := 0
+## Litter ever picked up, per kind (where it comes from becomes a question). Saved.
+var picked: Dictionary[StringName, int] = {}
 
 
 ## Adds as much of `amount` as the ranger can carry (see ItemData.carry_limit).
@@ -21,6 +23,7 @@ func add(item: ItemData, amount := 1, announce := true) -> void:
 		return
 	if item.is_litter:
 		litter_collected += amount
+		picked[item.id] = picked.get(item.id, 0) + amount
 	_set_count(item, count(item.id) + amount)
 	if announce:
 		item_added.emit(item, _counts[item.id])

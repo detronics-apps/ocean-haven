@@ -75,13 +75,43 @@ objective = SubResource("Goal_5")
 thanks = PackedStringArray("Fair winds, {name}. There are more fish here than when I was young.")
 reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Mangrove Resin at the ship (Explore).")
 
+[sub_resource type="Resource" id="Goal_6"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"bags_traced"
+text = "Find out where the plastic bags come from"
+
 [sub_resource type="Resource" id="Topic_6"]
+script = ExtResource("2_t")
+id = &"bags"
+when = PackedStringArray("installed:mangrove_resin", "picked:plastic_bag>=12")
+lines = PackedStringArray("The bags catch in the mangrove roots like leaves in a fence. You've pulled out {picked:plastic_bag} of them.", "Where do you think they come from?", "> The market? | The tide?", "The waterworks station can follow the water back up the channels: send Trace the bags.")
+objective = SubResource("Goal_6")
+thanks = PackedStringArray("The fish market! Every fish goes home in a new bag, used once.")
+reminder = PackedStringArray("Send Trace the bags from the waterworks station.")
+marks = &"bags_asked"
+
+[sub_resource type="Resource" id="Goal_7"]
+script = ExtResource("3_g")
+kind = &"stopped"
+target = &"plastic_bag"
+text = "Stop the plastic bags at their source"
+
+[sub_resource type="Resource" id="Topic_7"]
+script = ExtResource("2_t")
+id = &"weaving"
+lines = PackedStringArray("What do you think people carried their fish in before plastic?", "> Baskets? | Ask Samuel!", "Samuel's family wove baskets. Ask him, then build a Weaving Workshop: it's in your Build menu now.")
+objective = SubResource("Goal_7")
+thanks = PackedStringArray("Baskets at the market! One basket lasts for years of market days, and when it wears out it rots away like a leaf.")
+reminder = PackedStringArray("The Weaving Workshop is in your Build menu. Samuel knows the leaves to use.")
+
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"full_nets"
 when = PackedStringArray("animals:juvenile_snapper>=10")
 lines = PackedStringArray("My nets are full again. There are more fish than when I was young.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Something happening to the fish? You come and tell me.")
@@ -107,4 +137,4 @@ trousers = Color(0.2, 0.3, 0.45, 1)
 hat = 2
 hat_colour = Color(0.9, 0.85, 0.7, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])

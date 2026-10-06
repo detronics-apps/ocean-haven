@@ -18,9 +18,6 @@ const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 ## ... while there are fewer than this many oil patches in the area.
 @export var max_oil := 2
 const OIL := preload("res://data/items/oil_patch.tres")
-const PLASTIC_BOTTLE := &"plastic_bottle"
-## Lost fishing gear: none drifts in once the Deep Sea's research has brought gear marking.
-const FISHING_GEAR := [&"ghost_net", &"fishing_line"]
 ## Area searched for spots (the waters around the home island). Spots are also always
 ## within its island's rowboat waters (less `reach_margin`), so every piece can be reached.
 @export var area := Rect2(-900, -600, 1800, 1200)
@@ -164,18 +161,12 @@ func fill(count: int) -> void:
 ## already enough litter or no spot was found.
 func spawn_one() -> Debris:
 	var item: ItemData = _items.pick_random()
-	# Problems fixed at their source: no new plastic bottles (reusable bottles) or lost fishing
-	# gear (gear marking) drift in, so there's less litter overall (old ones can still be dug up
-	# or washed ashore by a storm: those use the full mix).
-	var stopped := 0
-	if Fleet.reusable_bottles():
-		stopped += 1
-		if item.id == PLASTIC_BOTTLE:
-			return null
-	if Fleet.has_flag(&"gear_marking"):
-		stopped += FISHING_GEAR.size()
-		if item.id in FISHING_GEAR:
-			return null
+	# Problems fixed at their source (Fleet.stopped: reusable bottles, gear marking, a weaving
+	# workshop...): none of that kind drifts in any more, so there's less litter overall (old
+	# ones can still be dug up or washed ashore by a storm: those use the full mix).
+	var stopped := _items.filter(func(i: ItemData) -> bool: return Fleet.stopped(i.id)).size()
+	if Fleet.stopped(item.id):
+		return null
 	if stopped > 0 and _litter_in_area() >= roundi(max_litter * (1.0 - float(stopped) / _items.size())):
 		return null
 	if _litter_in_area() >= max_litter:

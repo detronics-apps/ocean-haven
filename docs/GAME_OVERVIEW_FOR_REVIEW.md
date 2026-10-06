@@ -555,6 +555,18 @@ hunger or sickness that gets worse, no timers, no "feed me", no streaks.
 | 5 | Fishing line and nets (exists) | Imani | Deep Sea, with Rosa | Gear marking (built) + net recycling **[verify]** |
 | 6 | Microfibres (can't be picked up) | Sanna, after the Ice Core | Reef: Kai builds a filter | Washing-machine filters (France, 2025 **[verify]**) |
 
+- **As built (phase 9), changed from the table to keep each fix on the island that asks, with
+  the island's own hint-giver remembering how it was done before:**
+  - rings: Finn → Trace the rings (Kelp platform) → Harbour Refill Bar (Ines: kegs that go back
+    to be refilled, washed cups; no cans, no rings);
+  - bags: Rosa → Trace the bags (Waterworks) → Weaving Workshop (Samuel: baskets of nipa palm
+    leaves, a mangrove palm; verified: nipa leaves are traditionally woven and used for thatch);
+  - foam boxes: Maya, once two discoveries are fitted → Trace the foam boxes (rescue station) →
+    Box Return Depot (Tom: his father's crates went back to their boats);
+  - microfibres: Sanna → Look at the fibres (Polar station) → Kai's Filter Workshop on the Reef
+    (cross-island);
+  - bottles (Kai) and gear (Imani) are the existing fixes, asked as questions; existing saves
+    that already have them skip the question.
 - **The microfibre lesson:** "cleaning isn't always enough."
 - **Fact fixes:**
   - seaweed doesn't make strong reusable bags;
@@ -637,7 +649,7 @@ the shared foundations first.
 | **6. The other activities** ✅ built (Glass Sort with phase 9) | Mover (Otter Dive, Echo Dive), more Grid (Channel Flow, Floe Fit), Sort (Glass Sort), one at a time | Each reuses a framework |
 | **7. Rescue companions 2–6** ✅ Kelp, Mangrove, Polar built (Reef, Deep wait for species) | Once the species are decided | Reuses phase 4 |
 | **8. Photo moments + tagged animals** ✅ built | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
-| **9. Litter at its source** | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
+| **9. Litter at its source** ✅ built (Glass Sort still to come) | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
 | **10. Predict-then-watch + seasonal moments** | — | Polish on top |
 | **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
 

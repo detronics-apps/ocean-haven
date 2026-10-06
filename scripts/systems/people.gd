@@ -78,7 +78,9 @@ func current_question(person: PersonData) -> TalkTopic:
 	var list := questions(person)
 	var last_done := -1
 	for i in list.size():
-		if Fleet.goal_met(list[i].objective):
+		# (one that can't be asked yet doesn't count: a later problem solved early, like
+		# reusable bottles before the reef is restored, never skips the island's story)
+		if Fleet.goal_met(list[i].objective) and _holds(list[i], person, false):
 			last_done = i
 	if last_done + 1 >= list.size():
 		return null
@@ -170,6 +172,8 @@ func _give(person: PersonData, topic: TalkTopic) -> void:
 	var key := _key(person, topic)
 	_given[key] = true
 	_reveal[key] = 1 << 62  # not until the talk is over
+	if topic.marks != &"":
+		Fleet.mark(topic.marks)  # (e.g. "bags_asked": the research it needs is offered now)
 	_pending.append([person, topic])
 
 
@@ -202,6 +206,9 @@ func _lines(person: PersonData, said: Array[String]) -> Array[Dictionary]:
 ## "{name}" -> the ranger's name; "{count:green_turtle}" -> how many live on their island now.
 func _fill(line: String, person: PersonData) -> String:
 	line = line.replace("{name}", RangerProfile.call_name())
+	var picked := RegEx.create_from_string("\\{picked:([a-z_]+)\\}")
+	for found in picked.search_all(line):
+		line = line.replace(found.get_string(), str(Inventory.picked.get(StringName(found.get_string(1)), 0)))
 	line = line.replace("{moments}", str(Journal.moments_caught())).replace("{moments_total}", str(Journal.moments_total()))
 	var regex := RegEx.create_from_string("\\{count:([a-z_]+)\\}")
 	for found in regex.search_all(line):
@@ -262,12 +269,14 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ## Whether `condition` holds now for `person`'s island:
 ## - "first" (meeting them for the first time), "flag:X", "built:X", "installed:X", "met:X",
 ##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), "season:X", "here" (the ranger is on their
-##   island), each with "!" in
+##   island), "found:X" (island X discovered), "stopped:X" (litter X stopped at its source),
+##   each with "!" in
 ##   front for "not";
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
 ##   "tangled" (animals caught or hurt), "busy:X" (nesting areas too busy), "species"
-##   (species photographed), "missing_moments" (photo moments still to catch), "health"
+##   (species photographed), "missing_moments" (photo moments still to catch), "picked:X" (litter X ever picked up),
+##   "installed" (discoveries in the fleet), "health"
 ##   (percent), "built:X".
 func check(condition: String, person: PersonData, first := false) -> bool:
 	var negate := condition.begins_with("!")
@@ -294,6 +303,8 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"installed": result = Fleet.is_installed(arg)
 		"met": result = _met.has(arg)
 		"season": result = GameClock.season() == arg
+		"found": result = Regions.is_discovered(load("res://data/regions/%s.tres" % arg))
+		"stopped": result = Fleet.stopped(arg)
 		"here":  # the ranger is on their island
 			var ranger := ControlledBody.active(get_tree())
 			result = ranger != null and Regions.nearest(ranger.global_position).id == person.region
@@ -329,6 +340,8 @@ func _number(name: String, person: PersonData) -> float:
 				return b.data.id == arg and b.too_busy() != null and Regions.nearest(b.global_position) == region).size()
 		"species": return Journal.photographed_species()
 		"missing_moments": return Journal.moments_total() - Journal.moments_caught()
+		"picked": return Inventory.picked.get(arg, 0)
+		"installed": return Fleet.level()
 		"health": return IslandHealth.of(get_tree(), region) * 100.0
 		"built": return _built(person, arg)
 	push_warning("People: unknown number '%s'" % name)

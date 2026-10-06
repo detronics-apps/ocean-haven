@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
+[ext_resource type="Texture2D" path="res://assets/buildings/source/refill_bar.svg" id="2_t"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"refill_bar"
+display_name = "Harbour Refill Bar"
+description = "Ines's drinks come in big kegs that go back to be refilled, and the cups are washed and used again. No cans, so no plastic rings: none drift in on any island."
+summary = "Drinks from refillable kegs: no new plastic rings anywhere."
+order = 8
+texture = ExtResource("2_t")
+terrain = PackedStringArray("sand", "grass")
+cost_funding = 120
+cost_items = Dictionary[StringName, int]({&"wood": 3})
+max_count = 1
+only_on = &"kelp_forest"
+needs_flag = &"rings_traced"
+stops_litter = PackedStringArray("six_pack_rings")
+placement_hint = "by the harbour"
+fact = "Refillable containers can be used again and again, so they stop waste before it starts."

@@ -57,6 +57,8 @@ func _fill() -> void:
 	for data: BuildingData in all:
 		if data.only_on != &"" and data.only_on != island.id:
 			continue  # belongs to another island
+		if data.needs_flag != &"" and not Fleet.has_flag(data.needs_flag):
+			continue  # not worked out yet
 		if _tab == &"" or data.category == _tab:
 			_content.add_child(_entry(data))
 

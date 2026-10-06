@@ -79,6 +79,8 @@ func progress(goal: ObjectiveGoal) -> int:
 			return built
 		&"installed":
 			return 1 if _installed.has(goal.target) else 0
+		&"stopped":
+			return 1 if stopped(goal.target) else 0
 	return 0
 
 
@@ -119,6 +121,20 @@ func mark(flag: StringName) -> void:
 ## made, reusable glass bottles replace plastic ones everywhere (no new plastic bottles drift in).
 const GLASS_MADE := &"glass_made"
 const CLEAN_WATER_MADE := &"clean_water_made"
+
+
+## Whether litter of kind `id` has been stopped at its source, so no more of it drifts in on
+## any island: plastic bottles by reusable bottles, fishing gear by gear marking, the rest by a
+## building that stops it (BuildingData.stops_litter, e.g. the Weaving Workshop: plastic bags).
+func stopped(id: StringName) -> bool:
+	if id == &"plastic_bottle":
+		return reusable_bottles()
+	if id in [&"ghost_net", &"fishing_line"]:
+		return has_flag(&"gear_marking")
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if String(id) in building.data.stops_litter and not building.is_queued_for_deletion():
+			return true
+	return false
 
 
 func reusable_bottles() -> bool:
