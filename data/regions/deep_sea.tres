@@ -103,3 +103,6 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Understand the deep, and recover what was lost there"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_mapped"), SubResource("Goal_located"), SubResource("Goal_recovered")])
 discovery = &"cargo_module"
+flagship = &"sperm_whale"
+flagship_goal = "Bring the sperm whales back"
+flagship_tip = "Whales need quiet water: map the dark areas with quiet Hydrophone Buoys, use few lamps and dives, and Deep-Sea Sanctuaries welcome one more."

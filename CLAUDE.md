@@ -389,8 +389,10 @@ go on rock.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
-"health_gauge"); a StatusColumn top right stacks the health bar, water bar, the objective line
-(the island's next goal + ObjectiveGoal.hint) and a storm warning; every first visit says what the
+"health_gauge"); a StatusColumn top right stacks the health bar, water bar, the goal line (bring
+the island's headline animal back, RegionData.flagship: "3 / 10", then explore to find a new
+island), a Tip button (one tip when asked, for where the player is: the objective's next step
++ ObjectiveGoal.hint, the ship, installing, exploring, then RegionData.flagship_tip) and a storm warning; every first visit says what the
 island is about; oil patches and other boat-only things explain themselves close up. An island's
 storm timer starts when the ranger first gets there: nothing is warned or strikes within
 min_gap_days of that (RareEvents._first_on / _too_soon; earlier warnings are called off).

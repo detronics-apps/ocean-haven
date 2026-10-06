@@ -91,3 +91,6 @@ discovery = &"mangrove_resin"
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_water"), SubResource("Health_mangroves"), SubResource("Health_fish"), SubResource("Health_nests"), SubResource("Health_crabs"), SubResource("Health_crocodiles")])
 objective = "Get the water flowing through the mangroves again"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_flowing"), SubResource("Goal_resin")])
+flagship = &"juvenile_snapper"
+flagship_goal = "Bring young fish back to the nursery pools"
+flagship_tip = "Young snappers grow up in nursery pools linked to the open sea: dig the silted channels open, keep the water gates open, and plant mangroves beside the pools."

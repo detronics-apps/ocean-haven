@@ -82,3 +82,6 @@ discovery = &"reef_limestone"
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_coral"), SubResource("Health_fish"), SubResource("Health_clams"), SubResource("Health_seahorses"), SubResource("Health_sharks")])
 objective = "Bring the coral reef back to life"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_restored"), SubResource("Goal_rubble")])
+flagship = &"parrotfish"
+flagship_goal = "Bring the parrotfish back to the reef"
+flagship_tip = "Parrotfish follow healthy coral: plant coral fragments (from Coral Restoration Sites) on the reef patches from your boat, and keep the water clear of litter."

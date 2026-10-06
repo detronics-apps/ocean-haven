@@ -26,8 +26,17 @@ func _initialize() -> void:
 	await process_frame
 	_expect(not minimap.visible and not gauge.visible and not water.visible, "a new game: no minimap, health bar or water bar yet")
 	var text: String = hud.objective_text()
-	_expect(text.begins_with("Goal: Find what's hidden") and text.contains("Tip: Build the Marine Rescue"),
-		"the objective line says the first goal and how (%s)" % text)
+	_expect(text.begins_with("Goal: Bring the sea turtles back: ") and text.contains(" / 10") and text.contains("then explore to find a new island")
+		and not text.contains("Tip"), "the goal: bring the turtles back, then explore (%s)" % text)
+	var tip: String = hud.tip_text()
+	_expect(tip.begins_with("Next step towards exploring: Build the Marine Rescue"),
+		"one tip, only when asked: the objective's first step and how (%s)" % tip)
+	_expect(hud.get_node("StatusColumn/TipButton").visible, "a Tip button under the goal")
+
+	# Objective done, no ship yet: the tip says to build it.
+	for flag in [&"wreck_found", &"wreck_cleared", &"sonar_recovered"]:
+		fleet.mark(flag)
+	_expect(hud.tip_text().contains("Exploration Ship"), "objective done: the tip is to build the Exploration Ship (%s)" % hud.tip_text())
 
 	# The Sonar Core brings the minimap.
 	fleet.restore({"found": ["salvaged_sonar_core"], "installed": ["salvaged_sonar_core"]})
