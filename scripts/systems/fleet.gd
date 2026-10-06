@@ -68,6 +68,17 @@ func progress(goal: ObjectiveGoal) -> int:
 			return 1 if _flags.has(goal.target) else 0
 		&"count":
 			return _counts.get(goal.target, 0)
+		&"photos":
+			return Journal.photographed_species()
+		&"built":
+			var built := 0
+			for building: Building in get_tree().get_nodes_in_group("buildings"):
+				if building.data.id == goal.target and not building.is_queued_for_deletion() \
+						and (goal.island == &"" or Regions.nearest(building.global_position).id == goal.island):
+					built += 1
+			return built
+		&"installed":
+			return 1 if _installed.has(goal.target) else 0
 	return 0
 
 

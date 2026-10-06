@@ -67,6 +67,11 @@ func photograph(animal: AnimalData) -> void:
 	photographed.emit(animal, _photos[animal.id])
 
 
+## How many different species have been photographed.
+func photographed_species() -> int:
+	return _photos.values().filter(func(n: int) -> bool: return n > 0).size()
+
+
 func photos(id: StringName) -> int:
 	return _photos.get(id, 0)
 

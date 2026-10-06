@@ -80,6 +80,12 @@ func _ready() -> void:
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
+	var talk := TalkBox.new()  # talking to the people of the islands
+	talk.name = "TalkBox"
+	get_parent().add_child.call_deferred(talk)
+	People.objective_given.connect(func(_p: PersonData, goal: ObjectiveGoal) -> void:
+		show_toast("New objective: " + goal.text)
+		_unlock_check = 0.0)
 	var storage := StorageMenu.new()  # opened from a Ranger House or an Exploration Ship
 	storage.name = "StorageMenu"
 	get_parent().add_child.call_deferred(storage)
@@ -358,7 +364,10 @@ func _process(delta: float) -> void:
 		_check_unlocks()
 		_objective.text = objective_text()
 		_objective.visible = _objective.text != ""
-		($StatusColumn/TipButton as Control).visible = _objective.visible
+		# Islands with people: they give the objectives, and their hint-giver replaces the tip.
+		var region := _ranger_region()
+		($StatusColumn/TipButton as Control).visible = _objective.visible \
+			and not (region and People.has_people(region.id))
 	_info.text = nearest_animal_info()
 	_info.visible = _info.text != ""
 	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
@@ -386,10 +395,13 @@ func _check_unlocks() -> void:
 
 ## The island's goal: bring its headline animal back ("Goal: Bring the sea turtles back:
 ## 3 / 10"), and then explore to find more islands. "" when there's nothing to say.
+## On an island with people, objectives only come from them (People.goal_text).
 func objective_text() -> String:
 	var region := _ranger_region()
 	if not region:
 		return ""
+	if People.has_people(region.id):
+		return People.goal_text(region.id)
 	var lines: Array[String] = []
 	var factor := _flagship_factor(region)
 	if factor and IslandHealth.count(get_tree(), region, factor) < factor.amount:

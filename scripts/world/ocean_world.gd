@@ -14,6 +14,10 @@ const TOUCH_SCALE := 1.5
 
 
 func _ready() -> void:
+	for person: PersonData in People.all():  # the people of the islands (data/people/)
+		var someone := Person.new()
+		someone.data = person
+		add_child(someone)
 	var tint := Timer.new()
 	tint.wait_time = tint_interval
 	tint.autostart = true

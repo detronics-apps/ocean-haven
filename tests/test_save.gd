@@ -110,6 +110,10 @@ func _initialize() -> void:
 	world.get_node("HookIsland/Ecosystem/Sector5").dive_marked = true
 	world.get_node("PolarIsland/Ecosystem").set("_season", 1.25)
 	load("res://scripts/player/controlled_body.gd").water_until = 7.5
+	var people := root.get_node("People")
+	people.restore({})
+	people.talk(load("res://data/people/tom.tres"))
+	people.finish_talk()
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
 	world.free()
@@ -119,6 +123,7 @@ func _initialize() -> void:
 	fleet.restore({})
 	missions.restore({})
 	events.restore({})
+	root.get_node("People").restore({})
 	_inventory.restore({})
 	_inventory.litter_collected = 0
 	_journal.restore([])
@@ -150,6 +155,7 @@ func _initialize() -> void:
 		"how well the Deep Sea's dark areas are known, and the area marked for a dive, are restored")
 	_expect(is_equal_approx(world.get_node("PolarIsland/Ecosystem").get("_season"), 1.25), "the Polar Ocean's ice season is restored")
 	_expect(is_equal_approx(load("res://scripts/player/controlled_body.gd").water_until, 7.5), "the ranger's water is restored")
+	_expect(root.get_node("People").has_met(load("res://data/people/tom.tres")), "the people the ranger has met are remembered")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

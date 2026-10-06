@@ -387,6 +387,22 @@ Ice Breakup (EventData.ice_breakup: old ice broken off until the next freeze). O
 -> Ice Core Drill Site on old ice for 3 days -> Ice Core. Tents, houses and recycling centres can
 go on rock.
 
+**MVP 1.0 — "People & story" (current).** Design and build plan: `docs/GAME_OVERVIEW_FOR_REVIEW.md`
+(sections 6–16; story rules in `docs/ISLAND_RULES.md` section 9). Phase 1 built: people
+(`data/people/*.tres`, PersonData with TalkTopics; names live there) on the Starting Island:
+Dr. Maya Okafor (Researcher, objective-giver, field camp → by her station: `moves_to`) and Tom
+Pieters (Lighthouse keeper, hint-giver, lighthouse on the south-west tip). `People` autoload:
+objectives only come from people; a question (TalkTopic.objective, ObjectiveGoal kinds now also
+"photos", "built", "installed") becomes the objective DELAY seconds after the talk
+(`finish_talk`); done → "Go back to Maya" → thanks + the next. Everything is worked out from the
+game state (TalkTopic.when conditions, `People.check`), so questions the ranger has got past are
+skipped and old saves meet everyone where they are; only met / asked / thanked / told are saved.
+Person nodes (spawned by the world, group "people") block building on them and their place;
+TalkBox shows the talk (tap through; the game waits). Tom's tracks story (`marks`
+"tracks_noticed") makes turtle tracks show from nests to the sea. On islands with people the goal
+line is `People.goal_text` and there's no Tip button (other islands keep the old line + Tip
+until their people come, phase 5).
+
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
 "health_gauge"); a StatusColumn top right stacks the health bar, water bar, the goal line (bring

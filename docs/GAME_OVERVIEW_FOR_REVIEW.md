@@ -629,7 +629,7 @@ the shared foundations first.
 | Phase | What | Why here |
 |---|---|---|
 | **0. Rules** | This document; the principles (section 13) added to ISLAND_RULES | Done now |
-| **1. People (Starting Island)** | People, talking, the Notebook, Maya's story worked out from game state, Tom's hints, micro-stories and world reactions; the Tip button goes | Every later feature is delivered through people |
+| **1. People (Starting Island)** ✅ built | People, talking, the Notebook, Maya's story worked out from game state, Tom's hints, micro-stories and world reactions; the Tip button goes | Every later feature is delivered through people |
 | **2. Calendar + turtles** | Seasons on the HUD; turtle growth and the nesting season (simulated first) | Small; the rescue's 30 days and seasons need it |
 | **3. Sonar Sweep** | The Grid framework, personal bests, Maya introduces it, the survey point | The first ranger activity, and it proves the activity rules |
 | **4. Rescue companion #1** | The turtle at the Starting Island: naming, stages, care moments, the release, its Journal story | The emotional hook, early in the game |
@@ -641,7 +641,7 @@ the shared foundations first.
 | **10. Predict-then-watch + seasonal moments** | — | Polish on top |
 | **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
 
-### Phase 1 in detail: the starting point
+### Phase 1 in detail (built)
 
 1. **People as data:**
    - `data/people/maya.tres` and `tom.tres`, with name, job, island, spot and role

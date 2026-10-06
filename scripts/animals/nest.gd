@@ -24,6 +24,12 @@ var area: Node2D
 
 var _bar: ProgressBar
 var _caption: Label
+## Where the turtle came up from the sea (her tracks lead there; shown once the ranger has
+## learned to look for them: Fleet flag "tracks_noticed", from Tom's story).
+var _sea_at := Vector2.INF
+var _tracks: Node2D
+const TRACKS_FLAG := &"tracks_noticed"
+const TRACKS_SEEN := &"tracks_seen"
 
 
 func _enter_tree() -> void:
@@ -33,6 +39,14 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not area:
 		area = _nearest_area()
+	_sea_at = Terrain.nearest(get_tree(), global_position, ["water", ""], 8)
+	if _sea_at == global_position:
+		_sea_at = Vector2.INF
+	_tracks = Node2D.new()
+	_tracks.name = "Tracks"
+	_tracks.z_index = -1  # in the sand, under everything standing on it
+	_tracks.draw.connect(_draw_tracks)
+	add_child(_tracks)
 	# Built at 2x size and halved, so text is pixel-crisp under the 2x camera.
 	_caption = Label.new()
 	_caption.add_theme_font_size_override("font_size", 16)
@@ -82,6 +96,11 @@ func _process(_delta: float) -> void:
 		return
 	var ranger := ControlledBody.active(get_tree())
 	var near := ranger is Player and ranger.global_position.distance_to(global_position) <= SHOW_RANGE
+	if Fleet.has_flag(TRACKS_FLAG) and _sea_at != Vector2.INF:
+		_tracks.queue_redraw()
+		if near and not Fleet.has_flag(TRACKS_SEEN):
+			Fleet.mark(TRACKS_SEEN)
+			get_tree().call_group("hud", "show_toast", "Turtle tracks! A turtle crawled up from the sea in the night to lay her eggs here, just as Tom said.")
 	_bar.visible = near
 	_caption.visible = near
 	if near:
@@ -91,6 +110,28 @@ func _process(_delta: float) -> void:
 			_caption.text += " (protected)"
 		elif storm_hit:
 			_caption.text += " (storm-hit: 1 egg left)"
+
+
+## The mother turtle's tracks: two rows of flipper marks from the sea up to the nest.
+func _draw_tracks() -> void:
+	if not Fleet.has_flag(TRACKS_FLAG) or _sea_at == Vector2.INF:
+		return
+	var to := to_local(_sea_at)
+	var length := to.length()
+	if length < 8.0:
+		return
+	var along := to / length
+	var side := Vector2(-along.y, along.x)
+	var mark := Color(0.45, 0.36, 0.25, 0.35)
+	var step := 5.0
+	var d := 6.0
+	var i := 0
+	while d < length - 4.0:
+		var at := along * d
+		var offset := side * (4.0 if i % 2 == 0 else -4.0)
+		_tracks.draw_line((at + offset - side * 1.5).round(), (at + offset + side * 1.5).round(), mark, 1.0)
+		d += step
+		i += 1
 
 
 func hatch() -> void:

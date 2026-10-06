@@ -56,6 +56,7 @@ func attach(world: Node) -> bool:
 	Fleet.upgraded.connect(func(_d, _l): _dirty = true)
 	Missions.sent.connect(func(_m): _dirty = true)
 	RareEvents.warned.connect(func(_e): _dirty = true)
+	People.talked.connect(func(_p): _dirty = true)
 	RareEvents.struck.connect(func(_e, _d): _dirty = true)
 	Missions.returned.connect(func(_m, _f): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)
@@ -190,6 +191,7 @@ func save_to(world: Node, path: String) -> bool:
 		"fleet": Fleet.to_dict(),
 		"mission": Missions.to_dict(),
 		"rare_events": RareEvents.to_dict(),
+		"people": People.to_dict(),
 		"litter_collected": Inventory.litter_collected,
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
@@ -301,6 +303,7 @@ func load_from(world: Node, path: String) -> bool:
 	Fleet.restore(state.get("fleet", {}))
 	Missions.restore(state.get("mission", {}))
 	RareEvents.restore(state.get("rare_events", {}))
+	People.restore(state.get("people", {}))
 	GameClock.day = int(state.get("day", 1))
 	GameClock.time_of_day = float(state.get("time_of_day", 0.3))
 	_tile_edits = state.get("tile_edits", {})
