@@ -130,6 +130,8 @@ func _ready() -> void:
 		_tangle.texture = tangle_item.icon  # whatever it's caught in: line, net, bag...
 	_rest_left = randf_range(0.0, data.rest_max)
 	collision_mask = WATER_LAYER if _lives_on_land() else LAND_LAYER
+	if _water_only():
+		collision_mask = 0  # (wading shallows collide like land: swimmers check the water ahead instead)
 	if data.flies:
 		collision_mask = 0
 		z_index = 2  # over the trees
@@ -322,6 +324,9 @@ func _physics_process(delta: float) -> void:
 		_rest(randf_range(data.rest_min, data.rest_max))
 		return
 	velocity = to_target.normalized() * speed
+	if _water_only() and in_habitat(global_position) and not in_habitat(global_position + velocity.normalized() * 10.0):
+		_rest(data.rest_min)  # the water ends here: never swim up onto the land (then flicker back)
+		return
 	move_and_slide()
 	_face(velocity)
 	# Blocked by land (e.g. fled towards the beach): rest, then pick somewhere else.
@@ -805,7 +810,9 @@ func _pick_target() -> Vector2:
 	# Not much habitat around (a narrow beach): the nearest bit to a random spot,
 	# rather than always heading back to exactly the same place.
 	spot = Terrain.nearest(get_tree(), spot, Array(data.habitat_terrain), 4)
-	return spot if in_habitat(spot) else _home
+	if in_habitat(spot):
+		return spot
+	return _home if in_habitat(_home) else global_position
 
 
 ## Somewhere in its habitat, further from `danger` (so a crab runs along the beach
