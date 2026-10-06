@@ -13,41 +13,47 @@ lines = PackedStringArray("Welcome, {name}. I'm Samuel. I've built boats from th
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")
+id = &"ending"
+when = PackedStringArray("flag:observatory_opened")
+lines = PackedStringArray("Keep the water moving, and everything else follows.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
 id = &"caught"
 when = PackedStringArray("tangled>=1")
 lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
 
-[sub_resource type="Resource" id="Topic_2"]
+[sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"nipa"
 when = PackedStringArray("asked:weaving")
 lines = PackedStringArray("My grandmother wove baskets from nipa palm leaves. Nipa grows right here, among the mangroves.", "Take a few leaves and the palm grows more. A good basket lasts for years.")
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"silt"
 when = PackedStringArray("!flag:mangrove_flowing")
 lines = PackedStringArray("Water that stands still drops its mud. Keep it moving.", "Dig a channel with your shovel from the sea to a pool, and see how the water rushes in.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"trees"
 when = PackedStringArray("built:waterworks_station")
 lines = PackedStringArray("Mangrove roots hold the mud in place. Plant a propagule beside a channel and it slows the silting.")
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"litter"
 when = PackedStringArray("litter>12")
 lines = PackedStringArray("The roots catch everything the tide brings in, rubbish too. Clear it and the water runs cleaner.")
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"on"
 when = PackedStringArray("installed:mangrove_resin")
 lines = PackedStringArray("At the Tropical Reef, find Leilani, the dive guide. She knows where every current goes.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("A boat is only as good as the water under it.")
@@ -69,4 +75,4 @@ hair_colour = Color(0.7, 0.7, 0.7, 1)
 shirt = Color(0.45, 0.55, 0.35, 1)
 trousers = Color(0.35, 0.28, 0.2, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])

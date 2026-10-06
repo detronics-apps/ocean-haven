@@ -479,6 +479,16 @@ watch: an objective-giver's topic with `outcome` / `outcome_when` is a predictio
 with a reminder (never once what it predicts has happened); the ranger's reply is kept as the
 guess (People.chose from the TalkBox; saved "guesses"/"outcomes"), and once it happens they say
 what really happened. The Journal shows "Your predictions" beside the guesses. No score.
+Phase 11: the ending, not "You won". With all six discoveries fitted every Exploration Ship is
+an Ocean Research Vessel (ExploreMenu title) and the Map opens the Global Ocean Observatory
+(ObservatoryScreen): the six islands as they lie (Panorama) with arcs for the links the ranger
+has made (clean water -> kelp, mangrove fish -> reef, terns, each fix stopping litter
+everywhere, fibres -> the polar ice, travelling rescues), every island's health and the whole
+ocean's. Once every kind of litter is stopped at its source too (`final_chapter()`), it asks
+"You've helped every island. What have you learned?" with observations from the ranger's own
+game, then "One ocean. Many places. Everything connected." and each person's closing line
+(their "ending" topic, which they also say afterwards: flag "observatory_opened"). Maya's last
+question ("observatory") is answered by opening it. Play goes on.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

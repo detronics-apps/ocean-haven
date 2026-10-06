@@ -18,6 +18,8 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	# With all six discoveries fitted, every Exploration Ship is an Ocean Research Vessel.
+	_title.text = "Ocean Research Vessel" if ObservatoryScreen.is_open_to_ranger() else "Exploration Ship"
 	_content.add_child(_equipment_card())
 	var note := Label.new()
 	note.text = "Where shall we explore? You'll find out what's there when you arrive."
@@ -93,6 +95,8 @@ func install(discovery: DiscoveryData) -> void:
 	refresh.call_deferred()  # not while its own Upgrade button is still being pressed
 	get_tree().call_group("hud", "show_toast", "Fleet upgraded to Level %d: %s!\nEvery ship can now %s." % [
 		Fleet.level(), discovery.upgrade_name, discovery.capability])
+	if ObservatoryScreen.is_open_to_ranger():
+		get_tree().call_group("hud", "show_toast", "All six discoveries! Every Exploration Ship is an Ocean Research Vessel now, and the Map opens the Global Ocean Observatory: the whole ocean at once.")
 
 
 ## The island next to the ranger's (where this ship is) in `direction`.

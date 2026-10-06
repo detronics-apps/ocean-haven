@@ -78,6 +78,9 @@ func _ready() -> void:
 	var weather := StormWeather.new()  # a storm's weather when it strikes
 	weather.name = "StormWeather"
 	add_child(weather)
+	var observatory := ObservatoryScreen.new()  # the whole ocean (from the Map)
+	observatory.name = "ObservatoryScreen"
+	get_parent().add_child.call_deferred(observatory)
 	var season_show := SeasonShow.new()  # seasonal moments' sights (SeasonEvent)
 	season_show.name = "SeasonShow"
 	get_parent().add_child.call_deferred(season_show)

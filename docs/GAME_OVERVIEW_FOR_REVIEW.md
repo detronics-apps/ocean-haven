@@ -651,7 +651,7 @@ the shared foundations first.
 | **8. Photo moments + tagged animals** ✅ built | The album, named animals, sightings on healthy islands | Rescue companions become the first tagged animals |
 | **9. Litter at its source** ✅ built (Glass Sort still to come) | Counters, questions, Investigate missions, two new litter items, the fixes, microfibres, the Glassworks fact fix | Needs the people of several islands |
 | **10. Predict-then-watch + seasonal moments** ✅ built | One prediction per island (turtle nest, kelp, nursery pools, parrotfish, whales, seal pups); coral spawning, whales passing, terns arriving | Polish on top |
-| **11. The ending** | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
+| **11. The ending** ✅ built | Connected ocean, Ocean Research Vessel, Observatory reflection, the people at the end | Needs everything else |
 
 ### Phase 1 in detail (built)
 

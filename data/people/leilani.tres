@@ -13,41 +13,47 @@ lines = PackedStringArray("Aloha, {name}! I'm Leilani. I take people diving here
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")
+id = &"ending"
+when = PackedStringArray("flag:observatory_opened")
+lines = PackedStringArray("The reef's full of colour again. Every dive is different.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
 id = &"caught"
 when = PackedStringArray("tangled>=1")
 lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
 
-[sub_resource type="Resource" id="Topic_2"]
+[sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"spawning"
 when = PackedStringArray("soon:coral_spawning")
 lines = PackedStringArray("Early in summer, on a few nights after dark, the whole reef spawns at once. Come and watch from the water at night!")
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"shark"
 when = PackedStringArray("animals:reef_shark>=1")
 lines = PackedStringArray("The shark isn't the trouble. Follow it: it's circling something caught down there.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"coral"
 when = PackedStringArray("!flag:reef_restored")
 lines = PackedStringArray("Parrotfish graze the algae off the reef so young coral can grow. And giant clams clean the water.", "Grow coral fragments, plant them on the reef from your boat, and give the reef animals a home.")
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"litter"
 when = PackedStringArray("litter>12")
 lines = PackedStringArray("The lagoon keeps catching litter. Clear water lets the coral grow faster.")
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"on"
 when = PackedStringArray("installed:reef_limestone")
 lines = PackedStringArray("If you ever go to the Deep Sea, look for Bram. He's an old captain with a lot of stories.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Every dive here is different. That's what I love about it.")
@@ -69,4 +75,4 @@ hair_colour = Color(0.15, 0.1, 0.08, 1)
 shirt = Color(0.2, 0.65, 0.7, 1)
 trousers = Color(0.95, 0.9, 0.8, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])

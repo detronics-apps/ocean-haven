@@ -127,10 +127,10 @@ const CLEAN_WATER_MADE := &"clean_water_made"
 ## any island: plastic bottles by reusable bottles, fishing gear by gear marking, the rest by a
 ## building that stops it (BuildingData.stops_litter, e.g. the Weaving Workshop: plastic bags).
 func stopped(id: StringName) -> bool:
-	if id == &"plastic_bottle":
-		return reusable_bottles()
-	if id in [&"ghost_net", &"fishing_line"]:
-		return has_flag(&"gear_marking")
+	if id == &"plastic_bottle" and reusable_bottles():
+		return true
+	if id in [&"ghost_net", &"fishing_line"] and has_flag(&"gear_marking"):
+		return true
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if String(id) in building.data.stops_litter and not building.is_queued_for_deletion():
 			return true

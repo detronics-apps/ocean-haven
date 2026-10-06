@@ -13,47 +13,53 @@ lines = PackedStringArray("Welcome to the harbour, {name}! I'm Ines. I run the c
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")
+id = &"ending"
+when = PackedStringArray("flag:observatory_opened")
+lines = PackedStringArray("Rafts of otters again, and drinks from kegs. Grandma would laugh.")
+
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
 id = &"caught"
 when = PackedStringArray("tangled>=1")
 lines = PackedStringArray("Something's caught out there. Go gently: you can free it.")
 
-[sub_resource type="Resource" id="Topic_2"]
+[sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"kegs"
 when = PackedStringArray("asked:refill")
 lines = PackedStringArray("When I was young, drinks came in glass bottles in wooden crates, and the crates went back to be filled again.", "A refill bar works the same way: big kegs go back to be refilled, and the cups get washed. No cans, no rings.")
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"no_platform"
 when = PackedStringArray("!built:kelp_research_platform")
 lines = PackedStringArray("Finn keeps talking about a research platform on the water. He's right: you can't fix what you can't see.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"otters"
 when = PackedStringArray("animals:sea_otter<2")
 lines = PackedStringArray("Otters eat urchins, and urchins eat kelp. Grandma said that when the otters went, the kelp went too.", "Otters need a quiet stretch of shore to rest on, and enough to eat. An Otter Habitat or two, perhaps?")
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"litter"
 when = PackedStringArray("litter>12")
 lines = PackedStringArray("The tide keeps bringing litter in. The otters will carry some ashore once they're back, bless them.")
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"rafts"
 when = PackedStringArray("animals:sea_otter>=4")
 lines = PackedStringArray("Rafts of otters again! Just like in Grandma's stories.")
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"on"
 when = PackedStringArray("installed:kelp_fibre")
 lines = PackedStringArray("If you sail to the Mangrove Coast, find Samuel the boat builder. Nobody knows water like him.")
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Sit down a minute. The harbour's busier than it's been in years.")
@@ -75,4 +81,4 @@ hair_colour = Color(0.55, 0.55, 0.55, 1)
 shirt = Color(0.75, 0.3, 0.3, 1)
 trousers = Color(0.3, 0.3, 0.38, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])

@@ -17,36 +17,42 @@ id = &"hello"
 when = PackedStringArray("first")
 lines = PackedStringArray("Welcome to the ice, {name}. I'm Sanna. I lead the expedition here.", "Out here everything moves with the seasons: the ice, the seals, the bears, the birds.")
 
-[sub_resource type="Resource" id="Goal_2"]
+[sub_resource type="Resource" id="Topic_2"]
+script = ExtResource("2_t")
+id = &"ending"
+when = PackedStringArray("flag:observatory_opened")
+lines = PackedStringArray("There was only ever one ocean.")
+
+[sub_resource type="Resource" id="Goal_3"]
 script = ExtResource("3_g")
 kind = &"built"
 target = &"polar_research_station"
 island = &"arctic_ocean"
 text = "Build the Polar Research Station"
 
-[sub_resource type="Resource" id="Topic_2"]
+[sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"station"
 lines = PackedStringArray("Some of this ice is older than anyone alive. What do you think it remembers?", "> The weather long ago? | Nothing?", "Layers and layers of it! First we need a research station, on the rock. It's in your Build menu.")
-objective = SubResource("Goal_2")
+objective = SubResource("Goal_3")
 thanks = PackedStringArray("The station is up. Now we can watch the ice through the year.")
 reminder = PackedStringArray("The Polar Research Station goes on rock: it's in your Build menu.")
 
-[sub_resource type="Resource" id="Goal_3"]
+[sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"polar_balanced"
 text = "Help the Polar Ocean through the seasons (island health 70 %)"
 
-[sub_resource type="Resource" id="Topic_3"]
+[sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"seasons"
 lines = PackedStringArray("The ice freezes and melts every season here. What do you think a seal pup needs from the ice?", "> Ice that lasts? | Lots of fish?", "Let's find out. Erik has watched the ice for thirty years.")
-objective = SubResource("Goal_3")
+objective = SubResource("Goal_4")
 thanks = PackedStringArray("Pups on the old ice, and a bear crossing the frozen channel. This ocean's coming back.")
 reminder = PackedStringArray("How are the seals and bears doing? The station's surveys show which ice will last.")
 
-[sub_resource type="Resource" id="Topic_4"]
+[sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"guess_pups"
 when = PackedStringArray("asked:seasons")
@@ -54,65 +60,65 @@ lines = PackedStringArray("A seal pup is born on ice that melts in the thaw. Wha
 outcome_when = PackedStringArray("flag:polar_balanced")
 outcome = "Pups born on old ice, ice that lasts through the thaw, grew up safely. Ice that melts too soon is a hard place to start life."
 
-[sub_resource type="Resource" id="Goal_5"]
+[sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"ice_core_drilled"
 text = "Drill an ice core on old ice (3 days)"
 
-[sub_resource type="Resource" id="Topic_5"]
+[sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"core"
 lines = PackedStringArray("Now for the old ice's memory. A drill site on old ice could bring up a core from deep inside.", "It needs ice that lasts for three days while it drills. Help me plan it on the station's ice map: a Floe Fit.")
-objective = SubResource("Goal_5")
+objective = SubResource("Goal_6")
 thanks = PackedStringArray("An ice core! Every layer is a year. This ocean connects the whole planet, and now we can read it.")
 reminder = PackedStringArray("Plan it with a Floe Fit at the station, then build the Ice Core Drill Site on old ice and keep it there for 3 days.")
 
-[sub_resource type="Resource" id="Goal_6"]
+[sub_resource type="Resource" id="Goal_7"]
 script = ExtResource("3_g")
 kind = &"installed"
 target = &"ice_core"
 text = "Fit the Ice Core at one of your Exploration Ships"
 
-[sub_resource type="Resource" id="Topic_6"]
+[sub_resource type="Resource" id="Topic_7"]
 script = ExtResource("2_t")
 id = &"fit_core"
 lines = PackedStringArray("What do you think your ships could learn from the old ice?", "> About the climate? | About the whole ocean?", "Both! Fit the Ice Core at any of your Exploration Ships (Explore), and the whole fleet can read it.")
-objective = SubResource("Goal_6")
-thanks = PackedStringArray("Your fleet has all six now, {name}. When we started, we thought we were helping six islands.")
+objective = SubResource("Goal_7")
+thanks = PackedStringArray("Your fleet has all six now, {name}. Every island taught us something different.")
 reminder = PackedStringArray("Fit the Ice Core at any Exploration Ship: walk up to it and choose Explore.")
 
-[sub_resource type="Resource" id="Goal_7"]
+[sub_resource type="Resource" id="Goal_8"]
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"fibres_traced"
 text = "Find out what the threads in the ice are"
 
-[sub_resource type="Resource" id="Topic_7"]
+[sub_resource type="Resource" id="Topic_8"]
 script = ExtResource("2_t")
 id = &"fibres"
 when = PackedStringArray("installed:ice_core")
 lines = PackedStringArray("The ice core shows something strange: tiny coloured threads, in the newer layers.", "What do you think they are?", "> Plastic? | Bits of seaweed?", "Let's look closer. Send Look at the fibres from the station.")
-objective = SubResource("Goal_7")
+objective = SubResource("Goal_8")
 thanks = PackedStringArray("Plastic microfibres from washing clothes, all the way out here. The freezing ice traps them.")
 reminder = PackedStringArray("Send Look at the fibres from the research station.")
 marks = &"fibres_asked"
 
-[sub_resource type="Resource" id="Goal_8"]
+[sub_resource type="Resource" id="Goal_9"]
 script = ExtResource("3_g")
 kind = &"stopped"
 target = &"microfibres"
 text = "Catch the microfibres before they reach the sea"
 
-[sub_resource type="Resource" id="Topic_8"]
+[sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"filters"
 lines = PackedStringArray("The fibres come from laundry far away. How could we catch them before they reach the sea?", "> A filter? | Ask Kai!", "Kai the engineer at the Tropical Reef has been drawing a filter for washing machines. Build his Filter Workshop there.")
-objective = SubResource("Goal_8")
+objective = SubResource("Goal_9")
 thanks = PackedStringArray("Filters! The fibres are caught in every wash, before they reach the sea.", "It only works because so many people help. That's true of everything we've done.")
 reminder = PackedStringArray("Kai's Filter Workshop is in the Build menu on the Tropical Reef.")
 
-[sub_resource type="Resource" id="Topic_9"]
+[sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("What does this mean for the whole ocean? That's the question I can't stop asking.")
@@ -138,4 +144,4 @@ trousers = Color(0.2, 0.2, 0.25, 1)
 hat = 1
 hat_colour = Color(0.85, 0.85, 0.9, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])

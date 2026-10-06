@@ -20,6 +20,13 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	if ObservatoryScreen.is_open_to_ranger():  # the whole ocean, once the fleet has all six
+		var observatory := BuildMode._big_button("Global Ocean Observatory", Color("2a78a8"))
+		observatory.name = "Observatory"
+		observatory.pressed.connect(func() -> void:
+			close()
+			get_tree().call_group("observatory", "open"))
+		_content.add_child(observatory)
 	var here := Regions.nearest(_ranger_position())
 	for region: RegionData in Regions.all():
 		var known := Regions.is_discovered(region)
