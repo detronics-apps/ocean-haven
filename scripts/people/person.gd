@@ -21,6 +21,7 @@ var _check := 0.0
 func _enter_tree() -> void:
 	add_to_group("people")
 	add_to_group("interactables")
+	add_to_group("occupies")
 
 
 func _ready() -> void:
@@ -111,6 +112,11 @@ func _free(cell: Vector2i) -> bool:
 		if building.rect().has_point(cell):
 			return false
 	return true
+
+
+## What's in the way when building here.
+func blocker_name() -> String:
+	return data.short_name
 
 
 ## The tiles they and their place take up (nothing can be built there).

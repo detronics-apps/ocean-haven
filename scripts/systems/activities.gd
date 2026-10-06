@@ -69,6 +69,8 @@ func finish(activity: ActivityData, level: int, seconds: float) -> bool:
 		_done[activity.id] = true
 		if activity.reward_group != &"":
 			get_tree().call_group(activity.reward_group, activity.reward_method)
+		if activity.reward_mission and activity.region != &"":
+			Missions.run_now(activity.reward_mission, load("res://data/regions/%s.tres" % activity.region))
 	finished.emit(activity, level, seconds, story)
 	return record
 

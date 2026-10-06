@@ -41,7 +41,7 @@ text = "Bring the food web back into balance (island health 70 %)"
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"balance"
-lines = PackedStringArray("I used to dive for urchins to sell. I thought I was only taking urchins.", "Look at them now: they've eaten the kelp down to the rock. What do you think used to keep them in check?", "> Something that eats them? | I'm not sure.", "The platform's surveys will show what's out of balance. Ines at the harbour might remember too.")
+lines = PackedStringArray("I used to dive for urchins to sell. I thought I was only taking urchins.", "Look at them now: they've eaten the kelp down to the rock. What do you think used to keep them in check?", "> Something that eats them? | I'm not sure.", "Let's count them first. Dive with me from the old jetty, and the platform's surveys will show the rest. Ines at the harbour might remember too.")
 objective = SubResource("Goal_3")
 thanks = PackedStringArray("Look at that patch! The kelp is growing back. I didn't understand what else depended on it.")
 reminder = PackedStringArray("How's the forest doing? The platform's surveys show what's out of balance.")

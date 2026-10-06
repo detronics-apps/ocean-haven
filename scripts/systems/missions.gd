@@ -78,6 +78,19 @@ func send(mission: MissionData, region: RegionData) -> bool:
 	return true
 
 
+## Does `mission` on `region` right now, free (e.g. the research a ranger activity's story
+## play did): its report and minimap marks as if it had come back. A mission that's out stays out.
+func run_now(mission: MissionData, region: RegionData) -> void:
+	var out := active
+	var out_region := _region
+	active = mission
+	_region = region
+	_finish()
+	if out:
+		active = out
+		_region = out_region
+
+
 ## Whether a lasting effect ("boat_patrol", "dolphin_tracking") is going on now.
 func is_on(effect: StringName) -> bool:
 	return effect != &"" and _until.get(effect, -1.0) > GameClock.now()

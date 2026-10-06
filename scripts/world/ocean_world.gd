@@ -18,6 +18,11 @@ func _ready() -> void:
 		var someone := Person.new()
 		someone.data = person
 		add_child(someone)
+	for activity: ActivityData in Activities.all():  # ranger activities with a place of their own
+		if activity.spot != Vector2.ZERO:
+			var spot := ActivitySpot.new()
+			spot.activity = activity
+			add_child(spot)
 	Rescues.released.connect(func(rescue: RescueData, animal_name: String) -> void: release_animal(rescue, animal_name, true))
 	var tint := Timer.new()
 	tint.wait_time = tint_interval

@@ -90,9 +90,9 @@ func _ready() -> void:
 			r.stage_texts[stage].replace("{name}", Rescues.pet_name())]))
 	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
 		show_toast("%s is back in the wild!\n%s" % [animal_name, r.fact]))
-	var sweep := SonarSweep.new()  # ranger activities (data/activities/)
-	sweep.name = "SonarSweep"
-	get_parent().add_child.call_deferred(sweep)
+	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new()]:  # ranger activities (data/activities/)
+		activity_screen.name = activity_screen.get_script().get_global_name()
+		get_parent().add_child.call_deferred(activity_screen)
 	var talk := TalkBox.new()  # talking to the people of the islands
 	talk.name = "TalkBox"
 	get_parent().add_child.call_deferred(talk)

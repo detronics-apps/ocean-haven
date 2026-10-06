@@ -27,6 +27,17 @@ extends Resource
 ## "reveal": the wreck is found).
 @export var reward_group: StringName
 @export var reward_method: StringName
+## The research the story play does: this mission on the activity's island, done at once.
+@export var reward_mission: MissionData
+## Its own place in the world (spot != ZERO: e.g. an old jetty to dive from), visible from the
+## start, open once the activity is: `place` drawn there, on island `region`.
+@export var spot := Vector2.ZERO
+@export var region: StringName
+@export var place: Texture2D
+@export var place_offset := Vector2(-48, -8)
+## What the place is ("old jetty"), and what it says before it's open ("An old jetty...").
+@export var place_name: String
+@export var closed_note: String
 ## Seconds added to the time for each ping, and for marking a wrong tile.
 @export var ping_seconds := 1.0
 @export var miss_seconds := 5.0

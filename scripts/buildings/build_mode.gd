@@ -112,9 +112,9 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 	for plant: Node2D in get_tree().get_nodes_in_group("plants"):
 		if footprint.has_point(Terrain.cell_of(plant.global_position)):
 			return "A tree is in the way."
-	for person: Person in get_tree().get_nodes_in_group("people"):
-		if person.cells().any(func(c: Vector2i) -> bool: return footprint.has_point(c)):
-			return "%s is in the way." % person.data.short_name
+	for occupant: Node in get_tree().get_nodes_in_group("occupies"):  # people, activity places
+		if occupant.cells().any(func(c: Vector2i) -> bool: return footprint.has_point(c)):
+			return "%s is in the way." % occupant.blocker_name()
 	for other: Building in get_tree().get_nodes_in_group("buildings"):
 		if other.rect().intersects(footprint) and other.data.id != data.replaces:
 			return "Your %s is in the way." % other.data.display_name.to_lower()

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ActivityData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/activity_data.gd" id="1_a"]
+[ext_resource type="Resource" path="res://data/missions/urchin_pressure_survey.tres" id="2_m"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/old_jetty.svg" id="3_j"]
+
+[resource]
+script = ExtResource("1_a")
+id = &"otter_dive"
+display_name = "Otter Dive"
+verb = "Otter Dive"
+person = &"finn"
+unlock_any = PackedStringArray("asked:balance", "flag:kelp_balanced")
+story_intro = "Finn: \"I've got ten minutes before I head back up. Want to help me count the urchins? Dive like a sea otter: hold to go down, let go to float up. Mind your air!\""
+story_done = "Finn: \"Look at all those urchins! Sea otters crack them open on their bellies with a stone. I'll mark the worst beds on your map.\""
+practice_intro = "Dive from the old jetty for fun: each level has more urchins, more kelp and stronger currents. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(5, 2, 1), Vector3i(8, 3, 2), Vector3i(10, 4, 3), Vector3i(12, 5, 4), Vector3i(15, 6, 5)])
+reward_mission = ExtResource("2_m")
+spot = Vector2(4560, -40)
+region = &"kelp_forest"
+place = ExtResource("3_j")
+place_offset = Vector2(-72, -12)
+place_name = "old jetty"
+closed_note = "An old jetty, its planks worn smooth by years of divers. Finn might know what it's for."
