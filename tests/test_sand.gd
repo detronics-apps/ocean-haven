@@ -38,7 +38,11 @@ func _initialize() -> void:
 	await process_frame
 	await process_frame
 	await process_frame
-	_expect(shovel.selected == Vector2i(15, 0), "tapping the tile selects it (%s)" % [shovel.selected])
+	_expect(_terrain(Vector2(15 * 32 + 16, 16)) == "water" and inventory.count(&"sand") == 1, "tapping a green tile digs it up straight away")
+	_expect(shovel.what_can_be_done(Vector2i(15, 0)) == "place", "it's blue now: sand can go back")
+	var greens: Array = shovel.tiles_around().filter(func(c: Vector2i) -> bool: return shovel.what_can_be_done(c) == "pick_up")
+	_expect(not greens.is_empty(), "while the other sand tiles stay green (%d)" % greens.size())
+	shovel.place(Vector2i(15, 0))
 	shovel.selected = Vector2i(15, 0)
 	var labels: Array = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
 	_expect(labels == ["Pick up sand", "Put shovel away"], "selected sand tile offers 'Pick up sand' (%s)" % [labels])

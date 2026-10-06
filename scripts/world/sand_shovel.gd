@@ -1,9 +1,9 @@
 class_name SandShovel
 extends Node
 ## Moving sand and mud. With the shovel picked up (Build menu -> Shovel), the 8 tiles around
-## the ranger (on foot or in a boat) are outlined: sand or mud that can be dug up, and (while carrying some)
-## shallow water that can be filled. Tap one to select it; the action bar then
-## offers "Dig up sand / mud" or "Place sand / mud" for exactly that tile. The ranger carries
+## the ranger (on foot or in a boat) are outlined at once: green where sand or mud can be dug
+## up, blue where (while carrying some) water can be filled. Tap a tile to do it; the action
+## bar also offers one of each. The ranger carries
 ## 3 sand or 3 mud (storable in the Exploration Ship: dug mud is never lost, so a channel can
 ## always be filled back in); now and then sand hides buried litter. Digging mud makes a
 ## channel (shallow water); mud on shallow water makes a mud flat. Filling deep water takes 2.
@@ -74,8 +74,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	var tapped := Terrain.cell_of(_outlines.get_global_mouse_position())
 	if tapped in tiles_around():
-		selected = tapped
 		get_viewport().set_input_as_handled()  # a tile pick, not a walk
+		use(tapped)
+
+
+## Tapping a tile does what it shows: green digs it up, blue fills it.
+func use(cell: Vector2i) -> void:
+	match what_can_be_done(cell):
+		"pick_up":
+			pick_up(cell)
+		"place":
+			place(cell)
+		_:
+			selected = cell
+			return
+	selected = null
 
 
 ## The 8 tiles around the ranger (on foot, or in a boat: dig the beach or fill the water from
@@ -133,15 +146,26 @@ func actions() -> Array:
 	if not active:
 		return []
 	var list := [{"label": "Put shovel away", "do": stop}]
-	match what_can_be_done(selected) if selected != null else "":
-		"pick_up":
-			var dug := material_at(selected)
-			list.push_front({"label": "Pick up sand" if dug == _sand else "Dig up mud (makes a channel)", "do": pick_up.bind(selected)})
-		"place":
-			var deep := Terrain.at(get_tree(), Terrain.centre_of(selected)) == ""
-			var what := carried_material().display_name.to_lower()
-			list.push_front({"label": ("Place %s (makes it shallow)" % what) if deep
-				else ("Place mud (makes a mud flat)" if what == "mud" else "Place sand"), "do": place.bind(selected)})
+	# (for a controller or keyboard: one button to dig, one to fill, the first tiles that can)
+	var dig: Variant = null
+	var fill: Variant = null
+	var cells := tiles_around()
+	if selected != null and selected in cells:
+		cells = [selected]  # (a tile chosen with a controller)
+	for cell: Vector2i in cells:
+		match what_can_be_done(cell):
+			"pick_up":
+				dig = cell if dig == null else dig
+			"place":
+				fill = cell if fill == null else fill
+	if fill != null:
+		var deep := Terrain.at(get_tree(), Terrain.centre_of(fill)) == ""
+		var what := carried_material().display_name.to_lower()
+		list.push_front({"label": ("Place %s (makes it shallow)" % what) if deep
+			else ("Place mud (makes a mud flat)" if what == "mud" else "Place sand"), "do": place.bind(fill)})
+	if dig != null:
+		var dug := material_at(dig)
+		list.push_front({"label": "Pick up sand" if dug == _sand else "Dig up mud (makes a channel)", "do": pick_up.bind(dig)})
 	return list
 
 

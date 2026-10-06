@@ -49,6 +49,7 @@ func _fill() -> void:
 		field.custom_minimum_size = Vector2(240, 56)
 		field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(field)
+		TextPrompt.attach(field, "Give it a name")
 		var ok := _button("Name it", func() -> void:
 			Rescues.name_it(field.text)
 			refresh.call_deferred())

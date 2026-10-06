@@ -79,6 +79,7 @@ func _build() -> void:
 	_name.text_changed.connect(RangerProfile.set_ranger_name)
 	_name.text_submitted.connect(func(_t: String) -> void: _name.release_focus())
 	_left.add_child(_name)
+	TextPrompt.attach(_name, "Your ranger's name")
 	_preview_box = Control.new()
 	_left.add_child(_preview_box)
 	_preview = load("res://scenes/player/avatar.tscn").instantiate()
