@@ -610,6 +610,34 @@ func eco_count(target: StringName, projected := {}) -> float:
 	return 0.0
 
 
+## What a hint-giver says when this factor is what's holding the island back (People: a ranger
+## who keeps coming back stuck gets a concrete clue, not the same story again).
+func advice(factor: HealthFactor) -> String:
+	match factor.target:
+		&"quiet":
+			var sources: Array = []  # [noise, what it is]
+			var over := _buildings(func(b: Building) -> bool: return b.has_node("PatrolBoat") and _over_dark_area(b.global_position)).size()
+			if over > 0:
+				sources.append([patrol_noise * over, "your %d patrol boat%s working over the dark areas: move %s near the shore, or take %s down" % [
+					over, "" if over == 1 else "s", "it" if over == 1 else "them", "it" if over == 1 else "them"]])
+			if light() > 0.0:
+				sources.append([light(), "the camera lamps: fewer cameras, or upgrade them to need less light"])
+			var baited := _of(&"deep_camera").filter(func(c: Building) -> bool: return c.baited()).size()
+			if baited > 0:
+				sources.append([bait_noise * baited, "the bait at your cameras: it brings the sharks crowding in"])
+			if _dive_noise_until > GameClock.now():
+				sources.append([dive_noise, "the submarine dive (that settles down after a day)"])
+			if sources.is_empty():
+				return "The deep's as quiet as you can make it. Give the whales time."
+			sources.sort_custom(func(a: Array, b: Array) -> bool: return a[0] > b[0])
+			return "Listen: the loudest thing down there now is %s. The whales will stay once it's quiet." % sources[0][1]
+		&"knowledge":
+			return "Some dark areas are still a mystery: look for the dashed yellow circles. A hydrophone buoy or a camera close to one learns about it every day, and a dive from the Outpost maps it at once."
+		&"gear":
+			return "There's still lost gear down in the mapped areas. Sail over them in your boat and bring it up."
+	return ""
+
+
 func eco_describe(factor: HealthFactor) -> String:
 	match factor.target:
 		&"knowledge":

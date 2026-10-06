@@ -34,6 +34,8 @@ var _guesses := {}
 var _outcomes := {}
 ## The topic each person last talked about.
 var _last := {}
+## Person id -> how many times in a row they've had the same advice for the ranger.
+var _repeats := {}
 ## Questions asked in the talk going on now: [person, topic].
 var _pending: Array = []
 var _people: Array[PersonData] = []
@@ -162,9 +164,48 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	if not greeting:
 		var topic := _chat(person, first, false)
 		if topic:
-			said.append_array(topic.lines)
+			var again: bool = person.role == &"hint" and _last.get(person.id, &"") == topic.id
+			_repeats[person.id] = int(_repeats.get(person.id, 0)) + 1 if again else 0
+			var clue := _clue(person) if again else PackedStringArray()
+			said.append_array(clue if not clue.is_empty() else topic.lines)
 			_told(person, topic)
 	return _lines(person, said)
+
+
+## A ranger who keeps coming back to a hint-giver and hears the same advice is stuck: they say
+## what's holding the island back most right now, and what to do about it (never the same
+## story over and over).
+func _clue(person: PersonData) -> PackedStringArray:
+	var region := _region(person)
+	var weakest := IslandHealth.weakest(get_tree(), region).slice(0, 3)
+	if weakest.is_empty():
+		return PackedStringArray()
+	# Each visit the next of the (up to) three things holding the island back most.
+	var factor: HealthFactor = weakest[(int(_repeats.get(person.id, 1)) - 1) % weakest.size()]
+	var lines := PackedStringArray(["Still stuck? Here's something holding the island back right now.",
+		IslandHealth.describe(get_tree(), region, factor) + "."])
+	var eco := IslandHealth.ecosystem(get_tree(), region)
+	var advice := ""
+	if eco and eco.has_method("advice"):
+		advice = eco.advice(factor)
+	if advice == "":
+		match factor.kind:
+			&"clean":
+				advice = "Every piece of litter you pick up counts, in the water and on the shore."
+			&"animals", &"help":
+				var species: AnimalData = load("res://data/animals/%s.tres" % factor.target) if ResourceLoader.exists("res://data/animals/%s.tres" % factor.target) else null
+				advice = "Free any that are caught. %s" % (species.help_fact if species else "")
+			_:
+				advice = "Ask %s what the research shows: the station's surveys can tell you more." % _giver_name(person)
+	lines.append(advice.strip_edges())
+	return lines
+
+
+func _giver_name(person: PersonData) -> String:
+	for someone: PersonData in on(person.region):
+		if someone.role == &"objective":
+			return someone.short_name
+	return "the researchers"
 
 
 ## The ranger picked reply `index` of talk line `line` (a prediction's guess is kept).

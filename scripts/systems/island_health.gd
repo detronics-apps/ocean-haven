@@ -24,6 +24,26 @@ static func of(tree: SceneTree, region: RegionData, projected := {}) -> float:
 	return total / weights * scale if weights > 0.0 else -1.0
 
 
+## The factors holding `region`'s health back, the one costing most first (each costs at
+## least 1 %).
+static func weakest(tree: SceneTree, region: RegionData) -> Array[HealthFactor]:
+	var weights := 0.0
+	for factor: HealthFactor in region.health:
+		if not factor.scales_all:
+			weights += factor.weight
+	var losses := {}
+	for factor: HealthFactor in region.health:
+		var value := score(tree, region, factor)
+		var loss := (1.0 - lerpf(factor.scale_floor, 1.0, value)) if factor.scales_all \
+			else (1.0 - value) * factor.weight / maxf(weights, 0.001)
+		if loss > 0.01:
+			losses[factor] = loss
+	var list: Array[HealthFactor] = []
+	list.assign(losses.keys())
+	list.sort_custom(func(a: HealthFactor, b: HealthFactor) -> bool: return losses[a] > losses[b])
+	return list
+
+
 ## Whether a building with this id exists anywhere.
 static func built(tree: SceneTree, id: StringName) -> bool:
 	return tree.get_nodes_in_group("buildings").any(func(b: Node) -> bool: return b.data.id == id)
