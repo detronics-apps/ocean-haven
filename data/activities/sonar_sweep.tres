@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ActivityData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/activity_data.gd" id="1_a"]
+
+[resource]
+script = ExtResource("1_a")
+id = &"sonar_sweep"
+display_name = "Sonar Sweep"
+verb = "Sonar Sweep"
+building = &"marine_rescue_station"
+person = &"maya"
+unlock_any = PackedStringArray("asked:wreck", "flag:wreck_found")
+story_intro = "Maya: \"The old chart marks something off the west coast. Let's sweep that stretch with the station's sonar and see what echoes back.\""
+story_done = "Maya: \"There! A wreck, right where the old chart said. It's off the west coast: row out and have a look.\""
+practice_intro = "Sweep the coast with the sonar for fun: each level is a bigger stretch of sea. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(6, 5, 3), Vector3i(7, 6, 5), Vector3i(8, 7, 7), Vector3i(9, 8, 10), Vector3i(10, 8, 13)])
+reward_group = &"wreck_sites"
+reward_method = &"reveal"

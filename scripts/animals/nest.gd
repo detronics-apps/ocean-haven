@@ -139,7 +139,10 @@ func hatch() -> void:
 		return  # already hatched this frame
 	var world := get_parent()
 	for i in (1 if storm_hit else species.hatchlings):
-		var home := _area_with_room()
+		# Only stay_per_nest of them stay (the rest swim off into the open ocean, as most real
+		# hatchlings do); a storm-hit nest's one hatchling is swept out too.
+		var stays := not storm_hit and (species.stay_per_nest <= 0 or i < species.stay_per_nest)
+		var home := _area_with_room() if stays else null
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
 		baby.set("young", true)

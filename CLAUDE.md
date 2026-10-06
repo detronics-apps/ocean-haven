@@ -409,6 +409,17 @@ palms for wood and plant a sapling for each); the station is the Marine Search &
 Station; the tent is one tile; the Build menu shows only name, BuildingData.summary and cost;
 new animals arrive at most one a day per island, and seabirds need palms the ranger planted
 (ArrivalData.needs_planted 1 / 3 / 5, health 30 / 50 / 70 %).
+Phase 2: a 120-day year of four 30-day seasons (GameClock.season / year / calendar: the HUD
+reads "Day 42 · Summer, year 1"; a note when each season starts). Green turtles nest in spring
+every 4 days (AnimalData.nest_season / off_season_interval_days 40), one hatchling per nest
+stays (stay_per_nest; the rest swim off into the open ocean, a storm-hit nest's one too),
+hatchlings take 8 days to grow up and nest from the next spring (nests_from_next_season):
+about 8 turtles by day 30, 10 late in year 1 or early year 2 (simulated).
+Phase 3: ranger activities (data/activities/, ActivityData; `Activities` autoload: story done +
+personal bests per level, saved; ActivityScreen base: start page, timer, levels, finish).
+Sonar Sweep (Grid; SonarSweep): opens at the Marine Search & Rescue Station once Maya asks about
+the wreck (or it's found); the story play finds the wreck (reward_group "wreck_sites" /
+"reveal"); replays are for fun only (5 levels, pings +1 s, wrong marks +5 s, best times).
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag

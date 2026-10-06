@@ -819,10 +819,29 @@ func _face(motion: Vector2) -> void:
 		_sprite.flip_h = motion.x < 0.0
 
 
+## Days between its nests now: often in its nesting season, rarely (or never) outside it.
+func nest_interval() -> int:
+	if data.nest_season == &"" or GameClock.season() == data.nest_season:
+		return data.nest_interval_days
+	return data.off_season_interval_days if data.off_season_interval_days > 0 else 1 << 30
+
+
+## Old enough to nest: always for animals that came to the island; for ones that hatched here
+## (nests_from_next_season), from the start of the next nesting season after they hatched.
+func mature() -> bool:
+	if young:
+		return false
+	if not data.nests_from_next_season or data.nest_season == &"" or born_at < 0.0:
+		return true
+	return GameClock.day >= GameClock.next_season_start(data.nest_season, born_at)
+
+
 func _maybe_nest() -> void:
 	if young or tangled or injured or data.nest_building == &"" or not GameClock.is_night():
 		return
-	if GameClock.day - last_nest_day < data.nest_interval_days:
+	if GameClock.day - last_nest_day < nest_interval():
+		return
+	if not mature():
 		return
 	var site := _nest_site()
 	if not site:

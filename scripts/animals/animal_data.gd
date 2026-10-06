@@ -101,8 +101,18 @@ extends Resource
 @export_group("Nesting")
 ## Adults come ashore at night to lay eggs in this kind of building ("" = never nest).
 @export var nest_building: StringName
-## Days between nests for one animal.
+## Days between nests for one animal (in its nesting season, if it has one).
 @export var nest_interval_days := 2
+## Its nesting season (GameClock.season: "spring"...; "" = all year). Outside it, it nests only
+## every `off_season_interval_days` (0 = not at all).
+@export var nest_season: StringName
+@export var off_season_interval_days := 0
+## Young that hatched here only nest from the next nesting season after they hatched
+## (real turtles take many years to start nesting).
+@export var nests_from_next_season := false
+## Hatchlings from each nest that stay on the island (0 = all that have room); the rest swim
+## off into the open ocean, as most real hatchlings do. A storm-hit nest's one hatchling goes too.
+@export var stay_per_nest := 0
 ## In-game days before eggs hatch (they hatch at night). Real green turtle eggs take about two months.
 @export var incubation_days := 1.0
 ## Young that hatch from one nest (a game-sized stand-in for the real clutch).

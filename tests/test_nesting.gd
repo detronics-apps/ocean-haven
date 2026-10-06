@@ -11,6 +11,11 @@ func _initialize() -> void:
 	await process_frame
 	var journal := root.get_node("Journal")  # autoloads: looked up at runtime
 	var clock := root.get_node("GameClock")
+	# How areas fill and hatchlings grow, with every hatchling staying and quick growing-up
+	# (the real seasonal numbers, 1 staying per nest and 8 days, are tested in test_seasons).
+	var species: Resource = load("res://data/animals/green_turtle.tres")
+	species.stay_per_nest = 0
+	species.grow_days = 2.0
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
 	world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))

@@ -164,6 +164,9 @@ func actions() -> Array:
 		list.append({"label": "Open the gate" if gate_closed else "Close the gate", "do": toggle_gate})
 	if data.action == &"bait":
 		list.append({"label": "Take the bait out" if gate_closed else "Bait the camera", "do": toggle_bait})
+	for activity: ActivityData in Activities.at(data.id):  # ranger activities played here
+		list.append({"label": activity.verb, "do": get_tree().call_group.bind("activity_" + activity.id, "open_activity", activity),
+			"helps": not Activities.story_done(activity)})
 	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
 	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:

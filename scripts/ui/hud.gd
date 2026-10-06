@@ -62,6 +62,7 @@ func _ready() -> void:
 	SaveGame.saved.connect(_flash_saved)
 	Funding.donations_waiting.connect(_on_donations_waiting)
 	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
+	GameClock.new_day.connect(_on_new_day)
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
 	%LookButton.pressed.connect(get_tree().call_group.bind("avatar_creator", "open"))
@@ -80,6 +81,9 @@ func _ready() -> void:
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
+	var sweep := SonarSweep.new()  # ranger activities (data/activities/)
+	sweep.name = "SonarSweep"
+	get_parent().add_child.call_deferred(sweep)
 	var talk := TalkBox.new()  # talking to the people of the islands
 	talk.name = "TalkBox"
 	get_parent().add_child.call_deferred(talk)
@@ -370,7 +374,7 @@ func _process(delta: float) -> void:
 			and not (region and People.has_people(region.id))
 	_info.text = nearest_animal_info()
 	_info.visible = _info.text != ""
-	_clock.text = "Day %d · %s    Funding: %d" % [GameClock.day, GameClock.period(), Funding.balance]
+	_clock.text = "%s · %s    Funding: %d" % [GameClock.calendar(), GameClock.period(), Funding.balance]
 
 
 ## The HUD grows with the game: the minimap comes with the Salvaged Sonar Core (the end of the
@@ -465,6 +469,20 @@ func _next_here(region: RegionData) -> RegionData:
 		if next and not Regions.is_discovered(next) and not next.in_development:
 			return next
 	return null
+
+
+## A new season: what it means for the island's animals (data: SEASON_NOTES).
+const SEASON_NOTES := {
+	&"spring": "Spring has come: nesting season for the sea turtles.",
+	&"summer": "Summer has begun. The turtles nested in spring; now their young grow up.",
+	&"autumn": "Autumn has begun.",
+	&"winter": "Winter has begun. Next spring the turtles come back to nest.",
+}
+
+
+func _on_new_day(day: int) -> void:
+	if GameClock.day_of_season(day) == 1 and day > 1:
+		show_toast(SEASON_NOTES.get(GameClock.season(day), ""))
 
 
 func _on_earned(amount: int, reason: String) -> void:

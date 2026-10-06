@@ -63,10 +63,10 @@ text = "Find what's hidden off the coast"
 [sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"wreck"
-lines = PackedStringArray("Look at this old chart. There's a mark off the west coast that isn't on any map today.", "What do you think it could be?", "> A rock? | Treasure!", "Let's find out! A Coastal survey from the station could search for it.")
+lines = PackedStringArray("Look at this old chart. There's a mark off the west coast that isn't on any map today.", "What do you think it could be?", "> A rock? | Treasure!", "Let's find out! The station has a sonar: sweep that stretch of coast with it and see what echoes back.")
 objective = SubResource("Goal_5")
 thanks = PackedStringArray("A wreck! So that's what the old chart was marking.")
-reminder = PackedStringArray("Has the coastal survey found it yet? It can take a few tries: the sea is big.")
+reminder = PackedStringArray("Try a Sonar Sweep at the station. A Coastal survey mission could find it too, but it can take a few tries.")
 
 [sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
