@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ActivityData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/activity_data.gd" id="1_a"]
+[ext_resource type="Resource" path="res://data/missions/drill_planning.tres" id="2_m"]
+
+[resource]
+script = ExtResource("1_a")
+id = &"floe_fit"
+display_name = "Floe Fit"
+verb = "Floe Fit"
+building = &"polar_research_station"
+person = &"sanna"
+unlock_any = PackedStringArray("asked:core", "flag:ice_core_drilled")
+story_intro = "Sanna: \"Help me plan the drill site. Fit the floes back together on the ice map, and we'll see which old ice is thick enough to last three days.\""
+story_done = "Sanna: \"That's it. I've marked the oldest, thickest ice on your map: build the Ice Core Drill Site there.\""
+practice_intro = "Fit the floes on the ice map for fun: each level is a bigger map with odder floes. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(5, 4, 3), Vector3i(6, 5, 3), Vector3i(7, 5, 4), Vector3i(8, 6, 4), Vector3i(9, 6, 5)])
+reward_mission = ExtResource("2_m")
+region = &"arctic_ocean"

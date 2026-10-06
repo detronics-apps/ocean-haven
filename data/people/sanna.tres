@@ -55,10 +55,10 @@ text = "Drill an ice core on old ice (3 days)"
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"core"
-lines = PackedStringArray("Now for the old ice's memory. A drill site on old ice could bring up a core from deep inside.", "It needs ice that lasts for three days while it drills.")
+lines = PackedStringArray("Now for the old ice's memory. A drill site on old ice could bring up a core from deep inside.", "It needs ice that lasts for three days while it drills. Help me plan it on the station's ice map: a Floe Fit.")
 objective = SubResource("Goal_4")
 thanks = PackedStringArray("An ice core! Every layer is a year. This ocean connects the whole planet, and now we can read it.")
-reminder = PackedStringArray("Build the Ice Core Drill Site on old ice and keep it there for 3 days.")
+reminder = PackedStringArray("Plan it with a Floe Fit at the station, then build the Ice Core Drill Site on old ice and keep it there for 3 days.")
 
 [sub_resource type="Resource" id="Goal_5"]
 script = ExtResource("3_g")

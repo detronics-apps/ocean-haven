@@ -433,6 +433,14 @@ Expedition leader) and a hint-giver (Ines, Harbour cook; Samuel, Boat builder; L
 guide; Bram, Retired captain; Erik, Weather watcher) whose hints send the ranger on round the
 chain Tom → Ines → Samuel → Leilani → Bram → Erik → Tom. The Tip button and the old flagship
 goal line are gone: the goal line is always People.goal_text.
+Phase 6: more ranger activities, each introduced by an island's objective-giver, its story play
+doing one of the island's research missions at once (ActivityData.reward_mission,
+Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
+(Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
+Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
+Outpost; cargo search; extends OtterDive), Floe Fit (Sanna, Polar Research Station; drill
+planning; floes cut from a real filling, placed floes can be taken back). Glass Sort waits for
+phase 9 (Kai's bottle story).
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
