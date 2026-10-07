@@ -45,19 +45,51 @@ func _initialize() -> void:
 	(content.find_child("NameIt", true, false) as Button).pressed.emit()
 	await process_frame
 	_expect(rescues.pet_name() == "Milo" and "Care for Milo" in labels.call(), "it's called Milo now")
+	_expect(not rescues.hatched() and not rescues.can_do(&"feed"), "a turtle starts as an egg: nothing to do until it hatches")
+	await create_timer(3.5).timeout  # (it hatches on the table once it's named)
+	_expect(rescues.hatched(), "it hatches")
+	await process_frame
 
 	# --- A day's care: four things, each once a day; the bars only go up ---
 	content = screen.get("_content")
 	_expect(content.find_child("Bars", true, false) != null and content.find_child("Care", true, false).get_child_count() == 4,
 		"three bars, and four things to do")
 	var health_before: int = rescues.bar(&"health")
-	(content.find_child("Feed", true, false) as Button).pressed.emit()
+	var vet: Control = content.find_child("VetScene", true, false)
+	_expect(vet != null, "the vet room: the turtle hatchling on a towel on the counter")
+	var drag := func(scene: Control, from: Vector2, to: Vector2) -> void:
+		var press := InputEventMouseButton.new()
+		press.button_index = MOUSE_BUTTON_LEFT
+		press.pressed = true
+		press.position = from
+		scene.call("_gui_input", press)
+		var move := InputEventMouseMotion.new()
+		move.position = to
+		scene.call("_gui_input", move)
+		var release := InputEventMouseButton.new()
+		release.button_index = MOUSE_BUTTON_LEFT
+		release.pressed = false
+		release.position = to
+		scene.call("_gui_input", release)
+	var food_at: Vector2 = vet.call("_tool_slot", 0)
+	drag.call(vet, food_at, food_at + Vector2(0, -150))  # dropped somewhere else: nothing happens
+	_expect(rescues.can_do(&"feed"), "food dropped away from its mouth: not fed")
+	drag.call(vet, food_at, vet.call("_point", vet.rescue.mouth))
 	await process_frame
-	_expect(rescues.bar(&"fed") > 20 and not rescues.can_do(&"feed"), "fed: the Fed bar goes up, once a day")
+	await process_frame
+	_expect(rescues.bar(&"fed") > 20 and not rescues.can_do(&"feed"), "food dragged to its mouth: the Fed bar goes up, once a day")
 	content = screen.get("_content")
-	(content.find_child("Patch", true, false) as Button).pressed.emit()
+	vet = content.find_child("VetScene", true, false)
+	await process_frame  # (laid out)
+	var wounds: int = rescues.wounds_left()
+	drag.call(vet, vet.call("_tool_slot", 2), vet.call("_point", vet.rescue.wound_at))
 	await process_frame
+	_expect(rescues.wounds_left() == wounds - 1, "the plaster dragged onto the sore spot: patched")
 	_expect(rescues.bar(&"health") > health_before, "a wound patched: Health goes up")
+	content = screen.get("_content")
+	(content.find_child("Comfort", true, false) as Button).pressed.emit()
+	await process_frame
+	_expect(not rescues.can_do(&"comfort"), "the buttons still work too (keyboard / controller)")
 	screen.close()
 
 	# --- Caring every day until it's ready ---

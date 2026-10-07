@@ -42,20 +42,22 @@ func _initialize() -> void:
 	for i in 90:
 		screen.step(1.0 / 30.0, Vector2.ZERO)
 	_expect(screen.get("_playing") and screen.depth() > 50.0, "the sub sinks with the view by itself")
-	# Lower on the screen = faster; higher = slower; the depth never goes back up.
+	# Lower on the screen = faster; higher = slower. The sub can go back up the screen for something
+	# it missed, but the view itself never goes back up.
 	var slow_at_top: float
 	var fast_at_bottom: float
-	for i in 60:
-		screen.step(1.0 / 30.0, Vector2(0, -1))
-	slow_at_top = screen.sink_speed()
-	var before: float = screen.depth()
-	var rose := false
-	var lowest := before
 	for i in 30:
+		screen.step(1.0 / 30.0, Vector2(0, 1))
+	var low_depth: float = screen.depth()
+	var view_before: float = screen.get("_top")
+	var view_rose := false
+	for i in 40:
+		var top: float = screen.get("_top")
 		screen.step(1.0 / 30.0, Vector2(0, -1))
-		rose = rose or screen.depth() < lowest - 0.01
-		lowest = maxf(lowest, screen.depth())
-	_expect(not rose, "the depth never goes back up, even holding up")
+		view_rose = view_rose or float(screen.get("_top")) < top - 0.001
+	slow_at_top = screen.sink_speed()
+	_expect(screen.depth() < low_depth - 40.0, "holding up, the sub climbs back up the screen to reach what it missed (%.0f -> %.0f m)" % [low_depth, screen.depth()])
+	_expect(not view_rose and float(screen.get("_top")) > view_before, "but the view never goes back up")
 	for i in 90:
 		screen.step(1.0 / 30.0, Vector2(0, 1))
 	fast_at_bottom = screen.sink_speed()
@@ -96,8 +98,13 @@ func _initialize() -> void:
 			dark_steps += 1
 		steps += 1
 	_expect(not screen.get("_playing") and screen.depth() >= 975.0, "down to 1,000 m (%d steps)" % steps)
-	var share := float(lit) / maxf(lit + dark_steps, 1.0)
-	_expect(absf(share - 0.9) < 0.05, "level 1: the sonar light is on 90%% of the time (%.0f%%)" % (share * 100.0))
+	var time_now: float = screen.get("_time")
+	var on_steps := 0
+	for i in 1000:  # the light's timing over 10 cycles
+		screen.set("_time", i * 0.02)
+		on_steps += 1 if screen.light_on() else 0
+	screen.set("_time", time_now)
+	_expect(absf(on_steps / 1000.0 - 0.9) < 0.02, "level 1: the sonar light is on 90%% of the time (%.0f%%)" % (on_steps / 10.0))
 	_expect(screen.daylight(50.0) > 0.7 and screen.daylight(1000.0) == 0.0, "daylight near the top, none in the deep")
 	_expect(screen.gear_got() >= 1, "lost gear picked up on the way (%d)" % screen.gear_got())
 	_expect(screen.seen().has("Giant squid") and screen.seen().has("Midnight zone") and screen.seen().has("Bottlenose dolphin"),
@@ -135,7 +142,7 @@ func _initialize() -> void:
 	_expect(level_button_text.contains("Deepest"), "the level shows its deepest dive until the bottom is reached (%s)" % level_button_text)
 	screen.level = 4
 	screen.call("_begin")
-	# A missed piece of gear sinks: waiting under it (holding up), it comes down to the sub.
+	# A missed piece of gear above, still on screen: holding up, the sub gets back to it.
 	for i in 60:  # down to the bottom of the screen first: room to wait under the piece
 		screen.step(1.0 / 30.0, Vector2(0, 1))
 	var piece := {"depth": screen.depth() - 40.0, "x": screen.position_x(), "item": null}
@@ -143,7 +150,7 @@ func _initialize() -> void:
 	var got: int = screen.gear_got()
 	for i in 200:
 		screen.step(1.0 / 30.0, Vector2(0, -1))
-	_expect(screen.gear_got() == got + 1, "a missed piece sinks slowly and is caught by waiting under it")
+	_expect(screen.gear_got() == got + 1, "a missed piece still on screen can be caught by going back up for it")
 	screen.close_screen()
 
 	if not _failed:

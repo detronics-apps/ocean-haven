@@ -1,9 +1,11 @@
 class_name RescueScreen
 extends OverlayScreen
-## The rescue companion on the vet table (Rescues): the young animal from the front, its three
-## bars (health, fed, calm: they only ever go up), its day in care and the four things the
-## ranger can do for it each day (feed, comfort, patch a wound, medicine from the vet). The
-## first visit names it; after its days in care, the ranger takes it home, tagged.
+## The rescue companion in the vet room (Rescues, VetScene): the young animal on the counter
+## (or in a fish tank), its three bars (health, fed, calm: they only ever go up), its day in
+## care and the four things the ranger does for it each day by hand: drag the food to its mouth,
+## comfort it, put a plaster on its wound, the dropper to its mouth (the buttons below do the
+## same, for keyboards and controllers). The first visit names it; egg-layers then hatch; after
+## its days in care, the ranger takes it home, tagged.
 
 const TABLE := Color("cfd8dc")
 const TABLE_EDGE := Color("90a4ae")
@@ -55,7 +57,10 @@ func _fill() -> void:
 		_content.add_child(row)
 		return
 	var day := Rescues.day_now()
-	_add_text("Day %d of %d on the vet table" % [day, one.days], 22)
+	if not Rescues.hatched():
+		_add_text("Watch: %s is hatching!" % Rescues.pet_name(), 22, Color("f2d58a"))
+		return
+	_add_text("Day %d of %d in care: %s is growing a little every day." % [day, one.days, Rescues.pet_name()], 22)
 	if day - 1 < one.day_texts.size():
 		_add_text(one.day_texts[day - 1].replace("{name}", Rescues.pet_name()))
 	_content.add_child(_bars())
@@ -71,9 +76,15 @@ func _fill() -> void:
 		go.name = "Release"
 		_content.add_child(go)
 	else:
+		var tip := Label.new()
+		tip.name = "Hint"
+		tip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		tip.add_theme_color_override("font_color", Color("9fe3ff"))
+		tip.text = "Care for %s with your hands: drag the things on the counter to %s (or use the buttons)." % [Rescues.pet_name(), "the tank" if one.tank else "it"]
+		_content.add_child(tip)
 		var grid := GridContainer.new()
 		grid.name = "Care"
-		grid.columns = 2
+		grid.columns = 4
 		grid.add_theme_constant_override("h_separation", 12)
 		grid.add_theme_constant_override("v_separation", 12)
 		for action: StringName in Rescues.ACTIONS:
@@ -94,7 +105,7 @@ func _fill() -> void:
 		_add_text(_feedback, 20, Color("f2d58a"))
 
 
-## The animal from the front, lying on the vet table.
+## The vet room: the animal on the counter or in its tank, and the things to care for it with.
 func _vet_table(one: RescueData) -> Control:
 	var table := PanelContainer.new()
 	table.name = "VetTable"
@@ -103,17 +114,22 @@ func _vet_table(one: RescueData) -> Control:
 	style.border_color = TABLE_EDGE
 	style.set_border_width_all(4)
 	style.set_corner_radius_all(10)
-	style.set_content_margin_all(10)
+	style.set_content_margin_all(4)
 	table.add_theme_stylebox_override("panel", style)
-	var picture := TextureRect.new()
-	picture.name = "Picture"
-	picture.texture = one.vet_picture if one.vet_picture else one.species.sprite
-	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	picture.custom_minimum_size = Vector2(192, 192)
-	table.add_child(picture)
-	table.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var scene := VetScene.new()
+	scene.name = "VetScene"
+	scene.rescue = one
+	scene.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	scene.cared.connect(func(action: StringName) -> void:
+		if action != &"":
+			_feedback = Rescues.care(action)
+		refresh.call_deferred())
+	scene.hint.connect(func(text: String) -> void:
+		var tip := _content.find_child("Hint", true, false) as Label
+		if tip:
+			tip.text = text)
+	table.add_child(scene)
+	table.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return table
 
 

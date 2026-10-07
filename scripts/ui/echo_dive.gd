@@ -7,7 +7,7 @@ extends ActivityScreen
 ## right steer. Below the sunlight nothing can be seen unless the sonar's light is on: it
 ## flashes on and off, on for LIGHT_SHARE of the time (90 % at level 1 down to 50 % at level 5).
 ## Lost gear sinks slowly, so a missed piece can still be caught by waiting under it (each takes
-## GEAR_BONUS seconds off the time). Each bump (a wall, wreckage, a boulder) costs one of the
+## GEAR_BONUS seconds off the time). Each bump (a wall, a jellyfish, a boulder) costs one of the
 ## sub's HEARTS; repair kits (wrenches) deeper down give one back; with none left the sub needs
 ## repairs and heads back up: the dive's record is then the depth it reached
 ## (Activities.reached), until the level's sea floor is reached once; after that it's the time.
@@ -15,7 +15,7 @@ extends ActivityScreen
 ## deeper, sinks faster and has more in the way; the story dive finds the lost cargo module at
 ## 1,000 m (Imani's cargo search).
 
-## Level config: (target depth in hundreds of metres, wreckage and boulders, sinking speed 1-5).
+## Level config: (target depth in hundreds of metres, jellyfish and boulders, sinking speed 1-5).
 const SUB_HALF := 0.03
 ## Where the sub starts on the screen (0 top .. 1 bottom), and how far up / down it can go.
 const SUB_START := 0.3
@@ -27,8 +27,9 @@ const SINK_STEP := 12.0
 ## ... times this with the sub at the top of the screen, up to FAST at the bottom.
 const SLOW := 0.4
 const FAST := 2.0
-## Up and down the screen a second (a fraction of its height; never faster up than it sinks).
-const CLIMB := 0.7
+## Up and down the screen a second (a fraction of its height). Up the screen is fast enough to
+## go back for something missed while it's still in view; the view itself never goes back up.
+const CLIMB := 0.9
 ## Bumps the sub can take, at most MAX_HEARTS with repair kits; and how long after a bump
 ## nothing more can hurt it (it blinks).
 const HEARTS := 3
@@ -88,7 +89,7 @@ var _finger: Variant = null
 var _walls: Array[Vector2] = []
 ## Lost gear: {"depth", "x", "item": texture}.
 var _gear: Array[Dictionary] = []
-## In the way: {"depth", "x", "drift" (across, a second), "kind": "wreck" / "rock", "size"}.
+## In the way: {"depth", "x", "drift" (across, a second), "kind": "jelly" / "rock", "size"}.
 var _obstacles: Array[Dictionary] = []
 ## Repair kits: {"depth", "x"}.
 var _wrenches: Array[Dictionary] = []
@@ -145,7 +146,7 @@ func _start_board(config: Vector3i) -> void:
 		var d := lerpf(150.0, _target - 100.0, (i + randf_range(0.1, 0.9)) / maxf(count, 1.0))
 		var gap := gap_at(d)
 		_obstacles.append({"depth": d, "x": lerpf(gap.x + 0.08, gap.y - 0.08, randf()), "drift": randf_range(-0.06, 0.06),
-			"kind": "wreck" if randf() < 0.5 else "rock", "size": randf_range(0.8, 1.3)})
+			"kind": "jelly" if randf() < 0.6 else "rock", "size": randf_range(0.8, 1.3)})
 	_wrenches.clear()
 	var kits := maxi(roundi(_target / 1000.0), 1)
 	for i in kits:
@@ -219,17 +220,13 @@ func step(delta: float, move: Vector2) -> void:
 	if on and not _was_on:
 		Sound.play(&"ping", -8.0, 0.0)
 	_was_on = on
-	var before := depth()
 	var speed := sink_speed()
 	_slow = maxf(_slow - delta, 0.0)
 	_bump_wait = maxf(_bump_wait - delta, 0.0)
 	# The view sinks by itself (until the sea floor shows near the bottom of the screen).
 	_top = minf(_top + speed * delta, _target - SCREEN_BOTTOM * METRES_PER_SCREEN + 30.0)
-	# Up and down the screen (lower = faster); never up faster than the view sinks.
-	var climb := CLIMB if move.y > 0.0 else minf(CLIMB, speed / METRES_PER_SCREEN)
-	_sy = clampf(_sy + move.y * climb * delta, SCREEN_TOP, SCREEN_BOTTOM)
-	if depth() < before:  # never back up: the sub can't rise
-		_sy = (before - _top) / METRES_PER_SCREEN
+	# Up and down the screen (lower = faster): back up for something missed while it's in view.
+	_sy = clampf(_sy + move.y * CLIMB * delta, SCREEN_TOP, SCREEN_BOTTOM)
 	_x = clampf(_x + move.x * STEER * delta, SUB_HALF, 1.0 - SUB_HALF)
 	var gap := gap_at(depth())
 	if _x - SUB_HALF < gap.x or _x + SUB_HALF > gap.y:  # a wall: slowed for a moment, nudged back
@@ -242,7 +239,7 @@ func step(delta: float, move: Vector2) -> void:
 			thing.drift = -thing.drift
 			thing.x = clampf(thing.x, room.x + 0.05, room.y - 0.05)
 		if absf(thing.depth - depth()) < 18.0 * thing.size and absf(thing.x - _x) < 0.045 * thing.size + SUB_HALF:
-			_bump("an old wreck" if thing.kind == "wreck" else "a boulder")
+			_bump("a jellyfish (it's fine: go round them)" if thing.kind == "jelly" else "a boulder")
 	for kit: Dictionary in _wrenches.duplicate():
 		if absf(kit.depth - depth()) < 22.0 and absf(kit.x - _x) < 0.06:
 			_wrenches.erase(kit)
@@ -441,13 +438,13 @@ func _draw_arena() -> void:
 			var light := _seen_at(at, kit.depth)
 			if light > 0.04:
 				_draw_wrench(at, Color(0.85, 0.88, 0.92, light))
-	# Wreckage and boulders in the way.
+	# Jellyfish and boulders in the way.
 	for thing: Dictionary in _obstacles:
 		var at := Vector2(thing.x * size.x, to_y.call(thing.depth))
 		if at.y < -40.0 or at.y > size.y + 40.0:
 			continue
 		var light := _seen_at(at, thing.depth)
-		if light > 0.04:
+		if light > 0.04 or thing.kind == "jelly":
 			_draw_obstacle(thing, at, light)
 	# The sea floor at the target depth (with the cargo module on the story dive).
 	var floor_y: float = to_y.call(_target)
@@ -483,20 +480,27 @@ func _draw_wrench(at: Vector2, colour: Color) -> void:
 	_arena.draw_arc(at, 24.0, 0.0, TAU, 24, Color(1.0, 0.85, 0.4, colour.a * 0.6), 2.0)
 
 
-## An old wreck's twisted metal, or a boulder.
+## A jellyfish (pulsing, its tentacles trailing; many deep-sea jellies glow faintly on their own,
+## so a hint of one shows even in the dark), or a boulder.
 func _draw_obstacle(thing: Dictionary, at: Vector2, light: float) -> void:
 	var r: float = 26.0 * thing.size
-	if thing.kind == "wreck":
-		var rust := Color("8a4a2a").lerp(Color("05070c"), 1.0 - light)
-		var dark := Color("4a2616").lerp(Color("05070c"), 1.0 - light)
+	if thing.kind == "jelly":
+		var pulse := 1.0 + sin(_time * 3.0 + thing.x * 20.0) * 0.12
+		var glow := maxf(light, 0.25)
+		var bell := Color(0.95, 0.55, 0.85, 0.75 * glow)
 		var points := PackedVector2Array()
-		for i in 7:
-			var angle := TAU * i / 7.0 + 0.3
-			points.append(at + Vector2.from_angle(angle) * r * (0.6 if i % 2 == 0 else 1.0))
-		_arena.draw_colored_polygon(points, rust)
-		_arena.draw_polyline(points + PackedVector2Array([points[0]]), dark, 2.0)
-		for i in 3:  # rivets
-			_arena.draw_circle(at + Vector2(-r * 0.3 + i * r * 0.3, -r * 0.1), 2.0, dark)
+		for i in 13:
+			var a := PI + PI * i / 12.0
+			points.append(at + Vector2(cos(a) * r * pulse, sin(a) * r * 0.75 / pulse))
+		points.append(at + Vector2(r * pulse, 0))
+		_arena.draw_colored_polygon(points, bell)
+		_arena.draw_arc(at, r * 0.5, PI, TAU, 10, Color(1, 0.85, 0.95, 0.6 * glow), 2.0)
+		for i in 5:  # tentacles
+			var start := at + Vector2(-r * 0.8 + i * r * 0.4, 0)
+			var line := PackedVector2Array()
+			for k in 6:
+				line.append(start + Vector2(sin(_time * 2.0 + k * 0.8 + i) * 4.0, k * r * 0.25))
+			_arena.draw_polyline(line, Color(0.95, 0.6, 0.9, 0.6 * glow), 2.0)
 	else:
 		var stone := Color("5a5650").lerp(Color("05070c"), 1.0 - light)
 		_arena.draw_circle(at, r * 0.8, stone)

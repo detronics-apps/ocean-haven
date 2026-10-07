@@ -25,6 +25,25 @@ extends Resource
 @export var days := 6
 ## It from the front, lying on the vet table.
 @export var vet_picture: Texture2D
+## Lives in water: kept in a fish tank on the counter (a seahorse, a young shark).
+@export var tank := false
+## Hatches from an egg on the table (turtles, flamingos), on the first day once it's named.
+@export var from_egg := false
+@export var egg_colour := Color("f4efe2")
+## Where on its picture (0..1 of it) its mouth, wound and eyes are: food and medicine go to the
+## mouth, the plaster on the wound, and it blinks.
+@export var mouth := Vector2(0.5, 0.62)
+@export var wound_at := Vector2(0.68, 0.72)
+@export var eyes: PackedVector2Array = PackedVector2Array([Vector2(0.38, 0.4), Vector2(0.62, 0.4)])
+## Its food, drawn on the tray: "greens", "shrimp", "fish", "clam", "milk", "squid". With
+## `sprinkle` it's shaken over the tank instead of brought to its mouth (a seahorse).
+@export var food_kind: StringName = &"fish"
+@export var sprinkle := false
+## How it's comforted: "stroke" (brush or stroke it back and forth: grooming, a feather
+## duster) or "place" (put something by it: a cloth over the tank, a twig, ice), and the thing
+## used: "brush", "duster", "cloth", "twig", "ice", "hand".
+@export var comfort_kind: StringName = &"stroke"
+@export var comfort_tool: StringName = &"hand"
 
 @export_group("Care")
 ## How it's doing on each day in care ("{name}" is its name).

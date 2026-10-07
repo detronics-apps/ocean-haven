@@ -58,6 +58,27 @@ func pet_name() -> String:
 	return String(current.get("name", ""))
 
 
+## Whether the one in care has come out of its egg (only egg-layers start as one: RescueData.from_egg).
+func hatched() -> bool:
+	var one := in_care()
+	return one != null and (not one.from_egg or bool(current.get("hatched", false)))
+
+
+## It hatched on the vet table (saved with it).
+func hatch() -> void:
+	if not current.is_empty():
+		current.hatched = true
+
+
+## How grown it is, 0 (just hatched or found) to 1 (its last day in care): it grows a little
+## every day.
+func growth() -> float:
+	var one := in_care()
+	if not one:
+		return 1.0
+	return clampf(days_in() / maxf(one.days, 1.0), 0.0, 1.0)
+
+
 func is_named() -> bool:
 	return pet_name() != ""
 
@@ -97,7 +118,7 @@ func shape() -> float:
 
 ## Whether `action` can be done today (once a day each; patching only while there's a wound).
 func can_do(action: StringName) -> bool:
-	if current.is_empty() or is_ready() or not is_named():
+	if current.is_empty() or is_ready() or not is_named() or not hatched():
 		return false
 	if int((current.get("done", {}) as Dictionary).get(action, -1)) == GameClock.day:
 		return false

@@ -239,7 +239,7 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		elif question:
 			said.append_array(question.lines)
 			_give(person, question)
-		if not said.is_empty() or not extra.is_empty():
+		if not said.is_empty():
 			said.append_array(extra)
 			var lines := _lines(person, said)
 			if predict:

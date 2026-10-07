@@ -441,7 +441,8 @@ doing one of the island's research missions at once (ActivityData.reward_mission
 Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
 (Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
 Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
-Outpost; cargo search: reach the sea floor, then faster and faster. The view sinks by itself
+Outpost; cargo search: reach the sea floor (the sub climbs the screen fast enough to go back for something missed; jellyfish and
+boulders to avoid), then faster and faster. The view sinks by itself
 and never goes back up; the lower the sub is on the screen the faster it sinks; below the
 sunlight only the sonar light shows anything, on 90 % of the time at level 1 down to 50 % at
 level 5; lost gear sinks slowly (1.5 s off each); 3 hearts, one lost per bump (walls, wrecks,
@@ -519,7 +520,12 @@ Journal list = picture on a light tile, name, AnimalData.role; tap for the anima
 Second phone batch: zoom has five fixed steps, only the + / − buttons (or keys; no pinch); a
 tap walks the ranger all the way, a held finger is followed; photos crop 4 x 3 tiles round the
 animal through the camera and window stretch, and every moment it's in keeps the latest photo;
-rescues are 6 days on the vet table (RescueData.vet_picture, front view): feed / comfort /
+rescues are 6 days in the vet room (VetScene: on a towel on the counter, or a fish tank for
+RescueData.tank animals; it breathes, blinks and grows a little every day: Rescues.growth;
+egg-layers, RescueData.from_egg, hatch once named: the turtle and the flamingo; the sixgill is
+born live, so it's a pup): care is done by hand, dragging the tray's things to it (food to its
+mouth or shaken over the tank: sprinkle; stroke or place: comfort_kind / comfort_tool; the
+plaster on wound_at; the dropper; buttons below too): feed / comfort /
 patch / medicine once a day each raise Health, Fed and Calm (never down); it goes home tagged
 (TagBand) in the shape the care left it in, which sets how often it's about each morning
 (Rescues.check_visits: its island or RescueData.visits, never elsewhere; "Rescued_<id>",
