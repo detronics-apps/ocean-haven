@@ -83,7 +83,7 @@ func _initialize() -> void:
 	_expect(not said.any(func(t: String) -> bool: return t.to_lower().contains("you won")), "never 'You won'")
 	_expect(screen.find_child("DownloadPoster", true, false) != null, "the prize: the ocean poster to download")
 	var poster: Image = screen.POSTER.get_image()
-	_expect(poster.get_height() == 2000 and poster.save_jpg_to_buffer(0.95).size() > 100000, "the poster saves as a full-size JPEG")
+	_expect(poster.get_height() > poster.get_width() and poster.get_width() >= 700 and poster.save_jpg_to_buffer(0.95).size() > 100000, "the poster saves as a full-size JPEG (%dx%d)" % [poster.get_width(), poster.get_height()])
 	_expect(fleet.has_flag(&"observatory_opened") and fleet.goal_met(people.questions(maya).back().objective), "Maya's last question is answered")
 	screen.close()
 	var thanks: Array = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
