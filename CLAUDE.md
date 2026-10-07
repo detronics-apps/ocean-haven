@@ -441,11 +441,14 @@ doing one of the island's research missions at once (ActivityData.reward_mission
 Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
 (Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
 Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
-Outpost; cargo search: the view sinks by itself and never goes back up; the sub moves
-about the screen (up only holds its depth); below the sunlight only the sonar light shows
-anything, on 90 % of the time at level 1 down to 50 % at level 5; lost gear sinks slowly
-(1.5 s off each), wrecks and boulders and walls add 2 s; the game's own animal sprites at their
-real depths; levels 1,000 to 5,000 m, faster and with more obstacles each), Floe Fit (Sanna, Polar Research Station; drill
+Outpost; cargo search: reach the sea floor, then faster and faster. The view sinks by itself
+and never goes back up; the lower the sub is on the screen the faster it sinks; below the
+sunlight only the sonar light shows anything, on 90 % of the time at level 1 down to 50 % at
+level 5; lost gear sinks slowly (1.5 s off each); 3 hearts, one lost per bump (walls, wrecks,
+boulders), wrenches deeper down repair one; out of hearts the sub heads back up and the depth
+reached is the level's record (Activities.reached, saved) until its floor is reached, then the
+time is; the game's own animal sprites at their real depths; levels 1,000 to 5,000 m, faster and
+with more obstacles each), Floe Fit (Sanna, Polar Research Station; drill
 planning; floes cut from a real filling, placed floes can be taken back). Glass Sort waits for
 phase 9 (Kai's bottle story).
 Phase 7: rescue companions on the Kelp Forest (an otter pup separated from its mother; Finn,
@@ -554,7 +557,8 @@ Sound (`Sound` autoload, scripts/systems/sound_system.gd): placeholder sounds ma
 notes in audio/music/; loops have edit/loop_mode=2 in their .import). Each island's music is
 data (data/music/, MusicData: instruments, key, tempo, chords, ambient loop, animal calls) and
 is made up as it plays: a damaged island only hums a low pad; bass, the tune, bells and calls
-join in as its health rises. Buses Music / Ambient / Sounds; the speaker button in the menu bar
+join in as its health rises. Buses Music / Ambient / Sounds (in default_bus_layout.tres: buses added at runtime are silent
+on the web); the page plays like a music app (navigator.audioSession, iPhone silent switch); the speaker button in the menu bar
 (SoundButton) mutes everything or sets the music and sound volume (saved: "sound"). Every
 button clicks (Sound connects to each BaseButton; meta "silent" opts out); `Sound.play(&"id")`
 for the rest. Progress feedback (ProgressCheer, never tappable): sparkles and a chime when the
