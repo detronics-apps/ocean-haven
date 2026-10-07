@@ -4,7 +4,9 @@ extends ActivityScreen
 ## match-three on the station's ice map. Tap a piece, then one next to it, to swap them; three
 ## or more of the same in a row or column clear, the rest fall down and new ones drop in. Clear
 ## enough blocks of old ice (the white squares) to finish. A swap that makes no row just swaps
-## back; the board always has a move (it's reshuffled if not). The story play is Sanna's drill
+## back; the board always has a move (it's reshuffled if not). Drawn on the sea ice: snow falls,
+## terns fly over, a seal rests on the floe beside it; pieces slide when swapped, burst when they
+## clear and drop into place, and old ice cracks apart. The story play is Sanna's drill
 ## planning; after that it's for fun, with best times.
 
 ## Pieces: old ice, a snowflake, Arctic cod, krill, a stone, a tern feather.
@@ -25,6 +27,16 @@ var goal := 10
 var _picked := Vector2i(-1, -1)
 var _area: Control
 var _tile := 48.0
+var _time := 0.0
+## Cell -> how many squares it still has to fall (eases to 0); the last swap sliding back into
+## place ([a, b, t]); bursts: {"pos", "vel", "life", "colour"}; notes: {"text", "pos", "life"}.
+var _drop := {}
+var _sliding: Array = []
+var _bursts: Array[Dictionary] = []
+var _notes: Array[Dictionary] = []
+var _snow: Array[Vector2] = []
+var _cod: Texture2D
+var _seal: Texture2D
 
 
 func _enter_tree() -> void:
@@ -44,6 +56,15 @@ func _start_board(config: Vector3i) -> void:
 	cleared = 0
 	_picked = Vector2i(-1, -1)
 	_fill_board()
+	_drop.clear()
+	_sliding = []
+	_bursts.clear()
+	_notes.clear()
+	_snow.clear()
+	for i in 40:
+		_snow.append(Vector2(randf(), randf()))
+	_cod = (load("res://data/animals/arctic_cod.tres") as AnimalData).sprite
+	_seal = (load("res://data/animals/ringed_seal.tres") as AnimalData).sprite
 	_area = Control.new()
 	_area.name = "Map"
 	_area.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -102,16 +123,29 @@ func swap(a: Vector2i, b: Vector2i) -> bool:
 	_exchange(a, b)
 	if _matches().is_empty():
 		_exchange(a, b)  # no row: back they go
+		_sliding = [a, b, 1.0]
+		Sound.play(&"not_yet", -6.0)
 		return false
+	_sliding = [b, a, 1.0]
+	var chain := 0
 	while true:
 		var found := _matches()
 		if found.is_empty():
 			break
+		chain += 1
+		var ice := 0
 		for cell: Vector2i in found:
 			if grid[cell.x][cell.y] == OLD_ICE:
 				cleared += 1
+				ice += 1
+			_burst(cell, grid[cell.x][cell.y])
 			grid[cell.x][cell.y] = -1
+		if ice > 0:
+			_note("+%d old ice" % ice, found.keys()[0])
+		if chain > 1:
+			_note("Combo x%d!" % chain, found.keys()[found.size() - 1])
 		_fall()
+	Sound.play(&"plop" if chain == 1 else &"pickup")
 	if cleared >= goal:
 		_complete()
 	elif find_move().is_empty():
@@ -148,17 +182,57 @@ func _matches() -> Dictionary:
 	return found
 
 
-## Pieces fall into the gaps; new ones drop in from the top.
+## Pieces fall into the gaps; new ones drop in from the top (drawn falling: _drop).
 func _fall() -> void:
 	for x in cols:
 		var kept: Array[int] = []
+		var from: Array[int] = []
 		for y in rows:
 			if grid[x][y] >= 0:
 				kept.append(grid[x][y])
-		while kept.size() < rows:
+				from.append(y)
+		var missing := rows - kept.size()
+		for i in missing:  # new ones drop in from above the board
 			kept.push_front(randi() % kinds)
+			from.push_front(-1 - i)
 		for y in rows:
 			grid[x][y] = kept[y]
+			var fell := y - from[y]
+			if fell > 0:
+				_drop[Vector2i(x, y)] = maxf(float(_drop.get(Vector2i(x, y), 0.0)), float(fell))
+
+
+func _burst(cell: Vector2i, kind: int) -> void:
+	for i in 6:
+		_bursts.append({"pos": Vector2(cell) + Vector2(0.5, 0.5), "vel": Vector2.from_angle(randf() * TAU) * randf_range(1.0, 3.0),
+			"life": randf_range(0.4, 0.8), "colour": COLOURS[maxi(kind, 0) % COLOURS.size()]})
+
+
+func _note(text: String, cell: Vector2i) -> void:
+	_notes.append({"text": text, "pos": Vector2(cell) + Vector2(0.5, 0.2), "life": 1.2})
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	if not _area or not visible:
+		return
+	_time += delta
+	for cell in _drop.keys():
+		_drop[cell] = maxf(float(_drop[cell]) - delta * 9.0, 0.0)
+	if not _sliding.is_empty():
+		_sliding[2] = maxf(float(_sliding[2]) - delta * 7.0, 0.0)
+	for b in _bursts:
+		b.pos += b.vel * delta
+		b.vel.y += 6.0 * delta
+		b.life -= delta
+	_bursts = _bursts.filter(func(b: Dictionary) -> bool: return b.life > 0.0)
+	for n in _notes:
+		n.pos.y -= delta * 0.8
+		n.life -= delta
+	_notes = _notes.filter(func(n: Dictionary) -> bool: return n.life > 0.0)
+	for i in _snow.size():
+		_snow[i] = Vector2(fposmod(_snow[i].x + sin(_time + i) * 0.0008, 1.0), fposmod(_snow[i].y + delta * 0.05, 1.0))
+	_area.queue_redraw()
 
 
 ## A swap that makes a row ([a, b]), or [] if there's none.
@@ -197,14 +271,54 @@ func _draw_map() -> void:
 	if grid.is_empty():
 		return
 	var origin := _origin()
-	_area.draw_rect(Rect2(origin, Vector2(cols, rows) * _tile), BACK)
+	var board := Rect2(origin, Vector2(cols, rows) * _tile)
+	# The sea ice round the board: a floe each side, a seal resting on one, terns over the top.
+	_area.draw_rect(Rect2(Vector2(0, origin.y), Vector2(_area.size.x, board.size.y)), Color("2a5a7a"))
+	for side in 2:
+		var floe := Rect2(Vector2(0.0 if side == 0 else board.end.x + 12.0, origin.y + board.size.y * 0.35), Vector2(origin.x - 12.0, board.size.y * 0.5))
+		if floe.size.x > 20.0:
+			_area.draw_rect(floe, Color("e8f2f8"))
+			_area.draw_rect(Rect2(floe.position + Vector2(0, floe.size.y - 8.0), Vector2(floe.size.x, 8.0)), Color("b8d4e4"))
+	if origin.x > 90.0:
+		var sw := _seal.get_width() * 2.5
+		var sh := _seal.get_height() * 2.5
+		_area.draw_texture_rect(_seal, Rect2(Vector2(origin.x / 2.0 - sw / 2.0, origin.y + board.size.y * 0.35 - sh * 0.6 + sin(_time * 1.5) * 1.5), Vector2(sw, sh)), false)
+	for i in 2:
+		var g := Vector2(fposmod(_time * 40.0 + i * 300.0, _area.size.x + 60.0) - 30.0, origin.y + 12.0 + i * 16.0)
+		var flap := sin(_time * 8.0 + i) * 5.0
+		_area.draw_line(g + Vector2(-9, -flap), g, Color.WHITE, 2.0)
+		_area.draw_line(g, g + Vector2(9, -flap), Color.WHITE, 2.0)
+	_area.draw_rect(board.grow(4.0), Color("cfe6f2"))  # the board: frosted ice tiles
+	_area.draw_rect(board, BACK)
+	for x in cols:
+		for y in rows:
+			var tile := Rect2(origin + Vector2(x, y) * _tile, Vector2.ONE * _tile).grow(-1.0)
+			_area.draw_rect(tile, BACK.lightened(0.06) if (x + y) % 2 == 0 else BACK)
 	for x in cols:
 		for y in rows:
 			var k: int = grid[x][y]
-			var rect := Rect2(origin + Vector2(x, y) * _tile, Vector2.ONE * _tile).grow(-3.0)
+			var shift := Vector2(0, -float(_drop.get(Vector2i(x, y), 0.0)))
+			if not _sliding.is_empty() and float(_sliding[2]) > 0.0:
+				var t: float = _sliding[2]
+				if Vector2i(x, y) == _sliding[0]:
+					shift += Vector2(_sliding[1] - _sliding[0]) * t
+				elif Vector2i(x, y) == _sliding[1]:
+					shift += Vector2(_sliding[0] - _sliding[1]) * t
+			var rect := Rect2(origin + (Vector2(x, y) + shift) * _tile, Vector2.ONE * _tile).grow(-3.0)
+			if rect.position.y < origin.y - _tile * 0.5:
+				continue  # (still falling in from above the board)
 			if Vector2i(x, y) == _picked:
-				_area.draw_rect(rect.grow(2.0), PICKED)
+				var pulse := 2.0 + sin(_time * 8.0) * 2.0
+				_area.draw_rect(rect.grow(pulse), PICKED)
 			_draw_piece(k, rect)
+	for b in _bursts:
+		var colour: Color = b.colour
+		colour.a = b.life
+		_area.draw_rect(Rect2(origin + b.pos * _tile - Vector2(3, 3), Vector2(6, 6)), colour)
+	for n in _notes:
+		_area.draw_string(ThemeDB.fallback_font, origin + n.pos * _tile - Vector2(50, 0), n.text, HORIZONTAL_ALIGNMENT_CENTER, 100, 18, Color(1.0, 0.85, 0.4, minf(n.life, 1.0)))
+	for flake in _snow:  # snow falling over it all
+		_area.draw_circle(Vector2(flake.x * _area.size.x, origin.y + flake.y * board.size.y), 1.6, Color(1, 1, 1, 0.7))
 	_area.draw_string(ThemeDB.fallback_font, Vector2(8, 22), "Old ice cleared: %d / %d" % [mini(cleared, goal), goal],
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 
@@ -214,21 +328,33 @@ func _draw_piece(k: int, rect: Rect2) -> void:
 	var r := rect.size.x * 0.38
 	var colour := COLOURS[k % COLOURS.size()]
 	match k:
-		0:  # old ice: a white block
-			_area.draw_rect(rect.grow(-rect.size.x * 0.12), colour)
-			_area.draw_rect(Rect2(rect.position + rect.size * 0.18, rect.size * Vector2(0.4, 0.12)), Color("cfe6f2"))
-		1:  # snowflake
-			for i in 3:
-				var d := Vector2.from_angle(PI * i / 3.0) * r
-				_area.draw_line(c - d, c + d, colour, 3.0)
-		2:  # Arctic cod
-			_area.draw_colored_polygon(PackedVector2Array([c + Vector2(-r, 0), c + Vector2(r * 0.5, -r * 0.45), c + Vector2(r * 0.7, 0), c + Vector2(r * 0.5, r * 0.45)]), colour)
-			_area.draw_colored_polygon(PackedVector2Array([c + Vector2(-r, 0), c + Vector2(-r * 1.2, -r * 0.4), c + Vector2(-r * 1.2, r * 0.4)]), colour)
-		3:  # krill
+		0:  # old ice: a thick white block with cracks and a shine
+			var block := rect.grow(-rect.size.x * 0.08)
+			_area.draw_rect(block, Color("b8d4e4"))
+			_area.draw_rect(Rect2(block.position, block.size - Vector2(0, block.size.y * 0.18)), colour)
+			_area.draw_rect(Rect2(rect.position + rect.size * 0.18, rect.size * Vector2(0.4, 0.1)), Color("ffffff"))
+			_area.draw_polyline(PackedVector2Array([c + Vector2(-r * 0.6, r * 0.1), c + Vector2(-r * 0.1, -r * 0.2), c + Vector2(r * 0.3, r * 0.3)]), Color("9fc4d8"), 2.0)
+		1:  # snowflake, with little side branches
+			for i in 6:
+				var d := Vector2.from_angle(PI * i / 3.0 + _time * 0.3)
+				_area.draw_line(c, c + d * r, colour, 3.0)
+				_area.draw_line(c + d * r * 0.6, c + d * r * 0.6 + d.rotated(0.7) * r * 0.25, colour, 2.0)
+				_area.draw_line(c + d * r * 0.6, c + d * r * 0.6 + d.rotated(-0.7) * r * 0.25, colour, 2.0)
+		2:  # Arctic cod: its own picture
+			var w := rect.size.x * 0.9
+			var h := w * _cod.get_height() / maxf(_cod.get_width(), 1.0)
+			_area.draw_texture_rect(_cod, Rect2(c - Vector2(w, h) / 2.0 + Vector2(0, sin(_time * 3.0 + c.x) * 1.5), Vector2(w, h)), false)
+		3:  # krill: a little curled shrimp with legs and an eye
+			for i in 5:
+				var seg := c + Vector2.from_angle(PI * 0.9 + i * 0.35) * r * 0.6 + Vector2(r * 0.1, 0)
+				_area.draw_circle(seg, r * (0.26 - i * 0.03), colour)
 			for i in 4:
-				_area.draw_circle(c + Vector2(-r * 0.6 + i * r * 0.4, sin(i) * 3.0), r * 0.28, colour)
-		4:  # stone
+				_area.draw_line(c + Vector2(-r * 0.3 + i * r * 0.2, r * 0.1), c + Vector2(-r * 0.35 + i * r * 0.2, r * 0.45), colour.darkened(0.2), 1.5)
+			_area.draw_circle(c + Vector2(r * 0.55, -r * 0.2), 2.0, Color("1a1a1a"))
+		4:  # a sea-worn stone
+			_area.draw_circle(c + Vector2(0, 2), r * 0.8, colour.darkened(0.25))
 			_area.draw_circle(c, r * 0.8, colour)
+			_area.draw_circle(c + Vector2(-r * 0.25, -r * 0.25), r * 0.25, colour.lightened(0.2))
 		_:  # feather
 			_area.draw_line(c + Vector2(-r, r), c + Vector2(r, -r), colour, 3.0)
 			_area.draw_colored_polygon(PackedVector2Array([c + Vector2(-r * 0.6, r * 0.6), c + Vector2(r * 0.2, -r * 0.6), c + Vector2(r * 0.9, -r * 0.9), c + Vector2(r * 0.4, r * 0.1)]), colour)

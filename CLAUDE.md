@@ -538,6 +538,12 @@ island news the ranger may have missed (People.add_news: rescued visitors, hatch
 first newcomer; told once, within 3 days); the giant squid has a step-by-step hint (DeepEcosystem.squid_hint: map the canyon, a camera, 70 % quiet,
 2 days on the island; Bram's squid topic "{advice:giant_squid}", condition "journal:X"); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
 puzzle, opens when the furnace is firing, story play finishes the first batch).
+Every ranger activity is a drawn, living scene, not a grid of buttons: Sonar Sweep (the sea by
+the shore from above, waves, fish shadows, gulls, the boat gliding to each ping, rings, sea floor
+and buoys), Channel Flow (mud flats, pieces swing round, water runs along linked channels, a young
+snapper swims into each linked pool, mangroves and a wading flamingo), Ice Match (sea ice and
+snow, a seal on a floe, pieces slide, burst and fall, combos), Glass Sort (the Glassworks:
+furnace, glass pieces arcing between jars, corks on sorted jars), Otter Dive and Echo Dive.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
