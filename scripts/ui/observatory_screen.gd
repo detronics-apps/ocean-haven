@@ -42,12 +42,7 @@ func open() -> void:
 
 
 func _fill() -> void:
-	var regions: Array[RegionData] = []
-	for region: RegionData in Regions.all():
-		regions.append(region)
-	# (as they lie, colder to warmer: Polar, Deep Sea, Kelp, Starting, Mangrove, Reef)
-	var lie := func(r: RegionData) -> int: return -r.order if r.direction == &"colder" else r.order
-	regions.sort_custom(func(a: RegionData, b: RegionData) -> bool: return lie.call(a) < lie.call(b))
+	var regions := Regions.coldest_first()  # as they lie, colder to warmer
 	_panorama = Panorama.new()
 	_panorama.name = "Panorama"
 	_panorama.regions = regions

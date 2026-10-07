@@ -24,8 +24,6 @@ extends Node2D
 @export var bait_rate := 0.4
 ## A submarine dive reveals this much of its area.
 @export var dive_reveal := 0.7
-## Each level of a buoy or camera adds this share.
-@export var level_boost := 0.5
 
 @export_group("Quiet")
 ## Light and noise that leaves no quiet water at all.
@@ -235,18 +233,14 @@ func _of(id: StringName) -> Array[Building]:
 	return _buildings(func(b: Building) -> bool: return b.data.id == id)
 
 
-func _level(building: Building) -> float:
-	return 1.0 + level_boost * (building.tier - 1)
-
-
 ## Knowledge the instruments add a day (1 = one whole area), island-wide.
 func knowledge_rate() -> float:
 	var rate := 0.0
 	var whales := working(WHALE).size()
 	for buoy in _of(&"hydrophone_buoy"):
-		rate += hydrophone_rate * _level(buoy) * (1.0 + whale_boost * whales)
+		rate += hydrophone_rate * (1.0 + whale_boost * whales)
 	for camera in _of(&"deep_camera"):
-		rate += (bait_rate if camera.baited() else camera_rate) * _level(camera)
+		rate += bait_rate if camera.baited() else camera_rate
 	return rate
 
 
@@ -296,7 +290,7 @@ func light() -> float:
 	var cut := maxf(1.0 - angler_light_cut * working(ANGLER).size(), light_floor)
 	var total := 0.0
 	for camera in _of(&"deep_camera"):
-		total += camera_light * (1.0 - 0.25 * (camera.tier - 1)) * cut
+		total += camera_light * cut
 	return total
 
 
@@ -621,7 +615,7 @@ func advice(factor: HealthFactor) -> String:
 				sources.append([patrol_noise * over, "your %d patrol boat%s working over the dark areas: move %s near the shore, or take %s down" % [
 					over, "" if over == 1 else "s", "it" if over == 1 else "them", "it" if over == 1 else "them"]])
 			if light() > 0.0:
-				sources.append([light(), "the camera lamps: fewer cameras, or upgrade them to need less light"])
+				sources.append([light(), "the camera lamps: fewer cameras (anglerfish glow lets them use less light)"])
 			var baited := _of(&"deep_camera").filter(func(c: Building) -> bool: return c.baited()).size()
 			if baited > 0:
 				sources.append([bait_noise * baited, "the bait at your cameras: it brings the sharks crowding in"])

@@ -161,6 +161,9 @@ foundations the mechanics sit on, not the mechanics themselves.
 
   Simple structures (docks, drawbridges) never get levels. Which buildings get levels, and
   what each level does, is worked out per island.
+- **No levels just to have levels.** Each level must make something the building already does
+  a bit better (one more turtle, a wider patrol, more fragments a morning). Instruments that are
+  simply there or not (the Deep Sea's cameras and hydrophone buoys) get no levels at all.
 - **Shared buildings stay modest**, so they don't make other choices pointless: a Ranger House
   stores 4 / 8 / 10 of each (by level), and there's one recycling centre per island.
 - **Wood is shared; everything else is kept on the ship.** Ranger Houses store only wood and

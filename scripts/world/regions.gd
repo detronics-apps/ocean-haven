@@ -18,6 +18,17 @@ static func all() -> Array[Resource]:
 
 
 ## The region whose island is nearest `point`.
+## Every island from the coldest to the warmest, as they lie: Polar Ocean, Deep Sea, Kelp
+## Forest, Starting Island, Mangrove Coast, Tropical Reef.
+static func coldest_first() -> Array[RegionData]:
+	var list: Array[RegionData] = []
+	for region: RegionData in all():
+		list.append(region)
+	var lie := func(r: RegionData) -> int: return -r.order if r.direction == COLDER else r.order
+	list.sort_custom(func(a: RegionData, b: RegionData) -> bool: return lie.call(a) < lie.call(b))
+	return list
+
+
 static func nearest(point: Vector2) -> RegionData:
 	var best: RegionData = null
 	for region: RegionData in all():

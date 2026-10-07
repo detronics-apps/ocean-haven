@@ -195,7 +195,7 @@ caring for animals". Build in this order, placeholder art:
     RegionData.direction + order), which is then discovered for good (saved) and reachable from the
     Map. To go further you need a ship on that island (no skipping ahead from one ship). And the fleet
     finds only one more island than its level (`Regions.can_find_more`: Level 1 finds the 2nd island,
-    Level 2 the 3rd...), so every island found is helped before the next. The Map only sails to discovered islands; undiscovered ones are greyed out; a 🧭 marks islands
+    Level 2 the 3rd...), so every island found is helped before the next. The Map only sails to discovered islands, listed coldest at the top to warmest at the bottom (`Regions.coldest_first`); undiscovered ones are greyed out; a 🧭 marks islands
     with an Exploration Ship. One ship per island (built by the player; `one_per_island`).
 25. ✅ Island objectives & the fleet (MASTER_PLAN Step 1): each island's objective (RegionData.goals:
     ObjectiveGoal "help" a species / "litter" collected ever) must be done before its Exploration Ship
@@ -358,7 +358,7 @@ ranger has a walking animation (bob, sway, stepping boots).
 
 **MVP 0.8 — "Deep Sea" (current).** Design: `docs/MASTER_PLAN.md` Step 6 (draft 1, approved).
 `DeepEcosystem` (island child "Ecosystem"): 8 dark areas (`DeepSector`, a veil over their deep
-water) mapped island-wide by instruments: Hydrophone Buoys (quiet; whales' clicks boost them),
+water) mapped island-wide by instruments (no levels: they're there or not): Hydrophone Buoys (quiet; whales' clicks boost them),
 Deep Cameras (lamps light the dark; anglerfish let them use less; "Bait the camera" draws
 sixgill sharks: too many) and submarine dives from the Deep-Ocean Outpost (mark an area from the
 boat; noisy for a day; faster with the Reef's mapping system: MissionData.faster_with). Light and

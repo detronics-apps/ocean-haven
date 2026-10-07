@@ -1078,7 +1078,8 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   islands affect each other.
 
 **Gameplay still open**
-- Levels for the buildings that don't have them yet:
+- Levels for the buildings that don't have them yet, only where a level would make what the
+  building already does better (never just to have levels; ISLAND_RULES section 5):
   - Otter Habitat, Kelp Restoration Site, Kelp Discovery Centre, Kelp Research Platform;
   - Dolphin Viewing Area, Marine Search & Rescue Station, tent/house;
   - a picture per level for the patrol buoy.

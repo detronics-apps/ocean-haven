@@ -188,6 +188,10 @@ func _initialize() -> void:
 	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null
 		and _texts(map).contains("Still under development"), "the Map doesn't sail to an island under development")
 	region.call("arctic_ocean").in_development = false
+	var order: Array = map.get("_content").get_children().filter(func(c: Node) -> bool: return String(c.name).begins_with("Entry_")).map(
+		func(c: Node) -> String: return String(c.name).trim_prefix("Entry_"))
+	_expect(order == ["arctic_ocean", "deep_sea", "kelp_forest", "home_island", "mangrove_coast", "tropical_reef"],
+		"the Map lists the islands coldest first, the Tropical Reef at the bottom (%s)" % [order])
 	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
 	for i in 240:
 		await process_frame

@@ -4,7 +4,8 @@ extends OverlayScreen
 ## (the voyage fades out and in, and brings the ranger and their rowboat ashore there).
 ## Undiscovered islands are shown but can't be chosen: they're found by exploring
 ## warmer or colder with the Exploration Ship (see ExploreMenu). The Map answers just two
-## questions: discovered? (greyed out if not) and has an Exploration Ship? (a compass).
+## questions: discovered? (greyed out if not) and has an Exploration Ship? (a compass). The
+## islands are listed coldest first (the Polar Ocean at the top, the Tropical Reef at the bottom).
 ## Everything else (levels, upgrades) belongs in the ship's own screen.
 
 const COMPASS := preload("res://assets/ui/compass.svg")
@@ -28,7 +29,7 @@ func _fill() -> void:
 			get_tree().call_group("observatory", "open"))
 		_content.add_child(observatory)
 	var here := Regions.nearest(_ranger_position())
-	for region: RegionData in Regions.all():
+	for region: RegionData in Regions.coldest_first():
 		var known := Regions.is_discovered(region)
 		var lines: Array[String] = [region.display_name, region.description if known else region.theme]
 		if region == here:
