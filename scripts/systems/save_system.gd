@@ -255,15 +255,45 @@ func import_code(code: String) -> bool:
 
 ## The save text inside a code, or "" if it isn't one.
 static func decode(code: String) -> String:
-	code = code.strip_edges().replace("\n", "").replace("\r", "").replace(" ", "")
-	if not code.begins_with(CODE_PREFIX):
-		return ""
-	var packed := Marshalls.base64_to_raw(code.trim_prefix(CODE_PREFIX))
+	var packed := _packed(code)
 	if packed.is_empty():
 		return ""
 	var text := packed.decompress_dynamic(16_000_000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
 	var state: Variant = JSON.parse_string(text) if text else null
-	return text if state is Dictionary and state.get("version") == VERSION else ""
+	return text if state is Dictionary and int(state.get("version", -1)) == VERSION else ""
+
+
+## What's wrong with a pasted code ("" = nothing: it loads).
+static func code_problem(code: String) -> String:
+	if not code.contains(CODE_PREFIX):
+		return "That isn't a BlueHaven save code: a code starts with BH1:"
+	var packed := _packed(code)
+	if packed.is_empty() or packed.decompress_dynamic(16_000_000, FileAccess.COMPRESSION_GZIP).is_empty():
+		return "That code looks cut off: copy all of it (it's one long line), or use Save as file."
+	if decode(code) == "":
+		return "That save code is from a different version of the game and can't be loaded here."
+	return ""
+
+
+## The bytes in a code: from "BH1:" on, keeping only the code's own letters (a phone or notes app
+## may add spaces, line breaks, quotes or invisible characters when copying).
+static func _packed(code: String) -> PackedByteArray:
+	var at := code.find(CODE_PREFIX)
+	if at < 0:
+		return PackedByteArray()
+	var body := ""
+	for c in code.substr(at + CODE_PREFIX.length()):
+		if (c >= "A" and c <= "Z") or (c >= "a" and c <= "z") or (c >= "0" and c <= "9") or c in ["+", "/", "="]:
+			body += c
+	var cut := body.find("=")
+	if cut >= 0:  # padding ends it (anything pasted after it isn't part of the code)
+		var end := cut
+		while end < body.length() and body[end] == "=":
+			end += 1
+		body = body.substr(0, end)
+	while body.length() % 4 != 0:
+		body += "="
+	return Marshalls.base64_to_raw(body)
 
 
 ## Web: the same save text in localStorage (synchronous, survives abrupt closes).

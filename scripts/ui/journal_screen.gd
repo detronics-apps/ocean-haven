@@ -197,6 +197,7 @@ func _backup_card() -> Control:
 	var copy := BuildMode._big_button("Copy save code", Color("3f8a4a"))
 	copy.pressed.connect(func() -> void: status.text = _copy_code())
 	row.add_child(copy)
+	_code_status = status
 	var paste := BuildMode._big_button("Load save code", Color("2a78a8"))
 	paste.pressed.connect(func() -> void: status.text = _load_code())
 	row.add_child(paste)
@@ -206,24 +207,51 @@ func _backup_card() -> Control:
 
 func _copy_code() -> String:
 	var code := SaveGame.export_code()
+	if OS.has_feature("web"):  # a real page box: phones can't be trusted with long text otherwise
+		WebCodeBox.show_code(code)
+		return "Your save code is in the box: copy it, or save it as a file."
 	DisplayServer.clipboard_set(code)
-	if OS.has_feature("web"):  # phones may block the clipboard; the box lets you copy it by hand
-		JavaScriptBridge.eval("prompt(%s, %s)" % [JSON.stringify(
-			"Your save code (select all and copy it if it wasn't copied already):"), JSON.stringify(code)])
 	return "Save code copied. Paste it somewhere safe, like your notes app."
 
 
 func _load_code() -> String:
-	var code := DisplayServer.clipboard_get()
 	if OS.has_feature("web"):
-		var answer: Variant = JavaScriptBridge.eval("prompt(%s, '') || ''" % JSON.stringify(
-			"Paste your save code. This replaces your current progress."))
-		code = answer if answer is String else ""
+		WebCodeBox.ask_code()
+		_waiting_for_code = true
+		return "Paste your save code in the box, then tap Load."
+	return _use_code(DisplayServer.clipboard_get())
+
+
+## Loads a pasted code; says what's wrong with it if it can't.
+func _use_code(code: String) -> String:
 	if code.strip_edges() == "":
-		return ""
-	if SaveGame.import_code(code):
-		return "Loading your progress..."
-	return "That isn't a BlueHaven save code. Copy the whole code, starting with BH1:"
+		return "Nothing was pasted."
+	var problem := SaveGame.code_problem(code)
+	if problem != "":
+		return problem
+	SaveGame.import_code(code)
+	return "Loading your progress..."
+
+
+## Waiting for the web box to hand over a code.
+var _waiting_for_code := false
+var _code_check := 0.0
+var _code_status: Label
+
+
+func _process(delta: float) -> void:
+	if not _waiting_for_code or not OS.has_feature("web"):
+		return
+	_code_check -= delta
+	if _code_check > 0.0:
+		return
+	_code_check = 0.3
+	var code := WebCodeBox.take()
+	if code != "":
+		_waiting_for_code = false
+		var said := _use_code(code)
+		if is_instance_valid(_code_status):
+			_code_status.text = said
 
 
 ## How healthy an island is, and what goes into it.

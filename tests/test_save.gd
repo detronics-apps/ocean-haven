@@ -216,6 +216,11 @@ func _initialize() -> void:
 	_expect(code.begins_with("BH1:") and code.length() < text.length(), "save code is compact")
 	_expect(_save.decode(code.insert(20, "\n ")) == text, "save code decodes to the save")
 	_expect(_save.decode("BH1:hello") == "" and _save.decode("hello") == "", "junk code refused")
+	# Copied from a phone or a notes app: extra text, quotes, line breaks, odd spaces, a stray dot.
+	var messy := "My code: \"" + code.substr(0, 60) + "\u00a0\n" + code.substr(60, 40) + "\u200b " + code.substr(100) + "\"."
+	_expect(_save.decode(messy) == text and _save.code_problem(messy) == "", "a messy paste still loads")
+	_expect(_save.code_problem(code.substr(0, code.length() / 2)).contains("cut off"), "half a code: 'it looks cut off'")
+	_expect(_save.code_problem("hello").contains("isn't a BlueHaven save code"), "not a code at all: says so")
 
 	# --- An older save: a ship built before its island's objective was done is removed (its
 	# funding returned), and islands it found are locked again; the ranger goes home ---
