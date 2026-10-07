@@ -37,8 +37,27 @@ func _initialize() -> void:
 
 	# --- A problem solved early never skips an island's story ---
 	var imani: Resource = load("res://data/people/imani.tres")
+	fleet.restore({"flags": ["gear_recovered", "gear_traced"]})
+	_expect(people.current_question(imani).id == &"outpost", "lost gear brought up early: Imani still starts at the outpost (%s)" % people.current_question(imani).id)
+	var deep_done := {"installed": ["salvaged_sonar_core", "kelp_fibre", "cargo_module"], "flags": ["deep_mapped", "cargo_located", "cargo_recovered"]}
+	var outpost: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/deep_ocean_outpost.tres"), Vector2i(-40, -40))
+	fleet.restore(deep_done)
+	var deep_ship: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/expedition_boat.tres"), Vector2i(-48, -40))
+	var steps: Array[String] = []
+	_expect(people.current_question(imani) != null and people.current_question(imani).id == &"gear", "after the Cargo Module: Imani asks about the lost gear (%s)" % people.current_question(imani))
+	deep_done.flags.append("gear_recovered")
+	fleet.restore(deep_done)
+	steps.append(String(people.current_question(imani).id))
+	deep_done.flags.append("gear_traced")
+	fleet.restore(deep_done)
+	steps.append(String(people.current_question(imani).id))
+	_expect(steps == ["trace", "netpoint"], "3 pieces up: trace it; traced: the Net Return Point (%s)" % [steps])
+	outpost.queue_free()
+	deep_ship.queue_free()
+	await process_frame
 	fleet.restore({"flags": ["gear_marking"]})
-	_expect(people.current_question(imani).id == &"outpost", "gear marking done early: Imani still starts at the outpost (%s)" % people.current_question(imani).id)
+	_expect(fleet.has_flag(&"gear_recovered") and not fleet.has_flag(&"gear_marking") and not fleet.stopped(&"ghost_net"),
+		"an older save's gear marking becomes the 3 pieces brought up; the nets still need the Net Return Point")
 
 	# --- Finn, after the Kelp Forest's story: where do the rings come from? ---
 	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
@@ -102,13 +121,13 @@ func _initialize() -> void:
 	_expect(not kinds.has(&"six_pack_rings") and kinds.has(&"foam_box"), "no new rings drift in, other litter still does (%s)" % [kinds.keys()])
 
 	# --- Every fix building waits for its research ---
-	for id in ["weaving_workshop", "refill_bar", "box_return_depot", "filter_workshop"]:
+	for id in ["weaving_workshop", "refill_bar", "box_return_depot", "filter_workshop", "net_return_point"]:
 		var data: Resource = load("res://data/buildings/%s.tres" % id)
-		_expect(data.needs_flag != &"" and data.stops_litter.size() == 1, "%s needs research and stops one kind" % id)
+		_expect(data.needs_flag != &"" and data.stops_litter.size() >= 1, "%s needs research and stops its kind" % id)
 	var asked := []
 	for person: Resource in people.all():
 		for topic: Resource in people.questions(person):
-			if topic.objective.kind == &"stopped" or topic.objective.target == &"gear_marking":
+			if topic.objective.kind == &"stopped":
 				asked.append(String(topic.objective.target))
 	_expect(asked.size() == 6, "six kinds of litter, each asked about by someone (%s)" % [asked])
 	platform.queue_free()

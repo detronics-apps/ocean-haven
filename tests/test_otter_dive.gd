@@ -89,6 +89,7 @@ func _initialize() -> void:
 	_expect(activities.best(dive_data, 0) == INF, "the story dive sets no level time (only 5 urchins)")
 	screen.open_activity(dive_data)
 	_expect(screen.get("_buttons").has_node("Level1"), "the jetty now opens the levels")
+	var funding_before: int = root.get_node("Funding").balance
 	screen.level = 0
 	screen.call("_begin")
 	_expect(screen.hearts() == 3 and screen.get("_goal") == 10, "3 hearts, 10 urchins to collect")
@@ -112,12 +113,17 @@ func _initialize() -> void:
 	_expect(not screen.get("_playing") and screen.hearts() == 0, "litter takes the rest: the dive is over")
 	_expect(is_equal_approx(activities.most(dive_data, 0, "urchins"), 4.0), "the most urchins is the record (%.0f)" % activities.most(dive_data, 0, "urchins"))
 	_expect(not screen.get("_info").text.to_lower().contains("fail"), "never 'failed'")
+	var funding := root.get_node("Funding")
+	_expect(funding.balance == funding_before + 30 and screen.get("_info").text.contains("Research grant: +30"),
+		"the first replay today pays a research grant, though only 4 urchins were collected (%d)" % (funding.balance - funding_before))
 	_expect(activities.open_levels(dive_data) == 1, "fewer than 10: the next level stays closed")
 	screen.call("_begin")
 	screen.set("_got", 9)
 	screen.things().append({"x": screen.get("_scroll") + 0.22, "y": screen.depth(), "kind": "urchin"})
 	screen.step(1.0 / 30.0, false)
 	_expect(not screen.get("_playing") and activities.best(dive_data, 0) < INF, "all 10 collected: a best time")
+	_expect(funding.balance == funding_before + 30 and screen.get("_info").text.contains("come back tomorrow"),
+		"a second replay the same day: no more grant, however well it went")
 	_expect(activities.open_levels(dive_data) >= 2, "and the next level opens")
 	screen.call("_show_levels")
 	var texts: Array = screen.get("_buttons").get_children().filter(func(b: Node) -> bool: return not b.is_queued_for_deletion()).map(func(b: Button) -> String: return b.text)

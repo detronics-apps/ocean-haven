@@ -368,8 +368,8 @@ boat; noisy for a day; faster with the Reef's mapping system: MissionData.faster
 noise make the quiet water (`quiet()`, HealthFactor "quiet" scales_all): whales and anglerfish
 move away (never below 1), the giant squid only shows to a camera watching the mapped canyon in
 quiet water for 2 days. Mapped areas show their habitat and lost gear (lost longline / ghost net
-items, counts_as "deep_gear"); a sixgill with a hook surfaces some early; 3 recovered = gear
-marking (`Fleet` flag "gear_marking": no new nets or fishing line drift in anywhere). Deep-Sea
+items, counts_as "deep_gear"); a sixgill with a hook surfaces some early; 3 recovered = the
+evidence (`Fleet` flag "gear_recovered"; new deep gear sinks until nets are stopped). Deep-Sea
 Sanctuaries (+1 of the area's animals, no new gear), Deep-Sea Discovery Centre (watches whales),
 shore pines (`pine_sapling`). Oil Spill (EventData.oil_patches / needs_building): spreads each
 morning until the Outpost's "Contain" mission. Objective: 6 areas mapped at 70 % -> Cargo search
@@ -481,9 +481,11 @@ the recycling centre's menu lists every kind: picked up, carried, stopped by wha
 Finn: rings -> Trace the rings -> Harbour Refill Bar (Ines: kegs). Rosa: bags -> Trace the bags
 -> Weaving Workshop (Samuel: nipa palm baskets). Maya: foam boxes -> Trace the foam boxes ->
 Box Return Depot (Tom: crates that go back). Kai: bottles (reusable bottles). Imani: fishing
-gear (gear marking). Sanna: the threads in the ice core -> Look at the fibres -> Kai's Filter
+gear: bring up 3 pieces (who lost them? none is marked) -> Trace the lost gear (Outpost) ->
+Net Return Point on the Deep Sea (Bram: nowhere to take old nets; old nets recycled, new ones
+marked: stops ghost nets and fishing line; older saves' "gear_marking" becomes "gear_recovered"). Sanna: the threads in the ice core -> Look at the fibres -> Kai's Filter
 Workshop on the Reef ("microfibres", not an item). A question that can't be asked yet never
-counts as done, so a problem solved early (reusable bottles, gear marking) doesn't skip an
+counts as done, so a problem solved early (reusable bottles, lost gear brought up) doesn't skip an
 island's story.
 Phase 10: seasonal moments (data/seasons/, SeasonEvent: the coral spawns on summer nights 8-10
 on the Reef, sperm whales pass the Deep Sea in autumn 10-14, the Arctic terns arrive in spring
@@ -560,9 +562,14 @@ island), a Tip button (one tip when asked, for where the player is: the objectiv
 + ObjectiveGoal.hint, the ship, installing, exploring, then RegionData.flagship_tip) and a storm warning; every first visit says what the
 island is about; oil patches and other boat-only things explain themselves close up. An island's
 storm timer starts when the ranger first gets there: nothing is warned or strikes within
-min_gap_days of that (RareEvents._first_on / _too_soon; earlier warnings are called off).
+15-25 days of that (RareEvents.first_gap_min / first_gap_max, _first_on / _too_soon; earlier
+warnings are called off), later ones min_gap_days..max_gap_days apart.
 Economy: full-grown trees give 2-3 wood, the ranger carries 6, buildings need about a third less
-wood than before, recycling pays 2 a piece.
+wood than before, recycling pays 2 a piece (+1 per centre level), photo research 20 a species a
+day (Funding.PHOTO_RESEARCH), and the first replay of each ranger activity each day pays its
+research grant (ActivityData.daily_grant 30, never more for a better score; Activities.research_grant,
+saved "granted"). A day-by-day model of a full playthrough (all six islands, real costs) found
+funding held every island up: about 68 game days (~11 h) with these numbers.
 
 Playable islands: all six. An unfinished island would be `RegionData.in_development`: Explore
 says the fleet is ready (or what it still needs) and that the island is still under

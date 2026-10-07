@@ -29,6 +29,9 @@ extends Resource
 @export var reward_method: StringName
 ## The research the story play does: this mission on the activity's island, done at once.
 @export var reward_mission: MissionData
+## Replays (after the story play): the first one each day pays this research grant, the same
+## however well it went (the survey data is what's paid for, never a score).
+@export var daily_grant := 30
 ## Its own place in the world (spot != ZERO: e.g. an old jetty to dive from), visible from the
 ## start, open once the activity is: `place` drawn there, on island `region`.
 @export var spot := Vector2.ZERO

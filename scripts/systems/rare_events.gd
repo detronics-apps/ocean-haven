@@ -9,7 +9,8 @@ extends Node
 signal warned(event: EventData)
 signal struck(event: EventData, damaged: int)
 
-## Event id -> day it last struck (none yet: day 0, so the first comes after min_gap_days).
+## Event id -> day it last struck (none yet: the first comes first_gap_min..first_gap_max days
+## after the ranger first got to its island).
 var _last_day := {}
 ## Warned events waiting to strike: event id -> day they strike.
 var _coming := {}
@@ -18,10 +19,14 @@ var _murky := {}
 ## Nothing strikes an island the ranger isn't on, nor in their first `calm_days` back on it
 ## (the time between events keeps counting while they're away, so one can come soon after).
 @export var calm_days := 2
+## An island's first event comes between these many days after the ranger first gets there
+## (later ones: the event's min_gap_days..max_gap_days after the last).
+@export var first_gap_min := 15
+@export var first_gap_max := 25
 ## Region id -> day the ranger last came back to it.
 var _back_on := {}
 ## Region id -> the first day the ranger was ever on it: an island's first event never comes
-## sooner than min_gap_days after that (arriving late in the game is no reason for a storm).
+## sooner than first_gap_min days after that (arriving late in the game is no reason for a storm).
 var _first_on := {}
 ## Loaded from a save made before _first_on existed: count the islands found so far from now.
 var _fill_first_on := false
@@ -65,10 +70,18 @@ func _arrived_day(region_id: StringName) -> int:
 	return _first_on[region_id]
 
 
-## Whether `day` is within min_gap_days of the ranger first coming to `event`'s island: each
-## island's storm timer starts when the ranger first gets there.
+## Whether `day` is within first_gap_min days of the ranger first coming to `event`'s island:
+## each island's storm timer starts when the ranger first gets there.
 func _too_soon(event: EventData, day: int) -> bool:
-	return day < int(_first_on.get(event.region, day)) + event.min_gap_days
+	return day < int(_first_on.get(event.region, day)) + first_gap_min
+
+
+## The days between events: the island's first one comes first_gap_min..first_gap_max days
+## after the ranger first got there, later ones the event's min_gap_days..max_gap_days apart.
+func _window(event: EventData) -> Vector2i:
+	if not _last_day.has(event.id):
+		return Vector2i(first_gap_min, first_gap_max)
+	return Vector2i(event.min_gap_days, event.max_gap_days)
 
 
 ## Whether `event` may strike on `day`: the ranger is on its island and has been for calm_days.
@@ -100,13 +113,14 @@ func _on_new_day(day: int) -> void:
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
 			var since: int = day - maxi(_last_day.get(event.id, 0), _arrived_day(event.region))
-			# Warned 3-4 days ahead, but never so late that it strikes after max_gap_days.
+			var window := _window(event)
+			# Warned 3-4 days ahead, but never so late that it strikes after the window.
 			var lead := clampi(randi_range(event.warning_days, event.warning_days_max), event.warning_days,
-				maxi(event.max_gap_days - since, event.warning_days))
+				maxi(window.y - since, event.warning_days))
 			var gap: int = since + lead
-			# Evenly spread between min_gap_days and max_gap_days (certain once it's overdue).
-			if gap >= event.min_gap_days and not _too_soon(event, day + lead) and _can_strike(event, day + lead) \
-					and randf() < 1.0 / maxf(event.max_gap_days - gap + 1, 1.0):
+			# Evenly spread over the window (certain once it's overdue).
+			if gap >= window.x and not _too_soon(event, day + lead) and _can_strike(event, day + lead) \
+					and randf() < 1.0 / maxf(window.y - gap + 1, 1.0):
 				warn(event, lead)
 
 

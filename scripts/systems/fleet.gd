@@ -141,8 +141,6 @@ const CLEAN_WATER_MADE := &"clean_water_made"
 func stopped_by(id: StringName) -> String:
 	if id == &"plastic_bottle" and reusable_bottles():
 		return "reusable glass bottles from the Glassworks"
-	if id in [&"ghost_net", &"fishing_line"] and has_flag(&"gear_marking"):
-		return "gear marking: lost fishing gear is found and brought back"
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if String(id) in building.data.stops_litter and not building.is_queued_for_deletion():
 			return "your %s" % building.data.display_name
@@ -150,12 +148,10 @@ func stopped_by(id: StringName) -> String:
 
 
 ## Whether litter of kind `id` has been stopped at its source, so no more of it drifts in on
-## any island: plastic bottles by reusable bottles, fishing gear by gear marking, the rest by a
+## any island: plastic bottles by reusable bottles, the rest by a
 ## building that stops it (BuildingData.stops_litter, e.g. the Weaving Workshop: plastic bags).
 func stopped(id: StringName) -> bool:
 	if id == &"plastic_bottle" and reusable_bottles():
-		return true
-	if id in [&"ghost_net", &"fishing_line"] and has_flag(&"gear_marking"):
 		return true
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
 		if String(id) in building.data.stops_litter and not building.is_queued_for_deletion():
@@ -234,6 +230,9 @@ func restore(saved: Dictionary) -> void:
 		into.clear()
 	for flag in saved.get("flags", []):
 		_flags[StringName(flag)] = true
+	if _flags.has(&"gear_marking"):  # (older saves: bringing up 3 pieces used to stop the nets by itself)
+		_flags.erase(&"gear_marking")
+		_flags[&"gear_recovered"] = true
 	_counts.clear()
 	var counts: Dictionary = saved.get("counts", {})
 	for id in counts:

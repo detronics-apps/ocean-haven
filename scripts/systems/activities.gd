@@ -1,7 +1,8 @@
 extends Node
 ## Autoload "Activities": the ranger activities (data/activities/, ActivityData): which story
-## plays are done and the personal best time for each level. Replays are only for fun: they
-## never give progress, items or funding.
+## plays are done and the personal best time for each level. Replays never give progress or
+## items; the first one each day pays its research grant (ActivityData.daily_grant), whatever
+## the score.
 
 ## An activity was finished: `story` = its first (story) play.
 signal finished(activity: ActivityData, level: int, seconds: float, story: bool)
@@ -15,6 +16,8 @@ var _bests := {}
 var _depths := {}
 ## Activity id -> {"level/key": most} (endless plays: urchins collected, seconds lasted).
 var _most := {}
+## Activity id -> GameClock.day its last research grant was paid.
+var _granted := {}
 var _all: Array[ActivityData] = []
 
 
@@ -97,6 +100,25 @@ func open_levels(activity: ActivityData) -> int:
 	return count
 
 
+## The research grant for a replay played today: paid once a day per activity, the same
+## whatever the score. Returns the amount paid (0: already paid today, or the story play).
+func research_grant(activity: ActivityData) -> int:
+	if not story_done(activity) or activity.daily_grant <= 0 or granted_today(activity):
+		return 0
+	_granted[activity.id] = GameClock.day
+	var who := activity.display_name
+	for person: PersonData in People.all():
+		if person.id == activity.person:
+			who = "%s's team" % person.short_name
+	Funding.earn(activity.daily_grant, "%s used your %s results: a research grant." % [who, activity.display_name])
+	return activity.daily_grant
+
+
+## Whether today's research grant for `activity` has been paid.
+func granted_today(activity: ActivityData) -> bool:
+	return int(_granted.get(activity.id, -1)) == GameClock.day
+
+
 ## Records a finished play. The first story play gives its reward. Returns whether it's a new
 ## personal best.
 func finish(activity: ActivityData, level: int, seconds: float) -> bool:
@@ -129,10 +151,13 @@ func to_dict() -> Dictionary:
 		for level in _depths[id]:
 			levels[str(level)] = _depths[id][level]
 		depths[String(id)] = levels
+	var granted := {}
+	for id in _granted:
+		granted[String(id)] = _granted[id]
 	var most := {}
 	for id in _most:
 		most[String(id)] = (_most[id] as Dictionary).duplicate()
-	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests, "depths": depths, "most": most}
+	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests, "depths": depths, "most": most, "granted": granted}
 
 
 func restore(saved: Dictionary) -> void:
@@ -140,6 +165,10 @@ func restore(saved: Dictionary) -> void:
 	_bests.clear()
 	_depths.clear()
 	_most.clear()
+	_granted.clear()
+	var granted: Dictionary = saved.get("granted", {})
+	for id in granted:
+		_granted[StringName(id)] = int(granted[id])
 	var most: Dictionary = saved.get("most", {})
 	for id in most:
 		var records := {}

@@ -175,6 +175,9 @@ func _initialize() -> void:
 		"old Otter Dive records (endless levels, a 5-urchin story time) start fresh; the story stays done")
 	activities.restore({"done": ["otter_dive"], "bests": {"otter_dive": {"0": 40.0}}, "most": {"otter_dive": {"0/urchins": 10.0}}})
 	_expect(is_equal_approx(activities.best(otter, 0), 40.0), "new Otter Dive records are kept")
+	activities.restore({"done": ["otter_dive"], "granted": {"otter_dive": 7}})
+	var granted: Dictionary = activities.to_dict().granted
+	_expect(int(granted.get("otter_dive", 0)) == 7, "the day each activity's research grant was last paid is saved")
 	activities.restore({})
 	_expect(_inventory.picked_on.get(&"kelp_forest", 0) == 12, "litter picked up per island restored (Regions.helped)")
 	_expect(_inventory.picked == picked_before, "litter picked up per kind restored (%s)" % [_inventory.picked])

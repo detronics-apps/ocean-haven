@@ -38,8 +38,14 @@ lines = PackedStringArray("Whales talk in clicks. Make noise and they go quiet, 
 [sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"gear"
-when = PackedStringArray("flag:deep_mapped", "!flag:gear_marking")
+when = PackedStringArray("flag:deep_mapped", "!flag:gear_recovered")
 lines = PackedStringArray("Now that the deep's mapped, you'll find the old gear down there. Every net you bring up is one less catching fish.")
+
+[sub_resource type="Resource" id="Topic_nets"]
+script = ExtResource("2_t")
+id = &"nets"
+when = PackedStringArray("asked:netpoint")
+lines = PackedStringArray("Old nets? We'd have brought ours in, if there'd been anywhere to take them. Nobody wanted a torn net, so over the side it went.", "And a net with your boat's mark on it, you don't lose. You'd be asked where it went.")
 
 [sub_resource type="Resource" id="Topic_squid"]
 script = ExtResource("2_t")
@@ -83,4 +89,4 @@ trousers = Color(0.25, 0.25, 0.28, 1)
 hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])

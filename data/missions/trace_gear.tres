@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MissionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/mission_data.gd" id="1_mis"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/trace_gear.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_mis")
+id = &"trace_gear"
+display_name = "Trace the lost gear"
+icon = ExtResource("2_icon")
+description = "The submarine follows the lost nets and line back to where they were lost: whose are they, and why are they there?"
+order = 9
+facility = &"deep_ocean_outpost"
+cost = 20
+minutes = 2.0
+marker_colour = Color(0.37, 0.62, 0.42, 1)
+report = "The lost nets and line come from fishing boats. None of it carries a mark, so nobody can tell whose it is or report it, and the harbours have nowhere to take worn-out nets, so old gear gets dumped or lost. Talk to Imani."
+report_none = "The lost nets and line come from fishing boats. None of it carries a mark, so nobody can tell whose it is or report it, and the harbours have nowhere to take worn-out nets, so old gear gets dumped or lost. Talk to Imani."
+effect = &"investigate"
+show_flag = &"gear_asked"
+hide_flag = &"gear_traced"
+marks_flag = &"gear_traced"

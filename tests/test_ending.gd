@@ -26,7 +26,7 @@ func _initialize() -> void:
 
 	# --- All six discoveries: the Observatory opens, but the reflection waits ---
 	var all_six := ["salvaged_sonar_core", "kelp_fibre", "mangrove_resin", "reef_limestone", "cargo_module", "ice_core"]
-	var flags := ["sonar_recovered", "kelp_balanced", "mangrove_flowing", "reef_restored", "deep_mapped", "polar_balanced", "gear_marking"]
+	var flags := ["sonar_recovered", "kelp_balanced", "mangrove_flowing", "reef_restored", "deep_mapped", "polar_balanced", "gear_recovered"]
 	fleet.restore({"installed": all_six, "flags": flags})
 	for region: Resource in load("res://scripts/world/regions.gd").all():
 		load("res://scripts/world/regions.gd").discover(region)
@@ -38,7 +38,7 @@ func _initialize() -> void:
 	var screen: Node = world.find_child("ObservatoryScreen", true, false)
 	_expect(screen.visible and screen.find_child("Panorama", true, false) != null, "it shows the six islands side by side")
 	var links: Array = screen.links()
-	_expect(links.size() >= 4, "and what joins them (%s)" % [links.map(func(l: Dictionary) -> String: return l.text)])
+	_expect(links.size() >= 3, "and what joins them (%s)" % [links.map(func(l: Dictionary) -> String: return l.text)])
 	_expect(screen.find_child("Learned", true, false) == null and not fleet.has_flag(&"observatory_opened"),
 		"no reflection while some litter still starts somewhere")
 	_expect(screen.find_child("DownloadPoster", true, false) == null, "no poster before the whole ocean is connected")
@@ -47,7 +47,8 @@ func _initialize() -> void:
 	# --- Every source stopped: the final chapter ---
 	fleet.mark(&"fibres_traced")
 	var build: Node = world.get_node("BuildMode")
-	var spots := {"refill_bar": Vector2i(-12, -12), "weaving_workshop": Vector2i(-16, -12), "box_return_depot": Vector2i(-20, -12), "filter_workshop": Vector2i(-24, -12)}
+	fleet.mark(&"gear_traced")
+	var spots := {"refill_bar": Vector2i(-12, -12), "weaving_workshop": Vector2i(-16, -12), "box_return_depot": Vector2i(-20, -12), "filter_workshop": Vector2i(-24, -12), "net_return_point": Vector2i(-32, -12)}
 	for id in spots:
 		build.add_building(load("res://data/buildings/%s.tres" % id), spots[id])
 	await process_frame

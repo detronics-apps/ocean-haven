@@ -1,7 +1,7 @@
 extends SceneTree
 ## The Coastal Storm (the Starting Island's rare event): warned a day ahead; secured
 ## buildings come through fine; unsecured ones may be damaged (closed to visitors, no
-## nesting) until repaired with wood; litter washes up. Never within 30 days of the last one.
+## nesting) until repaired with wood; litter washes up. An island's first comes 15-25 days after the ranger gets there, then 30-60 days apart.
 ## Its state is saved.
 ## Run: godot --headless --path . --script res://tests/test_storm.gd --quit-after 200000
 
@@ -22,12 +22,12 @@ func _initialize() -> void:
 	var viewing: Node2D = build_mode.add_building(load("res://data/buildings/dolphin_viewing_area.tres"), Vector2i(-6, -4))
 	var dock: Node2D = build_mode.add_building(load("res://data/buildings/dock.tres"), Vector2i(-1, 6))
 
-	# --- Never in the first 30 days; then now and then ---
+	# --- Never in the first 15 days on an island; then now and then ---
 	clock.day = 1
-	for i in 25:  # the first can only strike from day 30 (warned 3-4 days ahead)
+	for i in 10:  # the first can only strike from day 16 (warned 3-4 days ahead)
 		clock.time_of_day = 0.9
 		clock.sleep_until_morning()
-	_expect(not events.is_coming(), "no storm in the first 30 days")
+	_expect(not events.is_coming(), "no storm in the first 15 days")
 	events.restore({"first_on": {"home_island": 1}})
 
 	# --- Warned days ahead: secure what you can ---
@@ -102,24 +102,27 @@ func _initialize() -> void:
 	events.restore(saved)
 	_expect(events.is_coming(), "a coming storm is saved")
 
-	# --- An island's first event never comes within min_gap_days of first arriving there ---
+	# --- An island's first event comes 15-25 days after first arriving there ---
 	events.restore({"first_on": {"home_island": 55}})
-	for day in range(56, 81):
+	for day in range(56, 66):
 		clock.day = day
 		events.call("_on_new_day", day)
-	_expect(not events.is_coming_to(&"home_island"), "arriving on day 55: no storm warned before day 81 (so none strikes before day 85)")
+	_expect(not events.is_coming_to(&"home_island"), "arriving on day 55: no storm warned before day 66 (so none strikes before day 70)")
 	events.restore({"first_on": {"home_island": 55}, "coming": {"coastal_storm": 60}})
 	events.call("_on_new_day", 56)
 	_expect(not events.is_coming_to(&"home_island"), "a warning from before the island's timer started is called off")
 	events.restore({"first_on": {"home_island": 55}})
-	var first_strike := -1
-	for day in range(56, 130):
-		if events._coming.get(&"coastal_storm", -1) == day:
-			first_strike = day
-			break
-		clock.day = day
-		events.call("_on_new_day", day)
-	_expect(first_strike >= 85, "the first storm comes at least 30 days after arriving (day %d)" % first_strike)
+	var firsts := []
+	for run in 12:
+		events.restore({"first_on": {"home_island": 55}})
+		for day in range(56, 130):
+			if events._coming.get(&"coastal_storm", -1) == day:
+				firsts.append(day - 55)
+				break
+			clock.day = day
+			events.call("_on_new_day", day)
+	_expect(firsts.size() == 12 and firsts.all(func(d: int) -> bool: return d >= 15 and d <= 26),
+		"the island's first storm comes 15-25 days after arriving (%s)" % [firsts])
 
 	if not _failed:
 		print("PASS")

@@ -105,17 +105,48 @@ reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, 
 [sub_resource type="Resource" id="Goal_9"]
 script = ExtResource("3_g")
 kind = &"flag"
-target = &"gear_marking"
+target = &"gear_recovered"
 text = "Bring up 3 pieces of lost fishing gear"
+
+[sub_resource type="Resource" id="Goal_9b"]
+script = ExtResource("3_g")
+kind = &"flag"
+target = &"gear_traced"
+text = "Find out where the lost gear comes from"
+
+[sub_resource type="Resource" id="Goal_9c"]
+script = ExtResource("3_g")
+kind = &"stopped"
+target = &"ghost_net"
+text = "Stop the lost nets and line at their source"
 
 [sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"gear"
 when = PackedStringArray("installed:cargo_module")
-lines = PackedStringArray("Every lost net we've seen down there had no name on it. Nobody could tell whose it was, or where it was lost.", "What if every net carried its boat's mark?", "> They'd be found! | They'd come back!", "Then lost gear could be reported and fetched. Bring up three pieces from the mapped areas, and we'll show the fishers.")
+lines = PackedStringArray("Every lost net we've seen down there is still catching fish. Nobody's coming back for them.", "Who do you think lost them?", "> Fishing boats? | A storm?", "Let's find out. Bring up three pieces from the mapped areas with your boat, and we'll take a close look.")
 objective = SubResource("Goal_9")
-thanks = PackedStringArray("Marked gear! The fishers report what they lose now, and no new nets or line drift in, anywhere.")
+thanks = PackedStringArray("Three pieces, and not one with a name or a mark on it. Nobody could ever tell whose they were.")
 reminder = PackedStringArray("Lost gear shows up in the mapped areas: bring up three pieces with your boat.")
+
+[sub_resource type="Resource" id="Topic_9b"]
+script = ExtResource("2_t")
+id = &"trace"
+when = PackedStringArray("installed:cargo_module")
+lines = PackedStringArray("So where does it all come from, and why is it lost?", "> Old nets thrown away? | Nets torn off?", "The sub can follow the gear back. Send Trace the lost gear from the Outpost.")
+objective = SubResource("Goal_9b")
+thanks = PackedStringArray("Unmarked nets, and nowhere to take the old ones. No wonder they end up in the sea.")
+reminder = PackedStringArray("Send Trace the lost gear from the Deep-Ocean Outpost, and we'll know where it comes from.")
+marks = &"gear_asked"
+
+[sub_resource type="Resource" id="Topic_9c"]
+script = ExtResource("2_t")
+id = &"netpoint"
+when = PackedStringArray("installed:cargo_module")
+lines = PackedStringArray("What if the fishers had somewhere to bring their old nets, and every new net carried its boat's mark?", "> Lost nets get found! | Ask Bram!", "Bram fished these waters for forty years. A Net Return Point by the dock would do both: it's in your Build menu.")
+objective = SubResource("Goal_9c")
+thanks = PackedStringArray("Old nets come back to be recycled, and a lost marked net gets reported and fetched. No new nets or line in the sea, anywhere.")
+reminder = PackedStringArray("The Net Return Point is in your Build menu: old nets recycled, new ones marked.")
 
 [sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")
@@ -141,4 +172,4 @@ hair_colour = Color(0.08, 0.06, 0.05, 1)
 shirt = Color(0.85, 0.45, 0.2, 1)
 trousers = Color(0.2, 0.22, 0.26, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_9b"), SubResource("Topic_9c"), SubResource("Topic_10")])

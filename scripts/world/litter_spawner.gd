@@ -161,7 +161,7 @@ func fill(count: int) -> void:
 ## already enough litter or no spot was found.
 func spawn_one() -> Debris:
 	var item: ItemData = _items.pick_random()
-	# Problems fixed at their source (Fleet.stopped: reusable bottles, gear marking, a weaving
+	# Problems fixed at their source (Fleet.stopped: reusable bottles, the Net Return Point, a weaving
 	# workshop...): none of that kind drifts in any more, so there's less litter overall (old
 	# ones can still be dug up or washed ashore by a storm: those use the full mix).
 	var stopped := _items.filter(func(i: ItemData) -> bool: return Fleet.stopped(i.id)).size()

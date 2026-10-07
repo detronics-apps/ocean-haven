@@ -57,7 +57,8 @@ extends Node2D
 ## Each morning a sixgill (when they aren't crowding round bait) may surface with a hook from
 ## lost gear in a dark area.
 @export var hook_chance := 0.5
-## Each morning before gear marking, new lost gear may sink in an unprotected area.
+## Each morning until lost nets are stopped at their source (the Net Return Point), new lost
+## gear may sink in an unprotected area.
 @export var new_gear_chance := 0.1
 
 const WHALE := preload("res://data/animals/sperm_whale.tres")
@@ -73,7 +74,8 @@ const LAYOUT := [&"squid_canyon", &"whale_ground", &"angler_slope", &"shark_ledg
 ## Lost gear hidden at the start: area index -> item.
 const START_GEAR := {1: &"lost_ghost_net", 2: &"lost_longline", 3: &"lost_longline"}
 const GEAR_COUNT := &"deep_gear"
-const GEAR_MARKING := &"gear_marking"
+## Three pieces brought up: the evidence for Imani (then Trace the lost gear, the Net Return Point).
+const GEAR_RECOVERED := &"gear_recovered"
 const MAPPED_FLAG := &"deep_mapped"
 const CARGO_FLAG := &"cargo_located"
 
@@ -489,8 +491,8 @@ func _check_gear() -> void:
 			continue
 		sector.gear_item = &""
 		sector.gear_found = false
-		if Fleet.count_of(GEAR_COUNT) >= START_GEAR.size() and not Fleet.has_flag(GEAR_MARKING):
-			Fleet.mark(GEAR_MARKING)
+		if Fleet.count_of(GEAR_COUNT) >= START_GEAR.size() and not Fleet.has_flag(GEAR_RECOVERED):
+			Fleet.mark(GEAR_RECOVERED)
 			get_tree().call_group("hud", "show_toast", "From the gear you've recovered, researchers have worked out where the lost nets and lines come from. Fishing boats now mark and recover their gear: no new ghost nets or fishing line drift in on any island.")
 
 
@@ -515,7 +517,7 @@ func _spawner() -> LitterSpawner:
 
 
 ## Each morning: a sixgill may surface with a hook from lost gear in a dark area, new lost gear
-## may sink (until gear marking), an oil spill spreads, and the objective moves on.
+## may sink (until nets are stopped at their source), an oil spill spreads, and the objective moves on.
 func _morning() -> void:
 	var crowding := living(SHARK).size() > 1 + mini(known_count(&"shark_ledge"), 1) + _sanctuaries(&"shark_ledge")
 	var hidden := sectors().filter(func(s: DeepSector) -> bool: return s.gear_item != &"" and not s.gear_found)
@@ -525,7 +527,7 @@ func _morning() -> void:
 		learn(0.25, sector)
 		Journal.record_gift(SHARK)
 		get_tree().call_group("hud", "show_toast", "A sixgill shark came up with a hook in its jaw: there's lost fishing line near %s! It has floated up: collect it by boat." % sector.label())
-	if not Fleet.has_flag(GEAR_MARKING) and randf() < new_gear_chance:
+	if not Fleet.stopped(&"ghost_net") and randf() < new_gear_chance:
 		var open := sectors().filter(func(s: DeepSector) -> bool: return s.gear_item == &"" and _of(&"deep_sanctuary").all(
 			func(m: Building) -> bool: return sector_at(m.global_position) != s))
 		if not open.is_empty():

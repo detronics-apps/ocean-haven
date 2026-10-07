@@ -124,7 +124,11 @@ func _complete() -> void:
 		lines.append("Your best: %.1f s" % Activities.best(activity, level))
 	if story:
 		lines.append(activity.story_done)
-		lines.append("You can come back here any time to play it again, for fun.")
+		lines.append("You can come back here any time to play it again: the first replay each day earns a research grant.")
+	else:
+		var grant := _grant_line()
+		if grant != "":
+			lines.append(grant)
 	_info.text = "\n".join(lines)
 	if level + 1 < activity.levels.size() and not story:
 		_add_button("Next level", _show_start.bind(level + 1, ""), "Next")
@@ -138,6 +142,9 @@ func _complete() -> void:
 func _stop(lines: Array[String]) -> void:
 	_playing = false
 	_clear_buttons()
+	var grant := _grant_line() if Activities.story_done(activity) else ""
+	if grant != "":
+		lines.append(grant)
 	_info.text = "\n".join(lines)
 	_add_button("Try again", _show_start.bind(level, ""), "Again")
 	_add_button("Done", close_screen, "Done")
@@ -163,6 +170,14 @@ func _add_button(text: String, action: Callable, name: String) -> Button:
 	button.pressed.connect(action)
 	_buttons.add_child(button)
 	return button
+
+
+## Pays today's research grant for a replay (once a day, whatever the score) and says so.
+func _grant_line() -> String:
+	if Activities.granted_today(activity):
+		return "Today's research grant is in: come back tomorrow for another."
+	var paid := Activities.research_grant(activity)
+	return "Research grant: +%d funding for your results (once a day)." % paid if paid > 0 else ""
 
 
 ## Whether the story play's time counts as the level's best (Otter Dive's story collects

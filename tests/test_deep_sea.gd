@@ -2,7 +2,7 @@ extends SceneTree
 ## The Deep Sea: 8 dark areas mapped by instruments (hydrophones, cameras, submarine dives),
 ## island-wide; light and noise drive whales and anglerfish away (never below 1); bait draws
 ## sixgills in (too many); mapped areas reveal lost gear (collected by boat: three recovered
-## brings gear marking, so no new nets or line drift in anywhere); the giant squid appears to a
+## is the evidence for Imani; the Net Return Point then stops new nets and line anywhere); the giant squid appears to a
 ## patient camera in quiet water; the cargo search floats up the cargo module; oil spills spread
 ## until contained; everything is saved.
 ## Run: godot --headless --path . --script res://tests/test_deep_sea.gd --quit-after 300000
@@ -56,7 +56,7 @@ func _initialize() -> void:
 	var first: Node = sectors.filter(func(s: Node) -> bool: return s.known())[0]
 	_expect(eco.known_count() == 1, "a whole area's knowledge maps one area (%s)" % first.describe())
 
-	# --- Mapping reveals lost gear; collecting it counts towards gear marking ---
+	# --- Mapping reveals lost gear; collecting it is the evidence for the Net Return Point ---
 	var gear_sector: Node = sectors[2]
 	eco.learn(1.0, gear_sector)
 	_expect(gear_sector.known() and gear_sector.gear_found and eco._gear_debris(gear_sector) != null,
@@ -74,14 +74,20 @@ func _initialize() -> void:
 				piece.collect()
 	await process_frame
 	eco.tick(0.01)
-	_expect(fleet.has_flag(&"gear_marking"), "three pieces recovered: gear marking")
+	_expect(fleet.has_flag(&"gear_recovered") and not fleet.stopped(&"ghost_net"),
+		"three pieces recovered: the evidence, but bringing them up doesn't stop new nets by itself")
+	fleet.mark(&"gear_traced")
+	var point: Node = place.call(&"net_return_point", world.get_node("Player").global_position + Vector2(64, 0))
+	_expect(point != null and fleet.stopped(&"ghost_net") and fleet.stopped(&"fishing_line"), "the Net Return Point stops lost nets and line at their source")
 	var spawner: Node = world.get_node("LitterSpawner")
 	var nets := 0
 	for i in 60:
 		var d: Node = spawner.spawn_one()
 		if d and d.item.id in [&"ghost_net", &"fishing_line"]:
 			nets += 1
-	_expect(nets == 0, "with gear marking, no new nets or line drift in on any island")
+	_expect(nets == 0, "no new nets or line drift in on any island")
+	point.queue_free()
+	await process_frame
 
 	# --- Cameras: faster, but their light drives anglerfish off; bait draws sharks ---
 	var cams: Array = []

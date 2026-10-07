@@ -164,7 +164,7 @@ func links() -> Array[Dictionary]:
 	if Fleet.stopped(&"plastic_bottle"):
 		list.append({"from": &"tropical_reef", "to": &"", "text": "Glass and clean water from the Reef: no new plastic bottles anywhere."})
 	if Fleet.stopped(&"ghost_net"):
-		list.append({"from": &"deep_sea", "to": &"", "text": "Fishing gear marked in the Deep Sea: no new lost nets or line anywhere."})
+		list.append({"from": &"deep_sea", "to": &"", "text": "The Deep Sea's Net Return Point: old nets recycled, new ones marked, no new lost nets or line anywhere."})
 	if Fleet.stopped(&"six_pack_rings"):
 		list.append({"from": &"kelp_forest", "to": &"", "text": "The Kelp Forest's refill bar: no new plastic rings anywhere."})
 	if Fleet.stopped(&"plastic_bag"):
