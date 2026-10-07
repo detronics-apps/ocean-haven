@@ -41,6 +41,7 @@ func _initialize() -> void:
 	_expect(links.size() >= 4, "and what joins them (%s)" % [links.map(func(l: Dictionary) -> String: return l.text)])
 	_expect(screen.find_child("Learned", true, false) == null and not fleet.has_flag(&"observatory_opened"),
 		"no reflection while some litter still starts somewhere")
+	_expect(screen.find_child("DownloadPoster", true, false) == null, "no poster before the whole ocean is connected")
 	screen.close()
 
 	# --- Every source stopped: the final chapter ---
@@ -80,6 +81,9 @@ func _initialize() -> void:
 		said.append(label.text)
 	_expect(said.any(func(t: String) -> bool: return t.contains("There was only ever one ocean.")), "the people at their work, each with a line")
 	_expect(not said.any(func(t: String) -> bool: return t.to_lower().contains("you won")), "never 'You won'")
+	_expect(screen.find_child("DownloadPoster", true, false) != null, "the prize: the ocean poster to download")
+	var poster: Image = screen.POSTER.get_image()
+	_expect(poster.get_height() == 2000 and poster.save_jpg_to_buffer(0.95).size() > 100000, "the poster saves as a full-size JPEG")
 	_expect(fleet.has_flag(&"observatory_opened") and fleet.goal_met(people.questions(maya).back().objective), "Maya's last question is answered")
 	screen.close()
 	var thanks: Array = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)

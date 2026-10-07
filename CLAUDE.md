@@ -501,6 +501,9 @@ ocean's. Once every kind of litter is stopped at its source too (`final_chapter(
 game, then "One ocean. Many places. Everything connected." and each person's closing line
 (their "ending" topic, which they also say afterwards: flag "observatory_opened"). Maya's last
 question ("observatory") is answered by opening it. Play goes on.
+The prize: the final chapter shows the ocean poster (assets/ui/poster/ocean_poster.jpg) with
+"Download your ocean poster" (`ObservatoryScreen.download_poster`: the browser's download on the
+web, the Pictures folder elsewhere); before it, "Still watching" says a poster waits there.
 Phone-play fixes (docs/ISLAND_RULES.md 9b): every species starts with one (a tangled booby,
 Seabird0) and nothing new arrives or settles until the ranger has helped the island
 (`Regions.helped`, Inventory.picked_on, saved); TextPrompt asks the browser for typed names on

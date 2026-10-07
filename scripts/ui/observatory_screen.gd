@@ -9,6 +9,8 @@ extends OverlayScreen
 
 const FULL_SET := 6
 const HEALTHY := 0.7
+const POSTER: Texture2D = preload("res://assets/ui/poster/ocean_poster.jpg")
+const POSTER_FILE := "BlueHaven_ocean_poster.jpg"
 
 var _panorama: Panorama
 
@@ -61,7 +63,8 @@ func _fill() -> void:
 	_content.add_child(card(null, connected))
 	if not final_chapter():
 		var watching: Array[String] = ["Still watching",
-			"Some kinds of litter still start somewhere. Ask the islands' people where they come from."]
+			"Some kinds of litter still start somewhere. Ask the islands' people where they come from.",
+			"Once the whole ocean is connected, a poster of it waits for you here."]
 		_content.add_child(card(null, watching))
 		return
 	var reflection: Array[String] = ["You've helped every island. What have you learned?"]
@@ -76,6 +79,7 @@ func _fill() -> void:
 	motto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	motto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_content.add_child(motto)
+	_content.add_child(_poster_card())
 	for person: PersonData in People.all():
 		var line := closing_line(person)
 		if line != "":
@@ -86,6 +90,54 @@ func _fill() -> void:
 	open_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	open_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_content.add_child(open_note)
+
+
+## The prize for the final chapter: the poster of the whole ocean, to download and keep.
+func _poster_card() -> Control:
+	var box := VBoxContainer.new()
+	box.name = "Poster"
+	box.add_theme_constant_override("separation", 10)
+	var note := Label.new()
+	note.name = "PosterNote"
+	note.text = "Every ship fitted and the whole ocean connected: here's your ocean poster to keep."
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	note.add_theme_color_override("font_color", Color("f2d58a"))
+	box.add_child(note)
+	var picture := TextureRect.new()
+	picture.texture = POSTER
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.custom_minimum_size = Vector2(0, 460)
+	picture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR  # a painted poster, shown small
+	box.add_child(picture)
+	var button := Button.new()
+	button.name = "DownloadPoster"
+	button.text = "Download your ocean poster"
+	button.custom_minimum_size = Vector2(0, 64)
+	button.add_theme_font_size_override("font_size", 20)
+	button.pressed.connect(func() -> void: note.text = download_poster())
+	box.add_child(button)
+	return box
+
+
+## Saves the poster for the player (the browser's download on the web, the Pictures folder
+## elsewhere) and says where it went.
+static func download_poster() -> String:
+	var bytes := POSTER.get_image().save_jpg_to_buffer(0.95)
+	if OS.has_feature("web"):
+		JavaScriptBridge.download_buffer(bytes, POSTER_FILE, "image/jpeg")
+		return "Your ocean poster is downloading."
+	var folder := OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	if folder == "" or not DirAccess.dir_exists_absolute(folder):
+		folder = ProjectSettings.globalize_path("user://")
+	var path := folder.path_join(POSTER_FILE)
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return "The poster couldn't be saved here. Try again from another device."
+	file.store_buffer(bytes)
+	file.close()
+	return "Your ocean poster is saved: %s" % path
 
 
 ## Average health of the discovered islands that measure it.
