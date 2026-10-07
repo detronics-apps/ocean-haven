@@ -777,12 +777,15 @@ func _interact() -> void:
 		_photo_moment()
 
 
-## A new photo moment (the first of its kind for this species): the photo is kept in the Journal.
+## Photo moments: every moment the animal is in right now gets this photo, the latest one
+## replacing the last (the first of each is also a new find).
 func _photo_moment() -> void:
+	var picture: Image = null
 	for moment: PhotoMoment in data.moments:
-		if not Journal.has_moment(data.id, moment.id) and Array(moment.when).all(moment_holds):
-			Journal.add_moment(data, moment, _snapshot())
-			return
+		if Array(moment.when).all(moment_holds):
+			if picture == null:
+				picture = _snapshot()
+			Journal.add_moment(data, moment, picture)
 
 
 ## Whether the animal is in situation `condition` now (PhotoMoment.when).
@@ -823,13 +826,22 @@ func _snapshot() -> Image:
 	var frame := viewport.get_texture().get_image()
 	if not frame or frame.is_empty():
 		return null
-	var at := get_global_transform_with_canvas().origin
-	var size := Vector2i(200, 150)
-	var corner := Vector2i(clampi(int(at.x) - size.x / 2, 0, maxi(frame.get_width() - size.x, 0)),
-		clampi(int(at.y) - size.y / 2, 0, maxi(frame.get_height() - size.y, 0)))
-	var crop := frame.get_region(Rect2i(corner, Vector2i(mini(size.x, frame.get_width()), mini(size.y, frame.get_height()))))
+	# The animal and the tiles around it (4 x 3 tiles), in the screen's own pixels: through
+	# the camera (zoom) and the window's stretch.
+	var to_screen := viewport.get_final_transform() * get_global_transform_with_canvas()
+	var at := to_screen.origin
+	var scale := to_screen.get_scale().abs()
+	var size := Vector2i(Vector2(PHOTO_TILES) * Terrain.TILE * scale)
+	size = Vector2i(clampi(size.x, 16, frame.get_width()), clampi(size.y, 12, frame.get_height()))
+	var corner := Vector2i(clampi(int(at.x) - size.x / 2, 0, frame.get_width() - size.x),
+		clampi(int(at.y) - size.y / 2, 0, frame.get_height() - size.y))
+	var crop := frame.get_region(Rect2i(corner, size))
 	crop.resize(160, 120, Image.INTERPOLATE_NEAREST)
 	return crop
+
+
+## How much a photo shows around the animal, in tiles.
+const PHOTO_TILES := Vector2(4, 3)
 
 
 func photographed_today() -> bool:

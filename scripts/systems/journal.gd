@@ -81,22 +81,31 @@ func has_moment(id: StringName, moment_id: StringName) -> bool:
 ## Keeps a new photo moment, and its picture (null: none could be taken, e.g. headless).
 func add_moment(animal: AnimalData, moment: PhotoMoment, picture: Image) -> void:
 	var key := "%s/%s" % [animal.id, moment.id]
-	if _moments.has(key):
-		return
+	var first := not _moments.has(key)
 	_moments[key] = true
-	if picture:
+	if picture:  # the latest photo of it is the one kept
 		DirAccess.make_dir_recursive_absolute(photos_dir)
 		picture.save_png(_photo_path(animal.id, moment.id))
-	moment_caught.emit(animal, moment)
+		_pictures.erase(key)
+	if first:
+		moment_caught.emit(animal, moment)
 
 
 ## The kept photo of a moment (null if there's none).
 func moment_picture(id: StringName, moment_id: StringName) -> Texture2D:
+	var key := "%s/%s" % [id, moment_id]
+	if _pictures.has(key):
+		return _pictures[key]
 	var path := _photo_path(id, moment_id)
 	if not FileAccess.file_exists(path):
 		return null
 	var image := Image.load_from_file(path)
-	return ImageTexture.create_from_image(image) if image else null
+	_pictures[key] = ImageTexture.create_from_image(image) if image else null
+	return _pictures[key]
+
+
+## Loaded photos (dropped when a newer one is taken).
+var _pictures := {}
 
 
 func _photo_path(id: StringName, moment_id: StringName) -> String:
