@@ -164,7 +164,7 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	if not greeting:
 		var topic := _chat(person, first, false)
 		if topic:
-			var again: bool = person.role == &"hint" and _last.get(person.id, &"") == topic.id
+			var again: bool = person.role == &"hint" and _last.get(person.id, &"") == topic.id and topic.id != &"ending"
 			_repeats[person.id] = int(_repeats.get(person.id, 0)) + 1 if again else 0
 			var clue := _clue(person) if again else PackedStringArray()
 			said.append_array(clue if not clue.is_empty() else topic.lines)

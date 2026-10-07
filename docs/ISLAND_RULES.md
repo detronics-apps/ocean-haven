@@ -272,6 +272,26 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 - **No preaching.** Wonder carries the message; balance is the central concept. The greatest
   reward is seeing creation recover.
 
+## 9b. Learned from playing on the phone (owner's corrections)
+
+- **Never zero, and one means trouble.** Every species starts with at least one, and when
+  there's only one it's not doing well and needs help (the Starting Island's lone booby is
+  caught in fishing line). No species ever drops to none.
+- **Nothing grows until the ranger acts.** No new animals arrive or settle on an island until
+  the ranger has helped there (`Regions.helped`: 10 pieces of litter picked up there, or
+  something built). Standing still never grows a population.
+- **Hints never repeat to a stuck ranger.** Asked again, a hint-giver points at what's actually
+  holding the island back now (`IslandHealth.weakest`, ecosystem `advice()`), a different
+  thing each visit.
+- **People stand on land.** Someone whose station is out at sea works from a shore place
+  (Imani's Dive Control), never in the water.
+- **Dense islands need room.** Where land is scarce (the Polar Ocean's rock) buildings may go on
+  ice, and the ice under a building never melts.
+- **Noise depends on where.** A disturbance near where the animals live counts fully; moved
+  away (patrol boats near the shore) it counts little, so the ranger can fix it by moving
+  things, not only by removing them.
+- **Islands the ranger isn't on are paused**, including patrol boats (no notes from far away).
+
 ## 10. Code habits that avoided bugs
 
 - New `class_name` scripts need `godot --headless --path . --import` before tests find them.

@@ -489,6 +489,22 @@ ocean's. Once every kind of litter is stopped at its source too (`final_chapter(
 game, then "One ocean. Many places. Everything connected." and each person's closing line
 (their "ending" topic, which they also say afterwards: flag "observatory_opened"). Maya's last
 question ("observatory") is answered by opening it. Play goes on.
+Phone-play fixes (docs/ISLAND_RULES.md 9b): every species starts with one (a tangled booby,
+Seabird0) and nothing new arrives or settles until the ranger has helped the island
+(`Regions.helped`, Inventory.picked_on, saved); TextPrompt asks the browser for typed names on
+the web (phone keyboard); the shovel shows green (dig) and blue (fill) tiles at once and a tap
+does it; swimmers don't collide with tiles (wading shallows did) but stop where the water ends;
+CameraZoom (pinch, wheel, zoom_in/zoom_out, + / - buttons; saved); notes move up above the
+action buttons; Ranger House drawn 1.5 tiles, people's places bigger; Imani at Dive Control on
+the shore (people never stand in the water); patrol boats rest off-island, are demolishable, and
+on the Deep Sea are noisy only over dark areas (patrol_noise / patrol_noise_away); unmapped dark
+areas always show a dashed outline and "N% known"; the ship's build message names the next
+story step and who to ask; hint-givers asked the same thing twice point at what's holding the
+island back (IslandHealth.weakest + ecosystem `advice()`); Polar buildings that go on rock can go
+on ice; terns nest on rock and sit (AnimalData.nests_on_ground); stores offer "Store everything"
+and "Look in storage" (no taking out: the shovel and coral use storage like building does);
+Journal list = picture on a light tile, name, AnimalData.role; tap for the animal's page
+(photo moments, real-life facts); "Only what I've found" toggle.
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
