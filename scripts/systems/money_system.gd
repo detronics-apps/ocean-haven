@@ -9,7 +9,7 @@ signal earned(amount: int, reason: String)
 signal donations_waiting(building: Building, amount: int)
 
 ## Researchers buy the first photo of each species each day.
-const PHOTO_RESEARCH := 10
+const PHOTO_RESEARCH := 20
 ## One-off grant when a species' first hatchlings reach the sea.
 const FIRST_HATCH_GRANT := 100
 

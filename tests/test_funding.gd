@@ -66,12 +66,12 @@ func _initialize() -> void:
 	# --- Research photos: once per species per day ---
 	journal.photograph(turtle)
 	journal.photograph(turtle)
-	_expect(funding.balance == 30, "one paid photo per day (got %d)" % funding.balance)
+	_expect(funding.balance == 40, "one paid photo per day (20 funding; got %d)" % funding.balance)
 
 	# --- Grant for the first hatchlings, once ---
 	journal.record_hatch(turtle, 3)
 	journal.record_hatch(turtle, 3)
-	_expect(funding.balance == 130, "one-off hatchling grant (got %d)" % funding.balance)
+	_expect(funding.balance == 140, "one-off hatchling grant (got %d)" % funding.balance)
 
 	# --- House replaces the tent ---
 	build_mode.add_building(load("res://data/buildings/tent.tres"), Vector2i(-1, -1))
@@ -87,7 +87,7 @@ func _initialize() -> void:
 	await process_frame
 	var ids := get_nodes_in_group("buildings").map(func(b: Node) -> StringName: return b.data.id)
 	_expect(&"house" in ids and not &"tent" in ids, "tent replaced by the house")
-	_expect(funding.balance == 10 and inventory.total() == 0 and inventory.count(&"wood") == 0,
+	_expect(funding.balance == 20 and inventory.total() == 0 and inventory.count(&"wood") == 0,
 		"house cost 120 funding + 10 litter + 2 wood")
 
 	# --- The house stores wood; building uses carried wood, then stored ---
@@ -117,7 +117,7 @@ func _initialize() -> void:
 	_expect(not build_mode.can_place(dock, Vector2i(-3, -3)), "dock can't go on grass")
 	_expect(not build_mode.can_place(dock, Vector2i(-30, 0)), "a dock plank must connect to the shore")
 	_expect(build_mode.place_at(Vector2i(0, 2)), "dock plank built at the lagoon beach")
-	_expect(funding.balance == 187, "a dock plank costs 23 funding, no litter (left %d)" % funding.balance)
+	_expect(funding.balance == 197, "a dock plank costs 23 funding, no litter (left %d)" % funding.balance)
 	_expect(not funding.spend(1000), "can't overspend")
 
 	# --- Recycling centre: turn litter into funding ---
