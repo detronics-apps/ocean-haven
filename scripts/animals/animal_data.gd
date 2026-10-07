@@ -10,6 +10,8 @@ extends Resource
 @export_group("Journal")
 @export var habitat: String
 @export var diet: String
+## What it does in the game, in one short line (the Journal's list).
+@export var role: String
 ## Short, accurate fact shown on discovery.
 @export_multiline var fact: String
 ## Shown with the first photo of this species.

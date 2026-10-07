@@ -30,6 +30,7 @@ display_name = "Sperm Whale"
 sprite = ExtResource("2_t")
 habitat = "The deep open ocean, diving more than a kilometre down"
 diet = "Squid, including giant squid, and deep-sea fish"
+role = "Stays where the deep is quiet; its clicks help the hydrophones map the dark."
 fact = "Sperm whales make the loudest sounds of any animal: clicks they use like sonar to find squid in the dark. Hydrophones listening to those clicks show where the whales are feeding."
 photo_fact = "It breathes through one blowhole on the left of its head, so its blow slants forward and to the left."
 help_fact = "Lost fishing line can wrap round a whale's tail or flippers. Noise from boats and machines drowns out the clicks it hunts with, so it moves to quieter water."

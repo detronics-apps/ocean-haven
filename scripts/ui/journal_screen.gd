@@ -14,6 +14,11 @@ const TAB_NAMES := {ISLAND: "This island", ANIMALS: "Animals", PLANTS: "Plants",
 ## The tab showing (kept between visits).
 var tab := ISLAND
 var _tab_buttons := {}
+## Animals / Plants: only what's been found (a toggle, kept between visits).
+var only_found := false
+## The animal whose page is open (null = the list).
+var page: AnimalData = null
+var _found_toggle: CheckButton
 
 
 func _enter_tree() -> void:
@@ -37,6 +42,14 @@ func _ready() -> void:
 		button.pressed.connect(show_tab.bind(id))
 		tabs.add_child(button)
 		_tab_buttons[id] = button
+	_found_toggle = CheckButton.new()
+	_found_toggle.name = "OnlyFound"
+	_found_toggle.text = "Only what I've found"
+	_found_toggle.focus_mode = Control.FOCUS_NONE
+	_found_toggle.toggled.connect(func(on: bool) -> void:
+		only_found = on
+		refresh())
+	tabs.add_child(_found_toggle)
 	_page.add_child(tabs)
 	_page.move_child(tabs, 1)  # under the title
 
@@ -44,8 +57,19 @@ func _ready() -> void:
 ## Switches to the Island or Animals tab.
 func show_tab(id: StringName) -> void:
 	tab = id
+	page = null
 	if visible:
 		refresh()
+
+
+## Opens an animal's own page (its photo moments and what it's like in real life).
+func open_animal(animal: AnimalData) -> void:
+	tab = ANIMALS
+	page = animal
+	if visible:
+		refresh()
+	else:
+		open()
 
 
 ## The whole-ocean tab opens once the fleet has every upgrade.
@@ -61,13 +85,20 @@ func _fill() -> void:
 	var species := DataFiles.load_all("res://data/animals")
 	var found := species.filter(func(a: AnimalData) -> bool: return Journal.in_journal(a.id)).size()
 	_title.text = "Ocean Journal  (%d of %d found)" % [found, species.size()]
+	_found_toggle.visible = tab in [ANIMALS, PLANTS] and page == null
+	_found_toggle.set_pressed_no_signal(only_found)
 	if tab == ANIMALS:
+		if page:
+			_animal_page(page)
+			return
 		for animal: AnimalData in species:
-			_content.add_child(_entry(animal))
+			if not only_found or Journal.in_journal(animal.id):
+				_content.add_child(_entry(animal))
 		return
 	if tab == PLANTS:
 		for plant: PlantData in DataFiles.load_all("res://data/plants"):
-			_content.add_child(_plant_entry(plant))
+			if not only_found or Journal.has_plant(plant.id):
+				_content.add_child(_plant_entry(plant))
 		return
 	if tab == OCEAN:
 		_ocean()
@@ -223,17 +254,84 @@ func _objective(region: RegionData) -> Control:
 	return entry
 
 
+## A species in the list: its picture, name and what it does in the game. Tap it for its page.
 func _entry(animal: AnimalData) -> Control:
 	if not Journal.in_journal(animal.id):
 		var unknown := card(null, ["???", "Spotted, but no photo yet: take one to add it to your Journal." if Journal.has(animal.id)
 			else "Not discovered yet. Keep exploring, and take a photo when you find it!"], true)
 		unknown.name = "Entry_" + animal.id
 		return unknown
-	var lines: Array[String] = [animal.display_name, animal.fact]
+	var moments := animal.moments.filter(func(m: PhotoMoment) -> bool: return Journal.has_moment(animal.id, m.id)).size()
+	var lines: Array[String] = [animal.display_name, animal.role if animal.role != "" else animal.fact]
+	if not animal.moments.is_empty():
+		lines.append("Photo moments: %d / %d   ›" % [moments, animal.moments.size()])
+	var entry := card(animal.sprite, lines, false, true)
+	entry.name = "Entry_" + animal.id
+	_tappable(entry, open_animal.bind(animal).call_deferred)
+	return entry
+
+
+## Calls `action` when `control` is tapped (not when the list is dragged to scroll).
+func _tappable(control: Control, action: Callable) -> void:
+	control.mouse_filter = Control.MOUSE_FILTER_PASS
+	control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var pressed_at := [Vector2.INF]
+	control.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				pressed_at[0] = event.global_position
+			elif pressed_at[0].distance_to(event.global_position) < 16.0:
+				action.call())
+
+
+## An animal's own page: its photo moments, then what it's like in real life.
+func _animal_page(animal: AnimalData) -> void:
+	var back := BuildMode._big_button("‹  All animals", Color("2a78a8"))
+	back.name = "Back"
+	back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	back.pressed.connect(func() -> void:
+		page = null
+		refresh.call_deferred())  # (not while the button is still handling its press)
+	_content.add_child(back)
+	var picture := TextureRect.new()
+	picture.texture = animal.sprite
+	picture.custom_minimum_size = Vector2(128, 128)
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 16)
+	head.add_child(light_tile(picture))
+	var names := VBoxContainer.new()
+	names.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var title := Label.new()
+	title.text = animal.display_name
+	title.add_theme_font_size_override("font_size", 26)
+	names.add_child(title)
+	var role := Label.new()
+	role.text = animal.role
+	role.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	names.add_child(role)
+	head.add_child(names)
+	_content.add_child(head)
+	if not animal.moments.is_empty():
+		var moments := Label.new()
+		moments.text = "Photo moments"
+		moments.add_theme_font_size_override("font_size", 20)
+		_content.add_child(moments)
+		_content.add_child(_album(animal))
+	var real: Array[String] = ["In real life"]
 	if Journal.has_observed(animal.id):
-		lines.append("Habitat: %s.  Diet: %s." % [animal.habitat, animal.diet])
+		real.append("Where it lives: %s." % animal.habitat)
+		real.append("What it eats: %s." % animal.diet)
 	else:
-		lines.append("Watch one quietly to learn where it lives and what it eats.")
+		real.append("Watch one quietly to learn where it lives and what it eats.")
+	_content.add_child(card(null, real))
+	var facts: Array[String] = ["Did you know?"]
+	for fact in [animal.fact, animal.photo_fact, animal.help_fact]:
+		if fact != "":
+			facts.append("• " + fact)
+	_content.add_child(card(null, facts))
 	var progress := "Photos: %d" % Journal.photos(animal.id)
 	if Journal.helped_count(animal.id) > 0:
 		progress += "    Helped: %d" % Journal.helped_count(animal.id)
@@ -241,19 +339,16 @@ func _entry(animal: AnimalData) -> Control:
 		progress += "    Litter found: %d" % Journal.gifts(animal.id)
 	if Journal.nests(animal.id) > 0:
 		progress += "    Nests: %d    Hatchlings: %d" % [Journal.nests(animal.id), Journal.hatched_count(animal.id)]
-	lines.append(progress)
-	var entry := card(animal.sprite, lines)
-	entry.name = "Entry_" + animal.id
-	if not animal.moments.is_empty():
-		entry.get_child(0).get_child(1).add_child(_album(animal))
-	return entry
+	var mine: Array[String] = ["Your notes", progress]
+	_content.add_child(card(null, mine))
 
 
 ## Its photo moments: the kept photo of each one caught, and a hint for the ones still to find.
 func _album(animal: AnimalData) -> Control:
-	var row := HBoxContainer.new()
+	var row := HFlowContainer.new()
 	row.name = "Album"
-	row.add_theme_constant_override("separation", 10)
+	row.add_theme_constant_override("h_separation", 10)
+	row.add_theme_constant_override("v_separation", 10)
 	for moment: PhotoMoment in animal.moments:
 		var cell := VBoxContainer.new()
 		var caught := Journal.has_moment(animal.id, moment.id)
@@ -261,16 +356,16 @@ func _album(animal: AnimalData) -> Control:
 		picture.texture = Journal.moment_picture(animal.id, moment.id) if caught else animal.sprite
 		if not picture.texture:
 			picture.texture = animal.sprite
-		picture.custom_minimum_size = Vector2(96, 72)
+		picture.custom_minimum_size = Vector2(160, 120)
 		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		if not caught:
 			picture.modulate = Color(0, 0, 0, 0.45)  # a silhouette: still to find
-		cell.add_child(picture)
+		cell.add_child(light_tile(picture) if not caught or picture.texture == animal.sprite else picture)
 		var label := Label.new()
 		label.text = moment.title if caught else moment.title + "?"
-		label.custom_minimum_size.x = 96
+		label.custom_minimum_size.x = 160
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.add_theme_font_size_override("font_size", 13)
 		label.modulate = Color.WHITE if caught else Color(1, 1, 1, 0.6)
@@ -284,7 +379,7 @@ func _plant_entry(plant: PlantData) -> Control:
 		var unknown := card(null, ["???", "Not discovered yet. Keep exploring!"], true)
 		unknown.name = "Plant_" + plant.id
 		return unknown
-	var entry := card(plant.picture, [plant.display_name, plant.fact, "Grows: %s." % plant.habitat, plant.role])
+	var entry := card(plant.picture, [plant.display_name, plant.role, "Grows: %s." % plant.habitat, plant.fact], false, true)
 	entry.name = "Plant_" + plant.id
 	return entry
 

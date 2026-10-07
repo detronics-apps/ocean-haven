@@ -25,6 +25,7 @@ display_name = "Seahorse"
 sprite = ExtResource("2_t")
 habitat = "Seagrass beds in shallow water"
 diet = "Tiny shrimp, sucked up through its snout"
+role = "Lives in the seagrass of Seahorse & Seagrass Protection Areas."
 fact = "Seahorses hold on to seagrass with their curly tails so the current doesn't carry them away. The father seahorse carries the eggs in a pouch."
 photo_fact = "Seahorses are slow swimmers: their little back fin beats up to 50 times a second."
 help_fact = "Debris tangled in seagrass can trap seahorses. Rescue them, and protect seagrass for them to live in."

@@ -24,6 +24,7 @@ display_name = "Arctic Cod"
 sprite = ExtResource("2_t")
 habitat = "Under the edge of the sea ice"
 diet = "Tiny shrimp-like animals that live on the underside of the ice"
+role = "Follows the ice, and feeds the seals and terns."
 fact = "Arctic cod shelter under the sea ice and feed on the tiny animals living on it. Seals, seabirds, whales and, through the seals, polar bears all depend on them."
 photo_fact = "Its blood holds a natural antifreeze, so it can live in water colder than 0 C."
 help_fact = "The more ice edge there is in the freeze, the more cod, and the more food for everyone."

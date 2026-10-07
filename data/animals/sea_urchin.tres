@@ -10,6 +10,7 @@ display_name = "Purple Sea Urchin"
 sprite = ExtResource("2_urch")
 habitat = "Rocky sea floors of cool kelp forests"
 diet = "Kelp and other seaweed"
+role = "Grazes the kelp. A few are healthy; too many eat the forest down to bare rock."
 fact = "Urchins aren't the enemy: a healthy kelp forest has some. But when their predators disappear, they multiply and can eat a forest down to bare rock, an 'urchin barren'."
 photo_fact = "A sea urchin walks on hundreds of tiny tube feet, and its mouth, called Aristotle's lantern, has five teeth."
 habitat_terrain = PackedStringArray("", "water")

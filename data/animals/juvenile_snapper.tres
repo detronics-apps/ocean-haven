@@ -24,6 +24,7 @@ display_name = "Young Mangrove Snapper"
 sprite = ExtResource("2_t")
 habitat = "Mangrove pools and channels while young; coral reefs once grown"
 diet = "Tiny shrimp, crabs and small fish"
+role = "Grows up in the nursery pools once they're joined to the sea."
 fact = "Grey (mangrove) snappers grow up hiding among mangrove roots, then swim out to coral reefs as adults. Mangroves are a nursery for many reef fish."
 photo_fact = "The tangle of mangrove roots keeps young fish safe from big predators."
 help_fact = "Young fish need pools that stay connected to the sea, so they can swim out when they are grown."

@@ -24,6 +24,7 @@ display_name = "Blue Rockfish"
 sprite = ExtResource("2_rock")
 habitat = "Kelp forests and rocky reefs of cool coasts"
 diet = "Plankton, jellies and small shrimp-like animals"
+role = "Comes back to healthy kelp beds, and feeds the cormorants."
 fact = "Kelp is their home: young rockfish shelter in the kelp, so their numbers show how healthy the forest is."
 photo_fact = "Some kinds of rockfish can live for more than 100 years."
 habitat_terrain = PackedStringArray("", "water")

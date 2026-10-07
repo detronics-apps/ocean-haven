@@ -31,6 +31,7 @@ display_name = "Giant Clam"
 sprite = ExtResource("2_t")
 habitat = "Shallow coral reefs"
 diet = "Sugars from algae living in its body, and plankton it filters from the water"
+role = "Cleans the water. In a Water Treatment Facility it makes clean water for you."
 fact = "Giant clams are the biggest clams in the world and can live for over 100 years. They filter seawater, cleaning it as they feed."
 photo_fact = "A giant clam's blue and green colours come from tiny algae living in its body, which make food from sunlight."
 help_fact = "Giant clams need clean, calm water and protection: a treatment facility gives them a safe bed."

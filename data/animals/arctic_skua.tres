@@ -24,6 +24,7 @@ display_name = "Arctic Skua"
 sprite = ExtResource("2_t")
 habitat = "Arctic coasts and open sea"
 diet = "Fish, often chased off other seabirds"
+role = "Circles over trouble: follow it to animals that need help."
 fact = "Skuas notice everything going on in a seabird colony: where they gather shows where something is happening."
 photo_fact = "Arctic skuas chase terns and gulls in the air until they drop their fish."
 help_fact = "Watch where the skua circles: it shows where something needs your help."

@@ -58,10 +58,21 @@ func _initialize() -> void:
 	_expect(screen != null, "(the Journal)")
 	screen.set("tab", screen.ANIMALS)
 	screen.open()
-	var album: Node = screen.find_child("Entry_green_turtle", true, false).find_child("Album", true, false)
+	var entry: Node = screen.find_child("Entry_green_turtle", true, false)
+	_expect(entry != null and entry.find_child("Album", true, false) == null, "the list is simple: picture, name, what it does")
+	screen.open_animal(turtle_data)
+	var album: Node = screen.find_child("Album", true, false)
 	_expect(album != null and album.get_child_count() == 3, "the turtle's page shows its 3 moments")
 	var labels: Array = album.get_children().map(func(c: Node) -> String: return (c.get_child(1) as Label).text)
 	_expect(labels.has("A hatchling") and labels.any(func(t: String) -> bool: return t.ends_with("?")), "the caught one by name, the others as hints (%s)" % [labels])
+	(screen.find_child("Back", true, false) as Button).pressed.emit()
+	await process_frame
+	_expect(screen.find_child("Album", true, false) == null and screen.find_child("Entry_green_turtle", true, false) != null, "Back: the list again")
+	screen.set("only_found", true)
+	screen.refresh()
+	_expect(screen.find_child("Entry_sperm_whale", true, false) == null and screen.find_child("Entry_green_turtle", true, false) != null,
+		"'Only what I've found' hides the rest")
+	screen.set("only_found", false)
 	screen.close()
 
 	# --- Saved ---

@@ -25,6 +25,7 @@ display_name = "Red-footed Booby"
 sprite = ExtResource("2_boo")
 habitat = "Tropical islands and open ocean; nests in trees and bushes"
 diet = "Flying fish and squid, caught by diving into the sea"
+role = "Nests in palms you planted, and circles over floating litter to show you where it is."
 fact = "Red-footed boobies are the smallest boobies, and they build their nests of twigs in trees and bushes, so they need the island's trees."
 photo_fact = "Their name may come from the Spanish word 'bobo', meaning silly, because they were so tame around sailors."
 help_fact = "Seabirds can get caught in lost fishing line. Picking up line from the beach and the water keeps them safe."

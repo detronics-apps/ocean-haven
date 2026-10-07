@@ -30,6 +30,7 @@ display_name = "Sea Otter"
 sprite = ExtResource("2_otter")
 habitat = "Cool coastal waters with kelp forests; they rest in the kelp canopy"
 diet = "Sea urchins, crabs, clams and other shellfish"
+role = "Eats urchins so the kelp can grow back, and carries floating litter ashore. Lives at Otter Habitats."
 fact = "A sea otter eats about a quarter of its own weight in food every day. By keeping urchin numbers down, otters protect whole kelp forests."
 photo_fact = "Sea otters often wrap themselves in kelp while they sleep, so they don't drift away."
 help_fact = "Lost fishing nets and line can trap otters. Picking up fishing litter keeps them safe."

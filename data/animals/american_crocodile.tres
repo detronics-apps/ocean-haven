@@ -24,6 +24,7 @@ display_name = "American Crocodile"
 sprite = ExtResource("2_t")
 habitat = "Quiet mangrove channels and coastal lagoons"
 diet = "Fish, crabs and birds"
+role = "Needs Crocodile Protection Zones, where patrol boats keep out."
 fact = "American crocodiles are shy and live in salty mangrove waters. Once endangered, they have come back where their quiet waters are protected."
 photo_fact = "A crocodile can stay still in the water for hours, with only its eyes and nostrils showing."
 help_fact = "Crocodiles need quiet water away from boats. Protected zones give them a place to rest and nest."

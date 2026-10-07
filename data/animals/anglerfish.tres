@@ -24,6 +24,7 @@ display_name = "Deep-sea Anglerfish"
 sprite = ExtResource("2_t")
 habitat = "The dark deep sea, where no sunlight reaches"
 diet = "Fish and shrimp drawn in by its glowing lure"
+role = "Its glow lets your cameras use less light. Leaves if there's too much."
 fact = "The lure on a female anglerfish's head is full of glowing bacteria. Its light draws prey close in the dark, and its glow lets deep cameras see animals without bright lamps."
 photo_fact = "Anglerfish wait almost without moving, saving energy where food is scarce."
 help_fact = "Bright lights from cameras and submarines drive it away from where it hunts."

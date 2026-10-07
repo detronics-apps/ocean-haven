@@ -25,6 +25,7 @@ display_name = "Double-crested Cormorant"
 sprite = ExtResource("2_corm")
 habitat = "Coasts and lakes; nests in trees and on rocky islands"
 diet = "Fish, caught by diving and swimming underwater"
+role = "Follows the fish, and needs full-grown trees to nest in."
 fact = "Cormorants eat fish, so when the kelp and its fish recover, you see it at the surface: more cormorants."
 photo_fact = "Cormorants' feathers get wet when they dive, which helps them swim underwater; afterwards they stand with their wings spread to dry them."
 help_fact = "Fishing line left in the water can catch diving birds. Picking it up keeps them safe."

@@ -97,7 +97,8 @@ func _fill() -> void:
 
 
 ## A rounded card row: optional picture on the left, text on the right.
-static func card(picture: Texture2D, lines: Array[String], dim := false) -> PanelContainer:
+## `backdrop`: a light tile behind the picture, so dark animals (cormorants, sharks) show up.
+static func card(picture: Texture2D, lines: Array[String], dim := false, backdrop := false) -> PanelContainer:
 	var panel := PanelContainer.new()
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 16)
@@ -107,7 +108,11 @@ static func card(picture: Texture2D, lines: Array[String], dim := false) -> Pane
 	pic.custom_minimum_size = Vector2(80, 80)
 	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	row.add_child(pic)
+	pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	if backdrop and picture:
+		row.add_child(light_tile(pic))
+	else:
+		row.add_child(pic)
 	var text := VBoxContainer.new()
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(text)
@@ -121,3 +126,15 @@ static func card(picture: Texture2D, lines: Array[String], dim := false) -> Pane
 	if dim:
 		panel.modulate = Color(1, 1, 1, 0.55)
 	return panel
+
+
+## `child` on a light, rounded tile (pictures of dark animals on the dark menus).
+static func light_tile(child: Control) -> PanelContainer:
+	var tile := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("dcebf0")
+	style.set_corner_radius_all(8)
+	style.set_content_margin_all(4)
+	tile.add_theme_stylebox_override("panel", style)
+	tile.add_child(child)
+	return tile

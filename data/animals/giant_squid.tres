@@ -24,6 +24,7 @@ display_name = "Giant Squid"
 sprite = ExtResource("2_t")
 habitat = "Dark, deep water hundreds of metres down"
 diet = "Deep-sea fish and other squid"
+role = "Only shows itself to a camera watching the mapped canyon in quiet water."
 fact = "Giant squid have the biggest eyes of any animal, as big as dinner plates. For centuries nobody had seen a living one: it was first filmed alive in its deep home in 2012."
 photo_fact = "In 2019 scientists filmed one using a camera with no bright lights and a glowing lure: quiet, dim equipment lets shy deep animals come close."
 help_fact = "It stays hidden while the deep is noisy or brightly lit. Keep the water quiet and know where it lives, and a patient camera may catch it."

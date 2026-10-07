@@ -24,6 +24,7 @@ display_name = "Blacktip Reef Shark"
 sprite = ExtResource("2_t")
 habitat = "Shallow lagoons and reef edges"
 diet = "Small fish, squid and shrimp"
+role = "Circles lost ghost gear: follow it to find the gear."
 fact = "Blacktip reef sharks are shy and rarely bother people. As top predators they keep reef fish populations healthy."
 photo_fact = "Look for the black tip on its dorsal fin, sticking out of the shallow water."
 help_fact = "Lost fishing line and nets can catch sharks. Sharks circling oddly may have found some."

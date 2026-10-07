@@ -31,6 +31,7 @@ display_name = "Arctic Tern"
 sprite = ExtResource("2_t")
 habitat = "Rocky Arctic shores in summer; the Antarctic in the southern summer"
 diet = "Small fish such as Arctic cod, caught by diving from the air"
+role = "Nests on the rock in the thaw, and visits your other healthy islands."
 fact = "Arctic terns fly from the Arctic to the Antarctic and back every year, the longest migration of any animal: they see two summers a year."
 photo_fact = "Over its life an Arctic tern can fly as far as to the Moon and back, more than once."
 help_fact = "It needs quiet rock to nest on in the thaw (a Tern Nesting Area) and cod to feed its chicks."

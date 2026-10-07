@@ -30,6 +30,7 @@ display_name = "Ringed Seal"
 sprite = ExtResource("2_t")
 habitat = "Arctic sea ice and the water beneath it"
 diet = "Arctic cod, shrimp and other small animals"
+role = "Has its pups on old ice, in Seal Pupping Zones. Too many eat the cod down."
 fact = "Ringed seals raise their pups in snow dens on the sea ice, so they need ice that lasts until the pups can swim. They keep breathing holes open through the ice with the claws on their flippers."
 photo_fact = "The pale rings on its fur give it its name."
 help_fact = "Pups need ice that lasts: a pupping zone on thin seasonal ice melts away before they're ready."

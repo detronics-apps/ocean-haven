@@ -24,6 +24,7 @@ display_name = "Bluntnose Sixgill Shark"
 sprite = ExtResource("2_t")
 habitat = "Deep water along slopes and ledges, rising nearer the surface at night"
 diet = "Fish, squid, crabs, and dead animals that sink from above"
+role = "Bait draws them in (too many crowd out the rest); some surface with hooks from lost gear."
 fact = "Most sharks have five gill slits; the bluntnose sixgill has six. Baited cameras, a real way scientists study the deep, draw sixgills in from far away."
 photo_fact = "Its eyes glow green in the light: they're made to catch the faintest glimmer in the deep."
 help_fact = "Sixgills get hooked on lost longlines. A shark seen with a hook in its jaw shows there's lost fishing line nearby."

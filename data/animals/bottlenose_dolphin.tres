@@ -30,6 +30,7 @@ display_name = "Bottlenose Dolphin"
 sprite = ExtResource("2_t780o")
 habitat = "Warm and temperate seas all over the world"
 diet = "Fish and squid"
+role = "Play with one and it leads you to floating litter. Keeps away from busy patrol boats."
 fact = "Dolphins breathe air through a blowhole on the top of their heads."
 photo_fact = "Scientists recognise individual dolphins by the nicks and notches on their dorsal fins."
 help_fact = "Lost 'ghost nets' can trap dolphins, turtles and seals. Rangers free them carefully - if you ever see a trapped animal, tell a lifeguard or wildlife rescue team."

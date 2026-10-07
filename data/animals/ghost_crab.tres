@@ -30,6 +30,7 @@ display_name = "Ghost Crab"
 sprite = ExtResource("2_btkom")
 habitat = "Sandy tropical beaches"
 diet = "Clams, insects and scraps washed up by the sea"
+role = "Digs up litter buried in the beach. Can get caught in plastic bags."
 fact = "Ghost crabs dig burrows in the sand and come out mostly at night."
 photo_fact = "Crabs walk sideways because their legs bend best that way - it's their fastest way to scuttle."
 help_fact = "Plastic bags on beaches can trap small animals like crabs. Every piece of litter you pick up helps."

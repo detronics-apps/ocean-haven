@@ -24,6 +24,7 @@ display_name = "Mangrove Crab"
 sprite = ExtResource("2_t")
 habitat = "Mud banks among the mangrove roots"
 diet = "Fallen mangrove leaves, and tiny creatures in the mud"
+role = "A few keep the channels from silting up; too many make it worse. Crab Habitats give them a home."
 fact = "Mangrove crabs eat fallen mangrove leaves and drag them into their burrows, recycling the leaves into food for the whole mangrove."
 photo_fact = "Crab burrows let air and water into the mud, which helps mangrove roots breathe."
 help_fact = "Plastic caught among mangrove roots can trap crabs. Picking it up keeps the mud banks safe."
