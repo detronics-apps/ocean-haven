@@ -14,7 +14,8 @@ var _title: Label
 var _clock: Label
 var _info: Label
 var _board: Control
-var _buttons: HBoxContainer
+var _buttons: HFlowContainer
+var _margin: MarginContainer
 
 
 func _ready() -> void:
@@ -27,9 +28,10 @@ func _ready() -> void:
 	add_child(background)
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 20)
+	_margin = margin
 	add_child(margin)
+	SafeArea.apply(margin)  # (clear of a phone's corners and home bar)
+	get_viewport().size_changed.connect(func() -> void: SafeArea.apply(_margin))
 	var page := VBoxContainer.new()
 	page.add_theme_constant_override("separation", 10)
 	margin.add_child(page)
@@ -55,9 +57,10 @@ func _ready() -> void:
 	_board.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	page.add_child(_board)
-	_buttons = HBoxContainer.new()
-	_buttons.alignment = BoxContainer.ALIGNMENT_CENTER
-	_buttons.add_theme_constant_override("separation", 12)
+	_buttons = HFlowContainer.new()  # (level buttons wrap onto a second row on a narrow screen)
+	_buttons.alignment = FlowContainer.ALIGNMENT_CENTER
+	_buttons.add_theme_constant_override("h_separation", 12)
+	_buttons.add_theme_constant_override("v_separation", 12)
 	page.add_child(_buttons)
 
 
@@ -70,6 +73,7 @@ func _process(delta: float) -> void:
 ## Opens `which`: the story play the first time, else the levels.
 func open_activity(which: ActivityData) -> void:
 	activity = which
+	SafeArea.apply(_margin)
 	visible = true
 	get_tree().paused = true
 	_title.text = activity.display_name

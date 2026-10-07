@@ -20,9 +20,9 @@ func _ready() -> void:
 	add_child(background)
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 24)
 	add_child(margin)
+	SafeArea.apply(margin, 24.0)  # (clear of a phone's corners and home bar)
+	get_viewport().size_changed.connect(func() -> void: SafeArea.apply(margin, 24.0))
 	_page = VBoxContainer.new()
 	_page.add_theme_constant_override("separation", 12)
 	margin.add_child(_page)
