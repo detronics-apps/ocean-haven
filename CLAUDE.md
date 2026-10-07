@@ -525,7 +525,11 @@ patch / medicine once a day each raise Health, Fed and Calm (never down); it goe
 (Rescues.check_visits: its island or RescueData.visits, never elsewhere; "Rescued_<id>",
 ocean_world.place_tagged), its name showing once met again; rescues for every island (Reef
 seahorse, Deep Sea sixgill pup); hint-givers alternate island clues with pointers to anything
-open elsewhere (People.open_things); the giant squid has a step-by-step hint (DeepEcosystem.squid_hint: map the canyon, a camera, 70 % quiet,
+open elsewhere (People.open_things); after what they say, people add (once a day each) what to do
+when funding (< 60: their island's funding facilities, upgrade the recycling centre) or wood (< 3:
+cut grown trees, replant, mind nests; or stored wood from an island with trees) runs low, and
+island news the ranger may have missed (People.add_news: rescued visitors, hatchlings, a species'
+first newcomer; told once, within 3 days); the giant squid has a step-by-step hint (DeepEcosystem.squid_hint: map the canyon, a camera, 70 % quiet,
 2 days on the island; Bram's squid topic "{advice:giant_squid}", condition "journal:X"); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
 puzzle, opens when the furnace is firing, story play finishes the first batch).
 

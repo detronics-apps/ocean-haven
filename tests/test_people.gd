@@ -60,7 +60,7 @@ func _initialize() -> void:
 		"a moment later it's the ranger's objective (%s)" % hud.objective_text())
 	_expect(people.notebook().size() == 1, "and it's in the notebook")
 	var reminder: Array = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
-	_expect(reminder.size() == 1 and reminder[0].contains("Any luck with the photos"), "talking again: a reminder, not the same question")
+	_expect(not reminder.is_empty() and reminder[0].contains("Any luck with the photos"), "talking again: a reminder, not the same question (then any funding / wood tips)")
 	people.finish_talk()
 
 	# --- Done: go back to her; she thanks the ranger and asks the next question ---
@@ -175,6 +175,37 @@ func _initialize() -> void:
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
 	_expect(people.goal_text(&"mangrove_coast") == "Goal: Build the Mangrove Waterworks Station", "Rosa: build the waterworks station (%s)" % people.goal_text(&"mangrove_coast"))
+
+	# --- Reminders: low funding, low wood (once a day each), and news the ranger may have missed ---
+	var funding := root.get_node("Funding")
+	var clock := root.get_node("GameClock")
+	var inventory := root.get_node("Inventory")
+	var balance: int = funding.balance
+	funding.balance = 20
+	inventory.restore({})
+	clock.day += 1
+	people.talk(tom)  # (meeting him first: no reminders then)
+	people.finish_talk()
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Funding's running low") and t.contains("Dolphin Viewing Area")),
+		"low funding: Tom names the island's funding facilities (%s)" % [texts])
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Short of wood") and t.contains("sapling") and t.contains("nesting")),
+		"low wood: cut a grown tree, replant, mind the nests")
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(not texts.any(func(t: String) -> bool: return t.contains("running low") or t.contains("Short of wood")), "only once a day")
+	var reef_giver: Resource = load("res://data/people/kai.tres")
+	_expect(people.wood_tip(reef_giver).contains("no trees to cut here") or world.get_tree().get_nodes_in_group("plants").size() > 0,
+		"an island without trees: bring stored wood from another island (%s)" % people.wood_tip(reef_giver))
+	people.add_news(&"home_island", "Did you see? Steve, the green turtle you rescued, is about the island today!")
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Steve")), "news: the next person you talk to there tells you what happened")
+	texts = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(not texts.any(func(t: String) -> bool: return t.contains("Steve")), "(once)")
+	funding.balance = balance
 
 	# --- The talk box: the game waits while they talk; a tap goes on ---
 	var box: Node = world.get_parent().find_child("TalkBox", true, false)

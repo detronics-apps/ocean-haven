@@ -16,6 +16,12 @@ signal talked(person: PersonData)
 
 ## Seconds after the talk before the question turns into an objective.
 const DELAY := 2.0
+## Below this much funding, or wood (carried and stored), the people of an island point out
+## how to get more (at most once a day each).
+const LOW_FUNDING := 60
+const LOW_WOOD := 3
+## News (something worth seeing that happened on an island) is told for this many days.
+const NEWS_DAYS := 3.0
 
 ## Person id -> met.
 var _met := {}
@@ -36,9 +42,85 @@ var _outcomes := {}
 var _last := {}
 ## Person id -> how many times in a row they've had the same advice for the ranger.
 var _repeats := {}
+## "person/kind" -> the day they last reminded the ranger about it (funding, wood).
+var _reminded := {}
+## What happened on the islands that the ranger may have missed: {"region", "day", "text"}
+## (the newest is told once, by whoever the ranger talks to there next). Not saved.
+var _news: Array[Dictionary] = []
 ## Questions asked in the talk going on now: [person, topic].
 var _pending: Array = []
 var _people: Array[PersonData] = []
+
+
+func _ready() -> void:
+	_listen.call_deferred()  # (Rescues is set up after People)
+
+
+func _listen() -> void:
+	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
+		add_news(region.id, "Did you see? %s, the %s you rescued, is about the island today! Look for the bright tag." % [
+			animal_name, r.species.display_name.to_lower()]))
+	Journal.hatched.connect(func(animal: AnimalData, count: int) -> void:
+		var ranger := ControlledBody.active(get_tree())
+		if ranger:
+			add_news(Regions.nearest(ranger.global_position).id, "Hatchlings! %d little %ss scrambled down the beach to the sea. Wonderful to see." % [
+				count, animal.display_name.to_lower()]))
+
+
+## Something worth seeing happened on `region_id`: whoever the ranger talks to there next
+## (within NEWS_DAYS) tells them, so they don't miss it.
+func add_news(region_id: StringName, text: String) -> void:
+	_news.append({"region": region_id, "day": GameClock.now(), "text": text})
+
+
+## Things to say before anything else: news the ranger may have missed, and (once a day each)
+## what to do when funding or wood is running low.
+func _reminders(person: PersonData) -> Array[String]:
+	var lines: Array[String] = []
+	for i in range(_news.size() - 1, -1, -1):  # the newest news from their island
+		var news: Dictionary = _news[i]
+		if news.region == person.region and GameClock.now() - float(news.day) <= NEWS_DAYS:
+			lines.append(news.text)
+			_news.remove_at(i)
+			break
+	var today := GameClock.day
+	if Funding.balance < LOW_FUNDING and int(_reminded.get("%s/funding" % person.id, -1)) != today:
+		_reminded["%s/funding" % person.id] = today
+		lines.append(funding_tip(person))
+	if Inventory.available(&"wood") < LOW_WOOD and int(_reminded.get("%s/wood" % person.id, -1)) != today:
+		_reminded["%s/wood" % person.id] = today
+		lines.append(wood_tip(person))
+	return lines
+
+
+## How to earn more funding on `person`'s island: its own funding facilities (visitors pay to see
+## a healthy island) and its recycling centre.
+func funding_tip(person: PersonData) -> String:
+	var region := _region(person)
+	var names: Array[String] = []
+	for data: BuildingData in DataFiles.load_all("res://data/buildings"):
+		if data.facility == &"funding" and (data.only_on == &"" or data.only_on == region.id):
+			names.append("a " + data.display_name)
+	var text := "You've run out of funding!" if Funding.balance <= 0 else "Funding's running low (%d)." % Funding.balance
+	if not names.is_empty():
+		text += " Visitors pay to see a healthy island: build %s. The healthier the island, the more they give." % (
+			", ".join(names.slice(0, names.size() - 1)) + " or " + names.back() if names.size() > 1 else names[0])
+	var centres := get_tree().get_nodes_in_group("buildings").filter(func(b: Node) -> bool:
+		return b.data.recycle_value > 0 and not b.is_queued_for_deletion() and Regions.nearest(b.global_position) == region)
+	if centres.any(func(b: Node) -> bool: return b.tier < b.data.max_tier):
+		text += " And upgrade your recycling centre: every piece of litter then pays more."
+	elif centres.is_empty():
+		text += " A recycling centre turns the litter you pick up into funding, too."
+	return text
+
+
+## Where to get wood on `person`'s island: cut grown trees (and replant, minding nests), or bring
+## it from an island with trees (stored wood can be used on every island).
+func wood_tip(person: PersonData) -> String:
+	var region := _region(person)
+	if Arrivals.grown_trees(get_tree(), region) > 0:
+		return "Short of wood? A full-grown tree gives 2 or 3 when you cut it down. Plant a sapling for each one you cut, and check first that no bird is nesting in it."
+	return "Short of wood? There are no trees to cut here. Wood kept in a Ranger House can be used on every island: cut some on an island with trees (and replant), store it, then build with it here."
 
 
 func all() -> Array[PersonData]:
@@ -126,6 +208,10 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	if greeting:
 		said.append_array(greeting.lines)
 		_told(person, greeting)
+	# News and low funding / wood come after whatever they had to say (not when first met).
+	var extra: Array[String] = []
+	if not first:
+		extra = _reminders(person)
 	if person.role == &"objective":
 		var done := to_thank(person)
 		if done:
@@ -153,7 +239,8 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		elif question:
 			said.append_array(question.lines)
 			_give(person, question)
-		if not said.is_empty():
+		if not said.is_empty() or not extra.is_empty():
+			said.append_array(extra)
 			var lines := _lines(person, said)
 			if predict:
 				for i in range(predict_from, lines.size()):
@@ -174,6 +261,7 @@ func talk(person: PersonData) -> Array[Dictionary]:
 					clue = _clue(person) if turn % 2 == 0 else _pointer(person, turn / 2)
 			said.append_array(clue if not clue.is_empty() else topic.lines)
 			_told(person, topic)
+	said.append_array(extra)
 	return _lines(person, said)
 
 
