@@ -188,7 +188,10 @@ func actions() -> Array:
 	if tier < data.max_tier:
 		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
 	if storage() > 0:
-		list.append({"label": "Storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
+		var carried := storable_carried()
+		if carried > 0:
+			list.append({"label": "Store everything (%d)" % carried, "do": store_all})
+		list.append({"label": "Look in storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
 	if data.movable:
 		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	if data.demolishable:
@@ -562,6 +565,31 @@ static func storable_items() -> Array:
 func kept_items() -> Array:
 	return storable_items().filter(func(item: ItemData) -> bool: return String(item.id) in data.stores) \
 		if storage() > 0 else []
+
+
+## How many of the things the ranger carries could go into this store now.
+func storable_carried() -> int:
+	var n := 0
+	for item: ItemData in kept_items():
+		n += maxi(mini(Inventory.count(item.id), storage_space(get_tree(), item.id) - Inventory.stored(item.id)), 0)
+	return n
+
+
+## Puts everything the ranger carries that this store keeps into it (as much as there's room
+## for). Building, planting and the shovel use stored things directly: nothing to take out.
+func store_all() -> void:
+	var stored := 0
+	var full: Array[String] = []
+	for item: ItemData in kept_items():
+		var room := storage_space(get_tree(), item.id) - Inventory.stored(item.id)
+		var n := maxi(mini(Inventory.count(item.id), room), 0)
+		if n > 0:
+			Inventory.store(item, n)
+			stored += n
+		if Inventory.count(item.id) > 0:
+			full.append(item.display_name.to_lower())
+	get_tree().call_group("hud", "show_toast", "Stored %d thing%s in your %s.%s" % [stored, "" if stored == 1 else "s",
+		data.display_name, (" No room for: %s (upgrade it, or build another)." % ", ".join(full)) if not full.is_empty() else ""])
 
 
 ## How much of `id` all the ranger's buildings that keep it hold together (every island).

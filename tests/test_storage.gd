@@ -38,28 +38,25 @@ func _initialize() -> void:
 		"a house: room for 4 wood, none for sand")
 	_expect(house.stats().find("Wood") == -1, "no long line of stored items above the house")
 
-	# An older save with sand in storage and no ship yet: it can still be taken out at the house.
+	# Stored things are used straight from storage: there's nothing to take out.
 	inventory.restore({}, {"sand": 5})
 	var menu: Node = world.get_node("../StorageMenu") if world.has_node("../StorageMenu") else root.find_child("StorageMenu", true, false)
 	_expect(menu != null, "the HUD adds a Storage menu")
 	var player: Node2D = world.get_node("Player")
 	player.global_position = house.global_position + Vector2(-50, 20)
+	inventory.add(wood, 3)
 	var labels: Array = house.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Storage" in labels, "the house offers its Storage (%s)" % [labels])
-	house.actions().filter(func(a: Dictionary) -> bool: return a.label == "Storage")[0].do.call()
-	_expect(menu.visible, "Storage opens the menu")
+	_expect("Look in storage" in labels and "Store everything (3)" in labels, "the house: look in storage, or store everything carried (%s)" % [labels])
+	house.actions().filter(func(a: Dictionary) -> bool: return a.label == "Look in storage")[0].do.call()
+	_expect(menu.visible, "'Look in storage' opens the menu")
 	var content: Node = menu.get("_content")
 	_expect(content.has_node("wood") and content.has_node("sapling") and content.has_node("sand"),
 		"the house menu lists wood, saplings, and the sand left over from before")
-	content.get_node("sand/Take").pressed.emit()
+	_expect(content.find_child("Take", true, false) == null, "no Take buttons")
+	content.get_node("StoreAll").pressed.emit()
 	await process_frame
-	_expect(inventory.count(&"sand") == 3 and inventory.stored(&"sand") == 2, "took 3 sand (the ranger carries 3)")
-	inventory.add(wood, 3)
-	menu.refresh()  # (the game is paused while it's open: nothing else changes what's carried)
-	content = menu.get("_content")
-	content.get_node("wood/Store").pressed.emit()
-	await process_frame
-	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "stored 3 wood from the menu")
+	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "'Store everything' put the 3 wood away")
+	_expect(inventory.available(&"sand") == 5, "the stored sand can still be used (shovel and building take it from storage)")
 	menu.close()
 
 	# A ship's cargo hold opens with the Cargo Module: room for 99 of everything, shared with every island.
@@ -69,15 +66,16 @@ func _initialize() -> void:
 	_expect(building_script.storage_space(tree, &"sand") == 99 and building_script.storage_space(tree, &"wood") == 4 + 99,
 		"an Exploration Ship's cargo hold: room for 99 of everything, wood too")
 	player.global_position = ship.global_position + Vector2(0, 40)
-	_expect(ship.actions().any(func(a: Dictionary) -> bool: return a.label == "Storage"), "the ship offers its Storage")
-	ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Storage")[0].do.call()
+	inventory.add(load("res://data/items/sand.tres"), 3)
+	_expect(ship.actions().any(func(a: Dictionary) -> bool: return a.label == "Look in storage"), "the ship offers its storage")
+	ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Look in storage")[0].do.call()
 	content = menu.get("_content")
 	_expect(content.has_node("sand") and content.has_node("mud") and content.has_node("wood"),
 		"the ship's menu lists everything")
-	content.get_node("sand/Store").pressed.emit()
+	content.get_node("StoreAll").pressed.emit()
 	await process_frame
-	_expect(inventory.count(&"sand") == 0 and inventory.stored(&"sand") == 5, "sand stored in the ship")
-	_expect(inventory.available(&"sand") == 5, "stored sand can be used for building anywhere")
+	_expect(inventory.count(&"sand") == 0 and inventory.stored(&"sand") == 8, "sand stored in the ship")
+	_expect(inventory.available(&"sand") == 8, "stored sand can be used for building anywhere")
 	menu.close()
 
 	if not _failed:

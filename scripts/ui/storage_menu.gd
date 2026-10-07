@@ -2,7 +2,8 @@ class_name StorageMenu
 extends OverlayScreen
 ## A store's screen (opened from a Ranger House or an Exploration Ship): every item it keeps,
 ## how many are stored (shared by all of that kind on every island) and how many are carried,
-## with buttons to store or take them. Ranger Houses keep wood and saplings; Exploration Ships
+## and one button to store everything carried. Nothing needs taking out: building, planting
+## and the shovel use what's stored directly. Ranger Houses keep wood and saplings; Exploration Ships
 ## keep everything else (BuildingData.stores).
 
 var _store: Building
@@ -29,8 +30,16 @@ func _fill() -> void:
 	_title.text = "%s storage" % _store.data.display_name
 	var note := Label.new()
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	note.text = "Everything stored here can be used for building on any island."
+	note.text = "Everything stored here is used straight from storage, on any island: for building, planting and the shovel."
 	_content.add_child(note)
+	var carried := _store.storable_carried()
+	var all := BuildMode._big_button("Store everything I'm carrying (%d)" % carried, Color("3f8a4a"))
+	all.name = "StoreAll"
+	all.disabled = carried <= 0
+	all.pressed.connect(func() -> void:
+		_store.store_all()
+		refresh.call_deferred())
+	_content.add_child(all)
 	for item: ItemData in _store.kept_items():
 		_content.add_child(_row(item))
 	# More stored than there's room for now (e.g. sand kept in a Ranger House before ships held
@@ -56,22 +65,7 @@ func _row(item: ItemData) -> Control:
 	var label := Label.new()
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.text = "%s\nStored %d/%d  ·  carrying %d/%d" % [item.display_name, Inventory.stored(item.id), space,
-		Inventory.count(item.id), item.carry_limit]
+	label.text = "%s\nStored %d / %d   (carrying %d)" % [item.display_name, Inventory.stored(item.id), space,
+		Inventory.count(item.id)]
 	row.add_child(label)
-	var give := mini(Inventory.count(item.id), space - Inventory.stored(item.id))
-	var take := mini(Inventory.stored(item.id), Inventory.room_for(item))
-	row.add_child(_button("Store %d" % maxi(give, 0), give > 0, Inventory.store.bind(item, give), "Store"))
-	row.add_child(_button("Take %d" % take, take > 0, Inventory.take_out.bind(item, take), "Take"))
 	return row
-
-
-func _button(text: String, enabled: bool, action: Callable, name: String) -> Button:
-	var button := BuildMode._big_button(text, Color("3f8a4a"))
-	button.name = name
-	button.custom_minimum_size = Vector2(110, 56)
-	button.disabled = not enabled
-	button.pressed.connect(func() -> void:
-		action.call()
-		refresh.call_deferred())  # (not while this button is still handling its press)
-	return button

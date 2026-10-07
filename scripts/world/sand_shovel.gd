@@ -134,9 +134,9 @@ func material_at(cell: Vector2i) -> ItemData:
 
 ## What the ranger would place: mud first (if carrying any), else sand; null = nothing.
 func carried_material() -> ItemData:
-	if Inventory.count(_mud.id) > 0:
+	if Inventory.available(_mud.id) > 0:
 		return _mud
-	if Inventory.count(_sand.id) > 0:
+	if Inventory.available(_sand.id) > 0:
 		return _sand
 	return null
 
@@ -190,7 +190,7 @@ func place(cell: Vector2i) -> void:
 		return
 	var deep := Terrain.at(get_tree(), Terrain.centre_of(cell)) == ""
 	var item := carried_material()
-	if Inventory.take_item(item.id):
+	if Inventory.use(item.id, 1):  # carried first, then from storage
 		_set_tile(cell, SHALLOW_TILE if deep else (MUD_TILE if item == _mud else SAND_TILE))
 		get_tree().call_group("ecosystems", "settle_now")  # the water changed
 

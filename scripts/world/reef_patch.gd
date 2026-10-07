@@ -41,13 +41,13 @@ func actions() -> Array:
 		return []
 	if planted >= 1.0:
 		return [{"label": "Reef patch: fully planted (coral %d%%)" % roundi(coral * 100.0), "do": _explain}]
-	if Inventory.count(&"coral_fragment") > 0:
+	if Inventory.available(&"coral_fragment") > 0:
 		return [{"label": "Plant coral fragment (coral %d%%)" % roundi(coral * 100.0), "do": plant, "helps": true}]
 	return [{"label": "Reef patch (coral %d%%)" % roundi(coral * 100.0), "do": _explain}]
 
 
 func plant() -> void:
-	if not Inventory.take_item(&"coral_fragment", 1):
+	if not Inventory.use(&"coral_fragment", 1):
 		return
 	planted += FRAGMENT
 	get_tree().call_group("ecosystems", "settle_now")
