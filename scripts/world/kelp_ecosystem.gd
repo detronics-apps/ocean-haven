@@ -435,8 +435,8 @@ func _follow(species: AnimalData, target: int) -> void:
 	if species.flies:
 		animal.home_radius = 360.0
 		animal.position = region().center + Vector2(randf_range(-200.0, 200.0), randf_range(-200.0, 200.0))
-		get_tree().call_group("hud", "show_toast",
-			"A %s has come to fish in the Kelp Forest: there are enough fish now!" % species.display_name)
+		get_tree().call_group("hud", "animal_returned", species,
+			"It has come to fish in the Kelp Forest: there are enough fish now!", region())
 	else:
 		# At a healthy bed with few fish yet.
 		var best: KelpBed = null
@@ -478,8 +478,8 @@ func _new_otter(species: AnimalData, home: Building, all: Array[Animal]) -> void
 	var world := get_tree().get_first_node_in_group("player").get_parent()
 	world.add_child(otter)
 	world.move_child(otter, world.get_node("Player").get_index())
-	get_tree().call_group("hud", "show_toast", ("A sea otter pup was born near your %s!" if pup
-		else "A sea otter has settled at your %s: the kelp around it can feed it.") % home.data.display_name)
+	get_tree().call_group("hud", "animal_returned", species, ("A pup was born near your %s!" if pup
+		else "It has settled at your %s: the kelp around it can feed it.") % home.data.display_name, region())
 
 
 ## Heavy swell tears up kelp: `share` of the beds lose up to `damage` health (marked as

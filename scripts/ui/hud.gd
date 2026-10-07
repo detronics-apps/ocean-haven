@@ -39,6 +39,7 @@ var _event_note: Label
 ## The island's objective: the next goal and a pointer on how to go about it.
 var _objective: Label
 var _unlock_check := 0.0
+var _cheer: ProgressCheer
 
 
 func _enter_tree() -> void:
@@ -82,6 +83,8 @@ func _ready() -> void:
 	observatory.name = "ObservatoryScreen"
 	get_parent().add_child.call_deferred(observatory)
 	add_child(CameraZoom.new())  # pinch / wheel / + − buttons
+	_cheer = ProgressCheer.new()  # sparkles, return cards, "+N" funding
+	add_child(_cheer)
 	var season_show := SeasonShow.new()  # seasonal moments' sights (SeasonEvent)
 	season_show.name = "SeasonShow"
 	get_parent().add_child.call_deferred(season_show)
@@ -128,6 +131,7 @@ func _ready() -> void:
 	_event_note.add_theme_color_override("font_outline_color", Color.BLACK)
 	_event_note.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	%JournalButton.add_sibling(map_button)
+	%LookButton.add_sibling(SoundButton.new())  # sound on / off and volume
 	# Under the menu bar, top right, one under the other: the island's health (once there's a
 	# research station on the 2nd island), the ranger's water (once clean water can be made),
 	# the island's objective with a pointer, and a coming storm. Hidden ones take no room.
@@ -291,6 +295,12 @@ func patrol_collected(_item: ItemData) -> void:
 	_patrol_tween.tween_property(_patrol_note, "modulate:a", 0.0, 0.8)
 
 
+## An animal came to `region` (a newcomer or one born there): a card with its picture
+## instead of a plain note.
+func animal_returned(species: AnimalData, note: String, region: RegionData = null) -> void:
+	_cheer.show_return(species, note, region)
+
+
 ## A note that stays on screen (e.g. progress can't be saved in this browser).
 func show_warning(text: String) -> void:
 	var panel := PanelContainer.new()
@@ -313,6 +323,7 @@ func show_warning(text: String) -> void:
 ## Fades out, sails to `region` (the ranger arrives there with their rowboat), fades in.
 ## `discovered`: found by exploring, so it says so.
 func voyage(region: RegionData, discovered := false) -> void:
+	Sound.play(&"whoosh")
 	var tween := create_tween()
 	tween.tween_property(_fade, "color:a", 1.0, 0.8)
 	tween.tween_callback(func() -> void: VoyageMap.arrive(get_tree(), region))
@@ -518,6 +529,7 @@ func _on_mission_returned(mission: MissionData, found: int) -> void:
 
 func _on_built(building: Building) -> void:
 	var done := "planted" if building.data.build_verb == "Plant" else "built"
+	Sound.play(&"dig" if done == "planted" else &"build")
 	show_toast("%s %s!\n%s" % [building.data.display_name, done, building.data.fact])
 
 

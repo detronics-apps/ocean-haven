@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="38" height="12" viewBox="0 0 38 12" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="14" viewBox="-1 -1 40 14" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="0,1 6,5 0,11 3,6" fill="#29252a"/>
+  <rect x="6" y="3" width="24" height="6" fill="#352e30"/>
+  <rect x="6" y="7" width="24" height="2" fill="#443d3e"/>
+  <polygon points="9,3 11,0 13,3" fill="#29252a"/>
+  <rect x="30" y="4" width="6" height="4" fill="#352e30"/><rect x="36" y="5" width="1" height="2" fill="#352e30"/>
+  <rect x="33" y="5" width="1" height="1" fill="#287a47"/>
+  <g fill="#29252a"><rect x="24" y="4" width="1" height="4"/><rect x="26" y="4" width="1" height="4"/><rect x="28" y="4" width="1" height="4"/></g>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="0,1 6,5 0,11 3,6" fill="#29252a"/>
+  <rect x="6" y="3" width="24" height="6" fill="#352e30"/>
+  <rect x="6" y="7" width="24" height="2" fill="#443d3e"/>
+  <polygon points="9,3 11,0 13,3" fill="#29252a"/>
+  <rect x="30" y="4" width="6" height="4" fill="#352e30"/><rect x="36" y="5" width="1" height="2" fill="#352e30"/>
+  <rect x="33" y="5" width="1" height="1" fill="#287a47"/>
+  <g fill="#29252a"><rect x="24" y="4" width="1" height="4"/><rect x="26" y="4" width="1" height="4"/><rect x="28" y="4" width="1" height="4"/></g>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="0,1 6,5 0,11 3,6" fill="#29252a"/>
+  <rect x="6" y="3" width="24" height="6" fill="#352e30"/>
+  <rect x="6" y="7" width="24" height="2" fill="#443d3e"/>
+  <polygon points="9,3 11,0 13,3" fill="#29252a"/>
+  <rect x="30" y="4" width="6" height="4" fill="#352e30"/><rect x="36" y="5" width="1" height="2" fill="#352e30"/>
+  <rect x="33" y="5" width="1" height="1" fill="#287a47"/>
+  <g fill="#29252a"><rect x="24" y="4" width="1" height="4"/><rect x="26" y="4" width="1" height="4"/><rect x="28" y="4" width="1" height="4"/></g>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="0,1 6,5 0,11 3,6" fill="#29252a"/>
+  <rect x="6" y="3" width="24" height="6" fill="#352e30"/>
+  <rect x="6" y="7" width="24" height="2" fill="#443d3e"/>
+  <polygon points="9,3 11,0 13,3" fill="#29252a"/>
+  <rect x="30" y="4" width="6" height="4" fill="#352e30"/><rect x="36" y="5" width="1" height="2" fill="#352e30"/>
+  <rect x="33" y="5" width="1" height="1" fill="#287a47"/>
+  <g fill="#29252a"><rect x="24" y="4" width="1" height="4"/><rect x="26" y="4" width="1" height="4"/><rect x="28" y="4" width="1" height="4"/></g>
+</g></g>
+  <g id="art" data-size="38 12" data-box="0 0 38 12">
   <!-- placeholder: bluntnose sixgill shark (dark brown-grey, one dorsal fin far back, blunt head, glowing green eye) -->
   <polygon points="0,1 6,5 0,11 3,6" fill="#3e3a36"/>
   <rect x="6" y="3" width="24" height="6" fill="#5a524a"/>
@@ -7,4 +46,5 @@
   <rect x="30" y="4" width="6" height="4" fill="#5a524a"/><rect x="36" y="5" width="1" height="2" fill="#5a524a"/>
   <rect x="33" y="5" width="1" height="1" fill="#7cff9c"/>
   <g fill="#3e3a36"><rect x="24" y="4" width="1" height="4"/><rect x="26" y="4" width="1" height="4"/><rect x="28" y="4" width="1" height="4"/></g>
+</g>
 </svg>

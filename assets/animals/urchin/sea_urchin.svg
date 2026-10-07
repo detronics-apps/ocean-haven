@@ -1,4 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="-1 -1 14 14" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="3" y="3" width="6" height="6" fill="#341352"/>
+  <rect x="4" y="4" width="4" height="4" fill="#421c60"/>
+  <rect x="5" y="0" width="2" height="3" fill="#290d44"/><rect x="5" y="9" width="2" height="3" fill="#290d44"/>
+  <rect x="0" y="5" width="3" height="2" fill="#290d44"/><rect x="9" y="5" width="3" height="2" fill="#290d44"/>
+  <rect x="1" y="1" width="2" height="2" fill="#290d44"/><rect x="9" y="1" width="2" height="2" fill="#290d44"/>
+  <rect x="1" y="9" width="2" height="2" fill="#290d44"/><rect x="9" y="9" width="2" height="2" fill="#290d44"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="3" y="3" width="6" height="6" fill="#341352"/>
+  <rect x="4" y="4" width="4" height="4" fill="#421c60"/>
+  <rect x="5" y="0" width="2" height="3" fill="#290d44"/><rect x="5" y="9" width="2" height="3" fill="#290d44"/>
+  <rect x="0" y="5" width="3" height="2" fill="#290d44"/><rect x="9" y="5" width="3" height="2" fill="#290d44"/>
+  <rect x="1" y="1" width="2" height="2" fill="#290d44"/><rect x="9" y="1" width="2" height="2" fill="#290d44"/>
+  <rect x="1" y="9" width="2" height="2" fill="#290d44"/><rect x="9" y="9" width="2" height="2" fill="#290d44"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="3" y="3" width="6" height="6" fill="#341352"/>
+  <rect x="4" y="4" width="4" height="4" fill="#421c60"/>
+  <rect x="5" y="0" width="2" height="3" fill="#290d44"/><rect x="5" y="9" width="2" height="3" fill="#290d44"/>
+  <rect x="0" y="5" width="3" height="2" fill="#290d44"/><rect x="9" y="5" width="3" height="2" fill="#290d44"/>
+  <rect x="1" y="1" width="2" height="2" fill="#290d44"/><rect x="9" y="1" width="2" height="2" fill="#290d44"/>
+  <rect x="1" y="9" width="2" height="2" fill="#290d44"/><rect x="9" y="9" width="2" height="2" fill="#290d44"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="3" y="3" width="6" height="6" fill="#341352"/>
+  <rect x="4" y="4" width="4" height="4" fill="#421c60"/>
+  <rect x="5" y="0" width="2" height="3" fill="#290d44"/><rect x="5" y="9" width="2" height="3" fill="#290d44"/>
+  <rect x="0" y="5" width="3" height="2" fill="#290d44"/><rect x="9" y="5" width="3" height="2" fill="#290d44"/>
+  <rect x="1" y="1" width="2" height="2" fill="#290d44"/><rect x="9" y="1" width="2" height="2" fill="#290d44"/>
+  <rect x="1" y="9" width="2" height="2" fill="#290d44"/><rect x="9" y="9" width="2" height="2" fill="#290d44"/>
+</g></g>
+  <g id="art" data-size="12 12" data-box="0 0 12 12">
   <!-- Placeholder purple sea urchin from above: a round body with spines. -->
   <rect x="3" y="3" width="6" height="6" fill="#6a3a86"/>
   <rect x="4" y="4" width="4" height="4" fill="#8a52a8"/>
@@ -6,4 +41,5 @@
   <rect x="0" y="5" width="3" height="2" fill="#4e2866"/><rect x="9" y="5" width="3" height="2" fill="#4e2866"/>
   <rect x="1" y="1" width="2" height="2" fill="#4e2866"/><rect x="9" y="1" width="2" height="2" fill="#4e2866"/>
   <rect x="1" y="9" width="2" height="2" fill="#4e2866"/><rect x="9" y="9" width="2" height="2" fill="#4e2866"/>
+</g>
 </svg>

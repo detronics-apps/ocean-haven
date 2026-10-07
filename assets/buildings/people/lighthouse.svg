@@ -1,4 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="72" viewBox="0 0 28 72" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="74" viewBox="-1 -1 30 74" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  
+  <rect x="3" y="62" width="22" height="6" fill="#4b4241"/>
+  <polygon points="6,62 22,62 20,18 8,18" fill="#75716e"/>
+  <polygon points="6.9,50 21.1,50 20.6,40 7.4,40" fill="#641415"/>
+  <polygon points="7.9,29 20.1,29 19.8,22 8.2,22" fill="#641415"/>
+  <rect x="12" y="54" width="4" height="8" fill="#351f1b"/>
+  <rect x="6" y="16" width="16" height="3" fill="#212537"/>
+  <rect x="8" y="8" width="12" height="8" fill="#77612a"/>
+  <rect x="9" y="9" width="2" height="6" fill="#7a745c"/>
+  <rect x="8" y="8" width="1" height="8" fill="#212537"/>
+  <rect x="19" y="8" width="1" height="8" fill="#212537"/>
+  <polygon points="7,8 14,2 21,8" fill="#641415"/>
+  <rect x="13" y="0" width="2" height="3" fill="#212537"/>
+</g><g transform="translate(1 0)">
+  
+  
+  <rect x="3" y="62" width="22" height="6" fill="#4b4241"/>
+  <polygon points="6,62 22,62 20,18 8,18" fill="#75716e"/>
+  <polygon points="6.9,50 21.1,50 20.6,40 7.4,40" fill="#641415"/>
+  <polygon points="7.9,29 20.1,29 19.8,22 8.2,22" fill="#641415"/>
+  <rect x="12" y="54" width="4" height="8" fill="#351f1b"/>
+  <rect x="6" y="16" width="16" height="3" fill="#212537"/>
+  <rect x="8" y="8" width="12" height="8" fill="#77612a"/>
+  <rect x="9" y="9" width="2" height="6" fill="#7a745c"/>
+  <rect x="8" y="8" width="1" height="8" fill="#212537"/>
+  <rect x="19" y="8" width="1" height="8" fill="#212537"/>
+  <polygon points="7,8 14,2 21,8" fill="#641415"/>
+  <rect x="13" y="0" width="2" height="3" fill="#212537"/>
+</g><g transform="translate(0 -1)">
+  
+  
+  <rect x="3" y="62" width="22" height="6" fill="#4b4241"/>
+  <polygon points="6,62 22,62 20,18 8,18" fill="#75716e"/>
+  <polygon points="6.9,50 21.1,50 20.6,40 7.4,40" fill="#641415"/>
+  <polygon points="7.9,29 20.1,29 19.8,22 8.2,22" fill="#641415"/>
+  <rect x="12" y="54" width="4" height="8" fill="#351f1b"/>
+  <rect x="6" y="16" width="16" height="3" fill="#212537"/>
+  <rect x="8" y="8" width="12" height="8" fill="#77612a"/>
+  <rect x="9" y="9" width="2" height="6" fill="#7a745c"/>
+  <rect x="8" y="8" width="1" height="8" fill="#212537"/>
+  <rect x="19" y="8" width="1" height="8" fill="#212537"/>
+  <polygon points="7,8 14,2 21,8" fill="#641415"/>
+  <rect x="13" y="0" width="2" height="3" fill="#212537"/>
+</g><g transform="translate(0 1)">
+  
+  
+  <rect x="3" y="62" width="22" height="6" fill="#4b4241"/>
+  <polygon points="6,62 22,62 20,18 8,18" fill="#75716e"/>
+  <polygon points="6.9,50 21.1,50 20.6,40 7.4,40" fill="#641415"/>
+  <polygon points="7.9,29 20.1,29 19.8,22 8.2,22" fill="#641415"/>
+  <rect x="12" y="54" width="4" height="8" fill="#351f1b"/>
+  <rect x="6" y="16" width="16" height="3" fill="#212537"/>
+  <rect x="8" y="8" width="12" height="8" fill="#77612a"/>
+  <rect x="9" y="9" width="2" height="6" fill="#7a745c"/>
+  <rect x="8" y="8" width="1" height="8" fill="#212537"/>
+  <rect x="19" y="8" width="1" height="8" fill="#212537"/>
+  <polygon points="7,8 14,2 21,8" fill="#641415"/>
+  <rect x="13" y="0" width="2" height="3" fill="#212537"/>
+</g></g>
+  <g id="art" data-size="28 72" data-box="0 0 28 72">
   <!-- an old lighthouse: white and red tower, lamp room, little door -->
   <rect x="2" y="66" width="24" height="4" fill="#000" opacity="0.18"/>
   <rect x="3" y="62" width="22" height="6" fill="#8e8477"/>
@@ -13,4 +76,5 @@
   <rect x="19" y="8" width="1" height="8" fill="#3b3f47"/>
   <polygon points="7,8 14,2 21,8" fill="#c94a3c"/>
   <rect x="13" y="0" width="2" height="3" fill="#3b3f47"/>
+</g>
 </svg>

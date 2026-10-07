@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="12" viewBox="0 0 22 12" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="-1 -1 24 14" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="5" width="5" height="2" fill="#351d16"/>
+  <rect x="4" y="3" width="11" height="6" fill="#43261c"/>
+  <rect x="5" y="4" width="9" height="4" fill="#492c20"/>
+  <rect x="14" y="3" width="6" height="6" fill="#645b57"/>
+  <rect x="17" y="4" width="1" height="1" fill="#1b1923"/><rect x="17" y="7" width="1" height="1" fill="#1b1923"/>
+  <rect x="19" y="5" width="2" height="2" fill="#28191a"/>
+  <rect x="11" y="4" width="2" height="1" fill="#351d16"/><rect x="11" y="7" width="2" height="1" fill="#351d16"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="5" width="5" height="2" fill="#351d16"/>
+  <rect x="4" y="3" width="11" height="6" fill="#43261c"/>
+  <rect x="5" y="4" width="9" height="4" fill="#492c20"/>
+  <rect x="14" y="3" width="6" height="6" fill="#645b57"/>
+  <rect x="17" y="4" width="1" height="1" fill="#1b1923"/><rect x="17" y="7" width="1" height="1" fill="#1b1923"/>
+  <rect x="19" y="5" width="2" height="2" fill="#28191a"/>
+  <rect x="11" y="4" width="2" height="1" fill="#351d16"/><rect x="11" y="7" width="2" height="1" fill="#351d16"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="5" width="5" height="2" fill="#351d16"/>
+  <rect x="4" y="3" width="11" height="6" fill="#43261c"/>
+  <rect x="5" y="4" width="9" height="4" fill="#492c20"/>
+  <rect x="14" y="3" width="6" height="6" fill="#645b57"/>
+  <rect x="17" y="4" width="1" height="1" fill="#1b1923"/><rect x="17" y="7" width="1" height="1" fill="#1b1923"/>
+  <rect x="19" y="5" width="2" height="2" fill="#28191a"/>
+  <rect x="11" y="4" width="2" height="1" fill="#351d16"/><rect x="11" y="7" width="2" height="1" fill="#351d16"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="5" width="5" height="2" fill="#351d16"/>
+  <rect x="4" y="3" width="11" height="6" fill="#43261c"/>
+  <rect x="5" y="4" width="9" height="4" fill="#492c20"/>
+  <rect x="14" y="3" width="6" height="6" fill="#645b57"/>
+  <rect x="17" y="4" width="1" height="1" fill="#1b1923"/><rect x="17" y="7" width="1" height="1" fill="#1b1923"/>
+  <rect x="19" y="5" width="2" height="2" fill="#28191a"/>
+  <rect x="11" y="4" width="2" height="1" fill="#351d16"/><rect x="11" y="7" width="2" height="1" fill="#351d16"/>
+</g></g>
+  <g id="art" data-size="22 12" data-box="0 0 22 12">
   <!-- Placeholder sea otter floating on its back, seen from above, facing right: brown body, pale grey head, paws on its chest, flat tail behind. -->
   <rect x="0" y="5" width="5" height="2" fill="#5a3a24"/>
   <rect x="4" y="3" width="11" height="6" fill="#7a5234"/>
@@ -7,4 +46,5 @@
   <rect x="17" y="4" width="1" height="1" fill="#1c1c1c"/><rect x="17" y="7" width="1" height="1" fill="#1c1c1c"/>
   <rect x="19" y="5" width="2" height="2" fill="#3a2a20"/>
   <rect x="11" y="4" width="2" height="1" fill="#5a3a24"/><rect x="11" y="7" width="2" height="1" fill="#5a3a24"/>
+</g>
 </svg>

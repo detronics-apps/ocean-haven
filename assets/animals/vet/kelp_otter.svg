@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="-1 -1 50 50" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="10" y="20" width="28" height="20" fill="#43261b"/><rect x="14" y="8" width="20" height="16" fill="#492e22"/>
+  <rect x="16" y="12" width="16" height="10" fill="#6a5b4e"/><rect x="18" y="14" width="2" height="2" fill="#1b1923"/><rect x="28" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="17" width="4" height="2" fill="#211415"/><rect x="12" y="16" width="4" height="1" fill="#746b75"/><rect x="32" y="16" width="4" height="1" fill="#746b75"/>
+  <rect x="14" y="8" width="3" height="3" fill="#3c1f16"/><rect x="31" y="8" width="3" height="3" fill="#3c1f16"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="10" y="20" width="28" height="20" fill="#43261b"/><rect x="14" y="8" width="20" height="16" fill="#492e22"/>
+  <rect x="16" y="12" width="16" height="10" fill="#6a5b4e"/><rect x="18" y="14" width="2" height="2" fill="#1b1923"/><rect x="28" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="17" width="4" height="2" fill="#211415"/><rect x="12" y="16" width="4" height="1" fill="#746b75"/><rect x="32" y="16" width="4" height="1" fill="#746b75"/>
+  <rect x="14" y="8" width="3" height="3" fill="#3c1f16"/><rect x="31" y="8" width="3" height="3" fill="#3c1f16"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="10" y="20" width="28" height="20" fill="#43261b"/><rect x="14" y="8" width="20" height="16" fill="#492e22"/>
+  <rect x="16" y="12" width="16" height="10" fill="#6a5b4e"/><rect x="18" y="14" width="2" height="2" fill="#1b1923"/><rect x="28" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="17" width="4" height="2" fill="#211415"/><rect x="12" y="16" width="4" height="1" fill="#746b75"/><rect x="32" y="16" width="4" height="1" fill="#746b75"/>
+  <rect x="14" y="8" width="3" height="3" fill="#3c1f16"/><rect x="31" y="8" width="3" height="3" fill="#3c1f16"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="10" y="20" width="28" height="20" fill="#43261b"/><rect x="14" y="8" width="20" height="16" fill="#492e22"/>
+  <rect x="16" y="12" width="16" height="10" fill="#6a5b4e"/><rect x="18" y="14" width="2" height="2" fill="#1b1923"/><rect x="28" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="17" width="4" height="2" fill="#211415"/><rect x="12" y="16" width="4" height="1" fill="#746b75"/><rect x="32" y="16" width="4" height="1" fill="#746b75"/>
+  <rect x="14" y="8" width="3" height="3" fill="#3c1f16"/><rect x="31" y="8" width="3" height="3" fill="#3c1f16"/>
+</g></g>
+  <g id="art" data-size="48 48" data-box="0 0 48 48">
   <!-- Placeholder: kelp_otter from the front, on the vet table -->
   <rect x="10" y="20" width="28" height="20" fill="#7a5233"/><rect x="14" y="8" width="20" height="16" fill="#8a6242"/>
   <rect x="16" y="12" width="16" height="10" fill="#d9c3a3"/><rect x="18" y="14" width="2" height="2" fill="#1c1c1c"/><rect x="28" y="14" width="2" height="2" fill="#1c1c1c"/>
   <rect x="22" y="17" width="4" height="2" fill="#2a1d14"/><rect x="12" y="16" width="4" height="1" fill="#f0f0f0"/><rect x="32" y="16" width="4" height="1" fill="#f0f0f0"/>
   <rect x="14" y="8" width="3" height="3" fill="#6a4228"/><rect x="31" y="8" width="3" height="3" fill="#6a4228"/>
+</g>
 </svg>

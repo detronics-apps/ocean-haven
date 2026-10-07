@@ -1,4 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="16" viewBox="0 0 28 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="-1 -1 30 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#0e214d"/>
+  <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#757574"/>
+  <rect x="3" y="10" width="18" height="2" fill="#0e376a"/>
+  <rect x="8" y="2" width="8" height="5" fill="#606778"/>
+  <rect x="12" y="3" width="3" height="2" fill="#3f637a"/>
+  <rect x="9" y="1" width="1" height="2" fill="#591817"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#0e214d"/>
+  <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#757574"/>
+  <rect x="3" y="10" width="18" height="2" fill="#0e376a"/>
+  <rect x="8" y="2" width="8" height="5" fill="#606778"/>
+  <rect x="12" y="3" width="3" height="2" fill="#3f637a"/>
+  <rect x="9" y="1" width="1" height="2" fill="#591817"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#0e214d"/>
+  <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#757574"/>
+  <rect x="3" y="10" width="18" height="2" fill="#0e376a"/>
+  <rect x="8" y="2" width="8" height="5" fill="#606778"/>
+  <rect x="12" y="3" width="3" height="2" fill="#3f637a"/>
+  <rect x="9" y="1" width="1" height="2" fill="#591817"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#0e214d"/>
+  <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#757574"/>
+  <rect x="3" y="10" width="18" height="2" fill="#0e376a"/>
+  <rect x="8" y="2" width="8" height="5" fill="#606778"/>
+  <rect x="12" y="3" width="3" height="2" fill="#3f637a"/>
+  <rect x="9" y="1" width="1" height="2" fill="#591817"/>
+</g></g>
+  <g id="art" data-size="28 16" data-box="0 0 28 16">
   <!-- Placeholder patrol boat, bow pointing right: white hull, blue stripe, cabin -->
   <polygon points="1,5 21,5 27,9 21,14 3,14" fill="#2f4a7a"/>
   <polygon points="2,6 20,6 25,9 20,13 4,13" fill="#f2f2ee"/>
@@ -6,4 +41,5 @@
   <rect x="8" y="2" width="8" height="5" fill="#d8dde2"/>
   <rect x="12" y="3" width="3" height="2" fill="#9fd3e6"/>
   <rect x="9" y="1" width="1" height="2" fill="#b04a3a"/>
+</g>
 </svg>

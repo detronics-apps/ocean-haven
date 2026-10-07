@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="-1 -1 22 14" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <ellipse cx="10" cy="7" rx="9" ry="5" fill="#494944"/><path d="M2 7 Q10 2 18 7" fill="#114374"/><rect x="4" y="6" width="12" height="2" fill="#042d63"/><g fill="#3b697e"><rect x="6" y="5" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/></g>
+</g><g transform="translate(1 0)">
+  
+  <ellipse cx="10" cy="7" rx="9" ry="5" fill="#494944"/><path d="M2 7 Q10 2 18 7" fill="#114374"/><rect x="4" y="6" width="12" height="2" fill="#042d63"/><g fill="#3b697e"><rect x="6" y="5" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/></g>
+</g><g transform="translate(0 -1)">
+  
+  <ellipse cx="10" cy="7" rx="9" ry="5" fill="#494944"/><path d="M2 7 Q10 2 18 7" fill="#114374"/><rect x="4" y="6" width="12" height="2" fill="#042d63"/><g fill="#3b697e"><rect x="6" y="5" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/></g>
+</g><g transform="translate(0 1)">
+  
+  <ellipse cx="10" cy="7" rx="9" ry="5" fill="#494944"/><path d="M2 7 Q10 2 18 7" fill="#114374"/><rect x="4" y="6" width="12" height="2" fill="#042d63"/><g fill="#3b697e"><rect x="6" y="5" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/></g>
+</g></g>
+  <g id="art" data-size="20 12" data-box="0 0 20 12">
   <!-- placeholder: giant clam -->
   <ellipse cx="10" cy="7" rx="9" ry="5" fill="#8a8a7a"/><path d="M2 7 Q10 2 18 7" fill="#4a9ad8"/><rect x="4" y="6" width="12" height="2" fill="#2a6ab0"/><g fill="#9ae0f0"><rect x="6" y="5" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/></g>
+</g>
 </svg>

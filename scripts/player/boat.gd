@@ -136,6 +136,8 @@ func _board(check_range := true) -> bool:
 	_look.move_child(_driver, 0)
 	controlled = true
 	ControlledBody.switch_camera(_camera)
+	if check_range:
+		Sound.play(&"splash", -4.0)
 	return true
 
 
@@ -145,6 +147,7 @@ func _go_ashore() -> bool:
 		return false
 	_player.global_position = spot  # (before its camera takes over, so the view doesn't jump)
 	restore_ashore()
+	Sound.play(&"splash", -8.0)
 	return true
 
 

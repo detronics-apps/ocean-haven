@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="-1 -1 11 11" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="0" width="9" height="9" fill="#7a717b"/>
+  <rect x="0" y="0" width="9" height="1" fill="#5a6073"/>
+  <rect x="3" y="1" width="3" height="7" fill="#710b11"/>
+  <rect x="1" y="3" width="7" height="3" fill="#710b11"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="0" width="9" height="9" fill="#7a717b"/>
+  <rect x="0" y="0" width="9" height="1" fill="#5a6073"/>
+  <rect x="3" y="1" width="3" height="7" fill="#710b11"/>
+  <rect x="1" y="3" width="7" height="3" fill="#710b11"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="0" width="9" height="9" fill="#7a717b"/>
+  <rect x="0" y="0" width="9" height="1" fill="#5a6073"/>
+  <rect x="3" y="1" width="3" height="7" fill="#710b11"/>
+  <rect x="1" y="3" width="7" height="3" fill="#710b11"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="0" width="9" height="9" fill="#7a717b"/>
+  <rect x="0" y="0" width="9" height="1" fill="#5a6073"/>
+  <rect x="3" y="1" width="3" height="7" fill="#710b11"/>
+  <rect x="1" y="3" width="7" height="3" fill="#710b11"/>
+</g></g>
+  <g id="art" data-size="9 9" data-box="0 0 9 9">
   <!-- Placeholder "hurt, needs care" badge: a white plaster with a red cross, over an injured animal. -->
   <rect x="0" y="0" width="9" height="9" fill="#ffffff"/>
   <rect x="0" y="0" width="9" height="1" fill="#c9ced4"/>
   <rect x="3" y="1" width="3" height="7" fill="#e8413a"/>
   <rect x="1" y="3" width="7" height="3" fill="#e8413a"/>
+</g>
 </svg>

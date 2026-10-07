@@ -1,4 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="5" width="11" height="7" fill="#103148"/>
+  <rect x="3" y="6" width="9" height="5" fill="#3f637a"/>
+  <rect x="6" y="6" width="3" height="5" fill="#6d656f"/>
+  <rect x="12" y="7" width="2" height="3" fill="#3f637a"/>
+  <rect x="14" y="7" width="1" height="3" fill="#073063"/>
+  <rect x="4" y="7" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="5" width="11" height="7" fill="#103148"/>
+  <rect x="3" y="6" width="9" height="5" fill="#3f637a"/>
+  <rect x="6" y="6" width="3" height="5" fill="#6d656f"/>
+  <rect x="12" y="7" width="2" height="3" fill="#3f637a"/>
+  <rect x="14" y="7" width="1" height="3" fill="#073063"/>
+  <rect x="4" y="7" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="5" width="11" height="7" fill="#103148"/>
+  <rect x="3" y="6" width="9" height="5" fill="#3f637a"/>
+  <rect x="6" y="6" width="3" height="5" fill="#6d656f"/>
+  <rect x="12" y="7" width="2" height="3" fill="#3f637a"/>
+  <rect x="14" y="7" width="1" height="3" fill="#073063"/>
+  <rect x="4" y="7" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="5" width="11" height="7" fill="#103148"/>
+  <rect x="3" y="6" width="9" height="5" fill="#3f637a"/>
+  <rect x="6" y="6" width="3" height="5" fill="#6d656f"/>
+  <rect x="12" y="7" width="2" height="3" fill="#3f637a"/>
+  <rect x="14" y="7" width="1" height="3" fill="#073063"/>
+  <rect x="4" y="7" width="1" height="1" fill="#7a717b"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- Placeholder: plastic bottle lying on its side -->
   <rect x="2" y="5" width="11" height="7" fill="#2f5d6e"/>
   <rect x="3" y="6" width="9" height="5" fill="#9fd3e6"/>
@@ -6,4 +41,5 @@
   <rect x="12" y="7" width="2" height="3" fill="#9fd3e6"/>
   <rect x="14" y="7" width="1" height="3" fill="#2f6fb0"/>
   <rect x="4" y="7" width="1" height="1" fill="#ffffff"/>
+</g>
 </svg>

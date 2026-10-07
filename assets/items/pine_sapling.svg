@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="7" y="8" width="2" height="5" fill="#371e16"/>
+  <ellipse cx="8" cy="7" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="9" cy="4" rx="3" ry="2" fill="#1f472f"/>
+  <rect x="4" y="12" width="8" height="3" fill="#3c2419"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="7" y="8" width="2" height="5" fill="#371e16"/>
+  <ellipse cx="8" cy="7" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="9" cy="4" rx="3" ry="2" fill="#1f472f"/>
+  <rect x="4" y="12" width="8" height="3" fill="#3c2419"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="7" y="8" width="2" height="5" fill="#371e16"/>
+  <ellipse cx="8" cy="7" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="9" cy="4" rx="3" ry="2" fill="#1f472f"/>
+  <rect x="4" y="12" width="8" height="3" fill="#3c2419"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="7" y="8" width="2" height="5" fill="#371e16"/>
+  <ellipse cx="8" cy="7" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="9" cy="4" rx="3" ry="2" fill="#1f472f"/>
+  <rect x="4" y="12" width="8" height="3" fill="#3c2419"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- placeholder: shore pine sapling in a little root ball -->
   <rect x="7" y="8" width="2" height="5" fill="#5e3d24"/>
   <ellipse cx="8" cy="7" rx="5" ry="3" fill="#37643f"/>
   <ellipse cx="9" cy="4" rx="3" ry="2" fill="#4d8455"/>
   <rect x="4" y="12" width="8" height="3" fill="#6b4a2c"/>
+</g>
 </svg>

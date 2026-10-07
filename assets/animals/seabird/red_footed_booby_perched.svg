@@ -1,4 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="-1 -1 16 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="6" y="1" width="4" height="4" fill="#7a717b"/>
+  <rect x="9" y="2" width="1" height="1" fill="#1b1923"/>
+  <rect x="9" y="3" width="1" height="1" fill="#753e56"/>
+  <rect x="10" y="2" width="3" height="2" fill="#365c7b"/>
+  <rect x="5" y="5" width="5" height="7" fill="#7a717b"/>
+  <rect x="3" y="6" width="4" height="5" fill="#676e7e"/>
+  <rect x="1" y="10" width="3" height="2" fill="#1b1923"/>
+  <rect x="6" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="8" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="5" y="14" width="3" height="1" fill="#710b11"/>
+  <rect x="8" y="14" width="2" height="1" fill="#710b11"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="6" y="1" width="4" height="4" fill="#7a717b"/>
+  <rect x="9" y="2" width="1" height="1" fill="#1b1923"/>
+  <rect x="9" y="3" width="1" height="1" fill="#753e56"/>
+  <rect x="10" y="2" width="3" height="2" fill="#365c7b"/>
+  <rect x="5" y="5" width="5" height="7" fill="#7a717b"/>
+  <rect x="3" y="6" width="4" height="5" fill="#676e7e"/>
+  <rect x="1" y="10" width="3" height="2" fill="#1b1923"/>
+  <rect x="6" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="8" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="5" y="14" width="3" height="1" fill="#710b11"/>
+  <rect x="8" y="14" width="2" height="1" fill="#710b11"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="6" y="1" width="4" height="4" fill="#7a717b"/>
+  <rect x="9" y="2" width="1" height="1" fill="#1b1923"/>
+  <rect x="9" y="3" width="1" height="1" fill="#753e56"/>
+  <rect x="10" y="2" width="3" height="2" fill="#365c7b"/>
+  <rect x="5" y="5" width="5" height="7" fill="#7a717b"/>
+  <rect x="3" y="6" width="4" height="5" fill="#676e7e"/>
+  <rect x="1" y="10" width="3" height="2" fill="#1b1923"/>
+  <rect x="6" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="8" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="5" y="14" width="3" height="1" fill="#710b11"/>
+  <rect x="8" y="14" width="2" height="1" fill="#710b11"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="6" y="1" width="4" height="4" fill="#7a717b"/>
+  <rect x="9" y="2" width="1" height="1" fill="#1b1923"/>
+  <rect x="9" y="3" width="1" height="1" fill="#753e56"/>
+  <rect x="10" y="2" width="3" height="2" fill="#365c7b"/>
+  <rect x="5" y="5" width="5" height="7" fill="#7a717b"/>
+  <rect x="3" y="6" width="4" height="5" fill="#676e7e"/>
+  <rect x="1" y="10" width="3" height="2" fill="#1b1923"/>
+  <rect x="6" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="8" y="12" width="1" height="2" fill="#710b11"/>
+  <rect x="5" y="14" width="3" height="1" fill="#710b11"/>
+  <rect x="8" y="14" width="2" height="1" fill="#710b11"/>
+</g></g>
+  <g id="art" data-size="14 16" data-box="0 0 14 16">
   <!-- Placeholder red-footed booby standing (side view, facing right): white body, folded wings with black tips, pink face, pale blue bill, red feet. Feet at the bottom middle. -->
   <rect x="6" y="1" width="4" height="4" fill="#ffffff"/>
   <rect x="9" y="2" width="1" height="1" fill="#1c1c1c"/>
@@ -11,4 +66,5 @@
   <rect x="8" y="12" width="1" height="2" fill="#e8413a"/>
   <rect x="5" y="14" width="3" height="1" fill="#e8413a"/>
   <rect x="8" y="14" width="2" height="1" fill="#e8413a"/>
+</g>
 </svg>

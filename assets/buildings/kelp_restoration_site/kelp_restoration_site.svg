@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="-1 -1 34 34" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="24" width="28" height="2" fill="#645b57"/>
+  <rect x="5" y="16" width="2" height="8" fill="#1e5d2a"/><rect x="11" y="18" width="2" height="6" fill="#1e5d2a"/>
+  <rect x="19" y="17" width="2" height="7" fill="#1e5d2a"/><rect x="25" y="19" width="2" height="5" fill="#1e5d2a"/>
+  <rect x="13" y="4" width="6" height="8" fill="#755c1a"/><rect x="13" y="7" width="6" height="2" fill="#710b11"/>
+  <rect x="15" y="12" width="2" height="12" fill="#49494b"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="24" width="28" height="2" fill="#645b57"/>
+  <rect x="5" y="16" width="2" height="8" fill="#1e5d2a"/><rect x="11" y="18" width="2" height="6" fill="#1e5d2a"/>
+  <rect x="19" y="17" width="2" height="7" fill="#1e5d2a"/><rect x="25" y="19" width="2" height="5" fill="#1e5d2a"/>
+  <rect x="13" y="4" width="6" height="8" fill="#755c1a"/><rect x="13" y="7" width="6" height="2" fill="#710b11"/>
+  <rect x="15" y="12" width="2" height="12" fill="#49494b"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="24" width="28" height="2" fill="#645b57"/>
+  <rect x="5" y="16" width="2" height="8" fill="#1e5d2a"/><rect x="11" y="18" width="2" height="6" fill="#1e5d2a"/>
+  <rect x="19" y="17" width="2" height="7" fill="#1e5d2a"/><rect x="25" y="19" width="2" height="5" fill="#1e5d2a"/>
+  <rect x="13" y="4" width="6" height="8" fill="#755c1a"/><rect x="13" y="7" width="6" height="2" fill="#710b11"/>
+  <rect x="15" y="12" width="2" height="12" fill="#49494b"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="24" width="28" height="2" fill="#645b57"/>
+  <rect x="5" y="16" width="2" height="8" fill="#1e5d2a"/><rect x="11" y="18" width="2" height="6" fill="#1e5d2a"/>
+  <rect x="19" y="17" width="2" height="7" fill="#1e5d2a"/><rect x="25" y="19" width="2" height="5" fill="#1e5d2a"/>
+  <rect x="13" y="4" width="6" height="8" fill="#755c1a"/><rect x="13" y="7" width="6" height="2" fill="#710b11"/>
+  <rect x="15" y="12" width="2" height="12" fill="#49494b"/>
+</g></g>
+  <g id="art" data-size="32 32" data-box="0 0 32 32">
   <!-- Placeholder Kelp Restoration Site: a yellow marker buoy over a line of young kelp growing on ropes. -->
   <rect x="2" y="24" width="28" height="2" fill="#c9bfae"/>
   <rect x="5" y="16" width="2" height="8" fill="#58b85c"/><rect x="11" y="18" width="2" height="6" fill="#58b85c"/>
   <rect x="19" y="17" width="2" height="7" fill="#58b85c"/><rect x="25" y="19" width="2" height="5" fill="#58b85c"/>
   <rect x="13" y="4" width="6" height="8" fill="#f2c94c"/><rect x="13" y="7" width="6" height="2" fill="#e8413a"/>
   <rect x="15" y="12" width="2" height="12" fill="#8a8a86"/>
+</g>
 </svg>

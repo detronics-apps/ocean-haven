@@ -313,7 +313,7 @@ func _follow(species: AnimalData, target: int) -> void:
 	var homes := _homes(species)
 	var spot := _patch_water(patches().pick_random()) if homes.is_empty() else Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["water", ""])
 	_spawn(species, spot)
-	get_tree().call_group("hud", "show_toast", "A %s has come to the reef: %s" % [species.display_name.to_lower(), _why(species)])
+	get_tree().call_group("hud", "animal_returned", species, "It has come to the reef: %s" % _why(species), region())
 
 
 func _why(species: AnimalData) -> String:

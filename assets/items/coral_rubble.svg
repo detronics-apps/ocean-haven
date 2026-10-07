@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="9" width="5" height="4" fill="#716965"/><rect x="7" y="7" width="4" height="6" fill="#6a635e"/><rect x="11" y="10" width="3" height="3" fill="#635c58"/><rect x="8" y="8" width="1" height="1" fill="#59524e"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="9" width="5" height="4" fill="#716965"/><rect x="7" y="7" width="4" height="6" fill="#6a635e"/><rect x="11" y="10" width="3" height="3" fill="#635c58"/><rect x="8" y="8" width="1" height="1" fill="#59524e"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="9" width="5" height="4" fill="#716965"/><rect x="7" y="7" width="4" height="6" fill="#6a635e"/><rect x="11" y="10" width="3" height="3" fill="#635c58"/><rect x="8" y="8" width="1" height="1" fill="#59524e"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="9" width="5" height="4" fill="#716965"/><rect x="7" y="7" width="4" height="6" fill="#6a635e"/><rect x="11" y="10" width="3" height="3" fill="#635c58"/><rect x="8" y="8" width="1" height="1" fill="#59524e"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- coral rubble (placeholder) -->
   <rect x="2" y="9" width="5" height="4" fill="#e8e0d0"/><rect x="7" y="7" width="4" height="6" fill="#d8d0c0"/><rect x="11" y="10" width="3" height="3" fill="#c8c0b0"/><rect x="8" y="8" width="1" height="1" fill="#b0a898"/>
+</g>
 </svg>

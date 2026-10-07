@@ -1,4 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="64" viewBox="0 0 40 64" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="66" viewBox="-1 -1 42 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  
+  <g fill="none" stroke="#432c1f" stroke-width="2">
+    <path d="M19 44 Q10 48 8 60"/><path d="M19 46 Q14 52 14 60"/>
+    <path d="M21 44 Q30 48 32 60"/><path d="M21 46 Q26 52 26 60"/>
+  </g>
+  <rect x="18" y="30" width="5" height="16" fill="#432c1f"/>
+  <ellipse cx="20" cy="22" rx="17" ry="12" fill="#113c23"/>
+  <ellipse cx="16" cy="18" rx="10" ry="7" fill="#164628"/>
+  <ellipse cx="26" cy="20" rx="8" ry="6" fill="#154326"/>
+  <g fill="#21562f"><rect x="10" y="16" width="3" height="2"/><rect x="22" y="13" width="3" height="2"/><rect x="28" y="22" width="3" height="2"/></g>
+  <rect x="13" y="30" width="1" height="5" fill="#33491d"/><rect x="27" y="29" width="1" height="6" fill="#33491d"/>
+</g><g transform="translate(1 0)">
+  
+  
+  <g fill="none" stroke="#432c1f" stroke-width="2">
+    <path d="M19 44 Q10 48 8 60"/><path d="M19 46 Q14 52 14 60"/>
+    <path d="M21 44 Q30 48 32 60"/><path d="M21 46 Q26 52 26 60"/>
+  </g>
+  <rect x="18" y="30" width="5" height="16" fill="#432c1f"/>
+  <ellipse cx="20" cy="22" rx="17" ry="12" fill="#113c23"/>
+  <ellipse cx="16" cy="18" rx="10" ry="7" fill="#164628"/>
+  <ellipse cx="26" cy="20" rx="8" ry="6" fill="#154326"/>
+  <g fill="#21562f"><rect x="10" y="16" width="3" height="2"/><rect x="22" y="13" width="3" height="2"/><rect x="28" y="22" width="3" height="2"/></g>
+  <rect x="13" y="30" width="1" height="5" fill="#33491d"/><rect x="27" y="29" width="1" height="6" fill="#33491d"/>
+</g><g transform="translate(0 -1)">
+  
+  
+  <g fill="none" stroke="#432c1f" stroke-width="2">
+    <path d="M19 44 Q10 48 8 60"/><path d="M19 46 Q14 52 14 60"/>
+    <path d="M21 44 Q30 48 32 60"/><path d="M21 46 Q26 52 26 60"/>
+  </g>
+  <rect x="18" y="30" width="5" height="16" fill="#432c1f"/>
+  <ellipse cx="20" cy="22" rx="17" ry="12" fill="#113c23"/>
+  <ellipse cx="16" cy="18" rx="10" ry="7" fill="#164628"/>
+  <ellipse cx="26" cy="20" rx="8" ry="6" fill="#154326"/>
+  <g fill="#21562f"><rect x="10" y="16" width="3" height="2"/><rect x="22" y="13" width="3" height="2"/><rect x="28" y="22" width="3" height="2"/></g>
+  <rect x="13" y="30" width="1" height="5" fill="#33491d"/><rect x="27" y="29" width="1" height="6" fill="#33491d"/>
+</g><g transform="translate(0 1)">
+  
+  
+  <g fill="none" stroke="#432c1f" stroke-width="2">
+    <path d="M19 44 Q10 48 8 60"/><path d="M19 46 Q14 52 14 60"/>
+    <path d="M21 44 Q30 48 32 60"/><path d="M21 46 Q26 52 26 60"/>
+  </g>
+  <rect x="18" y="30" width="5" height="16" fill="#432c1f"/>
+  <ellipse cx="20" cy="22" rx="17" ry="12" fill="#113c23"/>
+  <ellipse cx="16" cy="18" rx="10" ry="7" fill="#164628"/>
+  <ellipse cx="26" cy="20" rx="8" ry="6" fill="#154326"/>
+  <g fill="#21562f"><rect x="10" y="16" width="3" height="2"/><rect x="22" y="13" width="3" height="2"/><rect x="28" y="22" width="3" height="2"/></g>
+  <rect x="13" y="30" width="1" height="5" fill="#33491d"/><rect x="27" y="29" width="1" height="6" fill="#33491d"/>
+</g></g>
+  <g id="art" data-size="40 64" data-box="0 0 40 64">
   <!-- Placeholder red mangrove (3/4 view): arching prop roots in the mud, a short trunk, a round glossy crown. Trunk base at (20, 60); a nest would fit at (22, 18). -->
   <ellipse cx="20" cy="60" rx="12" ry="3" fill="#000000" fill-opacity="0.2"/>
   <g fill="none" stroke="#7a5a3a" stroke-width="2">
@@ -11,4 +66,5 @@
   <ellipse cx="26" cy="20" rx="8" ry="6" fill="#3a7a44"/>
   <g fill="#5aa860"><rect x="10" y="16" width="3" height="2"/><rect x="22" y="13" width="3" height="2"/><rect x="28" y="22" width="3" height="2"/></g>
   <rect x="13" y="30" width="1" height="5" fill="#6a8a3a"/><rect x="27" y="29" width="1" height="6" fill="#6a8a3a"/>
+</g>
 </svg>

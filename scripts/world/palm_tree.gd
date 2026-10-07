@@ -106,6 +106,7 @@ func actions() -> Array:
 func cut_down() -> void:
 	if has_nest():
 		return  # move the nest first
+	Sound.play(&"chop")
 	match stage():
 		SMALL:
 			Inventory.add(_sapling, 1)

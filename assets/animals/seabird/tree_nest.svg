@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="6" viewBox="0 0 14 6" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" viewBox="-1 -1 16 8" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="1" y="2" width="12" height="3" fill="#49331d"/>
+  <rect x="0" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="11" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="3" y="1" width="8" height="1" fill="#563e22"/>
+  <rect x="2" y="5" width="10" height="1" fill="#352011"/>
+  <rect x="5" y="3" width="1" height="1" fill="#352011"/>
+  <rect x="9" y="3" width="1" height="1" fill="#352011"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="1" y="2" width="12" height="3" fill="#49331d"/>
+  <rect x="0" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="11" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="3" y="1" width="8" height="1" fill="#563e22"/>
+  <rect x="2" y="5" width="10" height="1" fill="#352011"/>
+  <rect x="5" y="3" width="1" height="1" fill="#352011"/>
+  <rect x="9" y="3" width="1" height="1" fill="#352011"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="1" y="2" width="12" height="3" fill="#49331d"/>
+  <rect x="0" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="11" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="3" y="1" width="8" height="1" fill="#563e22"/>
+  <rect x="2" y="5" width="10" height="1" fill="#352011"/>
+  <rect x="5" y="3" width="1" height="1" fill="#352011"/>
+  <rect x="9" y="3" width="1" height="1" fill="#352011"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="1" y="2" width="12" height="3" fill="#49331d"/>
+  <rect x="0" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="11" y="1" width="3" height="1" fill="#3c2614"/>
+  <rect x="3" y="1" width="8" height="1" fill="#563e22"/>
+  <rect x="2" y="5" width="10" height="1" fill="#352011"/>
+  <rect x="5" y="3" width="1" height="1" fill="#352011"/>
+  <rect x="9" y="3" width="1" height="1" fill="#352011"/>
+</g></g>
+  <g id="art" data-size="14 6" data-box="0 0 14 6">
   <!-- Placeholder seabird nest of twigs, sitting in a palm's crown. -->
   <rect x="1" y="2" width="12" height="3" fill="#8a6a3a"/>
   <rect x="0" y="1" width="3" height="1" fill="#6b4c24"/>
@@ -7,4 +46,5 @@
   <rect x="2" y="5" width="10" height="1" fill="#5a3e1c"/>
   <rect x="5" y="3" width="1" height="1" fill="#5a3e1c"/>
   <rect x="9" y="3" width="1" height="1" fill="#5a3e1c"/>
+</g>
 </svg>

@@ -1,4 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="16" viewBox="0 0 32 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="18" viewBox="-1 -1 34 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="1,4 4,6 4,10 1,12 3,8" fill="#2a3a52"/>
+  <polygon points="4,6 12,4 24,5 29,7 31,8 29,9 24,11 12,12 4,10" fill="#36475f"/>
+  <polygon points="8,7 24,6 28,8 24,10 8,9" fill="#45546c"/>
+  <polygon points="13,4 16,1 18,4" fill="#2a3a52"/>
+  <polygon points="13,12 16,15 18,12" fill="#2a3a52"/>
+  <rect x="11" y="7" width="2" height="2" fill="#2a3a52"/>
+  <rect x="25" y="6" width="1" height="1" fill="#0e1932"/>
+  <rect x="25" y="9" width="1" height="1" fill="#0e1932"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="1,4 4,6 4,10 1,12 3,8" fill="#2a3a52"/>
+  <polygon points="4,6 12,4 24,5 29,7 31,8 29,9 24,11 12,12 4,10" fill="#36475f"/>
+  <polygon points="8,7 24,6 28,8 24,10 8,9" fill="#45546c"/>
+  <polygon points="13,4 16,1 18,4" fill="#2a3a52"/>
+  <polygon points="13,12 16,15 18,12" fill="#2a3a52"/>
+  <rect x="11" y="7" width="2" height="2" fill="#2a3a52"/>
+  <rect x="25" y="6" width="1" height="1" fill="#0e1932"/>
+  <rect x="25" y="9" width="1" height="1" fill="#0e1932"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="1,4 4,6 4,10 1,12 3,8" fill="#2a3a52"/>
+  <polygon points="4,6 12,4 24,5 29,7 31,8 29,9 24,11 12,12 4,10" fill="#36475f"/>
+  <polygon points="8,7 24,6 28,8 24,10 8,9" fill="#45546c"/>
+  <polygon points="13,4 16,1 18,4" fill="#2a3a52"/>
+  <polygon points="13,12 16,15 18,12" fill="#2a3a52"/>
+  <rect x="11" y="7" width="2" height="2" fill="#2a3a52"/>
+  <rect x="25" y="6" width="1" height="1" fill="#0e1932"/>
+  <rect x="25" y="9" width="1" height="1" fill="#0e1932"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="1,4 4,6 4,10 1,12 3,8" fill="#2a3a52"/>
+  <polygon points="4,6 12,4 24,5 29,7 31,8 29,9 24,11 12,12 4,10" fill="#36475f"/>
+  <polygon points="8,7 24,6 28,8 24,10 8,9" fill="#45546c"/>
+  <polygon points="13,4 16,1 18,4" fill="#2a3a52"/>
+  <polygon points="13,12 16,15 18,12" fill="#2a3a52"/>
+  <rect x="11" y="7" width="2" height="2" fill="#2a3a52"/>
+  <rect x="25" y="6" width="1" height="1" fill="#0e1932"/>
+  <rect x="25" y="9" width="1" height="1" fill="#0e1932"/>
+</g></g>
+  <g id="art" data-size="32 16" data-box="0 0 32 16">
   <!-- Placeholder bottlenose dolphin, top-down, snout facing right -->
   <polygon points="1,4 4,6 4,10 1,12 3,8" fill="#5f7486"/>
   <polygon points="4,6 12,4 24,5 29,7 31,8 29,9 24,11 12,12 4,10" fill="#7d93a6"/>
@@ -8,4 +51,5 @@
   <rect x="11" y="7" width="2" height="2" fill="#5f7486"/>
   <rect x="25" y="6" width="1" height="1" fill="#1e2a3a"/>
   <rect x="25" y="9" width="1" height="1" fill="#1e2a3a"/>
+</g>
 </svg>

@@ -1,6 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="7" viewBox="0 0 16 7" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="-1 -1 18 9" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="0,1 3,3 0,6" fill="#493e30"/>
+  <rect x="3" y="2" width="10" height="3" fill="#5d5144"/><rect x="3" y="4" width="10" height="1" fill="#6d6661"/>
+  <rect x="13" y="2" width="2" height="3" fill="#5d5144"/><rect x="13" y="3" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="0,1 3,3 0,6" fill="#493e30"/>
+  <rect x="3" y="2" width="10" height="3" fill="#5d5144"/><rect x="3" y="4" width="10" height="1" fill="#6d6661"/>
+  <rect x="13" y="2" width="2" height="3" fill="#5d5144"/><rect x="13" y="3" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="0,1 3,3 0,6" fill="#493e30"/>
+  <rect x="3" y="2" width="10" height="3" fill="#5d5144"/><rect x="3" y="4" width="10" height="1" fill="#6d6661"/>
+  <rect x="13" y="2" width="2" height="3" fill="#5d5144"/><rect x="13" y="3" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="0,1 3,3 0,6" fill="#493e30"/>
+  <rect x="3" y="2" width="10" height="3" fill="#5d5144"/><rect x="3" y="4" width="10" height="1" fill="#6d6661"/>
+  <rect x="13" y="2" width="2" height="3" fill="#5d5144"/><rect x="13" y="3" width="1" height="1" fill="#16151f"/>
+</g></g>
+  <g id="art" data-size="16 7" data-box="0 0 16 7">
   <!-- placeholder: small Arctic cod (facing right), silvery brown with a forked tail -->
   <polygon points="0,1 3,3 0,6" fill="#8a7a5a"/>
   <rect x="3" y="2" width="10" height="3" fill="#b8a888"/><rect x="3" y="4" width="10" height="1" fill="#e0d8c8"/>
   <rect x="13" y="2" width="2" height="3" fill="#b8a888"/><rect x="13" y="3" width="1" height="1" fill="#111111"/>
+</g>
 </svg>

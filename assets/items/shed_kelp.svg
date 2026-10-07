@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="9" width="11" height="3" fill="#564219"/>
+  <rect x="4" y="8" width="7" height="1" fill="#644f1d"/>
+  <rect x="13" y="9" width="2" height="2" fill="#493413"/>
+  <rect x="1" y="10" width="1" height="1" fill="#493413"/>
+  <rect x="6" y="10" width="3" height="1" fill="#6a5825"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="9" width="11" height="3" fill="#564219"/>
+  <rect x="4" y="8" width="7" height="1" fill="#644f1d"/>
+  <rect x="13" y="9" width="2" height="2" fill="#493413"/>
+  <rect x="1" y="10" width="1" height="1" fill="#493413"/>
+  <rect x="6" y="10" width="3" height="1" fill="#6a5825"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="9" width="11" height="3" fill="#564219"/>
+  <rect x="4" y="8" width="7" height="1" fill="#644f1d"/>
+  <rect x="13" y="9" width="2" height="2" fill="#493413"/>
+  <rect x="1" y="10" width="1" height="1" fill="#493413"/>
+  <rect x="6" y="10" width="3" height="1" fill="#6a5825"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="9" width="11" height="3" fill="#564219"/>
+  <rect x="4" y="8" width="7" height="1" fill="#644f1d"/>
+  <rect x="13" y="9" width="2" height="2" fill="#493413"/>
+  <rect x="1" y="10" width="1" height="1" fill="#493413"/>
+  <rect x="6" y="10" width="3" height="1" fill="#6a5825"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- A shed kelp frond floating on the water: a long golden-brown blade with a little air bladder. -->
   <rect x="2" y="9" width="11" height="3" fill="#a88a3a"/>
   <rect x="4" y="8" width="7" height="1" fill="#c9a84a"/>
   <rect x="13" y="9" width="2" height="2" fill="#8a6a2a"/>
   <rect x="1" y="10" width="1" height="1" fill="#8a6a2a"/>
   <rect x="6" y="10" width="3" height="1" fill="#d8bc5a"/>
+</g>
 </svg>

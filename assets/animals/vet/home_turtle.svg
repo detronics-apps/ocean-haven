@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="-1 -1 50 50" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="8" y="22" width="32" height="16" fill="#3c2818"/><rect x="10" y="20" width="28" height="4" fill="#49331d"/>
+  <rect x="4" y="30" width="8" height="6" fill="#2a4b28"/><rect x="36" y="30" width="8" height="6" fill="#2a4b28"/>
+  <rect x="18" y="10" width="12" height="12" fill="#30542c"/><rect x="20" y="14" width="2" height="2" fill="#1b1923"/><rect x="26" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="18" width="4" height="1" fill="#1f3720"/><rect x="6" y="32" width="4" height="2" fill="#7a2e0a"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="8" y="22" width="32" height="16" fill="#3c2818"/><rect x="10" y="20" width="28" height="4" fill="#49331d"/>
+  <rect x="4" y="30" width="8" height="6" fill="#2a4b28"/><rect x="36" y="30" width="8" height="6" fill="#2a4b28"/>
+  <rect x="18" y="10" width="12" height="12" fill="#30542c"/><rect x="20" y="14" width="2" height="2" fill="#1b1923"/><rect x="26" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="18" width="4" height="1" fill="#1f3720"/><rect x="6" y="32" width="4" height="2" fill="#7a2e0a"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="8" y="22" width="32" height="16" fill="#3c2818"/><rect x="10" y="20" width="28" height="4" fill="#49331d"/>
+  <rect x="4" y="30" width="8" height="6" fill="#2a4b28"/><rect x="36" y="30" width="8" height="6" fill="#2a4b28"/>
+  <rect x="18" y="10" width="12" height="12" fill="#30542c"/><rect x="20" y="14" width="2" height="2" fill="#1b1923"/><rect x="26" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="18" width="4" height="1" fill="#1f3720"/><rect x="6" y="32" width="4" height="2" fill="#7a2e0a"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="8" y="22" width="32" height="16" fill="#3c2818"/><rect x="10" y="20" width="28" height="4" fill="#49331d"/>
+  <rect x="4" y="30" width="8" height="6" fill="#2a4b28"/><rect x="36" y="30" width="8" height="6" fill="#2a4b28"/>
+  <rect x="18" y="10" width="12" height="12" fill="#30542c"/><rect x="20" y="14" width="2" height="2" fill="#1b1923"/><rect x="26" y="14" width="2" height="2" fill="#1b1923"/>
+  <rect x="22" y="18" width="4" height="1" fill="#1f3720"/><rect x="6" y="32" width="4" height="2" fill="#7a2e0a"/>
+</g></g>
+  <g id="art" data-size="48 48" data-box="0 0 48 48">
   <!-- Placeholder: home_turtle from the front, on the vet table -->
   <rect x="8" y="22" width="32" height="16" fill="#6b4f2a"/><rect x="10" y="20" width="28" height="4" fill="#8a6a3a"/>
   <rect x="4" y="30" width="8" height="6" fill="#5f8f4e"/><rect x="36" y="30" width="8" height="6" fill="#5f8f4e"/>
   <rect x="18" y="10" width="12" height="12" fill="#6fa35a"/><rect x="20" y="14" width="2" height="2" fill="#1c1c1c"/><rect x="26" y="14" width="2" height="2" fill="#1c1c1c"/>
   <rect x="22" y="18" width="4" height="1" fill="#3f5f33"/><rect x="6" y="32" width="4" height="2" fill="#ff7a2a"/>
+</g>
 </svg>

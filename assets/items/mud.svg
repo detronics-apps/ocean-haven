@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="10" width="12" height="4" fill="#35261f"/>
+  <rect x="3" y="7" width="10" height="3" fill="#3e2f24"/>
+  <rect x="5" y="5" width="6" height="2" fill="#443629"/>
+  <rect x="6" y="8" width="2" height="1" fill="#504335"/>
+  <rect x="10" y="11" width="1" height="1" fill="#291d19"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="10" width="12" height="4" fill="#35261f"/>
+  <rect x="3" y="7" width="10" height="3" fill="#3e2f24"/>
+  <rect x="5" y="5" width="6" height="2" fill="#443629"/>
+  <rect x="6" y="8" width="2" height="1" fill="#504335"/>
+  <rect x="10" y="11" width="1" height="1" fill="#291d19"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="10" width="12" height="4" fill="#35261f"/>
+  <rect x="3" y="7" width="10" height="3" fill="#3e2f24"/>
+  <rect x="5" y="5" width="6" height="2" fill="#443629"/>
+  <rect x="6" y="8" width="2" height="1" fill="#504335"/>
+  <rect x="10" y="11" width="1" height="1" fill="#291d19"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="10" width="12" height="4" fill="#35261f"/>
+  <rect x="3" y="7" width="10" height="3" fill="#3e2f24"/>
+  <rect x="5" y="5" width="6" height="2" fill="#443629"/>
+  <rect x="6" y="8" width="2" height="1" fill="#504335"/>
+  <rect x="10" y="11" width="1" height="1" fill="#291d19"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- A wet lump of mangrove mud -->
   <rect x="2" y="10" width="12" height="4" fill="#5a4630"/>
   <rect x="3" y="7" width="10" height="3" fill="#6e5a3e"/>
   <rect x="5" y="5" width="6" height="2" fill="#7e6a4a"/>
   <rect x="6" y="8" width="2" height="1" fill="#9a8866"/>
   <rect x="10" y="11" width="1" height="1" fill="#3e3020"/>
+</g>
 </svg>

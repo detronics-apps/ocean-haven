@@ -108,6 +108,11 @@ func mark_freed(animal: Node) -> void:
 	_dirty = true
 
 
+## Saves at the next frame (e.g. after the sound settings changed).
+func request_save() -> void:
+	_dirty = true
+
+
 func _process(delta: float) -> void:
 	if not _world:
 		return
@@ -204,6 +209,7 @@ func save_to(world: Node, path: String) -> bool:
 		"litter_picked": Inventory.picked.duplicate(),
 		"litter_picked_on": Inventory.picked_on.duplicate(),
 		"zoom": CameraZoom.level,
+		"sound": Sound.save_state(),
 	}
 	# Desktop: write a temp file then swap it in, so a crash mid-save can't corrupt the save.
 	# Web: write the save itself — the browser's storage is only updated when a file is
@@ -366,6 +372,7 @@ func load_from(world: Node, path: String) -> bool:
 	for id in picked:
 		Inventory.picked[StringName(id)] = int(picked[id])
 	CameraZoom.set_level(float(state.get("zoom", 1.0)))
+	Sound.load_state(state.get("sound", {}))
 	Inventory.picked_on.clear()
 	var picked_on: Dictionary = state.get("litter_picked_on", {})
 	for id in picked_on:

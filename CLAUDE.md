@@ -38,6 +38,9 @@ missions that lead to action…) and add to it whenever the user corrects someth
 - **¾ top-down view** (Stardew-style) on a square grid — not isometric. Chibi characters: big head, small body.
 - Pixel-perfect: import textures with filter **Nearest**; no smoothing.
 - Until real art exists, use placeholder shapes/colours. Code must not depend on final art dimensions beyond the 32×32 grid.
+- Placeholder sprites get a 1-px outline in a darker shade of each shape's own colour:
+  draw the SVG, then run `python3 tools/outline_sprites.py` (safe to re-run; it keeps the
+  drawing in `<g id="art">`; pieces laid edge to edge, like dock planks, are skipped).
 
 ## Project layout
 
@@ -539,6 +542,19 @@ until the fleet has the Deep Sea's Cargo Module, which opens a cargo hold on eve
 Ship: 99 of everything, wood and saplings too (BuildingData.storage_needs). Both open a
 Storage menu (StorageMenu) instead of a line of text; more stored than there's room for can be
 taken out at any store.
+
+Sound (`Sound` autoload, scripts/systems/sound_system.gd): placeholder sounds made by
+`tools/make_sounds.py` (effects in audio/sfx/, nature loops and calls in audio/ambient/, single
+notes in audio/music/; loops have edit/loop_mode=2 in their .import). Each island's music is
+data (data/music/, MusicData: instruments, key, tempo, chords, ambient loop, animal calls) and
+is made up as it plays: a damaged island only hums a low pad; bass, the tune, bells and calls
+join in as its health rises. Buses Music / Ambient / Sounds; the speaker button in the menu bar
+(SoundButton) mutes everything or sets the music and sound volume (saved: "sound"). Every
+button clicks (Sound connects to each BaseButton; meta "silent" opts out); `Sound.play(&"id")`
+for the rest. Progress feedback (ProgressCheer, never tappable): sparkles and a chime when the
+ranger's island passes a new 5 % of health, a card with the animal's picture when one comes
+to an island (HUD.animal_returned, called wherever animals arrive or settle; the first of a
+species is a bigger moment: Fleet flag "returned_<id>"), and "+N" rising from the funding.
 
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so

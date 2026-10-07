@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="20" viewBox="-1 -1 26 20" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="0,8 4,10 0,13" fill="#28192c"/>
+  <rect x="4" y="6" width="12" height="10" fill="#2e1e31"/>
+  <rect x="16" y="7" width="4" height="8" fill="#322035"/>
+  <rect x="15" y="12" width="5" height="2" fill="#716965"/>
+  <rect x="16" y="8" width="2" height="2" fill="#525e85"/>
+  <polyline points="12,6 14,2 19,1 21,3" fill="none" stroke="#3c293d" stroke-width="1"/>
+  <rect x="20" y="2" width="3" height="3" fill="#3c7585"/><rect x="21" y="3" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="0,8 4,10 0,13" fill="#28192c"/>
+  <rect x="4" y="6" width="12" height="10" fill="#2e1e31"/>
+  <rect x="16" y="7" width="4" height="8" fill="#322035"/>
+  <rect x="15" y="12" width="5" height="2" fill="#716965"/>
+  <rect x="16" y="8" width="2" height="2" fill="#525e85"/>
+  <polyline points="12,6 14,2 19,1 21,3" fill="none" stroke="#3c293d" stroke-width="1"/>
+  <rect x="20" y="2" width="3" height="3" fill="#3c7585"/><rect x="21" y="3" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="0,8 4,10 0,13" fill="#28192c"/>
+  <rect x="4" y="6" width="12" height="10" fill="#2e1e31"/>
+  <rect x="16" y="7" width="4" height="8" fill="#322035"/>
+  <rect x="15" y="12" width="5" height="2" fill="#716965"/>
+  <rect x="16" y="8" width="2" height="2" fill="#525e85"/>
+  <polyline points="12,6 14,2 19,1 21,3" fill="none" stroke="#3c293d" stroke-width="1"/>
+  <rect x="20" y="2" width="3" height="3" fill="#3c7585"/><rect x="21" y="3" width="1" height="1" fill="#7a717b"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="0,8 4,10 0,13" fill="#28192c"/>
+  <rect x="4" y="6" width="12" height="10" fill="#2e1e31"/>
+  <rect x="16" y="7" width="4" height="8" fill="#322035"/>
+  <rect x="15" y="12" width="5" height="2" fill="#716965"/>
+  <rect x="16" y="8" width="2" height="2" fill="#525e85"/>
+  <polyline points="12,6 14,2 19,1 21,3" fill="none" stroke="#3c293d" stroke-width="1"/>
+  <rect x="20" y="2" width="3" height="3" fill="#3c7585"/><rect x="21" y="3" width="1" height="1" fill="#7a717b"/>
+</g></g>
+  <g id="art" data-size="24 18" data-box="0 0 24 18">
   <!-- placeholder: deep-sea anglerfish with its glowing lure (facing right) -->
   <polygon points="0,8 4,10 0,13" fill="#3a2c34"/>
   <rect x="4" y="6" width="12" height="10" fill="#4a3842"/>
@@ -7,4 +46,5 @@
   <rect x="16" y="8" width="2" height="2" fill="#c8d8ff"/>
   <polyline points="12,6 14,2 19,1 21,3" fill="none" stroke="#6a5460" stroke-width="1"/>
   <rect x="20" y="2" width="3" height="3" fill="#9ff6ff"/><rect x="21" y="3" width="1" height="1" fill="#ffffff"/>
+</g>
 </svg>

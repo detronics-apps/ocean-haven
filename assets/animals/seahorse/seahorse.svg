@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="12" height="18" viewBox="0 0 12 18" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="20" viewBox="-1 -1 14 20" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="4" y="1" width="5" height="4" fill="#744313"/><rect x="8" y="2" width="3" height="2" fill="#6d3c0c"/><rect x="5" y="2" width="1" height="1" fill="#1c1719"/><rect x="3" y="5" width="5" height="7" fill="#744313"/><rect x="6" y="6" width="2" height="5" fill="#775524"/><rect x="4" y="12" width="3" height="3" fill="#6d3c0c"/><rect x="2" y="15" width="3" height="2" fill="#6d3c0c"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="4" y="1" width="5" height="4" fill="#744313"/><rect x="8" y="2" width="3" height="2" fill="#6d3c0c"/><rect x="5" y="2" width="1" height="1" fill="#1c1719"/><rect x="3" y="5" width="5" height="7" fill="#744313"/><rect x="6" y="6" width="2" height="5" fill="#775524"/><rect x="4" y="12" width="3" height="3" fill="#6d3c0c"/><rect x="2" y="15" width="3" height="2" fill="#6d3c0c"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="4" y="1" width="5" height="4" fill="#744313"/><rect x="8" y="2" width="3" height="2" fill="#6d3c0c"/><rect x="5" y="2" width="1" height="1" fill="#1c1719"/><rect x="3" y="5" width="5" height="7" fill="#744313"/><rect x="6" y="6" width="2" height="5" fill="#775524"/><rect x="4" y="12" width="3" height="3" fill="#6d3c0c"/><rect x="2" y="15" width="3" height="2" fill="#6d3c0c"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="4" y="1" width="5" height="4" fill="#744313"/><rect x="8" y="2" width="3" height="2" fill="#6d3c0c"/><rect x="5" y="2" width="1" height="1" fill="#1c1719"/><rect x="3" y="5" width="5" height="7" fill="#744313"/><rect x="6" y="6" width="2" height="5" fill="#775524"/><rect x="4" y="12" width="3" height="3" fill="#6d3c0c"/><rect x="2" y="15" width="3" height="2" fill="#6d3c0c"/>
+</g></g>
+  <g id="art" data-size="12 18" data-box="0 0 12 18">
   <!-- placeholder: seahorse -->
   <rect x="4" y="1" width="5" height="4" fill="#f0a040"/><rect x="8" y="2" width="3" height="2" fill="#e09030"/><rect x="5" y="2" width="1" height="1" fill="#1e1a14"/><rect x="3" y="5" width="5" height="7" fill="#f0a040"/><rect x="6" y="6" width="2" height="5" fill="#f8c060"/><rect x="4" y="12" width="3" height="3" fill="#e09030"/><rect x="2" y="15" width="3" height="2" fill="#e09030"/>
+</g>
 </svg>

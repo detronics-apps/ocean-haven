@@ -1,6 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="-1 -1 34 34" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="10" y="20" width="12" height="8" fill="#6a7080"/><rect x="10" y="23" width="12" height="2" fill="#052e60"/>
+  <rect x="15" y="5" width="2" height="15" fill="#606778"/>
+  <rect x="17" y="5" width="11" height="8" fill="#052e60"/><polygon points="20,11 22,7 24,11 22,9" fill="#6a7080"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="10" y="20" width="12" height="8" fill="#6a7080"/><rect x="10" y="23" width="12" height="2" fill="#052e60"/>
+  <rect x="15" y="5" width="2" height="15" fill="#606778"/>
+  <rect x="17" y="5" width="11" height="8" fill="#052e60"/><polygon points="20,11 22,7 24,11 22,9" fill="#6a7080"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="10" y="20" width="12" height="8" fill="#6a7080"/><rect x="10" y="23" width="12" height="2" fill="#052e60"/>
+  <rect x="15" y="5" width="2" height="15" fill="#606778"/>
+  <rect x="17" y="5" width="11" height="8" fill="#052e60"/><polygon points="20,11 22,7 24,11 22,9" fill="#6a7080"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="10" y="20" width="12" height="8" fill="#6a7080"/><rect x="10" y="23" width="12" height="2" fill="#052e60"/>
+  <rect x="15" y="5" width="2" height="15" fill="#606778"/>
+  <rect x="17" y="5" width="11" height="8" fill="#052e60"/><polygon points="20,11 22,7 24,11 22,9" fill="#6a7080"/>
+</g></g>
+  <g id="art" data-size="32 32" data-box="0 0 32 32">
   <!-- placeholder: Deep-Sea Sanctuary marker buoy: white and blue, a whale-tail flag -->
   <rect x="10" y="20" width="12" height="8" fill="#f0f2f4"/><rect x="10" y="23" width="12" height="2" fill="#2a6aa8"/>
   <rect x="15" y="5" width="2" height="15" fill="#d8dde2"/>
   <rect x="17" y="5" width="11" height="8" fill="#2a6aa8"/><polygon points="20,11 22,7 24,11 22,9" fill="#f0f2f4"/>
+</g>
 </svg>

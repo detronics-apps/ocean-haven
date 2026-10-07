@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
+  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
+  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
+  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
+  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
+  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
+  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
+  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
+  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
+  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- Placeholder: plastic bag -->
   <rect x="3" y="2" width="3" height="3" fill="#bdbdbd"/>
   <rect x="10" y="2" width="3" height="3" fill="#bdbdbd"/>
   <rect x="3" y="5" width="10" height="9" fill="#bdbdbd"/>
   <rect x="4" y="5" width="8" height="8" fill="#f2f2f2"/>
   <rect x="4" y="11" width="8" height="2" fill="#d6d6d6"/>
+</g>
 </svg>

@@ -1,4 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="96" height="64" viewBox="0 0 96 64" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="98" height="66" viewBox="-1 -1 98 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="4" y="44" width="88" height="16" fill="#493323"/>
+  <rect x="4" y="42" width="88" height="3" fill="#563e22"/>
+  <g fill="#352015"><rect x="8" y="45" width="3" height="15"/><rect x="46" y="45" width="3" height="15"/><rect x="85" y="45" width="3" height="15"/></g>
+  <rect x="10" y="18" width="40" height="24" fill="#716b66"/>
+  <rect x="8" y="14" width="44" height="6" fill="#16493d"/>
+  <rect x="16" y="26" width="8" height="8" fill="#29556e"/><rect x="30" y="26" width="8" height="8" fill="#29556e"/>
+  <rect x="42" y="30" width="6" height="12" fill="#432c1d"/>
+  <rect x="64" y="6" width="3" height="36" fill="#6a4913"/>
+  <rect x="64" y="6" width="22" height="3" fill="#6a4913"/>
+  <rect x="84" y="9" width="1" height="14" fill="#28242f"/>
+  <rect x="78" y="23" width="12" height="8" fill="#755c1a"/><rect x="81" y="25" width="4" height="4" fill="#29556e"/>
+  <rect x="56" y="44" width="2" height="18" fill="#5a6073"/><rect x="60" y="44" width="2" height="18" fill="#5a6073"/>
+  <rect x="56" y="48" width="6" height="1" fill="#5a6073"/><rect x="56" y="54" width="6" height="1" fill="#5a6073"/>
+  <rect x="28" y="4" width="1" height="10" fill="#3c2016"/><rect x="29" y="4" width="7" height="5" fill="#1e5d2a"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="4" y="44" width="88" height="16" fill="#493323"/>
+  <rect x="4" y="42" width="88" height="3" fill="#563e22"/>
+  <g fill="#352015"><rect x="8" y="45" width="3" height="15"/><rect x="46" y="45" width="3" height="15"/><rect x="85" y="45" width="3" height="15"/></g>
+  <rect x="10" y="18" width="40" height="24" fill="#716b66"/>
+  <rect x="8" y="14" width="44" height="6" fill="#16493d"/>
+  <rect x="16" y="26" width="8" height="8" fill="#29556e"/><rect x="30" y="26" width="8" height="8" fill="#29556e"/>
+  <rect x="42" y="30" width="6" height="12" fill="#432c1d"/>
+  <rect x="64" y="6" width="3" height="36" fill="#6a4913"/>
+  <rect x="64" y="6" width="22" height="3" fill="#6a4913"/>
+  <rect x="84" y="9" width="1" height="14" fill="#28242f"/>
+  <rect x="78" y="23" width="12" height="8" fill="#755c1a"/><rect x="81" y="25" width="4" height="4" fill="#29556e"/>
+  <rect x="56" y="44" width="2" height="18" fill="#5a6073"/><rect x="60" y="44" width="2" height="18" fill="#5a6073"/>
+  <rect x="56" y="48" width="6" height="1" fill="#5a6073"/><rect x="56" y="54" width="6" height="1" fill="#5a6073"/>
+  <rect x="28" y="4" width="1" height="10" fill="#3c2016"/><rect x="29" y="4" width="7" height="5" fill="#1e5d2a"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="4" y="44" width="88" height="16" fill="#493323"/>
+  <rect x="4" y="42" width="88" height="3" fill="#563e22"/>
+  <g fill="#352015"><rect x="8" y="45" width="3" height="15"/><rect x="46" y="45" width="3" height="15"/><rect x="85" y="45" width="3" height="15"/></g>
+  <rect x="10" y="18" width="40" height="24" fill="#716b66"/>
+  <rect x="8" y="14" width="44" height="6" fill="#16493d"/>
+  <rect x="16" y="26" width="8" height="8" fill="#29556e"/><rect x="30" y="26" width="8" height="8" fill="#29556e"/>
+  <rect x="42" y="30" width="6" height="12" fill="#432c1d"/>
+  <rect x="64" y="6" width="3" height="36" fill="#6a4913"/>
+  <rect x="64" y="6" width="22" height="3" fill="#6a4913"/>
+  <rect x="84" y="9" width="1" height="14" fill="#28242f"/>
+  <rect x="78" y="23" width="12" height="8" fill="#755c1a"/><rect x="81" y="25" width="4" height="4" fill="#29556e"/>
+  <rect x="56" y="44" width="2" height="18" fill="#5a6073"/><rect x="60" y="44" width="2" height="18" fill="#5a6073"/>
+  <rect x="56" y="48" width="6" height="1" fill="#5a6073"/><rect x="56" y="54" width="6" height="1" fill="#5a6073"/>
+  <rect x="28" y="4" width="1" height="10" fill="#3c2016"/><rect x="29" y="4" width="7" height="5" fill="#1e5d2a"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="4" y="44" width="88" height="16" fill="#493323"/>
+  <rect x="4" y="42" width="88" height="3" fill="#563e22"/>
+  <g fill="#352015"><rect x="8" y="45" width="3" height="15"/><rect x="46" y="45" width="3" height="15"/><rect x="85" y="45" width="3" height="15"/></g>
+  <rect x="10" y="18" width="40" height="24" fill="#716b66"/>
+  <rect x="8" y="14" width="44" height="6" fill="#16493d"/>
+  <rect x="16" y="26" width="8" height="8" fill="#29556e"/><rect x="30" y="26" width="8" height="8" fill="#29556e"/>
+  <rect x="42" y="30" width="6" height="12" fill="#432c1d"/>
+  <rect x="64" y="6" width="3" height="36" fill="#6a4913"/>
+  <rect x="64" y="6" width="22" height="3" fill="#6a4913"/>
+  <rect x="84" y="9" width="1" height="14" fill="#28242f"/>
+  <rect x="78" y="23" width="12" height="8" fill="#755c1a"/><rect x="81" y="25" width="4" height="4" fill="#29556e"/>
+  <rect x="56" y="44" width="2" height="18" fill="#5a6073"/><rect x="60" y="44" width="2" height="18" fill="#5a6073"/>
+  <rect x="56" y="48" width="6" height="1" fill="#5a6073"/><rect x="56" y="54" width="6" height="1" fill="#5a6073"/>
+  <rect x="28" y="4" width="1" height="10" fill="#3c2016"/><rect x="29" y="4" width="7" height="5" fill="#1e5d2a"/>
+</g></g>
+  <g id="art" data-size="96 64" data-box="0 0 96 64">
   <!-- Placeholder Kelp Research Platform (3/4 view): a research hut on stilts at the shore, dive ladder, crane with a submersible, kelp flag. -->
   <rect x="4" y="44" width="88" height="16" fill="#8a6a44"/>
   <rect x="4" y="42" width="88" height="3" fill="#a8844a"/>
@@ -14,4 +81,5 @@
   <rect x="56" y="44" width="2" height="18" fill="#c9ced4"/><rect x="60" y="44" width="2" height="18" fill="#c9ced4"/>
   <rect x="56" y="48" width="6" height="1" fill="#c9ced4"/><rect x="56" y="54" width="6" height="1" fill="#c9ced4"/>
   <rect x="28" y="4" width="1" height="10" fill="#6b4428"/><rect x="29" y="4" width="7" height="5" fill="#58b85c"/>
+</g>
 </svg>

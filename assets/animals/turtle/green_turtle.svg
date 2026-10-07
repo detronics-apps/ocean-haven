@@ -1,4 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="-1 -1 26 22" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <g fill="#24431f">
+    <rect x="13" y="0" width="5" height="4"/>
+    <rect x="13" y="16" width="5" height="4"/>
+    <rect x="3" y="3" width="4" height="3"/>
+    <rect x="3" y="14" width="4" height="3"/>
+    <rect x="1" y="9" width="3" height="2"/>
+  </g>
+  <rect x="18" y="7" width="5" height="6" fill="#335027"/>
+  <rect x="21" y="8" width="1" height="1" fill="#152115"/>
+  <rect x="21" y="11" width="1" height="1" fill="#152115"/>
+  <rect x="4" y="4" width="15" height="12" fill="#2e2115"/>
+  <rect x="5" y="5" width="13" height="10" fill="#43371e"/>
+  <g fill="#504528">
+    <rect x="9" y="7" width="5" height="6"/>
+    <rect x="6" y="6" width="2" height="3"/>
+    <rect x="6" y="11" width="2" height="3"/>
+    <rect x="15" y="6" width="2" height="3"/>
+    <rect x="15" y="11" width="2" height="3"/>
+  </g>
+</g><g transform="translate(1 0)">
+  
+  <g fill="#24431f">
+    <rect x="13" y="0" width="5" height="4"/>
+    <rect x="13" y="16" width="5" height="4"/>
+    <rect x="3" y="3" width="4" height="3"/>
+    <rect x="3" y="14" width="4" height="3"/>
+    <rect x="1" y="9" width="3" height="2"/>
+  </g>
+  <rect x="18" y="7" width="5" height="6" fill="#335027"/>
+  <rect x="21" y="8" width="1" height="1" fill="#152115"/>
+  <rect x="21" y="11" width="1" height="1" fill="#152115"/>
+  <rect x="4" y="4" width="15" height="12" fill="#2e2115"/>
+  <rect x="5" y="5" width="13" height="10" fill="#43371e"/>
+  <g fill="#504528">
+    <rect x="9" y="7" width="5" height="6"/>
+    <rect x="6" y="6" width="2" height="3"/>
+    <rect x="6" y="11" width="2" height="3"/>
+    <rect x="15" y="6" width="2" height="3"/>
+    <rect x="15" y="11" width="2" height="3"/>
+  </g>
+</g><g transform="translate(0 -1)">
+  
+  <g fill="#24431f">
+    <rect x="13" y="0" width="5" height="4"/>
+    <rect x="13" y="16" width="5" height="4"/>
+    <rect x="3" y="3" width="4" height="3"/>
+    <rect x="3" y="14" width="4" height="3"/>
+    <rect x="1" y="9" width="3" height="2"/>
+  </g>
+  <rect x="18" y="7" width="5" height="6" fill="#335027"/>
+  <rect x="21" y="8" width="1" height="1" fill="#152115"/>
+  <rect x="21" y="11" width="1" height="1" fill="#152115"/>
+  <rect x="4" y="4" width="15" height="12" fill="#2e2115"/>
+  <rect x="5" y="5" width="13" height="10" fill="#43371e"/>
+  <g fill="#504528">
+    <rect x="9" y="7" width="5" height="6"/>
+    <rect x="6" y="6" width="2" height="3"/>
+    <rect x="6" y="11" width="2" height="3"/>
+    <rect x="15" y="6" width="2" height="3"/>
+    <rect x="15" y="11" width="2" height="3"/>
+  </g>
+</g><g transform="translate(0 1)">
+  
+  <g fill="#24431f">
+    <rect x="13" y="0" width="5" height="4"/>
+    <rect x="13" y="16" width="5" height="4"/>
+    <rect x="3" y="3" width="4" height="3"/>
+    <rect x="3" y="14" width="4" height="3"/>
+    <rect x="1" y="9" width="3" height="2"/>
+  </g>
+  <rect x="18" y="7" width="5" height="6" fill="#335027"/>
+  <rect x="21" y="8" width="1" height="1" fill="#152115"/>
+  <rect x="21" y="11" width="1" height="1" fill="#152115"/>
+  <rect x="4" y="4" width="15" height="12" fill="#2e2115"/>
+  <rect x="5" y="5" width="13" height="10" fill="#43371e"/>
+  <g fill="#504528">
+    <rect x="9" y="7" width="5" height="6"/>
+    <rect x="6" y="6" width="2" height="3"/>
+    <rect x="6" y="11" width="2" height="3"/>
+    <rect x="15" y="6" width="2" height="3"/>
+    <rect x="15" y="11" width="2" height="3"/>
+  </g>
+</g></g>
+  <g id="art" data-size="24 20" data-box="0 0 24 20">
   <!-- Placeholder green sea turtle, top-down, head facing right -->
   <g fill="#4f7a3a">
     <rect x="13" y="0" width="5" height="4"/>
@@ -19,4 +106,5 @@
     <rect x="15" y="6" width="2" height="3"/>
     <rect x="15" y="11" width="2" height="3"/>
   </g>
+</g>
 </svg>

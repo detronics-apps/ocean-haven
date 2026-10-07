@@ -107,6 +107,7 @@ func close() -> void:
 
 
 func _show() -> void:
+	Sound.play(&"talk")
 	var line: Dictionary = _lines[_at]
 	_who.text = line.who if line.job == "" else "%s · %s" % [line.who, line.job]
 	for child in _choices.get_children():

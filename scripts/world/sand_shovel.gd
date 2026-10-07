@@ -83,8 +83,10 @@ func use(cell: Vector2i) -> void:
 	match what_can_be_done(cell):
 		"pick_up":
 			pick_up(cell)
+			Sound.play(&"dig")
 		"place":
 			place(cell)
+			Sound.play(&"plop")
 		_:
 			selected = cell
 			return

@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="-1 -1 16 10" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
+  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
+  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
+  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
+  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
+  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
+  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
+  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
+  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
+  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
+  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
+  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
+  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
+  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
+  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
+  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
+  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+</g></g>
+  <g id="art" data-size="14 8" data-box="0 0 14 8">
   <!-- Placeholder young mangrove (grey) snapper: small silver-grey fish with a dark eye stripe -->
   <rect x="0" y="2" width="2" height="4" fill="#8a7a6a"/>
   <rect x="2" y="1" width="9" height="6" fill="#a8a090"/>
   <rect x="3" y="2" width="7" height="3" fill="#c8c0b0"/>
   <rect x="11" y="2" width="2" height="4" fill="#a8a090"/>
   <rect x="9" y="2" width="1" height="3" fill="#5a4a3a"/><rect x="11" y="3" width="1" height="1" fill="#1e1a14"/>
+</g>
 </svg>

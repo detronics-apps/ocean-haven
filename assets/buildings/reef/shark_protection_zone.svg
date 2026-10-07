@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="-1 -1 34 34" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="14" y="4" width="4" height="20" fill="#716965"/><rect x="8" y="6" width="16" height="10" fill="#114374"/><polygon points="11,14 16,8 21,14" fill="#211e29"/><rect x="10" y="22" width="12" height="6" fill="#631414"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="14" y="4" width="4" height="20" fill="#716965"/><rect x="8" y="6" width="16" height="10" fill="#114374"/><polygon points="11,14 16,8 21,14" fill="#211e29"/><rect x="10" y="22" width="12" height="6" fill="#631414"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="14" y="4" width="4" height="20" fill="#716965"/><rect x="8" y="6" width="16" height="10" fill="#114374"/><polygon points="11,14 16,8 21,14" fill="#211e29"/><rect x="10" y="22" width="12" height="6" fill="#631414"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="14" y="4" width="4" height="20" fill="#716965"/><rect x="8" y="6" width="16" height="10" fill="#114374"/><polygon points="11,14 16,8 21,14" fill="#211e29"/><rect x="10" y="22" width="12" height="6" fill="#631414"/>
+</g></g>
+  <g id="art" data-size="32 32" data-box="0 0 32 32">
   <!-- placeholder: shark protection zone -->
   <rect x="14" y="4" width="4" height="20" fill="#e8e0d0"/><rect x="8" y="6" width="16" height="10" fill="#4a9ad8"/><polygon points="11,14 16,8 21,14" fill="#2a2a2a"/><rect x="10" y="22" width="12" height="6" fill="#c84a3a"/>
+</g>
 </svg>

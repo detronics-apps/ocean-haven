@@ -37,7 +37,7 @@ static func check(world: Node) -> Array[Node2D]:
 				continue
 			came.append(_bring(world, arrival))
 			_last_day[region.id] = today
-			tree.call_group("hud", "show_toast", arrival.note)
+			tree.call_group("hud", "animal_returned", arrival.species, arrival.note, region)
 	return came
 
 

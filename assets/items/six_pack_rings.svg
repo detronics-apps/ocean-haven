@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 18 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <g fill="none" stroke="#716872" stroke-width="1.5">
+    <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
+    <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
+  </g>
+</g><g transform="translate(1 0)">
+  
+  <g fill="none" stroke="#716872" stroke-width="1.5">
+    <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
+    <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
+  </g>
+</g><g transform="translate(0 -1)">
+  
+  <g fill="none" stroke="#716872" stroke-width="1.5">
+    <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
+    <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
+  </g>
+</g><g transform="translate(0 1)">
+  
+  <g fill="none" stroke="#716872" stroke-width="1.5">
+    <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
+    <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
+  </g>
+</g></g>
+  <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- Placeholder: plastic six-pack rings -->
   <g fill="none" stroke="#e8e8e8" stroke-width="1.5">
     <rect x="1.5" y="3.5" width="4" height="4"/><rect x="6" y="3.5" width="4" height="4"/><rect x="10.5" y="3.5" width="4" height="4"/>
     <rect x="1.5" y="8.5" width="4" height="4"/><rect x="6" y="8.5" width="4" height="4"/><rect x="10.5" y="8.5" width="4" height="4"/>
   </g>
+</g>
 </svg>

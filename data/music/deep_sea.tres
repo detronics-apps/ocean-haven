@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MusicData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/music_data.gd" id="1"]
+[ext_resource type="AudioStream" path="res://audio/music/bell.wav" id="2"]
+[ext_resource type="AudioStream" path="res://audio/music/celesta.wav" id="3"]
+[ext_resource type="AudioStream" path="res://audio/music/pad.wav" id="4"]
+[ext_resource type="AudioStream" path="res://audio/music/bass.wav" id="5"]
+[ext_resource type="AudioStream" path="res://audio/ambient/deep.wav" id="6"]
+[ext_resource type="AudioStream" path="res://audio/ambient/whale.wav" id="7"]
+[ext_resource type="AudioStream" path="res://audio/ambient/dolphin.wav" id="8"]
+
+[resource]
+script = ExtResource("1")
+region = &"deep_sea"
+melody = ExtResource("2")
+bells = ExtResource("3")
+pad = ExtResource("4")
+bass = ExtResource("5")
+tempo = 54.0
+root = -2
+scale = PackedInt32Array(0, 2, 3, 7, 10)
+chords = PackedInt32Array(0, -4, -2, 0)
+ambient = ExtResource("6")
+ambient_volume_db = -7.0
+calls = Array[AudioStream]([ExtResource("7"), ExtResource("8")])
+calls_per_minute = 2.0

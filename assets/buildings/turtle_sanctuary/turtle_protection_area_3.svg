@@ -1,4 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="66" viewBox="-1 -1 66 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <ellipse cx="32" cy="40" rx="13" ry="8" fill="#655b4c"/>
+  <ellipse cx="32" cy="39" rx="9" ry="5" fill="#6c6253"/>
+  <g fill="#324a6e">
+    <rect x="6" y="18" width="52" height="2"/><rect x="6" y="24" width="52" height="2"/>
+    <rect x="6" y="52" width="52" height="2"/><rect x="6" y="58" width="52" height="2"/>
+    <rect x="7" y="18" width="2" height="42"/><rect x="55" y="18" width="2" height="42"/>
+  </g>
+  <g fill="#1d3458">
+    <rect x="5" y="14" width="4" height="14"/><rect x="18" y="14" width="4" height="14"/><rect x="30" y="14" width="4" height="14"/>
+    <rect x="42" y="14" width="4" height="14"/><rect x="55" y="14" width="4" height="14"/>
+    <rect x="5" y="48" width="4" height="14"/><rect x="18" y="48" width="4" height="14"/><rect x="30" y="48" width="4" height="14"/>
+    <rect x="42" y="48" width="4" height="14"/><rect x="55" y="48" width="4" height="14"/>
+    <rect x="5" y="31" width="4" height="12"/><rect x="55" y="31" width="4" height="12"/>
+  </g>
+  <rect x="20" y="3" width="24" height="11" fill="#351d15"/>
+  <rect x="21" y="4" width="22" height="9" fill="#716b65"/>
+  <rect x="28" y="6" width="6" height="5" fill="#24431f"/>
+  <rect x="34" y="7" width="2" height="3" fill="#335027"/>
+  <rect x="27" y="6" width="1" height="1" fill="#24431f"/><rect x="27" y="10" width="1" height="1" fill="#24431f"/>
+  <rect x="44" y="32" width="8" height="2" fill="#634b30"/>
+  <polygon points="42,32 48,27 54,32" fill="#164927"/>
+  <rect x="45" y="34" width="1" height="6" fill="#3c2016"/>
+  <rect x="50" y="34" width="1" height="6" fill="#3c2016"/>
+  <ellipse cx="18" cy="42" rx="7" ry="4" fill="#655b4c"/>
+  <ellipse cx="18" cy="41" rx="5" ry="3" fill="#6c6253"/>
+  <rect x="10" y="30" width="16" height="2" fill="#56341b"/>
+</g><g transform="translate(1 0)">
+  
+  <ellipse cx="32" cy="40" rx="13" ry="8" fill="#655b4c"/>
+  <ellipse cx="32" cy="39" rx="9" ry="5" fill="#6c6253"/>
+  <g fill="#324a6e">
+    <rect x="6" y="18" width="52" height="2"/><rect x="6" y="24" width="52" height="2"/>
+    <rect x="6" y="52" width="52" height="2"/><rect x="6" y="58" width="52" height="2"/>
+    <rect x="7" y="18" width="2" height="42"/><rect x="55" y="18" width="2" height="42"/>
+  </g>
+  <g fill="#1d3458">
+    <rect x="5" y="14" width="4" height="14"/><rect x="18" y="14" width="4" height="14"/><rect x="30" y="14" width="4" height="14"/>
+    <rect x="42" y="14" width="4" height="14"/><rect x="55" y="14" width="4" height="14"/>
+    <rect x="5" y="48" width="4" height="14"/><rect x="18" y="48" width="4" height="14"/><rect x="30" y="48" width="4" height="14"/>
+    <rect x="42" y="48" width="4" height="14"/><rect x="55" y="48" width="4" height="14"/>
+    <rect x="5" y="31" width="4" height="12"/><rect x="55" y="31" width="4" height="12"/>
+  </g>
+  <rect x="20" y="3" width="24" height="11" fill="#351d15"/>
+  <rect x="21" y="4" width="22" height="9" fill="#716b65"/>
+  <rect x="28" y="6" width="6" height="5" fill="#24431f"/>
+  <rect x="34" y="7" width="2" height="3" fill="#335027"/>
+  <rect x="27" y="6" width="1" height="1" fill="#24431f"/><rect x="27" y="10" width="1" height="1" fill="#24431f"/>
+  <rect x="44" y="32" width="8" height="2" fill="#634b30"/>
+  <polygon points="42,32 48,27 54,32" fill="#164927"/>
+  <rect x="45" y="34" width="1" height="6" fill="#3c2016"/>
+  <rect x="50" y="34" width="1" height="6" fill="#3c2016"/>
+  <ellipse cx="18" cy="42" rx="7" ry="4" fill="#655b4c"/>
+  <ellipse cx="18" cy="41" rx="5" ry="3" fill="#6c6253"/>
+  <rect x="10" y="30" width="16" height="2" fill="#56341b"/>
+</g><g transform="translate(0 -1)">
+  
+  <ellipse cx="32" cy="40" rx="13" ry="8" fill="#655b4c"/>
+  <ellipse cx="32" cy="39" rx="9" ry="5" fill="#6c6253"/>
+  <g fill="#324a6e">
+    <rect x="6" y="18" width="52" height="2"/><rect x="6" y="24" width="52" height="2"/>
+    <rect x="6" y="52" width="52" height="2"/><rect x="6" y="58" width="52" height="2"/>
+    <rect x="7" y="18" width="2" height="42"/><rect x="55" y="18" width="2" height="42"/>
+  </g>
+  <g fill="#1d3458">
+    <rect x="5" y="14" width="4" height="14"/><rect x="18" y="14" width="4" height="14"/><rect x="30" y="14" width="4" height="14"/>
+    <rect x="42" y="14" width="4" height="14"/><rect x="55" y="14" width="4" height="14"/>
+    <rect x="5" y="48" width="4" height="14"/><rect x="18" y="48" width="4" height="14"/><rect x="30" y="48" width="4" height="14"/>
+    <rect x="42" y="48" width="4" height="14"/><rect x="55" y="48" width="4" height="14"/>
+    <rect x="5" y="31" width="4" height="12"/><rect x="55" y="31" width="4" height="12"/>
+  </g>
+  <rect x="20" y="3" width="24" height="11" fill="#351d15"/>
+  <rect x="21" y="4" width="22" height="9" fill="#716b65"/>
+  <rect x="28" y="6" width="6" height="5" fill="#24431f"/>
+  <rect x="34" y="7" width="2" height="3" fill="#335027"/>
+  <rect x="27" y="6" width="1" height="1" fill="#24431f"/><rect x="27" y="10" width="1" height="1" fill="#24431f"/>
+  <rect x="44" y="32" width="8" height="2" fill="#634b30"/>
+  <polygon points="42,32 48,27 54,32" fill="#164927"/>
+  <rect x="45" y="34" width="1" height="6" fill="#3c2016"/>
+  <rect x="50" y="34" width="1" height="6" fill="#3c2016"/>
+  <ellipse cx="18" cy="42" rx="7" ry="4" fill="#655b4c"/>
+  <ellipse cx="18" cy="41" rx="5" ry="3" fill="#6c6253"/>
+  <rect x="10" y="30" width="16" height="2" fill="#56341b"/>
+</g><g transform="translate(0 1)">
+  
+  <ellipse cx="32" cy="40" rx="13" ry="8" fill="#655b4c"/>
+  <ellipse cx="32" cy="39" rx="9" ry="5" fill="#6c6253"/>
+  <g fill="#324a6e">
+    <rect x="6" y="18" width="52" height="2"/><rect x="6" y="24" width="52" height="2"/>
+    <rect x="6" y="52" width="52" height="2"/><rect x="6" y="58" width="52" height="2"/>
+    <rect x="7" y="18" width="2" height="42"/><rect x="55" y="18" width="2" height="42"/>
+  </g>
+  <g fill="#1d3458">
+    <rect x="5" y="14" width="4" height="14"/><rect x="18" y="14" width="4" height="14"/><rect x="30" y="14" width="4" height="14"/>
+    <rect x="42" y="14" width="4" height="14"/><rect x="55" y="14" width="4" height="14"/>
+    <rect x="5" y="48" width="4" height="14"/><rect x="18" y="48" width="4" height="14"/><rect x="30" y="48" width="4" height="14"/>
+    <rect x="42" y="48" width="4" height="14"/><rect x="55" y="48" width="4" height="14"/>
+    <rect x="5" y="31" width="4" height="12"/><rect x="55" y="31" width="4" height="12"/>
+  </g>
+  <rect x="20" y="3" width="24" height="11" fill="#351d15"/>
+  <rect x="21" y="4" width="22" height="9" fill="#716b65"/>
+  <rect x="28" y="6" width="6" height="5" fill="#24431f"/>
+  <rect x="34" y="7" width="2" height="3" fill="#335027"/>
+  <rect x="27" y="6" width="1" height="1" fill="#24431f"/><rect x="27" y="10" width="1" height="1" fill="#24431f"/>
+  <rect x="44" y="32" width="8" height="2" fill="#634b30"/>
+  <polygon points="42,32 48,27 54,32" fill="#164927"/>
+  <rect x="45" y="34" width="1" height="6" fill="#3c2016"/>
+  <rect x="50" y="34" width="1" height="6" fill="#3c2016"/>
+  <ellipse cx="18" cy="42" rx="7" ry="4" fill="#655b4c"/>
+  <ellipse cx="18" cy="41" rx="5" ry="3" fill="#6c6253"/>
+  <rect x="10" y="30" width="16" height="2" fill="#56341b"/>
+</g></g>
+  <g id="art" data-size="64 64" data-box="0 0 64 64">
   <!-- Placeholder (tier 3: plus a second nest mound and a walkway) turtle protection area: recycled-plastic fence, nest mound, sign -->
   <ellipse cx="32" cy="40" rx="13" ry="8" fill="#cdbf9c"/>
   <ellipse cx="32" cy="39" rx="9" ry="5" fill="#ddd0ae"/>
@@ -26,4 +141,5 @@
   <ellipse cx="18" cy="42" rx="7" ry="4" fill="#cdbf9c"/>
   <ellipse cx="18" cy="41" rx="5" ry="3" fill="#ddd0ae"/>
   <rect x="10" y="30" width="16" height="2" fill="#a8743f"/>
+</g>
 </svg>

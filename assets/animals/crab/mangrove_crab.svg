@@ -1,4 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-1 -1 20 16" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <g fill="#351d1a">
+    <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
+    <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
+  </g>
+  <rect x="3" y="5" width="12" height="7" fill="#3c241d"/>
+  <rect x="4" y="6" width="10" height="5" fill="#492c20"/>
+  <rect x="2" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="13" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="6" y="3" width="1" height="2" fill="#281916"/><rect x="11" y="3" width="1" height="2" fill="#281916"/>
+  <rect x="6" y="2" width="1" height="1" fill="#746e5a"/><rect x="11" y="2" width="1" height="1" fill="#746e5a"/>
+</g><g transform="translate(1 0)">
+  
+  <g fill="#351d1a">
+    <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
+    <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
+  </g>
+  <rect x="3" y="5" width="12" height="7" fill="#3c241d"/>
+  <rect x="4" y="6" width="10" height="5" fill="#492c20"/>
+  <rect x="2" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="13" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="6" y="3" width="1" height="2" fill="#281916"/><rect x="11" y="3" width="1" height="2" fill="#281916"/>
+  <rect x="6" y="2" width="1" height="1" fill="#746e5a"/><rect x="11" y="2" width="1" height="1" fill="#746e5a"/>
+</g><g transform="translate(0 -1)">
+  
+  <g fill="#351d1a">
+    <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
+    <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
+  </g>
+  <rect x="3" y="5" width="12" height="7" fill="#3c241d"/>
+  <rect x="4" y="6" width="10" height="5" fill="#492c20"/>
+  <rect x="2" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="13" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="6" y="3" width="1" height="2" fill="#281916"/><rect x="11" y="3" width="1" height="2" fill="#281916"/>
+  <rect x="6" y="2" width="1" height="1" fill="#746e5a"/><rect x="11" y="2" width="1" height="1" fill="#746e5a"/>
+</g><g transform="translate(0 1)">
+  
+  <g fill="#351d1a">
+    <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
+    <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
+  </g>
+  <rect x="3" y="5" width="12" height="7" fill="#3c241d"/>
+  <rect x="4" y="6" width="10" height="5" fill="#492c20"/>
+  <rect x="2" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="13" y="2" width="3" height="3" fill="#631414"/>
+  <rect x="6" y="3" width="1" height="2" fill="#281916"/><rect x="11" y="3" width="1" height="2" fill="#281916"/>
+  <rect x="6" y="2" width="1" height="1" fill="#746e5a"/><rect x="11" y="2" width="1" height="1" fill="#746e5a"/>
+</g></g>
+  <g id="art" data-size="18 14" data-box="0 0 18 14">
   <!-- Placeholder mangrove crab, top-down: dark mud-brown shell with red claws -->
   <g fill="#5a3a2a">
     <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
@@ -10,4 +61,5 @@
   <rect x="13" y="2" width="3" height="3" fill="#c84a3a"/>
   <rect x="6" y="3" width="1" height="2" fill="#3a2a1a"/><rect x="11" y="3" width="1" height="2" fill="#3a2a1a"/>
   <rect x="6" y="2" width="1" height="1" fill="#f0e8c0"/><rect x="11" y="2" width="1" height="1" fill="#f0e8c0"/>
+</g>
 </svg>

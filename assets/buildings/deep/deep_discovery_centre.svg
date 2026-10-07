@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="48" viewBox="0 0 64 48" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="50" viewBox="-1 -1 66 50" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
+  <rect x="10" y="22" width="20" height="14" fill="#04102d"/><rect x="34" y="22" width="20" height="14" fill="#04102d"/>
+  <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
+  <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
+  <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
+  <rect x="10" y="22" width="20" height="14" fill="#04102d"/><rect x="34" y="22" width="20" height="14" fill="#04102d"/>
+  <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
+  <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
+  <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
+  <rect x="10" y="22" width="20" height="14" fill="#04102d"/><rect x="34" y="22" width="20" height="14" fill="#04102d"/>
+  <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
+  <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
+  <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
+  <rect x="10" y="22" width="20" height="14" fill="#04102d"/><rect x="34" y="22" width="20" height="14" fill="#04102d"/>
+  <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
+  <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
+  <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+</g></g>
+  <g id="art" data-size="64 48" data-box="0 0 64 48">
   <!-- placeholder: Deep-Sea Discovery Centre: a building with big screens showing the submarine's live feed -->
   <rect x="4" y="16" width="56" height="28" fill="#dfe6ea"/><polygon points="2,16 32,4 62,16" fill="#2a4a6a"/>
   <rect x="10" y="22" width="20" height="14" fill="#0e1a2e"/><rect x="34" y="22" width="20" height="14" fill="#0e1a2e"/>
   <rect x="14" y="28" width="10" height="3" fill="#6a7280"/><rect x="22" y="27" width="3" height="3" fill="#9ff6ff"/>
   <rect x="40" y="26" width="8" height="4" fill="#b24a3e"/><rect x="47" y="27" width="4" height="1" fill="#b24a3e"/>
   <rect x="28" y="38" width="8" height="6" fill="#6b4428"/>
+</g>
 </svg>

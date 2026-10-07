@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="-1 -1 22 16" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="5" y="0" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="5" y="10" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="2" y="5" width="12" height="4" fill="#171728"/>
+  <rect x="0" y="6" width="2" height="2" fill="#1c1c2d"/>
+  <rect x="14" y="6" width="3" height="2" fill="#713c11"/>
+  <rect x="17" y="6" width="2" height="1" fill="#2e2e33"/>
+  <rect x="15" y="6" width="1" height="1" fill="#255e78"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="5" y="0" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="5" y="10" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="2" y="5" width="12" height="4" fill="#171728"/>
+  <rect x="0" y="6" width="2" height="2" fill="#1c1c2d"/>
+  <rect x="14" y="6" width="3" height="2" fill="#713c11"/>
+  <rect x="17" y="6" width="2" height="1" fill="#2e2e33"/>
+  <rect x="15" y="6" width="1" height="1" fill="#255e78"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="5" y="0" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="5" y="10" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="2" y="5" width="12" height="4" fill="#171728"/>
+  <rect x="0" y="6" width="2" height="2" fill="#1c1c2d"/>
+  <rect x="14" y="6" width="3" height="2" fill="#713c11"/>
+  <rect x="17" y="6" width="2" height="1" fill="#2e2e33"/>
+  <rect x="15" y="6" width="1" height="1" fill="#255e78"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="5" y="0" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="5" y="10" width="5" height="4" fill="#1c1c2d"/>
+  <rect x="2" y="5" width="12" height="4" fill="#171728"/>
+  <rect x="0" y="6" width="2" height="2" fill="#1c1c2d"/>
+  <rect x="14" y="6" width="3" height="2" fill="#713c11"/>
+  <rect x="17" y="6" width="2" height="1" fill="#2e2e33"/>
+  <rect x="15" y="6" width="1" height="1" fill="#255e78"/>
+</g></g>
+  <g id="art" data-size="20 14" data-box="0 0 20 14">
   <!-- Placeholder double-crested cormorant from above, flying right: dark body and long wings, orange throat, hooked bill. -->
   <rect x="5" y="0" width="5" height="4" fill="#2a2a2e"/>
   <rect x="5" y="10" width="5" height="4" fill="#2a2a2e"/>
@@ -7,4 +46,5 @@
   <rect x="14" y="6" width="3" height="2" fill="#e8923a"/>
   <rect x="17" y="6" width="2" height="1" fill="#4a4a48"/>
   <rect x="15" y="6" width="1" height="1" fill="#6fc8e0"/>
+</g>
 </svg>

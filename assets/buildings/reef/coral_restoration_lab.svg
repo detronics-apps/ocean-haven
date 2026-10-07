@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="96" height="64" viewBox="0 0 96 64" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="98" height="66" viewBox="-1 -1 98 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="6" y="22" width="84" height="38" fill="#716965"/><rect x="2" y="12" width="92" height="12" fill="#0e5657"/><rect x="12" y="30" width="14" height="10" fill="#26546e"/><rect x="34" y="30" width="14" height="10" fill="#26546e"/><rect x="56" y="36" width="12" height="24" fill="#432c1f"/><rect x="74" y="30" width="12" height="10" fill="#74323c"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="6" y="22" width="84" height="38" fill="#716965"/><rect x="2" y="12" width="92" height="12" fill="#0e5657"/><rect x="12" y="30" width="14" height="10" fill="#26546e"/><rect x="34" y="30" width="14" height="10" fill="#26546e"/><rect x="56" y="36" width="12" height="24" fill="#432c1f"/><rect x="74" y="30" width="12" height="10" fill="#74323c"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="6" y="22" width="84" height="38" fill="#716965"/><rect x="2" y="12" width="92" height="12" fill="#0e5657"/><rect x="12" y="30" width="14" height="10" fill="#26546e"/><rect x="34" y="30" width="14" height="10" fill="#26546e"/><rect x="56" y="36" width="12" height="24" fill="#432c1f"/><rect x="74" y="30" width="12" height="10" fill="#74323c"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="6" y="22" width="84" height="38" fill="#716965"/><rect x="2" y="12" width="92" height="12" fill="#0e5657"/><rect x="12" y="30" width="14" height="10" fill="#26546e"/><rect x="34" y="30" width="14" height="10" fill="#26546e"/><rect x="56" y="36" width="12" height="24" fill="#432c1f"/><rect x="74" y="30" width="12" height="10" fill="#74323c"/>
+</g></g>
+  <g id="art" data-size="96 64" data-box="0 0 96 64">
   <!-- placeholder: coral restoration lab -->
   <rect x="6" y="22" width="84" height="38" fill="#e8e0d0"/><rect x="2" y="12" width="92" height="12" fill="#3aa89a"/><rect x="12" y="30" width="14" height="10" fill="#6ab0c8"/><rect x="34" y="30" width="14" height="10" fill="#6ab0c8"/><rect x="56" y="36" width="12" height="24" fill="#7a5a3a"/><rect x="74" y="30" width="12" height="10" fill="#f08a8a"/>
+</g>
 </svg>

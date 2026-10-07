@@ -1,7 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="-1 -1 34 34" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="3" y="4" width="4" height="26" fill="#432c1f"/><rect x="25" y="4" width="4" height="26" fill="#432c1f"/>
+  <rect x="7" y="4" width="18" height="6" fill="#563e22"/>
+  <rect x="7" y="16" width="18" height="12" fill="#144b6a"/>
+  <g fill="#587082"><rect x="9" y="19" width="4" height="1"/><rect x="17" y="23" width="5" height="1"/></g>
+</g><g transform="translate(1 0)">
+  
+  <rect x="3" y="4" width="4" height="26" fill="#432c1f"/><rect x="25" y="4" width="4" height="26" fill="#432c1f"/>
+  <rect x="7" y="4" width="18" height="6" fill="#563e22"/>
+  <rect x="7" y="16" width="18" height="12" fill="#144b6a"/>
+  <g fill="#587082"><rect x="9" y="19" width="4" height="1"/><rect x="17" y="23" width="5" height="1"/></g>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="3" y="4" width="4" height="26" fill="#432c1f"/><rect x="25" y="4" width="4" height="26" fill="#432c1f"/>
+  <rect x="7" y="4" width="18" height="6" fill="#563e22"/>
+  <rect x="7" y="16" width="18" height="12" fill="#144b6a"/>
+  <g fill="#587082"><rect x="9" y="19" width="4" height="1"/><rect x="17" y="23" width="5" height="1"/></g>
+</g><g transform="translate(0 1)">
+  
+  <rect x="3" y="4" width="4" height="26" fill="#432c1f"/><rect x="25" y="4" width="4" height="26" fill="#432c1f"/>
+  <rect x="7" y="4" width="18" height="6" fill="#563e22"/>
+  <rect x="7" y="16" width="18" height="12" fill="#144b6a"/>
+  <g fill="#587082"><rect x="9" y="19" width="4" height="1"/><rect x="17" y="23" width="5" height="1"/></g>
+</g></g>
+  <g id="art" data-size="32 32" data-box="0 0 32 32">
   <!-- Water gate, open: two wooden posts, the board raised, water flowing through -->
   <rect x="3" y="4" width="4" height="26" fill="#7a5a3a"/><rect x="25" y="4" width="4" height="26" fill="#7a5a3a"/>
   <rect x="7" y="4" width="18" height="6" fill="#a8844a"/>
   <rect x="7" y="16" width="18" height="12" fill="#4aa0c0"/>
   <g fill="#d0eef8"><rect x="9" y="19" width="4" height="1"/><rect x="17" y="23" width="5" height="1"/></g>
+</g>
 </svg>

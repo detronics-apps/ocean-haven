@@ -71,6 +71,7 @@ func open() -> void:
 	refresh()
 	visible = true
 	get_tree().paused = true
+	Sound.play(&"open", -6.0)
 	_close.grab_focus()
 
 
@@ -82,6 +83,8 @@ func refresh() -> void:
 
 
 func close() -> void:
+	if visible:
+		Sound.play(&"close", -6.0)
 	visible = false
 	get_tree().paused = false
 

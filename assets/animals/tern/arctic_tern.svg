@@ -1,4 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 22" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="-1 -1 26 24" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="13,10 7,1 5,1 9,10" fill="#596073"/>
+  <polygon points="13,12 7,21 5,21 9,12" fill="#596073"/>
+  <polygon points="8,10 6,2 5,2 7,10" fill="#464e62"/>
+  <polygon points="8,12 6,20 5,20 7,12" fill="#464e62"/>
+  <rect x="6" y="10" width="11" height="2" fill="#6c7282"/>
+  <polygon points="6,10 1,7 3,11 1,15 6,12" fill="#6c7282"/>
+  <rect x="16" y="9" width="3" height="4" fill="#171728"/>
+  <rect x="19" y="10" width="4" height="2" fill="#6a0a0a"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="13,10 7,1 5,1 9,10" fill="#596073"/>
+  <polygon points="13,12 7,21 5,21 9,12" fill="#596073"/>
+  <polygon points="8,10 6,2 5,2 7,10" fill="#464e62"/>
+  <polygon points="8,12 6,20 5,20 7,12" fill="#464e62"/>
+  <rect x="6" y="10" width="11" height="2" fill="#6c7282"/>
+  <polygon points="6,10 1,7 3,11 1,15 6,12" fill="#6c7282"/>
+  <rect x="16" y="9" width="3" height="4" fill="#171728"/>
+  <rect x="19" y="10" width="4" height="2" fill="#6a0a0a"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="13,10 7,1 5,1 9,10" fill="#596073"/>
+  <polygon points="13,12 7,21 5,21 9,12" fill="#596073"/>
+  <polygon points="8,10 6,2 5,2 7,10" fill="#464e62"/>
+  <polygon points="8,12 6,20 5,20 7,12" fill="#464e62"/>
+  <rect x="6" y="10" width="11" height="2" fill="#6c7282"/>
+  <polygon points="6,10 1,7 3,11 1,15 6,12" fill="#6c7282"/>
+  <rect x="16" y="9" width="3" height="4" fill="#171728"/>
+  <rect x="19" y="10" width="4" height="2" fill="#6a0a0a"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="13,10 7,1 5,1 9,10" fill="#596073"/>
+  <polygon points="13,12 7,21 5,21 9,12" fill="#596073"/>
+  <polygon points="8,10 6,2 5,2 7,10" fill="#464e62"/>
+  <polygon points="8,12 6,20 5,20 7,12" fill="#464e62"/>
+  <rect x="6" y="10" width="11" height="2" fill="#6c7282"/>
+  <polygon points="6,10 1,7 3,11 1,15 6,12" fill="#6c7282"/>
+  <rect x="16" y="9" width="3" height="4" fill="#171728"/>
+  <rect x="19" y="10" width="4" height="2" fill="#6a0a0a"/>
+</g></g>
+  <g id="art" data-size="24 22" data-box="0 0 24 22">
   <!-- placeholder: Arctic tern flying, seen from above (facing right): long pointed grey wings swept back, white body, black cap, red bill, deeply forked tail -->
   <polygon points="13,10 7,1 5,1 9,10" fill="#c8ced6"/>
   <polygon points="13,12 7,21 5,21 9,12" fill="#c8ced6"/>
@@ -8,4 +51,5 @@
   <polygon points="6,10 1,7 3,11 1,15 6,12" fill="#f4f6f8"/>
   <rect x="16" y="9" width="3" height="4" fill="#1e1e22"/>
   <rect x="19" y="10" width="4" height="2" fill="#d83a2a"/>
+</g>
 </svg>

@@ -29,6 +29,7 @@ RareEvents="*res://scripts/systems/rare_events.gd"
 People="*res://scripts/systems/people.gd"
 Activities="*res://scripts/systems/activities.gd"
 Rescues="*res://scripts/systems/rescues.gd"
+Sound="*res://scripts/systems/sound_system.gd"
 
 [display]
 

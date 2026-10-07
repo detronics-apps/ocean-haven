@@ -1,10 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="26" height="18" viewBox="0 0 26 18" shape-rendering="crispEdges">
-  <!-- placeholder: ringed seal on the ice, side view facing right, head held up (a backwards L): tail flippers behind, belly on the ice -->
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="-1 -1 28 20" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <polygon points="0,13 4,12 4,17 0,17" fill="#2e3549"/>
+  <rect x="3" y="10" width="15" height="7" fill="#3a4358"/><rect x="3" y="15" width="16" height="2" fill="#4c5368"/>
+  <rect x="14" y="8" width="6" height="7" fill="#3a4358"/>
+  <rect x="17" y="6" width="7" height="6" fill="#3e465a"/>
+  <rect x="21" y="7" width="1" height="1" fill="#16151f"/><rect x="23" y="9" width="1" height="1" fill="#16151f"/>
+  <g fill="#596073"><rect x="6" y="11" width="2" height="1"/><rect x="10" y="12" width="2" height="1"/><rect x="14" y="10" width="2" height="1"/></g>
+  <rect x="15" y="15" width="4" height="2" fill="#2e3549"/>
+</g><g transform="translate(1 0)">
+  
+  <polygon points="0,13 4,12 4,17 0,17" fill="#2e3549"/>
+  <rect x="3" y="10" width="15" height="7" fill="#3a4358"/><rect x="3" y="15" width="16" height="2" fill="#4c5368"/>
+  <rect x="14" y="8" width="6" height="7" fill="#3a4358"/>
+  <rect x="17" y="6" width="7" height="6" fill="#3e465a"/>
+  <rect x="21" y="7" width="1" height="1" fill="#16151f"/><rect x="23" y="9" width="1" height="1" fill="#16151f"/>
+  <g fill="#596073"><rect x="6" y="11" width="2" height="1"/><rect x="10" y="12" width="2" height="1"/><rect x="14" y="10" width="2" height="1"/></g>
+  <rect x="15" y="15" width="4" height="2" fill="#2e3549"/>
+</g><g transform="translate(0 -1)">
+  
+  <polygon points="0,13 4,12 4,17 0,17" fill="#2e3549"/>
+  <rect x="3" y="10" width="15" height="7" fill="#3a4358"/><rect x="3" y="15" width="16" height="2" fill="#4c5368"/>
+  <rect x="14" y="8" width="6" height="7" fill="#3a4358"/>
+  <rect x="17" y="6" width="7" height="6" fill="#3e465a"/>
+  <rect x="21" y="7" width="1" height="1" fill="#16151f"/><rect x="23" y="9" width="1" height="1" fill="#16151f"/>
+  <g fill="#596073"><rect x="6" y="11" width="2" height="1"/><rect x="10" y="12" width="2" height="1"/><rect x="14" y="10" width="2" height="1"/></g>
+  <rect x="15" y="15" width="4" height="2" fill="#2e3549"/>
+</g><g transform="translate(0 1)">
+  
+  <polygon points="0,13 4,12 4,17 0,17" fill="#2e3549"/>
+  <rect x="3" y="10" width="15" height="7" fill="#3a4358"/><rect x="3" y="15" width="16" height="2" fill="#4c5368"/>
+  <rect x="14" y="8" width="6" height="7" fill="#3a4358"/>
+  <rect x="17" y="6" width="7" height="6" fill="#3e465a"/>
+  <rect x="21" y="7" width="1" height="1" fill="#16151f"/><rect x="23" y="9" width="1" height="1" fill="#16151f"/>
+  <g fill="#596073"><rect x="6" y="11" width="2" height="1"/><rect x="10" y="12" width="2" height="1"/><rect x="14" y="10" width="2" height="1"/></g>
+  <rect x="15" y="15" width="4" height="2" fill="#2e3549"/>
+</g></g>
+  <g id="art" data-size="26 18" data-box="0 0 26 18">
+  <!-- placeholder: ringed seal on the ice, side view facing right, head lifted a little on a short thick neck: tail flippers behind, belly on the ice -->
   <polygon points="0,13 4,12 4,17 0,17" fill="#5e6670"/>
-  <rect x="3" y="11" width="15" height="6" fill="#7e8894"/><rect x="3" y="15" width="15" height="2" fill="#a8b0ba"/>
-  <rect x="15" y="5" width="6" height="9" fill="#7e8894"/>
-  <rect x="17" y="2" width="7" height="6" fill="#868f9a"/>
-  <rect x="21" y="3" width="1" height="1" fill="#111111"/><rect x="23" y="5" width="1" height="1" fill="#111111"/>
-  <g fill="#c8ced6"><rect x="6" y="12" width="2" height="1"/><rect x="10" y="13" width="2" height="1"/><rect x="16" y="8" width="2" height="1"/></g>
-  <rect x="14" y="16" width="4" height="2" fill="#5e6670"/>
+  <rect x="3" y="10" width="15" height="7" fill="#7e8894"/><rect x="3" y="15" width="16" height="2" fill="#a8b0ba"/>
+  <rect x="14" y="8" width="6" height="7" fill="#7e8894"/>
+  <rect x="17" y="6" width="7" height="6" fill="#868f9a"/>
+  <rect x="21" y="7" width="1" height="1" fill="#111111"/><rect x="23" y="9" width="1" height="1" fill="#111111"/>
+  <g fill="#c8ced6"><rect x="6" y="11" width="2" height="1"/><rect x="10" y="12" width="2" height="1"/><rect x="14" y="10" width="2" height="1"/></g>
+  <rect x="15" y="15" width="4" height="2" fill="#5e6670"/>
+</g>
 </svg>
