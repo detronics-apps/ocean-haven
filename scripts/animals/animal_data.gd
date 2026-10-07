@@ -77,6 +77,9 @@ extends Resource
 ## Nests in a full-grown tree (one tree each, shown with a nest) and spends time standing
 ## on it (`perched_sprite`): flies for `fly_seconds`, then perches for `perch_seconds`.
 @export var nests_in_trees := false
+## Flies about, then lands on its nest on the ground (its `lives_at` area, or the nearest rock
+## to its home) and sits on it (`perched_sprite`), like tree nesters do in their tree.
+@export var nests_on_ground := false
 @export var perched_sprite: Texture2D
 @export var fly_seconds := Vector2(12.0, 25.0)
 @export var perch_seconds := Vector2(15.0, 30.0)

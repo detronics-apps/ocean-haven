@@ -296,7 +296,7 @@ func _physics_process(delta: float) -> void:
 	_maybe_nest()
 	_maybe_guide()
 	_maybe_carry(delta)
-	if _tree_nesting(delta):
+	if _tree_nesting(delta) or _ground_nesting(delta):
 		return
 
 	_pose()
@@ -375,6 +375,64 @@ func _tree_nesting(delta: float) -> bool:
 	move_and_slide()
 	_face(velocity)
 	return true
+
+
+## Ground nesters (Arctic terns) fly about, then land on their nest and sit on it for a while.
+func _ground_nesting(delta: float) -> bool:
+	if not data.nests_on_ground or visiting:
+		return false
+	if injured or (_state == State.FLEE and not tangled) or _guide_to:
+		if perched or _to_nest:
+			take_off()
+		return false
+	if _nest_spot == Vector2.INF or _nest_check <= 0.0:
+		_nest_check = 10.0
+		_nest_spot = _ground_nest()
+	_nest_check -= delta
+	if _nest_spot == Vector2.INF:
+		return false
+	if perched:
+		velocity = Vector2.ZERO
+		global_position = _nest_spot
+		if not tangled:
+			_perch_left -= delta
+		if _perch_left <= 0.0 and not tangled:
+			take_off()
+		return true
+	if not _to_nest:
+		_fly_left -= delta
+		if _fly_left > 0.0 and not tangled:
+			return false
+		_to_nest = true
+	var to_nest := _nest_spot - global_position
+	if to_nest.length() < 3.0:
+		perched = true
+		_to_nest = false
+		_perch_left = randf_range(data.perch_seconds.x, data.perch_seconds.y)
+		global_position = _nest_spot
+		velocity = Vector2.ZERO
+		_sprite.rotation = 0.0
+		if data.perched_sprite:
+			_sprite.texture = data.perched_sprite
+		return true
+	velocity = to_nest.normalized() * data.swim_speed
+	move_and_slide()
+	_face(velocity)
+	return true
+
+
+## Its nest on the ground: in its nesting area if it has one, else on the nearest rock to its
+## home (INF = nowhere to nest).
+func _ground_nest() -> Vector2:
+	var near := home_area.global_position if is_instance_valid(home_area) else _home
+	var spot := Terrain.nearest(get_tree(), near, ["rock"], 6)
+	if Terrain.at(get_tree(), spot) != "rock":
+		return Vector2.INF
+	return spot + Vector2(randf_range(-8.0, 8.0), randf_range(-6.0, 6.0))
+
+
+var _nest_spot := Vector2.INF
+var _nest_check := 0.0
 
 
 func _has_nest_tree() -> bool:

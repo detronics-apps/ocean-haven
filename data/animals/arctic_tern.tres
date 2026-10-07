@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="2_t"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_sitting.svg" id="3_sit"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -39,6 +40,10 @@ shy_distance = 70.0
 discover_distance = 150.0
 curious = false
 flies = true
+nests_on_ground = true
+perched_sprite = ExtResource("3_sit")
+fly_seconds = Vector2(10, 20)
+perch_seconds = Vector2(15, 30)
 lives_at = &"tern_nesting_area"
 adult_home_radius = 140.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
