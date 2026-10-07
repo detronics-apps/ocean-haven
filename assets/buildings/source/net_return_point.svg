@@ -2,69 +2,89 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   <g id="art">
-  
-  <rect x="6" y="18" width="34" height="26" fill="#493325"/>
-  <polygon points="3,20 23,6 43,20" fill="#163753"/>
-  <rect x="18" y="30" width="10" height="14" fill="#35211f"/>
-  <rect x="9" y="23" width="8" height="5" fill="#71695e"/>
-  <rect x="44" y="30" width="16" height="14" fill="#1f3d56"/>
-  <rect x="45" y="25" width="14" height="6" fill="#265238"/>
-  <rect x="52" y="23" width="4" height="3" fill="#733610"/>
-  <rect x="30" y="36" width="8" height="8" fill="#596674"/>
-  <rect x="31" y="33" width="6" height="3" fill="#32556e"/>
+    
+    <rect x="4" y="20" width="32" height="24" fill="#493325"/>
+    <polygon points="2,22 20,8 38,22" fill="#163753"/>
+    <rect x="15" y="31" width="10" height="13" fill="#35211f"/>
+    <rect x="6" y="10" width="14" height="10" fill="#767673"/>
+    <rect x="7" y="12" width="9" height="1" fill="#15492e"/><rect x="7" y="15" width="9" height="1" fill="#15492e"/><rect x="7" y="18" width="9" height="1" fill="#15492e"/>
+    <rect x="8" y="11" width="1" height="8" fill="#15492e"/><rect x="11" y="11" width="1" height="8" fill="#15492e"/><rect x="14" y="11" width="1" height="8" fill="#15492e"/>
+    <rect x="16" y="14" width="3" height="3" fill="#733610"/>
+    <rect x="40" y="30" width="20" height="14" fill="#1f3d56"/><rect x="40" y="30" width="20" height="2" fill="#183148"/>
+    <rect x="40" y="22" width="20" height="8" fill="#265238"/>
+    <rect x="41" y="23" width="18" height="1" fill="#15492e"/><rect x="41" y="26" width="18" height="1" fill="#15492e"/><rect x="44" y="22" width="1" height="8" fill="#15492e"/><rect x="50" y="22" width="1" height="8" fill="#15492e"/><rect x="56" y="22" width="1" height="8" fill="#15492e"/>
+    <rect x="45" y="19" width="4" height="4" fill="#733610"/><rect x="53" y="20" width="4" height="3" fill="#755c1a"/>
+    <rect x="28" y="36" width="8" height="8" fill="#596674"/><rect x="29" y="34" width="6" height="2" fill="#32556e"/>
+    <rect x="30" y="38" width="4" height="1" fill="#2e3a49"/><rect x="30" y="40" width="4" height="1" fill="#2e3a49"/>
   </g>
 </g><g transform="translate(1 0)">
   <g id="art">
-  
-  <rect x="6" y="18" width="34" height="26" fill="#493325"/>
-  <polygon points="3,20 23,6 43,20" fill="#163753"/>
-  <rect x="18" y="30" width="10" height="14" fill="#35211f"/>
-  <rect x="9" y="23" width="8" height="5" fill="#71695e"/>
-  <rect x="44" y="30" width="16" height="14" fill="#1f3d56"/>
-  <rect x="45" y="25" width="14" height="6" fill="#265238"/>
-  <rect x="52" y="23" width="4" height="3" fill="#733610"/>
-  <rect x="30" y="36" width="8" height="8" fill="#596674"/>
-  <rect x="31" y="33" width="6" height="3" fill="#32556e"/>
+    
+    <rect x="4" y="20" width="32" height="24" fill="#493325"/>
+    <polygon points="2,22 20,8 38,22" fill="#163753"/>
+    <rect x="15" y="31" width="10" height="13" fill="#35211f"/>
+    <rect x="6" y="10" width="14" height="10" fill="#767673"/>
+    <rect x="7" y="12" width="9" height="1" fill="#15492e"/><rect x="7" y="15" width="9" height="1" fill="#15492e"/><rect x="7" y="18" width="9" height="1" fill="#15492e"/>
+    <rect x="8" y="11" width="1" height="8" fill="#15492e"/><rect x="11" y="11" width="1" height="8" fill="#15492e"/><rect x="14" y="11" width="1" height="8" fill="#15492e"/>
+    <rect x="16" y="14" width="3" height="3" fill="#733610"/>
+    <rect x="40" y="30" width="20" height="14" fill="#1f3d56"/><rect x="40" y="30" width="20" height="2" fill="#183148"/>
+    <rect x="40" y="22" width="20" height="8" fill="#265238"/>
+    <rect x="41" y="23" width="18" height="1" fill="#15492e"/><rect x="41" y="26" width="18" height="1" fill="#15492e"/><rect x="44" y="22" width="1" height="8" fill="#15492e"/><rect x="50" y="22" width="1" height="8" fill="#15492e"/><rect x="56" y="22" width="1" height="8" fill="#15492e"/>
+    <rect x="45" y="19" width="4" height="4" fill="#733610"/><rect x="53" y="20" width="4" height="3" fill="#755c1a"/>
+    <rect x="28" y="36" width="8" height="8" fill="#596674"/><rect x="29" y="34" width="6" height="2" fill="#32556e"/>
+    <rect x="30" y="38" width="4" height="1" fill="#2e3a49"/><rect x="30" y="40" width="4" height="1" fill="#2e3a49"/>
   </g>
 </g><g transform="translate(0 -1)">
   <g id="art">
-  
-  <rect x="6" y="18" width="34" height="26" fill="#493325"/>
-  <polygon points="3,20 23,6 43,20" fill="#163753"/>
-  <rect x="18" y="30" width="10" height="14" fill="#35211f"/>
-  <rect x="9" y="23" width="8" height="5" fill="#71695e"/>
-  <rect x="44" y="30" width="16" height="14" fill="#1f3d56"/>
-  <rect x="45" y="25" width="14" height="6" fill="#265238"/>
-  <rect x="52" y="23" width="4" height="3" fill="#733610"/>
-  <rect x="30" y="36" width="8" height="8" fill="#596674"/>
-  <rect x="31" y="33" width="6" height="3" fill="#32556e"/>
+    
+    <rect x="4" y="20" width="32" height="24" fill="#493325"/>
+    <polygon points="2,22 20,8 38,22" fill="#163753"/>
+    <rect x="15" y="31" width="10" height="13" fill="#35211f"/>
+    <rect x="6" y="10" width="14" height="10" fill="#767673"/>
+    <rect x="7" y="12" width="9" height="1" fill="#15492e"/><rect x="7" y="15" width="9" height="1" fill="#15492e"/><rect x="7" y="18" width="9" height="1" fill="#15492e"/>
+    <rect x="8" y="11" width="1" height="8" fill="#15492e"/><rect x="11" y="11" width="1" height="8" fill="#15492e"/><rect x="14" y="11" width="1" height="8" fill="#15492e"/>
+    <rect x="16" y="14" width="3" height="3" fill="#733610"/>
+    <rect x="40" y="30" width="20" height="14" fill="#1f3d56"/><rect x="40" y="30" width="20" height="2" fill="#183148"/>
+    <rect x="40" y="22" width="20" height="8" fill="#265238"/>
+    <rect x="41" y="23" width="18" height="1" fill="#15492e"/><rect x="41" y="26" width="18" height="1" fill="#15492e"/><rect x="44" y="22" width="1" height="8" fill="#15492e"/><rect x="50" y="22" width="1" height="8" fill="#15492e"/><rect x="56" y="22" width="1" height="8" fill="#15492e"/>
+    <rect x="45" y="19" width="4" height="4" fill="#733610"/><rect x="53" y="20" width="4" height="3" fill="#755c1a"/>
+    <rect x="28" y="36" width="8" height="8" fill="#596674"/><rect x="29" y="34" width="6" height="2" fill="#32556e"/>
+    <rect x="30" y="38" width="4" height="1" fill="#2e3a49"/><rect x="30" y="40" width="4" height="1" fill="#2e3a49"/>
   </g>
 </g><g transform="translate(0 1)">
   <g id="art">
-  
-  <rect x="6" y="18" width="34" height="26" fill="#493325"/>
-  <polygon points="3,20 23,6 43,20" fill="#163753"/>
-  <rect x="18" y="30" width="10" height="14" fill="#35211f"/>
-  <rect x="9" y="23" width="8" height="5" fill="#71695e"/>
-  <rect x="44" y="30" width="16" height="14" fill="#1f3d56"/>
-  <rect x="45" y="25" width="14" height="6" fill="#265238"/>
-  <rect x="52" y="23" width="4" height="3" fill="#733610"/>
-  <rect x="30" y="36" width="8" height="8" fill="#596674"/>
-  <rect x="31" y="33" width="6" height="3" fill="#32556e"/>
+    
+    <rect x="4" y="20" width="32" height="24" fill="#493325"/>
+    <polygon points="2,22 20,8 38,22" fill="#163753"/>
+    <rect x="15" y="31" width="10" height="13" fill="#35211f"/>
+    <rect x="6" y="10" width="14" height="10" fill="#767673"/>
+    <rect x="7" y="12" width="9" height="1" fill="#15492e"/><rect x="7" y="15" width="9" height="1" fill="#15492e"/><rect x="7" y="18" width="9" height="1" fill="#15492e"/>
+    <rect x="8" y="11" width="1" height="8" fill="#15492e"/><rect x="11" y="11" width="1" height="8" fill="#15492e"/><rect x="14" y="11" width="1" height="8" fill="#15492e"/>
+    <rect x="16" y="14" width="3" height="3" fill="#733610"/>
+    <rect x="40" y="30" width="20" height="14" fill="#1f3d56"/><rect x="40" y="30" width="20" height="2" fill="#183148"/>
+    <rect x="40" y="22" width="20" height="8" fill="#265238"/>
+    <rect x="41" y="23" width="18" height="1" fill="#15492e"/><rect x="41" y="26" width="18" height="1" fill="#15492e"/><rect x="44" y="22" width="1" height="8" fill="#15492e"/><rect x="50" y="22" width="1" height="8" fill="#15492e"/><rect x="56" y="22" width="1" height="8" fill="#15492e"/>
+    <rect x="45" y="19" width="4" height="4" fill="#733610"/><rect x="53" y="20" width="4" height="3" fill="#755c1a"/>
+    <rect x="28" y="36" width="8" height="8" fill="#596674"/><rect x="29" y="34" width="6" height="2" fill="#32556e"/>
+    <rect x="30" y="38" width="4" height="1" fill="#2e3a49"/><rect x="30" y="40" width="4" height="1" fill="#2e3a49"/>
   </g>
 </g></g>
   <g id="art" data-size="64 48" data-box="0 0 64 48">
   <g id="art">
-  <!-- Net Return Point: a harbour shed with a tag board, a bin of old green nets and a line bin -->
-  <rect x="6" y="18" width="34" height="26" fill="#8a6a48"/>
-  <polygon points="3,20 23,6 43,20" fill="#3f6f8a"/>
-  <rect x="18" y="30" width="10" height="14" fill="#5a4030"/>
-  <rect x="9" y="23" width="8" height="5" fill="#e9dfc4"/>
-  <rect x="44" y="30" width="16" height="14" fill="#4f7a8f"/>
-  <rect x="45" y="25" width="14" height="6" fill="#5f9e6a"/>
-  <rect x="52" y="23" width="4" height="3" fill="#ee8a3a"/>
-  <rect x="30" y="36" width="8" height="8" fill="#c9d4d8"/>
-  <rect x="31" y="33" width="6" height="3" fill="#7fb3c8"/>
+    <!-- Net Return Point: a shed with a net-and-tag sign, a bin of old green nets with floats, a line bin -->
+    <rect x="4" y="20" width="32" height="24" fill="#8a6a48"/>
+    <polygon points="2,22 20,8 38,22" fill="#3f6f8a"/>
+    <rect x="15" y="31" width="10" height="13" fill="#5a4030"/>
+    <rect x="6" y="10" width="14" height="10" fill="#f4f4ee"/>
+    <rect x="7" y="12" width="9" height="1" fill="#3e8a54"/><rect x="7" y="15" width="9" height="1" fill="#3e8a54"/><rect x="7" y="18" width="9" height="1" fill="#3e8a54"/>
+    <rect x="8" y="11" width="1" height="8" fill="#3e8a54"/><rect x="11" y="11" width="1" height="8" fill="#3e8a54"/><rect x="14" y="11" width="1" height="8" fill="#3e8a54"/>
+    <rect x="16" y="14" width="3" height="3" fill="#ee8a3a"/>
+    <rect x="40" y="30" width="20" height="14" fill="#4f7a8f"/><rect x="40" y="30" width="20" height="2" fill="#3b5d6e"/>
+    <rect x="40" y="22" width="20" height="8" fill="#5f9e6a"/>
+    <rect x="41" y="23" width="18" height="1" fill="#3e8a54"/><rect x="41" y="26" width="18" height="1" fill="#3e8a54"/><rect x="44" y="22" width="1" height="8" fill="#3e8a54"/><rect x="50" y="22" width="1" height="8" fill="#3e8a54"/><rect x="56" y="22" width="1" height="8" fill="#3e8a54"/>
+    <rect x="45" y="19" width="4" height="4" fill="#ee8a3a"/><rect x="53" y="20" width="4" height="3" fill="#f2c94c"/>
+    <rect x="28" y="36" width="8" height="8" fill="#c9d4d8"/><rect x="29" y="34" width="6" height="2" fill="#7fb3c8"/>
+    <rect x="30" y="38" width="4" height="1" fill="#5f6b70"/><rect x="30" y="40" width="4" height="1" fill="#5f6b70"/>
   </g>
 </g>
 </svg>

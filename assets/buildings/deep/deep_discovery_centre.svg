@@ -7,6 +7,7 @@
   <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
   <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
   <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="50" y="4" width="8" height="3" fill="#1c3353"/><rect x="51" y="3" width="5" height="1" fill="#1c3353"/><rect x="58" y="3" width="2" height="2" fill="#1c3353"/><rect x="59" y="2" width="1" height="1" fill="#1c3353"/><rect x="58" y="6" width="2" height="1" fill="#1c3353"/><rect x="52" y="5" width="1" height="1" fill="#767673"/><rect x="50" y="7" width="6" height="1" fill="#445067"/>
 </g><g transform="translate(1 0)">
   
   <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
@@ -14,6 +15,7 @@
   <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
   <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
   <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="50" y="4" width="8" height="3" fill="#1c3353"/><rect x="51" y="3" width="5" height="1" fill="#1c3353"/><rect x="58" y="3" width="2" height="2" fill="#1c3353"/><rect x="59" y="2" width="1" height="1" fill="#1c3353"/><rect x="58" y="6" width="2" height="1" fill="#1c3353"/><rect x="52" y="5" width="1" height="1" fill="#767673"/><rect x="50" y="7" width="6" height="1" fill="#445067"/>
 </g><g transform="translate(0 -1)">
   
   <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
@@ -21,6 +23,7 @@
   <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
   <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
   <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="50" y="4" width="8" height="3" fill="#1c3353"/><rect x="51" y="3" width="5" height="1" fill="#1c3353"/><rect x="58" y="3" width="2" height="2" fill="#1c3353"/><rect x="59" y="2" width="1" height="1" fill="#1c3353"/><rect x="58" y="6" width="2" height="1" fill="#1c3353"/><rect x="52" y="5" width="1" height="1" fill="#767673"/><rect x="50" y="7" width="6" height="1" fill="#445067"/>
 </g><g transform="translate(0 1)">
   
   <rect x="4" y="16" width="56" height="28" fill="#626c7c"/><polygon points="2,16 32,4 62,16" fill="#0d2546"/>
@@ -28,6 +31,7 @@
   <rect x="14" y="28" width="10" height="3" fill="#32394f"/><rect x="22" y="27" width="3" height="3" fill="#3c7585"/>
   <rect x="40" y="26" width="8" height="4" fill="#5a171a"/><rect x="47" y="27" width="4" height="1" fill="#5a171a"/>
   <rect x="28" y="38" width="8" height="6" fill="#3c2016"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="50" y="4" width="8" height="3" fill="#1c3353"/><rect x="51" y="3" width="5" height="1" fill="#1c3353"/><rect x="58" y="3" width="2" height="2" fill="#1c3353"/><rect x="59" y="2" width="1" height="1" fill="#1c3353"/><rect x="58" y="6" width="2" height="1" fill="#1c3353"/><rect x="52" y="5" width="1" height="1" fill="#767673"/><rect x="50" y="7" width="6" height="1" fill="#445067"/>
 </g></g>
   <g id="art" data-size="64 48" data-box="0 0 64 48">
   <!-- placeholder: Deep-Sea Discovery Centre: a building with big screens showing the submarine's live feed -->
@@ -36,5 +40,6 @@
   <rect x="14" y="28" width="10" height="3" fill="#6a7280"/><rect x="22" y="27" width="3" height="3" fill="#9ff6ff"/>
   <rect x="40" y="26" width="8" height="4" fill="#b24a3e"/><rect x="47" y="27" width="4" height="1" fill="#b24a3e"/>
   <rect x="28" y="38" width="8" height="6" fill="#6b4428"/>
+  <!-- emblem --><rect x="54" y="9" width="2" height="10" fill="#6b4f35"/><rect x="48" y="0" width="14" height="10" fill="#4a3424"/><rect x="49" y="1" width="12" height="8" fill="#f4f4ee"/><rect x="50" y="4" width="8" height="3" fill="#4a6a8a"/><rect x="51" y="3" width="5" height="1" fill="#4a6a8a"/><rect x="58" y="3" width="2" height="2" fill="#4a6a8a"/><rect x="59" y="2" width="1" height="1" fill="#4a6a8a"/><rect x="58" y="6" width="2" height="1" fill="#4a6a8a"/><rect x="52" y="5" width="1" height="1" fill="#f4f4ee"/><rect x="50" y="7" width="6" height="1" fill="#9aa9b8"/><!-- /emblem -->
 </g>
 </svg>

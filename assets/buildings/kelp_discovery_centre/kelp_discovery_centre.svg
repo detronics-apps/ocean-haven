@@ -11,6 +11,7 @@
   <rect x="42" y="8" width="16" height="9" fill="#76706d"/><rect x="45" y="11" width="7" height="3" fill="#43261c"/><rect x="52" y="11" width="3" height="3" fill="#645b57"/>
   <rect x="49" y="17" width="2" height="2" fill="#492919"/>
   <rect x="4" y="54" width="56" height="4" fill="#563e22"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="52" y="3" width="6" height="5" fill="#43261a"/><rect x="53" y="4" width="4" height="3" fill="#6a5b4e"/><rect x="53" y="4" width="1" height="1" fill="#1e1b25"/><rect x="56" y="4" width="1" height="1" fill="#1e1b25"/><rect x="54" y="6" width="2" height="1" fill="#211415"/><rect x="51" y="3" width="1" height="1" fill="#361d15"/><rect x="58" y="3" width="1" height="1" fill="#361d15"/>
 </g><g transform="translate(1 0)">
   
   <rect x="4" y="24" width="56" height="30" fill="#716b66"/>
@@ -22,6 +23,7 @@
   <rect x="42" y="8" width="16" height="9" fill="#76706d"/><rect x="45" y="11" width="7" height="3" fill="#43261c"/><rect x="52" y="11" width="3" height="3" fill="#645b57"/>
   <rect x="49" y="17" width="2" height="2" fill="#492919"/>
   <rect x="4" y="54" width="56" height="4" fill="#563e22"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="52" y="3" width="6" height="5" fill="#43261a"/><rect x="53" y="4" width="4" height="3" fill="#6a5b4e"/><rect x="53" y="4" width="1" height="1" fill="#1e1b25"/><rect x="56" y="4" width="1" height="1" fill="#1e1b25"/><rect x="54" y="6" width="2" height="1" fill="#211415"/><rect x="51" y="3" width="1" height="1" fill="#361d15"/><rect x="58" y="3" width="1" height="1" fill="#361d15"/>
 </g><g transform="translate(0 -1)">
   
   <rect x="4" y="24" width="56" height="30" fill="#716b66"/>
@@ -33,6 +35,7 @@
   <rect x="42" y="8" width="16" height="9" fill="#76706d"/><rect x="45" y="11" width="7" height="3" fill="#43261c"/><rect x="52" y="11" width="3" height="3" fill="#645b57"/>
   <rect x="49" y="17" width="2" height="2" fill="#492919"/>
   <rect x="4" y="54" width="56" height="4" fill="#563e22"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="52" y="3" width="6" height="5" fill="#43261a"/><rect x="53" y="4" width="4" height="3" fill="#6a5b4e"/><rect x="53" y="4" width="1" height="1" fill="#1e1b25"/><rect x="56" y="4" width="1" height="1" fill="#1e1b25"/><rect x="54" y="6" width="2" height="1" fill="#211415"/><rect x="51" y="3" width="1" height="1" fill="#361d15"/><rect x="58" y="3" width="1" height="1" fill="#361d15"/>
 </g><g transform="translate(0 1)">
   
   <rect x="4" y="24" width="56" height="30" fill="#716b66"/>
@@ -44,6 +47,7 @@
   <rect x="42" y="8" width="16" height="9" fill="#76706d"/><rect x="45" y="11" width="7" height="3" fill="#43261c"/><rect x="52" y="11" width="3" height="3" fill="#645b57"/>
   <rect x="49" y="17" width="2" height="2" fill="#492919"/>
   <rect x="4" y="54" width="56" height="4" fill="#563e22"/>
+  <rect x="54" y="9" width="2" height="10" fill="#3c281f"/><rect x="48" y="0" width="14" height="10" fill="#2e1c19"/><rect x="49" y="1" width="12" height="8" fill="#767673"/><rect x="52" y="3" width="6" height="5" fill="#43261a"/><rect x="53" y="4" width="4" height="3" fill="#6a5b4e"/><rect x="53" y="4" width="1" height="1" fill="#1e1b25"/><rect x="56" y="4" width="1" height="1" fill="#1e1b25"/><rect x="54" y="6" width="2" height="1" fill="#211415"/><rect x="51" y="3" width="1" height="1" fill="#361d15"/><rect x="58" y="3" width="1" height="1" fill="#361d15"/>
 </g></g>
   <g id="art" data-size="64 64" data-box="0 0 64 64">
   <!-- Placeholder Kelp Discovery Centre (3/4 view): a visitor centre with a big window onto the kelp, an otter sign and a small tour boat jetty. -->
@@ -56,5 +60,6 @@
   <rect x="42" y="8" width="16" height="9" fill="#f4efe2"/><rect x="45" y="11" width="7" height="3" fill="#7a5234"/><rect x="52" y="11" width="3" height="3" fill="#c9bfae"/>
   <rect x="49" y="17" width="2" height="2" fill="#8a5a34"/>
   <rect x="4" y="54" width="56" height="4" fill="#a8844a"/>
+  <!-- emblem --><rect x="54" y="9" width="2" height="10" fill="#6b4f35"/><rect x="48" y="0" width="14" height="10" fill="#4a3424"/><rect x="49" y="1" width="12" height="8" fill="#f4f4ee"/><rect x="52" y="3" width="6" height="5" fill="#7a5132"/><rect x="53" y="4" width="4" height="3" fill="#d9c3a3"/><rect x="53" y="4" width="1" height="1" fill="#222"/><rect x="56" y="4" width="1" height="1" fill="#222"/><rect x="54" y="6" width="2" height="1" fill="#2a1d14"/><rect x="51" y="3" width="1" height="1" fill="#5c3b22"/><rect x="58" y="3" width="1" height="1" fill="#5c3b22"/><!-- /emblem -->
 </g>
 </svg>
