@@ -99,7 +99,7 @@ func _ready() -> void:
 		show_toast("New photo moment: %s, %s!\nThe photo is kept in your Journal." % [animal.display_name, moment.title.to_lower()]))
 	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
 		show_toast("%s is back in the wild!\n%s" % [animal_name, r.fact]))
-	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new(), ChannelFlow.new(), EchoDive.new(), FloeFit.new()]:  # ranger activities (data/activities/)
+	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new(), ChannelFlow.new(), EchoDive.new(), FloeFit.new(), GlassSort.new()]:  # ranger activities (data/activities/)
 		activity_screen.name = activity_screen.get_script().get_global_name()
 		get_parent().add_child.call_deferred(activity_screen)
 	var talk := TalkBox.new()  # talking to the people of the islands

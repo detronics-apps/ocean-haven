@@ -239,7 +239,14 @@ func start_capability() -> void:
 		return
 	loaded = 1
 	batch_done_at = GameClock.now() + data.make_minutes * 60.0 / GameClock.DAY_LENGTH
+	Fleet.mark(StringName("%s_firing" % data.id))  # (e.g. Kai's Glass Sort opens: it finishes the first batch)
 	get_tree().call_group("hud", "show_toast", "The %s is firing up: ready in %s." % [data.display_name, Missions.real_time(data.make_minutes * 60.0)])
+
+
+## The first batch is ready at once (Glass Sort's story play: the sorted glass melts clear).
+func finish_firing() -> void:
+	if loaded > 0 and data.made_flag != &"" and not Fleet.has_flag(data.made_flag):
+		batch_done_at = GameClock.now()
 
 
 func take_stock() -> void:

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ActivityData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/activity_data.gd" id="1_a"]
+
+[resource]
+script = ExtResource("1_a")
+id = &"glass_sort"
+display_name = "Glass Sort"
+verb = "Glass Sort"
+building = &"glassworks"
+person = &"kai"
+unlock_any = PackedStringArray("flag:glassworks_firing", "flag:glass_made")
+story_intro = "Kai: \"The first batch is in the furnace, but the broken glass we're adding is all mixed up. Sort it by colour, jar by jar: mixed colours melt into murky glass.\""
+story_done = "Kai: \"Clear, green, brown, all sorted! The first batch is melting clear right now. Real glass recycling sorts by colour too.\""
+practice_intro = "Sort the jars for fun: each level has more colours. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(3, 2, 4), Vector3i(4, 2, 4), Vector3i(5, 2, 4), Vector3i(5, 2, 5), Vector3i(6, 2, 5)])
+reward_group = &"buildings"
+reward_method = &"finish_firing"
+region = &"tropical_reef"

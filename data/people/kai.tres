@@ -106,11 +106,17 @@ reminder = PackedStringArray("Make glass at the Glassworks (3 sand), and clean w
 
 [sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
+id = &"glass"
+when = PackedStringArray("flag:glassworks_firing", "!flag:glass_made")
+lines = PackedStringArray("The furnace is going! But the broken glass going in with the sand is all mixed up.", "Come to the Glassworks and help me sort it by colour: Glass Sort, at the bench.")
+
+[sub_resource type="Resource" id="Topic_10"]
+script = ExtResource("2_t")
 id = &"filters"
 when = PackedStringArray("asked:filters")
 lines = PackedStringArray("Sanna sent you about the fibres? A filter in a washing machine catches them before they go down the drain.", "Some countries are starting to require them. I've drawn the plans: the Filter Workshop is in your Build menu here.")
 
-[sub_resource type="Resource" id="Topic_10"]
+[sub_resource type="Resource" id="Topic_11"]
 script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Want to know how we could make something differently? That's what I'm here for.")
@@ -134,4 +140,4 @@ hair_colour = Color(0.1, 0.08, 0.06, 1)
 shirt = Color(0.95, 0.8, 0.3, 1)
 trousers = Color(0.25, 0.35, 0.45, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
