@@ -441,7 +441,9 @@ doing one of the island's research missions at once (ActivityData.reward_mission
 Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
 (Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
 Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
-Outpost; cargo search; extends OtterDive), Floe Fit (Sanna, Polar Research Station; drill
+Outpost; cargo search: steer the sub in 4 directions down a canyon whose walls slide
+past; sonar pings light up the dark; lost gear to grab, 1.5 s off each; the game's own animal
+sprites at their real depths; levels 1,000 to 5,000 m), Floe Fit (Sanna, Polar Research Station; drill
 planning; floes cut from a real filling, placed floes can be taken back). Glass Sort waits for
 phase 9 (Kai's bottle story).
 Phase 7: rescue companions on the Kelp Forest (an otter pup separated from its mother; Finn,

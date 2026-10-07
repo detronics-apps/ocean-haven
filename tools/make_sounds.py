@@ -193,6 +193,8 @@ def sfx() -> None:
                                  lambda t: math.sin(math.pi * t / 1.3) ** 2), peak=0.5)
     write("sfx", "page", shape(bandpass(noise(0.16), 1200, 5000), lambda t: math.sin(math.pi * t / 0.16) ** 2), peak=0.35)
     write("sfx", "not_yet", mix((0, tone(C4 * 2 * semis(4), 0.2, ((1.0, 1.0),), decay=12)), (0.1, tone(C4 * 2, 0.3, ((1.0, 1.0),), decay=10))), peak=0.4)
+    ping = tone(1480, 1.2, ((1.0, 1.0), (2.0, 0.1)), decay=3.5, attack=0.003)
+    write("sfx", "ping", mix((0, ping), (0.35, [s * 0.35 for s in ping]), (0.7, [s * 0.12 for s in ping])), peak=0.4)
     write("sfx", "talk", tone(C4 * 2 * semis(7), 0.06, ((1.0, 1.0), (2.0, 0.15)), decay=40, attack=0.002), peak=0.35)
     write("sfx", "hatch", mix(*[(t, tone(700 + 200 * k, 0.08, ((1.0, 1.0),), decay=50, glide=0.5)) for k, t in enumerate((0, 0.11, 0.19, 0.33))]), peak=0.45)
     thunder = shape(lowpass(noise(2.8), lambda t: 120 + 500 * math.exp(-3 * t)), lambda t: min(1.0, t / 0.05) * math.exp(-1.3 * t) * (1.0 + 0.4 * math.sin(TAU * 3 * t)))
