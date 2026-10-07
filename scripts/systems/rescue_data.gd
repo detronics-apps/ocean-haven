@@ -1,10 +1,12 @@
 class_name RescueData
 extends Resource
-## A rescue companion (data/rescues/): one young animal on an island that needs people's help
-## to survive. The ranger names it and helps care for it for `days` game days at the island's
-## rescue building (the staff look after it while the ranger is away), then releases it. One
-## at a time, one per island. Recovery only ever moves forward: nothing gets worse, and there
-## are no timers to keep up with.
+## A rescue companion (data/rescues/): one young animal on an island that needs people's help.
+## The ranger names it and cares for it on the vet table of the island's rescue building for
+## `days` game days: each day it can be fed, comforted, have a wound patched and get medicine
+## from the vet (each once a day). Its bars (health, fed, calm) only ever go up, never down;
+## the care it got by the end is the shape it goes home in, and the better its shape, the more
+## often the ranger sees it again, tagged, on its own island and on the islands it travels to
+## (`visits`). One at a time, one per island.
 
 @export var id: StringName
 ## The island (RegionData id).
@@ -19,29 +21,33 @@ extends Resource
 ## Said when it's found (on the HUD) and the first time the ranger visits.
 @export_multiline var found_note: String
 @export_multiline var intro: String
-## How many game days it takes to be ready to go back to the wild.
-@export var days := 30
+## Game days in care before it goes home.
+@export var days := 6
+## It from the front, lying on the vet table.
+@export var vet_picture: Texture2D
 
-@export_group("Stages")
-## Day each stage starts (the first is 0), its name, and how it's doing then.
-@export var stage_days: PackedInt32Array = []
-@export var stage_names: PackedStringArray = []
-@export var stage_texts: PackedStringArray = []
-## Each stage's care moment: the question, the right choice, the other choice, and what
-## happens with each ("{name}" is the animal's name).
-@export var care_questions: PackedStringArray = []
-@export var care_right: PackedStringArray = []
-@export var care_wrong: PackedStringArray = []
-@export var care_right_result: PackedStringArray = []
-@export var care_wrong_result: PackedStringArray = []
+@export_group("Care")
+## How it's doing on each day in care ("{name}" is its name).
+@export var day_texts: PackedStringArray = []
+## Wounds to patch (one a day).
+@export var wounds := 1
+## Each care action: what the button says, and what happens.
+@export var feed_label: String
+@export_multiline var feed_result: String
+@export var comfort_label: String
+@export_multiline var comfort_result: String
+@export var patch_label: String
+@export_multiline var patch_result: String
+@export var medicine_label: String
+@export_multiline var medicine_result: String
 
 @export_group("Release")
 @export_multiline var ready_text: String
 @export_multiline var release_text: String
 ## A fact for the Journal when it's released.
 @export_multiline var fact: String
-## Islands it may turn up on later, once released (it travels, as real ones do): only while
-## both its own island and that island are healthy.
+## Other islands it may turn up on once released (as real ones travel): a turtle visits the
+## Mangrove Coast and the Reef, never the Arctic.
 @export var visits: PackedStringArray = []
 
 

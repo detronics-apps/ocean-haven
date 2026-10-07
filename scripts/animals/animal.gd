@@ -534,6 +534,8 @@ func _react_to_ranger(delta: float) -> void:
 			_watched += delta
 			if _watched >= data.observe_time:
 				Journal.observe(data)
+				if has_meta("rescue_id"):
+					Rescues.meet(get_meta("rescue_id"))
 
 	if distance <= data.interact_distance:
 		_in_reach = true
@@ -765,6 +767,8 @@ func _is_first_choice() -> bool:
 
 
 func _interact() -> void:
+	if has_meta("rescue_id"):
+		Rescues.meet(get_meta("rescue_id"))  # one of the ranger's rescued animals: its name shows
 	if tangled:
 		restore_freed()
 		if tangle_item:

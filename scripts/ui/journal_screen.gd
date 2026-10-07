@@ -162,12 +162,12 @@ func _rescues() -> Control:
 	var caring := Rescues.in_care()
 	if caring and Rescues.is_named():
 		lines.append("In your care: %s, %s (day %d of %d)" % [Rescues.pet_name(), caring.species.display_name.to_lower(),
-			mini(int(Rescues.days_in()) + 1, caring.days), caring.days])
+			Rescues.day_now(), caring.days])
 	for id in Rescues.done:
 		var rescue := Rescues.rescue(id)
 		if rescue:
-			lines.append("Released: %s, %s, on day %d" % [Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower(),
-				int(Rescues.done[id].get("day", 0))])
+			lines.append("Released: %s, %s, on day %d, %s" % [Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower(),
+				int(Rescues.done[id].get("day", 0)), Rescues.shape_text(float(Rescues.done[id].get("shape", 0.7)))])
 			var seen: Array = Rescues.done[id].get("seen", [])
 			if not seen.is_empty():
 				lines.append("  Seen since near: %s" % ", ".join(seen.map(func(r: String) -> String:

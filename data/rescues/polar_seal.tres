@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
 [ext_resource type="Resource" path="res://data/animals/ringed_seal.tres" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/polar_seal.svg" id="3_v"]
 
 [resource]
 script = ExtResource("1_r")
@@ -11,17 +12,20 @@ species = ExtResource("2_t")
 building = &"polar_research_station"
 person = &"sanna"
 offer_when = PackedStringArray("built:polar_research_station", "here")
-found_note = "Sanna: \"A ringed seal pup is alone on the ice. Its snow den melted early and its mother hasn't come back. Come to the station!\""
-intro = "Sanna: \"This pup was left on the ice when its den melted. Ringed seal pups normally grow up in a snow den. It isn't a pet: we're helping it get back to the ice. Will you give it a name?\""
-days = 30
-stage_days = PackedInt32Array(0, 4, 8, 14, 20, 30)
-stage_names = PackedStringArray("Critical care", "Feeding", "Swimming", "Catching fish", "Wild again", "Ready")
-stage_texts = PackedStringArray("{name} is a fluffy white pup, resting in a cool, quiet pen.", "{name} is hungry.", "{name} has lost its white baby fur.", "{name} is ready to learn to hunt.", "{name} hides from people now, like a wild seal should.", "Sleek, strong and shy of people: ready.")
-care_questions = PackedStringArray("What does {name} need most?", "What should we feed {name}?", "How can {name} get ready for the sea?", "How should {name} get its fish now?", "{name} hides when you come near. Is that good?", "")
-care_right = PackedStringArray("A cool, quiet place to rest", "A fish formula made for seal pups", "Swims in a cold pool", "Whole fish dropped in the pool to catch", "Yes: wild seals keep away from people", "")
-care_wrong = PackedStringArray("A warm room by the stove", "Cow's milk", "Keep it on dry land", "Fed by hand", "No: it should want to play", "")
-care_right_result = PackedStringArray("{name} sleeps. Seal pups are built for the cold: a warm room would be far too hot.", "{name} drinks it all. Seal milk is very rich: pups grow fast on it.", "{name} dives and twists in the cold water. A natural!", "{name} chases the fish around the pool and catches it. That's how it'll eat on its own.", "Exactly. A seal that's shy of people is safer out on the ice.", "")
-care_wrong_result = PackedStringArray("Too warm! Seal pups are made for the cold, under their fluffy coat.", "Cow's milk isn't right for seals: their milk is much richer.", "A seal that never swims can't learn to catch fish.", "If food always comes from hands, {name} won't learn to catch fish under the ice.", "A wild seal should keep away from people: it's safer that way.", "")
-ready_text = "Sanna: \"{name} is ready for the ice. Shall we take it to the edge of the old ice?\""
-release_text = "At the edge of the old ice, {name} sniffs the air, slides into the water... and is gone. Sanna: \"Out there it'll keep a breathing hole open in the ice all winter, all by itself.\""
-fact = "Seal pups that are orphaned or stranded are cared for at rescue centres and released once they can hunt for themselves."
+found_note = "Sanna: \"We found a ringed seal pup alone on melting ice, far from its mother's lair. Come to the station!\""
+intro = "Sanna: \"This pup lost its snow den when the ice broke up early. It isn't a pet: we're helping it home to the ice. Will you give it a name?\""
+days = 6
+vet_picture = ExtResource("3_v")
+day_texts = PackedStringArray("{name} is a fluffy white pup, shivering on the table.", "{name} watches you with big dark eyes.", "{name} wriggles across the table towards the water bowl.", "{name} is growing a sleek grey coat.", "{name} dives in the cold pool and stays under a long time.", "Sleek, strong and shy of people: ready.")
+wounds = 1
+feed_label = "Feed: fish formula, then small fish"
+feed_result = "{name} slurps it up. In the wild a pup drinks rich milk, then learns to catch Arctic cod."
+comfort_label = "A cool, quiet pen with ice"
+comfort_result = "{name} rests on the ice. Ringed seal pups are born in snow dens on the sea ice."
+patch_label = "Clean the scratch on its flipper"
+patch_result = "You clean a scratch from the broken ice and cover it."
+medicine_label = "Medicine for its cough"
+medicine_result = "A shot from the vet, and {name}'s breathing is easier."
+ready_text = "Sanna: \"{name} has had six days of care. Shall we take it to the edge of the old ice?\""
+release_text = "You set {name} down on the old ice. It sniffs the air, slides to the edge... and slips into the water, a bright tag on its flipper."
+fact = "Seal rescue centres tag the pups they release on a flipper, so they can be recognised if they haul out on a beach again."

@@ -1,9 +1,10 @@
 extends SceneTree
 ## Rescue companions: once the Marine Search & Rescue Station is built, a young turtle found
-## tangled and weak comes into the ranger's care. The ranger names it and helps it each day
-## with a care moment (the wrong choice only explains why not); it recovers over 30 days in
-## stages (the staff care for it while the ranger is away; it never gets worse); then it's
-## released and lives on the island with its name. One at a time; saved.
+## tangled and weak comes into the ranger's care. The ranger names it, then for 6 game days
+## cares for it on the vet table: feed, comfort, patch a wound, medicine (each once a day).
+## Its bars (health, fed, calm) only ever go up. Then it goes home tagged, in the shape the
+## care left it in, and is seen again some mornings: on its own island, or (a turtle) on the
+## Mangrove Coast or the Reef, never the Arctic. Its name shows once the ranger meets it again.
 ## Run: godot --headless --path . --script res://tests/test_rescue.gd --quit-after 300000
 
 var _failed := false
@@ -28,7 +29,7 @@ func _initialize() -> void:
 	var station: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/marine_rescue_station.tres"), Vector2i(-6, -6))
 	rescues.call("_offer")
 	var turtle: Resource = rescues.in_care()
-	_expect(turtle != null and turtle.species.id == &"green_turtle", "a young green turtle is found and brought to the station")
+	_expect(turtle != null and turtle.species.id == &"green_turtle" and turtle.days == 6, "a young green turtle is found: 6 days of care")
 	var player: Node2D = world.get_node("Player")
 	player.global_position = station.global_position + Vector2(0, 50)
 	var labels := func() -> Array: return station.actions().map(func(a: Dictionary) -> String: return a.label)
@@ -38,67 +39,89 @@ func _initialize() -> void:
 	var screen: Node = world.get_parent().find_child("RescueScreen", true, false)
 	screen.open_rescue()
 	var content: Node = screen.get("_content")
-	_expect(screen.visible and content.find_child("NameField", true, false) != null, "the first visit asks for a name")
+	_expect(screen.visible and content.find_child("NameField", true, false) != null and content.find_child("VetTable", true, false) != null,
+		"on the vet table, seen from the front; the first visit asks for a name")
 	(content.find_child("NameField", true, false) as LineEdit).text = "Milo"
 	(content.find_child("NameIt", true, false) as Button).pressed.emit()
 	await process_frame
 	_expect(rescues.pet_name() == "Milo" and "Care for Milo" in labels.call(), "it's called Milo now")
 
-	# --- Today's care moment: the wrong choice only explains, the right one counts ---
+	# --- A day's care: four things, each once a day; the bars only go up ---
 	content = screen.get("_content")
-	_expect(rescues.can_care(), "there's a care moment today")
-	(content.find_child("Other", true, false) as Button).pressed.emit()
+	_expect(content.find_child("Bars", true, false) != null and content.find_child("Care", true, false).get_child_count() == 4,
+		"three bars, and four things to do")
+	var health_before: int = rescues.bar(&"health")
+	(content.find_child("Feed", true, false) as Button).pressed.emit()
 	await process_frame
-	_expect(rescues.can_care(), "the other choice only explains why not: try again")
+	_expect(rescues.bar(&"fed") > 20 and not rescues.can_do(&"feed"), "fed: the Fed bar goes up, once a day")
 	content = screen.get("_content")
-	(content.find_child("Right", true, false) as Button).pressed.emit()
+	(content.find_child("Patch", true, false) as Button).pressed.emit()
 	await process_frame
-	_expect(not rescues.can_care(), "the right one: Milo is cared for today")
+	_expect(rescues.bar(&"health") > health_before, "a wound patched: Health goes up")
 	screen.close()
 
-	# --- It recovers in stages over 30 days, cared for or not ---
-	var stages: Array = []
-	rescues.stage_reached.connect(func(_r: Resource, stage: int) -> void: stages.append(stage))
-	for day in 30:
+	# --- Caring every day until it's ready ---
+	for day in 6:
 		clock.advance(clock.DAY_LENGTH)
-		rescues.call("_process", 2.0)
-	_expect(stages == [1, 2, 3, 4, 5], "eating, swimming, exploring, wild again, ready: one stage after another (%s)" % [stages])
-	_expect(rescues.is_ready() and "Release Milo" in labels.call(), "after 30 days Milo is ready to go home")
+		for action in [&"feed", &"comfort", &"patch", &"medicine"]:
+			rescues.care(action)
+	_expect(rescues.is_ready() and "Release Milo" in labels.call(), "after 6 days Milo is ready to go home")
+	_expect(rescues.shape() > 0.95, "cared for every day: in top shape (%.2f)" % rescues.shape())
 
 	# --- Saved while in care ---
-	var saved: Dictionary = rescues.to_dict()
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(rescues.to_dict()))
 	rescues.restore({})
-	rescues.restore(JSON.parse_string(JSON.stringify(saved)))
-	_expect(rescues.pet_name() == "Milo" and rescues.is_ready(), "the rescue in care is saved")
+	rescues.restore(saved)
+	_expect(rescues.pet_name() == "Milo" and rescues.is_ready() and rescues.bar(&"fed") == 100, "the rescue in care is saved, bars and all")
 
-	# --- Release: a milestone; Milo lives on the island ---
+	# --- Release: tagged, on its island ---
 	screen.open_rescue()
 	content = screen.get("_content")
 	(content.find_child("Release", true, false) as Button).pressed.emit()
 	await process_frame
-	_expect(rescues.in_care() == null and rescues.done.has(&"home_turtle") and rescues.done[&"home_turtle"].name == "Milo",
-		"released: Milo's story is kept")
+	await process_frame
+	_expect(rescues.in_care() == null and rescues.done[&"home_turtle"].name == "Milo" and rescues.done[&"home_turtle"].shape > 0.95,
+		"released: Milo's story is kept, with the shape it went home in")
 	var milo: Node2D = world.get_node_or_null("Rescued_home_turtle")
-	_expect(milo != null and milo.data.id == &"green_turtle" and load("res://scripts/world/terrain.gd").at(self, milo.global_position) in ["water", ""],
-		"Milo swims in the island's waters")
+	_expect(milo != null and milo.data.id == &"green_turtle" and milo.get_node("Sprite2D").get_children().any(func(c: Node) -> bool: return c is TagBand),
+		"Milo swims by the station with a bright tag")
 	screen.close()
-	rescues.call("_offer")
-	_expect(rescues.in_care() == null, "no second rescue on the same island")
-	# --- The next island's rescue: only once the ranger is there and its research building is up ---
-	var kelp: Resource = load("res://data/regions/kelp_forest.tres")
-	load("res://scripts/world/regions.gd").discover(kelp)
-	var platform: Node2D = world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_research_platform.tres"),
-		load("res://scripts/world/terrain.gd").cell_of(kelp.arrival) + Vector2i(-3, 4))
-	rescues.call("_offer")
-	_expect(rescues.in_care() == null, "not while the ranger is on another island")
-	player.global_position = kelp.arrival
-	rescues.call("_offer")
-	_expect(rescues.in_care() != null and rescues.in_care().species.id == &"sea_otter", "on the Kelp Forest: a sea otter pup needs care")
-	_expect(rescues.in_care().stage_names.size() == rescues.in_care().care_questions.size()
-		and rescues.in_care().care_right.size() == rescues.in_care().stage_days.size(), "every stage has its care moment")
-	for id in ["kelp_otter", "mangrove_flamingo", "polar_seal"]:
+
+	# --- Where it turns up: its island or the islands it travels to, never the Arctic ---
+	for id in ["mangrove_coast", "tropical_reef", "arctic_ocean"]:
+		load("res://scripts/world/regions.gd").discover(load("res://data/regions/%s.tres" % id))
+	var places := {}
+	for i in 200:
+		var at: String = rescues.call("_roll_where", turtle, 1.0)
+		places[at] = places.get(at, 0) + 1
+	_expect(places.has("home_island") and places.has("tropical_reef") and places.has("mangrove_coast") and not places.has("arctic_ocean"),
+		"a turtle turns up at home, on the Mangrove Coast and the Reef, never the Arctic (%s)" % [places])
+	var away := 0
+	for i in 400:
+		if rescues.call("_roll_where", turtle, 0.2) == "":
+			away += 1
+	var away_well := 0
+	for i in 400:
+		if rescues.call("_roll_where", turtle, 1.0) == "":
+			away_well += 1
+	_expect(away > away_well, "one that went home in better shape is seen more often (%d vs %d days away)" % [away, away_well])
+	rescues.done[&"home_turtle"].met = false
+	rescues.done[&"home_turtle"].where = "home_island"
+	rescues.place_all()
+	await process_frame
+	milo = world.get_node("Rescued_home_turtle")
+	_expect(not milo.get_node("NameTag").visible, "its name only shows once the ranger has met it again")
+	player.global_position = milo.global_position + Vector2(20, 0)
+	milo.call("_interact")
+	await process_frame
+	await process_frame
+	_expect(world.get_node("Rescued_home_turtle").get_node("NameTag").visible, "met again (a photo): 'Milo' over it from now on")
+
+	# --- Every island's rescue is complete ---
+	for id in ["home_turtle", "kelp_otter", "mangrove_flamingo", "reef_seahorse", "deep_sixgill", "polar_seal"]:
 		var one: Resource = load("res://data/rescues/%s.tres" % id)
-		_expect(one.stage_days.size() == 6 and one.care_wrong_result.size() == 6 and one.species != null, "%s is complete" % id)
+		_expect(one.days == 6 and one.day_texts.size() == 6 and one.vet_picture != null and one.feed_label != "" and one.medicine_result != "",
+			"%s is complete" % id)
 
 	if not _failed:
 		print("PASS")

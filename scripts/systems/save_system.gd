@@ -61,7 +61,7 @@ func attach(world: Node) -> bool:
 	Activities.finished.connect(func(_a, _l, _s, _st): _dirty = true)
 	Rescues.found.connect(func(_r): _dirty = true)
 	Rescues.released.connect(func(_r, _n): _dirty = true)
-	Rescues.stage_reached.connect(func(_r, _s): _dirty = true)
+	Rescues.cared.connect(func(_r): _dirty = true)
 	RareEvents.struck.connect(func(_e, _d): _dirty = true)
 	Missions.returned.connect(func(_m, _f): _dirty = true)
 	Journal.nested.connect(func(_a): _dirty = true)

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/sixgill_shark.tres" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/deep_sixgill.svg" id="3_v"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"deep_sixgill"
+region = &"deep_sea"
+species = ExtResource("2_t")
+building = &"deep_ocean_outpost"
+person = &"imani"
+offer_when = PackedStringArray("built:deep_ocean_outpost", "here")
+found_note = "Imani: \"The submarine found a young sixgill shark with a fishing hook stuck in its mouth. We brought it up slowly. Come to the outpost!\""
+intro = "Imani: \"This young sixgill was hooked on an old longline. It isn't a pet: we're helping it home to the deep. Will you give it a name?\""
+days = 6
+vet_picture = ExtResource("3_v")
+day_texts = PackedStringArray("{name} lies quietly in its cold, dark tank.", "{name} turns its big green eyes towards you.", "{name} swims slowly round the tank.", "{name} took food from the tongs this morning.", "{name} swims faster now, low along the bottom.", "Strong and steady: ready for the deep.")
+wounds = 2
+feed_label = "Feed: pieces of squid and fish"
+feed_result = "{name} takes the squid gently. Sixgills eat fish, squid and whatever falls from above."
+comfort_label = "Keep the tank cold and dark"
+comfort_result = "{name} relaxes in the dark. Sixgills live deep down, far from the light."
+patch_label = "Take out the hook and clean the wound"
+patch_result = "Carefully, the hook comes out. You clean the wound. It will heal."
+medicine_label = "Medicine from the vet"
+medicine_result = "A shot of medicine stops the wound from getting infected."
+ready_text = "Imani: \"{name} has had six days of care. Shall we take it back down?\""
+release_text = "The submarine carries {name} down into the dark. It swims away slowly into the deep, a bright tag on its fin."
+fact = "Scientists tag sharks to follow where they go: some sixgills swim up towards the surface at night and back down by day."

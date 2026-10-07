@@ -2,8 +2,8 @@ extends SceneTree
 ## Photo moments: each species has 2-3 special situations to photograph it in (a hatchling, a
 ## crab digging, a dolphin leading you to litter...). The first photo of each is kept in the
 ## Journal; ordinary photos still count (research funding) but aren't kept; missing moments
-## show as a hint. Maya mentions the collection. Released rescue companions that travel can turn
-## up on another island, but only while both islands are healthy.
+## show as a hint. Maya mentions the collection. Released rescue companions that travel turn up on
+## other islands some days.
 ## Run: godot --headless --path . --script res://tests/test_photo_moments.gd --quit-after 300000
 
 var _failed := false
@@ -88,16 +88,16 @@ func _initialize() -> void:
 	root.get_node("People").finish_talk()
 	_expect(texts.any(func(t: String) -> bool: return t.contains("1 of %d photo moments" % journal.moments_total())), "Maya: '1 of N photo moments so far' (%s)" % [texts])
 
-	# --- A released turtle visits only healthy islands ---
+	# --- A released turtle turns up on another island, tagged ---
 	var rescues := root.get_node("Rescues")
-	rescues.restore({"done": {"home_turtle": {"name": "Milo", "day": 40}}})
 	var mangrove: Resource = load("res://data/regions/mangrove_coast.tres")
 	load("res://scripts/world/regions.gd").discover(mangrove)
-	world.get_node("Player").global_position = mangrove.arrival
-	rescues.check_visits()
-	_expect(world.get_node_or_null("Visiting_home_turtle") == null, "while the islands aren't healthy, Milo doesn't turn up")
-	var visitor: Node2D = world.visit_animal(load("res://data/rescues/home_turtle.tres"), "Milo", mangrove)
-	_expect(visitor.visiting and load("res://scripts/world/regions.gd").nearest(visitor.global_position) == mangrove, "a visit: Milo swims near the Mangrove Coast, just visiting")
+	rescues.restore({"done": {"home_turtle": {"name": "Milo", "day": 40, "shape": 1.0, "where": "mangrove_coast"}}})
+	rescues.place_all()
+	await process_frame
+	var visitor: Node2D = world.get_node_or_null("Rescued_home_turtle")
+	_expect(visitor != null and visitor.visiting and load("res://scripts/world/regions.gd").nearest(visitor.global_position) == mangrove,
+		"a visit: Milo swims near the Mangrove Coast, just visiting")
 
 	if not _failed:
 		print("PASS")

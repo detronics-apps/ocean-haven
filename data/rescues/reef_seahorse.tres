@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="RescueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/animals/seahorse.tres" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse.svg" id="3_v"]
+
+[resource]
+script = ExtResource("1_r")
+id = &"reef_seahorse"
+region = &"tropical_reef"
+species = ExtResource("2_t")
+building = &"coral_restoration_lab"
+person = &"kai"
+offer_when = PackedStringArray("built:coral_restoration_lab", "here")
+found_note = "Kai: \"A seahorse was caught in fishing line in the lagoon. It's so tired it can barely hold on to anything. Come to the coral lab!\""
+intro = "Kai: \"This seahorse was tangled in line. It isn't a pet: we're helping it home to the seagrass. Will you give it a name?\""
+days = 6
+vet_picture = ExtResource("3_v")
+day_texts = PackedStringArray("{name} drifts in its tank, too tired to hold on.", "{name} curls its tail round a twig.", "{name} snaps up a tiny shrimp.", "{name} changes colour to match its seagrass.", "{name} swims upright, fins fluttering fast.", "Strong and steady: ready for the seagrass.")
+wounds = 1
+feed_label = "Feed: tiny live shrimp"
+feed_result = "Snap! Seahorses have no stomach to store food, so they eat many times a day."
+comfort_label = "Something to hold with its tail"
+comfort_result = "{name} wraps its tail round a seagrass stem. Seahorses anchor themselves so the current doesn't carry them off."
+patch_label = "Clean where the line rubbed"
+patch_result = "You gently clean the sore where the line rubbed. It will heal."
+medicine_label = "A medicine bath from the vet"
+medicine_result = "A short bath with medicine in it helps {name}'s skin heal."
+ready_text = "Kai: \"{name} has had six days of care. Shall we take it home to the seagrass?\""
+release_text = "You lower {name} into the seagrass. It wraps its tail round a stem and turns as green as the leaves, a tiny bright tag on its neck."
+fact = "Scientists mark seahorses with tiny coloured tags to learn how far they travel: many stay close to home their whole lives."

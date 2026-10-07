@@ -24,7 +24,6 @@ func _ready() -> void:
 			var spot := ActivitySpot.new()
 			spot.activity = activity
 			add_child(spot)
-	Rescues.released.connect(func(rescue: RescueData, animal_name: String) -> void: release_animal(rescue, animal_name, true))
 	var tint := Timer.new()
 	tint.wait_time = tint_interval
 	tint.autostart = true
@@ -33,10 +32,7 @@ func _ready() -> void:
 	IslandHealth.tint.call_deferred(get_tree())
 	if not SaveGame.attach(self):
 		return
-	for id in Rescues.done:  # the rescue companions the ranger released live on their islands
-		var rescue := Rescues.rescue(id)
-		if rescue:
-			release_animal(rescue, String(Rescues.done[id].get("name", "")), false)
+	Rescues.place_all()  # the rescue companions the ranger released, wherever they are today
 	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
 		get_window().content_scale_factor = TOUCH_SCALE
 	if OS.has_feature("web") and not OS.is_userfs_persistent():
@@ -52,22 +48,35 @@ func _ready() -> void:
 		$BuildMode.start(load(TENT_PATH), true)
 
 
-## A released rescue companion: a wild animal of its island now, with its name (from its
-## rescue building's shore when it's just been released).
-func release_animal(rescue: RescueData, animal_name: String, just_now: bool) -> Node2D:
+## A released rescue companion, tagged, where it is today (Rescues: its own island, an island it
+## travels to, or out at sea: then it isn't in the world). A bright band shows it's one of
+## yours; its name shows over it once the ranger has met it again.
+func place_tagged(rescue: RescueData, record: Dictionary) -> Node2D:
 	var node_name := "Rescued_%s" % rescue.id
-	if has_node(node_name):
-		return get_node(node_name)
-	var at := (load(rescue.region_path()) as RegionData).arrival
-	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == rescue.building and Regions.nearest(building.global_position).id == rescue.region:
-			at = building.global_position
+	var old := get_node_or_null(node_name)
+	if old:
+		old.name = node_name + "_gone"
+		old.queue_free()
+	var where := String(record.get("where", ""))
+	if where == "":
+		return null
+	var region: RegionData = load("res://data/regions/%s.tres" % where)
+	var at := region.arrival
+	if where == String(rescue.region):
+		for building: Building in get_tree().get_nodes_in_group("buildings"):
+			if building.data.id == rescue.building and Regions.nearest(building.global_position) == region:
+				at = building.global_position
+	var habitat: Array = Array(rescue.species.habitat_terrain)
 	var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 	animal.name = node_name
 	animal.set("data", rescue.species)
-	animal.position = Terrain.nearest(get_tree(), at, ["water", ""]) if just_now else Terrain.nearest(get_tree(), at, ["water", ""], 12) + Vector2(randf_range(-60, 60), randf_range(-60, 60))
-	var tag := Label.new()  # its name, small, above it
-	tag.text = animal_name
+	animal.set("visiting", where != String(rescue.region))
+	animal.set_meta("rescue_id", rescue.id)
+	animal.position = Terrain.nearest(get_tree(), at + Vector2(randf_range(-80, 80), randf_range(-60, 60)), habitat, 12)
+	var tag := Label.new()  # its name, small, above it (once met)
+	tag.name = "NameTag"
+	tag.text = String(record.get("name", ""))
+	tag.visible = bool(record.get("met", false))
 	tag.add_theme_font_size_override("font_size", 14)
 	tag.add_theme_constant_override("outline_size", 5)
 	tag.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -77,31 +86,10 @@ func release_animal(rescue: RescueData, animal_name: String, just_now: bool) -> 
 	animal.add_child(tag)
 	add_child(animal)
 	move_child(animal, $Player.get_index())
-	if animal.has_method("link_to_nearest_area"):
+	var band := TagBand.new()  # (after it's ready: on its picture, so it turns with it)
+	animal.get_node("Sprite2D").add_child(band)
+	if animal.has_method("link_to_nearest_area") and where == String(rescue.region):
 		animal.link_to_nearest_area()
-	return animal
-
-
-## A released rescue companion turning up on another island for the day (a visitor: it
-## doesn't count as living there), with its name.
-func visit_animal(rescue: RescueData, animal_name: String, region: RegionData) -> Node2D:
-	var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
-	animal.name = "Visiting_%s" % rescue.id
-	animal.set("data", rescue.species)
-	animal.set("visiting", true)
-	animal.add_to_group("rescue_visitors")
-	animal.position = Terrain.nearest(get_tree(), region.arrival, ["water", ""], 12) + Vector2(randf_range(-80, 80), randf_range(-60, 60))
-	var tag := Label.new()
-	tag.text = animal_name
-	tag.add_theme_font_size_override("font_size", 14)
-	tag.add_theme_constant_override("outline_size", 5)
-	tag.add_theme_color_override("font_outline_color", Color.BLACK)
-	tag.scale = Vector2(0.5, 0.5)
-	tag.position = Vector2(-16, -26)
-	tag.z_index = 100
-	animal.add_child(tag)
-	add_child(animal)
-	move_child(animal, $Player.get_index())
 	return animal
 
 

@@ -93,13 +93,10 @@ func _ready() -> void:
 	get_parent().add_child.call_deferred(rescue_screen)
 	Rescues.found.connect(func(r: RescueData) -> void: show_toast(r.found_note))
 	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
-		show_toast("Something moved in the water... it's %s! The %s you rescued on the %s, here near the %s.\nHealthy islands and healthy seas let animals travel between them." % [
+		show_toast("Something moved in the water... it's %s! The %s you rescued on the %s, here near the %s.\nLook for the bright tag." % [
 			animal_name, r.species.display_name.to_lower(), (load(r.region_path()) as RegionData).display_name, region.display_name]))
 	Journal.moment_caught.connect(func(animal: AnimalData, moment: PhotoMoment) -> void:
 		show_toast("New photo moment: %s, %s!\nThe photo is kept in your Journal." % [animal.display_name, moment.title.to_lower()]))
-	Rescues.stage_reached.connect(func(r: RescueData, stage: int) -> void:
-		show_toast("%s is doing well: %s.\n%s" % [Rescues.pet_name(), r.stage_names[stage].to_lower(),
-			r.stage_texts[stage].replace("{name}", Rescues.pet_name())]))
 	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
 		show_toast("%s is back in the wild!\n%s" % [animal_name, r.fact]))
 	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new(), ChannelFlow.new(), EchoDive.new(), FloeFit.new()]:  # ranger activities (data/activities/)
