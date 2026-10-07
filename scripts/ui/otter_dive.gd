@@ -2,17 +2,24 @@ class_name OtterDive
 extends ActivityScreen
 ## Otter Dive (Finn, from the old jetty on the Kelp Forest): dive like a sea otter. Hold to swim
 ## down, let go to float up; grab the urchins on the sea floor and come up for air before it
-## runs out (out of air, you just float up: nothing goes wrong). Bumping a kelp stalk slows you
-## for a moment. Litter drifts through the forest: swimming into it the otter gets caught for a
-## moment and wriggles free, losing one of its HEARTS. The story play counts urchins for Finn
-## (the urchin pressure survey: collect the level's number). After that each level is endless:
-## how many urchins can you collect, and how long can you go without getting caught three
-## times? (Activities.record_most "urchins" / "seconds"; collecting the level's number of
-## urchins in one go opens the next.) Fish swim by and birds fly over the water.
+## runs out. Bumping a kelp stalk slows you for a moment. Litter drifts through the forest:
+## swimming into it the otter gets caught for a moment and wriggles free, losing one of its
+## HEARTS. The story play counts STORY_GOAL urchins for Finn (the urchin pressure survey; out of
+## air, the otter just floats up). After that each level asks for its number of urchins (10, 20,
+## 30...) as fast as you can, and staying under with no air left costs a heart too (sea otters
+## must come up to breathe), with a little less air each level. Out of hearts, the most urchins
+## is the level's record (Activities.record_most "urchins") until its number is reached, then
+## the best time is (Activities.finish), and the next level opens. Fish swim by and birds fly
+## over the water.
 
-## Level config: (urchins to collect: the story's goal, then what opens the next level; kelp
-## stalks per screen; current strength 1-5, which also brings more litter).
+## Level config: (urchins to collect for the level; kelp stalks per screen; current strength
+## 1-5, which also brings more litter).
+const STORY_GOAL := 5
 const AIR_SECONDS := 7.0
+## Less air each level (level 5: 5 s).
+const AIR_LESS_PER_LEVEL := 0.5
+## Air below this: the bar flashes and the otter is warned.
+const LOW_AIR := 2.0
 const OTTER_X := 0.22
 const SURFACE := 0.14
 const FLOOR := 0.9
@@ -28,6 +35,8 @@ var _holding := false
 var _y := 0.14
 var _velocity := 0.0
 var _air := AIR_SECONDS
+var _air_max := AIR_SECONDS
+var _warned := false
 var _scroll := 0.0
 var _slow := 0.0
 var _goal := 0
@@ -57,7 +66,7 @@ func _enter_tree() -> void:
 func _how_to_play() -> String:
 	if _story():
 		return "Hold to dive, let go to float up. Grab %d urchins on the sea floor, and come up for air before it runs out. Kelp slows you down; keep clear of litter: it catches you (3 hearts)." % _goal
-	return "Hold to dive, let go to float up. How many urchins can you grab, and how long can you last? Litter catches you and costs a heart: after 3 the dive is over."
+	return "Hold to dive, let go to float up. Grab %d urchins as fast as you can! Come up for air in time: running out under water costs a heart, and so does litter. 3 hearts." % _goal
 
 
 func _story() -> bool:
@@ -65,21 +74,27 @@ func _story() -> bool:
 
 
 func _level_note(i: int) -> String:
+	var target: int = activity.levels[i].x
+	var best := Activities.best(activity, i)
+	if best < INF:
+		return "%d urchins\nBest %.1f s" % [target, best]
 	var urchins := Activities.most(activity, i, "urchins")
 	if urchins <= 0.0:
-		return "New!"
-	return "Most %d urchins\nLasted %d s" % [roundi(urchins), roundi(Activities.most(activity, i, "seconds"))]
+		return "%d urchins\nNew!" % target
+	return "%d urchins\nMost %d" % [target, roundi(urchins)]
 
 
 func _start_board(config: Vector3i) -> void:
-	_goal = config.x
+	_goal = STORY_GOAL if _story() else config.x
+	_air_max = AIR_SECONDS if _story() else AIR_SECONDS - AIR_LESS_PER_LEVEL * level
+	_warned = false
 	_density = config.y
 	_current = config.z
 	_speed = 0.14 + 0.03 * config.z
 	_got = 0
 	_y = SURFACE
 	_velocity = 0.0
-	_air = AIR_SECONDS
+	_air = _air_max
 	_scroll = 0.0
 	_slow = 0.0
 	_time = 0.0
@@ -160,9 +175,20 @@ func step(delta: float, diving: bool) -> void:
 	_velocity = lerpf(_velocity, push, minf(delta * 4.0, 1.0))
 	_y = clampf(_y + _velocity * delta * 0.6, SURFACE, FLOOR - 0.04)
 	if _y <= SURFACE + 0.01:
-		_air = minf(_air + delta * AIR_SECONDS / 1.2, AIR_SECONDS)  # a breath at the surface
+		_air = minf(_air + delta * _air_max / 1.2, _air_max)  # a breath at the surface
+		_warned = false
 	else:
+		var had_air := _air > 0.0
 		_air = maxf(_air - delta, 0.0)
+		if _air < LOW_AIR and not _warned and not _story():
+			_warned = true
+			_note = "Air running low: swim up!"
+			Sound.play(&"not_yet", -6.0)
+		if had_air and _air <= 0.0 and not _story():  # still under with no air: up it goes, one heart less
+			_velocity = -1.2
+			_lose_heart("Out of air! The otter shoots up for a breath")
+			if not _playing:
+				return
 	var speed := _speed * (0.35 if _slow > 0.0 else 1.0) * (0.0 if _caught > 0.0 else 1.0)
 	_slow = maxf(_slow - delta, 0.0)
 	_scroll += speed * delta
@@ -193,36 +219,46 @@ func step(delta: float, diving: bool) -> void:
 			_add_life(1.25 if one.speed - speed < 0.0 else -0.15)
 	if _things.filter(func(t: Dictionary) -> bool: return t.kind == "urchin").size() < 4:
 		_place_ahead(_scroll + 1.2, _scroll + 2.4)
-	if _story() and _got >= _goal:
+	if _got >= _goal:
+		if not _story():
+			Activities.record_most(activity, level, "urchins", _got)
 		_complete()
 
 
 ## Swam into litter: held for a moment, then wriggles free, one heart less. With none left the
 ## dive is over (never a failure: it says how well it went).
 func _tangle() -> void:
-	_hearts -= 1
 	_caught = CAUGHT_SECONDS
 	_safe = CAUGHT_SECONDS + SAFE_AFTER
 	_velocity = 0.0
 	Sound.play(&"dig", -4.0)
+	_lose_heart("Caught in litter! The otter wriggles free")
+
+
+## One heart less (litter, or out of air under water). With none left the dive is over: never
+## a failure, it says how many urchins were collected.
+func _lose_heart(what: String) -> void:
+	_hearts -= 1
+	_safe = maxf(_safe, SAFE_AFTER)
 	if _hearts > 0:
-		_note = "Caught in litter! The otter wriggles free: %d heart%s left." % [_hearts, "" if _hearts == 1 else "s"]
+		_note = "%s: %d heart%s left." % [what, _hearts, "" if _hearts == 1 else "s"]
 		return
-	var more_urchins := Activities.record_most(activity, level, "urchins", _got)
-	var longer := Activities.record_most(activity, level, "seconds", seconds)
-	if _got >= _goal:
-		Activities.record_most(activity, level, "cleared", 1.0)
-	var lines: Array[String] = ["The otter is tired out from wriggling free of all that litter, and floats up for a rest.",
-		"You collected %d urchin%s and lasted %d s.%s" % [_got, "" if _got == 1 else "s", roundi(seconds),
-			" New record!" if more_urchins or longer else ""],
-		"Your best: %d urchins, %d s." % [roundi(Activities.most(activity, level, "urchins")), roundi(Activities.most(activity, level, "seconds"))]]
 	if _story():
-		lines = ["The otter got caught in litter three times and needs a rest. Let's try again: %d urchins for Finn!" % _goal]
-	elif _got >= _goal and level + 1 < activity.levels.size():
-		lines.append("%d urchins or more: level %d is open!" % [_goal, level + 2])
+		_stop(["The otter needs a rest after all that. Let's try again: %d urchins for Finn!" % _goal])
+		return
+	var more := Activities.record_most(activity, level, "urchins", _got)
+	var lines: Array[String] = ["The otter is tired out and floats up for a rest.",
+		"You collected %d of %d urchins.%s" % [_got, _goal, " New record!" if more else ""],
+		"Your most: %d urchins. Collect all %d to set a time and open the next level." % [roundi(Activities.most(activity, level, "urchins")), _goal]]
+	if Activities.best(activity, level) < INF:
+		lines[2] = "Your best time for %d urchins: %.1f s." % [_goal, Activities.best(activity, level)]
 	_stop(lines)
-	if not _story() and Activities.cleared(activity, level) and level + 1 < activity.levels.size():
+	if Activities.cleared(activity, level) and level + 1 < activity.levels.size():
 		_add_button("Next level", _show_start.bind(level + 1, ""), "Next")
+
+
+func _story_sets_time() -> bool:
+	return false
 
 
 func collected() -> int:
@@ -305,8 +341,9 @@ func _draw_arena() -> void:
 	# Air, urchins, hearts, and the last thing that happened.
 	var bar := Rect2(Vector2(16, 12), Vector2(160, 14))
 	_arena.draw_rect(bar, Color(0, 0, 0, 0.4))
-	_arena.draw_rect(Rect2(bar.position, Vector2(bar.size.x * _air / AIR_SECONDS, bar.size.y)), Color("8fd3ff"))
-	var count := "Urchins %d / %d" % [_got, _goal] if _story() else "Urchins %d    %d s" % [_got, roundi(seconds)]
+	var low := _air < LOW_AIR and _y > SURFACE + 0.01 and fmod(_time, 0.5) < 0.25  # flashes when low
+	_arena.draw_rect(Rect2(bar.position, Vector2(bar.size.x * _air / _air_max, bar.size.y)), Color("ff7a6a") if low else Color("8fd3ff"))
+	var count := "Urchins %d / %d" % [_got, _goal] if _story() else "Urchins %d / %d    %.1f s" % [_got, _goal, seconds]
 	_arena.draw_string(get_theme_default_font(), Vector2(190, 25), "Air    " + count, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	for i in _hearts:
 		draw_heart(_arena, Vector2(size.x - 28.0 - i * 34.0, 22.0))

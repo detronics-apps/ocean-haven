@@ -115,7 +115,7 @@ func _begin() -> void:
 func _complete() -> void:
 	_playing = false
 	var story := not Activities.story_done(activity)
-	var record := Activities.finish(activity, level, seconds)
+	var record := Activities.finish(activity, level, seconds if not story or _story_sets_time() else INF)
 	_clear_buttons()
 	var lines: Array[String] = ["Done in %.1f s!" % seconds]
 	if record and not story:
@@ -163,6 +163,12 @@ func _add_button(text: String, action: Callable, name: String) -> Button:
 	button.pressed.connect(action)
 	_buttons.add_child(button)
 	return button
+
+
+## Whether the story play's time counts as the level's best (Otter Dive's story collects
+## fewer urchins than its first level, so it doesn't).
+func _story_sets_time() -> bool:
+	return true
 
 
 ## The record shown on a level's button: the best time (Echo Dive: the deepest dive until the

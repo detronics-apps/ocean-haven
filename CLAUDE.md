@@ -439,7 +439,11 @@ goal line are gone: the goal line is always People.goal_text.
 Phase 6: more ranger activities, each introduced by an island's objective-giver, its story play
 doing one of the island's research missions at once (ActivityData.reward_mission,
 Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
-(Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
+(Finn, old jetty on the Kelp Forest; urchin pressure survey: 5 urchins, out of air just floats
+up; then levels of 10 / 20 / 30 / 40 / 50 urchins as fast as you can, 0.5 s less air each
+level, and staying under with no air costs a heart like litter does: 3 hearts; the most
+urchins is the record until all are collected, then the best time; the story sets no level
+time: ActivityScreen._story_sets_time; old endless-level records start fresh on load), Channel Flow (Rosa, Waterworks
 Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
 Outpost; cargo search: reach the sea floor (the sub climbs the screen fast enough to go back for something missed; jellyfish and
 boulders to avoid), then faster and faster. The view sinks by itself

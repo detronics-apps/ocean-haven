@@ -160,3 +160,15 @@ func restore(saved: Dictionary) -> void:
 		for level in bests[id]:
 			levels[int(level)] = float(bests[id][level])
 		_bests[StringName(id)] = levels
+	_forget_old_otter_records()
+
+
+## Otter Dive's levels used to be endless ("seconds" lasted, "cleared"), and its story play set
+## a time for level 1 with only 5 urchins: those records can't be compared with the new ones
+## (collect 10, 20, 30... as fast as you can), so they start fresh. The story stays done.
+func _forget_old_otter_records() -> void:
+	var records: Dictionary = _most.get(&"otter_dive", {})
+	if records.keys().any(func(k: String) -> bool: return k.ends_with("/seconds") or k.ends_with("/cleared")) \
+			or (_bests.has(&"otter_dive") and records.is_empty()):
+		_most.erase(&"otter_dive")
+		_bests.erase(&"otter_dive")

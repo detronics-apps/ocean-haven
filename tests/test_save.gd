@@ -169,6 +169,12 @@ func _initialize() -> void:
 	var activities := root.get_node("Activities")
 	_expect(activities.story_done(echo) and is_equal_approx(activities.best(echo, 0), 21.5) and is_equal_approx(activities.best_depth(echo, 1), 1234.0),
 		"activities restored: story done, best times, deepest dives")
+	var otter: Resource = load("res://data/activities/otter_dive.tres")
+	activities.restore({"done": ["otter_dive"], "bests": {"otter_dive": {"0": 20.0}}, "most": {"otter_dive": {"0/urchins": 9.0, "0/seconds": 80.0}}})
+	_expect(activities.story_done(otter) and activities.best(otter, 0) == INF and activities.most(otter, 0, "urchins") == 0.0,
+		"old Otter Dive records (endless levels, a 5-urchin story time) start fresh; the story stays done")
+	activities.restore({"done": ["otter_dive"], "bests": {"otter_dive": {"0": 40.0}}, "most": {"otter_dive": {"0/urchins": 10.0}}})
+	_expect(is_equal_approx(activities.best(otter, 0), 40.0), "new Otter Dive records are kept")
 	activities.restore({})
 	_expect(_inventory.picked_on.get(&"kelp_forest", 0) == 12, "litter picked up per island restored (Regions.helped)")
 	_expect(_inventory.picked == picked_before, "litter picked up per kind restored (%s)" % [_inventory.picked])

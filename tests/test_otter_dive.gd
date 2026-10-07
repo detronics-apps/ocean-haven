@@ -2,7 +2,8 @@ extends SceneTree
 ## Otter Dive: an old jetty on the Kelp Forest, there from the start, explains itself until
 ## Finn asks about the urchins; then it opens. Hold to dive, let go to float up; air runs out
 ## under water (then the otter just floats up) and comes back at the surface; grab urchins on
-## the sea floor. The story play does Finn's urchin survey (marked); after that, just for fun.
+## the sea floor. The story play does Finn's urchin survey (marked); after that, levels of 10,
+## 20... urchins against the clock, where staying under with no air costs a heart.
 ## Run: godot --headless --path . --script res://tests/test_otter_dive.gd --quit-after 300000
 
 var _failed := false
@@ -84,30 +85,47 @@ func _initialize() -> void:
 		"and it did Finn's urchin survey (%s)" % root.get_node("Missions").last_report)
 	screen.close_screen()
 
-	# --- Replays: endless; how many urchins, how long, until litter catches the otter 3 times ---
+	# --- Replays: the level's urchins as fast as you can; air and litter cost hearts ---
+	_expect(activities.best(dive_data, 0) == INF, "the story dive sets no level time (only 5 urchins)")
 	screen.open_activity(dive_data)
 	_expect(screen.get("_buttons").has_node("Level1"), "the jetty now opens the levels")
 	screen.level = 0
 	screen.call("_begin")
-	_expect(screen.hearts() == 3, "3 hearts")
-	screen.set("_goal", 2)
-	screen.set("_got", 3)  # (as if 3 urchins were grabbed: more than the level's number)
-	var caught := 0
-	for i in 3:
+	_expect(screen.hearts() == 3 and screen.get("_goal") == 10, "3 hearts, 10 urchins to collect")
+	screen.set("_current", 0)
+	for i in 600:  # hold under water until the air runs out
+		no_litter.call()
+		screen.step(1.0 / 30.0, true)
+		if screen.hearts() < 3:
+			break
+	_expect(screen.hearts() == 2 and screen.get("_playing"), "out of air under water: one heart less, and the dive goes on")
+	_expect(screen.get("_note").contains("Out of air"), "it says why (%s)" % screen.get("_note"))
+	for i in 200:
+		no_litter.call()
+		screen.step(1.0 / 30.0, false)
+	_expect(screen.depth() < 0.2 and screen.air() > 6.0, "it shoots up for a breath")
+	screen.set("_got", 4)
+	for i in 2:
 		screen.things().append({"x": screen.get("_scroll") + 0.22, "y": screen.depth(), "kind": "litter", "icon": null, "phase": 0.0})
 		screen.set("_safe", 0.0)
 		screen.step(1.0 / 30.0, false)
-		caught += 1
-		if i == 0:
-			_expect(screen.hearts() == 2 and screen.get("_caught") > 0.0, "swimming into litter: caught for a moment, one heart less")
-			_expect(screen.get("_playing"), "and the dive goes on")
-	_expect(not screen.get("_playing") and screen.hearts() == 0, "caught three times: the dive is over (%d)" % caught)
-	_expect(is_equal_approx(activities.most(dive_data, 0, "urchins"), 3.0), "the most urchins is the record (%.0f)" % activities.most(dive_data, 0, "urchins"))
+	_expect(not screen.get("_playing") and screen.hearts() == 0, "litter takes the rest: the dive is over")
+	_expect(is_equal_approx(activities.most(dive_data, 0, "urchins"), 4.0), "the most urchins is the record (%.0f)" % activities.most(dive_data, 0, "urchins"))
 	_expect(not screen.get("_info").text.to_lower().contains("fail"), "never 'failed'")
-	_expect(activities.open_levels(dive_data) >= 2, "enough urchins open the next level")
+	_expect(activities.open_levels(dive_data) == 1, "fewer than 10: the next level stays closed")
+	screen.call("_begin")
+	screen.set("_got", 9)
+	screen.things().append({"x": screen.get("_scroll") + 0.22, "y": screen.depth(), "kind": "urchin"})
+	screen.step(1.0 / 30.0, false)
+	_expect(not screen.get("_playing") and activities.best(dive_data, 0) < INF, "all 10 collected: a best time")
+	_expect(activities.open_levels(dive_data) >= 2, "and the next level opens")
 	screen.call("_show_levels")
 	var texts: Array = screen.get("_buttons").get_children().filter(func(b: Node) -> bool: return not b.is_queued_for_deletion()).map(func(b: Button) -> String: return b.text)
-	_expect(texts.size() >= 1 and texts[0].contains("Most 3 urchins"), "the level shows its record (%s)" % [texts])
+	_expect(texts.size() >= 2 and texts[0].contains("Best") and texts[1].contains("20 urchins"), "the levels show their time and target (%s)" % [texts])
+	screen.level = 4
+	screen.call("_begin")
+	_expect(is_equal_approx(screen.get("_air_max"), 5.0) and screen.get("_goal") == 50, "level 5: 50 urchins, less air")
+	screen.set("_playing", false)
 	screen.close_screen()
 
 	if not _failed:
