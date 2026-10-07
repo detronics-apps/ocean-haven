@@ -441,9 +441,11 @@ doing one of the island's research missions at once (ActivityData.reward_mission
 Missions.run_now); some have their own place (ActivitySpot, e.g. the old jetty): Otter Dive
 (Finn, old jetty on the Kelp Forest; urchin pressure survey), Channel Flow (Rosa, Waterworks
 Station; water flow survey; boards built with a way through), Echo Dive (Imani, Deep-Ocean
-Outpost; cargo search: steer the sub in 4 directions down a canyon whose walls slide
-past; sonar pings light up the dark; lost gear to grab, 1.5 s off each; the game's own animal
-sprites at their real depths; levels 1,000 to 5,000 m), Floe Fit (Sanna, Polar Research Station; drill
+Outpost; cargo search: the view sinks by itself and never goes back up; the sub moves
+about the screen (up only holds its depth); below the sunlight only the sonar light shows
+anything, on 90 % of the time at level 1 down to 50 % at level 5; lost gear sinks slowly
+(1.5 s off each), wrecks and boulders and walls add 2 s; the game's own animal sprites at their
+real depths; levels 1,000 to 5,000 m, faster and with more obstacles each), Floe Fit (Sanna, Polar Research Station; drill
 planning; floes cut from a real filling, placed floes can be taken back). Glass Sort waits for
 phase 9 (Kai's bottle story).
 Phase 7: rescue companions on the Kelp Forest (an otter pup separated from its mother; Finn,
@@ -466,7 +468,8 @@ story its objective-giver asks where one kind comes from (TalkTopic.when "picked
 "installed>=2"...; `marks` e.g. "rings_asked"), an Investigate mission (MissionData.effect
 "investigate", show_flag / marks_flag) finds out, and a fix building appears in the Build menu
 (BuildingData.needs_flag) that stops it on every island (BuildingData.stops_litter;
-`Fleet.stopped(id)`, ObjectiveGoal kind "stopped"; the LitterSpawner skips stopped kinds).
+`Fleet.stopped(id)` / `stopped_by(id)`, ObjectiveGoal kind "stopped"; the LitterSpawner skips stopped kinds;
+the recycling centre's menu lists every kind: picked up, carried, stopped by what or still washing in).
 Finn: rings -> Trace the rings -> Harbour Refill Bar (Ines: kegs). Rosa: bags -> Trace the bags
 -> Weaving Workshop (Samuel: nipa palm baskets). Maya: foam boxes -> Trace the foam boxes ->
 Box Return Depot (Tom: crates that go back). Kai: bottles (reusable bottles). Imani: fishing
@@ -519,7 +522,8 @@ patch / medicine once a day each raise Health, Fed and Calm (never down); it goe
 (Rescues.check_visits: its island or RescueData.visits, never elsewhere; "Rescued_<id>",
 ocean_world.place_tagged), its name showing once met again; rescues for every island (Reef
 seahorse, Deep Sea sixgill pup); hint-givers alternate island clues with pointers to anything
-open elsewhere (People.open_things); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
+open elsewhere (People.open_things); the giant squid has a step-by-step hint (DeepEcosystem.squid_hint: map the canyon, a camera, 70 % quiet,
+2 days on the island; Bram's squid topic "{advice:giant_squid}", condition "journal:X"); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
 puzzle, opens when the furnace is firing, story play finishes the first batch).
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar

@@ -608,28 +608,54 @@ func eco_count(target: StringName, projected := {}) -> float:
 ## who keeps coming back stuck gets a concrete clue, not the same story again).
 func advice(factor: HealthFactor) -> String:
 	match factor.target:
+		&"giant_squid":
+			return squid_hint()
 		&"quiet":
-			var sources: Array = []  # [noise, what it is]
-			var over := _buildings(func(b: Building) -> bool: return b.has_node("PatrolBoat") and _over_dark_area(b.global_position)).size()
-			if over > 0:
-				sources.append([patrol_noise * over, "your %d patrol boat%s working over the dark areas: move %s near the shore, or take %s down" % [
-					over, "" if over == 1 else "s", "it" if over == 1 else "them", "it" if over == 1 else "them"]])
-			if light() > 0.0:
-				sources.append([light(), "the camera lamps: fewer cameras (anglerfish glow lets them use less light)"])
-			var baited := _of(&"deep_camera").filter(func(c: Building) -> bool: return c.baited()).size()
-			if baited > 0:
-				sources.append([bait_noise * baited, "the bait at your cameras: it brings the sharks crowding in"])
-			if _dive_noise_until > GameClock.now():
-				sources.append([dive_noise, "the submarine dive (that settles down after a day)"])
-			if sources.is_empty():
+			var loudest := _loudest()
+			if loudest == "":
 				return "The deep's as quiet as you can make it. Give the whales time."
-			sources.sort_custom(func(a: Array, b: Array) -> bool: return a[0] > b[0])
-			return "Listen: the loudest thing down there now is %s. The whales will stay once it's quiet." % sources[0][1]
+			return "Listen: the loudest thing down there now is %s. The whales will stay once it's quiet." % loudest
 		&"knowledge":
 			return "Some dark areas are still a mystery: look for the dashed yellow circles. A hydrophone buoy or a camera close to one learns about it every day, and a dive from the Outpost maps it at once."
 		&"gear":
 			return "There's still lost gear down in the mapped areas. Sail over them in your boat and bring it up."
 	return ""
+
+
+## The loudest thing disturbing the deep now, as words ("" when it's as quiet as it gets).
+func _loudest() -> String:
+	var sources: Array = []  # [noise, what it is]
+	var over := _buildings(func(b: Building) -> bool: return b.has_node("PatrolBoat") and _over_dark_area(b.global_position)).size()
+	if over > 0:
+		sources.append([patrol_noise * over, "your %d patrol boat%s working over the dark areas: move %s near the shore, or take %s down" % [
+			over, "" if over == 1 else "s", "it" if over == 1 else "them", "it" if over == 1 else "them"]])
+	if light() > 0.0:
+		sources.append([light(), "the camera lamps: fewer cameras (anglerfish glow lets them use less light)"])
+	var baited := _of(&"deep_camera").filter(func(c: Building) -> bool: return c.baited()).size()
+	if baited > 0:
+		sources.append([bait_noise * baited, "the bait at your cameras: it brings the sharks crowding in"])
+	if _dive_noise_until > GameClock.now():
+		sources.append([dive_noise, "the submarine dive (that settles down after a day)"])
+	if sources.is_empty():
+		return ""
+	sources.sort_custom(func(a: Array, b: Array) -> bool: return a[0] > b[0])
+	return sources[0][1]
+
+
+## The next step towards seeing the giant squid, from where the ranger is now.
+func squid_hint() -> String:
+	if _squid_found:
+		return "Your camera filmed a giant squid in the canyon inside the hook. Sail over the canyon in your boat to see it, and take its photo."
+	if known_count(&"squid_canyon") == 0:
+		return "It lives in the canyon inside the hook, but that dark area isn't mapped yet. Put a hydrophone buoy or a camera close to it, or send a dive from the Outpost."
+	if _of(&"deep_camera").is_empty():
+		return "The squid canyon is mapped. Now build a Deep Camera (near the canyon is best) and leave it watching. No bait!"
+	if quiet() < squid_quiet:
+		var loudest := _loudest()
+		return "Your camera's watching, but the deep is only %d%% quiet and a giant squid needs %d%%.%s" % [
+			roundi(quiet() * 100.0), roundi(squid_quiet * 100.0), (" The loudest thing now is %s." % loudest) if loudest != "" else ""]
+	return "Everything's ready: a camera watching quiet water. Stay here on the Deep Sea (time only passes for an island while you're on it) and sleep a night or two. After %d quiet days the camera may film one (%.1f so far)." % [
+		roundi(squid_days), _squid_watch]
 
 
 func eco_describe(factor: HealthFactor) -> String:

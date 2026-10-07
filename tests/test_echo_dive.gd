@@ -1,7 +1,8 @@
 extends SceneTree
 ## Echo Dive: once Imani asks about the lost cargo module it's at the Deep-Ocean Outpost. The
-## sub sinks slowly from the surface and steers in all four directions down the canyon (a bump
-## only slows it); the sonar pings light up the dark, lost gear is picked up on the way, past
+## view sinks by itself, never back up; the sub moves about the screen (up only holds the depth);
+## only the sonar light shows the dark (90 % on at level 1, 50 % at level 5); lost gear sinks
+## slowly; wrecks and boulders slow it and add time; past
 ## the deep's animals at their real depths. The story dive reaches the cargo module at
 ## 1,000 m (Imani's cargo search); then it's for fun, each level 1,000 m deeper.
 ## Run: godot --headless --path . --script res://tests/test_echo_dive.gd --quit-after 300000
@@ -38,34 +39,51 @@ func _initialize() -> void:
 	screen.call("_begin")
 	for i in 90:
 		screen.step(1.0 / 30.0, Vector2.ZERO)
-	_expect(screen.get("_playing") and screen.depth() > 50.0, "the sub sinks slowly by itself")
+	_expect(screen.get("_playing") and screen.depth() > 50.0, "the sub sinks with the view by itself")
 	var before: float = screen.depth()
-	for i in 30:
+	var on_screen: float = screen.screen_y()
+	var lowest := before
+	var rose := false
+	for i in 60:
 		screen.step(1.0 / 30.0, Vector2(0, -1))
-	_expect(screen.depth() < before, "holding up rises again (%.0f -> %.0f m)" % [before, screen.depth()])
+		rose = rose or screen.depth() < lowest - 0.01
+		lowest = maxf(lowest, screen.depth())
+	_expect(not rose and screen.screen_y() < on_screen, "holding up moves it up the screen but never back up in depth (%.0f m, screen %.2f -> %.2f)" % [screen.depth(), on_screen, screen.screen_y()])
+	_expect(absf(screen.depth() - before) < 15.0, "going up exactly as fast as the view sinks: the depth is held (%.0f -> %.0f m)" % [before, screen.depth()])
 	var x: float = screen.position_x()
 	for i in 10:
 		screen.step(1.0 / 30.0, Vector2(1, 0))
 	_expect(screen.position_x() > x, "and it moves sideways")
-	for i in 120:  # into the left wall: only slowed, pushed back into open water
+	var t0: float = screen.seconds
+	for i in 120:  # into the left wall: slowed, pushed back into open water, a little time added
 		screen.step(1.0 / 30.0, Vector2(-1, 0))
-	_expect(screen.position_x() - 0.03 >= screen.gap_at(screen.depth()).x - 0.001, "bumping a wall only stops it at the rock")
+	_expect(screen.position_x() - 0.03 >= screen.gap_at(screen.depth()).x - 0.001, "bumping a wall stops it at the rock")
+	_expect(screen.bumps() >= 1, "a bump adds time (%d bumps)" % screen.bumps())
+	var lit := 0
+	var dark_steps := 0
 	var steps := 0
-	var echoes := 0
-	while screen.get("_playing") and steps < 30000:  # dive down the middle of the canyon, towards the nearest gear
-		var gap: Vector2 = screen.gap_at(screen.depth() + 30.0)
+	while screen.get("_playing") and steps < 30000:  # dive down the middle, towards gear, round obstacles
+		var d: float = screen.depth()
+		var gap: Vector2 = screen.gap_at(d + 30.0)
 		var aim := (gap.x + gap.y) / 2.0
 		for piece: Dictionary in screen.gear_left():
-			if piece.depth > screen.depth() and piece.depth - screen.depth() < 120.0:
+			if absf(piece.depth - d) < 120.0:
 				aim = piece.x
 				break
+		for thing: Dictionary in screen.obstacles():
+			if thing.depth > d - 10.0 and thing.depth - d < 60.0 and absf(thing.x - aim) < 0.12:
+				aim = thing.x + (0.15 if thing.x < (gap.x + gap.y) / 2.0 else -0.15)
 		screen.step(1.0 / 30.0, Vector2(clampf((aim - screen.position_x()) * 8.0, -1.0, 1.0), 1.0))
-		if screen.echo() > 0.99:
-			echoes += 1
+		if d > 400.0:
+			if screen.light_on():
+				lit += 1
+			else:
+				dark_steps += 1
 		steps += 1
-	_expect(not screen.get("_playing") and screen.depth() >= 1000.0, "down to 1,000 m (%d steps)" % steps)
-	_expect(echoes >= 2, "the sonar pings, lighting up the dark now and then (%d)" % echoes)
-	_expect(screen.daylight(50.0) > 0.9 and screen.daylight(1000.0) == 0.0, "daylight near the top, none in the deep")
+	_expect(not screen.get("_playing") and screen.depth() >= 975.0, "down to 1,000 m (%d steps)" % steps)
+	var share := float(lit) / maxf(lit + dark_steps, 1.0)
+	_expect(absf(share - 0.9) < 0.05, "level 1: the sonar light is on 90%% of the time (%.0f%%)" % (share * 100.0))
+	_expect(screen.daylight(50.0) > 0.7 and screen.daylight(1000.0) == 0.0, "daylight near the top, none in the deep")
 	_expect(screen.gear_got() >= 1, "lost gear picked up on the way (%d)" % screen.gear_got())
 	_expect(screen.seen().has("Giant squid") and screen.seen().has("Midnight zone") and screen.seen().has("Bottlenose dolphin"),
 		"passing the dolphins, the giant squid's depth and into the midnight zone (%s)" % [screen.seen()])
@@ -73,6 +91,23 @@ func _initialize() -> void:
 	var levels: Array = dive_data.levels
 	_expect(levels.size() == 5 and levels.map(func(l: Vector3i) -> int: return l.x * 100) == [1000, 2000, 3000, 4000, 5000],
 		"each level is 1,000 m deeper, down to 5,000 m")
+	var harder := true
+	for i in range(1, levels.size()):
+		harder = harder and levels[i].y > levels[i - 1].y and levels[i].z > levels[i - 1].z
+	_expect(harder, "and each sinks faster with more obstacles")
+	screen.level = 4
+	screen.call("_begin")
+	_expect(is_equal_approx(screen.light_share(), 0.5) and screen.obstacles().size() == levels[4].y, "level 5: light on half the time, %d obstacles" % screen.obstacles().size())
+	# A missed piece of gear sinks: waiting under it (holding up), it comes down to the sub.
+	for i in 60:  # down to the bottom of the screen first: room to wait under the piece
+		screen.step(1.0 / 30.0, Vector2(0, 1))
+	var piece: Dictionary = screen.gear_left()[0]
+	piece.depth = screen.depth() - 60.0
+	piece.x = screen.position_x()
+	var got: int = screen.gear_got()
+	for i in 200:
+		screen.step(1.0 / 30.0, Vector2(0, -1))
+	_expect(screen.gear_got() == got + 1, "a missed piece sinks slowly and is caught by waiting under it")
 	screen.close_screen()
 
 	if not _failed:

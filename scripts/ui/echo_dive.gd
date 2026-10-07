@@ -1,33 +1,43 @@
 class_name EchoDive
 extends ActivityScreen
 ## Echo Dive (Imani, at the Deep-Ocean Outpost): take the submarine down the canyon from the
-## surface. Steer in all four directions (hold a finger where you want it to go, or the move
-## keys): down goes faster, up rises again, and it sinks slowly by itself, the canyon walls
-## sliding past. Sunlight fades as you go down; below it only the sub's lamp and the sonar's
-## ping, lighting everything up for a moment every PING_EVERY seconds, show the walls, the lost
-## gear to pick up (each piece takes GEAR_BONUS seconds off the time) and the deep's animals,
-## swimming at the depths where they really live. Bumping a wall only slows the sub. Each level
-## is 1,000 m deeper; the story dive finds the lost cargo module at 1,000 m (Imani's cargo
+## surface. The view sinks by itself at the level's speed and never goes back up; the sub moves
+## anywhere on the screen (hold a finger where it should go, or the move keys): down dives
+## faster, up only holds the depth (it can never rise back to the surface), left and right
+## steer. Below the sunlight nothing can be seen unless the sonar's light is on: it flashes on
+## and off, on for LIGHT_SHARE of the time (90 % at level 1 down to 50 % at level 5). Lost gear
+## sinks slowly, so a missed piece can still be caught by waiting under it (each takes
+## GEAR_BONUS seconds off the time); wreckage and boulders drift in the canyon: bumping one, or
+## a wall, slows the sub and adds OBSTACLE_PENALTY seconds. Never a failure. The deep's animals
+## swim past at the depths where they really live. Each level is 1,000 m deeper, sinks faster and
+## has more in the way; the story dive finds the lost cargo module at 1,000 m (Imani's cargo
 ## search), then it's for fun, with best times.
 
-## Level config: (target depth in hundreds of metres, lost gear pieces, sinking speed 1-5).
-const SUB_Y := 0.38
+## Level config: (target depth in hundreds of metres, wreckage and boulders, sinking speed 1-5).
 const SUB_HALF := 0.03
-## The sub's speed down the canyon, metres a second at speed 1, and more per speed step.
-const SINK := 40.0
-const SINK_STEP := 10.0
-## Sinking by itself, diving (down held) and rising (up held), times that speed.
-const DRIFT := 0.4
-const DIVE := 1.6
-const RISE := 0.8
+## Where the sub starts on the screen (0 top .. 1 bottom), and how far up / down it can go.
+const SUB_START := 0.3
+const SCREEN_TOP := 0.08
+const SCREEN_BOTTOM := 0.9
+## How fast the view sinks, metres a second at speed 1, and more per speed step.
+const SINK := 50.0
+const SINK_STEP := 12.0
+## Down the screen, times the sinking speed (up is exactly the sinking speed: depth is held).
+const DIVE := 1.5
 ## Across the screen a second (a fraction of its width).
 const STEER := 0.6
 const METRES_PER_SCREEN := 420.0
-const PING_EVERY := 1.6
-const PING_FADE := 1.3
+## The sonar light: one flash every LIGHT_CYCLE seconds, on for this share of it, by level.
+const LIGHT_CYCLE := 2.0
+const LIGHT_SHARE: Array[float] = [0.9, 0.8, 0.7, 0.6, 0.5]
 const GEAR_BONUS := 1.5
-## Sunlight is gone by this depth (only the lamp and the sonar show anything below).
-const DARK_AT := 900.0
+const OBSTACLE_PENALTY := 2.0
+## Lost gear sinks at this share of the view's speed.
+const GEAR_SINK := 0.25
+## Lost gear pieces per 1,000 m.
+const GEAR_PER_KM := 4
+## Sunlight is gone by this depth (only the sonar's light shows anything below).
+const DARK_AT := 250.0
 ## Canyon wall points every this many metres.
 const WALL_STEP := 40.0
 
@@ -51,21 +61,26 @@ const SIGHTS := [
 
 var _arena: Control
 var _x := 0.5
-var _depth := 0.0
-## The view's depth: it follows the sub, a little behind, so the sub moves on the screen too.
-var _view := 0.0
+## The depth at the top of the view (it sinks by itself), and the sub's place on the screen.
+var _top := 0.0
+var _sy := SUB_START
 var _target := 1000.0
 var _speed := 1
 var _slow := 0.0
+var _bump_wait := 0.0
 var _time := 0.0
-var _ping := 0.0
+var _light_share := 0.9
+var _was_on := false
 ## Where a held finger is (the sub heads for it), or null.
 var _finger: Variant = null
 ## Canyon walls: how far each side reaches in (0..1 of the width) every WALL_STEP metres.
 var _walls: Array[Vector2] = []
 ## Lost gear: {"depth", "x", "item": texture}.
 var _gear: Array[Dictionary] = []
+## In the way: {"depth", "x", "drift" (across, a second), "kind": "wreck" / "rock", "size"}.
+var _obstacles: Array[Dictionary] = []
 var _got := 0
+var _bumps := 0
 var _seen := {}
 var _note := ""
 var _textures := {}
@@ -78,19 +93,22 @@ func _enter_tree() -> void:
 
 
 func _how_to_play() -> String:
-	return "Hold your finger where you want the submarine to go (or use the move keys): down to dive, up to rise. The sonar pings and lights up the dark for a moment. Pick up lost gear on the way!"
+	return "Hold your finger where you want the submarine to go (or use the move keys). It keeps sinking: down dives faster, up holds your depth. In the dark you only see while the sonar light is on. Grab lost gear, steer round wreckage and rocks!"
 
 
 func _start_board(config: Vector3i) -> void:
 	_target = config.x * 100.0
 	_speed = maxi(config.z, 1)
+	_light_share = LIGHT_SHARE[clampi(level, 0, LIGHT_SHARE.size() - 1)]
 	_x = 0.5
-	_depth = 0.0
-	_view = 0.0
+	_sy = SUB_START
+	_top = -SUB_START * METRES_PER_SCREEN  # the sub starts at the surface
 	_slow = 0.0
+	_bump_wait = 0.0
 	_time = 0.0
-	_ping = 0.0
+	_was_on = false
 	_got = 0
+	_bumps = 0
 	_finger = null
 	_seen.clear()
 	_note = ""
@@ -101,11 +119,18 @@ func _start_board(config: Vector3i) -> void:
 	_gear_textures = [load("res://assets/items/ghost_net.svg"), load("res://assets/items/fishing_line.svg")]
 	_make_walls()
 	_gear.clear()
-	var pieces := maxi(config.y, 1)
+	var pieces := maxi(roundi(_target / 1000.0 * GEAR_PER_KM), 1)
 	for i in pieces:
-		var d := lerpf(120.0, _target - 80.0, (i + randf_range(0.2, 0.8)) / pieces)
+		var d := lerpf(120.0, _target - 120.0, (i + randf_range(0.2, 0.8)) / pieces)
 		var gap := gap_at(d)
 		_gear.append({"depth": d, "x": lerpf(gap.x + 0.06, gap.y - 0.06, randf()), "item": _gear_textures.pick_random()})
+	_obstacles.clear()
+	var count := maxi(config.y, 0)
+	for i in count:
+		var d := lerpf(150.0, _target - 100.0, (i + randf_range(0.1, 0.9)) / maxf(count, 1.0))
+		var gap := gap_at(d)
+		_obstacles.append({"depth": d, "x": lerpf(gap.x + 0.08, gap.y - 0.08, randf()), "drift": randf_range(-0.06, 0.06),
+			"kind": "wreck" if randf() < 0.5 else "rock", "size": randf_range(0.8, 1.3)})
 	_arena = Control.new()
 	_arena.name = "Arena"
 	_arena.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -123,11 +148,11 @@ func _make_walls() -> void:
 	var right := 0.12
 	var d := 0.0
 	while d <= _target + METRES_PER_SCREEN:
-		left = clampf(left + randf_range(-0.04, 0.04), 0.04, 0.26)
-		right = clampf(right + randf_range(-0.04, 0.04), 0.04, 0.26)
+		left = clampf(left + randf_range(-0.04, 0.04), 0.04, 0.24)
+		right = clampf(right + randf_range(-0.04, 0.04), 0.04, 0.24)
 		var ledge := Vector2.ZERO
-		if d > 100.0 and randf() < 0.28:  # a ledge sticking out of one side
-			ledge = Vector2(randf_range(0.1, 0.2), 0.0) if randf() < 0.5 else Vector2(0.0, randf_range(0.1, 0.2))
+		if d > 100.0 and randf() < 0.25:  # a ledge sticking out of one side
+			ledge = Vector2(randf_range(0.08, 0.18), 0.0) if randf() < 0.5 else Vector2(0.0, randf_range(0.08, 0.18))
 		_walls.append(Vector2(left, right) + ledge)
 		d += WALL_STEP
 
@@ -159,46 +184,85 @@ func _process(delta: float) -> void:
 	_arena.queue_redraw()
 
 
+## The view's sinking speed now, metres a second (slowed for a moment after a bump).
+func sink_speed() -> float:
+	return (SINK + SINK_STEP * (_speed - 1)) * (0.3 if _slow > 0.0 else 1.0)
+
+
 ## One step of the dive (tests drive it): `move` x -1 left .. 1 right, y -1 up .. 1 down.
 func step(delta: float, move: Vector2) -> void:
 	_time += delta
-	_ping -= delta
-	if _ping <= -PING_EVERY:
-		_ping = 0.0
+	var on := light_on()
+	if on and not _was_on:
 		Sound.play(&"ping", -8.0, 0.0)
-	var speed := (SINK + SINK_STEP * (_speed - 1)) * (0.3 if _slow > 0.0 else 1.0)
+	_was_on = on
+	var before := depth()
+	var speed := sink_speed()
 	_slow = maxf(_slow - delta, 0.0)
-	var rate := lerpf(DRIFT, DIVE, move.y) if move.y >= 0.0 else lerpf(DRIFT, -RISE, -move.y)
-	_depth = maxf(_depth + speed * rate * delta, 0.0)
+	_bump_wait = maxf(_bump_wait - delta, 0.0)
+	# The view sinks by itself (until the sea floor shows near the bottom of the screen).
+	_top = minf(_top + speed * delta, _target - SCREEN_BOTTOM * METRES_PER_SCREEN + 30.0)
+	# Up the screen exactly as fast as the view sinks (the depth is held), down faster.
+	var screen_speed := speed / METRES_PER_SCREEN * (DIVE if move.y > 0.0 else 1.0)
+	_sy = clampf(_sy + move.y * screen_speed * delta, SCREEN_TOP, SCREEN_BOTTOM)
+	if depth() < before:  # never back up: the sub can't rise
+		_sy = (before - _top) / METRES_PER_SCREEN
 	_x = clampf(_x + move.x * STEER * delta, SUB_HALF, 1.0 - SUB_HALF)
-	var gap := gap_at(_depth)
-	if _x - SUB_HALF < gap.x or _x + SUB_HALF > gap.y:  # a bump: slowed for a moment, nudged back
-		if _slow <= 0.0:
-			_slow = 0.7
+	var gap := gap_at(depth())
+	if _x - SUB_HALF < gap.x or _x + SUB_HALF > gap.y:  # a wall: slowed for a moment, nudged back
 		_x = clampf(_x, gap.x + SUB_HALF + 0.005, gap.y - SUB_HALF - 0.005)
-	_view = lerpf(_view, _depth, minf(delta * 2.5, 1.0))
+		_bump("the canyon wall")
+	for thing: Dictionary in _obstacles:
+		var room := gap_at(thing.depth)
+		thing.x += thing.drift * delta
+		if thing.x < room.x + 0.05 or thing.x > room.y - 0.05:
+			thing.drift = -thing.drift
+			thing.x = clampf(thing.x, room.x + 0.05, room.y - 0.05)
+		if absf(thing.depth - depth()) < 18.0 * thing.size and absf(thing.x - _x) < 0.045 * thing.size + SUB_HALF:
+			_bump("an old wreck" if thing.kind == "wreck" else "a boulder")
 	for piece: Dictionary in _gear.duplicate():
-		if absf(piece.depth - _depth) < 22.0 and absf(piece.x - _x) < 0.06:
+		piece.depth = minf(piece.depth + speed * GEAR_SINK * delta, _target - 20.0)  # sinking slowly
+		if absf(piece.depth - depth()) < 22.0 and absf(piece.x - _x) < 0.06:
 			_gear.erase(piece)
 			_got += 1
 			seconds = maxf(seconds - GEAR_BONUS, 0.0)
 			_note = "Lost gear picked up: %d (-%.1f s). It won't catch any more animals." % [_got, GEAR_BONUS]
 			Sound.play(&"pickup")
 	for sight: Dictionary in SIGHTS:
-		if _depth >= sight.depth and not _seen.has(sight.name):
+		if depth() >= sight.depth and not _seen.has(sight.name):
 			_seen[sight.name] = true
 			_note = "%s, %d m: %s." % [sight.name, sight.depth, sight.note]
-	if _depth >= _target:
-		_depth = _target
+	if depth() >= _target - 25.0:  # on the sea floor
+		for sight: Dictionary in SIGHTS:
+			if sight.depth <= _target:
+				_seen[sight.name] = true
 		_complete()
 
 
+## Bumped into something: slowed down for a moment and OBSTACLE_PENALTY seconds added.
+func _bump(what: String) -> void:
+	_slow = maxf(_slow, 0.7)
+	if _bump_wait > 0.0:
+		return
+	_bump_wait = 1.0
+	_bumps += 1
+	seconds += OBSTACLE_PENALTY
+	_note = "Bump! You hit %s (+%.0f s). Wait for the light to see what's ahead." % [what, OBSTACLE_PENALTY]
+	Sound.play(&"dig", -4.0)
+
+
+## The sub's depth, metres.
 func depth() -> float:
-	return _depth
+	return _top + _sy * METRES_PER_SCREEN
 
 
 func position_x() -> float:
 	return _x
+
+
+## The sub's place on the screen, 0 (top) .. 1 (bottom).
+func screen_y() -> float:
+	return _sy
 
 
 func gear_left() -> Array[Dictionary]:
@@ -209,20 +273,39 @@ func gear_got() -> int:
 	return _got
 
 
+func obstacles() -> Array[Dictionary]:
+	return _obstacles
+
+
+func bumps() -> int:
+	return _bumps
+
+
+func light_share() -> float:
+	return _light_share
+
+
 func seen() -> Array:
 	return _seen.keys()
 
 
-## Where the sub is drawn: it moves on the screen as the view follows it.
 func sub_on_screen() -> Vector2:
 	var size := _arena.size if _arena else Vector2(1, 1)
-	var y := clampf(SUB_Y + (_depth - _view) / METRES_PER_SCREEN, 0.15, 0.75)
-	return Vector2(_x * size.x, y * size.y)
+	return Vector2(_x * size.x, _sy * size.y)
 
 
-## How bright the sonar's echo is now (1 just after a ping, fading to 0).
+## Whether the sonar light is on now (on for `light_share` of every LIGHT_CYCLE).
+func light_on() -> bool:
+	return fposmod(_time, LIGHT_CYCLE) < _light_share * LIGHT_CYCLE
+
+
+## How bright the sonar light is: 1 while on, with a quick fade at either end.
 func echo() -> float:
-	return clampf(1.0 + _ping / PING_FADE, 0.0, 1.0)
+	var t := fposmod(_time, LIGHT_CYCLE)
+	var on := _light_share * LIGHT_CYCLE
+	if t >= on:
+		return 0.0
+	return clampf(minf(t, on - t) / 0.08, 0.0, 1.0)
 
 
 ## Daylight at `metres`: 1 at the surface, gone by DARK_AT.
@@ -230,18 +313,17 @@ func daylight(metres: float) -> float:
 	return clampf(1.0 - metres / DARK_AT, 0.0, 1.0)
 
 
-## How well something at screen point `at` and depth `metres` can be seen: daylight, the
-## lamp near the sub, or the sonar's ping.
-func _seen_at(at: Vector2, metres: float) -> float:
-	var lamp := clampf(1.0 - at.distance_to(sub_on_screen()) / 170.0, 0.0, 1.0)
-	return clampf(maxf(maxf(daylight(metres), lamp), echo() * 0.85), 0.0, 1.0)
+## How well something at depth `metres` can be seen: daylight near the top, else only while
+## the sonar light is on.
+func _seen_at(_at: Vector2, metres: float) -> float:
+	return clampf(maxf(daylight(metres), echo()), 0.0, 1.0)
 
 
 func _draw_arena() -> void:
 	var size := _arena.size
 	if size.x <= 0.0:
 		return
-	var top := _view - SUB_Y * METRES_PER_SCREEN
+	var top := _top
 	var to_y := func(metres: float) -> float: return (metres - top) / METRES_PER_SCREEN * size.y
 	# The water, darker with depth, in bands.
 	var band := 12.0
@@ -258,14 +340,11 @@ func _draw_arena() -> void:
 			_arena.draw_colored_polygon(PackedVector2Array([Vector2(x, surface), Vector2(x + 30, surface),
 				Vector2(x + 90, surface + size.y * 0.7), Vector2(x + 40, surface + size.y * 0.7)]), Color(1, 1, 0.85, 0.07))
 	# Glowing specks in the dark (deep-sea animals' own light).
-	if _view > 700.0:
+	if top > 400.0:
 		for i in 24:
-			var sy := fposmod(i * 97.0 - _view * 0.9 * size.y / METRES_PER_SCREEN, size.y)
+			var sy := fposmod(i * 97.0 - top * 0.9 * size.y / METRES_PER_SCREEN, size.y)
 			var sx := fposmod(i * 211.0 + sin(_time + i) * 8.0, size.x)
 			_arena.draw_circle(Vector2(sx, sy), 1.5, Color(0.5, 0.95, 1.0, 0.35 + 0.3 * sin(_time * 2.0 + i)))
-	var lamp := clampf(1.0 - daylight(_depth), 0.0, 1.0)  # the sub's lamp, under everything it lights
-	_arena.draw_circle(sub_on_screen(), 170.0, Color(1.0, 0.95, 0.6, 0.05 * lamp))
-	_arena.draw_circle(sub_on_screen(), 90.0, Color(1.0, 0.95, 0.6, 0.06 * lamp))
 	# The animals, swimming across at their depths.
 	for sight: Dictionary in SIGHTS:
 		var sy: float = to_y.call(sight.depth)
@@ -301,20 +380,56 @@ func _draw_arena() -> void:
 		var light := _seen_at(at, piece.depth)
 		if light > 0.04:
 			_arena.draw_texture_rect(piece.item, Rect2(at - Vector2(24, 24), Vector2(48, 48)), false, Color(1, 1, 1, light))
+	# Wreckage and boulders in the way.
+	for thing: Dictionary in _obstacles:
+		var at := Vector2(thing.x * size.x, to_y.call(thing.depth))
+		if at.y < -40.0 or at.y > size.y + 40.0:
+			continue
+		var light := _seen_at(at, thing.depth)
+		if light > 0.04:
+			_draw_obstacle(thing, at, light)
 	# The sea floor at the target depth (with the cargo module on the story dive).
 	var floor_y: float = to_y.call(_target)
 	if floor_y < size.y + 20.0:
 		_arena.draw_rect(Rect2(0, floor_y, size.x, size.y - floor_y + 20.0), Color("3a3028").lerp(Color("1a1612"), clampf(_target / 3000.0, 0.0, 1.0)))
 		if not Activities.story_done(activity):
 			_arena.draw_texture_rect(_cargo, Rect2(Vector2(size.x * 0.5 - 48, floor_y - 60), Vector2(96, 64)), false)
+	# The dark: with the sonar light off, nothing below the sunlight can be seen.
+	var shade := 0.0
+	while shade < size.y:
+		var dark := 1.0 - maxf(daylight(top + shade / size.y * METRES_PER_SCREEN), echo())
+		if dark > 0.01:
+			_arena.draw_rect(Rect2(0, shade, size.x, 13.0), Color(0.01, 0.015, 0.03, dark * 0.97))
+		shade += 12.0
 	_draw_sub(size)
-	_arena.draw_string(ThemeDB.fallback_font, Vector2(16, 26), "Depth %d m  /  %d m     Lost gear: %d" % [roundi(_depth), roundi(_target), _got],
+	_arena.draw_string(ThemeDB.fallback_font, Vector2(16, 26), "Depth %d m  /  %d m     Lost gear: %d     Light on %d%% of the time" % [
+		roundi(depth()), roundi(_target), _got, roundi(_light_share * 100.0)],
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
 	if _note != "":
 		_arena.draw_string(ThemeDB.fallback_font, Vector2(16, size.y - 16), _note, HORIZONTAL_ALIGNMENT_LEFT, size.x - 32, 16, Color("f2d58a"))
 
 
-## The canyon's rock walls, lit by daylight near the top, below by the lamp and the ping;
+## An old wreck's twisted metal, or a boulder.
+func _draw_obstacle(thing: Dictionary, at: Vector2, light: float) -> void:
+	var r: float = 26.0 * thing.size
+	if thing.kind == "wreck":
+		var rust := Color("8a4a2a").lerp(Color("05070c"), 1.0 - light)
+		var dark := Color("4a2616").lerp(Color("05070c"), 1.0 - light)
+		var points := PackedVector2Array()
+		for i in 7:
+			var angle := TAU * i / 7.0 + 0.3
+			points.append(at + Vector2.from_angle(angle) * r * (0.6 if i % 2 == 0 else 1.0))
+		_arena.draw_colored_polygon(points, rust)
+		_arena.draw_polyline(points + PackedVector2Array([points[0]]), dark, 2.0)
+		for i in 3:  # rivets
+			_arena.draw_circle(at + Vector2(-r * 0.3 + i * r * 0.3, -r * 0.1), 2.0, dark)
+	else:
+		var stone := Color("5a5650").lerp(Color("05070c"), 1.0 - light)
+		_arena.draw_circle(at, r * 0.8, stone)
+		_arena.draw_circle(at + Vector2(-r * 0.25, -r * 0.25), r * 0.3, Color("6e6a62").lerp(Color("05070c"), 1.0 - light))
+
+
+## The canyon's rock walls, lit by daylight near the top, below only by the sonar's light;
 ## stripes of rock slide past as the sub goes down.
 func _draw_walls(size: Vector2, top: float) -> void:
 	var slice := 8.0
@@ -330,7 +445,7 @@ func _draw_walls(size: Vector2, top: float) -> void:
 				var w := gap.x * size.x if side == 0 else size.x - x0
 				var edge := Vector2(gap.x * size.x if side == 0 else x0, y)
 				var light := _seen_at(edge, metres)  # solid rock, just darker where it isn't lit
-				_arena.draw_rect(Rect2(x0, y, w, slice + 1.0), Color("05070c").lerp(rock, maxf(light, 0.08)))
+				_arena.draw_rect(Rect2(x0, y, w, slice + 1.0), Color("05070c").lerp(rock, maxf(light, 0.04)))
 		y += slice
 
 
@@ -340,6 +455,6 @@ func _draw_sub(size: Vector2) -> void:
 	_arena.draw_rect(Rect2(sub - Vector2(8, 20), Vector2(16, 8)), Color("e0b03a"))
 	_arena.draw_circle(sub + Vector2(10, 0), 6.0, Color("9fd8f0"))
 	_arena.draw_rect(Rect2(sub + Vector2(-28, -4), Vector2(6, 8)), Color("b08a2a"))  # propeller
-	var glow := echo()
-	if glow > 0.0:  # the sonar's ping spreading out
-		_arena.draw_arc(sub, (1.0 - glow) * size.x * 0.6 + 20.0, 0.0, TAU, 48, Color(0.56, 0.83, 1.0, glow * 0.5), 2.0)
+	var since := fposmod(_time, LIGHT_CYCLE)
+	if light_on() and since < 0.6:  # the sonar's ping spreading out as the light comes on
+		_arena.draw_arc(sub, since / 0.6 * size.x * 0.6 + 20.0, 0.0, TAU, 48, Color(0.56, 0.83, 1.0, 0.5 * (1.0 - since / 0.6)), 2.0)

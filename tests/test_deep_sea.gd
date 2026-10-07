@@ -122,12 +122,27 @@ func _initialize() -> void:
 	# --- The giant squid: a camera watching the known canyon in quiet water ---
 	clock.advance(clock.DAY_LENGTH * 1.1)  # the dive's noise fades
 	await process_frame
+	var hints: Array[String] = []  # what the ranger is told at each step (Bram, and the stuck clue)
+	var cameras_now: Array = world.get_tree().get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"deep_camera")
+	if cameras_now.is_empty() and not sectors[0].known():
+		hints.append(eco.squid_hint())
+		_expect("isn't mapped" in hints[-1], "the squid hint: first map the canyon (%s)" % hints[-1])
 	eco.learn(1.0, sectors[0])
+	if cameras_now.is_empty():
+		hints.append(eco.squid_hint())
+		_expect("build a Deep Camera" in hints[-1], "then build a camera (%s)" % hints[-1])
 	var cam: Node = place.call(&"deep_camera", sectors[0].global_position)
 	_expect(eco.quiet() >= eco.squid_quiet, "quiet enough for the squid (%d%%)" % roundi(eco.quiet() * 100.0))
+	_expect("Everything's ready" in eco.squid_hint(), "then wait on the island, sleeping a night or two (%s)" % eco.squid_hint())
+	var people := root.get_node("People")
+	var bram: Resource = load("res://data/people/bram.tres")
+	var said: String = people.call("_fill", "{advice:giant_squid}", bram)
+	_expect("Everything's ready" in said, "Bram's squid line says the next step ({advice:giant_squid}: %s)" % said)
+	_expect(bram.topics.any(func(t: Resource) -> bool: return t.id == &"squid" and "{advice:giant_squid}" in t.lines), "Bram talks about the squid until it's photographed")
 	for i in 9:
 		eco.tick(0.25)
 	_expect(eco.squid_found() and eco.living(load("res://data/animals/giant_squid.tres")).size() == 1, "after 2 quiet days the camera films a giant squid")
+	_expect("Sail over the canyon" in eco.squid_hint(), "then go and photograph it")
 
 	# --- Objective: map 6 areas at 70 % -> cargo search -> tow the module in ---
 	var cargo := load("res://data/missions/cargo_search.tres")

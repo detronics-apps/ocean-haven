@@ -369,13 +369,22 @@ func _lines(person: PersonData, said: Array[String]) -> Array[Dictionary]:
 	return list
 
 
-## "{name}" -> the ranger's name; "{count:green_turtle}" -> how many live on their island now.
+## "{name}" -> the ranger's name; "{count:green_turtle}" -> how many live on their island now;
+## "{advice:X}" -> the island ecosystem's next step for health factor X (e.g. giant_squid).
 func _fill(line: String, person: PersonData) -> String:
 	line = line.replace("{name}", RangerProfile.call_name())
 	var picked := RegEx.create_from_string("\\{picked:([a-z_]+)\\}")
 	for found in picked.search_all(line):
 		line = line.replace(found.get_string(), str(Inventory.picked.get(StringName(found.get_string(1)), 0)))
 	line = line.replace("{moments}", str(Journal.moments_caught())).replace("{moments_total}", str(Journal.moments_total()))
+	var advice := RegEx.create_from_string("\\{advice:([a-z_]+)\\}")  # the island's own next step
+	for found in advice.search_all(line):
+		var eco := IslandHealth.ecosystem(get_tree(), _region(person))
+		var factor: HealthFactor = null
+		for f: HealthFactor in _region(person).health:
+			if f.target == StringName(found.get_string(1)):
+				factor = f
+		line = line.replace(found.get_string(), eco.advice(factor) if eco and factor and eco.has_method("advice") else "")
 	var regex := RegEx.create_from_string("\\{count:([a-z_]+)\\}")
 	for found in regex.search_all(line):
 		line = line.replace(found.get_string(), str(_animals(person, StringName(found.get_string(1)))))
@@ -435,7 +444,7 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ## Whether `condition` holds now for `person`'s island:
 ## - "first" (meeting them for the first time), "flag:X", "built:X", "installed:X", "met:X",
 ##   "heard:X" (a story told), "asked:X" (question X asked, not done yet), "season:X", "here" (the ranger is on their
-##   island), "found:X" (island X discovered), "stopped:X" (litter X stopped at its source),
+##   island), "found:X" (island X discovered), "stopped:X" (litter X stopped at its source), "journal:X" (species X photographed),
 ##   "soon:X" (seasonal moment X on or within a week),
 ##   each with "!" in
 ##   front for "not";
@@ -472,6 +481,7 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"season": result = GameClock.season() == arg
 		"found": result = Regions.is_discovered(load("res://data/regions/%s.tres" % arg))
 		"stopped": result = Fleet.stopped(arg)
+		"journal": result = Journal.has(arg)  # photographed (in the Journal)
 		"soon":  # seasonal moment `arg` is on, or starts within a week
 			var event := SeasonEvent.find(arg)
 			result = event != null and event.days_until() <= 7

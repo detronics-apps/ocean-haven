@@ -49,9 +49,12 @@ func _initialize() -> void:
 	for i in 60:
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.depth() > 0.5, "holding: the otter dives (%.2f)" % screen.depth())
+	var goal: int = screen.get("_goal")
+	screen.set("_goal", 999)  # (so grabbing every urchin on the way can't end the dive here)
 	for i in 400:
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.air() <= 0.0 and screen.get("_playing"), "out of air: nothing goes wrong")
+	screen.set("_goal", goal)
 	for i in 30:
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.depth() < 0.8, "it just floats up, even holding")

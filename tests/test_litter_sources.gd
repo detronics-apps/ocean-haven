@@ -75,6 +75,21 @@ func _initialize() -> void:
 	_expect(not fleet.stopped(&"six_pack_rings"), "rings still drift in")
 	build.add_building(refill, terrain.cell_of(kelp.arrival) + Vector2i(2, -3))
 	_expect(fleet.stopped(&"six_pack_rings") and fleet.goal_met(people.questions(finn).back().objective), "the Refill Bar stops them at their source: Finn's question is answered")
+	# The recycling centre's menu lists every kind: picked up, carried, stopped or still washing in.
+	var centre: Node = build.add_building(load("res://data/buildings/recycling_centre.tres"), terrain.cell_of(kelp.arrival) + Vector2i(-3, 2))
+	var recycle: Node = world.get_parent().find_child("RecycleMenu", true, false)
+	if centre and recycle:
+		recycle.open_for(centre)
+		var rings_status: Label = recycle.find_child("Status_six_pack_rings", true, false)
+		var bags_status: Label = recycle.find_child("Status_plastic_bag", true, false)
+		var rings_count: Label = recycle.find_child("Count_six_pack_rings", true, false)
+		_expect(rings_status and rings_status.text.contains("Refill Bar"), "the recycling menu says the rings are stopped, and by what (%s)" % (rings_status.text if rings_status else "none"))
+		_expect(bags_status and bags_status.text == "Still washing in", "and that bags still wash in")
+		_expect(rings_count and rings_count.text.begins_with("%d picked up" % inventory.picked.get(&"six_pack_rings", 0)), "with how many of each were picked up (%s)" % (rings_count.text if rings_count else "none"))
+		_expect(recycle.find_child("Status_microfibres", true, false) != null, "the microfibres are listed too")
+		recycle.close()
+	else:
+		_expect(false, "a recycling centre and its menu")
 	var spawner: Node = world.get_node("LitterSpawner")
 	for d in get_nodes_in_group("debris"):
 		d.free()

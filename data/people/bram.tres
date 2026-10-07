@@ -41,6 +41,12 @@ id = &"gear"
 when = PackedStringArray("flag:deep_mapped", "!flag:gear_marking")
 lines = PackedStringArray("Now that the deep's mapped, you'll find the old gear down there. Every net you bring up is one less catching fish.")
 
+[sub_resource type="Resource" id="Topic_squid"]
+script = ExtResource("2_t")
+id = &"squid"
+when = PackedStringArray("!journal:giant_squid")
+lines = PackedStringArray("The giant squid? Forty years at sea and I never saw one. Hardly anyone has, alive. It hides in the canyon inside the hook, and only comes near a camera when the deep is really quiet.", "{advice:giant_squid}")
+
 [sub_resource type="Resource" id="Topic_6"]
 script = ExtResource("2_t")
 id = &"litter"
@@ -77,4 +83,4 @@ trousers = Color(0.25, 0.25, 0.28, 1)
 hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
