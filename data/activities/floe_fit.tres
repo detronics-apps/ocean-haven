@@ -6,14 +6,14 @@
 [resource]
 script = ExtResource("1_a")
 id = &"floe_fit"
-display_name = "Floe Fit"
-verb = "Floe Fit"
+display_name = "Ice Match"
+verb = "Ice Match"
 building = &"polar_research_station"
 person = &"sanna"
 unlock_any = PackedStringArray("asked:core", "flag:ice_core_drilled")
-story_intro = "Sanna: \"Help me plan the drill site. Fit the floes back together on the ice map, and we'll see which old ice is thick enough to last three days.\""
+story_intro = "Sanna: \"Help me plan the drill site on the station's ice map. Swap pieces to make rows of three: every block of old ice you clear shows us thick, old ice that will last three days.\""
 story_done = "Sanna: \"That's it. I've marked the oldest, thickest ice on your map: build the Ice Core Drill Site there.\""
-practice_intro = "Fit the floes on the ice map for fun: each level is a bigger map with odder floes. Can you beat your best time?"
-levels = Array[Vector3i]([Vector3i(5, 4, 3), Vector3i(6, 5, 3), Vector3i(7, 5, 4), Vector3i(8, 6, 4), Vector3i(9, 6, 5)])
+practice_intro = "Ice Match for fun: each level has a bigger map and more kinds of piece. Can you beat your best time?"
+levels = Array[Vector3i]([Vector3i(6, 4, 9), Vector3i(6, 5, 12), Vector3i(7, 5, 15), Vector3i(7, 6, 18), Vector3i(8, 6, 21)])
 reward_mission = ExtResource("2_m")
 region = &"arctic_ocean"

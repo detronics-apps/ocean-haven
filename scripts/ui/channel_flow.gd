@@ -23,6 +23,8 @@ var _source := Vector2i.ZERO
 var _wet := {}
 ## Each piece as it was made (the way through), before it was scrambled.
 var _solution := {}
+## The cells on the way through (the pieces a hint can turn).
+var _way := {}
 var _area: Control
 var _tile := 48.0
 
@@ -32,7 +34,7 @@ func _enter_tree() -> void:
 
 
 func _how_to_play() -> String:
-	return "Tap a channel to turn it. Sea water comes in from the left: link every nursery pool (the round ones) to the sea."
+	return "Tap a channel to turn it. Sea water comes in from the left: link every nursery pool (the round ones) to the sea. Every map has a way through; stuck? Tap \"Show me one\"."
 
 
 func _start_board(config: Vector3i) -> void:
@@ -46,6 +48,7 @@ func _start_board(config: Vector3i) -> void:
 	_area.gui_input.connect(_on_input)
 	_area.draw.connect(_draw_map)
 	_board.add_child(_area)
+	_add_button("Show me one (+5 s)", hint, "Hint")
 	_flow()
 
 
@@ -69,6 +72,7 @@ func _make(pool_count: int) -> void:
 			_join(path[j], path[j + 1])
 		for cell in path:
 			tree[cell] = true
+	_way = tree.duplicate()
 	for x in _cols:  # the rest: odd bits of channel, to make it a puzzle
 		for y in _rows:
 			var cell := Vector2i(x, y)
@@ -114,6 +118,24 @@ func _join(a: Vector2i, b: Vector2i) -> void:
 ## A piece turned a quarter clockwise.
 static func rotated(mask: int) -> int:
 	return ((mask << 1) | (mask >> 3)) & 15
+
+
+## Every board has a way through: a hint turns one piece on it into place (+5 seconds).
+## Returns whether there was one left to turn.
+func hint() -> bool:
+	if not _playing:
+		return false
+	var cells := _way.keys()
+	cells.shuffle()
+	for cell: Vector2i in cells:
+		if _pieces[cell] != _solution[cell]:
+			_pieces[cell] = _solution[cell]
+			seconds += 5.0
+			_flow()
+			if _all_linked():
+				_complete()
+			return true
+	return false
 
 
 ## Turns the piece at `cell` (a tap).

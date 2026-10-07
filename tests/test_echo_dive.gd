@@ -1,7 +1,8 @@
 extends SceneTree
-## Echo Dive: once Imani asks about the lost cargo module it's at the Deep-Ocean Outpost. Hold to
-## rise, let go to sink, through a dark canyon lit by sonar pings; walls only slow you; pick up
-## lost gear. The story dive finds the cargo module (Imani's cargo search); then it's for fun.
+## Echo Dive: once Imani asks about the lost cargo module it's at the Deep-Ocean Outpost. The
+## sub sinks straight down from the surface; steer round the ledges (a bump only slows it),
+## past the deep's animals at their real depths. The story dive reaches the cargo module at
+## 1,000 m (Imani's cargo search); then it's for fun, deeper each level.
 ## Run: godot --headless --path . --script res://tests/test_echo_dive.gd --quit-after 300000
 
 var _failed := false
@@ -34,21 +35,19 @@ func _initialize() -> void:
 	var screen: Node = world.get_parent().find_child("EchoDive", true, false)
 	screen.open_activity(dive_data)
 	screen.call("_begin")
-	for i in 120:
-		screen.step(1.0 / 30.0, false)
-	_expect(screen.get("_playing"), "sinking into a wall only slows the sub: nothing goes wrong")
-	_expect(screen.echo() >= 0.0 and screen.echo() <= 1.0, "the sonar pings and fades")
+	for i in 90:
+		screen.step(1.0 / 30.0, 0.0)
+	_expect(screen.get("_playing") and screen.depth() > 50.0, "the sub sinks from the surface by itself; bumping a ledge only slows it")
 	var steps := 0
-	while screen.get("_playing") and steps < 30000:  # steer for the gear, or the middle of the canyon
-		var x: float = screen.get("_scroll") + screen.SUB_X
-		var aim: float = (screen.gap_at(x).x + screen.gap_at(x).y) / 2.0
-		for thing: Dictionary in screen.get("_things"):
-			if thing.x > x and thing.x < x + 0.4:
-				aim = thing.y
-				break
-		screen.step(1.0 / 30.0, screen.depth() > aim)
+	while screen.get("_playing") and steps < 30000:  # steer away from the next ledge's side
+		var ledge: Dictionary = screen.next_ledge()
+		var steer := 0.0
+		if not ledge.is_empty():
+			steer = 1.0 if ledge.side < 0 else -1.0
+		screen.step(1.0 / 30.0, steer)
 		steps += 1
-	_expect(not screen.get("_playing") and screen.collected() >= 3, "the lost gear picked up (%d, %d steps)" % [screen.collected(), steps])
+	_expect(not screen.get("_playing") and screen.depth() >= 1000.0, "down to 1,000 m (%d steps)" % steps)
+	_expect(screen.seen().has("Giant squid") and screen.seen().has("Midnight zone"), "passing the giant squid's depth, into the midnight zone (%s)" % [screen.seen()])
 	_expect(fleet.has_flag(&"cargo_located"), "the story dive found the cargo module")
 	screen.close_screen()
 

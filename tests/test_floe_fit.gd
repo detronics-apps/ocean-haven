@@ -1,7 +1,8 @@
 extends SceneTree
-## Floe Fit: once Sanna asks about the ice core it's at the Polar Research Station. Fit floes into
-## the gaps of open water on the ice map; a placed floe can be taken back (never stuck); every
-## board has a way to fill it. The story play is Sanna's drill planning; then it's for fun.
+## Ice Match (activity "floe_fit"): once Sanna asks about the ice core it's at the Polar Research
+## Station. Swap neighbouring pieces to make rows of three or more of the same: they clear,
+## the rest fall, new ones drop in. A swap with no row swaps back; there's always a move.
+## Clearing enough old ice finishes it. The story play is Sanna's drill planning.
 ## Run: godot --headless --path . --script res://tests/test_floe_fit.gd --quit-after 300000
 
 var _failed := false
@@ -19,50 +20,42 @@ func _initialize() -> void:
 		await process_frame
 	var polar: Resource = load("res://data/regions/arctic_ocean.tres")
 	load("res://scripts/world/regions.gd").discover(polar)
-	var fit_data: Resource = load("res://data/activities/floe_fit.tres")
+	var data: Resource = load("res://data/activities/floe_fit.tres")
 	var sanna: Resource = load("res://data/people/sanna.tres")
 	var people := root.get_node("People")
 	var terrain: GDScript = load("res://scripts/world/terrain.gd")
 	world.get_node("BuildMode").add_building(load("res://data/buildings/polar_research_station.tres"), terrain.cell_of(polar.arrival) + Vector2i(1, -1))
-	_expect(not activities.is_open(fit_data), "not before Sanna asks about the ice core")
+	_expect(not activities.is_open(data), "not before Sanna asks about the ice core")
 	people.talk(sanna)
 	people.talk(sanna)
 	people.finish_talk()
-	_expect(people.check("asked:core", sanna) and activities.is_open(fit_data), "Sanna asks about the ice core: Floe Fit opens")
+	_expect(people.check("asked:core", sanna) and activities.is_open(data), "Sanna asks about the ice core: Ice Match opens")
 
-	var screen: Node = world.get_parent().find_child("FloeFit", true, false)
-	screen.open_activity(fit_data)
+	var screen: Node = world.get_parent().find_child("IceMatch", true, false)
+	screen.open_activity(data)
 	screen.call("_begin")
-	_expect(screen.floe_count() > 0 and not screen.filled(), "the ice map has gaps and floes to fit")
-	# A floe in the wrong place can be taken back.
-	screen.pick(0)
-	var wrong := Vector2i(-1, -1)
-	for x in 5:
-		for y in 4:
-			if wrong == Vector2i(-1, -1) and Vector2i(x, y) != screen.cut_at(0) and screen.call("_fits", 0, Vector2i(x, y)):
-				wrong = Vector2i(x, y)
-	if wrong != Vector2i(-1, -1):
-		screen.place(wrong)
-		_expect(screen.take_back(wrong + screen.get("_floes")[0][0]), "a floe put in the wrong place can be taken back")
-	for floe in screen.floe_count():
-		screen.pick(floe)
-		screen.place(screen.cut_at(floe))
-	_expect(not screen.get("_playing"), "every gap filled: done")
-	_expect(activities.story_done(fit_data) and root.get_node("Missions").last_report.contains("oldest"), "the story play did the drill planning (%s)" % root.get_node("Missions").last_report)
+	_expect(screen.call("_matches").is_empty() and screen.find_move().size() == 2, "a fresh board: no rows ready-made, and a move to make")
+	var before: Array = screen.grid.duplicate(true)
+	var bad := Vector2i(-1, -1)
+	for x in screen.cols - 1:  # a swap that makes no row
+		for y in screen.rows:
+			screen.call("_exchange", Vector2i(x, y), Vector2i(x + 1, y))
+			var none: bool = screen.call("_matches").is_empty()
+			screen.call("_exchange", Vector2i(x, y), Vector2i(x + 1, y))
+			if none and bad == Vector2i(-1, -1):
+				bad = Vector2i(x, y)
+	if bad != Vector2i(-1, -1):
+		_expect(not screen.swap(bad, bad + Vector2i(1, 0)) and screen.grid == before, "a swap that makes no row swaps back")
+	var moves := 0
+	while screen.get("_playing") and moves < 2000:
+		var move: Array = screen.find_move()
+		if move.is_empty():
+			break
+		screen.swap(move[0], move[1])
+		moves += 1
+	_expect(not screen.get("_playing") and screen.cleared >= screen.goal, "enough old ice cleared: done (%d moves)" % moves)
+	_expect(activities.story_done(data) and root.get_node("Missions").last_report.contains("oldest"), "the story play did the drill planning (%s)" % root.get_node("Missions").last_report)
 	screen.close_screen()
-	var ok := true
-	for i in 30:
-		screen.set("_cols", 9)
-		screen.set("_rows", 6)
-		screen.set("_playing", true)
-		screen.call("_cut", 5)
-		for floe in screen.floe_count():
-			screen.pick(floe)
-			ok = ok and screen.call("_fits", floe, screen.cut_at(floe))
-			screen.get("_placed")[floe] = screen.cut_at(floe)
-		ok = ok and screen.filled()
-	screen.set("_playing", false)
-	_expect(ok, "every board can be filled")
 
 	if not _failed:
 		print("PASS")

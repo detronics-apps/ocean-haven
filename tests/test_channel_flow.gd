@@ -59,6 +59,14 @@ func _initialize() -> void:
 			screen.pieces()[cell] = made[cell]
 		ok = ok and screen.call("_all_linked")
 	_expect(ok, "every board can be solved")
+	# Stuck? "Show me one" turns a piece of the way through into place, until it's done.
+	screen.set("_playing", true)
+	screen.call("_make", 4)
+	var hints := 0
+	while screen.get("_playing") and hints < 200:
+		screen.hint()
+		hints += 1
+	_expect(not screen.get("_playing"), "the hints alone lead all the way through (%d)" % hints)
 
 	if not _failed:
 		print("PASS")

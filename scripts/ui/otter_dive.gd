@@ -26,6 +26,7 @@ var _things: Array[Dictionary] = []
 var _speed := 0.18
 var _density := 3
 var _note := ""
+var _paddle := 0.0
 
 
 func _enter_tree() -> void:
@@ -147,15 +148,43 @@ func _draw_arena() -> void:
 			_arena.draw_circle(at, 9.0, Color("7b3f8c"))
 			for i in 8:
 				_arena.draw_line(at, at + Vector2.from_angle(TAU * i / 8.0) * 14.0, Color("5a2a6a"), 2.0)
-	var otter := Vector2(OTTER_X * size.x, _y * size.y)
-	_arena.draw_circle(otter, 14.0, Color("7a5132"))
-	_arena.draw_circle(otter + Vector2(12, -4), 8.0, Color("8c6040"))
-	_arena.draw_circle(otter + Vector2(15, -6), 2.0, Color.BLACK)
+	_draw_otter(Vector2(OTTER_X * size.x, _y * size.y))
 	# Air and urchins.
 	var bar := Rect2(Vector2(16, 12), Vector2(160, 14))
 	_arena.draw_rect(bar, Color(0, 0, 0, 0.4))
 	_arena.draw_rect(Rect2(bar.position, Vector2(bar.size.x * _air / AIR_SECONDS, bar.size.y)), Color("8fd3ff"))
 	_arena.draw_string(get_theme_default_font(), Vector2(190, 25), "Air    Urchins %d / %d" % [_got, _goal], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+
+
+## The otter: a long brown body tilted the way it's swimming, a paler face with whiskers, a
+## flat tail, hind feet paddling and a trail of bubbles while it's under.
+func _draw_otter(at: Vector2) -> void:
+	_paddle += get_process_delta_time() * (9.0 if _velocity > 0.2 else 4.0)
+	var tilt := clampf(_velocity * 0.5, -0.5, 0.6)
+	var fur := Color("7a5132")
+	var dark := Color("5c3b22")
+	var pale := Color("d9c3a3")
+	_arena.draw_set_transform(at, tilt, Vector2.ONE)
+	var kick := sin(_paddle) * 5.0
+	_arena.draw_colored_polygon(PackedVector2Array([Vector2(-30, -3), Vector2(-46, -6 + kick * 0.4), Vector2(-46, 3 + kick * 0.4), Vector2(-30, 4)]), dark)  # tail
+	_arena.draw_colored_polygon(PackedVector2Array([Vector2(-26, 4), Vector2(-34, 10 + kick), Vector2(-28, 12 + kick), Vector2(-22, 6)]), dark)  # hind feet
+	_arena.draw_colored_polygon(PackedVector2Array([Vector2(-26, -4), Vector2(-34, -10 - kick), Vector2(-28, -11 - kick), Vector2(-22, -5)]), dark)
+	_arena.draw_rect(Rect2(-28, -8, 36, 16), fur)  # body
+	_arena.draw_circle(Vector2(-28, 0), 8.0, fur)
+	_arena.draw_rect(Rect2(-22, 2, 26, 5), Color("8c6040"))  # belly
+	_arena.draw_colored_polygon(PackedVector2Array([Vector2(0, 7), Vector2(6, 13 - kick * 0.5), Vector2(10, 11 - kick * 0.5), Vector2(6, 6)]), dark)  # front paw
+	_arena.draw_circle(Vector2(14, -2), 10.0, fur)  # head
+	_arena.draw_circle(Vector2(18, 0), 6.5, pale)  # face
+	_arena.draw_circle(Vector2(9, -10), 3.0, dark)  # ear
+	_arena.draw_circle(Vector2(18, -4), 1.8, Color.BLACK)  # eye
+	_arena.draw_circle(Vector2(24, 0), 2.0, Color("2a1d14"))  # nose
+	for i in 3:  # whiskers
+		_arena.draw_line(Vector2(22, 2), Vector2(32, -2 + i * 3), Color(1, 1, 1, 0.8), 1.0)
+	_arena.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	if _y > SURFACE + 0.03:  # bubbles rising behind it
+		for i in 4:
+			var rise := fmod(_paddle * 6.0 + i * 13.0, 50.0)
+			_arena.draw_arc(at + Vector2(-20.0 - i * 6.0, -rise), 2.0 + i * 0.5, 0.0, TAU, 10, Color(1, 1, 1, 0.6), 1.0)
 
 
 static func get_theme_default_font() -> Font:
