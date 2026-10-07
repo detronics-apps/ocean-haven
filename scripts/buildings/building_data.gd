@@ -169,7 +169,7 @@ extends Resource
 ## What interacting with it does: "" (nothing), "sleep", "explore" (the Exploration Ship) or
 ## "missions" (a signature facility: send missions, see Missions).
 @export var action: StringName
-## Short, accurate fact shown when it's built.
+## Short, accurate fact shown when it's built (and in "What is this?").
 @export_multiline var fact: String
 
 

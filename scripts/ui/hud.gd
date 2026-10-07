@@ -91,6 +91,9 @@ func _ready() -> void:
 	var recycling := RecycleMenu.new()  # opened from a recycling centre
 	recycling.name = "RecycleMenu"
 	get_parent().add_child.call_deferred(recycling)
+	var info := BuildingInfo.new()  # "What is this?" on any building
+	info.name = "BuildingInfo"
+	get_parent().add_child.call_deferred(info)
 	var rescue_screen := RescueScreen.new()  # the rescue companion (Rescues)
 	rescue_screen.name = "RescueScreen"
 	get_parent().add_child.call_deferred(rescue_screen)

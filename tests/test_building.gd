@@ -203,6 +203,20 @@ func _initialize() -> void:
 	_expect(home_tents.call() == tents_here, "it replaces the tent there, not the one on the Starting Island")
 	build_mode.cancel()
 
+	# --- Every building says what it's for ---
+	var new_house: Node2D = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"house" and not b.is_queued_for_deletion())[0]
+	world.get_node("Player").global_position = new_house.global_position + Vector2(0, 40)
+	var asks: Array = new_house.actions().filter(func(a: Dictionary) -> bool: return a.label == "What is this?")
+	_expect(asks.size() == 1, "a building offers 'What is this?'")
+	asks[0].do.call()
+	var info: Node = world.get_parent().find_child("BuildingInfo", true, false)
+	var said := info.find_children("*", "Label", true, false).map(func(l: Label) -> String: return l.text)
+	_expect(info.visible and said.has(house.description) and said.has(house.fact), "it shows what it's for, and a real-life fact")
+	info.close()
+	var no_fact: Array = Array(DirAccess.get_files_at("res://data/buildings")).filter(func(f: String) -> bool:
+		return f.ends_with(".tres") and f != "shovel.tres" and (load("res://data/buildings/" + f).fact == "" or load("res://data/buildings/" + f).description == ""))
+	_expect(no_fact.is_empty(), "every building has a description and a fact (%s)" % [no_fact])
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
