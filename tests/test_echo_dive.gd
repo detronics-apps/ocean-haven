@@ -76,6 +76,10 @@ func _initialize() -> void:
 	screen.wrenches().append(kit)
 	screen.step(1.0 / 30.0, Vector2.ZERO)
 	_expect(screen.hearts() == 3 and not screen.wrenches().has(kit), "a repair kit gives a heart back")
+	var got_before: int = screen.gear_got()
+	screen.gear_left().append({"depth": screen.depth(), "x": screen.position_x(), "item": null})
+	screen.step(1.0 / 30.0, Vector2.ZERO)
+	_expect(screen.gear_got() == got_before + 1, "lost gear the sub reaches is picked up (%d)" % screen.gear_got())
 	screen.set("_hearts", 99)  # (the autopilot below is about what's seen on the way, not steering)
 	var lit := 0
 	var dark_steps := 0
@@ -106,7 +110,6 @@ func _initialize() -> void:
 	screen.set("_time", time_now)
 	_expect(absf(on_steps / 1000.0 - 0.9) < 0.02, "level 1: the sonar light is on 90%% of the time (%.0f%%)" % (on_steps / 10.0))
 	_expect(screen.daylight(50.0) > 0.7 and screen.daylight(1000.0) == 0.0, "daylight near the top, none in the deep")
-	_expect(screen.gear_got() >= 1, "lost gear picked up on the way (%d)" % screen.gear_got())
 	_expect(screen.seen().has("Giant squid") and screen.seen().has("Midnight zone") and screen.seen().has("Bottlenose dolphin"),
 		"passing the dolphins, the giant squid's depth and into the midnight zone (%s)" % [screen.seen()])
 	_expect(fleet.has_flag(&"cargo_located"), "the story dive found the cargo module")
