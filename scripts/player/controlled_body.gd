@@ -54,6 +54,8 @@ static func switch_camera(camera: Camera2D, glide := 0.3) -> void:
 
 var _target: Vector2
 var _has_target := false
+## The finger (or mouse button) is still down after a tap on the world: follow it.
+var _holding := false
 
 @onready var _look: Node2D = get_node_or_null("Look")
 
@@ -71,16 +73,26 @@ func _enter_tree() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Touch taps arrive as mouse clicks (emulate_mouse_from_touch is on by default).
+	# Touch taps arrive as mouse clicks (emulate_mouse_from_touch is on by default). A tap walks
+	# all the way there; holding the finger down, the ranger follows it.
 	if controlled and is_tap(event):
 		_target = get_global_mouse_position()
 		_has_target = true
+		_holding = true
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_holding = false  # let go: keep walking to where the finger last was
 
 
 func _physics_process(_delta: float) -> void:
 	if not controlled:
 		return
 	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if _holding and dir == Vector2.ZERO:
+		_target = get_global_mouse_position()
+		_has_target = true
 	if dir != Vector2.ZERO:
 		_has_target = false
 	elif _has_target:
@@ -102,6 +114,7 @@ func _physics_process(_delta: float) -> void:
 
 func stop() -> void:
 	_has_target = false
+	_holding = false
 	velocity = Vector2.ZERO
 
 
