@@ -212,6 +212,14 @@ func _initialize() -> void:
 	_expect(box != null, "the HUD adds a talk box")
 	tom_node.talk()
 	_expect(box.visible and paused, "talking: the box shows and the game waits")
+	var back: Button = box.find_child("Back", true, false)
+	var first_line: String = box.get("_text").text
+	_expect(back != null and back.disabled, "a Back button, not usable on the first line")
+	if box.get("_lines").size() > 1 and not box.is_choosing():
+		box.next()
+		_expect(not back.disabled, "on the next line it is")
+		back.pressed.emit()
+		_expect(box.visible and box.get("_text").text == first_line, "Back shows the line before again")
 	for i in 10:
 		if box.visible:
 			box.next()

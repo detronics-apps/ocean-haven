@@ -1,7 +1,7 @@
 class_name TalkBox
 extends CanvasLayer
 ## A talk with someone (People.talk): one speech bubble at a time at the bottom of the screen,
-## with their name and job; a tap anywhere shows the next. The game waits while they talk.
+## with their name and job; a tap anywhere shows the next, Back the one before. The game waits while they talk.
 ## When it's over, any question they asked turns into an objective a moment later.
 
 var _lines: Array[Dictionary] = []
@@ -10,6 +10,7 @@ var _panel: PanelContainer
 var _who: Label
 var _text: Label
 var _more: Label
+var _back: Button
 ## The ranger's two replies to pick from (on their lines).
 var _choices: HBoxContainer
 ## The frame it opened on (the key press that opened it doesn't also skip the first line).
@@ -66,11 +67,22 @@ func _ready() -> void:
 	_choices.add_theme_constant_override("separation", 16)
 	_choices.alignment = BoxContainer.ALIGNMENT_CENTER
 	column.add_child(_choices)
+	var bottom := HBoxContainer.new()
+	bottom.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_child(bottom)
+	_back = Button.new()
+	_back.name = "Back"
+	_back.text = "< Back"
+	_back.custom_minimum_size = Vector2(110, 44)
+	_back.add_theme_font_size_override("font_size", 18)
+	_back.pressed.connect(back)
+	bottom.add_child(_back)
 	_more = Label.new()
 	_more.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_more.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_more.add_theme_font_size_override("font_size", 15)
 	_more.add_theme_color_override("font_color", Color("6b6f78"))
-	column.add_child(_more)
+	bottom.add_child(_more)
 
 
 ## Starts a talk with `person`: `lines` from People.talk.
@@ -99,6 +111,13 @@ func next() -> void:
 		_show()
 
 
+## Shows the line before again (to read it once more, or pick a different reply).
+func back() -> void:
+	if _at > 0:
+		_at -= 1
+		_show()
+
+
 func close() -> void:
 	visible = false
 	get_tree().paused = false
@@ -116,6 +135,7 @@ func _show() -> void:
 	_choices.visible = not options.is_empty()
 	_text.visible = options.is_empty()
 	_more.visible = options.is_empty()
+	_back.disabled = _at == 0
 	_text.text = line.text
 	_more.text = "Tap to close" if _at == _lines.size() - 1 else "Tap to go on"
 	for i in options.size():  # the ranger's reply: pick one

@@ -13,6 +13,7 @@ const POSTER: Texture2D = preload("res://assets/ui/poster/ocean_poster.jpg")
 const POSTER_FILE := "BlueHaven_ocean_poster.jpg"
 
 var _panorama: Panorama
+var _credits: EndCredits
 
 
 func _enter_tree() -> void:
@@ -22,6 +23,10 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	super()
 	_title.text = "Global Ocean Observatory"
+	_credits = EndCredits.new()
+	_credits.name = "EndCredits"
+	_credits.finished.connect(func() -> void: get_tree().paused = visible)
+	add_child(_credits)
 
 
 static func is_open_to_ranger() -> bool:
@@ -41,6 +46,18 @@ func open() -> void:
 	super()
 	if final_chapter():
 		Fleet.mark(&"observatory_opened")
+		if not Fleet.has_flag(&"credits_seen"):  # the first time: the screen goes black and the credits roll
+			Fleet.mark(&"credits_seen")
+			play_credits()
+
+
+## The end credits ("A Final Word"), over the Observatory.
+func play_credits() -> void:
+	_credits.play()
+
+
+func credits() -> EndCredits:
+	return _credits
 
 
 func _fill() -> void:
@@ -80,6 +97,13 @@ func _fill() -> void:
 	motto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_content.add_child(motto)
 	_content.add_child(_poster_card())
+	var again := Button.new()
+	again.name = "EndCreditsButton"
+	again.text = "End credits"
+	again.custom_minimum_size = Vector2(0, 64)
+	again.add_theme_font_size_override("font_size", 20)
+	again.pressed.connect(play_credits)
+	_content.add_child(again)
 	for person: PersonData in People.all():
 		var line := closing_line(person)
 		if line != "":

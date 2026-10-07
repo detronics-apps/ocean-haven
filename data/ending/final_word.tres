@@ -1,0 +1,281 @@
+[gd_resource type="Resource" script_class="CreditsData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/credits_data.gd" id="1_c"]
+
+[resource]
+script = ExtResource("1_c")
+text = "# A Final Word
+
+Thank you for following my journey.
+
+You have travelled a long way.
+
+You began with one little island, perhaps not knowing what you would find there. Along the way, you met people who cared deeply about the places they called home. You discovered animals, explored forests and reefs, followed currents, studied the deep ocean, and watched the seasons change.
+
+You cleaned beaches.
+
+You restored habitats.
+
+You rescued animals.
+
+You asked questions.
+
+And, hopefully, somewhere along the way, you began to notice something.
+
+The ocean was never really divided into islands.
+
+It was always one ocean.
+
+So before you leave, there are a few things I hope you remember.
+
+---
+
+### Look closely.
+
+The natural world is full of things worth noticing.
+
+A turtle leaving tracks in the sand.
+
+An otter carrying something ashore.
+
+A fish hiding among the kelp.
+
+A bird returning to an island after travelling across the ocean.
+
+The more closely we look, the more we begin to understand.
+
+And the more we understand, the more there is to care about.
+
+---
+
+### Everything has a role.
+
+An animal is not simply there to look at.
+
+A plant is not simply decoration.
+
+A reef is not just a collection of colourful creatures.
+
+Everything is connected to something else.
+
+One species can influence another.
+
+One habitat can support another.
+
+One small change can travel much further than we expect.
+
+Sometimes the smallest part of a system is doing something very important.
+
+---
+
+### Balance matters.
+
+Helping nature does not always mean doing more.
+
+Sometimes we need to restore something.
+
+Sometimes we need to remove something.
+
+Sometimes we need to change the way we do things.
+
+And sometimes the best thing we can do is step back and give nature room to recover.
+
+Good intentions are important.
+
+But understanding is what allows good intentions to become good decisions.
+
+---
+
+### Look for the cause, not only the problem.
+
+Picking up litter is important.
+
+But if the same litter keeps returning, perhaps we should ask why.
+
+A lasting solution does more than clean up what has already happened.
+
+It changes what happens next.
+
+So when you see a problem, don't only ask:
+
+**“How do I fix this?”**
+
+Ask:
+
+**“Why is this happening?”**
+
+---
+
+### Learning takes time.
+
+We cannot always understand something by looking at it once.
+
+Sometimes we need to watch.
+
+Measure.
+
+Listen.
+
+Explore.
+
+Make a careful change.
+
+And then watch again.
+
+The world has a way of teaching us when we are patient enough to observe it.
+
+---
+
+### Care means letting go.
+
+Perhaps you remember the animals you cared for along the way.
+
+You gave them names.
+
+You watched them grow.
+
+You helped them become strong enough to return to the wild.
+
+And then you let them go.
+
+That is an important part of caring for wildlife.
+
+We do not protect animals so that they belong to us.
+
+We protect them so that they can continue to belong to the wild.
+
+---
+
+### People are part of the ocean too.
+
+There is no great wall between people and nature.
+
+Fishermen depend on healthy waters.
+
+Communities depend on healthy coasts.
+
+Researchers depend on healthy ecosystems.
+
+Families depend on the food, water and resources the natural world provides.
+
+We are not standing outside the environment, looking in.
+
+**We are part of it.**
+
+What we do on land can reach the sea.
+
+What happens in the sea can eventually reach us.
+
+---
+
+### Small actions matter.
+
+You may have started by picking up one piece of litter.
+
+One turtle.
+
+One patch of kelp.
+
+One channel.
+
+One reef.
+
+One animal.
+
+It may not have seemed like much.
+
+But conservation rarely begins with one enormous action.
+
+It begins with someone noticing that something matters...
+
+and deciding to care.
+
+---
+
+### And remember the ocean.
+
+You may have travelled from one island to another.
+
+But there were never really six separate worlds.
+
+The turtle you met in one place could travel somewhere else.
+
+The water that flowed past one shore could reach another.
+
+The waste created somewhere far away could arrive on a beach you had never seen before.
+
+The health of one place could help another.
+
+You discovered this slowly.
+
+Island by island.
+
+Animal by animal.
+
+Until eventually, the picture became clear.
+
+**There is only one ocean.**
+
+Many shores.
+
+Many creatures.
+
+Many people.
+
+Many stories.
+
+But one connected world.
+
+---
+
+So thank you.
+
+Thank you for following my journey.
+
+Thank you for looking closely.
+
+Thank you for asking questions.
+
+Thank you for caring for the creatures you met.
+
+And when you leave this little world behind, I hope you take something with you.
+
+Not every fact.
+
+Not every name.
+
+Not every number.
+
+But perhaps a way of looking at the world.
+
+When you see a beach, look a little closer.
+
+When you see an animal, wonder what its role might be.
+
+When you see a problem, ask where it came from.
+
+When you make a choice, remember that it may reach further than you can see.
+
+And when you see something beautiful...
+
+**stop for a moment and appreciate it.**
+
+Because perhaps the greatest lesson of all is this:
+
+> **We cannot care for what we never take the time to notice.**
+
+So keep looking.
+
+Keep asking.
+
+Keep learning.
+
+And wherever you go next,
+
+**remember that you are part of the same ocean.**
+
+### One ocean.  
+### Many places.  
+### Everything connected.
+
+**Thank you for sharing this journey with me.**"

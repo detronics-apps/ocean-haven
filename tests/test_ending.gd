@@ -83,6 +83,36 @@ func _initialize() -> void:
 	_expect(said.any(func(t: String) -> bool: return t.contains("There was only ever one ocean.")), "the people at their work, each with a line")
 	_expect(not said.any(func(t: String) -> bool: return t.to_lower().contains("you won")), "never 'You won'")
 	_expect(screen.find_child("DownloadPoster", true, false) != null, "the prize: the ocean poster to download")
+	var credits: Node = screen.credits()
+	_expect(credits.is_playing() and fleet.has_flag(&"credits_seen"), "the first time: the screen goes black and the end credits roll")
+	await process_frame
+	await process_frame
+	var rows: Array = credits.rows()
+	_expect(rows.size() > 100 and rows[0].text == "A Final Word" and rows.any(func(r: Dictionary) -> bool: return r.text.contains("Thank you for sharing")),
+		"'A Final Word', all the way to the last line (%d rows)" % rows.size())
+	for i in 200:  # (past the black)
+		credits._process(1.0 / 30.0)
+	var slow: float = credits.progress()
+	credits.toggle_speed()
+	for i in 60:
+		credits._process(1.0 / 30.0)
+	var fast: float = credits.progress() - slow
+	credits.toggle_speed()
+	var before: float = credits.progress()
+	for i in 60:
+		credits._process(1.0 / 30.0)
+	var normal: float = credits.progress() - before
+	_expect(credits.is_playing() and is_equal_approx(fast, normal * 2.0), "a tap: twice as fast (%.4f vs %.4f)" % [fast, normal])
+	var minutes: float = 1.0 / (normal * 30.0 / 60.0) / 60.0
+	_expect(minutes > 4.0, "slow enough for slow readers: about %.1f minutes at normal speed" % minutes)
+	credits.stop()
+	_expect(not credits.is_playing() and screen.visible, "closed: back at the Observatory")
+	screen.close()
+	screen.open()
+	_expect(not screen.credits().is_playing(), "not again by itself")
+	screen.find_child("EndCreditsButton", true, false).pressed.emit()
+	_expect(screen.credits().is_playing(), "the End credits button plays them again")
+	screen.credits().stop()
 	var poster: Image = screen.POSTER.get_image()
 	_expect(poster.get_height() > poster.get_width() and poster.get_width() >= 700 and poster.save_jpg_to_buffer(0.95).size() > 100000, "the poster saves as a full-size JPEG (%dx%d)" % [poster.get_width(), poster.get_height()])
 	_expect(fleet.has_flag(&"observatory_opened") and fleet.goal_met(people.questions(maya).back().objective), "Maya's last question is answered")
