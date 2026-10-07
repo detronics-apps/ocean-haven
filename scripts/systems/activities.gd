@@ -13,6 +13,8 @@ var _bests := {}
 ## Activity id -> {level: deepest metres reached} (Echo Dive: the record until the level's
 ## bottom is reached, then the time counts).
 var _depths := {}
+## Activity id -> {"level/key": most} (endless plays: urchins collected, seconds lasted).
+var _most := {}
 var _all: Array[ActivityData] = []
 
 
@@ -66,10 +68,31 @@ func reached(activity: ActivityData, level: int, metres: float) -> bool:
 	return true
 
 
+## The most of `key` in one play of `level` (e.g. Otter Dive: "urchins", "seconds"; 0 = none yet).
+func most(activity: ActivityData, level: int, key: String) -> float:
+	return float(_most.get(activity.id, {}).get("%d/%s" % [level, key], 0.0))
+
+
+## Records `value` of `key` for a play of `level`. Returns whether it's a new most.
+func record_most(activity: ActivityData, level: int, key: String, value: float) -> bool:
+	if value <= most(activity, level, key):
+		return false
+	if not _most.has(activity.id):
+		_most[activity.id] = {}
+	_most[activity.id]["%d/%s" % [level, key]] = value
+	return true
+
+
+## Whether `level` has been done (finished, or for endless plays its "cleared" record), so
+## the next one opens.
+func cleared(activity: ActivityData, level: int) -> bool:
+	return best(activity, level) < INF or most(activity, level, "cleared") > 0.0
+
+
 ## Levels that can be played: every one finished, and the next.
 func open_levels(activity: ActivityData) -> int:
 	var count := 1
-	while count < activity.levels.size() and best(activity, count - 1) < INF:
+	while count < activity.levels.size() and cleared(activity, count - 1):
 		count += 1
 	return count
 
@@ -106,13 +129,23 @@ func to_dict() -> Dictionary:
 		for level in _depths[id]:
 			levels[str(level)] = _depths[id][level]
 		depths[String(id)] = levels
-	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests, "depths": depths}
+	var most := {}
+	for id in _most:
+		most[String(id)] = (_most[id] as Dictionary).duplicate()
+	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests, "depths": depths, "most": most}
 
 
 func restore(saved: Dictionary) -> void:
 	_done.clear()
 	_bests.clear()
 	_depths.clear()
+	_most.clear()
+	var most: Dictionary = saved.get("most", {})
+	for id in most:
+		var records := {}
+		for key in most[id]:
+			records[String(key)] = float(most[id][key])
+		_most[StringName(id)] = records
 	var depths: Dictionary = saved.get("depths", {})
 	for id in depths:
 		var levels := {}

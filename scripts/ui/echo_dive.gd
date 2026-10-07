@@ -464,21 +464,12 @@ func _draw_arena() -> void:
 		shade += 12.0
 	_draw_sub(size)
 	for i in _hearts:  # the sub's hearts, top right
-		_draw_heart(Vector2(size.x - 28.0 - i * 34.0, 22.0))
+		draw_heart(_arena, Vector2(size.x - 28.0 - i * 34.0, 22.0))
 	_arena.draw_string(ThemeDB.fallback_font, Vector2(16, 26), "Depth %d m  /  %d m     Lost gear: %d     Light on %d%% of the time" % [
 		roundi(depth()), roundi(_target), _got, roundi(_light_share * 100.0)],
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
 	if _note != "":
 		_arena.draw_string(ThemeDB.fallback_font, Vector2(16, size.y - 16), _note, HORIZONTAL_ALIGNMENT_LEFT, size.x - 32, 16, Color("f2d58a"))
-
-
-## A heart (one bump the sub can still take).
-func _draw_heart(at: Vector2) -> void:
-	var red := Color("ff5d6c")
-	_arena.draw_circle(at + Vector2(-6, -3), 7.0, red)
-	_arena.draw_circle(at + Vector2(6, -3), 7.0, red)
-	_arena.draw_colored_polygon(PackedVector2Array([at + Vector2(-13, -1), at + Vector2(13, -1), at + Vector2(0, 13)]), red)
-	_arena.draw_circle(at + Vector2(-7, -5), 2.0, Color(1, 1, 1, 0.7))
 
 
 ## A repair kit: a spanner.

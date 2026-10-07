@@ -46,21 +46,33 @@ func _initialize() -> void:
 	screen.open_activity(dive_data)
 	screen.call("_begin")
 	_expect(screen.visible and paused, "the dive opens and the game waits")
+	screen.set("_current", 0)  # (no new litter while the air and floating are checked)
+	var no_litter := func() -> void:
+		var list: Array[Dictionary] = screen.things()
+		for t in list.duplicate():
+			if t.kind == "litter":
+				list.erase(t)
+	no_litter.call()
 	for i in 60:
+		no_litter.call()
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.depth() > 0.5, "holding: the otter dives (%.2f)" % screen.depth())
 	var goal: int = screen.get("_goal")
 	screen.set("_goal", 999)  # (so grabbing every urchin on the way can't end the dive here)
 	for i in 400:
+		no_litter.call()
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.air() <= 0.0 and screen.get("_playing"), "out of air: nothing goes wrong")
 	screen.set("_goal", goal)
 	for i in 30:
+		no_litter.call()
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.depth() < 0.8, "it just floats up, even holding")
 	for i in 200:
+		no_litter.call()
 		screen.step(1.0 / 30.0, false)
 	_expect(screen.air() > 6.0, "a breath at the surface fills the air again")
+	screen.set("_hearts", 99)  # (the autopilot below doesn't steer round litter)
 	var steps := 0
 	while screen.get("_playing") and steps < 20000:  # dive for urchins, up for air
 		var low_air: bool = screen.air() < 2.0
@@ -72,9 +84,30 @@ func _initialize() -> void:
 		"and it did Finn's urchin survey (%s)" % root.get_node("Missions").last_report)
 	screen.close_screen()
 
-	# --- Replays: levels and bests only ---
+	# --- Replays: endless; how many urchins, how long, until litter catches the otter 3 times ---
 	screen.open_activity(dive_data)
 	_expect(screen.get("_buttons").has_node("Level1"), "the jetty now opens the levels")
+	screen.level = 0
+	screen.call("_begin")
+	_expect(screen.hearts() == 3, "3 hearts")
+	screen.set("_goal", 2)
+	screen.set("_got", 3)  # (as if 3 urchins were grabbed: more than the level's number)
+	var caught := 0
+	for i in 3:
+		screen.things().append({"x": screen.get("_scroll") + 0.22, "y": screen.depth(), "kind": "litter", "icon": null, "phase": 0.0})
+		screen.set("_safe", 0.0)
+		screen.step(1.0 / 30.0, false)
+		caught += 1
+		if i == 0:
+			_expect(screen.hearts() == 2 and screen.get("_caught") > 0.0, "swimming into litter: caught for a moment, one heart less")
+			_expect(screen.get("_playing"), "and the dive goes on")
+	_expect(not screen.get("_playing") and screen.hearts() == 0, "caught three times: the dive is over (%d)" % caught)
+	_expect(is_equal_approx(activities.most(dive_data, 0, "urchins"), 3.0), "the most urchins is the record (%.0f)" % activities.most(dive_data, 0, "urchins"))
+	_expect(not screen.get("_info").text.to_lower().contains("fail"), "never 'failed'")
+	_expect(activities.open_levels(dive_data) >= 2, "enough urchins open the next level")
+	screen.call("_show_levels")
+	var texts: Array = screen.get("_buttons").get_children().filter(func(b: Node) -> bool: return not b.is_queued_for_deletion()).map(func(b: Button) -> String: return b.text)
+	_expect(texts.size() >= 1 and texts[0].contains("Most 3 urchins"), "the level shows its record (%s)" % [texts])
 	screen.close_screen()
 
 	if not _failed:

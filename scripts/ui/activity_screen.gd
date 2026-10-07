@@ -89,10 +89,7 @@ func _show_levels() -> void:
 	_clear()
 	_info.text = activity.practice_intro
 	for i in Activities.open_levels(activity):
-		var best := Activities.best(activity, i)
-		var deepest := Activities.best_depth(activity, i)
-		var text := "Level %d" % (i + 1) + ("\nBest %.1f s" % best if best < INF
-			else ("\nDeepest %d m" % roundi(deepest) if deepest > 0.0 else "\nNew!"))
+		var text := "Level %d\n%s" % [i + 1, _level_note(i)]
 		_add_button(text, _show_start.bind(i, ""), "Level%d" % (i + 1))
 
 
@@ -166,6 +163,23 @@ func _add_button(text: String, action: Callable, name: String) -> Button:
 	button.pressed.connect(action)
 	_buttons.add_child(button)
 	return button
+
+
+## The record shown on a level's button: the best time (Echo Dive: the deepest dive until the
+## sea floor is reached), or "New!". Subclasses can show their own.
+func _level_note(i: int) -> String:
+	var best := Activities.best(activity, i)
+	var deepest := Activities.best_depth(activity, i)
+	return "Best %.1f s" % best if best < INF else ("Deepest %d m" % roundi(deepest) if deepest > 0.0 else "New!")
+
+
+## A heart (one more bump or tangle it can take), drawn on `canvas` at `at`.
+static func draw_heart(canvas: CanvasItem, at: Vector2) -> void:
+	var red := Color("ff5d6c")
+	canvas.draw_circle(at + Vector2(-6, -3), 7.0, red)
+	canvas.draw_circle(at + Vector2(6, -3), 7.0, red)
+	canvas.draw_colored_polygon(PackedVector2Array([at + Vector2(-13, -1), at + Vector2(13, -1), at + Vector2(0, 13)]), red)
+	canvas.draw_circle(at + Vector2(-7, -5), 2.0, Color(1, 1, 1, 0.7))
 
 
 ## Subclasses: build the board for (columns, rows, count).

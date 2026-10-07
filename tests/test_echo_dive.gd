@@ -66,7 +66,7 @@ func _initialize() -> void:
 	_expect(screen.position_x() > x, "and it moves sideways")
 	screen.set("_hearts", 3)
 	screen.set("_bump_wait", 0.0)
-	for i in 60:  # into the left wall: one heart lost, then safe for a moment
+	for i in 40:  # into the left wall: one heart lost, then safe for a moment (1.5 s)
 		screen.step(1.0 / 30.0, Vector2(-1, 0))
 	_expect(screen.position_x() - 0.03 >= screen.gap_at(screen.depth()).x - 0.001, "bumping a wall stops it at the rock")
 	_expect(screen.hearts() == 2, "a bump costs one heart (%d left)" % screen.hearts())

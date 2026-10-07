@@ -180,8 +180,8 @@ func actions() -> Array:
 		var n := Inventory.available(data.accepts)
 		list.append({"label": "Give %d %s to %s (+%d funding)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
 			data.accepts_for, n * item.grant_value], "do": give_away})
-	if recycle_value() > 0 and Inventory.total() > 0 and not damaged:
-		list.append({"label": "Recycle litter (%d carried)" % Inventory.total(),
+	if recycle_value() > 0 and not damaged:  # (opens with nothing carried too: the litter stats are there)
+		list.append({"label": "Recycle litter (%d carried)" % Inventory.total() if Inventory.total() > 0 else "Recycling and litter stats",
 			"do": get_tree().call_group.bind("recycle_menu", "open_for", self)})
 	if (data.makes or data.makes_from != &"") and not damaged:
 		list.append_array(_production_actions())
