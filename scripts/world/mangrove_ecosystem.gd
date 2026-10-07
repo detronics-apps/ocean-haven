@@ -606,6 +606,14 @@ func _seed() -> void:
 	_spawn(CROCODILE, Terrain.nearest(get_tree(), region().center + Vector2(0, region().waters_radius * 0.5), ["water", ""]))
 
 
+## The mud-mound nest within `radius` of `point` (a resting flamingo sits on it), or null.
+func mound_near(point: Vector2, radius: float) -> Variant:
+	for spot: Vector2 in _nests_at:
+		if spot.distance_to(point) <= radius:
+			return spot
+	return null
+
+
 ## Nests on the flats (mud mounds, one per flamingo while the water is right) and silt
 ## building up in the channels (brown, as it gets closer to silting up).
 func _draw() -> void:

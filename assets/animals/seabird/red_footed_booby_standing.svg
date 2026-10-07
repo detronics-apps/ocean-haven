@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="-1 -1 20 18" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  <g id="art">
+  
+  <rect x="5" y="5" width="8" height="6" fill="#777775"/>
+  <rect x="4" y="7" width="7" height="3" fill="#616676"/>
+  <rect x="4" y="9" width="6" height="1" fill="#171728"/>
+  <rect x="1" y="8" width="4" height="2" fill="#171728"/>
+  <rect x="11" y="2" width="4" height="4" fill="#777775"/>
+  <rect x="13" y="3" width="1" height="1" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#753e53"/>
+  <rect x="15" y="3" width="3" height="2" fill="#415b74"/>
+  <rect x="7" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="10" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="6" y="14" width="3" height="1" fill="#6d0913"/>
+  <rect x="9" y="14" width="3" height="1" fill="#6d0913"/>
+  </g>
+</g><g transform="translate(1 0)">
+  <g id="art">
+  
+  <rect x="5" y="5" width="8" height="6" fill="#777775"/>
+  <rect x="4" y="7" width="7" height="3" fill="#616676"/>
+  <rect x="4" y="9" width="6" height="1" fill="#171728"/>
+  <rect x="1" y="8" width="4" height="2" fill="#171728"/>
+  <rect x="11" y="2" width="4" height="4" fill="#777775"/>
+  <rect x="13" y="3" width="1" height="1" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#753e53"/>
+  <rect x="15" y="3" width="3" height="2" fill="#415b74"/>
+  <rect x="7" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="10" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="6" y="14" width="3" height="1" fill="#6d0913"/>
+  <rect x="9" y="14" width="3" height="1" fill="#6d0913"/>
+  </g>
+</g><g transform="translate(0 -1)">
+  <g id="art">
+  
+  <rect x="5" y="5" width="8" height="6" fill="#777775"/>
+  <rect x="4" y="7" width="7" height="3" fill="#616676"/>
+  <rect x="4" y="9" width="6" height="1" fill="#171728"/>
+  <rect x="1" y="8" width="4" height="2" fill="#171728"/>
+  <rect x="11" y="2" width="4" height="4" fill="#777775"/>
+  <rect x="13" y="3" width="1" height="1" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#753e53"/>
+  <rect x="15" y="3" width="3" height="2" fill="#415b74"/>
+  <rect x="7" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="10" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="6" y="14" width="3" height="1" fill="#6d0913"/>
+  <rect x="9" y="14" width="3" height="1" fill="#6d0913"/>
+  </g>
+</g><g transform="translate(0 1)">
+  <g id="art">
+  
+  <rect x="5" y="5" width="8" height="6" fill="#777775"/>
+  <rect x="4" y="7" width="7" height="3" fill="#616676"/>
+  <rect x="4" y="9" width="6" height="1" fill="#171728"/>
+  <rect x="1" y="8" width="4" height="2" fill="#171728"/>
+  <rect x="11" y="2" width="4" height="4" fill="#777775"/>
+  <rect x="13" y="3" width="1" height="1" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#753e53"/>
+  <rect x="15" y="3" width="3" height="2" fill="#415b74"/>
+  <rect x="7" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="10" y="11" width="1" height="3" fill="#6d0913"/>
+  <rect x="6" y="14" width="3" height="1" fill="#6d0913"/>
+  <rect x="9" y="14" width="3" height="1" fill="#6d0913"/>
+  </g>
+</g></g>
+  <g id="art" data-size="18 16" data-box="0 0 18 16">
+  <g id="art">
+  <!-- Red-footed booby standing (side view, facing right): white, black wing edges, blue-grey bill, bright red feet -->
+  <rect x="5" y="5" width="8" height="6" fill="#f6f6f2"/>
+  <rect x="4" y="7" width="7" height="3" fill="#d8dadc"/>
+  <rect x="4" y="9" width="6" height="1" fill="#1e1e22"/>
+  <rect x="1" y="8" width="4" height="2" fill="#1e1e22"/>
+  <rect x="11" y="2" width="4" height="4" fill="#f6f6f2"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1e1e22"/>
+  <rect x="14" y="4" width="1" height="1" fill="#f2a0b0"/>
+  <rect x="15" y="3" width="3" height="2" fill="#9fc3d8"/>
+  <rect x="7" y="11" width="1" height="3" fill="#e03c3c"/>
+  <rect x="10" y="11" width="1" height="3" fill="#e03c3c"/>
+  <rect x="6" y="14" width="3" height="1" fill="#e03c3c"/>
+  <rect x="9" y="14" width="3" height="1" fill="#e03c3c"/>
+  </g>
+</g>
+</svg>

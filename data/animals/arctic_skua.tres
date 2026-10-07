@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua.svg" id="2_t"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_standing.svg" id="rest_889"]
+[ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_floating.svg" id="floa_557"]
+[ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_sitting.svg" id="perc_8752"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -19,6 +22,9 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_s")
+perched_sprite = ExtResource("perc_8752")
+floating_sprite = ExtResource("floa_557")
+resting_sprite = ExtResource("rest_889")
 id = &"arctic_skua"
 display_name = "Arctic Skua"
 sprite = ExtResource("2_t")

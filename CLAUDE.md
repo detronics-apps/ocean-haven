@@ -328,7 +328,10 @@ Resin. All building limits count per island.
 Boats: every island starts with its own rowboat (world nodes Boat, KelpBoat, MangroveBoat…);
 nothing sails along on voyages and every boat stays where it was left (saved). Up to 2 extra
 Rowboats per island (building holding a Boat), each needing 2 dock planks on the island
-(BuildingData.requires_each); the ranger boards the nearest boat. From a boat the ranger can take
+(BuildingData.requires_each); an island keeps 3 rowboats at most (BuildingData.keep_boats): a
+4th can always be built and one of the others (never the ranger's or one in tow) goes back to
+the boatyard at random (BuildMode.let_boats_go; an island's own one is retired: Boat.retire,
+saved "retired_boats"), e.g. when one was left stranded far out at sea; the ranger boards the nearest boat. From a boat the ranger can take
 another boat in tow ("Tow the other boat" / "Let go"; Boat.towing) and use the shovel (dig a
 beach or fill water from the boat). The bottom UI keeps clear of a phone's corners in portrait
 and landscape, and the web page re-measures the window after the phone is turned.
@@ -401,7 +404,7 @@ objectives only come from people; a question (TalkTopic.objective, ObjectiveGoal
 game state (TalkTopic.when conditions, `People.check`), so questions the ranger has got past are
 skipped and old saves meet everyone where they are; only met / asked / thanked / told are saved.
 Person nodes (spawned by the world, group "people") block building on them and their place;
-TalkBox shows the talk (tap through; the game waits). Tom's tracks story (`marks`
+TalkBox shows the talk (tap through, "< Back" for the line before; the game waits). Tom's tracks story (`marks`
 "tracks_noticed") makes turtle tracks show from nests to the sea. On islands with people the goal
 line is `People.goal_text`.
 Then: the ranger has a name (avatar creator; RangerProfile.ranger_name, saved) that people use
@@ -510,6 +513,10 @@ question ("observatory") is answered by opening it. Play goes on.
 The prize: the final chapter shows the ocean poster (assets/ui/poster/ocean_poster.jpg) with
 "Download your ocean poster" (`ObservatoryScreen.download_poster`: the browser's download on the
 web, the Pictures folder elsewhere); before it, "Still watching" says a poster waits there.
+The first time the final chapter opens, the screen goes black and the end credits roll
+(EndCredits: data/ending/final_word.tres, CreditsData; centred gold text rolling slowly up and
+away, stars; a tap doubles the speed, Close or the end returns; Fleet flag "credits_seen"); the
+Observatory's "End credits" button plays them again.
 Phone-play fixes (docs/ISLAND_RULES.md 9b): every species starts with one (a tangled booby,
 Seabird0) and nothing new arrives or settles until the ranger has helped the island
 (`Regions.helped`, Inventory.picked_on, saved); TextPrompt asks the browser for typed names on
@@ -595,6 +602,16 @@ for the rest. Progress feedback (ProgressCheer, never tappable): sparkles and a 
 ranger's island passes a new 5 % of health, a card with the animal's picture when one comes
 to an island (HUD.animal_returned, called wherever animals arrive or settle; the first of a
 species is a bigger moment: Fleet flag "returned_<id>"), and "+N" rising from the funding.
+
+Every building has "What is this?" (BuildingInfo: its picture, BuildingData.description, stats
+and fact), and its picture shows what it does (the Glassworks' furnace and bottles, the refill
+bar's kegs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
+centres). Full-screen pages keep clear of a phone's home bar, corners and notch (SafeArea: the
+browser's safe-area insets, never less than a phone margin); activity level buttons wrap.
+Birds have four pictures: flying (from above), standing (resting_sprite), floating on the sea
+(floating_sprite) and sitting on the nest (perched_sprite: tree nesters, ground nesters, and the
+flamingo on its mud mound: MangroveEcosystem.mound_near); the sea otter swims belly-down and
+rests on its back, the polar bear lies down to rest.
 
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so

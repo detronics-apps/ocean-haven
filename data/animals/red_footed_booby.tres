@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_perched.svg" id="3_boo"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_standing.svg" id="rest_3043"]
+[ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_floating.svg" id="floa_8091"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -20,6 +22,8 @@ when = PackedStringArray("perched")
 
 [resource]
 script = ExtResource("1_boo")
+floating_sprite = ExtResource("floa_8091")
+resting_sprite = ExtResource("rest_3043")
 id = &"red_footed_booby"
 display_name = "Red-footed Booby"
 sprite = ExtResource("2_boo")

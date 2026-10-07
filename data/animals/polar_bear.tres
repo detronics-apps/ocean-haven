@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear.svg" id="2_t"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_resting.svg" id="rest_1411"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -19,6 +20,7 @@ when = PackedStringArray("on:water")
 
 [resource]
 script = ExtResource("1_s")
+resting_sprite = ExtResource("rest_1411")
 id = &"polar_bear"
 display_name = "Polar Bear"
 sprite = ExtResource("2_t")

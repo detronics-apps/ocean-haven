@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-1 -1 20 14" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  <g id="art">
+  
+  <rect x="2" y="6" width="10" height="3" fill="#171b2b"/>
+  <rect x="1" y="6" width="2" height="1" fill="#1e2434"/>
+  <rect x="11" y="2" width="2" height="6" fill="#171b2b"/>
+  <rect x="11" y="1" width="3" height="2" fill="#171b2b"/>
+  <rect x="13" y="2" width="1" height="2" fill="#754510"/>
+  <rect x="13" y="0" width="4" height="1" fill="#35394a"/>
+  <rect x="16" y="1" width="1" height="1" fill="#35394a"/>
+  <rect x="1" y="9" width="15" height="1" fill="#3e647e"/>
+  <rect x="0" y="11" width="4" height="1" fill="#3e647e"/>
+  <rect x="13" y="11" width="4" height="1" fill="#3e647e"/>
+  </g>
+</g><g transform="translate(1 0)">
+  <g id="art">
+  
+  <rect x="2" y="6" width="10" height="3" fill="#171b2b"/>
+  <rect x="1" y="6" width="2" height="1" fill="#1e2434"/>
+  <rect x="11" y="2" width="2" height="6" fill="#171b2b"/>
+  <rect x="11" y="1" width="3" height="2" fill="#171b2b"/>
+  <rect x="13" y="2" width="1" height="2" fill="#754510"/>
+  <rect x="13" y="0" width="4" height="1" fill="#35394a"/>
+  <rect x="16" y="1" width="1" height="1" fill="#35394a"/>
+  <rect x="1" y="9" width="15" height="1" fill="#3e647e"/>
+  <rect x="0" y="11" width="4" height="1" fill="#3e647e"/>
+  <rect x="13" y="11" width="4" height="1" fill="#3e647e"/>
+  </g>
+</g><g transform="translate(0 -1)">
+  <g id="art">
+  
+  <rect x="2" y="6" width="10" height="3" fill="#171b2b"/>
+  <rect x="1" y="6" width="2" height="1" fill="#1e2434"/>
+  <rect x="11" y="2" width="2" height="6" fill="#171b2b"/>
+  <rect x="11" y="1" width="3" height="2" fill="#171b2b"/>
+  <rect x="13" y="2" width="1" height="2" fill="#754510"/>
+  <rect x="13" y="0" width="4" height="1" fill="#35394a"/>
+  <rect x="16" y="1" width="1" height="1" fill="#35394a"/>
+  <rect x="1" y="9" width="15" height="1" fill="#3e647e"/>
+  <rect x="0" y="11" width="4" height="1" fill="#3e647e"/>
+  <rect x="13" y="11" width="4" height="1" fill="#3e647e"/>
+  </g>
+</g><g transform="translate(0 1)">
+  <g id="art">
+  
+  <rect x="2" y="6" width="10" height="3" fill="#171b2b"/>
+  <rect x="1" y="6" width="2" height="1" fill="#1e2434"/>
+  <rect x="11" y="2" width="2" height="6" fill="#171b2b"/>
+  <rect x="11" y="1" width="3" height="2" fill="#171b2b"/>
+  <rect x="13" y="2" width="1" height="2" fill="#754510"/>
+  <rect x="13" y="0" width="4" height="1" fill="#35394a"/>
+  <rect x="16" y="1" width="1" height="1" fill="#35394a"/>
+  <rect x="1" y="9" width="15" height="1" fill="#3e647e"/>
+  <rect x="0" y="11" width="4" height="1" fill="#3e647e"/>
+  <rect x="13" y="11" width="4" height="1" fill="#3e647e"/>
+  </g>
+</g></g>
+  <g id="art" data-size="18 12" data-box="0 0 18 12">
+  <g id="art">
+  <!-- Double-crested cormorant swimming (side view, facing right): low in the water, neck up, bill tilted up -->
+  <rect x="2" y="6" width="10" height="3" fill="#22252a"/>
+  <rect x="1" y="6" width="2" height="1" fill="#353a40"/>
+  <rect x="11" y="2" width="2" height="6" fill="#22252a"/>
+  <rect x="11" y="1" width="3" height="2" fill="#22252a"/>
+  <rect x="13" y="2" width="1" height="2" fill="#f2a33a"/>
+  <rect x="13" y="0" width="4" height="1" fill="#6a6e74"/>
+  <rect x="16" y="1" width="1" height="1" fill="#6a6e74"/>
+  <rect x="1" y="9" width="15" height="1" fill="#9fd8f0"/>
+  <rect x="0" y="11" width="4" height="1" fill="#9fd8f0"/>
+  <rect x="13" y="11" width="4" height="1" fill="#9fd8f0"/>
+  </g>
+</g>
+</svg>

@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="2_otter"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter_swimming.svg" id="spri_9759"]
+[ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="rest_1201"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -25,9 +27,10 @@ when = PackedStringArray("on:water", "day")
 
 [resource]
 script = ExtResource("1_otter")
+resting_sprite = ExtResource("rest_1201")
 id = &"sea_otter"
 display_name = "Sea Otter"
-sprite = ExtResource("2_otter")
+sprite = ExtResource("spri_9759")
 habitat = "Cool coastal waters with kelp forests; they rest in the kelp canopy"
 diet = "Sea urchins, crabs, clams and other shellfish"
 role = "Eats urchins so the kelp can grow back, and carries floating litter ashore. Lives at Otter Habitats."

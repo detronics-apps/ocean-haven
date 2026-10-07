@@ -940,10 +940,23 @@ func _pose() -> void:
 	var texture := data.sprite
 	if _state == State.FLEE and data.flying_sprite:
 		texture = data.flying_sprite
+	elif _state == State.REST and data.perched_sprite and not data.flies and _sit_on_mound():
+		texture = data.perched_sprite  # (a flamingo resting by its mud-mound nest sits on it)
 	elif _state == State.REST and data.resting_sprite:
 		texture = data.resting_sprite
 	if _sprite.texture != texture:
 		_sprite.texture = texture
+
+
+## A walker resting next to a mud-mound nest (MangroveEcosystem.mound_near) settles onto it.
+func _sit_on_mound() -> bool:
+	for eco: Node in get_tree().get_nodes_in_group("ecosystems"):
+		if eco.has_method("mound_near"):
+			var mound: Variant = eco.mound_near(global_position, 40.0)
+			if mound != null:
+				global_position = mound
+				return true
+	return false
 
 
 ## Water animals that find themselves on land (their channel silted up, or mud was put on

@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_perched.svg" id="3_corm"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_standing.svg" id="rest_5796"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_floating.svg" id="floa_2326"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -20,6 +22,8 @@ when = PackedStringArray("perched")
 
 [resource]
 script = ExtResource("1_corm")
+floating_sprite = ExtResource("floa_2326")
+resting_sprite = ExtResource("rest_5796")
 id = &"double_crested_cormorant"
 display_name = "Double-crested Cormorant"
 sprite = ExtResource("2_corm")
