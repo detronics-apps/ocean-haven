@@ -1,17 +1,19 @@
 class_name EchoDive
 extends ActivityScreen
-## Echo Dive (Imani, at the Deep-Ocean Outpost): take the submarine down the canyon from the
-## surface. The view sinks by itself at the level's speed and never goes back up; the sub moves
-## anywhere on the screen (hold a finger where it should go, or the move keys): down dives
-## faster, up only holds the depth (it can never rise back to the surface), left and right
-## steer. Below the sunlight nothing can be seen unless the sonar's light is on: it flashes on
-## and off, on for LIGHT_SHARE of the time (90 % at level 1 down to 50 % at level 5). Lost gear
-## sinks slowly, so a missed piece can still be caught by waiting under it (each takes
-## GEAR_BONUS seconds off the time); wreckage and boulders drift in the canyon: bumping one, or
-## a wall, slows the sub and adds OBSTACLE_PENALTY seconds. Never a failure. The deep's animals
-## swim past at the depths where they really live. Each level is 1,000 m deeper, sinks faster and
-## has more in the way; the story dive finds the lost cargo module at 1,000 m (Imani's cargo
-## search), then it's for fun, with best times.
+## Echo Dive (Imani, at the Deep-Ocean Outpost): take the submarine down the canyon to the sea
+## floor, then do it faster and faster. The view sinks by itself and never goes back up; the
+## sub moves anywhere on the screen (hold a finger where it should go, or the move keys): the
+## lower on the screen it is, the faster it sinks (up slows it, down speeds it up), left and
+## right steer. Below the sunlight nothing can be seen unless the sonar's light is on: it
+## flashes on and off, on for LIGHT_SHARE of the time (90 % at level 1 down to 50 % at level 5).
+## Lost gear sinks slowly, so a missed piece can still be caught by waiting under it (each takes
+## GEAR_BONUS seconds off the time). Each bump (a wall, wreckage, a boulder) costs one of the
+## sub's HEARTS; repair kits (wrenches) deeper down give one back; with none left the sub needs
+## repairs and heads back up: the dive's record is then the depth it reached
+## (Activities.reached), until the level's sea floor is reached once; after that it's the time.
+## The deep's animals swim past at the depths where they really live. Each level is 1,000 m
+## deeper, sinks faster and has more in the way; the story dive finds the lost cargo module at
+## 1,000 m (Imani's cargo search).
 
 ## Level config: (target depth in hundreds of metres, wreckage and boulders, sinking speed 1-5).
 const SUB_HALF := 0.03
@@ -19,11 +21,21 @@ const SUB_HALF := 0.03
 const SUB_START := 0.3
 const SCREEN_TOP := 0.08
 const SCREEN_BOTTOM := 0.9
-## How fast the view sinks, metres a second at speed 1, and more per speed step.
+## How fast the view sinks, metres a second at speed 1, and more per speed step...
 const SINK := 50.0
 const SINK_STEP := 12.0
-## Down the screen, times the sinking speed (up is exactly the sinking speed: depth is held).
-const DIVE := 1.5
+## ... times this with the sub at the top of the screen, up to FAST at the bottom.
+const SLOW := 0.4
+const FAST := 2.0
+## Up and down the screen a second (a fraction of its height; never faster up than it sinks).
+const CLIMB := 0.7
+## Bumps the sub can take, at most MAX_HEARTS with repair kits; and how long after a bump
+## nothing more can hurt it (it blinks).
+const HEARTS := 3
+const MAX_HEARTS := 5
+const SAFE_AFTER := 1.5
+## Repair kits: one per 1,000 m of the level, below this share of its depth.
+const WRENCH_FROM := 0.35
 ## Across the screen a second (a fraction of its width).
 const STEER := 0.6
 const METRES_PER_SCREEN := 420.0
@@ -31,7 +43,6 @@ const METRES_PER_SCREEN := 420.0
 const LIGHT_CYCLE := 2.0
 const LIGHT_SHARE: Array[float] = [0.9, 0.8, 0.7, 0.6, 0.5]
 const GEAR_BONUS := 1.5
-const OBSTACLE_PENALTY := 2.0
 ## Lost gear sinks at this share of the view's speed.
 const GEAR_SINK := 0.25
 ## Lost gear pieces per 1,000 m.
@@ -79,6 +90,9 @@ var _walls: Array[Vector2] = []
 var _gear: Array[Dictionary] = []
 ## In the way: {"depth", "x", "drift" (across, a second), "kind": "wreck" / "rock", "size"}.
 var _obstacles: Array[Dictionary] = []
+## Repair kits: {"depth", "x"}.
+var _wrenches: Array[Dictionary] = []
+var _hearts := HEARTS
 var _got := 0
 var _bumps := 0
 var _seen := {}
@@ -93,7 +107,7 @@ func _enter_tree() -> void:
 
 
 func _how_to_play() -> String:
-	return "Hold your finger where you want the submarine to go (or use the move keys). It keeps sinking: down dives faster, up holds your depth. In the dark you only see while the sonar light is on. Grab lost gear, steer round wreckage and rocks!"
+	return "Hold your finger where you want the submarine to go (or use the move keys). It keeps sinking: down dives faster, up holds your depth. In the dark you only see while the sonar light is on. The lower you are, the faster you sink. Each bump costs a heart; wrenches repair the sub."
 
 
 func _start_board(config: Vector3i) -> void:
@@ -109,6 +123,7 @@ func _start_board(config: Vector3i) -> void:
 	_was_on = false
 	_got = 0
 	_bumps = 0
+	_hearts = HEARTS
 	_finger = null
 	_seen.clear()
 	_note = ""
@@ -131,6 +146,12 @@ func _start_board(config: Vector3i) -> void:
 		var gap := gap_at(d)
 		_obstacles.append({"depth": d, "x": lerpf(gap.x + 0.08, gap.y - 0.08, randf()), "drift": randf_range(-0.06, 0.06),
 			"kind": "wreck" if randf() < 0.5 else "rock", "size": randf_range(0.8, 1.3)})
+	_wrenches.clear()
+	var kits := maxi(roundi(_target / 1000.0), 1)
+	for i in kits:
+		var d := lerpf(_target * WRENCH_FROM, _target - 80.0, (i + randf_range(0.3, 0.7)) / kits)
+		var gap := gap_at(d)
+		_wrenches.append({"depth": d, "x": lerpf(gap.x + 0.08, gap.y - 0.08, randf())})
 	_arena = Control.new()
 	_arena.name = "Arena"
 	_arena.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -184,9 +205,11 @@ func _process(delta: float) -> void:
 	_arena.queue_redraw()
 
 
-## The view's sinking speed now, metres a second (slowed for a moment after a bump).
+## The view's sinking speed now, metres a second: faster the lower the sub is on the screen
+## (slowed for a moment after a bump).
 func sink_speed() -> float:
-	return (SINK + SINK_STEP * (_speed - 1)) * (0.3 if _slow > 0.0 else 1.0)
+	var low := clampf((_sy - SCREEN_TOP) / (SCREEN_BOTTOM - SCREEN_TOP), 0.0, 1.0)
+	return (SINK + SINK_STEP * (_speed - 1)) * lerpf(SLOW, FAST, low) * (0.3 if _slow > 0.0 else 1.0)
 
 
 ## One step of the dive (tests drive it): `move` x -1 left .. 1 right, y -1 up .. 1 down.
@@ -202,9 +225,9 @@ func step(delta: float, move: Vector2) -> void:
 	_bump_wait = maxf(_bump_wait - delta, 0.0)
 	# The view sinks by itself (until the sea floor shows near the bottom of the screen).
 	_top = minf(_top + speed * delta, _target - SCREEN_BOTTOM * METRES_PER_SCREEN + 30.0)
-	# Up the screen exactly as fast as the view sinks (the depth is held), down faster.
-	var screen_speed := speed / METRES_PER_SCREEN * (DIVE if move.y > 0.0 else 1.0)
-	_sy = clampf(_sy + move.y * screen_speed * delta, SCREEN_TOP, SCREEN_BOTTOM)
+	# Up and down the screen (lower = faster); never up faster than the view sinks.
+	var climb := CLIMB if move.y > 0.0 else minf(CLIMB, speed / METRES_PER_SCREEN)
+	_sy = clampf(_sy + move.y * climb * delta, SCREEN_TOP, SCREEN_BOTTOM)
 	if depth() < before:  # never back up: the sub can't rise
 		_sy = (before - _top) / METRES_PER_SCREEN
 	_x = clampf(_x + move.x * STEER * delta, SUB_HALF, 1.0 - SUB_HALF)
@@ -220,6 +243,14 @@ func step(delta: float, move: Vector2) -> void:
 			thing.x = clampf(thing.x, room.x + 0.05, room.y - 0.05)
 		if absf(thing.depth - depth()) < 18.0 * thing.size and absf(thing.x - _x) < 0.045 * thing.size + SUB_HALF:
 			_bump("an old wreck" if thing.kind == "wreck" else "a boulder")
+	for kit: Dictionary in _wrenches.duplicate():
+		if absf(kit.depth - depth()) < 22.0 and absf(kit.x - _x) < 0.06:
+			_wrenches.erase(kit)
+			_hearts = mini(_hearts + 1, MAX_HEARTS)
+			_note = "A repair kit! The sub is patched up: +1 heart."
+			Sound.play(&"free")
+	if not _playing:
+		return
 	for piece: Dictionary in _gear.duplicate():
 		piece.depth = minf(piece.depth + speed * GEAR_SINK * delta, _target - 20.0)  # sinking slowly
 		if absf(piece.depth - depth()) < 22.0 and absf(piece.x - _x) < 0.06:
@@ -236,19 +267,42 @@ func step(delta: float, move: Vector2) -> void:
 		for sight: Dictionary in SIGHTS:
 			if sight.depth <= _target:
 				_seen[sight.name] = true
+		Activities.reached(activity, level, _target)
 		_complete()
 
 
-## Bumped into something: slowed down for a moment and OBSTACLE_PENALTY seconds added.
+## Bumped into something: slowed down for a moment, and one heart lost (none for a moment
+## after). With none left the sub needs repairs: it heads back up, and the depth it reached
+## is kept as the record until the level's sea floor has been reached.
 func _bump(what: String) -> void:
 	_slow = maxf(_slow, 0.7)
-	if _bump_wait > 0.0:
+	if _bump_wait > 0.0 or not _playing:
 		return
-	_bump_wait = 1.0
+	_bump_wait = SAFE_AFTER
 	_bumps += 1
-	seconds += OBSTACLE_PENALTY
-	_note = "Bump! You hit %s (+%.0f s). Wait for the light to see what's ahead." % [what, OBSTACLE_PENALTY]
+	_hearts -= 1
 	Sound.play(&"dig", -4.0)
+	if _hearts > 0:
+		_note = "Bump! You hit %s: %d heart%s left. Wait for the light to see what's ahead." % [what, _hearts, "" if _hearts == 1 else "s"]
+		return
+	var metres := roundi(depth())
+	var deeper := Activities.reached(activity, level, depth())
+	var lines: Array[String] = ["The submarine needs repairs, so it's heading back up to the Outpost.",
+		"You reached %d m%s." % [metres, " (your deepest yet!)" if deeper else ""]]
+	if Activities.best(activity, level) < INF:
+		lines.append("Your best time to the sea floor: %.1f s." % Activities.best(activity, level))
+	else:
+		lines.append("Deepest so far: %d m of %d m. Reach the sea floor and your time becomes the record." % [roundi(Activities.best_depth(activity, level)), roundi(_target)])
+	lines.append("Tip: stay higher on the screen where it's dark: you sink more slowly and have time to see what's ahead.")
+	_stop(lines)
+
+
+func hearts() -> int:
+	return _hearts
+
+
+func wrenches() -> Array[Dictionary]:
+	return _wrenches
 
 
 ## The sub's depth, metres.
@@ -380,6 +434,13 @@ func _draw_arena() -> void:
 		var light := _seen_at(at, piece.depth)
 		if light > 0.04:
 			_arena.draw_texture_rect(piece.item, Rect2(at - Vector2(24, 24), Vector2(48, 48)), false, Color(1, 1, 1, light))
+	# Repair kits.
+	for kit: Dictionary in _wrenches:
+		var at := Vector2(kit.x * size.x, to_y.call(kit.depth))
+		if at.y > -30.0 and at.y < size.y + 30.0:
+			var light := _seen_at(at, kit.depth)
+			if light > 0.04:
+				_draw_wrench(at, Color(0.85, 0.88, 0.92, light))
 	# Wreckage and boulders in the way.
 	for thing: Dictionary in _obstacles:
 		var at := Vector2(thing.x * size.x, to_y.call(thing.depth))
@@ -402,11 +463,33 @@ func _draw_arena() -> void:
 			_arena.draw_rect(Rect2(0, shade, size.x, 13.0), Color(0.01, 0.015, 0.03, dark * 0.97))
 		shade += 12.0
 	_draw_sub(size)
+	for i in _hearts:  # the sub's hearts, top right
+		_draw_heart(Vector2(size.x - 28.0 - i * 34.0, 22.0))
 	_arena.draw_string(ThemeDB.fallback_font, Vector2(16, 26), "Depth %d m  /  %d m     Lost gear: %d     Light on %d%% of the time" % [
 		roundi(depth()), roundi(_target), _got, roundi(_light_share * 100.0)],
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
 	if _note != "":
 		_arena.draw_string(ThemeDB.fallback_font, Vector2(16, size.y - 16), _note, HORIZONTAL_ALIGNMENT_LEFT, size.x - 32, 16, Color("f2d58a"))
+
+
+## A heart (one bump the sub can still take).
+func _draw_heart(at: Vector2) -> void:
+	var red := Color("ff5d6c")
+	_arena.draw_circle(at + Vector2(-6, -3), 7.0, red)
+	_arena.draw_circle(at + Vector2(6, -3), 7.0, red)
+	_arena.draw_colored_polygon(PackedVector2Array([at + Vector2(-13, -1), at + Vector2(13, -1), at + Vector2(0, 13)]), red)
+	_arena.draw_circle(at + Vector2(-7, -5), 2.0, Color(1, 1, 1, 0.7))
+
+
+## A repair kit: a spanner.
+func _draw_wrench(at: Vector2, colour: Color) -> void:
+	_arena.draw_set_transform(at, -0.7, Vector2.ONE)
+	_arena.draw_rect(Rect2(-16, -3, 26, 6), colour)
+	_arena.draw_circle(Vector2(13, 0), 8.0, colour)
+	_arena.draw_rect(Rect2(12, -3, 10, 6), Color(0.02, 0.05, 0.1, colour.a))  # the jaw's gap
+	_arena.draw_circle(Vector2(-16, 0), 5.0, colour)
+	_arena.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	_arena.draw_arc(at, 24.0, 0.0, TAU, 24, Color(1.0, 0.85, 0.4, colour.a * 0.6), 2.0)
 
 
 ## An old wreck's twisted metal, or a boulder.
@@ -451,6 +534,8 @@ func _draw_walls(size: Vector2, top: float) -> void:
 
 func _draw_sub(size: Vector2) -> void:
 	var sub := sub_on_screen()
+	if _bump_wait > 0.0 and fmod(_bump_wait, 0.3) < 0.15:
+		return  # blinking: just bumped
 	_arena.draw_rect(Rect2(sub - Vector2(22, 12), Vector2(44, 24)), Color("f2c94c"))
 	_arena.draw_rect(Rect2(sub - Vector2(8, 20), Vector2(16, 8)), Color("e0b03a"))
 	_arena.draw_circle(sub + Vector2(10, 0), 6.0, Color("9fd8f0"))

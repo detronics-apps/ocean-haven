@@ -37,28 +37,44 @@ func _initialize() -> void:
 	var screen: Node = world.get_parent().find_child("EchoDive", true, false)
 	screen.open_activity(dive_data)
 	screen.call("_begin")
+	_expect(screen.hearts() == 3, "the sub starts with 3 hearts")
+	screen.obstacles().clear()  # (the controls first, with nothing in the way)
 	for i in 90:
 		screen.step(1.0 / 30.0, Vector2.ZERO)
 	_expect(screen.get("_playing") and screen.depth() > 50.0, "the sub sinks with the view by itself")
-	var before: float = screen.depth()
-	var on_screen: float = screen.screen_y()
-	var lowest := before
-	var rose := false
+	# Lower on the screen = faster; higher = slower; the depth never goes back up.
+	var slow_at_top: float
+	var fast_at_bottom: float
 	for i in 60:
+		screen.step(1.0 / 30.0, Vector2(0, -1))
+	slow_at_top = screen.sink_speed()
+	var before: float = screen.depth()
+	var rose := false
+	var lowest := before
+	for i in 30:
 		screen.step(1.0 / 30.0, Vector2(0, -1))
 		rose = rose or screen.depth() < lowest - 0.01
 		lowest = maxf(lowest, screen.depth())
-	_expect(not rose and screen.screen_y() < on_screen, "holding up moves it up the screen but never back up in depth (%.0f m, screen %.2f -> %.2f)" % [screen.depth(), on_screen, screen.screen_y()])
-	_expect(absf(screen.depth() - before) < 15.0, "going up exactly as fast as the view sinks: the depth is held (%.0f -> %.0f m)" % [before, screen.depth()])
+	_expect(not rose, "the depth never goes back up, even holding up")
+	for i in 90:
+		screen.step(1.0 / 30.0, Vector2(0, 1))
+	fast_at_bottom = screen.sink_speed()
+	_expect(fast_at_bottom > slow_at_top * 3.0, "low on the screen it sinks much faster (%.0f vs %.0f m/s)" % [fast_at_bottom, slow_at_top])
 	var x: float = screen.position_x()
 	for i in 10:
 		screen.step(1.0 / 30.0, Vector2(1, 0))
 	_expect(screen.position_x() > x, "and it moves sideways")
-	var t0: float = screen.seconds
-	for i in 120:  # into the left wall: slowed, pushed back into open water, a little time added
+	screen.set("_hearts", 3)
+	screen.set("_bump_wait", 0.0)
+	for i in 60:  # into the left wall: one heart lost, then safe for a moment
 		screen.step(1.0 / 30.0, Vector2(-1, 0))
 	_expect(screen.position_x() - 0.03 >= screen.gap_at(screen.depth()).x - 0.001, "bumping a wall stops it at the rock")
-	_expect(screen.bumps() >= 1, "a bump adds time (%d bumps)" % screen.bumps())
+	_expect(screen.hearts() == 2, "a bump costs one heart (%d left)" % screen.hearts())
+	var kit := {"depth": screen.depth(), "x": screen.position_x()}
+	screen.wrenches().append(kit)
+	screen.step(1.0 / 30.0, Vector2.ZERO)
+	_expect(screen.hearts() == 3 and not screen.wrenches().has(kit), "a repair kit gives a heart back")
+	screen.set("_hearts", 99)  # (the autopilot below is about what's seen on the way, not steering)
 	var lit := 0
 	var dark_steps := 0
 	var steps := 0
@@ -73,12 +89,11 @@ func _initialize() -> void:
 		for thing: Dictionary in screen.obstacles():
 			if thing.depth > d - 10.0 and thing.depth - d < 60.0 and absf(thing.x - aim) < 0.12:
 				aim = thing.x + (0.15 if thing.x < (gap.x + gap.y) / 2.0 else -0.15)
-		screen.step(1.0 / 30.0, Vector2(clampf((aim - screen.position_x()) * 8.0, -1.0, 1.0), 1.0))
-		if d > 400.0:
-			if screen.light_on():
-				lit += 1
-			else:
-				dark_steps += 1
+		screen.step(1.0 / 30.0, Vector2(clampf((aim - screen.position_x()) * 8.0, -1.0, 1.0), 0.0))
+		if screen.light_on():
+			lit += 1
+		else:
+			dark_steps += 1
 		steps += 1
 	_expect(not screen.get("_playing") and screen.depth() >= 975.0, "down to 1,000 m (%d steps)" % steps)
 	var share := float(lit) / maxf(lit + dark_steps, 1.0)
@@ -98,12 +113,33 @@ func _initialize() -> void:
 	screen.level = 4
 	screen.call("_begin")
 	_expect(is_equal_approx(screen.light_share(), 0.5) and screen.obstacles().size() == levels[4].y, "level 5: light on half the time, %d obstacles" % screen.obstacles().size())
+	# Out of hearts: the sub heads back up, and the depth reached is the record.
+	screen.level = 1
+	screen.call("_begin")
+	for i in 120:
+		screen.step(1.0 / 30.0, Vector2(0, 1))
+	var reached: float = screen.depth()
+	for i in 3:
+		screen.set("_bump_wait", 0.0)
+		screen.call("_bump", "a boulder")
+	_expect(not screen.get("_playing") and screen.hearts() == 0, "three bumps and the sub needs repairs: the dive ends")
+	_expect(absf(activities.best_depth(dive_data, 1) - reached) < 5.0 and activities.best(dive_data, 1) == INF,
+		"before the sea floor is reached, the record is the depth (%.0f m)" % activities.best_depth(dive_data, 1))
+	var info: String = screen.get("_info").text
+	_expect(info.contains("%d m" % roundi(reached)) and not info.contains("fail"), "it says how deep you got, never 'failed' (%s)" % info)
+	var level_button_text: String = ""
+	screen.call("_show_levels")
+	for b in screen.get("_buttons").get_children():
+		if b.name == "Level2":
+			level_button_text = b.text
+	_expect(level_button_text.contains("Deepest"), "the level shows its deepest dive until the bottom is reached (%s)" % level_button_text)
+	screen.level = 4
+	screen.call("_begin")
 	# A missed piece of gear sinks: waiting under it (holding up), it comes down to the sub.
 	for i in 60:  # down to the bottom of the screen first: room to wait under the piece
 		screen.step(1.0 / 30.0, Vector2(0, 1))
-	var piece: Dictionary = screen.gear_left()[0]
-	piece.depth = screen.depth() - 60.0
-	piece.x = screen.position_x()
+	var piece := {"depth": screen.depth() - 40.0, "x": screen.position_x(), "item": null}
+	screen.gear_left().append(piece)
 	var got: int = screen.gear_got()
 	for i in 200:
 		screen.step(1.0 / 30.0, Vector2(0, -1))

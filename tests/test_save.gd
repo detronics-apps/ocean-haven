@@ -120,6 +120,9 @@ func _initialize() -> void:
 	_inventory.picked_on[&"kelp_forest"] = 12
 	load("res://scripts/ui/camera_zoom.gd").set_level(1.4)
 	root.get_node("Sound").load_state({"music": 0.3, "sounds": 0.5, "muted": true})
+	var echo: Resource = load("res://data/activities/echo_dive.tres")
+	root.get_node("Activities").restore({"done": ["echo_dive"], "bests": {"echo_dive": {"0": 21.5}}})
+	root.get_node("Activities").reached(echo, 1, 1234.0)
 	var picked_before: Dictionary = _inventory.picked.duplicate()
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
@@ -138,6 +141,7 @@ func _initialize() -> void:
 	_inventory.picked_on.clear()
 	load("res://scripts/ui/camera_zoom.gd").set_level(1.0)
 	root.get_node("Sound").load_state({})
+	root.get_node("Activities").restore({})
 	_journal.restore([])
 	clock.day = 1
 	clock.time_of_day = 0.3
@@ -162,6 +166,10 @@ func _initialize() -> void:
 	_expect(is_equal_approx(sound.music_volume, 0.3) and is_equal_approx(sound.sound_volume, 0.5) and sound.muted,
 		"the sound settings are restored (music, sounds, muted)")
 	sound.load_state({})
+	var activities := root.get_node("Activities")
+	_expect(activities.story_done(echo) and is_equal_approx(activities.best(echo, 0), 21.5) and is_equal_approx(activities.best_depth(echo, 1), 1234.0),
+		"activities restored: story done, best times, deepest dives")
+	activities.restore({})
 	_expect(_inventory.picked_on.get(&"kelp_forest", 0) == 12, "litter picked up per island restored (Regions.helped)")
 	_expect(_inventory.picked == picked_before, "litter picked up per kind restored (%s)" % [_inventory.picked])
 	_expect(fleet.is_installed(&"kelp_fibre") and fleet.level() == 2 and fleet.objective_done(home), "objectives and fleet upgrades restored")

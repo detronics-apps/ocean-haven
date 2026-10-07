@@ -11,6 +11,12 @@ func _initialize() -> void:
 	await process_frame
 	var sound := root.get_node("Sound")  # autoloads: looked up at runtime
 
+	# --- The buses are in the project's bus layout (on the web, buses made at runtime are silent) ---
+	var layout := FileAccess.get_file_as_string("res://default_bus_layout.tres")
+	_expect(["Music", "Ambient", "Sounds"].all(func(b: String) -> bool: return layout.contains('name = &"%s"' % b)),
+		"Music, Ambient and Sounds are in default_bus_layout.tres")
+	_expect(AudioServer.get_bus_index("Music") == 1 and AudioServer.get_bus_index("Sounds") == 3, "and loaded from it at the start")
+
 	# --- Every island has music, and its sounds load ---
 	for region: Resource in load("res://scripts/systems/data_files.gd").load_all("res://data/regions"):
 		var track: Resource = sound.get("_tracks").get(region.id)

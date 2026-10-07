@@ -90,7 +90,9 @@ func _show_levels() -> void:
 	_info.text = activity.practice_intro
 	for i in Activities.open_levels(activity):
 		var best := Activities.best(activity, i)
-		var text := "Level %d" % (i + 1) + ("\nBest %.1f s" % best if best < INF else "\nNew!")
+		var deepest := Activities.best_depth(activity, i)
+		var text := "Level %d" % (i + 1) + ("\nBest %.1f s" % best if best < INF
+			else ("\nDeepest %d m" % roundi(deepest) if deepest > 0.0 else "\nNew!"))
 		_add_button(text, _show_start.bind(i, ""), "Level%d" % (i + 1))
 
 
@@ -131,6 +133,16 @@ func _complete() -> void:
 		_add_button("Next level", _show_start.bind(level + 1, ""), "Next")
 	if not story:
 		_add_button("Again", _show_start.bind(level, ""), "Again")
+	_add_button("Done", close_screen, "Done")
+
+
+## Ends the play before it's done (e.g. the submarine needs repairs): what happened, and
+## another go. Never a failure: `lines` say what was reached.
+func _stop(lines: Array[String]) -> void:
+	_playing = false
+	_clear_buttons()
+	_info.text = "\n".join(lines)
+	_add_button("Try again", _show_start.bind(level, ""), "Again")
 	_add_button("Done", close_screen, "Done")
 
 

@@ -43,6 +43,9 @@ var _call_wait := 6.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # the music goes on behind menus
+	# The buses come from res://default_bus_layout.tres: on the web, buses added while the game
+	# runs aren't passed on to the browser, so every sound sent to them was silent. (Kept as a
+	# fallback for a missing layout.)
 	for bus: String in ["Music", "Ambient", "Sounds"]:
 		if AudioServer.get_bus_index(bus) < 0:
 			AudioServer.add_bus()

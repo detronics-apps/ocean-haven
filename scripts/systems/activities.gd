@@ -10,6 +10,9 @@ signal finished(activity: ActivityData, level: int, seconds: float, story: bool)
 var _done := {}
 ## Activity id -> {level: best seconds}.
 var _bests := {}
+## Activity id -> {level: deepest metres reached} (Echo Dive: the record until the level's
+## bottom is reached, then the time counts).
+var _depths := {}
 var _all: Array[ActivityData] = []
 
 
@@ -48,6 +51,21 @@ func best(activity: ActivityData, level: int) -> float:
 	return float(_bests.get(activity.id, {}).get(level, INF))
 
 
+## The deepest `level` has been dived (0 = never tried).
+func best_depth(activity: ActivityData, level: int) -> float:
+	return float(_depths.get(activity.id, {}).get(level, 0.0))
+
+
+## Records how deep a dive got. Returns whether it's deeper than ever before.
+func reached(activity: ActivityData, level: int, metres: float) -> bool:
+	if metres <= best_depth(activity, level):
+		return false
+	if not _depths.has(activity.id):
+		_depths[activity.id] = {}
+	_depths[activity.id][level] = metres
+	return true
+
+
 ## Levels that can be played: every one finished, and the next.
 func open_levels(activity: ActivityData) -> int:
 	var count := 1
@@ -82,12 +100,25 @@ func to_dict() -> Dictionary:
 		for level in _bests[id]:
 			levels[str(level)] = _bests[id][level]
 		bests[String(id)] = levels
-	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests}
+	var depths := {}
+	for id in _depths:
+		var levels := {}
+		for level in _depths[id]:
+			levels[str(level)] = _depths[id][level]
+		depths[String(id)] = levels
+	return {"done": _done.keys().map(func(k: StringName) -> String: return String(k)), "bests": bests, "depths": depths}
 
 
 func restore(saved: Dictionary) -> void:
 	_done.clear()
 	_bests.clear()
+	_depths.clear()
+	var depths: Dictionary = saved.get("depths", {})
+	for id in depths:
+		var levels := {}
+		for level in depths[id]:
+			levels[int(level)] = float(depths[id][level])
+		_depths[StringName(id)] = levels
 	for id in saved.get("done", []):
 		_done[StringName(id)] = true
 	var bests: Dictionary = saved.get("bests", {})
