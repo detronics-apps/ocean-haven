@@ -8,7 +8,7 @@
 script = ExtResource("1_s")
 id = &"rowboat"
 display_name = "Rowboat"
-description = "Another small wooden boat for this island, so there's one where you need it. It stays where you leave it. Each needs 2 dock planks on the island first. Up to 2 on each island, besides the rowboat every island starts with."
+description = "Another small wooden boat for this island, so there's one where you need it. It stays where you leave it. Each needs 2 dock planks on the island first. An island keeps 3 rowboats at most (its own one included): build another and one of the others, chosen at random, goes back to the boatyard (handy when one is stranded far out at sea)."
 summary = "Another rowboat for this island."
 order = 4
 texture = ExtResource("2_t")
@@ -17,6 +17,7 @@ terrain = PackedStringArray("water", "")
 cost_funding = 135
 cost_items = Dictionary[StringName, int]({&"wood": 3})
 max_count = 2
+keep_boats = 3
 requires = &"dock"
 requires_each = 2
 spawns = ExtResource("3_b")

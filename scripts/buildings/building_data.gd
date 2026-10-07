@@ -75,6 +75,10 @@ extends Resource
 @export var only_on: StringName
 ## Only once the island's objective is done (RegionData.goals; the Exploration Ship).
 @export var needs_objective := false
+## Boats: at most this many on an island (its own rowboat included). Building another is always
+## allowed, and one of the others (not the one the ranger is in) is let go at random, e.g. a
+## rowboat left stranded far out at sea.
+@export var keep_boats := 0
 ## Pictures by fleet equipment level (Fleet.level(): 1 = first entry); `texture` below level 1.
 @export var fleet_textures: Array[Texture2D] = []
 ## At most this many on each island (0 = no limit); `unique` = one on each island.

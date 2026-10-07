@@ -28,6 +28,19 @@ func _ready() -> void:
 	_apply_colour()
 
 
+## Gone back to the boatyard (an island's own rowboat, when a newer one replaced it): hidden
+## and out of use for good (saved: SaveGame "retired_boats").
+func retire() -> void:
+	visible = false
+	remove_from_group("boat")
+	remove_from_group("interactables")
+	add_to_group("retired_boats")
+	process_mode = Node.PROCESS_MODE_DISABLED
+	for child in get_children():
+		if child is CollisionShape2D or child is CollisionPolygon2D:
+			child.set_deferred("disabled", true)
+
+
 func _apply_colour() -> void:
 	$Look/Hull.modulate = RangerProfile.pick("boat")
 

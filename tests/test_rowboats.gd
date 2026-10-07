@@ -45,7 +45,7 @@ func _initialize() -> void:
 	build_mode.cancel()
 	var second: Node = build_mode.add_building(rowboat, Vector2i(24, 3))
 	_expect(first.boat() != null and second.boat() != null, "they're real boats")
-	_expect(build_mode.placement_problem(rowboat, Vector2i(17, -1)).contains("as many"), "up to 2 on each island")
+	_expect(not build_mode.at_limit(rowboat), "a third built one is allowed too (one of the others goes)")
 
 	# --- The ranger boards the nearest boat, and leaves it somewhere else ---
 	player.global_position = second.global_position + Vector2(0, -30)
@@ -123,6 +123,37 @@ func _initialize() -> void:
 	load("res://scripts/ui/voyage_map.gd").arrive(self, load("res://data/regions/kelp_forest.tres"))
 	_expect(home_boat.global_position == home_spot and world.get_node("KelpBoat").global_position.distance_to(kelp_left) < 1.0,
 		"sailing to the Kelp Forest: every boat stays where it was")
+
+	# --- A fourth rowboat: one of the other three goes back to the boatyard, at random ---
+	var on_home := func() -> Array:
+		return get_nodes_in_group("boat").filter(func(b: Node2D) -> bool: return regions.nearest(b.global_position) == home)
+	_expect(on_home.call().size() == 3, "3 rowboats on the Starting Island (its own + 2 built)")
+	build_mode = world.get_node("BuildMode")
+	root.get_node("Funding").balance = 1000
+	for x in range(20, 22):
+		build_mode.add_building(dock, Vector2i(x, 0))
+	root.get_node("Inventory").add(load("res://data/items/wood.tres"), 6)
+	build_mode.start(rowboat)
+	var cell := Vector2i(26, 3)
+	_expect(build_mode.placement_problem(rowboat, cell) == "", "a 4th can be built (%s)" % build_mode.placement_problem(rowboat, cell))
+	build_mode.place_at(cell)
+	build_mode.cancel()
+	await process_frame
+	var now: Array = on_home.call()
+	_expect(now.size() == 3 and now.any(func(b: Node2D) -> bool: return b.get_parent().get("cell") == cell),
+		"built: still 3 on the island, the new one among them (%d)" % now.size())
+	var own: Node2D = world.get_node("Boat")
+	own.retire()
+	_expect(not own.visible and not own.is_in_group("boat"), "an island's own rowboat can go too: hidden and out of use")
+	_expect(root.get_node("SaveGame").save_to(world, PATH), "saved")
+	world.free()
+	world = load("res://scenes/world/ocean_world.tscn").instantiate()
+	root.add_child(world)
+	await process_frame
+	root.get_node("SaveGame").load_from(world, PATH)
+	await process_frame
+	_expect(not world.get_node("Boat").visible and not world.get_node("Boat").is_in_group("boat"), "and stays gone after loading")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 
 	if not _failed:
 		print("PASS")

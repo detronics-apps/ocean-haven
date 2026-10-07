@@ -178,6 +178,7 @@ func save_to(world: Node, path: String) -> bool:
 		"injured_animals": get_tree().get_nodes_in_group("animals").filter(func(a: Animal) -> bool:
 			return a.injured and a.born_at < 0.0 and a.get_parent() == world).map(func(a: Animal) -> String: return String(a.name)),
 		"cut_trees": _cut_trees,
+		"retired_boats": get_tree().get_nodes_in_group("retired_boats").map(func(b: Node) -> String: return String(b.name)),
 		"tile_edits": _tile_edits,
 		"washed_in_litter": litter,
 		"funding": Funding.to_dict(),
@@ -500,6 +501,10 @@ func load_from(world: Node, path: String) -> bool:
 	var b: Array = state.get("boat", [])
 	if b.size() == 2:
 		(world.get_node("Boat") as Node2D).global_position = Vector2(b[0], b[1])
+	for boat_name in state.get("retired_boats", []):
+		var retired := world.get_node_or_null(String(boat_name)) as Boat
+		if retired:
+			retired.retire()
 	var island_boats: Dictionary = state.get("island_boats", {})
 	for boat_name: String in island_boats:
 		var island_boat := world.get_node_or_null(boat_name) as Boat

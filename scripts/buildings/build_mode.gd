@@ -209,7 +209,7 @@ func _touches_walkable(footprint: Rect2i) -> bool:
 ## Every limit counts per island.
 func at_limit(data: BuildingData, island: RegionData = null) -> bool:
 	var limit := 1 if data.unique else data.max_count
-	if limit <= 0:
+	if limit <= 0 or data.keep_boats > 0:  # (boats: another lets one of the others go)
 		return false
 	if not island:
 		var ranger := ControlledBody.active(get_tree())
@@ -291,6 +291,8 @@ func place() -> bool:
 			old.queue_free()
 			old.remove_from_group("buildings")  # gone for saving and overlap checks right away
 	var building := add_building(_data, _cell)
+	if _data.keep_boats > 0:
+		let_boats_go(building, _data.keep_boats)
 	built.emit(building)
 	get_tree().call_group("ecosystems", "settle_now")  # animals respond straight away
 	# Keep going with another of the same (e.g. a row of dock planks) until Cancel.
@@ -299,6 +301,37 @@ func place() -> bool:
 		_free = false
 		_show(false)
 	return true
+
+
+## Keeps at most `keep` boats on `new_one`'s island: the others beyond it go back to the
+## boatyard, chosen at random (never the new one, the one the ranger is in, or one in tow).
+## Returns how many went.
+func let_boats_go(new_one: Building, keep: int) -> int:
+	var island := Regions.nearest(new_one.global_position)
+	var fresh := new_one.boat()
+	var boats: Array[Boat] = []
+	var spare: Array[Boat] = []
+	for boat: Boat in get_tree().get_nodes_in_group("boat"):
+		if Regions.nearest(boat.global_position) != island or boat.is_queued_for_deletion():
+			continue
+		boats.append(boat)
+		var in_tow := get_tree().get_nodes_in_group("boat").any(func(b: Boat) -> bool: return b.controlled and b.towing == boat)
+		if boat != fresh and not boat.controlled and not in_tow:
+			spare.append(boat)
+	var gone := 0
+	spare.shuffle()
+	while boats.size() - gone > keep and not spare.is_empty():
+		var boat: Boat = spare.pop_back()
+		var holder := boat.get_parent() as Building
+		if holder:  # a built rowboat: the building goes with it
+			holder.remove_from_group("buildings")
+			holder.queue_free()
+		else:  # an island's own rowboat
+			boat.retire()
+		gone += 1
+	if gone > 0:
+		get_tree().call_group("hud", "show_toast", "An island keeps %d rowboats at most, so one of your others has gone back to the boatyard." % keep)
+	return gone
 
 
 ## Adds a finished building (no cost, no fuss) — also used when loading a save.
