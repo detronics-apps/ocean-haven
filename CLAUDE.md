@@ -505,6 +505,17 @@ on ice; terns nest on rock and sit (AnimalData.nests_on_ground); stores offer "S
 and "Look in storage" (no taking out: the shovel and coral use storage like building does);
 Journal list = picture on a light tile, name, AnimalData.role; tap for the animal's page
 (photo moments, real-life facts); "Only what I've found" toggle.
+Second phone batch: zoom has five fixed steps, only the + / − buttons (or keys; no pinch); a
+tap walks the ranger all the way, a held finger is followed; photos crop 4 x 3 tiles round the
+animal through the camera and window stretch, and every moment it's in keeps the latest photo;
+rescues are 6 days on the vet table (RescueData.vet_picture, front view): feed / comfort /
+patch / medicine once a day each raise Health, Fed and Calm (never down); it goes home tagged
+(TagBand) in the shape the care left it in, which sets how often it's about each morning
+(Rescues.check_visits: its island or RescueData.visits, never elsewhere; "Rescued_<id>",
+ocean_world.place_tagged), its name showing once met again; rescues for every island (Reef
+seahorse, Deep Sea sixgill pup); hint-givers alternate island clues with pointers to anything
+open elsewhere (People.open_things); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
+puzzle, opens when the furnace is firing, story play finishes the first batch).
 
 Progression and pointers: the HUD grows with the game (the minimap with the Salvaged Sonar
 Core, the island health bar with a research station on the 2nd island: Fleet flag
