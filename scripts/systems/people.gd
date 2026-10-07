@@ -166,7 +166,12 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		if topic:
 			var again: bool = person.role == &"hint" and _last.get(person.id, &"") == topic.id and topic.id != &"ending"
 			_repeats[person.id] = int(_repeats.get(person.id, 0)) + 1 if again else 0
-			var clue := _clue(person) if again else PackedStringArray()
+			var clue := PackedStringArray()
+			if again:  # stuck: turn by turn, what's holding this island back, and what's open elsewhere
+				var turn := int(_repeats[person.id])
+				clue = _pointer(person, turn / 2) if turn % 2 == 0 else _clue(person)
+				if clue.is_empty():
+					clue = _clue(person) if turn % 2 == 0 else _pointer(person, turn / 2)
 			said.append_array(clue if not clue.is_empty() else topic.lines)
 			_told(person, topic)
 	return _lines(person, said)
@@ -199,6 +204,56 @@ func _clue(person: PersonData) -> PackedStringArray:
 				advice = "Ask %s what the research shows: the station's surveys can tell you more." % _giver_name(person)
 	lines.append(advice.strip_edges())
 	return lines
+
+
+## Something still open in the game, for a stuck ranger (the `n`th, cycling): someone with a
+## question or waiting on one, an animal waiting for care, islands left to find. Things on
+## other islands first, so the ranger always knows where to go next.
+func _pointer(person: PersonData, n: int) -> PackedStringArray:
+	var list := open_things(person.region)
+	if list.is_empty():
+		return PackedStringArray()
+	return PackedStringArray(["Have you heard? " + list[(n - 1) % list.size() if n > 0 else 0]])
+
+
+## What's still open, as lines someone could say (things away from `here` first).
+func open_things(here: StringName) -> Array[String]:
+	var away: Array[String] = []
+	var near: Array[String] = []
+	for region: RegionData in Regions.all():
+		if not Regions.is_discovered(region) or region.in_development:
+			continue
+		var into := near if region.id == here else away
+		var on_island := "here" if region.id == here else "on the %s" % region.display_name
+		for someone: PersonData in on(region.id):
+			if someone.role != &"objective":
+				continue
+			var question := current_question(someone)
+			if not has_met(someone):
+				into.append("%s, the %s %s, would like to meet you." % [someone.short_name, someone.job.to_lower(), on_island])
+			elif to_thank(someone) or (question and not is_given(someone, question)):
+				into.append("%s %s has something to ask you. Go and see them %s." % [someone.short_name, on_island, where(someone)])
+			elif question:
+				into.append("%s %s is still waiting on you: %s." % [someone.short_name, on_island, question.objective.text.to_lower()])
+	var caring := Rescues.in_care()
+	if caring:
+		var island: RegionData = load(caring.region_path())
+		var who := Rescues.pet_name() if Rescues.is_named() else "a young %s" % caring.species.display_name.to_lower()
+		(near if caring.region == here else away).append("%s is waiting for you on the vet table on the %s." % [who, island.display_name])
+	else:
+		for one: RescueData in Rescues.all():
+			var island: RegionData = load(one.region_path())
+			if not Rescues.done.has(one.id) and Regions.is_discovered(island):
+				var building: BuildingData = load("res://data/buildings/%s.tres" % one.building)
+				var built := get_tree().get_nodes_in_group("buildings").any(func(b: Building) -> bool:
+					return b.data.id == one.building and Regions.nearest(b.global_position) == island)
+				(near if one.region == here else away).append(("An animal on the %s needs looking after: go to the %s there." if built
+					else "Once there's a %s on the %s, they could take in an animal that needs care.") % (
+					[island.display_name, building.display_name] if built else [building.display_name, island.display_name]))
+				break
+	if Regions.can_find_more() and Regions.discovered_count() < Regions.all().size():
+		away.append("There are still islands out there nobody's mapped. Try Explore at one of your Exploration Ships.")
+	return away + near
 
 
 func _giver_name(person: PersonData) -> String:

@@ -41,6 +41,20 @@ func _initialize() -> void:
 	_expect(clues.any(func(t: String) -> bool: return t.contains("patrol boat")), "among the things he points at: the patrol boats over the dark areas (%s)" % [clues])
 	_expect(clues[0] != clues[1], "each visit a different clue")
 
+	# --- Back home with Tom: past the island's own clues, he points at what's open elsewhere ---
+	var reef: Resource = load("res://data/regions/tropical_reef.tres")
+	regions.discover(reef)
+	world.get_node("Player").global_position = Vector2.ZERO
+	var tom: Resource = load("res://data/people/tom.tres")
+	var heard: Array = []
+	for i in 8:
+		heard.append(" ".join(people.talk(tom).map(func(l: Dictionary) -> String: return l.text)))
+		people.finish_talk()
+	_expect(heard.any(func(t: String) -> bool: return t.contains("Kai") and t.contains("Tropical Reef")),
+		"Tom: someone on the Tropical Reef would like to meet you (%s)" % [heard])
+	_expect(heard.any(func(t: String) -> bool: return t.contains("Imani") or t.contains("Bram")) or heard.any(func(t: String) -> bool: return t.contains("Deep Sea")),
+		"and the Deep Sea, still open")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)
