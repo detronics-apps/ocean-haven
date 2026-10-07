@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="2_t"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal_land.svg" id="3_land"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -35,7 +36,9 @@ fact = "Ringed seals raise their pups in snow dens on the sea ice, so they need 
 photo_fact = "The pale rings on its fur give it its name."
 help_fact = "Pups need ice that lasts: a pupping zone on thin seasonal ice melts away before they're ready."
 habitat_terrain = PackedStringArray("ice", "water", "")
-swim_speed = 30.0
+swim_speed = 55.0
+land_sprite = ExtResource("3_land")
+land_speed = 0.3
 shy_distance = 60.0
 discover_distance = 130.0
 curious = false

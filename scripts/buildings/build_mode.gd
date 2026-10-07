@@ -106,6 +106,16 @@ func placement_problem(data: BuildingData, cell: Vector2i) -> String:
 		for y in data.size.y:
 			if Terrain.at(get_tree(), Terrain.centre_of(cell + Vector2i(x, y))) not in data.terrain:
 				return "Your %s goes %s." % [name, where_it_goes(data)]
+	if data.terrain.has("rock") and data.terrain.has("ice"):  # on the ice, it needs a foundation
+		var rock := false
+		var any_ice := false
+		for x in data.size.x:
+			for y in data.size.y:
+				var here := Terrain.at(get_tree(), Terrain.centre_of(cell + Vector2i(x, y)))
+				rock = rock or here == "rock"
+				any_ice = any_ice or here == "ice"
+		if any_ice and not rock:
+			return "Your %s needs at least one tile of rock under it, as a foundation." % name
 	if data.needs_banks and not _between_banks(cell):
 		return "Your %s goes %s." % [name, where_it_goes(data)]
 	var footprint := Rect2i(cell, data.size)

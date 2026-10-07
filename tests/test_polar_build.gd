@@ -24,24 +24,30 @@ func _initialize() -> void:
 	# Seasonal ice (a ring that freezes and thaws): freeze it, build on it, thaw it.
 	eco.tick(eco.cycle_days - fposmod(eco.get("_season"), eco.cycle_days) + eco.cycle_days * 0.45)
 	eco.apply_ice()
-	var cell := Vector2i.MAX
-	for c: Vector2i in eco.get("_ring"):
-		if ground.get_cell_atlas_coords(c) == eco.ICE_TILE and ground.get_cell_atlas_coords(c + Vector2i(1, 0)) == eco.ICE_TILE \
-				and ground.get_cell_atlas_coords(c + Vector2i(0, 1)) == eco.ICE_TILE and ground.get_cell_atlas_coords(c + Vector2i(1, 1)) == eco.ICE_TILE:
-			cell = c
-			break
-	_expect(cell != Vector2i.MAX, "(found frozen seasonal ice)")
-	var at: Vector2 = ground.to_global(ground.map_to_local(cell))
 	var house: Resource = load("res://data/buildings/house.tres")
 	var build: Node = world.get_node("BuildMode")
-	var wcell: Vector2i = terrain.cell_of(at) - Vector2i(0, 0)
-	_expect(build.placement_problem(house, wcell) == "" or not build.placement_problem(house, wcell).contains("goes"), "a Ranger House can go on the ice (%s)" % build.placement_problem(house, wcell))
-	build.add_building(house, wcell)
+	var kind := func(c: Vector2i) -> String:
+		var tile := ground.get_cell_tile_data(c)
+		return tile.get_custom_data("terrain") if tile else ""
+	var all_ice := Vector2i.MAX
+	var with_rock := Vector2i.MAX
+	for c: Vector2i in ground.get_used_cells():
+		var kinds := [kind.call(c), kind.call(c + Vector2i(1, 0)), kind.call(c + Vector2i(0, 1)), kind.call(c + Vector2i(1, 1))]
+		if all_ice == Vector2i.MAX and kinds.all(func(k: String) -> bool: return k == "ice"):
+			all_ice = c
+		if with_rock == Vector2i.MAX and kinds.has("rock") and kinds.has("ice") and kinds.all(func(k: String) -> bool: return k in ["rock", "ice"]):
+			with_rock = c
+	var to_world := func(c: Vector2i) -> Vector2i: return terrain.cell_of(ground.to_global(ground.map_to_local(c)))
+	_expect(build.placement_problem(house, to_world.call(all_ice)).contains("rock under it"), "all on ice: it needs a tile of rock as a foundation (%s)" % build.placement_problem(house, to_world.call(all_ice)))
+	var problem: String = build.placement_problem(house, to_world.call(with_rock))
+	_expect(not problem.contains("goes") and not problem.contains("rock under it"), "one rock and the rest ice: fine (%s)" % problem)
+	build.add_building(house, to_world.call(with_rock))
 	await process_frame
+	var ice_cells: Array = [with_rock, with_rock + Vector2i(1, 0), with_rock + Vector2i(0, 1), with_rock + Vector2i(1, 1)].filter(func(c: Vector2i) -> bool: return kind.call(c) == "ice")
 	for i in 8:
 		eco.tick(eco.cycle_days / 4.0)
 		eco.apply_ice()
-	_expect(ground.get_cell_atlas_coords(cell) == eco.ICE_TILE, "a whole year later the ice under it is still there")
+	_expect(ice_cells.all(func(c: Vector2i) -> bool: return kind.call(c) == "ice"), "a whole year later the ice under it is still there")
 	var station: Resource = load("res://data/buildings/polar_research_station.tres")
 	_expect("ice" in station.terrain and "ice" in load("res://data/buildings/tent.tres").terrain, "the station and the tent can go on ice too")
 

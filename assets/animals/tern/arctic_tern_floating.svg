@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="12" viewBox="0 0 18 12" shape-rendering="crispEdges">
+  <!-- Placeholder Arctic tern resting on the sea (side view, facing right): body low in the water, no legs showing, ripples. -->
+  <rect x="5" y="4" width="8" height="5" fill="#f4f6f8"/>
+  <rect x="4" y="5" width="7" height="3" fill="#c8ced6"/>
+  <rect x="1" y="4" width="4" height="1" fill="#c8ced6"/>
+  <rect x="11" y="1" width="4" height="4" fill="#f4f6f8"/>
+  <rect x="11" y="0" width="4" height="2" fill="#1e1e22"/>
+  <rect x="15" y="2" width="3" height="1" fill="#d83a2a"/>
+  <rect x="2" y="9" width="14" height="1" fill="#9fd8f0"/><rect x="0" y="11" width="4" height="1" fill="#9fd8f0"/><rect x="14" y="11" width="4" height="1" fill="#9fd8f0"/>
+</svg>

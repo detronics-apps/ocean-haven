@@ -28,6 +28,13 @@ extends Resource
 @export var faces_movement := true
 ## Walkers' other pictures (optional): standing still, and flying off when startled.
 @export var resting_sprite: Texture2D
+## Animals of land and water (seals): the picture on land or ice (side view, never turned),
+## and how fast they go there compared with swimming.
+@export var land_sprite: Texture2D
+## Flying birds resting on the water (side view, no legs showing); on land they use
+## `resting_sprite` (standing).
+@export var floating_sprite: Texture2D
+@export var land_speed := 1.0
 @export var flying_sprite: Texture2D
 @export var swim_speed := 40.0
 ## Seconds spent resting between swims (random in this range).

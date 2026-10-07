@@ -130,8 +130,8 @@ func _ready() -> void:
 		_tangle.texture = tangle_item.icon  # whatever it's caught in: line, net, bag...
 	_rest_left = randf_range(0.0, data.rest_max)
 	collision_mask = WATER_LAYER if _lives_on_land() else LAND_LAYER
-	if _water_only():
-		collision_mask = 0  # (wading shallows collide like land: swimmers check the water ahead instead)
+	if _water_only() or _land_and_water():
+		collision_mask = 0  # (tiles collide like walls: these check the ground ahead instead)
 	if data.flies:
 		collision_mask = 0
 		z_index = 2  # over the trees
@@ -301,6 +301,14 @@ func _physics_process(delta: float) -> void:
 
 	_pose()
 	var speed := data.swim_speed * (0.5 if tangled or injured else 1.0)
+	var on_land := data.land_sprite != null and not Terrain.at(get_tree(), global_position) in ["water", ""]
+	if data.land_sprite:
+		var picture := data.land_sprite if on_land else data.sprite
+		if _sprite.texture != picture:
+			_sprite.texture = picture
+			_sprite.rotation = 0.0
+		if on_land:
+			speed *= data.land_speed  # slow, humping along on the ice
 	match _state:
 		State.REST:
 			velocity = Vector2.ZERO
@@ -324,8 +332,8 @@ func _physics_process(delta: float) -> void:
 		_rest(randf_range(data.rest_min, data.rest_max))
 		return
 	velocity = to_target.normalized() * speed
-	if _water_only() and in_habitat(global_position) and not in_habitat(global_position + velocity.normalized() * 10.0):
-		_rest(data.rest_min)  # the water ends here: never swim up onto the land (then flicker back)
+	if not data.flies and in_habitat(global_position) and not in_habitat(global_position + velocity.normalized() * 10.0):
+		_rest(data.rest_min)  # its habitat ends here: never step out of it (then flicker back)
 		return
 	move_and_slide()
 	_face(velocity)
@@ -913,6 +921,20 @@ func _lives_on_land() -> bool:
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
+	if data.flies and data.resting_sprite:  # a bird: flying (from above), or landed (side view)
+		var landed := _state == State.REST
+		var texture := data.sprite
+		if landed:
+			texture = data.floating_sprite if data.floating_sprite and Terrain.at(get_tree(), global_position) in ["water", ""] \
+				else data.resting_sprite
+		if _sprite.texture != texture:
+			_sprite.texture = texture
+			if landed:
+				_sprite.flip_h = _sprite.rotation > PI / 2.0 or _sprite.rotation < -PI / 2.0
+				_sprite.rotation = 0.0
+			else:
+				_sprite.flip_h = false
+		return
 	if not data.resting_sprite and not data.flying_sprite:
 		return
 	var texture := data.sprite
@@ -947,12 +969,26 @@ var _habitat_check := randf()
 var _dug_at := -1.0
 
 
+## Lives on land (or ice) and in water both (seals).
+func _land_and_water() -> bool:
+	var kinds := Array(data.habitat_terrain)
+	return not data.flies and kinds.any(func(t: String) -> bool: return t in ["water", ""]) \
+		and kinds.any(func(t: String) -> bool: return t in ["sand", "grass", "mud", "rock", "ice"])
+
+
 ## Lives only in water (fish, turtles, dolphins, otters, crocodiles), never on land.
 func _water_only() -> bool:
 	return not data.flies and not Array(data.habitat_terrain).any(func(t: String) -> bool: return t in ["sand", "grass", "mud", "rock", "ice"])
 
 
 func _face(motion: Vector2) -> void:
+	if data.land_sprite and _sprite.texture == data.land_sprite:  # on land: side view, never turned
+		_sprite.rotation = 0.0
+		if motion.x != 0.0:
+			_sprite.flip_h = motion.x < 0.0
+		return
+	if data.land_sprite:
+		_sprite.flip_h = false
 	if data.faces_movement:
 		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle(), 0.1)
 	elif motion.x != 0.0:
