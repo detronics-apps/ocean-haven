@@ -1090,6 +1090,22 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
 - More animals (more seabirds, reef fish), net boats, and sanctuary interiors (the turtle rehab
   mini-game).
 
+**Planned, not built yet (the user's list, still being planned: ask before building)**
+- **Growing up in three pictures.** Every animal and every plant gets three different pictures
+  for its life stages (baby / young / adult; sapling / young / full grown), not one picture
+  drawn smaller. Babies look like the real young: flamingo chicks are grey-white and fluffy, not
+  pink. Open: which species get all three (fish, urchins, clams, squid?), and whether kelp,
+  coral, seagrass and mangroves count as plants here.
+- **Every new animal comes from somewhere.** No animal ever just appears. A newcomer either
+  - is born: an adult of its kind goes to its sanctuary / habitat / zone, and one or two young
+    appear next to it there (e.g. a ringed seal hauls out at a Seal Pupping Zone and a pup
+    appears beside it); the parent then goes back to roaming and the young grow up; or
+  - travels in from another island (swims in, or flies in for birds), seen arriving.
+  Sanctuaries and habitats then make room for young, never make animals appear on their own
+  (today the Seal Pupping Zone, Otter Habitat, Crab Habitat and others spawn grown animals).
+  Open: does one adult do (a game simplification) or does a second have to arrive first; and
+  where newcomers come from on an island whose neighbours don't have that species yet.
+
 **Look and feel (the user's list, for later)**
 - ✅ A very subtle texture on sand, grass and rock tiles.
 - ✅ Rock is warm stone now, no longer water-like (tiles, minimap, island maps).
