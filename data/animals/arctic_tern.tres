@@ -26,6 +26,13 @@ script = ExtResource("pm_script")
 id = &"arriving"
 title = "Just arrived from the far south"
 when = PackedStringArray("event:terns_arriving")
+bonus = true
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"nest"
+title = "Sitting on its nest"
+when = PackedStringArray("perched")
 
 [resource]
 script = ExtResource("1_s")
@@ -53,7 +60,7 @@ fly_seconds = Vector2(10, 20)
 perch_seconds = Vector2(15, 30)
 lives_at = &"tern_nesting_area"
 adult_home_radius = 140.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_3"), SubResource("Moment_2")])
 seeds_tree = ExtResource("seed_pine")
 seeds_from = &"deep_sea"
 seeds_to = &"arctic_ocean"

@@ -23,9 +23,19 @@ func _initialize() -> void:
 	_expect(turtle_data.moments.size() == 3, "the green turtle has 3 photo moments")
 	var missing: Array = []
 	for animal: Resource in load("res://scripts/systems/data_files.gd").load_all("res://data/animals"):
-		if animal.id != &"sea_urchin" and (animal.moments.size() < 2 or animal.moments.size() > 3):
+		var regular: int = animal.moments.filter(func(m: Resource) -> bool: return not m.bonus).size()
+		var bonus: int = animal.moments.size() - regular
+		if animal.id != &"sea_urchin" and (regular < 2 or regular > 3 or bonus > 1):
 			missing.append(animal.id)
-	_expect(missing.is_empty(), "every species has 2-3 moments (%s)" % [missing])
+		for m: Resource in animal.moments:
+			if m.bonus != Array(m.when).any(func(c: String) -> bool: return c.begins_with("event:")):
+				missing.append("%s/%s" % [animal.id, m.id])
+	_expect(missing.is_empty(), "every species has 2-3 photo moments, and a seasonal one is a bonus 4th (%s)" % [missing])
+	var counted: int = load("res://scripts/systems/journal.gd").moments_total()
+	var all_moments := 0
+	for animal: Resource in load("res://scripts/systems/data_files.gd").load_all("res://data/animals"):
+		all_moments += animal.moments.size()
+	_expect(counted == all_moments - 3, "the 3 seasonal bonus photos aren't counted as ones to find (%d of %d)" % [counted, all_moments])
 
 	# --- A hatchling: its moment is caught with the photo ---
 	var baby: Node2D = load("res://scenes/animals/animal.tscn").instantiate()

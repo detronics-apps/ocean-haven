@@ -289,10 +289,12 @@ func _entry(animal: AnimalData) -> Control:
 			else "Not discovered yet. Keep exploring, and take a photo when you find it!"], true)
 		unknown.name = "Entry_" + animal.id
 		return unknown
-	var moments := animal.moments.filter(func(m: PhotoMoment) -> bool: return Journal.has_moment(animal.id, m.id)).size()
+	var regular := animal.moments.filter(func(m: PhotoMoment) -> bool: return not m.bonus)
+	var moments := regular.filter(func(m: PhotoMoment) -> bool: return Journal.has_moment(animal.id, m.id)).size()
+	var bonus := animal.moments.any(func(m: PhotoMoment) -> bool: return m.bonus and Journal.has_moment(animal.id, m.id))
 	var lines: Array[String] = [animal.display_name, animal.role if animal.role != "" else animal.fact]
-	if not animal.moments.is_empty():
-		lines.append("Photo moments: %d / %d   ›" % [moments, animal.moments.size()])
+	if not regular.is_empty():
+		lines.append("Photo moments: %d / %d%s   ›" % [moments, regular.size(), "  + a bonus photo!" if bonus else ""])
 	var entry := card(animal.picture(), lines, false, true)
 	entry.name = "Entry_" + animal.id
 	_tappable(entry, open_animal.bind(animal).call_deferred)
@@ -378,8 +380,12 @@ func _album(animal: AnimalData) -> Control:
 	row.add_theme_constant_override("h_separation", 10)
 	row.add_theme_constant_override("v_separation", 10)
 	for moment: PhotoMoment in animal.moments:
-		var cell := VBoxContainer.new()
 		var caught := Journal.has_moment(animal.id, moment.id)
+		if moment.bonus:
+			if caught:  # (a bonus photo only shows once taken: nothing to find)
+				row.add_child(_bonus_photo(animal, moment))
+			continue
+		var cell := VBoxContainer.new()
 		var picture := TextureRect.new()
 		picture.texture = Journal.moment_picture(animal.id, moment.id) if caught else animal.picture()
 		if not picture.texture:
@@ -400,6 +406,38 @@ func _album(animal: AnimalData) -> Control:
 		cell.add_child(label)
 		row.add_child(cell)
 	return row
+
+
+## A bonus photo (a seasonal moment) in a gold frame.
+func _bonus_photo(animal: AnimalData, moment: PhotoMoment) -> Control:
+	var cell := VBoxContainer.new()
+	cell.name = "Bonus"
+	var frame := PanelContainer.new()
+	var gold := StyleBoxFlat.new()
+	gold.bg_color = Color("3a2c10")
+	gold.border_color = Color("e8b93a")
+	gold.set_border_width_all(4)
+	gold.set_corner_radius_all(4)
+	gold.set_content_margin_all(4)
+	frame.add_theme_stylebox_override("panel", gold)
+	var picture := TextureRect.new()
+	picture.texture = Journal.moment_picture(animal.id, moment.id)
+	if not picture.texture:
+		picture.texture = animal.picture()
+	picture.custom_minimum_size = Vector2(160, 120)
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	frame.add_child(picture)
+	cell.add_child(frame)
+	var label := Label.new()
+	label.text = "Bonus: " + moment.title
+	label.custom_minimum_size.x = 168
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size", 13)
+	label.add_theme_color_override("font_color", Color("ffd27a"))
+	cell.add_child(label)
+	return cell
 
 
 func _plant_entry(plant: PlantData) -> Control:

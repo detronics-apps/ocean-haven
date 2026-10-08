@@ -12,3 +12,6 @@ extends Resource
 ## "surfaced", "underwater", "guiding", "carrying", "digging", "near_boat", "visiting",
 ## "event:X" (seasonal moment X is on, on its island: data/seasons/).
 @export var when: PackedStringArray = []
+## A bonus photo (a seasonal moment, data/seasons/): not one of the species' photos to find,
+## not counted, shown in a gold frame on its page once taken.
+@export var bonus := false

@@ -485,7 +485,9 @@ choice of species.
 Phase 8: photo moments (AnimalData.moments: PhotoMoment, 2-3 per species, conditions checked
 by Animal.moment_holds: young, nesting, digging, guiding, perched, surfaced, on:ice...): the
 first photo of each is kept (a 160x120 crop of the screen, user://photos; Journal.photos_dir,
-tests point it elsewhere) and shown in the species' Journal page, missing ones as hints; Maya
+tests point it elsewhere) and shown in the species' Journal page, missing ones as hints; a
+seasonal moment's photo is a bonus 4th (PhotoMoment.bonus: not counted, shown only once taken, in
+a gold frame; the clam, the whale and the tern have 3 everyday ones besides); Maya
 mentions the collection. Released rescue companions that travel (RescueData.visits: the turtle
 to the Mangrove Coast and the Reef, the flamingo to the Reef) turn up for a day on the
 ranger's island, only while both islands are healthy (70 %), at most every 6 days; sightings

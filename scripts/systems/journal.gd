@@ -196,14 +196,20 @@ func _photo_path(id: StringName, moment_id: StringName) -> String:
 
 
 ## Photo moments caught, and how many there are, over every species.
+## Photo moments caught (not counting bonus photos).
 func moments_caught() -> int:
-	return _moments.size()
+	var caught := 0
+	for animal: AnimalData in DataFiles.load_all("res://data/animals"):
+		for moment: PhotoMoment in animal.moments:
+			if not moment.bonus and has_moment(animal.id, moment.id):
+				caught += 1
+	return caught
 
 
 static func moments_total() -> int:
 	var total := 0
 	for animal: AnimalData in DataFiles.load_all("res://data/animals"):
-		total += animal.moments.size()
+		total += animal.moments.filter(func(m: PhotoMoment) -> bool: return not m.bonus).size()
 	return total
 
 
