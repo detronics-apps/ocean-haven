@@ -33,6 +33,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_6nm75")
+lays_eggs = true
 roams = true
 travel_home = &"home_island"
 travels_to = PackedStringArray("mangrove_coast", "tropical_reef")
@@ -53,6 +54,8 @@ hatch_fact = "Hatchlings find the sea by heading for the brightest horizon - tha
 can_tangle = true
 boat_shy_distance = 120.0
 nest_interval_days = 4
+hatchlings = 2
+hatchlings_max = 4
 nest_season = &"spring"
 off_season_interval_days = 40
 nests_from_next_season = false

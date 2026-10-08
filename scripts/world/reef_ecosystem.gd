@@ -370,6 +370,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if not Regions.helped(get_tree(), region()):
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
+	if not Births.can_have(get_tree(), species, region()):
+		return  # its parents' last young are still too little (or one drifted in just now)
 	var homes := _homes(species)
 	var spot := _patch_water(patches().pick_random()) if homes.is_empty() else Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["water", ""])
 	Births.bring(_spawn(species, spot), region(), "It has come to the reef: %s" % _why(species))

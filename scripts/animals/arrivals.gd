@@ -8,9 +8,6 @@ const ANIMAL_SCENE := preload("res://scenes/animals/animal.tscn")
 
 ## Node names of the animals that have arrived.
 static var _arrived := {}
-## Region id -> the day an animal last arrived there: at most one a day per island, so the
-## animals come back gradually as the ranger works.
-static var _last_day := {}
 
 
 ## Brings in every animal whose island (and ocean) is now healthy enough. Returns them.
@@ -22,22 +19,20 @@ static func check(world: Node) -> Array[Node2D]:
 		var health := IslandHealth.of(tree, region)
 		var trees := grown_trees(tree, region)
 		var planted := grown_trees(tree, region, true)
-		var today: int = tree.root.get_node("GameClock").day
 		for arrival: ArrivalData in region.arrivals:
 			if _arrived.has(arrival.node_name):
 				_stay_or_go(world, arrival, trees)
 				continue
-			if int(_last_day.get(region.id, -1)) == today:
-				continue  # one new arrival a day on each island
 			if health < arrival.island_health or trees < arrival.needs_trees or planted < arrival.needs_planted:
 				continue
 			if not Regions.helped(tree, region):
 				continue  # only because of something the ranger did
 			if healthy.filter(func(r: RegionData) -> bool: return r != region).size() < arrival.healthy_islands:
 				continue
+			if not Births.can_have(tree, arrival.species, region):
+				continue  # its parents' last young are still too little: it comes a little later
 			var animal := _bring(world, arrival)
 			came.append(animal)
-			_last_day[region.id] = today
 			Births.bring(animal, region, arrival.note)
 	return came
 

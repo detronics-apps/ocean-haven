@@ -16,6 +16,8 @@ func _initialize() -> void:
 	var species: Resource = load("res://data/animals/green_turtle.tres")
 	species.stay_per_nest = 0
 	species.grow_days = 2.0
+	species.hatchlings = 3  # 3 a nest here, so the area fills just so (2-4 is checked in test_seasons)
+	species.hatchlings_max = 3
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
 	world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))

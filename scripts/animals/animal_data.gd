@@ -130,8 +130,14 @@ extends Resource
 @export var stay_per_nest := 0
 ## In-game days before eggs hatch (they hatch at night). Real green turtle eggs take about two months.
 @export var incubation_days := 1.0
-## Young that hatch from one nest (a game-sized stand-in for the real clutch).
+## Young that hatch from one nest (a game-sized stand-in for the real clutch): from
+## `hatchlings` to `hatchlings_max` (0 = always `hatchlings`).
 @export var hatchlings := 3
+@export var hatchlings_max := 0
+## Lays eggs (turtles, crocodiles, birds, crabs): a parent can have young again once its last
+## eggs have hatched (`incubation_days` after the last young). Otherwise born live: once its
+## last baby has grown into the young (teen) stage (half of grow_days). See Births.
+@export var lays_eggs := false
 ## In-game days for a hatchling to grow up (it gets bigger meanwhile; 0 = never). Grown,
 ## it moves out to its own spot in the island's waters (away from busy boats and other
 ## adults) and nests itself. Real green turtles take decades; this is game-sized.

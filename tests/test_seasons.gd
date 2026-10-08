@@ -65,14 +65,19 @@ func _initialize() -> void:
 	nest.set("species", turtle_data)
 	nest.set("laid_at", 5.0)
 	nest.position = area.global_position
+	nest.set("mother", turtle)
 	world.add_child(nest)
 	await process_frame
+	_expect(turtle.nest_interval() > 1, "her own nest hasn't hatched yet: she waits for it before nesting again")
+	nest.set("mother", null)
+	_expect(turtle.nest_interval() == 1, "another turtle's nest doesn't hold her back")
+	nest.set("mother", turtle)
 	var room: int = load("res://scripts/animals/nest.gd").island_room(nest, turtle_data)
 	nest.hatch()
 	var hatched: Array = babies.call()
 	var stayed: int = hatched.filter(func(a: Node) -> bool: return not a.leaving).size()
-	_expect(room > 0 and hatched.size() in [3, 4] and stayed == mini(room, hatched.size()),
-		"%d hatchlings (3-4 a nest): %d stay in the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
+	_expect(room > 0 and hatched.size() in [2, 4] and stayed == mini(room, hatched.size()),
+		"%d hatchlings (2-4 a nest): %d stay in the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
 	for baby: Node in hatched:
 		baby.free()
 	var hit: Node2D = load("res://scenes/animals/nest.tscn").instantiate()

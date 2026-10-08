@@ -50,6 +50,7 @@ bonus = true
 
 [resource]
 script = ExtResource("1_s")
+lays_eggs = true
 icon = ExtResource("4_stand")
 id = &"arctic_tern"
 display_name = "Arctic Tern"

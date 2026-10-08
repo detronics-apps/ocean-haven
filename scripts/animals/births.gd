@@ -6,9 +6,55 @@ class_name Births
 ##   (AnimalData.young_sprites, or just its size), then goes its own way;
 ## - drifting in (AnimalData.drifts_in: fish, clams, squid, whose young drift in the open sea):
 ##   it swims in from the island's edge to where it belongs.
+## The island's limit says how many there can be, never how fast: each parent has young again
+## only once its last ones are a step on (`busy`: hatched for egg-layers, out of the baby stage
+## for the born-live), and drifters come one per species every DRIFT_GAP days. Several parents
+## can breed at once, so more grown ones fill the room faster.
 
 ## Seconds a parent has to get there before the young one is born where it is.
 const DUE_SECONDS := 25.0
+## Days between two of a drifting species coming to an island (3 a day at most).
+const DRIFT_GAP := 1.0 / 3.0
+
+## "region:species" -> GameClock.now() when one last drifted in (not saved).
+static var _drifted := {}
+
+
+## Whether one more of `species` can come to `region` now: a drifter not too soon after the
+## last, a parent that's free (`parent_for`), or, with no grown one of its kind there yet,
+## the first drifting in.
+static func can_have(tree: SceneTree, species: AnimalData, region: RegionData) -> bool:
+	if species.drifts_in:
+		return GameClock.now() - float(_drifted.get(_key(species, region), -INF)) >= DRIFT_GAP
+	var any_grown := false
+	for other: Animal in tree.get_nodes_in_group("animals"):
+		if other.data != species or other.young or other.leaving or other.visiting or Regions.nearest(other.global_position) != region:
+			continue
+		any_grown = true
+		if _free(other):
+			return true
+	return not any_grown
+
+
+## Its last young are still too little for it to have more: eggs that haven't hatched yet (it
+## is expecting), a young one born less than incubation_days ago (egg-layers), or one still
+## in its baby stage (the born-live: half of grow_days).
+static func busy(parent: Animal) -> bool:
+	if parent.is_expecting():
+		return true
+	var wait := parent.data.incubation_days if parent.data.lays_eggs else parent.data.grow_days / 2.0
+	for child: Animal in parent.get_tree().get_nodes_in_group("animals"):
+		if child.parent == parent and child.young and GameClock.now() - child.born_at < wait - 0.001:
+			return true
+	return false
+
+
+static func _free(other: Animal) -> bool:
+	return not other.tangled and not other.injured and not busy(other)
+
+
+static func _key(species: AnimalData, region: RegionData) -> String:
+	return "%s:%s" % [region.id, species.id]
 
 
 ## Turns `animal`, a grown newcomer the island has just added at the spot it belongs, into one
@@ -18,6 +64,7 @@ static func bring(animal: Animal, region: RegionData, note: String) -> void:
 	var spot := animal.global_position
 	var parent: Animal = null if animal.data.drifts_in else parent_for(animal, region)
 	if not parent:
+		_drifted[_key(animal.data, region)] = GameClock.now()
 		_drift_in(animal, region, spot)
 		tree.call_group("hud", "animal_returned", animal.data, note, region)
 		return
@@ -29,14 +76,14 @@ static func bring(animal: Animal, region: RegionData, note: String) -> void:
 
 
 ## A grown one of `animal`'s kind on `region` to be its parent: the nearest that's free (not
-## caught, hurt, leaving, visiting or already expecting), or null.
+## caught, hurt, leaving, visiting or `busy` with its last young), or null.
 static func parent_for(animal: Animal, region: RegionData) -> Animal:
 	var best: Animal = null
 	var best_distance := INF
 	for other: Animal in animal.get_tree().get_nodes_in_group("animals"):
 		if other == animal or other.data != animal.data or other.young or other.leaving or other.visiting:
 			continue
-		if other.tangled or other.injured or other.is_expecting() or Regions.nearest(other.global_position) != region:
+		if not _free(other) or Regions.nearest(other.global_position) != region:
 			continue
 		var distance := other.global_position.distance_to(animal.global_position)
 		if distance < best_distance:

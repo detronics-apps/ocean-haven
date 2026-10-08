@@ -42,6 +42,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_corm")
+lays_eggs = true
 icon = ExtResource("rest_5796")
 floating_sprite = ExtResource("floa_2326")
 resting_sprite = ExtResource("rest_5796")

@@ -342,7 +342,7 @@ func settle() -> void:
 		for home in homes:
 			if home.damaged or not home.upkeep_paid or home.room_for_animals() <= 0:
 				continue
-			if otters().size() + 1 > otters_supported(species):
+			if otters().size() + 1 > otters_supported(species) or not Births.can_have(get_tree(), species, region()):
 				break
 			_new_otter(species, home, otters())
 	if otters().size() != before:
@@ -422,6 +422,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if not Regions.helped(get_tree(), region()):
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
+	if not Births.can_have(get_tree(), species, region()):
+		return  # its parents' last young are still too little (or one drifted in just now)
 	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)  # grown: saved like the island's own

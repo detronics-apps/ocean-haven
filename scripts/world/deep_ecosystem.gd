@@ -394,6 +394,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if not Regions.helped(get_tree(), region()):
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
+	if not Births.can_have(get_tree(), species, region()):
+		return  # its parents' last young are still too little (or one drifted in just now)
 	Births.bring(_spawn(species, _home_spot(species)), region(), "It has come to the deep: %s" % _why(species))
 
 

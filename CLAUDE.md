@@ -700,8 +700,12 @@ stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_s
 crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
 polar bears); dolphins, whales and sharks just grow. Trees show sapling and young pictures
 (PalmTree.stage_textures). Turtles: while their protection areas have room any grown turtle
-nests the next night in any season; a nest hatches 3-4 (AnimalData.hatchlings or one more),
-those with room stay, the rest swim off; no next-spring rule. The HUD's Build button is
+nests again once her own last nest has hatched (Nest.mother), several at once; a nest hatches
+2-4 (AnimalData.hatchlings / hatchlings_max), those with room stay, the rest swim off. Breeding
+pace (Births.can_have / busy): an island's limit is never filled at once; each parent has young
+again only once its last ones are a step on (hatched: AnimalData.lays_eggs, incubation_days;
+born live: out of the baby stage), and drifters come one per species every third of a day;
+the old one-arrival-a-day limit is gone. The HUD's Build button is
 "Make" (buildings, planting, the shovel: the Make menu). Photo moments: at most 5 everyday ones per species (3 grown poses or
 places plus a baby and a young one, or 4 plus one young; conditions baby / juvenile /
 standing / resting / taking_flight / resting_pose / swimming), plus an uncounted gold bonus.

@@ -129,10 +129,16 @@ func _initialize() -> void:
 		b.urchins = 1.0
 	var fish_target: int = ecosystem.fish_supported()
 	_expect(fish_target >= 6, "a healthy forest supports fish (%d)" % fish_target)
+	var fish_day: int = root.get_node("GameClock").day
+	ecosystem.settle()
+	ecosystem.settle()
+	_expect(ecosystem.living(ecosystem.FISH).size() == 1, "fish drift in one at a time, not all at once")
 	for i in fish_target + 1:
+		root.get_node("GameClock").day += 1  # a third of a day or more between them
 		ecosystem.settle()
+	root.get_node("GameClock").day = fish_day
 	var fish: Array = ecosystem.living(ecosystem.FISH)
-	_expect(fish.size() == fish_target, "fish come back to the kelp, one a morning (%d)" % fish.size())
+	_expect(fish.size() == fish_target, "fish come back to the kelp, one at a time (%d)" % fish.size())
 	_expect(fish.all(func(f: Node2D) -> bool: return terrain.at(self, f.global_position) in ["water", ""]), "they live in the water by the kelp")
 	var birds: Array = ecosystem.living(ecosystem.CORMORANT)
 	_expect(birds.size() >= 1, "with fish to eat, cormorants arrive (%d)" % birds.size())

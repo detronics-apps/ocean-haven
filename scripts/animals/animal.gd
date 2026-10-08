@@ -1268,13 +1268,13 @@ func nest_interval() -> int:
 	return data.off_season_interval_days if data.off_season_interval_days > 0 else 1 << 30
 
 
-## Its nesting areas have room for young and no nest there is waiting to hatch yet.
+## Its island's nesting areas have room for young and her own last nest has hatched (each
+## grown one nests on her own: several can nest the same night).
 func _island_needs_young() -> bool:
 	if data.nest_building == &"" or Nest.island_room(self, data) <= 0:
 		return false
-	var island := Regions.nearest(global_position)
 	return not get_tree().get_nodes_in_group("nests").any(func(n: Node2D) -> bool:
-		return n.species == data and not n.is_queued_for_deletion() and Regions.nearest(n.global_position) == island)
+		return n.get("mother") == self and not n.is_queued_for_deletion())
 
 
 ## Old enough to nest: always for animals that came to the island; for ones that hatched here
@@ -1375,6 +1375,7 @@ func _finish_laying() -> void:
 	var nest: Node2D = load(NEST_SCENE).instantiate()
 	nest.set("species", data)
 	nest.set("area", home_area)
+	nest.set("mother", self)
 	nest.set("laid_at", GameClock.now())
 	nest.position = position
 	var world := get_parent()

@@ -43,6 +43,14 @@ func _initialize() -> void:
 	_expect(cheer == null or cheer.find_child("ReturnCard", true, false) != null or not (cheer.get("_cards") as Array).is_empty(),
 		"then the card: it has joined the island")
 
+	# --- A parent has young again only once its last ones are a step on ---
+	_expect(not births.can_have(self, crab_data, home), "the crab's eggs have just hatched: no more young from it yet (crabs lay eggs)")
+	clock.day += 1
+	_expect(births.can_have(self, crab_data, home), "a day later (its eggs' incubation): it can have young again")
+	clock.day -= 1
+	var dolphin_data: Resource = load("res://data/animals/bottlenose_dolphin.tres")
+	_expect(not dolphin_data.lays_eggs and crab_data.lays_eggs, "dolphins are born live, crabs hatch from eggs")
+
 	# --- Growing up: its own pictures, following its parent, then off on its own ---
 	var sprite: Sprite2D = newcomer.get_node("Sprite2D")
 	if crab_data.young_sprites.size() >= 2:
@@ -82,6 +90,12 @@ func _initialize() -> void:
 	births.bring(fish, reef, "A test.")
 	_expect(fish_data.drifts_in and not fish.young and fish.visible and fish.global_position.distance_to(reef.center) > reef.waters_radius * 0.6
 		and fish.home().distance_to(fish_spot) < 1.0, "a parrotfish drifts in from the edge to where it belongs")
+	var fish2: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	fish2.set("data", fish_data)
+	_expect(not births.can_have(self, fish_data, reef), "drifters: not another parrotfish straight away")
+	clock.day += 1
+	_expect(births.can_have(self, fish_data, reef), "a third of a day later, one more can drift in (3 a day at most)")
+	fish2.free()
 	_expect(regions != null, "")
 
 	if not _failed:

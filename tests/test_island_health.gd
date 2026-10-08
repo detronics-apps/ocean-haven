@@ -55,11 +55,9 @@ func _initialize() -> void:
 		turtle.position = Vector2(-500 + i * 20, 100)
 		world.add_child(turtle)
 	came = names.call(arrivals.check(world))
-	_expect(came.is_empty(), "one new arrival a day on each island (%s)" % [came])
-	clock.day += 1
-	came = names.call(arrivals.check(world))
 	_expect("Dolphin1" in came and not "Dolphin3" in came and count.call(&"bottlenose_dolphin") == 2,
-		"the next day, cleaner water: a second dolphin (the rest wait for other islands to recover) (%s)" % [came])
+		"cleaner water: a second dolphin, the same day (each species' own parents set the pace), the rest wait for other islands to recover (%s)" % [came])
+	clock.day += 1
 	clock.day += 1
 	_expect(arrivals.check(world).is_empty() and count.call(&"red_footed_booby") == 1,
 		"only the one seabird the island starts with: none more from the island's own palms alone")

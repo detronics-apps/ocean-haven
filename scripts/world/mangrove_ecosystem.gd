@@ -520,6 +520,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		return
 	if not Regions.helped(get_tree(), region()):
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
+	if not Births.can_have(get_tree(), species, region()):
+		return  # its parents' last young are still too little (or one drifted in just now)
 	var animal := _spawn(species, _spot_for(species))
 	Births.bring(animal, region(), "It has come to the Mangrove Coast: %s" % _why_coming(species))
 	if species == CRAB:

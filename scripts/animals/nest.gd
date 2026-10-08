@@ -21,6 +21,9 @@ const SHOW_RANGE := 72.0
 @export var storm_hit := false
 ## The protection area it's in (found automatically if not set).
 var area: Node2D
+## The turtle that laid it: she nests again only once it has hatched (not saved: after a
+## reload she may nest again the next night).
+var mother: Node2D
 
 var _bar: ProgressBar
 var _caption: Label
@@ -138,11 +141,11 @@ func hatch() -> void:
 	if is_queued_for_deletion():
 		return  # already hatched this frame
 	var world := get_parent()
-	# `hatchlings` or one more hatch (3-4 for turtles); those with room on the island stay, the
-	# rest swim off into the open ocean, as most real hatchlings do. While there's room the
-	# turtles nest every night, so the island fills up over a few nights. A storm-hit nest's
-	# one hatchling is swept out too.
-	var count := 1 if storm_hit else randi_range(species.hatchlings, species.hatchlings + 1)
+	# `hatchlings` to `hatchlings_max` hatch (2-4 for turtles); those with room on the island
+	# stay, the rest swim off into the open ocean, as most real hatchlings do. While there's room
+	# each grown turtle nests again once her last nest has hatched, so the island fills up over
+	# a few nights. A storm-hit nest's one hatchling is swept out too.
+	var count := 1 if storm_hit else randi_range(species.hatchlings, maxi(species.hatchlings_max, species.hatchlings))
 	for i in count:
 		var stays := not storm_hit and (species.stay_per_nest <= 0 or i < species.stay_per_nest)
 		var home := _area_with_room() if stays else null
