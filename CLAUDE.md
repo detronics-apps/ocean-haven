@@ -642,8 +642,9 @@ Rubbish near camp on the Polar Ocean (2+ litter within 200 px of the tent / hous
 station / centre) draws a polar bear in (Fleet flag "bear_at_camp"; PolarEcosystem.check_camp):
 Sanna and Erik get nervous (PersonData.scared_line, a red "!"), the skua circles it; no building
 keeps it away: cleared, it wanders back to the ice. Flamingos' legs show the Mangrove Coast's water
-level (AnimalData.shows_water_level: a water band and their note: dry feet / ankle-deep and
-feeding / belly-deep). The end credits have an x1 / x2 / x3 speed button. Buttons keep short
+level (AnimalData.shows_water_level: their note says dry feet / ankle-deep and feeding /
+belly-deep, and a shader, assets/effects/wading/, tints only the leg pixels in the water the
+tile's own colour, feet still showing, or hides the feet in mud; nothing on dry land). The end credits have an x1 / x2 / x3 speed button. Buttons keep short
 labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene

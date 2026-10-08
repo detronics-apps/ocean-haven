@@ -141,11 +141,10 @@ func _ready() -> void:
 	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
-	if data.shows_water_level:
-		var water := Node2D.new()  # the water round its legs: how deep it's standing
-		water.name = "WaterLine"
-		water.draw.connect(_draw_water_line.bind(water))
-		_sprite.add_child(water)
+	if data.shows_water_level:  # the water (or mud) round its legs: how deep it's standing
+		var wading := ShaderMaterial.new()
+		wading.shader = WADING
+		_sprite.material = wading
 	_bandage = Sprite2D.new()
 	_bandage.texture = BANDAGE
 	_bandage.position = Vector2(0, -12)
@@ -597,14 +596,77 @@ func _water_depth() -> String:
 	return ""
 
 
-func _draw_water_line(water: Node2D) -> void:
-	var depth := _water_depth()
-	if depth == "" or depth == "low" or not _sprite.texture:
+## How many rows of its legs are under water at each water level, and sunk in mud.
+const WADE_ROWS := {"low": 1, "right": 3, "high": 7}
+const MUD_ROWS := 2
+const WADING := preload("res://assets/effects/wading/wading.gdshader")
+## Per texture: the lowest row with any pixels (its feet).
+static var _feet_rows := {}
+## Per tile (source / atlas coords): the tile's own colour.
+static var _tile_colours := {}
+
+
+## Wading (flamingos): only the pixels of its legs that are in the water take the water's
+## colour, still showing the feet; in mud the feet are hidden in mud; on dry land, nothing.
+func _update_wading() -> void:
+	var wading := _sprite.material as ShaderMaterial
+	if not wading:
 		return
-	var h := float(_sprite.texture.get_height())
-	var top := h / 2.0 - (h * 0.18 if depth == "right" else h * 0.42)
-	water.draw_rect(Rect2(-9, top, 18, h / 2.0 - top + 1.0), Color(0.36, 0.62, 0.78, 0.55))
-	water.draw_line(Vector2(-9, top), Vector2(9, top), Color(0.85, 0.95, 1.0, 0.8), 1.0)
+	var rows := 0
+	var colour := Color.WHITE
+	var tex := _sprite.texture
+	if tex and (tex == data.sprite or tex == data.resting_sprite):
+		var feet_row := _feet_row(tex)
+		var feet := _sprite.to_global(Vector2(0.0, feet_row + 1.0 - tex.get_height() / 2.0) + _sprite.offset)
+		for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
+			var cell := ground.local_to_map(ground.to_local(feet))
+			var tile := ground.get_cell_tile_data(cell)
+			if not tile:
+				continue
+			var kind: String = tile.get_custom_data("terrain")
+			if kind == "water":
+				var depth := _water_depth()
+				rows = WADE_ROWS.get(depth if depth != "" else "right", 3)
+			elif kind == "mud":
+				rows = MUD_ROWS
+			if rows > 0:
+				colour = _tile_colour(ground, cell) * ground.modulate
+			wading.set_shader_parameter("see_through", kind == "water")
+			break
+		wading.set_shader_parameter("from_row", float(feet_row - rows + 1) if rows > 0 else 999.0)
+	else:
+		wading.set_shader_parameter("from_row", 999.0)
+	wading.set_shader_parameter("ground_colour", colour)
+
+
+static func _feet_row(tex: Texture2D) -> int:
+	if not _feet_rows.has(tex):
+		var image := tex.get_image()
+		var row := tex.get_height() - 1
+		if image:
+			if image.is_compressed():
+				image.decompress()
+			while row > 0 and not range(image.get_width()).any(func(x: int) -> bool: return image.get_pixel(x, row).a > 0.1):
+				row -= 1
+		_feet_rows[tex] = row
+	return _feet_rows[tex]
+
+
+static func _tile_colour(ground: TileMapLayer, cell: Vector2i) -> Color:
+	var source_id := ground.get_cell_source_id(cell)
+	var atlas := ground.get_cell_atlas_coords(cell)
+	var key := Vector3i(source_id, atlas.x, atlas.y)
+	if not _tile_colours.has(key):
+		var colour := Color(0.32, 0.55, 0.58)
+		var source := ground.tile_set.get_source(source_id) as TileSetAtlasSource
+		if source and source.texture:
+			var image := source.texture.get_image()
+			if image:
+				if image.is_compressed():
+					image.decompress()
+				colour = image.get_pixelv(source.get_tile_texture_region(atlas).position + Vector2i(3, 3))
+		_tile_colours[key] = colour
+	return _tile_colours[key]
 
 
 ## Trusting (relaxed) guides the ranger has played with lead them to floating
@@ -991,8 +1053,8 @@ func _lives_on_land() -> bool:
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
-	if data.shows_water_level and _sprite.has_node("WaterLine"):
-		(_sprite.get_node("WaterLine") as Node2D).queue_redraw()
+	if data.shows_water_level:
+		_update_wading.call_deferred()  # (after this pose's picture is set)
 	if data.flies and data.resting_sprite:  # a bird: flying (from above), or landed (side view)
 		var landed := _state == State.REST and not circling  # (only once it has really landed)
 		var texture := data.sprite

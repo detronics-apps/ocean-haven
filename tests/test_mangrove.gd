@@ -45,7 +45,7 @@ func _initialize() -> void:
 	var flamingo: Node2D = eco.living(load("res://data/animals/american_flamingo.tres"))[0]
 	var depth: String = eco.water_depth_word()
 	var reading: String = flamingo.water_reading()
-	_expect(depth in ["low", "right", "high"] and reading != "" and flamingo.get_node("Sprite2D").has_node("WaterLine"),
+	_expect(depth in ["low", "right", "high"] and reading != "" and flamingo.get_node("Sprite2D").material is ShaderMaterial,
 		"the flamingo's legs show the water level (%s: %s)" % [depth, reading])
 	var base: float = eco.base_level
 	eco.base_level = 1.0
@@ -53,6 +53,21 @@ func _initialize() -> void:
 	eco.base_level = 0.0
 	_expect(eco.water_depth_word() == "low" and flamingo.water_reading().contains("dry feet"), "too low: dry feet")
 	eco.base_level = base
+	# Only the leg pixels in water or mud change, never a box round it; on dry land nothing.
+	var terrain_script: GDScript = load("res://scripts/world/terrain.gd")
+	var wading: ShaderMaterial = flamingo.get_node("Sprite2D").material
+	var was_at: Vector2 = flamingo.global_position
+	var sprite: Sprite2D = flamingo.get_node("Sprite2D")
+	sprite.texture = flamingo.data.sprite
+	var seen := {}
+	for kind in ["water", "mud", "grass"]:
+		var spot: Vector2 = terrain_script.nearest(self, was_at, [kind], 40)
+		flamingo.global_position = spot - (sprite.to_global(Vector2(0.0, flamingo._feet_row(sprite.texture) + 1.0 - sprite.texture.get_height() / 2.0) + sprite.offset) - flamingo.global_position)
+		flamingo._update_wading()
+		seen[kind] = [wading.get_shader_parameter("from_row"), wading.get_shader_parameter("see_through")]
+	flamingo.global_position = was_at
+	_expect(seen.water[0] < 999.0 and seen.water[1] and seen.mud[0] < 999.0 and not seen.mud[1] and seen.grass[0] >= 999.0,
+		"in water the legs show through the water, in mud the feet are hidden, on grass nothing (%s)" % seen)
 	var bird_sprite: Sprite2D = flamingo.get_node("Sprite2D")
 	var pictures := {}
 	for state in [flamingo.State.SWIM, flamingo.State.REST, flamingo.State.FLEE]:

@@ -10,12 +10,6 @@
   <rect x="18" y="5" width="1" height="1" fill="#1b1923"/>
   <rect x="18" y="7" width="1" height="1" fill="#1b1923"/>
   <rect x="20" y="6" width="2" height="1" fill="#28191a"/>
-  <rect x="0" y="2" width="5" height="1" fill="#657383"/>
-  <rect x="0" y="10" width="5" height="1" fill="#657383"/>
-  <rect x="4" y="1" width="3" height="1" fill="#657383"/>
-  <rect x="4" y="11" width="3" height="1" fill="#657383"/>
-  <rect x="22" y="5" width="2" height="1" fill="#657383"/>
-  <rect x="22" y="7" width="2" height="1" fill="#657383"/>
   </g>
 </g><g transform="translate(1 0)">
   <g id="art">
@@ -27,12 +21,6 @@
   <rect x="18" y="5" width="1" height="1" fill="#1b1923"/>
   <rect x="18" y="7" width="1" height="1" fill="#1b1923"/>
   <rect x="20" y="6" width="2" height="1" fill="#28191a"/>
-  <rect x="0" y="2" width="5" height="1" fill="#657383"/>
-  <rect x="0" y="10" width="5" height="1" fill="#657383"/>
-  <rect x="4" y="1" width="3" height="1" fill="#657383"/>
-  <rect x="4" y="11" width="3" height="1" fill="#657383"/>
-  <rect x="22" y="5" width="2" height="1" fill="#657383"/>
-  <rect x="22" y="7" width="2" height="1" fill="#657383"/>
   </g>
 </g><g transform="translate(0 -1)">
   <g id="art">
@@ -44,12 +32,6 @@
   <rect x="18" y="5" width="1" height="1" fill="#1b1923"/>
   <rect x="18" y="7" width="1" height="1" fill="#1b1923"/>
   <rect x="20" y="6" width="2" height="1" fill="#28191a"/>
-  <rect x="0" y="2" width="5" height="1" fill="#657383"/>
-  <rect x="0" y="10" width="5" height="1" fill="#657383"/>
-  <rect x="4" y="1" width="3" height="1" fill="#657383"/>
-  <rect x="4" y="11" width="3" height="1" fill="#657383"/>
-  <rect x="22" y="5" width="2" height="1" fill="#657383"/>
-  <rect x="22" y="7" width="2" height="1" fill="#657383"/>
   </g>
 </g><g transform="translate(0 1)">
   <g id="art">
@@ -61,17 +43,11 @@
   <rect x="18" y="5" width="1" height="1" fill="#1b1923"/>
   <rect x="18" y="7" width="1" height="1" fill="#1b1923"/>
   <rect x="20" y="6" width="2" height="1" fill="#28191a"/>
-  <rect x="0" y="2" width="5" height="1" fill="#657383"/>
-  <rect x="0" y="10" width="5" height="1" fill="#657383"/>
-  <rect x="4" y="1" width="3" height="1" fill="#657383"/>
-  <rect x="4" y="11" width="3" height="1" fill="#657383"/>
-  <rect x="22" y="5" width="2" height="1" fill="#657383"/>
-  <rect x="22" y="7" width="2" height="1" fill="#657383"/>
   </g>
 </g></g>
   <g id="art" data-size="26 14" data-box="0 0 26 14">
   <g id="art">
-  <!-- Sea otter swimming belly-down, seen from above, facing right: dark brown, head forward, tail behind, a wake trailing -->
+  <!-- Sea otter swimming belly-down, seen from above, facing right: dark brown, head forward, tail behind -->
   <rect x="1" y="5" width="5" height="3" fill="#4a3020"/>
   <rect x="5" y="4" width="12" height="5" fill="#6a4428"/>
   <rect x="6" y="5" width="10" height="3" fill="#7a5234"/>
@@ -79,12 +55,6 @@
   <rect x="18" y="5" width="1" height="1" fill="#1c1c1c"/>
   <rect x="18" y="7" width="1" height="1" fill="#1c1c1c"/>
   <rect x="20" y="6" width="2" height="1" fill="#3a2a20"/>
-  <rect x="0" y="2" width="5" height="1" fill="#e8f6fb"/>
-  <rect x="0" y="10" width="5" height="1" fill="#e8f6fb"/>
-  <rect x="4" y="1" width="3" height="1" fill="#e8f6fb"/>
-  <rect x="4" y="11" width="3" height="1" fill="#e8f6fb"/>
-  <rect x="22" y="5" width="2" height="1" fill="#e8f6fb"/>
-  <rect x="22" y="7" width="2" height="1" fill="#e8f6fb"/>
   </g>
 </g>
 </svg>
