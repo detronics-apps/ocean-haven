@@ -141,6 +141,11 @@ func _ready() -> void:
 	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
 		_sprite.scale = Vector2(0.5, 0.5)
+	if data.shows_water_level:
+		var water := Node2D.new()  # the water round its legs: how deep it's standing
+		water.name = "WaterLine"
+		water.draw.connect(_draw_water_line.bind(water))
+		_sprite.add_child(water)
 	_bandage = Sprite2D.new()
 	_bandage.texture = BANDAGE
 	_bandage.position = Vector2(0, -12)
@@ -567,6 +572,39 @@ func _react_to_ranger(delta: float) -> void:
 			info = "%s: standing on its nest. Take a photo!" % name
 		else:
 			info = "%s: relaxed. Take a photo!" % name
+		var reading := water_reading()
+		if reading != "":
+			info = "%s %s" % [name, reading]
+
+
+## What a flamingo's legs say about the water level ("" = not a wader, or no flats here).
+func water_reading() -> String:
+	var depth := _water_depth()
+	if depth == "":
+		return ""
+	return {"low": "with dry feet: the water's too low (close a gate).",
+		"right": "wading ankle-deep and feeding: the water level is just right.",
+		"high": "standing belly-deep, not feeding: the water's too high (open a gate)."}[depth]
+
+
+## "low", "right" or "high" (the island's water level), or "" if it doesn't show it.
+func _water_depth() -> String:
+	if not data.shows_water_level:
+		return ""
+	for eco: Node in get_tree().get_nodes_in_group("ecosystems"):
+		if eco.has_method("water_depth_word") and Regions.nearest(global_position) == eco.region():
+			return eco.water_depth_word()
+	return ""
+
+
+func _draw_water_line(water: Node2D) -> void:
+	var depth := _water_depth()
+	if depth == "" or depth == "low" or not _sprite.texture:
+		return
+	var h := float(_sprite.texture.get_height())
+	var top := h / 2.0 - (h * 0.18 if depth == "right" else h * 0.42)
+	water.draw_rect(Rect2(-9, top, 18, h / 2.0 - top + 1.0), Color(0.36, 0.62, 0.78, 0.55))
+	water.draw_line(Vector2(-9, top), Vector2(9, top), Color(0.85, 0.95, 1.0, 0.8), 1.0)
 
 
 ## Trusting (relaxed) guides the ranger has played with lead them to floating
@@ -936,6 +974,8 @@ func _lives_on_land() -> bool:
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
+	if data.shows_water_level and _sprite.has_node("WaterLine"):
+		(_sprite.get_node("WaterLine") as Node2D).queue_redraw()
 	if data.flies and data.resting_sprite:  # a bird: flying (from above), or landed (side view)
 		var landed := _state == State.REST and not circling  # (only once it has really landed)
 		var texture := data.sprite

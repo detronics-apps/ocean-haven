@@ -25,6 +25,10 @@ when = PackedStringArray("young")
 
 [resource]
 script = ExtResource("1_6nm75")
+travel_home = &"home_island"
+travels_to = PackedStringArray("mangrove_coast", "tropical_reef")
+travel_chance = 0.3
+travel_news = "A green turtle was grazing the seagrass this morning. I think it swam here from the {from}."
 id = &"green_turtle"
 display_name = "Green Sea Turtle"
 sprite = ExtResource("2_5ypsb")

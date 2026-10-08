@@ -22,13 +22,14 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_s")
+shows_water_level = true
 perched_sprite = ExtResource("perc_99")
 id = &"american_flamingo"
 display_name = "American Flamingo"
 sprite = ExtResource("2_t")
 habitat = "Shallow, muddy flats and lagoons"
 diet = "Brine shrimp, small snails and algae, filtered from the water"
-role = "Feeds and nests when the water level is just right: set it with Water Gates."
+role = "Feeds and nests when the water level is just right: its legs show you the level (set it with Water Gates)."
 fact = "Flamingos feed with their heads upside down, filtering food out of the shallow water with their bills. Their pink colour comes from the food they eat."
 photo_fact = "Flamingos build nests of mud: a little mound with a hollow on top for a single egg."
 help_fact = "Flamingos need the water on the flats to be just right: too deep and they cannot feed, too dry and there is no food."

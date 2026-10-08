@@ -323,13 +323,22 @@ func _room(species: AnimalData) -> int:
 	return room
 
 
-## Seahorses: room in Protection Areas whose seagrass has grown (a day after building).
+## Seahorses: room in Protection Areas whose seagrass has grown (a day after building); while a
+## green turtle grazes the Reef (a traveller, or a rescued one visiting), the seagrass is lusher:
+## one more in each. (Grazing turtles keep real seagrass meadows healthy and growing.)
 func seahorses_supported() -> int:
 	var room := 0
+	var grazed := turtle_grazing()
 	for home in _homes(SEAHORSE):
 		if not home.damaged and GameClock.day - home.built_day >= 1:
-			room += home.capacity()
+			room += home.capacity() + (1 if grazed else 0)
 	return room
+
+
+## Whether a green turtle is on the Reef today, grazing its seagrass.
+func turtle_grazing() -> bool:
+	return get_tree().get_nodes_in_group("animals").any(func(a: Node) -> bool:
+		return a.data.id == &"green_turtle" and not a.is_queued_for_deletion() and Regions.nearest(a.global_position) == region())
 
 
 func sharks_supported() -> int:
@@ -681,7 +690,8 @@ func run_mission(mission: MissionData) -> Dictionary:
 			var caught := living(SEAHORSE).filter(func(a: Animal) -> bool: return a.tangled)
 			return {"found": caught + _homes(SEAHORSE), "detail": "%d seahorse(s), %d caught in debris%s; %d Protection Area(s) with room for %d. %s" % [
 				living(SEAHORSE).size(), caught.size(), " (marked: free them)" if caught else "", _homes(SEAHORSE).size(), seahorses_supported(),
-				"Build a Seahorse & Seagrass Protection Area on shallow water: its seagrass grows in a day." if _homes(SEAHORSE).is_empty() else ""]}
+				"Build a Seahorse & Seagrass Protection Area on shallow water: its seagrass grows in a day." if _homes(SEAHORSE).is_empty()
+				else ("A green turtle is grazing the seagrass: it's growing lusher, with room for more seahorses." if turtle_grazing() else "")]}
 		&"coral_restoration":
 			var worst := list.duplicate()
 			worst.sort_custom(func(a: ReefPatch, b: ReefPatch) -> bool: return a.planted < b.planted)

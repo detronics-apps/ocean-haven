@@ -200,6 +200,7 @@ func save_to(world: Node, path: String) -> bool:
 		"ranger_name": RangerProfile.ranger_name,
 		"discovered_regions": Regions.discovered_ids(),
 		"arrived_animals": Arrivals.arrived_names(),
+		"travellers": Travellers.to_dict(),
 		"fleet": Fleet.to_dict(),
 		"mission": Missions.to_dict(),
 		"rare_events": RareEvents.to_dict(),
@@ -381,6 +382,7 @@ func load_from(world: Node, path: String) -> bool:
 	Funding.restore(state.get("funding", {}))
 	Journal.restore(state.get("discovered", []), state.get("journal", {}))
 	Arrivals.restore(world, state.get("arrived_animals", []))  # before anything refers to them by name
+	Travellers.restore(state.get("travellers", {}))
 	for animal_name: String in state.get("freed_animals", []):
 		_freed.append(animal_name)
 		var animal := world.get_node_or_null(animal_name)

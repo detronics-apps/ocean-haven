@@ -147,3 +147,18 @@ extends Resource
 ## The picture to show it by in the Journal and on cards.
 func picture() -> Texture2D:
 	return icon if icon else sprite
+
+
+## Wading birds whose legs show the water level (flamingos): ankle-deep and feeding when it's
+## right, belly-deep when too high, dry feet when too low (MangroveEcosystem.water_reading).
+@export var shows_water_level := false
+
+@export_group("Travel")
+## Visits other islands (Travellers): from its home island, spreading one island further along the
+## chain every Travellers.DAYS_PER_STEP days, only to these islands (where it really lives), on
+## a morning with this chance; the first time on an island, its people say they saw it
+## (`travel_news`, "{from}" = its home island).
+@export var travel_home: StringName
+@export var travels_to: PackedStringArray = []
+@export var travel_chance := 0.0
+@export_multiline var travel_news: String

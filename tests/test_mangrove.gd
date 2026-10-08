@@ -43,6 +43,16 @@ func _initialize() -> void:
 
 	# --- The flamingo walks upright (never rotates), stands on one leg, flies off when startled ---
 	var flamingo: Node2D = eco.living(load("res://data/animals/american_flamingo.tres"))[0]
+	var depth: String = eco.water_depth_word()
+	var reading: String = flamingo.water_reading()
+	_expect(depth in ["low", "right", "high"] and reading != "" and flamingo.get_node("Sprite2D").has_node("WaterLine"),
+		"the flamingo's legs show the water level (%s: %s)" % [depth, reading])
+	var base: float = eco.base_level
+	eco.base_level = 1.0
+	_expect(eco.water_depth_word() == "high" and flamingo.water_reading().contains("belly-deep"), "too high: standing belly-deep")
+	eco.base_level = 0.0
+	_expect(eco.water_depth_word() == "low" and flamingo.water_reading().contains("dry feet"), "too low: dry feet")
+	eco.base_level = base
 	var bird_sprite: Sprite2D = flamingo.get_node("Sprite2D")
 	var pictures := {}
 	for state in [flamingo.State.SWIM, flamingo.State.REST, flamingo.State.FLEE]:

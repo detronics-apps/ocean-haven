@@ -25,6 +25,10 @@ when = PackedStringArray("near_boat")
 
 [resource]
 script = ExtResource("1_2r22d")
+travel_home = &"home_island"
+travels_to = PackedStringArray("kelp_forest", "mangrove_coast", "tropical_reef", "deep_sea")
+travel_chance = 0.35
+travel_news = "Did you see the dolphins out past the shallows this morning? Bottlenose dolphins, come all the way from the {from}!"
 id = &"bottlenose_dolphin"
 display_name = "Bottlenose Dolphin"
 sprite = ExtResource("2_t780o")

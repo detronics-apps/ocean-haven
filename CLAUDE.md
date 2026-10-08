@@ -630,6 +630,22 @@ trouble never land: Animal.circling), standing (resting_sprite), floating on the
 flamingo on its mud mound: MangroveEcosystem.mound_near); the sea otter swims belly-down and
 rests on its back, the polar bear lies down to rest.
 
+Travelling animals (`Travellers` autoload, saved "travellers"; AnimalData.travel_home /
+travels_to / travel_chance / travel_news): bottlenose dolphins (from the Starting Island; never
+the Arctic), sperm whales (from the Deep Sea; everywhere) and green turtles (from the Starting
+Island to the Mangrove Coast and the Reef) spread one island further along the chain every
+DAYS_PER_STEP (8) days once they live at home, so the whale reaches the Reef last; a morning
+visitor comes for the day to the ranger's island (visiting), and the first time on an island its
+people mention it (People.add_news). Rescued companions visit more often. A green turtle on the
+Reef grazes the seagrass: one more seahorse per grown Protection Area (ReefEcosystem.turtle_grazing).
+Rubbish near camp on the Polar Ocean (2+ litter within 200 px of the tent / house / research
+station / centre) draws a polar bear in (Fleet flag "bear_at_camp"; PolarEcosystem.check_camp):
+Sanna and Erik get nervous (PersonData.scared_line, a red "!"), the skua circles it; no building
+keeps it away: cleared, it wanders back to the ice. Flamingos' legs show the Mangrove Coast's water
+level (AnimalData.shows_water_level: a water band and their note: dry feet / ankle-deep and
+feeding / belly-deep). The end credits have an x1 / x2 / x3 speed button. Buttons keep short
+labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
+
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).

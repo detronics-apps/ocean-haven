@@ -308,6 +308,12 @@ func water_level() -> float:
 	return clampf(base_level + closed * level_per_closed - open * level_per_open, 0.0, 1.0)
 
 
+## The water level in a word, for the flamingos' legs: "low", "right" or "high".
+func water_depth_word() -> String:
+	var level := water_level()
+	return "low" if level < level_low - 0.001 else ("high" if level > level_high + 0.001 else "right")
+
+
 func level_right() -> bool:
 	return water_level() >= level_low - 0.001 and water_level() <= level_high + 0.001
 
