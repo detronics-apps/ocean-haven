@@ -161,7 +161,8 @@ caring for animals". Build in this order, placeholder art:
 5. ✅ Limit on Turtle Protection Areas; each holds a set number of turtles — extra hatchlings still
    count, but swim off into the open ocean
 6. ✅ Palm trees (walk around/behind them; can't build on them)
-7. ✅ Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home
+7. ✅ Round minimap, bottom-left (Minecraft-style): the island, you, and a dot for your home (the home on
+   the island you're on only)
 8. ✅ Bigger horseshoe island around a sheltered lagoon; fewer crabs (2)
 9. ✅ At a protection area, show its turtles (e.g. "Turtles here: 3 / 4"); turtles belong to the
    area they hatched / nested at
@@ -614,7 +615,9 @@ trees, the tent); and its picture shows what it does (the Glassworks' furnace an
 bar's kegs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
 centres). Full-screen pages keep clear of a phone's home bar, corners and notch (SafeArea: the
 browser's safe-area insets, never less than a phone margin); activity level buttons wrap.
-Birds have four pictures: flying (from above), standing (resting_sprite), floating on the sea
+Birds have four pictures (the standing one is their Journal and card picture: AnimalData.icon /
+picture()): flying (from above; always while moving, also to the nest; birds circling litter or
+trouble never land: Animal.circling), standing (resting_sprite), floating on the sea
 (floating_sprite) and sitting on the nest (perched_sprite: tree nesters, ground nesters, and the
 flamingo on its mud mound: MangroveEcosystem.mound_near); the sea otter swims belly-down and
 rests on its back, the polar bear lies down to rest.

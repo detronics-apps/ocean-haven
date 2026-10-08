@@ -174,7 +174,7 @@ func _rescues() -> Control:
 					return (load("res://data/regions/%s.tres" % r) as RegionData).display_name)))
 	if lines.size() == 1:
 		return null
-	var picture: Texture2D = caring.species.sprite if caring else null
+	var picture: Texture2D = caring.species.picture() if caring else null
 	return card(picture, lines)
 
 
@@ -293,7 +293,7 @@ func _entry(animal: AnimalData) -> Control:
 	var lines: Array[String] = [animal.display_name, animal.role if animal.role != "" else animal.fact]
 	if not animal.moments.is_empty():
 		lines.append("Photo moments: %d / %d   ›" % [moments, animal.moments.size()])
-	var entry := card(animal.sprite, lines, false, true)
+	var entry := card(animal.picture(), lines, false, true)
 	entry.name = "Entry_" + animal.id
 	_tappable(entry, open_animal.bind(animal).call_deferred)
 	return entry
@@ -322,7 +322,7 @@ func _animal_page(animal: AnimalData) -> void:
 		refresh.call_deferred())  # (not while the button is still handling its press)
 	_content.add_child(back)
 	var picture := TextureRect.new()
-	picture.texture = animal.sprite
+	picture.texture = animal.picture()
 	picture.custom_minimum_size = Vector2(128, 128)
 	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -381,16 +381,16 @@ func _album(animal: AnimalData) -> Control:
 		var cell := VBoxContainer.new()
 		var caught := Journal.has_moment(animal.id, moment.id)
 		var picture := TextureRect.new()
-		picture.texture = Journal.moment_picture(animal.id, moment.id) if caught else animal.sprite
+		picture.texture = Journal.moment_picture(animal.id, moment.id) if caught else animal.picture()
 		if not picture.texture:
-			picture.texture = animal.sprite
+			picture.texture = animal.picture()
 		picture.custom_minimum_size = Vector2(160, 120)
 		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		if not caught:
 			picture.modulate = Color(0, 0, 0, 0.45)  # a silhouette: still to find
-		cell.add_child(light_tile(picture) if not caught or picture.texture == animal.sprite else picture)
+		cell.add_child(light_tile(picture) if not caught or picture.texture == animal.picture() else picture)
 		var label := Label.new()
 		label.text = moment.title if caught else moment.title + "?"
 		label.custom_minimum_size.x = 160

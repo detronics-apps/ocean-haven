@@ -619,6 +619,7 @@ func _guide_skua() -> void:
 	if skuas.is_empty():
 		return
 	var spot := trouble()
+	(skuas[0] as Animal).circling = spot != Vector2.INF  # (circling trouble: it keeps flying)
 	if spot != Vector2.INF:
 		(skuas[0] as Animal).restore_young(skuas[0].global_position, spot)
 

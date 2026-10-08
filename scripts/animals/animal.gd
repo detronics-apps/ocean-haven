@@ -55,6 +55,8 @@ var last_nest_day := -99
 ## The protection area this animal belongs to (where it hatched or nests), or null.
 var home_area: Node2D
 
+## Circling over something (litter, trouble): a flying bird keeps flying and never lands.
+var circling := false
 var _state := State.REST
 var _target: Vector2
 var _rest_left := 0.0
@@ -311,6 +313,9 @@ func _physics_process(delta: float) -> void:
 			speed *= data.land_speed  # slow, humping along on the ice
 	match _state:
 		State.REST:
+			if data.flies and circling:  # circling over something: round again, never landing
+				_swim_to(_pick_target(), State.SWIM)
+				return
 			velocity = Vector2.ZERO
 			_rest_left -= delta
 			# A curious animal stays beside a calm ranger rather than wandering off.
@@ -380,6 +385,7 @@ func _tree_nesting(delta: float) -> bool:
 		_perch()
 		return true
 	velocity = to_nest.normalized() * data.swim_speed
+	_fly_pose()
 	move_and_slide()
 	_face(velocity)
 	return true
@@ -424,6 +430,7 @@ func _ground_nesting(delta: float) -> bool:
 			_sprite.texture = data.perched_sprite
 		return true
 	velocity = to_nest.normalized() * data.swim_speed
+	_fly_pose()
 	move_and_slide()
 	_face(velocity)
 	return true
@@ -476,7 +483,7 @@ func take_off() -> void:
 	_fly_left = randf_range(data.fly_seconds.x, data.fly_seconds.y)
 	_sprite.texture = data.sprite
 	_sprite.flip_h = false
-	_rest(0.1)
+	_swim_to(_pick_target(), State.SWIM)
 
 
 ## Boat-shy animals swim off from a patrol boat that comes close.
@@ -865,6 +872,13 @@ func _swim_to(target: Vector2, state: State) -> void:
 	_state = state
 
 
+## A flying bird on the move: its flying picture (from above), whatever it showed before.
+func _fly_pose() -> void:
+	if data.flies and _sprite.texture != data.sprite:
+		_sprite.texture = data.sprite
+		_sprite.flip_h = false
+
+
 func _rest(seconds: float) -> void:
 	_state = State.REST
 	_rest_left = seconds
@@ -874,6 +888,7 @@ func _rest(seconds: float) -> void:
 func _pick_target() -> Vector2:
 	if data.circles_litter and not tangled:
 		var litter := _nearest_floating_litter_to(_home, data.circle_range)
+		circling = litter != null
 		if litter:  # circling over it shows the ranger where it is
 			return litter.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 32.0)
 	var spot := _home
@@ -922,7 +937,7 @@ func _lives_on_land() -> bool:
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
 	if data.flies and data.resting_sprite:  # a bird: flying (from above), or landed (side view)
-		var landed := _state == State.REST
+		var landed := _state == State.REST and not circling  # (only once it has really landed)
 		var texture := data.sprite
 		if landed:
 			texture = data.floating_sprite if data.floating_sprite and Terrain.at(get_tree(), global_position) in ["water", ""] \

@@ -22,6 +22,7 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_s")
+icon = ExtResource("rest_889")
 perched_sprite = ExtResource("perc_8752")
 floating_sprite = ExtResource("floa_557")
 resting_sprite = ExtResource("rest_889")

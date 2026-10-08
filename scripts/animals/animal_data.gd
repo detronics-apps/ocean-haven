@@ -6,6 +6,9 @@ extends Resource
 @export var display_name: String
 ## Top-down sprite, facing right (rotated to the swim direction).
 @export var sprite: Texture2D
+## The picture for the Journal and cards ("" = `sprite`): flying birds use their standing side
+## view, which looks more like the bird than its top view in flight.
+@export var icon: Texture2D
 
 @export_group("Journal")
 @export var habitat: String
@@ -139,3 +142,8 @@ extends Resource
 ## Special situations to photograph it in (the Journal keeps the first photo of each).
 @export var moments: Array[PhotoMoment] = []
 @export_multiline var hatch_fact: String
+
+
+## The picture to show it by in the Journal and on cards.
+func picture() -> Texture2D:
+	return icon if icon else sprite

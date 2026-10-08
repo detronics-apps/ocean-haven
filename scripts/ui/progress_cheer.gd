@@ -167,7 +167,7 @@ func _next_card() -> void:
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(row)
 	var picture := TextureRect.new()
-	picture.texture = species.sprite
+	picture.texture = species.picture()
 	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

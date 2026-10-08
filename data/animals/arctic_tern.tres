@@ -28,6 +28,7 @@ when = PackedStringArray("event:terns_arriving")
 
 [resource]
 script = ExtResource("1_s")
+icon = ExtResource("4_stand")
 id = &"arctic_tern"
 display_name = "Arctic Tern"
 sprite = ExtResource("2_t")

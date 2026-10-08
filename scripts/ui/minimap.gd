@@ -68,9 +68,14 @@ func _draw() -> void:
 	draw_circle(middle, 2.5, Color.WHITE)
 
 
-## The ranger's home: the building they sleep in (tent or house).
+## The ranger's home on the island they're on: the building they sleep in (tent or house).
+## None on this island: no dot (a home on another island isn't pinned to the rim).
 func _home() -> Node2D:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return null
+	var here := Regions.nearest(ranger.global_position)
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.action == &"sleep":
+		if building.data.action == &"sleep" and not building.is_queued_for_deletion() and Regions.nearest(building.global_position) == here:
 			return building
 	return null

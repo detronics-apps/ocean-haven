@@ -22,6 +22,7 @@ when = PackedStringArray("perched")
 
 [resource]
 script = ExtResource("1_boo")
+icon = ExtResource("rest_3043")
 floating_sprite = ExtResource("floa_8091")
 resting_sprite = ExtResource("rest_3043")
 id = &"red_footed_booby"
