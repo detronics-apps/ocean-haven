@@ -101,17 +101,19 @@ func _initialize() -> void:
 		"the area shows 'Turtles 4/4' (%s)" % area.get_node("Hint").text)
 	world.get_node("Player").global_position = Vector2(-600, 400)
 
-	# --- Hatchlings grow bigger, then grow up and move out to spots of their own ---
+	# --- Hatchlings grow up through their own pictures, then move out to spots of their own ---
 	var baby: Node2D = young[0]
-	var small: float = baby.get_node("Sprite2D").scale.x
-	clock.day = 3
-	clock.time_of_day = 0.3
-	await process_frame
-	_expect(baby.young and baby.get_node("Sprite2D").scale.x > small, "a day later it's bigger (%.2f -> %.2f)" % [
-		small, baby.get_node("Sprite2D").scale.x])
-	clock.day = 5
+	var green: Resource = load("res://data/animals/green_turtle.tres")
+	var turtle_sprite: Sprite2D = baby.get_node("Sprite2D")
+	_expect(turtle_sprite.texture == green.young_sprites[0], "a hatchling: its hatchling picture")
+	clock.day += 8  # (later on: the times below stay after day 0)
+	baby.born_at = clock.now() - green.grow_days * 0.6
+	baby._process(0.0)
+	_expect(baby.young and turtle_sprite.texture == green.young_sprites[1], "a few days later: a young turtle")
 	clock.time_of_day = 0.4
-	await process_frame
+	for one: Node in young:
+		one.born_at = clock.now() - green.grow_days - 0.1
+		one._process(0.0)
 	await process_frame
 	_expect(young.all(func(a: Node) -> bool: return not a.young), "after %d days the hatchlings are grown up" % turtle_days())
 	var homes: Array = young.map(func(a: Node) -> Vector2: return a.home())
