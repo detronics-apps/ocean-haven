@@ -1118,7 +1118,10 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   of turtles is still set by the island (how many the protection areas hold); any female can
   nest; when there's room, enough hatchlings stay to fill it; when it's full, females still nest
   now and then and every hatchling scuttles straight out to sea and off the map, as real ones do
-  (no parent looks after them). Fish (blue rockfish, parrotfish,
+  (no parent looks after them). Never slow: when there's room, a female nests within a night or
+  two, any time of year (the season only sets how often they nest once the island is full);
+  the eggs hatch the next night and the hatchlings that stay are grown 7 days later. Ten
+  turtles is about a week after the island has room for them, never months. Fish (blue rockfish, parrotfish,
   Arctic cod, young snappers) drift in from beyond the map instead, as their larvae really do,
   swimming in from the island's edge.
 
