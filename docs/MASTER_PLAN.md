@@ -1101,7 +1101,12 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   - fast: a new picture every day, grown up on day 3;
   - medium: a new picture every 2nd day, grown up on day 5;
   - slow: a new picture every 3rd day, grown up on day 7.
-  Still to confirm: which species are in which group, and which get pictures at all.
+  Groups (agreed): fast (day 3): ghost crab, mangrove crab, Arctic tern, Arctic skua; medium
+  (day 5): red-footed booby, double-crested cormorant, American flamingo, sea otter, ringed seal;
+  slow (day 7): green turtle (still nests only from the next spring), American crocodile, polar
+  bear. No pictures, but young are smaller and follow their mother until full size, then go
+  their own way: bottlenose dolphin, sperm whale. No life-stage pictures: fish, sharks, urchins,
+  clams, squid, seahorses.
 - **Every new animal comes from somewhere (decided so far).** No animal ever just appears. A
   newcomer is either born (an adult of its kind goes to its sanctuary / habitat / zone, one or
   two young appear beside it there, then the parent goes back to roaming and the young grow up)
@@ -1109,8 +1114,9 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   and habitats make room for young; they never make grown animals appear (today the Seal Pupping
   Zone, Otter Habitat, Crab Habitat and others do). One adult is enough at first: the animal the
   island starts with (or the one the ranger rescues) is a mother-to-be. After that, some animals
-  are male and some female, and only females have young. Still to confirm: where a newcomer
-  comes from when no other island has its species.
+  are male and some female, and only females have young. Every new animal on an island
+  descends from the one it started with (preferred: no newcomers from beyond the map; any
+  exception has to be argued for and agreed).
 
 **Look and feel (the user's list, for later)**
 - ✅ A very subtle texture on sand, grass and rock tiles.
