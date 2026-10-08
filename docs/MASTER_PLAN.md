@@ -1114,9 +1114,9 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   dolphins and whales just its size), and once grown goes its own way. Any adult can have the
   young (no males and females in the game). Young don't have young of their own beyond
   what the triggers ask for: no booms. Green turtles: the number of turtles is still set
-  by the island (how many the protection areas hold); any adult can nest; when there's room, enough hatchlings stay to fill it; when it's full, females still nest
+  by the island (how many the protection areas hold); any adult can nest; when there's room, enough hatchlings stay to fill it; when it's full, turtles still nest
   now and then and every hatchling scuttles straight out to sea and off the map, as real ones do
-  (no parent looks after them). Never slow: when there's room, a female nests within a night or
+  (no parent looks after them). Never slow: when there's room, a turtle nests within a night or
   two, any time of year (the season only sets how often they nest once the island is full);
   the eggs hatch the next night and the hatchlings that stay are grown 7 days later. Ten
   turtles is about a week after the island has room for them, never months. Fish (blue rockfish, parrotfish,
