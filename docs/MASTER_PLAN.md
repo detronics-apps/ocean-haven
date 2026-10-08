@@ -1111,9 +1111,10 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   and limits). Only how the new one appears changes: instead of a grown animal appearing, a
   baby appears beside an adult of its kind (at its sanctuary / habitat / zone if the species has
   one: the adult goes there first), follows it round while it grows up (its pictures, or for
-  dolphins and whales just its size), and once grown goes its own way. Young are male and female
-  in turn (the last one born was female, so the next is male, and so on); the island's first
-  animal is a female, so there's always a mother. Young don't have young of their own beyond
+  dolphins and whales just its size), and once grown goes its own way. Male and female is not a
+  game mechanic: any adult can have the young. Only where males and females really look
+  different (a nice-to-have picture, e.g. parrotfish: grey-brown females, bright blue-green
+  males) does a male-looking adult never go and have young. Young don't have young of their own beyond
   what the triggers ask for: no booms. Green turtles (being talked through): the number
   of turtles is still set by the island (how many the protection areas hold); any female can
   nest; when there's room, enough hatchlings stay to fill it; when it's full, females still nest
