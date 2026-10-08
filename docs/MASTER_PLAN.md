@@ -1096,6 +1096,10 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   drawn smaller. Babies look like the real young: flamingo chicks are grey-white and fluffy, not
   pink. Open: which species get all three (fish, urchins, clams, squid?), and whether kelp,
   coral, seagrass and mangroves count as plants here.
+  Birds and reptiles that lay eggs get four: egg, baby, young, adult (green turtle, American
+  crocodile, red-footed booby, double-crested cormorant, American flamingo, Arctic tern, Arctic
+  skua). Open: is the egg drawn in its nest (turtle nest in the sand, flamingo mud mound, booby
+  nest in the palm, tern scrape on the rock) as part of the nest, or as its own picture.
 - **Every new animal comes from somewhere.** No animal ever just appears. A newcomer either
   - is born: an adult of its kind goes to its sanctuary / habitat / zone, and one or two young
     appear next to it there (e.g. a ringed seal hauls out at a Seal Pupping Zone and a pup
