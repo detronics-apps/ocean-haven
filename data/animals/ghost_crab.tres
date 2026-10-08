@@ -17,13 +17,25 @@ when = PackedStringArray("digging")
 script = ExtResource("pm_script")
 id = &"night"
 title = "Out on the beach at night"
-when = PackedStringArray("night", "on:land")
+when = PackedStringArray("adult", "night", "on:land")
 
 [sub_resource type="Resource" id="Moment_2"]
 script = ExtResource("pm_script")
 id = &"day"
 title = "On the sand by day"
-when = PackedStringArray("day", "on:sand")
+when = PackedStringArray("adult", "day", "on:sand")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"baby"
+title = "A baby crab"
+when = PackedStringArray("baby")
+
+[sub_resource type="Resource" id="Moment_4"]
+script = ExtResource("pm_script")
+id = &"young"
+title = "A young crab"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_chj40")
@@ -48,6 +60,6 @@ curious = false
 interact_distance = 70.0
 digs_up_litter = true
 can_tangle = true
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 2.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

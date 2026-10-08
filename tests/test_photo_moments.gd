@@ -20,17 +20,17 @@ func _initialize() -> void:
 	for i in 3:
 		await process_frame
 	var turtle_data: Resource = load("res://data/animals/green_turtle.tres")
-	_expect(turtle_data.moments.size() == 3, "the green turtle has 3 photo moments")
+	_expect(turtle_data.moments.size() == 4, "the green turtle has 4 photo moments (2 grown, a hatchling, a young one)")
 	var missing: Array = []
 	for animal: Resource in load("res://scripts/systems/data_files.gd").load_all("res://data/animals"):
 		var regular: int = animal.moments.filter(func(m: Resource) -> bool: return not m.bonus).size()
 		var bonus: int = animal.moments.size() - regular
-		if animal.id != &"sea_urchin" and (regular < 2 or regular > 3 or bonus > 1):
+		if animal.id != &"sea_urchin" and (regular < 2 or regular > 5 or bonus > 1):
 			missing.append(animal.id)
 		for m: Resource in animal.moments:
 			if m.bonus != Array(m.when).any(func(c: String) -> bool: return c.begins_with("event:")):
 				missing.append("%s/%s" % [animal.id, m.id])
-	_expect(missing.is_empty(), "every species has 2-3 photo moments, and a seasonal one is a bonus 4th (%s)" % [missing])
+	_expect(missing.is_empty(), "every species has 2-5 photo moments (never more than 5), and a seasonal one is an extra bonus (%s)" % [missing])
 	var counted: int = load("res://scripts/systems/journal.gd").moments_total()
 	var all_moments := 0
 	for animal: Resource in load("res://scripts/systems/data_files.gd").load_all("res://data/animals"):
@@ -72,7 +72,7 @@ func _initialize() -> void:
 	_expect(entry != null and entry.find_child("Album", true, false) == null, "the list is simple: picture, name, what it does")
 	screen.open_animal(turtle_data)
 	var album: Node = screen.find_child("Album", true, false)
-	_expect(album != null and album.get_child_count() == 3, "the turtle's page shows its 3 moments")
+	_expect(album != null and album.get_child_count() == 4, "the turtle's page shows its 4 moments")
 	var labels: Array = album.get_children().map(func(c: Node) -> String: return (c.get_child(1) as Label).text)
 	_expect(labels.has("A hatchling") and labels.any(func(t: String) -> bool: return t.ends_with("?")), "the caught one by name, the others as hints (%s)" % [labels])
 	(screen.find_child("Back", true, false) as Button).pressed.emit()
@@ -108,6 +108,28 @@ func _initialize() -> void:
 	var visitor: Node2D = world.get_node_or_null("Rescued_home_turtle")
 	_expect(visitor != null and visitor.visiting and load("res://scripts/world/regions.gd").nearest(visitor.global_position) == mangrove,
 		"a visit: Milo swims near the Mangrove Coast, just visiting")
+
+	# --- Poses and young: a standing booby, a crab baby, a young crab ---
+	var booby_data: Resource = load("res://data/animals/red_footed_booby.tres")
+	var booby: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	booby.set("data", booby_data)
+	booby.position = Vector2(-300, -200)
+	world.add_child(booby)
+	booby.get_node("Sprite2D").texture = booby_data.resting_sprite
+	_expect(booby.moment_holds("standing") and not booby.moment_holds("resting"), "a landed booby showing its standing picture: 'Standing'")
+	booby.get_node("Sprite2D").texture = booby_data.floating_sprite
+	_expect(booby.moment_holds("resting"), "floating on the sea counts as resting (like on its nest)")
+	var young_crab_data: Resource = load("res://data/animals/ghost_crab.tres")
+	var young_crab: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	young_crab.set("data", young_crab_data)
+	young_crab.set("young", true)
+	root.get_node("GameClock").day += 3
+	young_crab.set("born_at", root.get_node("GameClock").now())
+	young_crab.position = Vector2(-300, -180)
+	world.add_child(young_crab)
+	_expect(young_crab.moment_holds("baby") and not young_crab.moment_holds("juvenile"), "a newborn crab: 'A baby crab'")
+	young_crab.born_at = root.get_node("GameClock").now() - young_crab_data.grow_days * 0.6
+	_expect(young_crab.moment_holds("juvenile") and not young_crab.moment_holds("adult"), "older: 'A young crab'")
 
 	if not _failed:
 		print("PASS")

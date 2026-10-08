@@ -12,13 +12,31 @@
 script = ExtResource("pm_script")
 id = &"ice"
 title = "Walking on the ice"
-when = PackedStringArray("on:ice")
+when = PackedStringArray("adult", "on:ice")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
 id = &"swimming"
 title = "Swimming between floes"
-when = PackedStringArray("on:water")
+when = PackedStringArray("adult", "on:water")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"lying"
+title = "Lying down to rest"
+when = PackedStringArray("resting_pose")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"cub"
+title = "A cub"
+when = PackedStringArray("baby")
+
+[sub_resource type="Resource" id="Moment_4"]
+script = ExtResource("pm_script")
+id = &"young"
+title = "A young bear"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
@@ -41,6 +59,6 @@ curious = false
 interact_distance = 140.0
 lives_at = &"quiet_den_area"
 adult_home_radius = 160.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 6.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

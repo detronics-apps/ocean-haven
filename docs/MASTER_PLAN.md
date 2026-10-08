@@ -1090,7 +1090,7 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
 - More animals (more seabirds, reef fish), net boats, and sanctuary interiors (the turtle rehab
   mini-game).
 
-**Planned, not built yet (the user's list, still being planned: ask before building)**
+**The user's list (planned with the user; built: life stages, births, pose photos)**
 - **Growing up in pictures (decided so far).** Only animals that clearly change as they grow
   get their own life-stage pictures (baby / young / adult), not one picture drawn smaller; ones
   that barely change (fish, urchins, clams, squid...) stay as they are. Babies look like the real

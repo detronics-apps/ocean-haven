@@ -685,6 +685,21 @@ Journal.take_island_photo, user://photos/island_<id>_arrival.png); taken once, n
 no "now" picture. Tapping an island in the Observatory's Panorama shows just that picture
 (IslandPicture: + / - and the wheel zoom in, drag to look round; a note if none was kept).
 
+Births and growing up: the islands still decide when one more animal comes (same triggers and
+limits); Births.bring turns that newcomer into a young one born beside a grown one of its kind
+(the parent goes to where it belongs first: Animal.expect; hidden until then: unborn; the card
+shows at the birth; a sleep catches up: Births.born_now), which follows it while growing up and
+then keeps its own spot. Fish, clams and squid drift in from the island's edge
+(AnimalData.drifts_in). Growth: grow_days 2 / 4 / 6 (grown on day 3, 5 or 7), two young
+stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_sprites:
+crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
+polar bears); dolphins, whales and sharks just grow. Trees show sapling and young pictures
+(PalmTree.stage_textures). Turtles: while their protection areas have room any grown turtle
+nests the next night in any season and a nest hatches enough to fill it (Nest.island_room);
+no next-spring rule. Photo moments: at most 5 everyday ones per species (3 grown poses or
+places plus a baby and a young one, or 4 plus one young; conditions baby / juvenile /
+standing / resting / taking_flight / resting_pose / swimming), plus an uncounted gold bonus.
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 

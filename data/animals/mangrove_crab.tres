@@ -11,13 +11,25 @@
 script = ExtResource("pm_script")
 id = &"mud"
 title = "On the mud by day"
-when = PackedStringArray("day")
+when = PackedStringArray("adult", "day")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
 id = &"night"
 title = "Out at night"
-when = PackedStringArray("night")
+when = PackedStringArray("adult", "night")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"baby"
+title = "A baby crab"
+when = PackedStringArray("baby")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"young"
+title = "A young crab"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
@@ -43,5 +55,5 @@ can_tangle = true
 lives_at = &"crab_habitat"
 grow_days = 2.0
 adult_home_radius = 80.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3")])
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

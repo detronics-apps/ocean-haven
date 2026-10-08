@@ -10,7 +10,10 @@ extends Resource
 ## What must be true of the animal (Animal.moment_holds): "young", "adult", "day", "night",
 ## "on:water", "on:land", "on:sand", "on:ice", "on:rock", "nesting", "perched", "flying",
 ## "surfaced", "underwater", "guiding", "carrying", "digging", "near_boat", "visiting",
-## "event:X" (seasonal moment X is on, on its island: data/seasons/).
+## "event:X" (seasonal moment X is on, on its island: data/seasons/), "baby" / "juvenile" (its
+## two young stages), poses: "standing", "resting" (a bird on its nest or the sea),
+## "taking_flight" (a walker flying off), "resting_pose" (its resting picture: lying down,
+## floating on its back, standing on one leg), "swimming".
 @export var when: PackedStringArray = []
 ## A bonus photo (a seasonal moment, data/seasons/): not one of the species' photos to find,
 ## not counted, shown in a gold frame on its page once taken.

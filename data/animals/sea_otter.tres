@@ -11,21 +11,33 @@
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
+id = &"floating"
+title = "Floating on its back"
+when = PackedStringArray("resting_pose")
+
+[sub_resource type="Resource" id="Moment_1"]
+script = ExtResource("pm_script")
 id = &"carrying"
 title = "Carrying litter ashore"
 when = PackedStringArray("carrying")
 
-[sub_resource type="Resource" id="Moment_1"]
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"swimming"
+title = "Swimming"
+when = PackedStringArray("swimming")
+
+[sub_resource type="Resource" id="Moment_3"]
 script = ExtResource("pm_script")
 id = &"pup"
 title = "A pup"
-when = PackedStringArray("young")
+when = PackedStringArray("baby")
 
-[sub_resource type="Resource" id="Moment_2"]
+[sub_resource type="Resource" id="Moment_4"]
 script = ExtResource("pm_script")
-id = &"floating"
-title = "Floating in the kelp"
-when = PackedStringArray("on:water", "day")
+id = &"young"
+title = "A young otter"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_otter")
@@ -56,5 +68,5 @@ forage_range = 260.0
 food_needed = 4.0
 kelp_food = 3.0
 carries_litter_ashore = true
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

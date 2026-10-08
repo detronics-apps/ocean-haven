@@ -1009,6 +1009,14 @@ func moment_holds(condition: String) -> bool:
 	match condition:
 		"young": return young
 		"adult": return not young
+		"baby": return young and stage() == 0
+		"juvenile": return young and stage() == 1
+		# Poses: what its picture shows right now.
+		"standing": return not young and data.flies and data.resting_sprite and _sprite.texture == data.resting_sprite
+		"resting": return not young and data.flies and (perched or (data.floating_sprite and _sprite.texture == data.floating_sprite))
+		"taking_flight": return not young and data.flying_sprite != null and _sprite.texture == data.flying_sprite
+		"resting_pose": return not young and not data.flies and data.resting_sprite and _sprite.texture == data.resting_sprite
+		"swimming": return not young and _state == State.SWIM and ground in ["water", ""]
 		"day": return not GameClock.is_night()
 		"night": return GameClock.is_night()
 		"on:water": return ground in ["water", ""]

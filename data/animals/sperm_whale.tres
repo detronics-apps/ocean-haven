@@ -9,26 +9,32 @@
 script = ExtResource("pm_script")
 id = &"surface"
 title = "Resting at the surface"
-when = PackedStringArray("surfaced")
+when = PackedStringArray("adult", "surfaced")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
 id = &"diving"
 title = "Diving into the deep"
-when = PackedStringArray("underwater")
+when = PackedStringArray("adult", "underwater")
 
 [sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"near_boat"
+title = "Close to your boat"
+when = PackedStringArray("adult", "near_boat")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"calf"
+title = "A calf"
+when = PackedStringArray("young")
+
+[sub_resource type="Resource" id="Moment_4"]
 script = ExtResource("pm_script")
 id = &"passing"
 title = "Passing by in autumn"
 when = PackedStringArray("event:whales_passing")
 bonus = true
-
-[sub_resource type="Resource" id="Moment_3"]
-script = ExtResource("pm_script")
-id = &"near_boat"
-title = "Close to your boat"
-when = PackedStringArray("near_boat")
 
 [resource]
 script = ExtResource("1_s")
@@ -58,5 +64,5 @@ dive_seconds = Vector2(8, 14)
 boat_shy_distance = 120.0
 can_tangle = true
 adult_home_radius = 260.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_3"), SubResource("Moment_2")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 6.0

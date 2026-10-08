@@ -18,9 +18,27 @@ when = PackedStringArray("flying")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
+id = &"standing"
+title = "Standing"
+when = PackedStringArray("standing")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
 id = &"nest"
-title = "On its nest"
-when = PackedStringArray("perched")
+title = "Resting on its nest or the sea"
+when = PackedStringArray("resting")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"chick"
+title = "A chick"
+when = PackedStringArray("baby")
+
+[sub_resource type="Resource" id="Moment_4"]
+script = ExtResource("pm_script")
+id = &"young"
+title = "A young cormorant"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_corm")
@@ -47,6 +65,6 @@ flies = true
 nests_in_trees = true
 perched_sprite = ExtResource("3_corm")
 can_tangle = true
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 4.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

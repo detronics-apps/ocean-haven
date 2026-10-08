@@ -11,13 +11,25 @@
 script = ExtResource("pm_script")
 id = &"basking"
 title = "Basking by day"
-when = PackedStringArray("day")
+when = PackedStringArray("adult", "day")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
 id = &"night"
 title = "Out at night"
-when = PackedStringArray("night")
+when = PackedStringArray("adult", "night")
+
+[sub_resource type="Resource" id="Moment_2"]
+script = ExtResource("pm_script")
+id = &"hatchling"
+title = "A hatchling"
+when = PackedStringArray("baby")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"young"
+title = "A young crocodile"
+when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
@@ -41,6 +53,6 @@ curious = false
 interact_distance = 110.0
 boat_shy_distance = 120.0
 adult_home_radius = 160.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3")])
 grow_days = 6.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

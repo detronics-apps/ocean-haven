@@ -9,7 +9,7 @@
 script = ExtResource("pm_script")
 id = &"surfacing"
 title = "Coming up for air"
-when = PackedStringArray("surfaced")
+when = PackedStringArray("adult", "surfaced")
 
 [sub_resource type="Resource" id="Moment_1"]
 script = ExtResource("pm_script")
@@ -21,7 +21,19 @@ when = PackedStringArray("guiding")
 script = ExtResource("pm_script")
 id = &"boat"
 title = "Swimming beside your boat"
-when = PackedStringArray("near_boat")
+when = PackedStringArray("adult", "near_boat")
+
+[sub_resource type="Resource" id="Moment_3"]
+script = ExtResource("pm_script")
+id = &"diving"
+title = "Diving"
+when = PackedStringArray("adult", "underwater")
+
+[sub_resource type="Resource" id="Moment_4"]
+script = ExtResource("pm_script")
+id = &"calf"
+title = "A calf"
+when = PackedStringArray("young")
 
 [resource]
 script = ExtResource("1_2r22d")
@@ -52,5 +64,5 @@ dives = true
 guides_to_litter = true
 can_tangle = true
 boat_shy_distance = 200.0
-moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 4.0
