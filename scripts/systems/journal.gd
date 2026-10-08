@@ -28,28 +28,29 @@ var _moments := {}
 ## Where the kept photos are (one small picture per moment; tests point it elsewhere).
 var photos_dir := "user://photos"
 
-## Pictures of each island for the Observatory: "arrival" (how it looked when the ranger first
-## got there, before helping it: litter and all) and "now" (kept up to date, once a day).
-const ISLAND_PHOTO_SIZE := Vector2i(640, 400)
-## How much of the island's waters a picture takes in (1 = all of them).
+## A picture of each island as it was when the ranger first got there (before helping it:
+## litter and all), for the Observatory: the whole island at full size, sharp enough to zoom in.
+## Taken once, never replaced.
+## How much of the island's waters the picture takes in (1 = all of them).
 const ISLAND_FRAMING := 0.6
-var _taking := false
+## Largest side of the picture, in pixels (the world is drawn 1:1 below this).
+const ISLAND_PHOTO_MAX := 2048
 ## Seconds on an island before its picture is taken (the litter has washed in, the view settled).
 const SETTLE_SECONDS := 6.0
 const CHECK_EVERY := 3.0
 var _island_check := 0.0
 var _here := &""
 var _here_for := 0.0
-var _now_day := {}
+var _taking := false
 
 
-func island_photo_path(region_id: StringName, kind: String) -> String:
-	return "%s/island_%s_%s.png" % [photos_dir, region_id, kind]
+func island_photo_path(region_id: StringName) -> String:
+	return "%s/island_%s_arrival.png" % [photos_dir, region_id]
 
 
-## The kept picture of `region_id` ("arrival" or "now"), or null.
-func island_photo(region_id: StringName, kind: String) -> Texture2D:
-	var path := island_photo_path(region_id, kind)
+## The picture of `region_id` from the ranger's first visit, or null.
+func island_photo(region_id: StringName) -> Texture2D:
+	var path := island_photo_path(region_id)
 	if not FileAccess.file_exists(path):
 		return null
 	var image := Image.load_from_file(path)
@@ -76,29 +77,27 @@ func _process(delta: float) -> void:
 	_here_for += CHECK_EVERY
 	if _here_for < SETTLE_SECONDS:
 		return
-	if not FileAccess.file_exists(island_photo_path(region.id, "arrival")) and not Regions.helped(get_tree(), region):
-		take_island_photo(region, "arrival")
-	elif int(_now_day.get(region.id, -1)) != GameClock.day:
-		_now_day[region.id] = GameClock.day
-		take_island_photo(region, "now")
+	if not FileAccess.file_exists(island_photo_path(region.id)) and not Regions.helped(get_tree(), region):
+		take_island_photo(region)
 
 
 ## Keeps a picture of the whole island now (an offscreen camera over the world, so no menus
-## and nothing on screen changes) as `region`'s `kind` picture. False without a screen.
-func take_island_photo(region: RegionData, kind: String) -> bool:
+## and nothing on screen changes) as `region`'s first-visit picture. False without a screen.
+func take_island_photo(region: RegionData) -> bool:
 	var viewport := get_viewport()
 	if not viewport or DisplayServer.get_name() == "headless" or _taking:
 		return false
 	_taking = true
 	var shot := SubViewport.new()
-	shot.size = ISLAND_PHOTO_SIZE
+	var across := region.waters_radius * 2.0 * ISLAND_FRAMING
+	var zoom := minf(1.0, ISLAND_PHOTO_MAX / across)  # (1:1 pixels unless the island is huge)
+	shot.size = Vector2i(Vector2(across, across * 0.8) * zoom)
 	shot.world_2d = viewport.world_2d
 	shot.render_target_update_mode = SubViewport.UPDATE_ONCE
 	shot.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
 	var camera := Camera2D.new()
 	camera.position = region.center
-	var across := region.waters_radius * 2.0 * ISLAND_FRAMING
-	camera.zoom = Vector2.ONE * minf(ISLAND_PHOTO_SIZE.x / across, ISLAND_PHOTO_SIZE.y / across)
+	camera.zoom = Vector2.ONE * zoom
 	shot.add_child(camera)
 	add_child(shot)
 	camera.make_current()
@@ -110,7 +109,7 @@ func take_island_photo(region: RegionData, kind: String) -> bool:
 	if not image or image.is_empty():
 		return false
 	DirAccess.make_dir_recursive_absolute(photos_dir)
-	return image.save_png(island_photo_path(region.id, kind)) == OK
+	return image.save_png(island_photo_path(region.id)) == OK
 
 
 func discover(animal: AnimalData) -> void:

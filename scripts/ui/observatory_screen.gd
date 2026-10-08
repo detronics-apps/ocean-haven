@@ -129,8 +129,8 @@ func _fill() -> void:
 	_content.add_child(open_note)
 
 
-## One island then and now: the picture kept when the ranger first got there (litter and all)
-## beside how it looks now, and its health. A reminder of where they started.
+## One island as it was when the ranger first got there (litter and all): the whole island,
+## to zoom into (+ / -, the wheel) and look round (drag). A reminder of where they started.
 func show_island(region: RegionData) -> void:
 	if not Regions.is_discovered(region):
 		return
@@ -148,15 +148,31 @@ func show_island(region: RegionData) -> void:
 	view.add_child(margin)
 	SafeArea.apply(margin, 24.0)
 	var page := VBoxContainer.new()
-	page.add_theme_constant_override("separation", 12)
+	page.add_theme_constant_override("separation", 10)
 	margin.add_child(page)
 	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 10)
 	page.add_child(header)
 	var title := Label.new()
-	title.text = region.display_name
-	title.add_theme_font_size_override("font_size", 28)
+	title.text = "%s, when you first arrived" % region.display_name
+	title.add_theme_font_size_override("font_size", 24)
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title)
+	var photo: Texture2D = Journal.island_photo(region.id)
+	var picture := IslandPicture.new()
+	picture.name = "Picture"
+	picture.texture = photo
+	picture.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	if photo:
+		for step: Array in [["-", -1], ["+", 1]]:
+			var button := Button.new()
+			button.name = "ZoomOut" if step[1] < 0 else "ZoomIn"
+			button.text = step[0]
+			button.custom_minimum_size = Vector2(56, 48)
+			button.add_theme_font_size_override("font_size", 24)
+			button.pressed.connect(picture.zoom_by.bind(step[1]))
+			header.add_child(button)
 	var back := Button.new()
 	back.name = "Back"
 	back.text = "< Back"
@@ -164,50 +180,66 @@ func show_island(region: RegionData) -> void:
 	back.pressed.connect(view.queue_free)
 	header.add_child(back)
 	back.grab_focus.call_deferred()
-	var scroll := ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	page.add_child(scroll)
-	var pictures := HFlowContainer.new()
-	pictures.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	pictures.alignment = FlowContainer.ALIGNMENT_CENTER
-	pictures.add_theme_constant_override("h_separation", 20)
-	pictures.add_theme_constant_override("v_separation", 16)
-	scroll.add_child(pictures)
-	var then: Texture2D = Journal.island_photo(region.id, "arrival")
-	pictures.add_child(_island_picture("When you first arrived", then, region, true,
-		"" if then else "No picture was kept of your first visit here (that was before the Observatory kept them)."))
-	var now: Texture2D = Journal.island_photo(region.id, "now")
-	pictures.add_child(_island_picture("Now: %d %% healthy" % roundi(IslandHealth.of(get_tree(), region) * 100.0), now, region, false, ""))
+	if photo:
+		page.add_child(picture)
+	else:
+		var note := Label.new()
+		note.text = "No picture was kept of your first visit here: that was before the Observatory kept them."
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		page.add_child(note)
 
 
-func _island_picture(heading: String, picture: Texture2D, region: RegionData, damaged: bool, note: String) -> Control:
-	var column := VBoxContainer.new()
-	column.name = "Then" if damaged else "Now"
-	column.custom_minimum_size = Vector2(360, 0)
-	var label := Label.new()
-	label.text = heading
-	label.add_theme_font_size_override("font_size", 22)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	column.add_child(label)
-	var pic := TextureRect.new()
-	pic.name = "Picture"
-	pic.texture = picture if picture else region.map_icon
-	pic.custom_minimum_size = Vector2(360, 225)
-	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	if not picture:  # (just its map, in the colours of then or now)
-		pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		pic.modulate = IslandHealth.DAMAGED_TINT if damaged else Color.WHITE
-	column.add_child(pic)
-	if note != "":
-		var small := Label.new()
-		small.text = note
-		small.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		small.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		small.custom_minimum_size = Vector2(360, 0)
-		column.add_child(small)
-	return column
+## A picture to zoom into and drag around (starts showing all of it).
+class IslandPicture extends Control:
+	const STEPS := 6
+	const MAX_ZOOM := 4.0
+	var texture: Texture2D
+	## 0 = all of it fits, STEPS - 1 = closest.
+	var step := 0
+	var _centre := Vector2(0.5, 0.5)  # (the spot shown in the middle, 0..1 of the picture)
+	var _dragging := false
+
+	func _ready() -> void:
+		clip_contents = true
+		mouse_filter = Control.MOUSE_FILTER_STOP
+
+	func scale_now() -> float:
+		if not texture or size.x <= 0.0:
+			return 1.0
+		var fit := minf(size.x / texture.get_width(), size.y / texture.get_height())
+		return fit * pow(maxf(MAX_ZOOM / fit, 1.0), float(step) / (STEPS - 1))
+
+	func zoom_by(direction: int) -> void:
+		step = clampi(step + direction, 0, STEPS - 1)
+		queue_redraw()
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+				zoom_by(1)
+			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+				zoom_by(-1)
+			elif event.button_index == MOUSE_BUTTON_LEFT:
+				_dragging = event.pressed
+			accept_event()
+		elif event is InputEventMouseMotion and _dragging and texture:
+			_centre -= event.relative / (Vector2(texture.get_size()) * scale_now())
+			_centre = _centre.clamp(Vector2.ZERO, Vector2.ONE)
+			queue_redraw()
+			accept_event()
+
+	func _draw() -> void:
+		if not texture:
+			return
+		var shown := Vector2(texture.get_size()) * scale_now()
+		var at := size / 2.0 - shown * _centre
+		if shown.x <= size.x:
+			at.x = (size.x - shown.x) / 2.0
+		if shown.y <= size.y:
+			at.y = (size.y - shown.y) / 2.0
+		draw_texture_rect(texture, Rect2(at, shown), false)
+		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 ## The prize for the final chapter: the poster of the whole ocean, to download and keep.

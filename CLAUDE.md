@@ -76,6 +76,12 @@ addons/                  third-party Godot plugins only
   ask for ideas, ask what you think, or say something still needs planning, reply with a plan
   or options and wait for their pick. A message can be both: build the instructed parts, plan
   the rest. Never re-plan back what was already decided.
+- **Something completely new is planned first, never built straight away.** Only build, code or
+  create it when the user clearly confirms: they say "build the following" (or code it / create
+  it), or it has gone back and forth over three or four chats and they then say something like
+  "okay, cool, let's do this". Without that confirmation, reply with a plan and ask about
+  anything that isn't 100 % clear. When building, build exactly what was asked, nothing extra
+  (e.g. "show the picture from when I arrived" is that one picture, not a then-and-now comparison).
 - Work in small, playable steps. After each step the game must still run.
 - Commit after every working step with a clear message; never commit a broken project.
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
@@ -670,12 +676,12 @@ shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry sn
 (PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the tree's own pixels turn white,
 building up in the freeze, deepest when frozen, gone by open water).
 
-Then and now (Observatory): the first time the ranger is on an island (6 s, before helping it:
-Regions.helped) the Journal keeps a picture of the whole island from an offscreen camera
-(Journal.take_island_photo: a SubViewport sharing the world, no HUD), and a "now" picture once a
-day after (user://photos/island_<id>_arrival|now.png). Tapping an island in the Observatory's
-Panorama shows "When you first arrived" beside "Now: N % healthy" (its map in damaged colours
-when no picture was kept, e.g. islands first visited before this existed).
+When you first arrived (Observatory): the first time the ranger is on an island (6 s, before
+helping it: Regions.helped) the Journal keeps one picture of the whole island, litter and all,
+at full size (1:1 pixels, from an offscreen camera sharing the world: no HUD;
+Journal.take_island_photo, user://photos/island_<id>_arrival.png); taken once, never replaced,
+no "now" picture. Tapping an island in the Observatory's Panorama shows just that picture
+(IslandPicture: + / - and the wheel zoom in, drag to look round; a note if none was kept).
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
