@@ -1107,16 +1107,18 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   bear. No pictures, but young are smaller and follow their mother until full size, then go
   their own way: bottlenose dolphin, sperm whale. No life-stage pictures: fish, sharks, urchins,
   clams, squid, seahorses.
-- **Every new animal comes from somewhere (decided so far).** No animal ever just appears. A
-  newcomer is either born (an adult of its kind goes to its sanctuary / habitat / zone, one or
-  two young appear beside it there, then the parent goes back to roaming and the young grow up)
-  or travels in from another island (swims, or flies in for birds), seen arriving. Sanctuaries
-  and habitats make room for young; they never make grown animals appear (today the Seal Pupping
-  Zone, Otter Habitat, Crab Habitat and others do). One adult is enough at first: the animal the
-  island starts with (or the one the ranger rescues) is a mother-to-be. After that, some animals
-  are male and some female, and only females have young. Every new animal on an island
-  descends from the one it started with (preferred: no newcomers from beyond the map; any
-  exception has to be argued for and agreed).
+- **Every new animal comes from somewhere (decided; not an animal simulation).** How many of each
+  animal an island has, and when one more comes, stay exactly as they are now (the same triggers
+  and limits). Only how the new one appears changes: instead of a grown animal appearing, a
+  baby appears beside an adult of its kind (at its sanctuary / habitat / zone if the species has
+  one: the adult goes there first), follows it round while it grows up (its pictures, or for
+  dolphins and whales just its size), and once grown goes its own way. Young are male and female
+  in turn (the last one born was female, so the next is male, and so on); the island's first
+  animal is a female, so there's always a mother. Young don't have young of their own beyond
+  what the triggers ask for: no booms. Green turtles keep their nesting as it is (hatchlings,
+  most swim off; nesting from the next spring, 120 days on). Fish (blue rockfish, parrotfish,
+  Arctic cod, young snappers) drift in from beyond the map instead, as their larvae really do,
+  swimming in from the island's edge.
 
 **Look and feel (the user's list, for later)**
 - ✅ A very subtle texture on sand, grass and rock tiles.
