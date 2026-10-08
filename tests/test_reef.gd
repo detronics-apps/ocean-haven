@@ -212,6 +212,53 @@ func _initialize() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 	fleet.restore({})
 
+	# --- A full patch splits in two (35 % each), and patches can be moved by boat ---
+	var full: Node2D = eco.patches()[0]
+	var boat: Node2D = world.get_node("ReefBoat")
+	boat.global_position = full.global_position + Vector2(20, 0)
+	boat.call("restore_aboard")
+	full.coral = 0.995
+	full.planted = 1.0
+	var count_before: int = eco.patches().size()
+	var total_before: float = eco.total_coral()
+	var split_labels: Array = full.actions().map(func(a: Dictionary) -> String: return a.label)
+	_expect(split_labels.any(func(t: String) -> bool: return t.begins_with("Split")), "a full patch can be split (%s)" % [split_labels])
+	var fresh: Node2D = full.split()
+	_expect(fresh != null and eco.patches().size() == count_before + 1, "split: a new patch")
+	_expect(is_equal_approx(full.coral, 0.35) and is_equal_approx(fresh.coral, 0.35) and is_equal_approx(fresh.planted, 0.35),
+		"both have 35 %% coral, and can be planted up again")
+	_expect(eco.total_coral() < total_before, "less coral in all: the cost of spreading the reef")
+	_expect(fresh.global_position.distance_to(full.global_position) <= 32.0 * 5 and load("res://scripts/world/terrain.gd").at(self, fresh.global_position) == "water",
+		"the new patch is on shallow water beside it")
+	var health_before: float = eco.coral_health()
+	fresh.coral = 1.0
+	_expect(eco.coral_health() > health_before, "more patches only add to the reef's health")
+	var moves: Array = fresh.actions().filter(func(a: Dictionary) -> bool: return a.label == "Move this reef patch")
+	boat.global_position = fresh.global_position + Vector2(10, 0)
+	moves = fresh.actions().filter(func(a: Dictionary) -> bool: return a.label == "Move this reef patch")
+	_expect(moves.size() == 1, "from the boat, a patch can be moved")
+	moves[0].do.call()
+	var spot: Vector2 = eco.free_spot_near(full.global_position + Vector2(0, 200))
+	boat.global_position = spot - Vector2(0, 28)
+	fresh.call("_process", 0.016)
+	_expect(fresh.carried and fresh.global_position.distance_to(spot) < 1.0, "it follows the boat")
+	var downs: Array = fresh.actions().filter(func(a: Dictionary) -> bool: return a.label.begins_with("Set the reef patch down"))
+	_expect(downs.size() == 1, "on free shallow water it can be set down")
+	downs[0].do.call()
+	_expect(not fresh.carried, "set down")
+	var kept: Dictionary = eco.to_dict()
+	var fresh_name := String(fresh.name)
+	var fresh_coral: float = fresh.coral
+	fresh.free()
+	eco.restore(kept)
+	var back: Node2D = eco.get_node_or_null(fresh_name)
+	_expect(back != null and back.global_position.distance_to(spot) < 1.0 and is_equal_approx(back.coral, fresh_coral), "split and moved patches are saved (%s)" % [[back.global_position, spot, back.coral] if back else "none"])
+
+	# --- Spare coral fragments: a grant from the lab ---
+	var lab_data: Resource = load("res://data/buildings/coral_restoration_lab.tres")
+	_expect(lab_data.accepts == &"coral_fragment" and load("res://data/items/coral_fragment.tres").grant_value == 5,
+		"spare coral fragments can be given to the Coral Restoration Laboratory (5 funding each)")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

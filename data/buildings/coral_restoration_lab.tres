@@ -5,6 +5,8 @@
 
 [resource]
 script = ExtResource("1_s")
+accepts = &"coral_fragment"
+accepts_for = "the reef restoration team"
 explains = 1
 id = &"coral_restoration_lab"
 texture = ExtResource("2_t")

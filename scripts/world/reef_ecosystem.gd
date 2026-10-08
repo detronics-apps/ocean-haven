@@ -14,6 +14,10 @@ extends Node2D
 @export var region_id := &"tropical_reef"
 @export var tick_days := 0.25
 @export var patch_count := 10
+## Most patches the reef can grow to (splitting full patches).
+@export var max_patches := 30
+## Closest a patch may be to another (split and moved ones).
+@export var patch_gap := 44.0
 @export var patch_spacing := 150.0
 @export var half_life_days := 1.0
 @export var instant_share := 0.2
@@ -215,9 +219,56 @@ func _restored_by_sites() -> Array[ReefPatch]:
 	return list.slice(0, count)
 
 
+## The reef's coral, 0..1: all of it added up, against the reef's first `patch_count` patches
+## (so a bigger reef, from splitting, only fills it faster and never pulls it down).
 func coral_health() -> float:
-	var list := patches()
-	return list.reduce(func(sum: float, p: ReefPatch) -> float: return sum + p.coral, 0.0) / maxf(list.size(), 1)
+	return clampf(total_coral() / patch_count, 0.0, 1.0)
+
+
+## All the reef's coral added up (a full patch is 1).
+func total_coral() -> float:
+	return patches().reduce(func(sum: float, p: ReefPatch) -> float: return sum + p.coral, 0.0)
+
+
+## Whether a patch can sit at `point` (world): shallow water, not too close to another patch.
+func spot_free(point: Vector2, ignore: ReefPatch = null) -> bool:
+	if Terrain.at(get_tree(), point) != "water":
+		return false
+	return patches().all(func(p: ReefPatch) -> bool: return p == ignore or p.global_position.distance_to(point) >= patch_gap)
+
+
+## The nearest free spot (a water tile's middle) around `point`, or null.
+func free_spot_near(point: Vector2) -> Variant:
+	var centre := _ground.local_to_map(_ground.to_local(point))
+	var best: Variant = null
+	var best_d := INF
+	for dx in range(-4, 5):
+		for dy in range(-4, 5):
+			var at := _world(centre + Vector2i(dx, dy))
+			var d := at.distance_to(point)
+			if d < best_d and d >= patch_gap and spot_free(at):
+				best = at
+				best_d = d
+	return best
+
+
+## Adds a patch at `point` (world): split from another, or restored from a save.
+func add_patch(point: Vector2, coral_now: float, planted_now: float, patch_name := "") -> ReefPatch:
+	var patch: ReefPatch = PATCH_SCRIPT.new()
+	var n := patches().size() + 1
+	while patch_name == "" and has_node("Reef%d" % n):
+		n += 1
+	patch.name = patch_name if patch_name != "" else "Reef%d" % n
+	add_child(patch)
+	patch.global_position = point
+	patch.coral = coral_now
+	patch.planted = planted_now
+	return patch
+
+
+## Whether a patch is being moved (one at a time).
+func carrying() -> bool:
+	return patches().any(func(p: ReefPatch) -> bool: return p.carried)
 
 
 func _buildings(which: Callable) -> Array[Building]:
@@ -261,7 +312,7 @@ func settle() -> void:
 
 
 func parrotfish_supported() -> int:
-	return clampi(roundi(coral_health() * patches().size()) + 1, 1, parrotfish_max)
+	return clampi(roundi(total_coral()) + 1, 1, parrotfish_max)  # (a bigger reef feeds more)
 
 
 func _room(species: AnimalData) -> int:
@@ -511,8 +562,8 @@ func project() -> Dictionary:
 	var sum := 0.0
 	for patch in patches():
 		sum += coral_target(patch, sites)
-	var coral := sum / maxf(patches().size(), 1)
-	var fish := clampi(roundi(coral * patches().size()) + 1, 1, parrotfish_max)
+	var coral := clampf(sum / patch_count, 0.0, 1.0)
+	var fish := clampi(roundi(sum) + 1, 1, parrotfish_max)
 	return {"coral": roundi(coral * 100.0), "water": water_quality(), PARROTFISH.id: fish,
 		CLAM.id: maxi(_room(CLAM), 1), SEAHORSE.id: maxi(seahorses_supported(), 1),
 		SHARK.id: maxi(mini(_homes(SHARK).size(), fish / fish_per_shark), 1)}
@@ -650,7 +701,7 @@ func to_dict() -> Dictionary:
 	if _gear_at != Vector2.INF:
 		saved["gear"] = [_gear_at.x, _gear_at.y, String(_gear_item)]
 	for patch in patches():
-		saved.patches[String(patch.name)] = [patch.coral, patch.planted, patch.storm_hit]
+		saved.patches[String(patch.name)] = [patch.coral, patch.planted, patch.storm_hit, patch.global_position.x, patch.global_position.y]
 	return saved
 
 
@@ -663,9 +714,15 @@ func restore(saved: Dictionary) -> void:
 	if gear.size() == 3:
 		_gear_item = StringName(gear[2])
 	var saved_patches: Dictionary = saved.get("patches", {})
+	for patch_name: String in saved_patches:  # (split ones: made again where they were)
+		var entry: Array = saved_patches[patch_name]
+		if not has_node(patch_name) and entry.size() >= 5:
+			add_patch(Vector2(entry[3], entry[4]), float(entry[0]), float(entry[1]), patch_name)
 	for patch in patches():
 		var entry: Array = saved_patches.get(String(patch.name), [])
 		if entry.size() >= 3:
 			patch.coral = float(entry[0])
 			patch.planted = float(entry[1])
 			patch.storm_hit = bool(entry[2])
+		if entry.size() >= 5:  # (moved ones: where they were set down)
+			patch.global_position = Vector2(entry[3], entry[4])

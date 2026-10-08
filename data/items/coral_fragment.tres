@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+grant_value = 5
 id = &"coral_fragment"
 display_name = "Coral Fragment"
 icon = ExtResource("2_t")

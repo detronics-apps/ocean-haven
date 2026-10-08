@@ -71,8 +71,11 @@ addons/                  third-party Godot plugins only
 
 ## Workflow
 
-- **Plan first.** Before building any change the user asks for, reply with a short plan (what
-  will change, the choices made, anything left out) and wait for their OK or corrections.
+- **Instructions vs discussion.** When the user says what to do (add / make / fix / change X),
+  build it straight away (ask only if a key choice is really open, then just that). When they
+  ask for ideas, ask what you think, or say something still needs planning, reply with a plan
+  or options and wait for their pick. A message can be both: build the instructed parts, plan
+  the rest. Never re-plan back what was already decided.
 - Work in small, playable steps. After each step the game must still run.
 - Commit after every working step with a clear message; never commit a broken project.
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
@@ -360,7 +363,12 @@ house ("Store N clean water"; `ControlledBody.water_until`, saved, shared by eve
 any bottles are left the ranger and boat move 30 % faster; each lasts half a day (2 a day); a
 blue WaterGauge under the health bar shows the bottles once clean water can be made. Coral Restoration Laboratory with 8 missions; Reef Diving Centre;
 Shark Protection Zones; Hurricane; objective: 70 % → 5 dead coral rubble → Reef Limestone
-(Underwater Habitat Mapping System). The Hurricane also tears up seagrass in battered
+(Underwater Habitat Mapping System). A patch at full coral can be split (ReefPatch.split: it drops to 35 % and a
+new 35 % patch starts on free shallow water beside it; less coral in all), any patch can be
+moved by boat (towed behind it, then set down on free shallow water), up to 30 patches
+(ReefEcosystem.max_patches; positions saved); coral health is all the coral added up against
+the first 10 patches, so a bigger reef never lowers it, and supports more parrotfish; spare
+fragments go to the Coral Restoration Laboratory for 5 funding each (BuildingData.accepts). The Hurricane also tears up seagrass in battered
 Protection Areas and washes parrotfish sand back into the lagoon. Every rare event shows its own
 weather when it strikes (StormWeather; EventData.weather: storm / swell / flood / hurricane). The
 ranger has a walking animation (bob, sway, stepping boots).
