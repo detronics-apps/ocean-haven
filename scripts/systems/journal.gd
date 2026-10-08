@@ -231,8 +231,13 @@ func helped_count(id: StringName) -> int:
 	return _helped.get(id, 0)
 
 
-func record_nest(animal: AnimalData) -> void:
+## Where the last nest or hatch happened (so notes only show for the ranger's island).
+var event_at := Vector2.INF
+
+
+func record_nest(animal: AnimalData, at := Vector2.INF) -> void:
 	_nests[animal.id] = nests(animal.id) + 1
+	event_at = at
 	nested.emit(animal)
 
 
@@ -240,8 +245,9 @@ func nests(id: StringName) -> int:
 	return _nests.get(id, 0)
 
 
-func record_hatch(animal: AnimalData, count: int) -> void:
+func record_hatch(animal: AnimalData, count: int, at := Vector2.INF) -> void:
 	_hatched[animal.id] = hatched_count(animal.id) + count
+	event_at = at
 	hatched.emit(animal, count)
 
 

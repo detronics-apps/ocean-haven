@@ -240,7 +240,9 @@ foundations the mechanics sit on, not the mechanics themselves.
   is beside it: flamingo nests, silting channels…). Nothing is only decoration the player has to
   guess about.
 - **No emoji in game text** (the font can't draw them); use drawn pictures instead.
-- Long notes get more time on screen.
+- **Notes are one short line, one at a time, and only about the island the ranger is on**
+  (the owner: the big black box with long text, too often, overwhelmed play). Facts go in
+  the Journal; a busy moment shows the first note and the newest, never a pile.
 
 ## 9. Story, people and activities (from the outside review, agreed by the owner)
 

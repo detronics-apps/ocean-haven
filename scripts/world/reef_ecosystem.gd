@@ -449,7 +449,7 @@ func _build_sand() -> int:
 			changed += 1
 	if changed > 0 and _sand_note_day != GameClock.day:
 		_sand_note_day = GameClock.day
-		get_tree().call_group("hud", "show_toast", "Parrotfish grinding up the reef have built up the sea floor near it. Shallow water turns to sand you can dig up.")
+		get_tree().call_group("hud", "show_toast", "Parrotfish have made new sand to dig up")
 	return changed
 
 
@@ -512,7 +512,7 @@ func _hide_gear() -> void:
 	_gear_item = [&"ghost_net", &"fishing_line"].pick_random()
 	_gear_shark.restore_young(_gear_shark.global_position, _gear_at)
 	_gear_shark.home_radius = 28.0
-	get_tree().call_group("hud", "show_toast", "A reef shark is circling one spot on the reef, over and over. Follow it: it may have found something.")
+	get_tree().call_group("hud", "show_toast", "A reef shark is circling something: follow it")
 
 
 func _check_gear() -> void:

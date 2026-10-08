@@ -165,6 +165,8 @@ func _process(delta: float) -> void:
 
 ## One step of the dive (tests drive it directly).
 func step(delta: float, diving: bool) -> void:
+	if not _playing:
+		return  # (a dive that's over stays over: it never finishes twice)
 	_time += delta
 	_safe = maxf(_safe - delta, 0.0)
 	var out_of_air := _air <= 0.0

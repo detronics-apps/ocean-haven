@@ -17,6 +17,12 @@ var _labels: Dictionary[StringName, Label] = {}
 var _toast_tween: Tween
 ## Notes waiting for the current one to fade (so they don't overwrite each other).
 var _toast_queue: Array[String] = []
+## Notes: the longest line, the pause after one, and how soon the same note may show again.
+const NOTE_MAX_CHARS := 60
+const NOTE_GAP_SECONDS := 2.5
+const NOTE_REPEAT_SECONDS := 90.0
+var _note_shown := {}
+var _note_free_at := 0.0
 
 @onready var _rows: VBoxContainer = %Rows
 @onready var _toast: PanelContainer = %Toast
@@ -48,10 +54,21 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_toast.modulate.a = 0.0
+	# Notes are small: one short line in a light box, not a big black panel.
+	_toast_label.custom_minimum_size = Vector2.ZERO
+	_toast_label.add_theme_font_size_override("font_size", 17)
+	var note_box := StyleBoxFlat.new()
+	note_box.bg_color = Color(0.05, 0.1, 0.15, 0.6)
+	note_box.set_corner_radius_all(10)
+	note_box.content_margin_left = 14
+	note_box.content_margin_right = 14
+	note_box.content_margin_top = 5
+	note_box.content_margin_bottom = 6
+	_toast.add_theme_stylebox_override("panel", note_box)
 	Inventory.changed.connect(_set_row)
 	Inventory.item_added.connect(_on_item_added)
 	Journal.discovered.connect(_on_discovered)
-	Journal.plant_discovered.connect(func(p: PlantData) -> void: show_toast("New plant in your Journal: %s!\n%s" % [p.display_name, p.fact]))
+	Journal.plant_discovered.connect(func(p: PlantData) -> void: show_toast("New plant in your Journal: %s" % p.display_name))
 	Journal.observed.connect(_on_observed)
 	Journal.photographed.connect(_on_photographed)
 	Journal.helped.connect(_on_helped)
@@ -97,14 +114,13 @@ func _ready() -> void:
 	var rescue_screen := RescueScreen.new()  # the rescue companion (Rescues)
 	rescue_screen.name = "RescueScreen"
 	get_parent().add_child.call_deferred(rescue_screen)
-	Rescues.found.connect(func(r: RescueData) -> void: show_toast(r.found_note))
+	Rescues.found.connect(func(r: RescueData) -> void: show_toast("A young %s needs your help!" % r.species.display_name.to_lower()))
 	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
-		show_toast("Something moved in the water... it's %s! The %s you rescued on the %s, here near the %s.\nLook for the bright tag." % [
-			animal_name, r.species.display_name.to_lower(), (load(r.region_path()) as RegionData).display_name, region.display_name]))
+		show_toast("%s, the %s you rescued, is here!" % [animal_name, r.species.display_name.to_lower()]))
 	Journal.moment_caught.connect(func(animal: AnimalData, moment: PhotoMoment) -> void:
-		show_toast("New photo moment: %s, %s!\nThe photo is kept in your Journal." % [animal.display_name, moment.title.to_lower()]))
+		show_toast("New photo moment: %s" % moment.title.to_lower(), true))
 	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
-		show_toast("%s is back in the wild!\n%s" % [animal_name, r.fact]))
+		show_toast("%s is back in the wild!" % animal_name, true))
 	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new(), ChannelFlow.new(), EchoDive.new(), IceMatch.new(), GlassSort.new()]:  # ranger activities (data/activities/)
 		activity_screen.name = activity_screen.get_script().get_global_name()
 		get_parent().add_child.call_deferred(activity_screen)
@@ -120,9 +136,9 @@ func _ready() -> void:
 	var missions := MissionMenu.new()  # opened from a signature facility
 	missions.name = "MissionMenu"
 	get_parent().add_child.call_deferred(missions)
-	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s sent out. It's back in %s." % [m.display_name, Missions.time_left()]))
+	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s: back in %s" % [m.display_name, Missions.time_left()], true))
 	Missions.returned.connect(_on_mission_returned)
-	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s!\n%s" % [e.display_name, e.warning.replace("{when}", RareEvents.when(e.id))]))
+	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s coming %s" % [e.display_name, RareEvents.when(e.id)], true))
 	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged if "%d" in e.aftermath else e.aftermath))
 	# What's coming (a storm warning), under the clock until it arrives.
 	_event_note = Label.new()
@@ -428,12 +444,12 @@ func _check_unlocks() -> void:
 	minimap.visible = Fleet.is_installed(MINIMAP_NEEDS)
 	if minimap.visible and not Fleet.has_flag(&"minimap_shown"):
 		Fleet.mark(&"minimap_shown")
-		show_toast("The salvaged sonar gives you a map of the waters round you (bottom left): your home and what your missions find are marked on it.")
+		show_toast("New: your map, bottom left", true)
 	if not Fleet.has_flag(HEALTH_FLAG):
 		for building: Building in get_tree().get_nodes_in_group("buildings"):
 			if building.data.facility == &"signature" and Regions.nearest(building.global_position).id != &"home_island":
 				Fleet.mark(HEALTH_FLAG)
-				show_toast("Your research station measures how healthy each island is: the bar at the top right shows it now, and where it's heading.")
+				show_toast("New: island health, top right", true)
 				break
 
 
@@ -479,36 +495,35 @@ func _on_new_day(day: int) -> void:
 		show_toast(SEASON_NOTES.get(GameClock.season(day), ""))
 
 
-func _on_earned(amount: int, reason: String) -> void:
-	show_toast("+%d funding\n%s" % [amount, reason])
+func _on_earned(_amount: int, _reason: String) -> void:
+	pass  # the "+N" rising from the funding (ProgressCheer) says it
 
 
 func _on_donations_waiting(building: Building, amount: int) -> void:
-	show_toast("Visitors left %d funding at your %s.\nGo and collect it!" % [amount, building.data.display_name])
+	show_toast("Visitors left %d funding at your %s" % [amount, building.data.display_name], false, building.global_position)
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
-	show_toast("%s collected!\n%s" % [item.display_name, item.fact])
+	show_toast("%s collected" % item.display_name)
 
 
 func _on_discovered(animal: AnimalData) -> void:
-	show_toast("You spotted a %s!\nStay calm, and take a photo to add it to your Journal." % animal.display_name)
+	show_toast("A %s! Take a photo for your Journal" % animal.display_name.to_lower())
 
 
 func _on_observed(animal: AnimalData) -> void:
-	show_toast("You quietly watched the %s.\nHabitat: %s. Diet: %s." % [
-		animal.display_name, animal.habitat, animal.diet])
+	show_toast("You watched the %s" % animal.display_name.to_lower())
 
 
 func _on_photographed(animal: AnimalData, count: int) -> void:
 	if count == 1:
-		show_toast("New in your Journal: %s!\n%s %s" % [animal.display_name, animal.fact, animal.photo_fact])
+		show_toast("New in your Journal: %s" % animal.display_name, true)
 	else:
-		show_toast("Photo saved! (%d %s photos)" % [count, animal.display_name])
+		show_toast("Photo taken", true)
 
 
 func _on_helped(animal: AnimalData, _count: int) -> void:
-	show_toast("You freed the %s!\n%s" % [animal.display_name, animal.help_fact])
+	show_toast("You freed the %s!" % animal.display_name.to_lower(), true)
 
 
 func _on_gifted(animal: AnimalData) -> void:
@@ -516,29 +531,26 @@ func _on_gifted(animal: AnimalData) -> void:
 
 
 func _on_nested(animal: AnimalData) -> void:
-	show_toast("A %s is nesting on your beach!\n%s" % [animal.display_name, animal.nest_fact])
+	show_toast("A %s is nesting" % animal.display_name.to_lower(), false, Journal.event_at)
 
 
 func _on_hatched(animal: AnimalData, count: int) -> void:
-	show_toast("%d hatchlings are heading for the sea!\n%s" % [count, animal.hatch_fact])
+	show_toast("%d hatchlings are heading for the sea" % count, false, Journal.event_at)
 
 
 func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> void:
-	var text := "%s: objective complete!" % region.display_name
-	if discovery:
-		text += "\n%s\n%s" % [region.discovery_text, discovery.fact]
-	show_toast(text)
+	show_toast("Objective complete: %s" % discovery.display_name if discovery else "Objective complete!", true)
 
 
 func _on_mission_returned(mission: MissionData, found: int) -> void:
 	var report := mission.report if found > 0 else mission.report_none
-	show_toast("%s is back!\n%s" % [mission.display_name, Missions.last_report])
+	show_toast("%s is back: see the report" % mission.display_name)
 
 
 func _on_built(building: Building) -> void:
 	var done := "planted" if building.data.build_verb == "Plant" else "built"
 	Sound.play(&"dig" if done == "planted" else &"build")
-	show_toast("%s %s!\n%s" % [building.data.display_name, done, building.data.fact])
+	show_toast("%s %s" % [building.data.display_name, done], true)
 
 
 func _set_row(item: ItemData, count: int) -> void:
@@ -560,24 +572,57 @@ func _set_row(item: ItemData, count: int) -> void:
 
 ## Shows a note for a few seconds (waiting its turn; `now`: straight away, e.g. a tip the player
 ## asked for, and the interrupted note comes back after it).
-func show_toast(text: String, now := false) -> void:
-	if now and _toast_tween and _toast_tween.is_running():
-		_toast_tween.kill()
-		if _toast.modulate.a > 0.5:
-			_toast_queue.push_front(_toast_label.text)
-	elif _toast_tween and _toast_tween.is_running():
-		_toast_queue.append(text)
-		if _toast_queue.size() > 2:
-			_toast_queue.pop_front()  # keep it short: drop the oldest waiting note
+## A note: one short line (`brief`), one at a time, a pause between them, never the same one
+## again soon, and only about the island the ranger is on (`at`, a place in the world: notes
+## from other islands are dropped). While one shows, only the newest waits; the rest are
+## dropped, so a busy moment never piles notes up. `now`: shown at once (the ranger just did
+## something), replacing the one on screen.
+func show_toast(text: String, now := false, at := Vector2.INF) -> void:
+	if at != Vector2.INF and not _here(at):
 		return
+	text = brief(text)
+	var clock := Time.get_ticks_msec() / 1000.0
+	if text == "" or clock - float(_note_shown.get(text, -INF)) < NOTE_REPEAT_SECONDS:
+		return
+	var busy := (_toast_tween and _toast_tween.is_running()) or clock < _note_free_at
+	if busy and not now:
+		_toast_queue = [text]  # only the newest waits
+		return
+	if _toast_tween:
+		_toast_tween.kill()
+	_note_shown[text] = clock
 	_toast_label.text = text
 	_toast.modulate.a = 1.0
+	var showing := clampf(1.8 + text.length() / 30.0, 2.5, 4.0)  # time to read it
+	_note_free_at = clock + showing + 0.4 + NOTE_GAP_SECONDS
 	_toast_tween = create_tween()
-	_toast_tween.tween_interval(clampf(2.5 + text.length() / 45.0, 3.0, 10.0))  # time to read it
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.6)
+	_toast_tween.tween_interval(showing)
+	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.4)
+	_toast_tween.tween_interval(NOTE_GAP_SECONDS)
 	_toast_tween.finished.connect(_show_next_toast)
 
 
 func _show_next_toast() -> void:
 	if not _toast_queue.is_empty():
 		show_toast(_toast_queue.pop_front())
+
+
+## `text` cut to its first line and first sentence, at most NOTE_MAX_CHARS (whole words).
+static func brief(text: String) -> String:
+	var line := text.strip_edges().get_slice("\n", 0).strip_edges()
+	if line.length() > NOTE_MAX_CHARS:
+		for stop in [". ", "! ", "? ", ": ", "; ", " - ", ", "]:
+			var at := line.find(stop)
+			if at > 8 and at < NOTE_MAX_CHARS:
+				line = line.left(at + (1 if stop.strip_edges() in [".", "!", "?"] else 0))
+				break
+	if line.length() > NOTE_MAX_CHARS:
+		line = line.left(NOTE_MAX_CHARS)
+		line = line.left(line.rfind(" ")) if line.rfind(" ") > 20 else line
+	return line.strip_edges().trim_suffix(",").trim_suffix(":")
+
+
+## Whether `at` is on the island the ranger is on.
+func _here(at: Vector2) -> bool:
+	var ranger := ControlledBody.active(get_tree())
+	return not ranger or Regions.nearest(ranger.global_position) == Regions.nearest(at)

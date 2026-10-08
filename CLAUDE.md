@@ -725,6 +725,13 @@ settles to 50 % (not distressed), and only drops below that while health is drop
 rescue starts below 50 %. The bars freeze once it's ready to go home. The vet room shows them
 live and says what it needs now.
 
+Notes (HUD.show_toast; the owner: too big, too wordy, too often): one short line (HUD.brief:
+first line and sentence, at most 60 letters) in a small see-through box; one at a time with a
+2.5 s pause, only the newest waits (a busy moment never piles up), the same note not again
+within 90 s; `now` for what the ranger just did; notes about another island are dropped (an
+`at` position: world things pass theirs; nests and hatchings via Journal.event_at). Facts
+stay in the Journal; funding shows only as the rising "+N".
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

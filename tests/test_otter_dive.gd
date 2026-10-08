@@ -64,7 +64,6 @@ func _initialize() -> void:
 		no_litter.call()
 		screen.step(1.0 / 30.0, true)
 	_expect(screen.air() <= 0.0 and screen.get("_playing"), "out of air: nothing goes wrong")
-	screen.set("_goal", goal)
 	for i in 30:
 		no_litter.call()
 		screen.step(1.0 / 30.0, true)
@@ -73,6 +72,7 @@ func _initialize() -> void:
 		no_litter.call()
 		screen.step(1.0 / 30.0, false)
 	_expect(screen.air() > 6.0, "a breath at the surface fills the air again")
+	screen.set("_goal", goal)
 	screen.set("_hearts", 99)  # (the autopilot below doesn't steer round litter)
 	var steps := 0
 	while screen.get("_playing") and steps < 20000:  # dive for urchins, up for air

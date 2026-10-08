@@ -467,7 +467,7 @@ func _watch_for_squid(days: float) -> void:
 	if _squid_watch >= squid_days:
 		_squid_found = true
 		_spawn(SQUID, _home_spot(SQUID))
-		get_tree().call_group("hud", "show_toast", "Your camera filmed a giant squid in the canyon inside the hook! Hardly anyone has ever seen one alive. Go and photograph it while it's near the surface.")
+		get_tree().call_group("hud", "show_toast", "Your camera filmed a giant squid in the canyon!")
 
 
 func squid_found() -> bool:
@@ -494,7 +494,7 @@ func _check_gear() -> void:
 		sector.gear_found = false
 		if Fleet.count_of(GEAR_COUNT) >= START_GEAR.size() and not Fleet.has_flag(GEAR_RECOVERED):
 			Fleet.mark(GEAR_RECOVERED)
-			get_tree().call_group("hud", "show_toast", "From the gear you've recovered, researchers have worked out where the lost nets and lines come from. Fishing boats now mark and recover their gear: no new ghost nets or fishing line drift in on any island.")
+			get_tree().call_group("hud", "show_toast", "Lost fishing gear: traced to its source")
 
 
 func _gear_debris(sector: DeepSector) -> Debris:

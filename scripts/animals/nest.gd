@@ -158,7 +158,7 @@ func hatch() -> void:
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))
 		world.add_child(baby)
 		baby.call("crawl_to_sea")
-	Journal.record_hatch(species, count)
+	Journal.record_hatch(species, count, global_position)
 	queue_free()
 
 

@@ -330,7 +330,7 @@ func settle() -> void:
 			continue
 		if otter.homeless_since < 0.0:
 			otter.homeless_since = GameClock.now()
-			get_tree().call_group("hud", "show_toast", "A sea otter has nowhere quiet to rest: build an Otter Habitat, or it will move away.")
+			get_tree().call_group("hud", "show_toast", "A sea otter needs an Otter Habitat")
 		elif GameClock.now() - otter.homeless_since >= homeless_days:
 			if otters().size() > 1:  # the last one stays on: no species ever disappears
 				_move_away(otter, "it had no quiet place to rest (an Otter Habitat)")

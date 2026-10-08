@@ -267,7 +267,7 @@ func check_camp() -> void:
 	var rubbish := camp_rubbish()
 	if rubbish >= RUBBISH_DRAWS_BEAR and not Fleet.has_flag(BEAR_AT_CAMP):
 		Fleet.mark(BEAR_AT_CAMP)
-		get_tree().call_group("hud", "show_toast", "A polar bear has smelled the rubbish around camp and come to look! The researchers are nervous. Clear the litter and it'll wander back to the ice.")
+		get_tree().call_group("hud", "show_toast", "Rubbish at camp drew a polar bear in!")
 	elif rubbish == 0 and Fleet.has_flag(BEAR_AT_CAMP):
 		Fleet.unmark(BEAR_AT_CAMP)
 		bear.restore_young(bear.global_position, _home_spot(BEAR))
@@ -505,7 +505,7 @@ func _check_zones() -> void:
 		if _on_ice(zone) or _failed.has(_key(zone)):
 			continue
 		_failed[_key(zone)] = true
-		get_tree().call_group("hud", "show_toast", "The ice under a Seal Pupping Zone has melted before the pups were ready: they've gone into the water early. Move the zone onto old ice (the ice survey shows where).")
+		get_tree().call_group("hud", "show_toast", "A pupping zone melted: move it to old ice")
 
 
 ## Pupping zones that will see their pups through: on ice, and not failed this season.
@@ -529,7 +529,7 @@ func _drill(days: float) -> void:
 	for site in _buildings(&"ice_core_drill"):
 		if not _on_ice(site):
 			if _drilled > 0.0:
-				get_tree().call_group("hud", "show_toast", "The ice under the drill site has melted: the drilling had to stop. Move it to old ice and start again.")
+				get_tree().call_group("hud", "show_toast", "The drill site melted: move it to old ice")
 			_drilled = 0.0
 		elif Fleet.has_flag(BALANCED_FLAG):
 			_drilled += days

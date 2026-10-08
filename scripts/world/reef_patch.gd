@@ -118,7 +118,7 @@ func _process(_delta: float) -> void:
 
 
 func _explain_spot() -> void:
-	get_tree().call_group("hud", "show_toast", "A reef patch needs shallow water (not deep sea, sand or land), a little away from other patches.")
+	get_tree().call_group("hud", "show_toast", "A reef patch needs free shallow water")
 
 
 func plant() -> void:

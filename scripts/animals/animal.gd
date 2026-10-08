@@ -328,10 +328,10 @@ func grow_up() -> void:
 		return  # (it just happens on islands the ranger isn't on)
 	var kind: String = data.display_name.get_slice(" ", data.display_name.get_slice_count(" ") - 1).to_lower()
 	if followed:
-		get_tree().call_group("hud", "show_toast", "A young %s has grown up and gone its own way." % kind)
+		get_tree().call_group("hud", "show_toast", "A young %s has grown up" % kind, false, global_position)
 	elif _grow_note_day != GameClock.day:  # one note a day, however many grow up
 		_grow_note_day = GameClock.day
-		get_tree().call_group("hud", "show_toast", "Your young %ss are growing up and swimming out to live around the island!\nKeep some water free of patrol boats for them." % kind)
+		get_tree().call_group("hud", "show_toast", "Your young %ss have grown up" % kind, false, global_position)
 
 
 ## A spot in its island's waters it can swim straight to, away from busy boats and as
@@ -837,7 +837,7 @@ func _maybe_carry(delta: float) -> void:
 		Journal.record_gift(data)
 		if _carry_note_day != GameClock.day:  # one note a day
 			_carry_note_day = GameClock.day
-			get_tree().call_group("hud", "show_toast", "A %s brought some litter ashore - pick it up on the beach!" % data.display_name.to_lower())
+			get_tree().call_group("hud", "show_toast", "A %s brought litter ashore" % data.display_name.to_lower(), false, global_position)
 		_rest(1.0)
 	elif _state == State.REST:
 		_swim_to(_carry_shore, State.SWIM)
@@ -1368,7 +1368,7 @@ func _lay() -> void:
 	_state = State.LAY
 	_lay_left = LAY_SECONDS
 	velocity = Vector2.ZERO
-	Journal.record_nest(data)
+	Journal.record_nest(data, global_position)
 
 
 func _finish_laying() -> void:

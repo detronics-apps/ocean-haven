@@ -65,6 +65,9 @@ Compatibility renderer), BlueHaven's stack; translate if the game uses another e
 - Short labels; no hover-only information; no emoji in game text (the font can't draw them);
   long notes stay longer.
 - A HUD that grows with progress (BlueHaven: minimap and gauges appear when earned).
+- One note system from the start: one short line (cut automatically), a small box, one at a
+  time with a pause, only the newest waiting, no repeats soon, only about where the player is.
+  Facts belong in the journal, not in notes.
 
 ## Shared frameworks (build once, reuse)
 - A talk box (tap through, Back, 2 reply choices), an overlay/menu screen base, a storage menu.

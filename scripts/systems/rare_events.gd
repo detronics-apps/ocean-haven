@@ -201,13 +201,13 @@ func strike(event: EventData) -> int:
 	struck.emit(event, damaged)
 	if hurt > 0 or nests_hit > 0 or torn > 0:
 		var lines: Array[String] = []
-		if torn > 0:
-			lines.append("%d kelp bed(s) were torn up: a storm damage survey shows which to restore first." % torn)
 		if hurt > 0:
-			lines.append("%d animal(s) were hurt: send a Rescue mission from your station to help them recover." % hurt)
+			lines.append("%d hurt" % hurt)
+		if torn > 0:
+			lines.append("%d kelp bed(s) torn" % torn)
 		if nests_hit > 0:
-			lines.append("%d unprotected nest(s) were washed over (turtle monitoring protects them)." % nests_hit)
-		get_tree().call_group("hud", "show_toast", "\n".join(lines))
+			lines.append("%d nest(s) washed over" % nests_hit)
+		get_tree().call_group("hud", "show_toast", "After the storm: " + ", ".join(lines))
 	return damaged
 
 
