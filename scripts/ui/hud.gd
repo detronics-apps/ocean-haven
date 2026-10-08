@@ -299,8 +299,12 @@ func patrol_collected(_item: ItemData) -> void:
 
 
 ## An animal came to `region` (a newcomer or one born there): a card with its picture
-## instead of a plain note.
+## instead of a plain note, only while the ranger is on that island (elsewhere it just
+## happens, and they'll see more of them when they get there).
 func animal_returned(species: AnimalData, note: String, region: RegionData = null) -> void:
+	var ranger := ControlledBody.active(get_tree())
+	if region and ranger and Regions.nearest(ranger.global_position) != region:
+		return
 	_cheer.show_return(species, note, region)
 
 

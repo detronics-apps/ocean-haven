@@ -34,6 +34,12 @@ func _initialize() -> void:
 	cheer.call("_check_health")
 	_expect((cheer.get("_sparks") as Array).is_empty(), "no sparkle for going back up to where it was")
 
+	# --- Only for the island the ranger is on: elsewhere it just happens ---
+	var crab: Resource = load("res://data/animals/mangrove_crab.tres")
+	world.get_node("HUD").animal_returned(crab, "A Crab Habitat has room for it.", load("res://data/regions/mangrove_coast.tres"))
+	_expect(cheer.find_child("ReturnCard", true, false) == null and (cheer.get("_cards") as Array).is_empty(),
+		"a crab joining the Mangrove Coast while the ranger is elsewhere: no card")
+
 	# --- An animal comes back: a card with its picture ---
 	var dolphin: Resource = load("res://data/animals/bottlenose_dolphin.tres")
 	world.get_node("HUD").animal_returned(dolphin, "The water is cleaner.", home)

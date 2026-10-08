@@ -619,7 +619,7 @@ for the rest. Progress feedback (ProgressCheer, never tappable): sparkles and a 
 ranger's island passes a new 5 % of health, a card with the animal's picture when one comes
 to an island (HUD.animal_returned, called wherever animals arrive or settle: "Another X has
 joined the island!", never "the first"; the first newcomer of a species is a gold card: Fleet
-flag "returned_<id>"), and "+N" rising from the funding.
+flag "returned_<id>") (only on the island the ranger is on: elsewhere it just happens), and "+N" rising from the funding.
 
 "What is this?" (BuildingInfo: its picture, BuildingData.description, stats and fact) depends
 on BuildingData.explains: Always for markers and enclosures (protection areas and zones, habitats,
