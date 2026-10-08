@@ -138,9 +138,11 @@ func hatch() -> void:
 	if is_queued_for_deletion():
 		return  # already hatched this frame
 	var world := get_parent()
-	for i in (1 if storm_hit else species.hatchlings):
-		# Only stay_per_nest of them stay (the rest swim off into the open ocean, as most real
-		# hatchlings do); a storm-hit nest's one hatchling is swept out too.
+	# Enough hatch to fill the room the island has for them (at least `hatchlings`); those
+	# stay, the rest swim off into the open ocean, as most real hatchlings do. A storm-hit
+	# nest's one hatchling is swept out too.
+	var count := 1 if storm_hit else clampi(island_room(self, species), species.hatchlings, MAX_HATCHLINGS)
+	for i in count:
 		var stays := not storm_hit and (species.stay_per_nest <= 0 or i < species.stay_per_nest)
 		var home := _area_with_room() if stays else null
 		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
@@ -152,8 +154,22 @@ func hatch() -> void:
 		baby.position = position + Vector2(randf_range(-10.0, 10.0), randf_range(-6.0, 6.0))
 		world.add_child(baby)
 		baby.call("crawl_to_sea")
-	Journal.record_hatch(species, 1 if storm_hit else species.hatchlings)
+	Journal.record_hatch(species, count)
 	queue_free()
+
+
+## Most hatchlings one nest can have (when the island has a lot of room for them).
+const MAX_HATCHLINGS := 12
+
+
+## How many more of `species` the nesting areas on `at`'s island can take.
+static func island_room(at: Node2D, species: AnimalData) -> int:
+	var island := Regions.nearest(at.global_position)
+	var room := 0
+	for building: Building in at.get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == species.nest_building and Regions.nearest(building.global_position) == island:
+			room += building.room_for_animals()
+	return room
 
 
 ## This nest's own area if it has room, else the nearest other one that does, else null.

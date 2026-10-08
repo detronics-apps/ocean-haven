@@ -46,3 +46,4 @@ curious = false
 interact_distance = 100.0
 boat_shy_distance = 80.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 4.0

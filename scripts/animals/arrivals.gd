@@ -35,9 +35,10 @@ static func check(world: Node) -> Array[Node2D]:
 				continue  # only because of something the ranger did
 			if healthy.filter(func(r: RegionData) -> bool: return r != region).size() < arrival.healthy_islands:
 				continue
-			came.append(_bring(world, arrival))
+			var animal := _bring(world, arrival)
+			came.append(animal)
 			_last_day[region.id] = today
-			tree.call_group("hud", "animal_returned", arrival.species, arrival.note, region)
+			Births.bring(animal, region, arrival.note)
 	return came
 
 
@@ -53,7 +54,7 @@ static func restore(world: Node, names: Array) -> void:
 ## Tree nesters fly off while there aren't enough grown trees, and come back when there are.
 static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 	var animal := world.get_node_or_null(arrival.node_name) as Node2D
-	if not animal or arrival.needs_trees <= 0:
+	if not animal or arrival.needs_trees <= 0 or animal.get("unborn"):
 		return
 	var stays: bool = trees >= arrival.needs_trees or animal.get("tangled") or animal.get("injured")  # never flies off needing help
 	if stays == animal.visible:

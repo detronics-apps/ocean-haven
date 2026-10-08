@@ -44,6 +44,16 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 @export var young := false
 ## GameClock.now() when it hatched here (-1 = it didn't: it was always here, or arrived).
 var born_at := -1.0
+## The grown one a young one follows round until it's grown (Births).
+var parent: Animal
+## A young one to be born where this one is going (Births.bring): it appears beside it there.
+var _due: Animal
+var _due_at := Vector2.INF
+var _due_left := 0.0
+var _due_note := ""
+var _due_region: RegionData
+## Not born yet (Births): hidden until its parent gets to where it belongs.
+var unborn := false
 ## A hatchling with no room at home: once in the water it swims off into the open ocean.
 @export var leaving := false
 ## Only passing through (dolphin tracking's visitor): not one of the island's own.
@@ -140,7 +150,9 @@ func _ready() -> void:
 	_land_mask = collision_mask
 	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
-		_sprite.scale = Vector2(0.5, 0.5)
+		_sprite.scale = Vector2.ONE if _own_young_picture() else Vector2(0.5, 0.5)
+		if _own_young_picture():
+			_sprite.texture = data.young_sprites[stage()]
 	if data.shows_water_level:  # the water (or mud) round its legs: how deep it's standing
 		var wading := ShaderMaterial.new()
 		wading.shader = WADING
@@ -194,6 +206,62 @@ func home() -> Vector2:
 	return _home
 
 
+## Lives round `spot` from now on, and heads there.
+func set_home(spot: Vector2) -> void:
+	_home = spot
+	_swim_to(spot, State.SWIM)
+
+
+## Not yet born (Births): not seen, not moving, nothing to do with it.
+func hide_until_born() -> void:
+	unborn = true
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	remove_from_group("interactables")
+
+
+func is_expecting() -> bool:
+	return is_instance_valid(_due)
+
+
+## Goes to `spot` (where its young one belongs: its sanctuary, habitat, zone...), and the young
+## one is born beside it there (or where it is after a while, if it can't get there).
+func expect(baby: Animal, spot: Vector2, note: String, region: RegionData) -> void:
+	_due = baby
+	_due_at = spot
+	_due_left = Births.DUE_SECONDS
+	_due_note = note
+	_due_region = region
+	baby.global_position = spot
+	set_home(spot)
+
+
+func give_birth_now() -> void:
+	_due_left = 0.0
+	_check_birth(0.0)
+
+
+func _check_birth(delta: float) -> void:
+	if not is_instance_valid(_due):
+		_due = null
+		return
+	_due_left -= delta
+	if global_position.distance_to(_due_at) > 40.0 and _due_left > 0.0:
+		return
+	var baby := _due
+	_due = null
+	var beside := global_position + Vector2(randf_range(-10.0, 10.0), randf_range(4.0, 10.0))
+	if not baby.in_habitat(beside):
+		beside = global_position
+	baby.global_position = beside
+	baby._home = _due_at
+	baby.unborn = false
+	baby.visible = true
+	baby.process_mode = Node.PROCESS_MODE_INHERIT
+	baby.add_to_group("interactables")
+	get_tree().call_group("hud", "animal_returned", data, _due_note, _due_region)
+
+
 ## Puts a hatchling back where it was (loading a save). If it was still on the
 ## beach, it carries on to the sea.
 func restore_young(pos: Vector2, home_spot: Vector2) -> void:
@@ -218,10 +286,25 @@ func _process(delta: float) -> void:
 		_grow()
 
 
-## Hatchlings get bigger as they grow, then grow up (not while crawling to the sea).
+## Young: 0 = a baby, 1 = growing up (each half of grow_days), 2 = grown.
+func stage() -> int:
+	if not young or born_at < 0.0 or data.grow_days <= 0.0:
+		return 2
+	return clampi(int((GameClock.now() - born_at) / (data.grow_days / 2.0)), 0, 2) if young else 2
+
+
+## Shows its own young pictures (AnimalData.young_sprites) while growing up.
+func _own_young_picture() -> bool:
+	return young and data.young_sprites.size() >= 2 and stage() < 2
+
+
+## Young ones get bigger as they grow (or show their young pictures), then grow up (not
+## while crawling to the sea).
 func _grow() -> void:
 	var age := clampf((GameClock.now() - born_at) / data.grow_days, 0.0, 1.0)
-	_sprite.scale = Vector2.ONE * lerpf(0.5, 0.85, age)
+	_sprite.scale = Vector2.ONE if _own_young_picture() else Vector2.ONE * lerpf(0.5, 0.85, age)
+	if _own_young_picture():
+		_pose()
 	if age >= 1.0 and _state != State.CRAWL:
 		grow_up()
 
@@ -230,14 +313,25 @@ func _grow() -> void:
 ## from the next time it's due.
 func grow_up() -> void:
 	young = false
+	var followed := parent != null  # born beside a parent (Births): it already has its own spot
+	parent = null  # grown: off on its own
+	if data.young_sprites.size() >= 2:
+		_sprite.texture = data.sprite
 	last_nest_day = GameClock.day
 	create_tween().tween_property(_sprite, "scale", Vector2.ONE, 1.5)
 	home_radius = maxf(home_radius, data.adult_home_radius)
-	_home = _own_spot()
+	if not followed:
+		_home = _own_spot()
 	_rest(0.1)
-	if _grow_note_day != GameClock.day:  # one note a day, however many grow up
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger or Regions.nearest(ranger.global_position) != Regions.nearest(global_position):
+		return  # (it just happens on islands the ranger isn't on)
+	var kind: String = data.display_name.get_slice(" ", data.display_name.get_slice_count(" ") - 1).to_lower()
+	if followed:
+		get_tree().call_group("hud", "show_toast", "A young %s has grown up and gone its own way." % kind)
+	elif _grow_note_day != GameClock.day:  # one note a day, however many grow up
 		_grow_note_day = GameClock.day
-		get_tree().call_group("hud", "show_toast", "Your young %ss are growing up and swimming out to live around the island!\nKeep some water free of patrol boats for them." % data.display_name.get_slice(" ", data.display_name.get_slice_count(" ") - 1).to_lower())
+		get_tree().call_group("hud", "show_toast", "Your young %ss are growing up and swimming out to live around the island!\nKeep some water free of patrol boats for them." % kind)
 
 
 ## A spot in its island's waters it can swim straight to, away from busy boats and as
@@ -290,6 +384,8 @@ func _breathe(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if _due:
+		_check_birth(delta)
 	if _state == State.CRAWL or _state == State.LAY:
 		_nesting(delta)
 		return
@@ -302,13 +398,13 @@ func _physics_process(delta: float) -> void:
 	_maybe_nest()
 	_maybe_guide()
 	_maybe_carry(delta)
-	if _tree_nesting(delta) or _ground_nesting(delta):
+	if not young and (_tree_nesting(delta) or _ground_nesting(delta)):
 		return
 
 	_pose()
 	var speed := data.swim_speed * (0.5 if tangled or injured else 1.0)
 	var on_land := data.land_sprite != null and not Terrain.at(get_tree(), global_position) in ["water", ""]
-	if data.land_sprite:
+	if data.land_sprite and not _own_young_picture():
 		var picture := data.land_sprite if on_land else data.sprite
 		if _sprite.texture != picture:
 			_sprite.texture = picture
@@ -991,6 +1087,13 @@ func _pick_target() -> Vector2:
 		circling = litter != null
 		if litter:  # circling over it shows the ranger where it is
 			return litter.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 32.0)
+	if young and parent == null and not data.drifts_in and data.nest_building == &"" and born_at >= 0.0:
+		parent = Births.parent_for(self, Regions.nearest(global_position))  # (after loading a save)
+	if young and is_instance_valid(parent) and not parent.leaving and not (data.flies and stage() == 0):
+		# Growing up: keeps close to its parent (chicks that can't fly yet stay at the nest).
+		var beside := parent.global_position + Vector2.from_angle(randf() * TAU) * randf_range(10.0, 22.0)
+		if in_habitat(beside):
+			return beside
 	if data.roams and not tangled and not injured and not young and randf() < data.roam_share:
 		var wander := _roam_spot()
 		if wander != Vector2.INF:
@@ -1053,6 +1156,12 @@ func _lives_on_land() -> bool:
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
+	if _own_young_picture():  # growing up: its young picture, whatever it's doing
+		var stage_picture: Texture2D = data.young_sprites[stage()]
+		if _sprite.texture != stage_picture:
+			_sprite.texture = stage_picture
+			_sprite.rotation = 0.0
+		return
 	if data.shows_water_level:
 		_update_wading.call_deferred()  # (after this pose's picture is set)
 	if data.flies and data.resting_sprite:  # a bird: flying (from above), or landed (side view)
@@ -1144,9 +1253,20 @@ func _face(motion: Vector2) -> void:
 
 ## Days between its nests now: often in its nesting season, rarely (or never) outside it.
 func nest_interval() -> int:
+	if _island_needs_young():
+		return 1  # the island has room for more: she nests the next night, any time of year
 	if data.nest_season == &"" or GameClock.season() == data.nest_season:
 		return data.nest_interval_days
 	return data.off_season_interval_days if data.off_season_interval_days > 0 else 1 << 30
+
+
+## Its nesting areas have room for young and no nest there is waiting to hatch yet.
+func _island_needs_young() -> bool:
+	if data.nest_building == &"" or Nest.island_room(self, data) <= 0:
+		return false
+	var island := Regions.nearest(global_position)
+	return not get_tree().get_nodes_in_group("nests").any(func(n: Node2D) -> bool:
+		return n.species == data and not n.is_queued_for_deletion() and Regions.nearest(n.global_position) == island)
 
 
 ## Old enough to nest: always for animals that came to the island; for ones that hatched here

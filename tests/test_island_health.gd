@@ -70,6 +70,7 @@ func _initialize() -> void:
 	for i in 3:
 		clock.day += 1
 		arrivals.check(world)
+		load("res://scripts/animals/births.gd").born_now(self)
 	_expect(count.call(&"red_footed_booby") == 4, "the palms the ranger planted bring three more seabirds, one a day")
 	_expect(is_equal_approx(health.of(self, home), 1.0), "no litter, no hurt or caught animals, fully populated (12 turtles, 4 seabirds, 2 crabs, 2 dolphins): 100 %")
 	var hurt: Node = world.get_node("Crab1")

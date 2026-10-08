@@ -345,6 +345,7 @@ func sleep_through_night() -> void:
 	var tween := create_tween()
 	tween.tween_property(_fade, "color:a", 1.0, 0.6)
 	tween.tween_callback(GameClock.sleep_until_morning)
+	tween.tween_callback(Births.born_now.bind(get_tree()))  # (young due overnight are born)
 	tween.tween_interval(0.4)
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 

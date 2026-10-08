@@ -65,3 +65,4 @@ seeds_tree = ExtResource("seed_pine")
 seeds_from = &"deep_sea"
 seeds_to = &"arctic_ocean"
 seeds_news = "There's a little pine growing among the rocks! The terns stopped on the {from} on their way south, and brought a seed back with them."
+grow_days = 2.0

@@ -41,3 +41,4 @@ dive_seconds = Vector2(5, 9)
 can_tangle = true
 adult_home_radius = 240.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 4.0

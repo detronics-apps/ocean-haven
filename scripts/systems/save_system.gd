@@ -435,6 +435,12 @@ func load_from(world: Node, path: String) -> bool:
 		var pos: Array = entry.get("pos", [])
 		var home: Array = entry.get("home", pos)
 		if species and pos.size() == 2 and home.size() == 2:
+			var same := world.get_node_or_null(String(entry.get("name", ""))) if entry.get("name", "") != "" else null
+			if same is Animal and same.data == species:  # (an island arrival born as a young one: already put back)
+				same.young = not entry.get("adult", false)
+				same.born_at = float(entry.get("born_at", 0.0))
+				same.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
+				continue
 			var baby: Animal = load(Nest.ANIMAL_SCENE).instantiate()
 			baby.data = species
 			baby.young = not entry.get("adult", false)

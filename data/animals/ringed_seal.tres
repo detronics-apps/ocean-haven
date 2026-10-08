@@ -48,3 +48,4 @@ can_tangle = true
 lives_at = &"seal_pupping_zone"
 adult_home_radius = 120.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+grow_days = 4.0

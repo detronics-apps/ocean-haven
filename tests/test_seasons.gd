@@ -1,8 +1,9 @@
 extends SceneTree
 ## Seasons: a 120-day year of four 30-day seasons, shown on the HUD ("Day 42 · Summer, year 1").
-## Sea turtles nest in spring (every 4 days; only every 40 days the rest of the year); of each
-## nest's hatchlings one stays and the rest swim off into the open ocean (a storm-hit nest's
-## one goes too); hatchlings take 8 days to grow up and only nest from the next spring.
+## Sea turtles nest in spring (every 4 days; only every 40 days the rest of the year), but the
+## next night, any time of year, while their protection areas have room; a nest hatches enough
+## to fill that room and the rest swim off into the open ocean (a storm-hit nest's one goes
+## too); hatchlings are grown on their 7th day (6 days) and can nest too.
 ## Run: godot --headless --path . --script res://tests/test_seasons.gd --quit-after 300000
 
 var _failed := false
@@ -39,7 +40,7 @@ func _initialize() -> void:
 	_expect(turtle.nest_interval() == 40, "the rest of the year only every 40 days")
 	_expect(turtle.mature(), "the island's own turtle can nest")
 
-	# --- Young: 8 days to grow up, nesting from the next spring ---
+	# --- Young: grown on the 7th day, nesting as soon as they're grown ---
 	clock.day = 5
 	var young: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 	young.set("data", turtle_data)
@@ -47,16 +48,17 @@ func _initialize() -> void:
 	young.set("born_at", 5.0)
 	young.position = Vector2(-500, 100)
 	world.add_child(young)
-	_expect(is_equal_approx(turtle_data.grow_days, 8.0), "hatchlings take 8 days to grow up")
+	_expect(is_equal_approx(turtle_data.grow_days, 6.0), "hatchlings are grown on their 7th day")
 	young.grow_up()
 	clock.day = 20
-	_expect(not young.mature(), "grown up in spring, it doesn't nest until next spring")
-	clock.day = 121
-	_expect(young.mature(), "next spring it nests too")
+	_expect(young.mature(), "grown, it can nest too (no waiting for the next spring)")
 
-	# --- One hatchling stays, the rest swim off ---
+	# --- A nest fills the room there is; the rest swim off ---
 	clock.day = 6
 	var area: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
+	clock.day = 50
+	_expect(turtle.nest_interval() == 1, "a protection area with room: she nests the next night, even in summer")
+	clock.day = 6
 	var babies := func() -> Array:
 		return get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.data == turtle_data and a.young and a.born_at > 5.5)
 	var nest: Node2D = load("res://scenes/animals/nest.tscn").instantiate()
@@ -65,10 +67,12 @@ func _initialize() -> void:
 	nest.position = area.global_position
 	world.add_child(nest)
 	await process_frame
+	var room: int = load("res://scripts/animals/nest.gd").island_room(nest, turtle_data)
 	nest.hatch()
 	var hatched: Array = babies.call()
-	_expect(hatched.size() == 3 and hatched.filter(func(a: Node) -> bool: return not a.leaving).size() == 1,
-		"3 hatchlings: 1 stays, 2 swim off into the open ocean (%d stay)" % hatched.filter(func(a: Node) -> bool: return not a.leaving).size())
+	var stayed: int = hatched.filter(func(a: Node) -> bool: return not a.leaving).size()
+	_expect(room > 0 and stayed == room and hatched.size() >= 3,
+		"%d hatchlings: %d stay to fill the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
 	for baby: Node in hatched:
 		baby.free()
 	var hit: Node2D = load("res://scenes/animals/nest.tscn").instantiate()

@@ -138,6 +138,13 @@ extends Resource
 @export var grow_days := 2.0
 ## How far a grown-up wanders around its own spot.
 @export var adult_home_radius := 200.0
+## Its young's own pictures while growing up: [baby, young] (empty = a smaller picture of the
+## grown one). Each stage lasts half of grow_days: fast growers (grow_days 2) are grown on
+## their 3rd day, medium (4) on the 5th, slow (6) on the 7th.
+@export var young_sprites: Array[Texture2D] = []
+## New ones drift in from beyond the island's edge instead of being born there (fish, clams,
+## squid: their eggs and larvae drift in the open sea before they settle).
+@export var drifts_in := false
 @export_multiline var nest_fact: String
 ## Special situations to photograph it in (the Journal keeps the first photo of each).
 @export var moments: Array[PhotoMoment] = []

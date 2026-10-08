@@ -153,8 +153,8 @@ func _initialize() -> void:
 	nest2.hatch()
 	await physics_frame
 	var leaving_now := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving).size()
-	_expect(second.animals_here() == 3 and leaving_now == 0,
-		"hatchlings fill the empty second area first (%d there, %d leaving)" % [second.animals_here(), leaving_now])
+	_expect(second.animals_here() == second.capacity() and leaving_now == 0,
+		"hatchlings fill the empty second area (%d there, %d leaving)" % [second.animals_here(), leaving_now])
 
 	# --- Loading a save re-links turtles to areas with room, not all to the nearest one ---
 	var areas := get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"turtle_protection_area")

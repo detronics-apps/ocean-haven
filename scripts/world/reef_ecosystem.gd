@@ -372,8 +372,7 @@ func _follow(species: AnimalData, target: int) -> void:
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
 	var homes := _homes(species)
 	var spot := _patch_water(patches().pick_random()) if homes.is_empty() else Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["water", ""])
-	_spawn(species, spot)
-	get_tree().call_group("hud", "animal_returned", species, "It has come to the reef: %s" % _why(species), region())
+	Births.bring(_spawn(species, spot), region(), "It has come to the reef: %s" % _why(species))
 
 
 func _why(species: AnimalData) -> String:

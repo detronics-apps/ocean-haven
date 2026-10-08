@@ -39,3 +39,4 @@ surface_seconds = Vector2(4, 6)
 dive_seconds = Vector2(10, 16)
 adult_home_radius = 120.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+drifts_in = true

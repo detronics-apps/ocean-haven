@@ -59,3 +59,4 @@ boat_shy_distance = 120.0
 can_tangle = true
 adult_home_radius = 260.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_3"), SubResource("Moment_2")])
+grow_days = 6.0

@@ -52,3 +52,4 @@ discover_distance = 100.0
 interact_distance = 70.0
 lives_at = &"water_treatment_facility"
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_3"), SubResource("Moment_2")])
+drifts_in = true

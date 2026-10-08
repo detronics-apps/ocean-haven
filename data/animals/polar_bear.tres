@@ -40,3 +40,4 @@ interact_distance = 140.0
 lives_at = &"quiet_den_area"
 adult_home_radius = 160.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 6.0

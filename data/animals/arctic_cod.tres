@@ -35,3 +35,4 @@ shy_distance = 50.0
 discover_distance = 110.0
 curious = false
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+drifts_in = true

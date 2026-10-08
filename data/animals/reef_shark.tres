@@ -40,3 +40,4 @@ can_tangle = true
 lives_at = &"shark_protection_zone"
 adult_home_radius = 220.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 4.0

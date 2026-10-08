@@ -47,3 +47,4 @@ interact_distance = 70.0
 digs_up_litter = true
 can_tangle = true
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+grow_days = 2.0

@@ -58,3 +58,4 @@ seeds_tree = ExtResource("seed_palm")
 seeds_from = &"home_island"
 seeds_to = &"tropical_reef"
 seeds_news = "Have you seen? A little palm has come up on the island, the first tree we've ever had here! The boobies from the {from} must have brought the seed."
+grow_days = 4.0

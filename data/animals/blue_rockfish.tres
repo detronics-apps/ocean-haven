@@ -35,3 +35,4 @@ curious = false
 discover_distance = 110.0
 settles_near = &"kelp_beds"
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+drifts_in = true

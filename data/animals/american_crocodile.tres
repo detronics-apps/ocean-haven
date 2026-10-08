@@ -40,3 +40,4 @@ interact_distance = 110.0
 boat_shy_distance = 120.0
 adult_home_radius = 160.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 6.0

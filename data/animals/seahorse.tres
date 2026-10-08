@@ -40,3 +40,4 @@ interact_distance = 70.0
 can_tangle = true
 lives_at = &"seagrass_protection_area"
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+drifts_in = true

@@ -53,8 +53,6 @@ const SPOT_RANGE := 72.0
 ## Otters settled at a habitat only move away when food falls below this share of what they
 ## need (they ride out lean days while the kelp grows back).
 @export var leave_below := 0.5
-## Chance that a new otter is a pup born on the island (with 2+ grown otters), not a newcomer.
-@export var pup_chance := 0.5
 @export_group("Fish and birds")
 ## Kelp fish the forest supports per healthy bed (health at least healthy_bed_at).
 @export var fish_per_bed := 0.5
@@ -435,8 +433,6 @@ func _follow(species: AnimalData, target: int) -> void:
 	if species.flies:
 		animal.home_radius = 360.0
 		animal.position = region().center + Vector2(randf_range(-200.0, 200.0), randf_range(-200.0, 200.0))
-		get_tree().call_group("hud", "animal_returned", species,
-			"It has come to fish in the Kelp Forest: there are enough fish now!", region())
 	else:
 		# At a healthy bed with few fish yet.
 		var best: KelpBed = null
@@ -451,6 +447,8 @@ func _follow(species: AnimalData, target: int) -> void:
 		animal.position = best.global_position + Vector2(randf_range(-16.0, 16.0), randf_range(-16.0, 16.0))
 	world.add_child(animal)
 	world.move_child(animal, world.get_node("Player").get_index())
+	Births.bring(animal, region(), "It has come to fish in the Kelp Forest: there are enough fish now!" if species.flies
+		else "It has come to a healthy kelp bed.")
 
 
 func _move_away(otter: Animal, why: String) -> void:
@@ -459,27 +457,18 @@ func _move_away(otter: Animal, why: String) -> void:
 	get_tree().call_group("hud", "show_toast", "A sea otter has moved away: %s." % why)
 
 
-## A newcomer from along the coast, or (with 2+ grown otters here) a pup.
-func _new_otter(species: AnimalData, home: Building, all: Array[Animal]) -> void:
-	var grown := all.filter(func(o: Animal) -> bool: return not o.young)
-	var pup := grown.size() >= 2 and randf() < pup_chance
+## A new otter at `home`: a pup, born beside one of the island's otters there (Births).
+func _new_otter(species: AnimalData, home: Building, _all: Array[Animal]) -> void:
 	var otter: Animal = load("res://scenes/animals/animal.tscn").instantiate()
 	otter.data = species
 	otter.home_area = home
 	otter.home_radius = species.adult_home_radius
-	if pup:
-		var parent: Animal = grown.pick_random()
-		otter.young = true
-		otter.born_at = GameClock.now()
-		otter.position = parent.global_position
-	else:
-		otter.born_at = maxf(GameClock.now() - species.grow_days, 0.0)  # grown: counted and saved like the island's own
-		otter.position = Terrain.nearest(get_tree(), home.global_position, ["water", ""])
+	otter.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
+	otter.position = Terrain.nearest(get_tree(), home.global_position, ["water", ""])
 	var world := get_tree().get_first_node_in_group("player").get_parent()
 	world.add_child(otter)
 	world.move_child(otter, world.get_node("Player").get_index())
-	get_tree().call_group("hud", "animal_returned", species, ("A pup was born near your %s!" if pup
-		else "It has settled at your %s: the kelp around it can feed it.") % home.data.display_name, region())
+	Births.bring(otter, region(), "A pup was born at your %s: the kelp around it can feed it." % home.data.display_name)
 
 
 ## Heavy swell tears up kelp: `share` of the beds lose up to `damage` health (marked as

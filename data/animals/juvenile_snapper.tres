@@ -36,3 +36,4 @@ curious = false
 interact_distance = 80.0
 grow_days = 2.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+drifts_in = true

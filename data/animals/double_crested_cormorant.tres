@@ -46,3 +46,4 @@ nests_in_trees = true
 perched_sprite = ExtResource("3_corm")
 can_tangle = true
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+grow_days = 4.0
