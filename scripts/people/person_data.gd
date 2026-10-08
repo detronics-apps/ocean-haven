@@ -39,4 +39,6 @@ extends Resource
 @export var hat_colour := Color("d9c27a")
 
 @export_group("Talk")
+## Said first while a polar bear is at camp (rubbish drew it in): they're nervous ("!" in red).
+@export_multiline var scared_line: String
 @export var topics: Array[TalkTopic] = []

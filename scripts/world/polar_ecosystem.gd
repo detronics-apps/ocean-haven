@@ -195,6 +195,10 @@ func _process(delta: float) -> void:
 		return
 	if not _seeded:
 		_seed()
+	_camp_check -= delta
+	if _camp_check <= 0.0:
+		_camp_check = 2.0
+		check_camp()
 	_wake_check -= delta
 	if _wake_check <= 0.0:
 		_wake_check = 0.5
@@ -212,6 +216,61 @@ func _process(delta: float) -> void:
 		ticks += 1
 	if now - _last_tick >= tick_days:
 		_last_tick = now
+
+
+## Rubbish near camp (litter by the tent or house, the research station or centre) draws a polar
+## bear in by its smell: the researchers get nervous (People.nervous), the skua circles it. No
+## building keeps it away: once the litter is cleared, the bear slowly wanders back to the ice.
+const CAMP_RANGE := 200.0
+const RUBBISH_DRAWS_BEAR := 2
+const BEAR_AT_CAMP := &"bear_at_camp"
+var _camp_check := 0.0
+
+
+## Litter lying near camp on this island.
+func camp_rubbish() -> int:
+	var camp := _camp()
+	if camp.is_empty():
+		return 0
+	return get_tree().get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+		return (not d.is_queued_for_deletion() and d.item.is_litter and Regions.nearest(d.global_position) == region()
+			and camp.any(func(b: Building) -> bool: return b.global_position.distance_to(d.global_position) <= CAMP_RANGE))).size()
+
+
+func _camp() -> Array[Building]:
+	return _buildings_where(func(b: Building) -> bool:
+		return b.data.action == &"sleep" or b.data.id in [&"polar_research_station", &"polar_research_centre"])
+
+
+## Draws the bear to camp, or sends it back to the ice (checked every couple of seconds while the
+## ranger is on the island).
+func check_camp() -> void:
+	if not Regions.ranger_on(get_tree(), region()):
+		return
+	var bears := living(BEAR)
+	if bears.is_empty():
+		return
+	var bear: Animal = bears[0]
+	var rubbish := camp_rubbish()
+	if rubbish >= RUBBISH_DRAWS_BEAR and not Fleet.has_flag(BEAR_AT_CAMP):
+		Fleet.mark(BEAR_AT_CAMP)
+		get_tree().call_group("hud", "show_toast", "A polar bear has smelled the rubbish around camp and come to look! The researchers are nervous. Clear the litter and it'll wander back to the ice.")
+	elif rubbish == 0 and Fleet.has_flag(BEAR_AT_CAMP):
+		Fleet.unmark(BEAR_AT_CAMP)
+		bear.restore_young(bear.global_position, _home_spot(BEAR))
+		get_tree().call_group("hud", "show_toast", "The rubbish is gone, and the polar bear is slowly wandering back to the ice.")
+	if Fleet.has_flag(BEAR_AT_CAMP):
+		var camp := _camp()
+		if not camp.is_empty() and bear.global_position.distance_to(camp[0].global_position) > 120.0:
+			bear.restore_young(bear.global_position, camp[0].global_position + Vector2(90, 40))
+
+
+func _buildings_where(which: Callable) -> Array[Building]:
+	var list: Array[Building] = []
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if not building.is_queued_for_deletion() and Regions.nearest(building.global_position) == region() and which.call(building):
+			list.append(building)
+	return list
 
 
 func tick(days: float) -> void:
@@ -631,6 +690,8 @@ func trouble() -> Vector2:
 	for zone in _buildings(&"seal_pupping_zone"):
 		if not on_old_ice(zone):
 			return zone.global_position
+	if Fleet.has_flag(BEAR_AT_CAMP) and not living(BEAR).is_empty():
+		return living(BEAR)[0].global_position  # (a bear drawn to camp by rubbish)
 	if corridor_score() < corridor_needed:
 		var bears := living(BEAR)
 		if not bears.is_empty():

@@ -122,6 +122,11 @@ func count_of(id: StringName) -> int:
 
 
 ## Marks a progress flag and checks the objectives.
+## Clears a flag that comes and goes (e.g. "bear_at_camp").
+func unmark(flag: StringName) -> void:
+	_flags.erase(flag)
+
+
 func mark(flag: StringName) -> void:
 	if _flags.has(flag):
 		return

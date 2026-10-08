@@ -125,6 +125,7 @@ lines = PackedStringArray("What does this mean for the whole ocean? That's the q
 
 [resource]
 script = ExtResource("1_p")
+scared_line = "{name}! There's a polar bear right by camp! It must smell the rubbish lying about. Please clear it up, quickly, and it'll wander back to the ice."
 id = &"sanna"
 display_name = "Dr. Sanna Lind"
 short_name = "Sanna"

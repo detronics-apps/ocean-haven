@@ -187,7 +187,7 @@ func to_thank(person: PersonData) -> TalkTopic:
 
 ## Whether they've something new for the ranger (a question, or a thank-you): shown above them.
 func has_news(person: PersonData) -> bool:
-	if not has_met(person):
+	if not has_met(person) or nervous(person):
 		return true
 	if person.role != &"objective":
 		return false
@@ -197,6 +197,11 @@ func has_news(person: PersonData) -> bool:
 	return question != null and not is_given(person, question)
 
 
+## Whether `person` is nervous: a polar bear is at camp on their island (rubbish drew it in).
+func nervous(person: PersonData) -> bool:
+	return person.scared_line != "" and Fleet.has_flag(&"bear_at_camp")
+
+
 ## Talks to `person`: the lines they say now, as [{"who": name, "text": line}]. Asking a
 ## question gives its objective a moment later.
 func talk(person: PersonData) -> Array[Dictionary]:
@@ -204,6 +209,8 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	_met[person.id] = true
 	talked.emit(person)
 	var said: Array[String] = []
+	if nervous(person):
+		said.append(person.scared_line)
 	var greeting := _chat(person, first, true)
 	if greeting:
 		said.append_array(greeting.lines)

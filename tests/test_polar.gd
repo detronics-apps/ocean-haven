@@ -155,6 +155,36 @@ func _initialize() -> void:
 	var event: Resource = load("res://data/events/ice_breakup.tres")
 	_expect(event.min_gap_days == 30 and event.max_gap_days == 60 and event.ice_breakup > 0.0, "ice breakups come 30-60 days apart")
 
+	# --- Rubbish near camp draws a polar bear in; cleared, it wanders back to the ice ---
+	var tent: Node2D = build_mode.add_building(load("res://data/buildings/tent.tres"), terrain.cell_of(terrain.nearest(self, polar.arrival, ["rock", "ice"])))
+	player.global_position = tent.global_position + Vector2(0, 40)
+	var spawner: Node = world.get_node("PolarLitter")
+	var bottle: Resource = load("res://data/items/plastic_bottle.tres")
+	for d in get_nodes_in_group("debris").filter(func(d: Node2D) -> bool: return d.global_position.distance_to(tent.global_position) < 260.0):
+		d.free()
+	eco.check_camp()
+	_expect(not fleet.has_flag(&"bear_at_camp"), "a clean camp: no bear")
+	var litter: Array = []
+	for i in 2:
+		litter.append(spawner.spawn_at(bottle, tent.global_position + Vector2(40 + i * 20, 30), false))
+	eco.check_camp()
+	var sanna: Resource = load("res://data/people/sanna.tres")
+	var people := root.get_node("People")
+	_expect(fleet.has_flag(&"bear_at_camp") and eco.camp_rubbish() == 2, "rubbish by the tent draws a polar bear to camp")
+	var bear: Node2D = eco.living(bear_data)[0]
+	var camp_home: Vector2 = bear.get("_home")
+	_expect(camp_home.distance_to(tent.global_position) < 150.0, "it heads for camp")
+	_expect(people.nervous(sanna) and people.has_news(sanna), "the researchers are nervous (a red '!')")
+	var said: Array = people.talk(sanna).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(said[0].contains("polar bear right by camp"), "Sanna says so first (%s)" % said[0])
+	_expect(eco.trouble().distance_to(bear.global_position) < 1.0, "the skua circles the bear")
+	for d in litter:
+		d.free()
+	eco.check_camp()
+	_expect(not fleet.has_flag(&"bear_at_camp") and not people.nervous(sanna), "cleared: the bear wanders back to the ice, and everyone calms down")
+	_expect(bear.get("_home").distance_to(camp_home) > 10.0, "back towards its den")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

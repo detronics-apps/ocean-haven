@@ -55,6 +55,7 @@ func _process(delta: float) -> void:
 	_check = 1.0
 	_settle()
 	_news.visible = People.has_news(data)
+	_news.add_theme_color_override("font_color", Color("ff6a4d") if People.nervous(data) else Color("f6d36b"))  # (red: scared)
 
 
 ## Their layered look, from the avatar parts (no ranger profile: their own colours).

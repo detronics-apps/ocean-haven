@@ -48,6 +48,7 @@ lines = PackedStringArray("The ice remembers everything. So do my notebooks.")
 
 [resource]
 script = ExtResource("1_p")
+scared_line = "Stay close, {name}, there's a bear about! Forty winters up here and they still make my heart race. It's the rubbish that drew it: clear that, and it'll leave on its own."
 id = &"erik"
 display_name = "Erik Holm"
 short_name = "Erik"
