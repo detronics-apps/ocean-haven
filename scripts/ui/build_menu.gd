@@ -21,7 +21,7 @@ var _have: Label
 
 func _ready() -> void:
 	super()
-	_title.text = "Build"
+	_title.text = "Make"
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
 	var group := ButtonGroup.new()

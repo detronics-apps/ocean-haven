@@ -146,7 +146,7 @@ script = ExtResource("2_goal")
 kind = &"flag"
 target = &"wreck_found"
 text = "Find what's hidden off the coast (a coastal survey from your Marine Search & Rescue Station)"
-hint = "Build the Marine Search & Rescue Station (Build menu), then send its Coastal survey mission."
+hint = "Build the Marine Search & Rescue Station (Make menu), then send its Coastal survey mission."
 
 [sub_resource type="Resource" id="Goal_cleared"]
 script = ExtResource("2_goal")

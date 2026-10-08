@@ -75,7 +75,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 44)
 layout_mode = 2
 focus_mode = 0
-text = "Build"
+text = "Make"
 
 [node name="JournalButton" type="Button" parent="MenuBar" unique_id=1015447356]
 unique_name_in_owner = true

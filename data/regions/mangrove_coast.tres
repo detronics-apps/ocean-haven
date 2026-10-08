@@ -63,7 +63,7 @@ script = ExtResource("4_goal")
 kind = &"flag"
 target = &"mangrove_flowing"
 text = "Get the water flowing: link 4 nursery pools to the sea (island health 70 %)"
-hint = "Use the shovel (Build menu) to dig channels through the mud from the sea to the inland pools. The Waterworks Station's water flow survey shows which pools are cut off."
+hint = "Use the shovel (Make menu) to dig channels through the mud from the sea to the inland pools. The Waterworks Station's water flow survey shows which pools are cut off."
 
 [sub_resource type="Resource" id="Goal_resin"]
 script = ExtResource("4_goal")

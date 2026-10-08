@@ -53,7 +53,7 @@ func _initialize() -> void:
 	clock.day = 20
 	_expect(young.mature(), "grown, it can nest too (no waiting for the next spring)")
 
-	# --- A nest fills the room there is; the rest swim off ---
+	# --- A nest hatches 3-4: those with room stay, the rest swim off ---
 	clock.day = 6
 	var area: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(14, -1))
 	clock.day = 50
@@ -71,8 +71,8 @@ func _initialize() -> void:
 	nest.hatch()
 	var hatched: Array = babies.call()
 	var stayed: int = hatched.filter(func(a: Node) -> bool: return not a.leaving).size()
-	_expect(room > 0 and stayed == room and hatched.size() >= 3,
-		"%d hatchlings: %d stay to fill the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
+	_expect(room > 0 and hatched.size() in [3, 4] and stayed == mini(room, hatched.size()),
+		"%d hatchlings (3-4 a nest): %d stay in the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
 	for baby: Node in hatched:
 		baby.free()
 	var hit: Node2D = load("res://scenes/animals/nest.tscn").instantiate()

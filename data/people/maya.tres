@@ -53,12 +53,12 @@ text = "Build the Marine Search & Rescue Station"
 [sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"station"
-lines = PackedStringArray("How do you think we'd see what's happening out on the water?", "> From a boat? | From up high?", "Good thinking! With a search and rescue station we could send boats out to look, and to help animals in trouble. Could you build one? It's in your Build menu.")
+lines = PackedStringArray("How do you think we'd see what's happening out on the water?", "> From a boat? | From up high?", "Good thinking! With a search and rescue station we could send boats out to look, and to help animals in trouble. Could you build one? It's in your Make menu.")
 objective = SubResource("Goal_5")
 thanks = PackedStringArray("A real station! I'm moving my notes in right away.")
-reminder = PackedStringArray("The Marine Search & Rescue Station is in your Build menu. I'll move my notes in as soon as it's up.")
+reminder = PackedStringArray("The Marine Search & Rescue Station is in your Make menu. I'll move my notes in as soon as it's up.")
 stuck_when = PackedStringArray("flag:build_menu_opened")
-stuck = PackedStringArray("You've looked in the Build menu? Building takes more than funding.", "Tom at the lighthouse has watched this island for fifty years. Ask him where to start.")
+stuck = PackedStringArray("You've looked in the Make menu? Building takes more than funding.", "Tom at the lighthouse has watched this island for fifty years. Ask him where to start.")
 
 [sub_resource type="Resource" id="Goal_6"]
 script = ExtResource("3_g")
@@ -141,10 +141,10 @@ text = "Stop the foam boxes at their source"
 [sub_resource type="Resource" id="Topic_11"]
 script = ExtResource("2_t")
 id = &"boxes"
-lines = PackedStringArray("What could the boats pack their fish in instead?", "> Stronger boxes? | Ask Tom!", "Tom remembers how they did it in his father's day. A Box Return Depot by the dock could do the same: it's in your Build menu.")
+lines = PackedStringArray("What could the boats pack their fish in instead?", "> Stronger boxes? | Ask Tom!", "Tom remembers how they did it in his father's day. A Box Return Depot by the dock could do the same: it's in your Make menu.")
 objective = SubResource("Goal_11")
 thanks = PackedStringArray("No more foam! The same boxes go out on the boats, trip after trip.", "We didn't just clean the beach this time. We stopped it getting dirty.")
-reminder = PackedStringArray("The Box Return Depot is in your Build menu: sturdy boxes that come back to be washed and used again.")
+reminder = PackedStringArray("The Box Return Depot is in your Make menu: sturdy boxes that come back to be washed and used again.")
 
 [sub_resource type="Resource" id="Goal_12"]
 script = ExtResource("3_g")

@@ -700,8 +700,9 @@ stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_s
 crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
 polar bears); dolphins, whales and sharks just grow. Trees show sapling and young pictures
 (PalmTree.stage_textures). Turtles: while their protection areas have room any grown turtle
-nests the next night in any season and a nest hatches enough to fill it (Nest.island_room);
-no next-spring rule. Photo moments: at most 5 everyday ones per species (3 grown poses or
+nests the next night in any season; a nest hatches 3-4 (AnimalData.hatchlings or one more),
+those with room stay, the rest swim off; no next-spring rule. The HUD's Build button is
+"Make" (buildings, planting, the shovel: the Make menu). Photo moments: at most 5 everyday ones per species (3 grown poses or
 places plus a baby and a young one, or 4 plus one young; conditions baby / juvenile /
 standing / resting / taking_flight / resting_pose / swimming), plus an uncounted gold bonus.
 

@@ -33,10 +33,10 @@ text = "Build the Polar Research Station"
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"station"
-lines = PackedStringArray("Some of this ice is older than anyone alive. What do you think it remembers?", "> The weather long ago? | Nothing?", "Layers and layers of it! First we need a research station, on the rock. It's in your Build menu.")
+lines = PackedStringArray("Some of this ice is older than anyone alive. What do you think it remembers?", "> The weather long ago? | Nothing?", "Layers and layers of it! First we need a research station, on the rock. It's in your Make menu.")
 objective = SubResource("Goal_3")
 thanks = PackedStringArray("The station is up. Now we can watch the ice through the year.")
-reminder = PackedStringArray("The Polar Research Station goes on rock: it's in your Build menu.")
+reminder = PackedStringArray("The Polar Research Station goes on rock: it's in your Make menu.")
 
 [sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")
@@ -116,7 +116,7 @@ id = &"filters"
 lines = PackedStringArray("The fibres come from laundry far away. How could we catch them before they reach the sea?", "> A filter? | Ask Kai!", "Kai the engineer at the Tropical Reef has been drawing a filter for washing machines. Build his Filter Workshop there.")
 objective = SubResource("Goal_9")
 thanks = PackedStringArray("Filters! The fibres are caught in every wash, before they reach the sea.", "It only works because so many people help. That's true of everything we've done.")
-reminder = PackedStringArray("Kai's Filter Workshop is in the Build menu on the Tropical Reef.")
+reminder = PackedStringArray("Kai's Filter Workshop is in the Make menu on the Tropical Reef.")
 
 [sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")

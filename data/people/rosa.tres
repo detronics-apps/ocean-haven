@@ -36,7 +36,7 @@ id = &"station"
 lines = PackedStringArray("The young fish used to grow up in the pools back in the mangroves. Why do you think they've gone?", "> The pools are cut off? | The water's bad?", "Maybe both. A waterworks station could show us where the water goes, and where it doesn't.")
 objective = SubResource("Goal_3")
 thanks = PackedStringArray("Now we can see the water! Some of those pools haven't had fresh sea water in years.")
-reminder = PackedStringArray("The Waterworks Station is in your Build menu. Then we'll see where the water flows.")
+reminder = PackedStringArray("The Waterworks Station is in your Make menu. Then we'll see where the water flows.")
 
 [sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")
@@ -87,7 +87,7 @@ id = &"ship"
 lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Mangrove Resin to it. Then we'd find out.")
 objective = SubResource("Goal_7")
 thanks = PackedStringArray("Fair winds, {name}. There are more fish here than when I was young.")
-reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Mangrove Resin at the ship (Explore).")
+reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Make menu. Fit the Mangrove Resin at the ship (Explore).")
 
 [sub_resource type="Resource" id="Goal_8"]
 script = ExtResource("3_g")
@@ -114,10 +114,10 @@ text = "Stop the plastic bags at their source"
 [sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"weaving"
-lines = PackedStringArray("What do you think people carried their fish in before plastic?", "> Baskets? | Ask Samuel!", "Samuel's family wove baskets. Ask him, then build a Weaving Workshop: it's in your Build menu now.")
+lines = PackedStringArray("What do you think people carried their fish in before plastic?", "> Baskets? | Ask Samuel!", "Samuel's family wove baskets. Ask him, then build a Weaving Workshop: it's in your Make menu now.")
 objective = SubResource("Goal_9")
 thanks = PackedStringArray("Baskets at the market! One basket lasts for years of market days, and when it wears out it rots away like a leaf.")
-reminder = PackedStringArray("The Weaving Workshop is in your Build menu. Samuel knows the leaves to use.")
+reminder = PackedStringArray("The Weaving Workshop is in your Make menu. Samuel knows the leaves to use.")
 
 [sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")

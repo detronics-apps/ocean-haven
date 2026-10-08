@@ -69,7 +69,7 @@ script = ExtResource("4_goal")
 kind = &"flag"
 target = &"deep_mapped"
 text = "Map the deep (6 of the 8 dark areas) and bring the island to 70 %"
-hint = "The dark patches are deep water nobody has mapped yet. Build Hydrophone Buoys and Deep Cameras (Build menu) to map them, or send a Submarine dive from the Deep-Ocean Outpost. Too many lamps and too much noise drive the animals away."
+hint = "The dark patches are deep water nobody has mapped yet. Build Hydrophone Buoys and Deep Cameras (Make menu) to map them, or send a Submarine dive from the Deep-Ocean Outpost. Too many lamps and too much noise drive the animals away."
 
 [sub_resource type="Resource" id="Goal_located"]
 script = ExtResource("4_goal")

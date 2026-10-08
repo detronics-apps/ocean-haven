@@ -33,10 +33,10 @@ text = "Build the Deep-Ocean Outpost"
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"outpost"
-lines = PackedStringArray("What do you think lives in the dark?", "> Monsters? | Nothing at all?", "Ha! Let's find out. An outpost would let me take the submarine down. It's in your Build menu.")
+lines = PackedStringArray("What do you think lives in the dark?", "> Monsters? | Nothing at all?", "Ha! Let's find out. An outpost would let me take the submarine down. It's in your Make menu.")
 objective = SubResource("Goal_3")
 thanks = PackedStringArray("The outpost is up! Now we can go down.")
-reminder = PackedStringArray("The Deep-Ocean Outpost is in your Build menu.")
+reminder = PackedStringArray("The Deep-Ocean Outpost is in your Make menu.")
 
 [sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")
@@ -100,7 +100,7 @@ id = &"ship"
 lines = PackedStringArray("What do you think lies past these waters?", "> More islands? | Let's go and see!", "Build this island's Exploration Ship beside two dock planks, and fit the Cargo Module to it. Then we'd find out.")
 objective = SubResource("Goal_8")
 thanks = PackedStringArray("Where next, {name}? North, maybe. The ice holds secrets too.")
-reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Build menu. Fit the Cargo Module at the ship (Explore).")
+reminder = PackedStringArray("The Exploration Ship goes beside two dock planks, from the Make menu. Fit the Cargo Module at the ship (Explore).")
 
 [sub_resource type="Resource" id="Goal_9"]
 script = ExtResource("3_g")
@@ -143,10 +143,10 @@ marks = &"gear_asked"
 script = ExtResource("2_t")
 id = &"netpoint"
 when = PackedStringArray("installed:cargo_module")
-lines = PackedStringArray("What if the fishers had somewhere to bring their old nets, and every new net carried its boat's mark?", "> Lost nets get found! | Ask Bram!", "Bram fished these waters for forty years. A Net Return Point by the dock would do both: it's in your Build menu.")
+lines = PackedStringArray("What if the fishers had somewhere to bring their old nets, and every new net carried its boat's mark?", "> Lost nets get found! | Ask Bram!", "Bram fished these waters for forty years. A Net Return Point by the dock would do both: it's in your Make menu.")
 objective = SubResource("Goal_9c")
 thanks = PackedStringArray("Old nets come back to be recycled, and a lost marked net gets reported and fetched. No new nets or line in the sea, anywhere.")
-reminder = PackedStringArray("The Net Return Point is in your Build menu: old nets recycled, new ones marked.")
+reminder = PackedStringArray("The Net Return Point is in your Make menu: old nets recycled, new ones marked.")
 
 [sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")

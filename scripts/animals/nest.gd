@@ -138,10 +138,11 @@ func hatch() -> void:
 	if is_queued_for_deletion():
 		return  # already hatched this frame
 	var world := get_parent()
-	# Enough hatch to fill the room the island has for them (at least `hatchlings`); those
-	# stay, the rest swim off into the open ocean, as most real hatchlings do. A storm-hit
-	# nest's one hatchling is swept out too.
-	var count := 1 if storm_hit else clampi(island_room(self, species), species.hatchlings, MAX_HATCHLINGS)
+	# `hatchlings` or one more hatch (3-4 for turtles); those with room on the island stay, the
+	# rest swim off into the open ocean, as most real hatchlings do. While there's room the
+	# turtles nest every night, so the island fills up over a few nights. A storm-hit nest's
+	# one hatchling is swept out too.
+	var count := 1 if storm_hit else randi_range(species.hatchlings, species.hatchlings + 1)
 	for i in count:
 		var stays := not storm_hit and (species.stay_per_nest <= 0 or i < species.stay_per_nest)
 		var home := _area_with_room() if stays else null
@@ -156,10 +157,6 @@ func hatch() -> void:
 		baby.call("crawl_to_sea")
 	Journal.record_hatch(species, count)
 	queue_free()
-
-
-## Most hatchlings one nest can have (when the island has a lot of room for them).
-const MAX_HATCHLINGS := 12
 
 
 ## How many more of `species` the nesting areas on `at`'s island can take.
