@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = true
 id = &"refill_bar"
 display_name = "Harbour Refill Bar"
 description = "Ines's drinks come in big kegs that go back to be refilled, and the cups are washed and used again. No cans, so no plastic rings: none drift in on any island."

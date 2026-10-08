@@ -192,7 +192,8 @@ func actions() -> Array:
 		if carried > 0:
 			list.append({"label": "Store everything (%d)" % carried, "do": store_all})
 		list.append({"label": "Look in storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
-	list.append({"label": "What is this?", "do": get_tree().call_group.bind("building_info", "open_for", self)})
+	if data.explains:  # (real buildings only: not docks, buoys, cameras, zones or trees)
+		list.append({"label": "What is this?", "do": get_tree().call_group.bind("building_info", "open_for", self)})
 	if data.movable:
 		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
 	if data.demolishable:

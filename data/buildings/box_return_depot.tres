@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = true
 id = &"box_return_depot"
 display_name = "Box Return Depot"
 description = "The fishing boats pack their catch in sturdy boxes that come back here to be washed and used again, trip after trip. No foam boxes: none drift in on any island."

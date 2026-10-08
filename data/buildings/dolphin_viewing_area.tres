@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_dva")
+explains = true
 id = &"dolphin_viewing_area"
 display_name = "Dolphin Viewing Area"
 description = "A shady deck on the shore where visitors watch the dolphins from a respectful distance. More dolphins in view, more visitors."

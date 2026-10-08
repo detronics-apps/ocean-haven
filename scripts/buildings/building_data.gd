@@ -169,6 +169,9 @@ extends Resource
 ## What interacting with it does: "" (nothing), "sleep", "explore" (the Exploration Ship) or
 ## "missions" (a signature facility: send missions, see Missions).
 @export var action: StringName
+## A real building someone might forget the purpose of (it looks like another house):
+## it offers "What is this?". Built items (docks, buoys, cameras, zones, trees) don't.
+@export var explains := false
 ## Short, accurate fact shown when it's built (and in "What is this?").
 @export_multiline var fact: String
 
