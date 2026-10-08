@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="66" viewBox="-1 -1 42 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  
+  <rect x="19" y="54" width="2" height="6" fill="#371e16"/>
+  <ellipse cx="20" cy="53" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="21" cy="50" rx="3" ry="2" fill="#1f472f"/>
+</g><g transform="translate(1 0)">
+  
+  
+  <rect x="19" y="54" width="2" height="6" fill="#371e16"/>
+  <ellipse cx="20" cy="53" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="21" cy="50" rx="3" ry="2" fill="#1f472f"/>
+</g><g transform="translate(0 -1)">
+  
+  
+  <rect x="19" y="54" width="2" height="6" fill="#371e16"/>
+  <ellipse cx="20" cy="53" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="21" cy="50" rx="3" ry="2" fill="#1f472f"/>
+</g><g transform="translate(0 1)">
+  
+  
+  <rect x="19" y="54" width="2" height="6" fill="#371e16"/>
+  <ellipse cx="20" cy="53" rx="5" ry="3" fill="#173927"/>
+  <ellipse cx="21" cy="50" rx="3" ry="2" fill="#1f472f"/>
+</g></g>
+  <g id="art" data-size="40 64" data-box="0 0 40 64">
+  <!-- Shore pine seedling: a small tuft of needles. Trunk base at (20, 60). -->
+  <ellipse cx="20" cy="60" rx="4" ry="2" fill="#000000" fill-opacity="0.2"/>
+  <rect x="19" y="54" width="2" height="6" fill="#5e3d24"/>
+  <ellipse cx="20" cy="53" rx="5" ry="3" fill="#37643f"/>
+  <ellipse cx="21" cy="50" rx="3" ry="2" fill="#4d8455"/>
+</g>
+</svg>

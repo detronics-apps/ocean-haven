@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="11" viewBox="-1 -1 28 11" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="3" width="4" height="3" fill="#49492a"/>
+  <rect x="4" y="2" width="13" height="5" fill="#494e2d"/>
+  <rect x="6" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="10" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="14" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="17" y="3" width="8" height="3" fill="#59593d"/>
+  <rect x="18" y="2" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="3" width="4" height="3" fill="#49492a"/>
+  <rect x="4" y="2" width="13" height="5" fill="#494e2d"/>
+  <rect x="6" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="10" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="14" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="17" y="3" width="8" height="3" fill="#59593d"/>
+  <rect x="18" y="2" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="3" width="4" height="3" fill="#49492a"/>
+  <rect x="4" y="2" width="13" height="5" fill="#494e2d"/>
+  <rect x="6" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="10" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="14" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="17" y="3" width="8" height="3" fill="#59593d"/>
+  <rect x="18" y="2" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="3" width="4" height="3" fill="#49492a"/>
+  <rect x="4" y="2" width="13" height="5" fill="#494e2d"/>
+  <rect x="6" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="10" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="14" y="2" width="1" height="5" fill="#2c3121"/>
+  <rect x="17" y="3" width="8" height="3" fill="#59593d"/>
+  <rect x="18" y="2" width="1" height="1" fill="#21211a"/>
+</g></g>
+  <g id="art" data-size="26 9" data-box="0 0 26 9">
+  <!-- Young American crocodile: olive with fading dark bands, pale narrow snout -->
+  <rect x="0" y="3" width="4" height="3" fill="#8a8a50"/>
+  <rect x="4" y="2" width="13" height="5" fill="#8e9658"/>
+  <rect x="6" y="2" width="1" height="5" fill="#4a5030"/>
+  <rect x="10" y="2" width="1" height="5" fill="#4a5030"/>
+  <rect x="14" y="2" width="1" height="5" fill="#4a5030"/>
+  <rect x="17" y="3" width="8" height="3" fill="#b0b07a"/>
+  <rect x="18" y="2" width="1" height="1" fill="#2a2a1a"/>
+</g>
+</svg>

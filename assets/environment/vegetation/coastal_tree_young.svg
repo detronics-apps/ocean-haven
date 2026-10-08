@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="66" viewBox="-1 -1 42 66" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  
+  <rect x="18" y="52" width="4" height="8" fill="#3c2016"/>
+  <polygon points="20,40 9,53 31,53" fill="#143526"/>
+  <polygon points="20,32 11,45 29,45" fill="#18402b"/>
+  <polygon points="20,25 14,36 26,36" fill="#1f4b30"/>
+</g><g transform="translate(1 0)">
+  
+  
+  <rect x="18" y="52" width="4" height="8" fill="#3c2016"/>
+  <polygon points="20,40 9,53 31,53" fill="#143526"/>
+  <polygon points="20,32 11,45 29,45" fill="#18402b"/>
+  <polygon points="20,25 14,36 26,36" fill="#1f4b30"/>
+</g><g transform="translate(0 -1)">
+  
+  
+  <rect x="18" y="52" width="4" height="8" fill="#3c2016"/>
+  <polygon points="20,40 9,53 31,53" fill="#143526"/>
+  <polygon points="20,32 11,45 29,45" fill="#18402b"/>
+  <polygon points="20,25 14,36 26,36" fill="#1f4b30"/>
+</g><g transform="translate(0 1)">
+  
+  
+  <rect x="18" y="52" width="4" height="8" fill="#3c2016"/>
+  <polygon points="20,40 9,53 31,53" fill="#143526"/>
+  <polygon points="20,32 11,45 29,45" fill="#18402b"/>
+  <polygon points="20,25 14,36 26,36" fill="#1f4b30"/>
+</g></g>
+  <g id="art" data-size="40 64" data-box="0 0 40 64">
+  <!-- Young coastal conifer: three layers of boughs. Trunk base at (20, 60). -->
+  <ellipse cx="20" cy="60" rx="7" ry="2" fill="#000000" fill-opacity="0.2"/>
+  <rect x="18" y="52" width="4" height="8" fill="#6b4428"/>
+  <polygon points="20,40 9,53 31,53" fill="#2f5a3a"/>
+  <polygon points="20,32 11,45 29,45" fill="#3d7449"/>
+  <polygon points="20,25 14,36 26,36" fill="#4f8f5a"/>
+</g>
+</svg>

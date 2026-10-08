@@ -69,11 +69,14 @@ func _initialize() -> void:
 	_expect(not "Move Palm Tree" in palm_labels, "palms can't be moved: cut down and replant (%s)" % [palm_labels])
 	var clock := root.get_node("GameClock")
 	_expect(trunk.stage() == 0 and trunk.actions()[0].label == "Dig up sapling", "a new palm is small: dig it up")
-	clock.day += 1
-	_expect(trunk.stage() == 1, "a day later it's medium")
+	var palm_sprite: Sprite2D = trunk.get_node("Sprite2D")
+	_expect(palm_sprite.texture == trunk.stage_textures[0], "a sapling has its own picture (a sprouting coconut)")
 	clock.day += 1
 	await process_frame
-	_expect(trunk.stage() == 2 and trunk.get_node("Sprite2D").scale == Vector2.ONE, "another day: full grown")
+	_expect(trunk.stage() == 1 and palm_sprite.texture == trunk.stage_textures[1], "a day later it's a young palm, with its own picture")
+	clock.day += 1
+	await process_frame
+	_expect(trunk.stage() == 2 and palm_sprite.scale == Vector2.ONE and not palm_sprite.texture in trunk.stage_textures, "another day: full grown")
 	var saplings: int = inventory.count(&"sapling")
 	trunk.actions()[0].do.call()
 	await process_frame

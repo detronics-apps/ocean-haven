@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="8" viewBox="-1 -1 18 8" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
+  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
+  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
+  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
+  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
+  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
+  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
+  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
+  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
+  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
+  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
+  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
+  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
+  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+</g></g>
+  <g id="art" data-size="16 6" data-box="0 0 16 6">
+  <!-- American crocodile hatchling: yellow-tan with black bands, narrow snout -->
+  <rect x="0" y="2" width="3" height="2" fill="#c8b060"/>
+  <rect x="3" y="1" width="8" height="4" fill="#d8c070"/>
+  <rect x="4" y="1" width="1" height="4" fill="#2a2a1a"/>
+  <rect x="7" y="1" width="1" height="4" fill="#2a2a1a"/>
+  <rect x="10" y="1" width="1" height="4" fill="#2a2a1a"/>
+  <rect x="11" y="2" width="5" height="2" fill="#d0c078"/>
+  <rect x="12" y="1" width="1" height="1" fill="#f0e070"/>
+  <rect x="12" y="1" width="1" height="1" fill="#2a2a1a"/>
+</g>
+</svg>

@@ -27,6 +27,9 @@ var _nest: Sprite2D
 
 ## The sapling it grows from and gives back (each island's land trees have their own).
 @export var sapling: ItemData
+## Its own pictures while it grows: [sapling, young] (drawn on the grown tree's canvas, trunk
+## base in the same place). Empty: the grown picture, drawn smaller.
+@export var stage_textures: Array[Texture2D] = []
 ## What it is, for the Journal's Plants tab (found the first time the ranger comes close).
 @export var plant: PlantData
 const SPOT_RANGE := 90.0
@@ -138,8 +141,19 @@ var _snow_from: Node
 var _snow_looked := false
 
 
+var _grown_texture: Texture2D
+
+
 func _process(_delta: float) -> void:
-	$Sprite2D.scale = Vector2.ONE * STAGE_SIZE[stage()]
+	var sprite: Sprite2D = $Sprite2D
+	if not _grown_texture:
+		_grown_texture = sprite.texture
+	var now := stage()
+	if stage_textures.size() >= 2:
+		sprite.texture = stage_textures[now] if now < GROWN else _grown_texture
+		sprite.scale = Vector2.ONE
+	else:
+		sprite.scale = Vector2.ONE * STAGE_SIZE[now]
 	if not _snow_looked:
 		_snow_looked = true
 		var island := Regions.nearest(global_position)

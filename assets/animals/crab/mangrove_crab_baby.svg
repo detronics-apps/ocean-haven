@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="-1 -1 12 10" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="0" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="1" y="2" width="8" height="5" fill="#432b24"/>
+  <rect x="2" y="3" width="6" height="3" fill="#4b332a"/>
+  <rect x="1" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="7" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="3" y="1" width="1" height="1" fill="#211111"/>
+  <rect x="6" y="1" width="1" height="1" fill="#211111"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="0" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="1" y="2" width="8" height="5" fill="#432b24"/>
+  <rect x="2" y="3" width="6" height="3" fill="#4b332a"/>
+  <rect x="1" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="7" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="3" y="1" width="1" height="1" fill="#211111"/>
+  <rect x="6" y="1" width="1" height="1" fill="#211111"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="0" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="1" y="2" width="8" height="5" fill="#432b24"/>
+  <rect x="2" y="3" width="6" height="3" fill="#4b332a"/>
+  <rect x="1" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="7" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="3" y="1" width="1" height="1" fill="#211111"/>
+  <rect x="6" y="1" width="1" height="1" fill="#211111"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="0" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="3" width="1" height="1" fill="#351d1a"/>
+  <rect x="9" y="5" width="1" height="1" fill="#351d1a"/>
+  <rect x="1" y="2" width="8" height="5" fill="#432b24"/>
+  <rect x="2" y="3" width="6" height="3" fill="#4b332a"/>
+  <rect x="1" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="7" y="0" width="2" height="2" fill="#592524"/>
+  <rect x="3" y="1" width="1" height="1" fill="#211111"/>
+  <rect x="6" y="1" width="1" height="1" fill="#211111"/>
+</g></g>
+  <g id="art" data-size="10 8" data-box="0 0 10 8">
+  <!-- Mangrove crab baby, top-down: tiny, dull brown, small red claws -->
+  <rect x="0" y="3" width="1" height="1" fill="#5a3a2a"/>
+  <rect x="0" y="5" width="1" height="1" fill="#5a3a2a"/>
+  <rect x="9" y="3" width="1" height="1" fill="#5a3a2a"/>
+  <rect x="9" y="5" width="1" height="1" fill="#5a3a2a"/>
+  <rect x="1" y="2" width="8" height="5" fill="#7a5a42"/>
+  <rect x="2" y="3" width="6" height="3" fill="#8e6c50"/>
+  <rect x="1" y="0" width="2" height="2" fill="#b06050"/>
+  <rect x="7" y="0" width="2" height="2" fill="#b06050"/>
+  <rect x="3" y="1" width="1" height="1" fill="#2a1a10"/>
+  <rect x="6" y="1" width="1" height="1" fill="#2a1a10"/>
+</g>
+</svg>

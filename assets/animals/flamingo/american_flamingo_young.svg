@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="27" viewBox="-1 -1 20 27" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="2" y="10" width="10" height="6" fill="#685b66"/>
+  <rect x="3" y="11" width="7" height="3" fill="#715663"/>
+  <rect x="1" y="11" width="2" height="2" fill="#433944"/>
+  <rect x="10" y="5" width="2" height="6" fill="#685b66"/>
+  <rect x="11" y="2" width="4" height="4" fill="#685b66"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="15" y="3" width="2" height="2" fill="#6a6163"/>
+  <rect x="16" y="5" width="1" height="2" fill="#211923"/>
+  <rect x="6" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="9" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="5" y="24" width="3" height="1" fill="#3d353f"/>
+  <rect x="9" y="24" width="3" height="1" fill="#3d353f"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="2" y="10" width="10" height="6" fill="#685b66"/>
+  <rect x="3" y="11" width="7" height="3" fill="#715663"/>
+  <rect x="1" y="11" width="2" height="2" fill="#433944"/>
+  <rect x="10" y="5" width="2" height="6" fill="#685b66"/>
+  <rect x="11" y="2" width="4" height="4" fill="#685b66"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="15" y="3" width="2" height="2" fill="#6a6163"/>
+  <rect x="16" y="5" width="1" height="2" fill="#211923"/>
+  <rect x="6" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="9" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="5" y="24" width="3" height="1" fill="#3d353f"/>
+  <rect x="9" y="24" width="3" height="1" fill="#3d353f"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="2" y="10" width="10" height="6" fill="#685b66"/>
+  <rect x="3" y="11" width="7" height="3" fill="#715663"/>
+  <rect x="1" y="11" width="2" height="2" fill="#433944"/>
+  <rect x="10" y="5" width="2" height="6" fill="#685b66"/>
+  <rect x="11" y="2" width="4" height="4" fill="#685b66"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="15" y="3" width="2" height="2" fill="#6a6163"/>
+  <rect x="16" y="5" width="1" height="2" fill="#211923"/>
+  <rect x="6" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="9" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="5" y="24" width="3" height="1" fill="#3d353f"/>
+  <rect x="9" y="24" width="3" height="1" fill="#3d353f"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="2" y="10" width="10" height="6" fill="#685b66"/>
+  <rect x="3" y="11" width="7" height="3" fill="#715663"/>
+  <rect x="1" y="11" width="2" height="2" fill="#433944"/>
+  <rect x="10" y="5" width="2" height="6" fill="#685b66"/>
+  <rect x="11" y="2" width="4" height="4" fill="#685b66"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="15" y="3" width="2" height="2" fill="#6a6163"/>
+  <rect x="16" y="5" width="1" height="2" fill="#211923"/>
+  <rect x="6" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="9" y="16" width="1" height="8" fill="#4a424c"/>
+  <rect x="5" y="24" width="3" height="1" fill="#3d353f"/>
+  <rect x="9" y="24" width="3" height="1" fill="#3d353f"/>
+</g></g>
+  <g id="art" data-size="18 25" data-box="0 0 18 25">
+  <!-- Young American flamingo, side view: grey-white with a pink blush, long grey legs, bent dark bill -->
+  <rect x="2" y="10" width="10" height="6" fill="#d4cccc"/>
+  <rect x="3" y="11" width="7" height="3" fill="#e8c8cc"/>
+  <rect x="1" y="11" width="2" height="2" fill="#7a7474"/>
+  <rect x="10" y="5" width="2" height="6" fill="#d4cccc"/>
+  <rect x="11" y="2" width="4" height="4" fill="#d4cccc"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1e1a14"/>
+  <rect x="15" y="3" width="2" height="2" fill="#d8d0c8"/>
+  <rect x="16" y="5" width="1" height="2" fill="#2a2424"/>
+  <rect x="6" y="16" width="1" height="8" fill="#8c8888"/>
+  <rect x="9" y="16" width="1" height="8" fill="#8c8888"/>
+  <rect x="5" y="24" width="3" height="1" fill="#6c6868"/>
+  <rect x="9" y="24" width="3" height="1" fill="#6c6868"/>
+</g>
+</svg>

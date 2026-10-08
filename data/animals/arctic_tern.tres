@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_standing.svg" id="4_stand"]
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_floating.svg" id="5_float"]
 [ext_resource type="Resource" path="res://data/buildings/shore_pine.tres" id="seed_pine"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_baby.svg" id="young_0"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_young.svg" id="young_1"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -66,3 +68,4 @@ seeds_from = &"deep_sea"
 seeds_to = &"arctic_ocean"
 seeds_news = "There's a little pine growing among the rocks! The terns stopped on the {from} on their way south, and brought a seed back with them."
 grow_days = 2.0
+young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_5ypsb"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle_baby.svg" id="young_0"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle_young.svg" id="young_1"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -51,3 +53,4 @@ nests_from_next_season = false
 stay_per_nest = 0
 grow_days = 6.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

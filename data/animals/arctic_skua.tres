@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_standing.svg" id="rest_889"]
 [ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_floating.svg" id="floa_557"]
 [ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_sitting.svg" id="perc_8752"]
+[ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_baby.svg" id="young_0"]
+[ext_resource type="Texture2D" path="res://assets/animals/skua/arctic_skua_young.svg" id="young_1"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -45,3 +47,4 @@ circles_litter = true
 adult_home_radius = 300.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
 grow_days = 2.0
+young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

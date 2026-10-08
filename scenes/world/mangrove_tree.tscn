@@ -4,6 +4,8 @@
 [ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="2_mtree"]
 [ext_resource type="Resource" path="res://data/items/mangrove_propagule.tres" id="3_mtree"]
 [ext_resource type="Resource" path="res://data/plants/red_mangrove.tres" id="4_mtree"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_sapling.svg" id="stage_0"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_young.svg" id="stage_1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mtree"]
 radius = 5.0
@@ -14,6 +16,7 @@ collision_mask = 0
 script = ExtResource("2_mtree")
 sapling = ExtResource("3_mtree")
 plant = ExtResource("4_mtree")
+stage_textures = Array[Texture2D]([ExtResource("stage_0"), ExtResource("stage_1")])
 
 [node name="Trunk" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mtree")

@@ -5,6 +5,8 @@
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
 [ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal_land.svg" id="3_land"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal_baby.svg" id="young_0"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal_young.svg" id="young_1"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -49,3 +51,4 @@ lives_at = &"seal_pupping_zone"
 adult_home_radius = 120.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
 grow_days = 4.0
+young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

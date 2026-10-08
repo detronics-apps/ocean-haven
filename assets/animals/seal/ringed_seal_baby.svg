@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="-1 -1 17 11" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="0" y="3" width="2" height="3" fill="#606778"/>
+  <rect x="2" y="2" width="9" height="6" fill="#696f80"/>
+  <rect x="2" y="6" width="9" height="2" fill="#7a717b"/>
+  <rect x="10" y="2" width="4" height="5" fill="#666c7d"/>
+  <rect x="11" y="3" width="1" height="1" fill="#16151f"/>
+  <rect x="13" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="0" y="3" width="2" height="3" fill="#606778"/>
+  <rect x="2" y="2" width="9" height="6" fill="#696f80"/>
+  <rect x="2" y="6" width="9" height="2" fill="#7a717b"/>
+  <rect x="10" y="2" width="4" height="5" fill="#666c7d"/>
+  <rect x="11" y="3" width="1" height="1" fill="#16151f"/>
+  <rect x="13" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="0" y="3" width="2" height="3" fill="#606778"/>
+  <rect x="2" y="2" width="9" height="6" fill="#696f80"/>
+  <rect x="2" y="6" width="9" height="2" fill="#7a717b"/>
+  <rect x="10" y="2" width="4" height="5" fill="#666c7d"/>
+  <rect x="11" y="3" width="1" height="1" fill="#16151f"/>
+  <rect x="13" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="0" y="3" width="2" height="3" fill="#606778"/>
+  <rect x="2" y="2" width="9" height="6" fill="#696f80"/>
+  <rect x="2" y="6" width="9" height="2" fill="#7a717b"/>
+  <rect x="10" y="2" width="4" height="5" fill="#666c7d"/>
+  <rect x="11" y="3" width="1" height="1" fill="#16151f"/>
+  <rect x="13" y="4" width="1" height="1" fill="#16151f"/>
+</g></g>
+  <g id="art" data-size="15 9" data-box="0 0 15 9">
+  <!-- Ringed seal pup: white, woolly coat (lanugo), big dark eyes -->
+  <rect x="0" y="3" width="2" height="3" fill="#d8dde2"/>
+  <rect x="2" y="2" width="9" height="6" fill="#eef1f4"/>
+  <rect x="2" y="6" width="9" height="2" fill="#ffffff"/>
+  <rect x="10" y="2" width="4" height="5" fill="#e6eaee"/>
+  <rect x="11" y="3" width="1" height="1" fill="#111111"/>
+  <rect x="13" y="4" width="1" height="1" fill="#111111"/>
+</g>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="-1 -1 13 11" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="5" y="0" width="3" height="2" fill="#212123"/>
+  <rect x="5" y="7" width="3" height="2" fill="#212123"/>
+  <rect x="1" y="2" width="2" height="1" fill="#212123"/>
+  <rect x="1" y="6" width="2" height="1" fill="#212123"/>
+  <rect x="2" y="2" width="7" height="5" fill="#282827"/>
+  <rect x="3" y="3" width="5" height="3" fill="#2e2d28"/>
+  <rect x="2" y="6" width="7" height="1" fill="#5d5951"/>
+  <rect x="9" y="3" width="2" height="3" fill="#282827"/>
+  <rect x="10" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="5" y="0" width="3" height="2" fill="#212123"/>
+  <rect x="5" y="7" width="3" height="2" fill="#212123"/>
+  <rect x="1" y="2" width="2" height="1" fill="#212123"/>
+  <rect x="1" y="6" width="2" height="1" fill="#212123"/>
+  <rect x="2" y="2" width="7" height="5" fill="#282827"/>
+  <rect x="3" y="3" width="5" height="3" fill="#2e2d28"/>
+  <rect x="2" y="6" width="7" height="1" fill="#5d5951"/>
+  <rect x="9" y="3" width="2" height="3" fill="#282827"/>
+  <rect x="10" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="5" y="0" width="3" height="2" fill="#212123"/>
+  <rect x="5" y="7" width="3" height="2" fill="#212123"/>
+  <rect x="1" y="2" width="2" height="1" fill="#212123"/>
+  <rect x="1" y="6" width="2" height="1" fill="#212123"/>
+  <rect x="2" y="2" width="7" height="5" fill="#282827"/>
+  <rect x="3" y="3" width="5" height="3" fill="#2e2d28"/>
+  <rect x="2" y="6" width="7" height="1" fill="#5d5951"/>
+  <rect x="9" y="3" width="2" height="3" fill="#282827"/>
+  <rect x="10" y="4" width="1" height="1" fill="#16151f"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="5" y="0" width="3" height="2" fill="#212123"/>
+  <rect x="5" y="7" width="3" height="2" fill="#212123"/>
+  <rect x="1" y="2" width="2" height="1" fill="#212123"/>
+  <rect x="1" y="6" width="2" height="1" fill="#212123"/>
+  <rect x="2" y="2" width="7" height="5" fill="#282827"/>
+  <rect x="3" y="3" width="5" height="3" fill="#2e2d28"/>
+  <rect x="2" y="6" width="7" height="1" fill="#5d5951"/>
+  <rect x="9" y="3" width="2" height="3" fill="#282827"/>
+  <rect x="10" y="4" width="1" height="1" fill="#16151f"/>
+</g></g>
+  <g id="art" data-size="11 9" data-box="0 0 11 9">
+  <!-- Green turtle hatchling, top-down: dark brown-black shell with a pale edge, big front flippers -->
+  <rect x="5" y="0" width="3" height="2" fill="#2a2a24"/>
+  <rect x="5" y="7" width="3" height="2" fill="#2a2a24"/>
+  <rect x="1" y="2" width="2" height="1" fill="#2a2a24"/>
+  <rect x="1" y="6" width="2" height="1" fill="#2a2a24"/>
+  <rect x="2" y="2" width="7" height="5" fill="#3a3a30"/>
+  <rect x="3" y="3" width="5" height="3" fill="#4a4838"/>
+  <rect x="2" y="6" width="7" height="1" fill="#b8b4a0"/>
+  <rect x="9" y="3" width="2" height="3" fill="#3a3a30"/>
+  <rect x="10" y="4" width="1" height="1" fill="#111111"/>
+</g>
+</svg>
