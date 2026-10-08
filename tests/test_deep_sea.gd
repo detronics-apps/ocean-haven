@@ -100,6 +100,8 @@ func _initialize() -> void:
 	_expect(eco.sharks_supported() >= 7, "bait draws sixgills in from far away (%d)" % eco.sharks_supported())
 	for i in 8:
 		eco.settle()
+		load("res://scripts/animals/births.gd").born_now(self)
+		root.get_node("GameClock").day += 2  # each sixgill has a pup at a time, born live
 	var shark_factor: Resource = deep.health.filter(func(f: Resource) -> bool: return f.target == &"sixgill_shark")[0]
 	_expect(health.score(self, deep, shark_factor) < 0.5, "too many sharks crowding the bait scores lower")
 	_expect(eco.quiet() < eco.whale_quiet and eco.whales_supported() == 1, "all that light and bait: too noisy for more whales")

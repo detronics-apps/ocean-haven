@@ -4,6 +4,10 @@ class_name Arrivals
 
 ## An island counts as healthy for other islands' arrivals at this health.
 const HEALTHY := 0.7
+## Tree-nesting birds: full-grown trees on the island for each bird to come (the 2nd bird
+## at 16, the 3rd at 24...), and to stay (8 keep 2 birds, 12 keep 3...).
+const TREES_TO_COME := 8
+const TREES_TO_STAY := 4
 const ANIMAL_SCENE := preload("res://scenes/animals/animal.tscn")
 
 ## Node names of the animals that have arrived.
@@ -51,7 +55,7 @@ static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 	var animal := world.get_node_or_null(arrival.node_name) as Node2D
 	if not animal or arrival.needs_trees <= 0 or animal.get("unborn"):
 		return
-	var stays: bool = trees >= arrival.needs_trees or animal.get("tangled") or animal.get("injured")  # never flies off needing help
+	var stays: bool = trees >= (arrival.stay_trees if arrival.stay_trees >= 0 else arrival.needs_trees) or animal.get("tangled") or animal.get("injured")  # never flies off needing help
 	if stays == animal.visible:
 		return
 	animal.visible = stays
@@ -66,6 +70,14 @@ static func _stay_or_go(world: Node, arrival: ArrivalData, trees: int) -> void:
 			animal.set_nest_tree(null)  # its nest tree is free again
 	world.get_tree().call_group("hud", "show_toast", "A %s is back, nesting in your palm trees!" % arrival.species.display_name if stays
 		else "A %s has flown off: it needs more full-grown trees to nest in." % arrival.species.display_name)
+
+
+## How many tree-nesting birds `trees` full-grown trees allow, with `now` there already: one
+## more once there are TREES_TO_COME for each, and as many as TREES_TO_STAY each keep.
+static func birds_for_trees(trees: int, now: int) -> int:
+	if trees >= TREES_TO_COME * (now + 1):
+		return now + 1
+	return mini(now, floori(float(trees) / TREES_TO_STAY))
 
 
 ## Full-grown trees on `region`'s island (seabirds nest in them); `planted`: only those the

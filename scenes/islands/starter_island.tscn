@@ -101,20 +101,3 @@ collision_layer = 16
 collision_mask = 0
 script = ExtResource("3_feps1")
 
-[node name="Palm15" type="StaticBody2D" parent="." unique_id=141235051 groups=["plants"] instance=ExtResource("2_36cgk")]
-position = Vector2(304, 184)
-collision_layer = 16
-collision_mask = 0
-script = ExtResource("3_feps1")
-
-[node name="Palm16" type="StaticBody2D" parent="." unique_id=999970490 groups=["plants"] instance=ExtResource("2_36cgk")]
-position = Vector2(368, -104)
-collision_layer = 16
-collision_mask = 0
-script = ExtResource("3_feps1")
-
-[node name="Palm17" type="StaticBody2D" parent="." unique_id=1230443138 groups=["plants"] instance=ExtResource("2_36cgk")]
-position = Vector2(400, -40)
-collision_layer = 16
-collision_mask = 0
-script = ExtResource("3_feps1")

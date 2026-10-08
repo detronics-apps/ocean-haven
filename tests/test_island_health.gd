@@ -61,15 +61,23 @@ func _initialize() -> void:
 	clock.day += 1
 	_expect(arrivals.check(world).is_empty() and count.call(&"red_footed_booby") == 1,
 		"only the one seabird the island starts with: none more from the island's own palms alone")
-	# Seabirds come once the ranger has planted palms (and they've grown): 1, 3, 5.
-	for i in 5:
-		var sapling: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), Vector2i(-8 + i * 2, -5))
+	# Seabirds need 8 full-grown trees each to come (the 2nd at 16, 3rd 24, 4th 32) and 4 each
+	# to stay. The island starts with 14 palms.
+	_expect(arrivals.grown_trees(self, home) == 14, "the Starting Island starts with 14 palms (%d)" % arrivals.grown_trees(self, home))
+	var plant := func(cell: Vector2i) -> void:
+		var sapling: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), cell)
 		sapling.built_day = -10  # full grown
+	plant.call(Vector2i(-8, -5))
+	clock.day += 1
+	arrivals.check(world)
+	_expect(count.call(&"red_footed_booby") == 1, "15 palms: not yet enough for a second booby")
+	for i in 17:
+		plant.call(Vector2i(-6 + (i % 9) * 2, -5 - (i / 9) * 2))
 	for i in 3:
 		clock.day += 1
 		arrivals.check(world)
 		load("res://scripts/animals/births.gd").born_now(self)
-	_expect(count.call(&"red_footed_booby") == 4, "the palms the ranger planted bring three more seabirds, one a day")
+	_expect(count.call(&"red_footed_booby") == 4, "32 palms bring three more seabirds (4 in all)")
 	_expect(is_equal_approx(health.of(self, home), 1.0), "no litter, no hurt or caught animals, fully populated (12 turtles, 4 seabirds, 2 crabs, 2 dolphins): 100 %")
 	var hurt: Node = world.get_node("Crab1")
 	hurt.injure()
@@ -78,12 +86,13 @@ func _initialize() -> void:
 
 	# Seabirds need full-grown palms: cut too many and one flies off (back when they regrow).
 	var palms: Array = world.get_node("StarterIsland").get_children().filter(func(n: Node) -> bool: return n.is_in_group("plants"))
-	while arrivals.grown_trees(self, home) >= 14:
-		palms.pop_back().free()
+	var planted_palms: Array = get_nodes_in_group("plants").filter(func(n: Node) -> bool: return n.get_parent().get("built_day") != null)
+	while arrivals.grown_trees(self, home) >= 16:
+		(palms.pop_back() if palms else planted_palms.pop_back()).free()
 	arrivals.check(world)
 	var seabird3: Node2D = world.get_node("Seabird3")
 	_expect(not seabird3.visible and not seabird3.is_in_group("animals") and count.call(&"red_footed_booby") == 3,
-		"fewer than 14 palms: the third seabird flies off")
+		"fewer than 16 palms (4 for each of 4 birds): the fourth seabird flies off")
 	_expect(health.of(self, home) < 1.0, "and the island is a little less healthy")
 	var planted: Node = world.get_node("BuildMode").add_building(load("res://data/buildings/palm_tree.tres"), Vector2i(-2, -8))
 	planted.built_day = -10  # full grown

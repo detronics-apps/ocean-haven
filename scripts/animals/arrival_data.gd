@@ -15,9 +15,12 @@ extends Resource
 ## ... and how many other islands must be healthy (see Arrivals.HEALTHY) — the ocean
 ## around them recovering too.
 @export var healthy_islands := 0
-## Nests in trees: stays only while the island has at least this many full-grown trees
-## (away while there are fewer, back when they regrow). 0 = doesn't need trees.
+## Nests in trees: arrives once the island has this many full-grown trees (8 for each bird
+## there will be: Arrivals.TREES_TO_COME), 0 = doesn't need trees ...
 @export var needs_trees := 0
+## ... and stays while it has at least this many (4 a bird: TREES_TO_STAY; away while there
+## are fewer, back when they regrow). -1 = needs_trees.
+@export var stay_trees := -1
 ## Only arrives once the ranger has planted (and grown) this many full-grown trees on the
 ## island: new seabirds come because of something the ranger did, not the trees already there.
 @export var needs_planted := 0

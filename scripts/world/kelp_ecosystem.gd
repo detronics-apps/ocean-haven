@@ -359,7 +359,8 @@ func fish_supported() -> int:
 ## Cormorants the fish can feed, if there are full-grown trees to nest in.
 func cormorants_supported() -> int:
 	var fish := living(FISH).size()
-	return mini(mini(roundi(float(fish) / fish_per_cormorant), cormorant_max), Arrivals.grown_trees(get_tree(), region()))
+	var trees := Arrivals.birds_for_trees(Arrivals.grown_trees(get_tree(), region()), living(CORMORANT).size())
+	return mini(mini(roundi(float(fish) / fish_per_cormorant), cormorant_max), trees)
 
 
 ## The island's animals of `species` (not ones moving away).

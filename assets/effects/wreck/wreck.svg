@@ -6,45 +6,30 @@
   
   
   
-  <rect x="86" y="10" width="6" height="8" fill="#75370e"/>
-  <rect x="86" y="10" width="6" height="2" fill="#757574"/>
-  <rect x="88" y="4" width="2" height="6" fill="#333f53"/>
 </g><g transform="translate(1 0)">
   
   
   
   
   
-  <rect x="86" y="10" width="6" height="8" fill="#75370e"/>
-  <rect x="86" y="10" width="6" height="2" fill="#757574"/>
-  <rect x="88" y="4" width="2" height="6" fill="#333f53"/>
 </g><g transform="translate(0 -1)">
   
   
   
   
   
-  <rect x="86" y="10" width="6" height="8" fill="#75370e"/>
-  <rect x="86" y="10" width="6" height="2" fill="#757574"/>
-  <rect x="88" y="4" width="2" height="6" fill="#333f53"/>
 </g><g transform="translate(0 1)">
   
   
   
   
   
-  <rect x="86" y="10" width="6" height="8" fill="#75370e"/>
-  <rect x="86" y="10" width="6" height="2" fill="#757574"/>
-  <rect x="88" y="4" width="2" height="6" fill="#333f53"/>
 </g></g>
   <g id="art" data-size="96 48" data-box="0 0 96 48">
-  <!-- Placeholder sunken wreck seen through the water: a dark, tilted old hull with a broken mast, and a marker buoy -->
+  <!-- Placeholder sunken wreck seen through the water: a dark, tilted old hull with and a broken mast -->
   <polygon points="6,22 70,14 84,24 70,36 10,38" fill="#1e2a33" fill-opacity="0.7"/>
   <polygon points="10,24 68,17 78,24 68,33 13,35" fill="#2e3f4a" fill-opacity="0.7"/>
   <rect x="30" y="20" width="18" height="8" fill="#1a242c" fill-opacity="0.7"/>
   <polygon points="52,16 60,4 62,5 55,17" fill="#3a2a1e" fill-opacity="0.7"/>
-  <rect x="86" y="10" width="6" height="8" fill="#f28c38"/>
-  <rect x="86" y="10" width="6" height="2" fill="#f2f2ee"/>
-  <rect x="88" y="4" width="2" height="6" fill="#6f7d88"/>
 </g>
 </svg>

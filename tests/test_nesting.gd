@@ -87,7 +87,7 @@ func _initialize() -> void:
 	await physics_frame
 	await process_frame
 	var hatched := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.young)
-	_expect(hatched.size() in [3, 4] and journal.hatched_count(&"green_turtle") == hatched.size(), "3-4 hatchlings (%d)" % hatched.size())
+	_expect(hatched.size() == 3 and journal.hatched_count(&"green_turtle") == hatched.size(), "3 hatchlings (%d)" % hatched.size())
 	var young := hatched.filter(func(a: Node) -> bool: return not a.leaving)
 	_expect(young.size() == 3, "3 stay to fill the area, any more swim off (%d)" % young.size())
 	_expect(get_nodes_in_group("nests").size() == 0, "nest is empty after hatching")
@@ -141,7 +141,7 @@ func _initialize() -> void:
 	nest.hatch()
 	await physics_frame
 	var leavers := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving and not a in left_before)
-	_expect(leavers.size() in [3, 4], "no room: all 3-4 new hatchlings head for the open ocean (%d)" % leavers.size())
+	_expect(leavers.size() == 3, "no room: all 3 new hatchlings head for the open ocean (%d)" % leavers.size())
 	_expect(journal.hatched_count(&"green_turtle") == counted + leavers.size(), "they still count as hatchlings")
 	for i in 900:
 		await physics_frame
@@ -162,7 +162,7 @@ func _initialize() -> void:
 	await physics_frame
 	var leaving_now := get_nodes_in_group("animals").filter(func(a: Node) -> bool: return a.leaving).size()
 	var hatched_now: int = second.animals_here() + leaving_now
-	_expect(hatched_now in [3, 4] and second.animals_here() == mini(hatched_now, second.capacity()),
+	_expect(hatched_now == 3 and second.animals_here() == mini(hatched_now, second.capacity()),
 		"hatchlings move into the empty second area (%d there, %d leaving)" % [second.animals_here(), leaving_now])
 
 	# --- Loading a save re-links turtles to areas with room, not all to the nearest one ---

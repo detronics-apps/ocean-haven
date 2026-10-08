@@ -246,7 +246,7 @@ Step 2. Build in this order:
    boats (AnimalData.boat_shy_distance); turtles won't nest at a protection area with another
    building within 2 tiles (BuildingData.needs_quiet; docks and trees are fine)
 5. ✅ Seabirds (red-footed boobies; AnimalData.flies / circles_litter): arrive by trees
-   (ArrivalData.needs_trees: 5 / 10 / 14 full-grown palms), fly off while there are too few and
+   (ArrivalData.needs_trees / stay_trees: now 8 full-grown trees a bird to come, 4 to stay), fly off while there are too few and
    come back when palms regrow (never while tangled); circle over floating litter near home; can
    be caught in litter; a health factor
 6. ✅ Upgrade art: BuildingData.tier_textures (a picture per tier: Ranger House, recycling centre,
@@ -429,8 +429,11 @@ Then: the ranger has a name (avatar creator; RangerProfile.ranger_name, saved) t
 `stuck` (e.g. Build menu opened, nothing built: Maya sends the ranger to Tom, who says to cut
 palms for wood and plant a sapling for each); the station is the Marine Search & Rescue
 Station; the tent is one tile; the Build menu shows only name, BuildingData.summary and cost;
-new animals arrive at most one a day per island, and seabirds need palms the ranger planted
-(ArrivalData.needs_planted 1 / 3 / 5, health 30 / 50 / 70 %).
+new animals arrive gradually (see Births: breeding pace), and seabirds need trees
+(health 30 / 50 / 70 %). Tree-nesting birds (boobies, cormorants) need 8 full-grown trees
+for each bird to come (the 2nd at 16, 3rd 24, 4th 32: Arrivals.TREES_TO_COME) and 4 each to
+stay (TREES_TO_STAY; Arrivals.birds_for_trees); the Starting Island starts with 14 palms, at
+most 4 boobies.
 Phase 2: a 120-day year of four 30-day seasons (GameClock.season / year / calendar: the HUD
 reads "Day 42 · Summer, year 1"; a note when each season starts). Green turtles nest in spring
 every 4 days (AnimalData.nest_season / off_season_interval_days 40), one hatchling per nest

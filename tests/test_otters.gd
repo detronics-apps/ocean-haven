@@ -39,6 +39,9 @@ func _initialize() -> void:
 			clock.time_of_day = 0.4  # time passes (homeless otters move away after a day), but not a new morning
 			clock.day += 0 if i % 4 else 1
 			ecosystem.tick(ecosystem.tick_days)
+			load("res://scripts/animals/births.gd").born_now(self)  # (no frames run here: parents can't walk there)
+			for pup: Node in ecosystem.otters().filter(func(o: Node) -> bool: return o.young):
+				pup._process(0.0)  # (and pups grow up)
 
 	# --- One habitat: the first otter comes straight away, it's full within a day ---
 	var cells := _free_cells(build_mode, habitat_data, ecosystem, 6)
@@ -58,19 +61,19 @@ func _initialize() -> void:
 			d.free()
 	var predicted: float = health.heading(self, kelp_region)
 	var start_health: float = health.of(self, kelp_region)
-	days.call(6.0)
+	days.call(9.0)  # pups come one per parent at a time, so it takes a few days
 	var balanced: float = health.of(self, kelp_region)
 	_expect(absf(balanced - predicted) < 0.08 and predicted > start_health + 0.1,
 		"the gauge showed where it was heading: %d%% predicted, %d%% reached (from %d%%)" % [roundi(predicted * 100), roundi(balanced * 100), roundi(start_health * 100)])
 	_expect(otter_count.call() == 6, "3 habitats: 6 otters (%d)" % otter_count.call())
 	_expect(ecosystem.kelp_health() > 0.7 and ecosystem.urchin_total() > ecosystem.beds().size() * 0.2,
-		"within 4 days the kelp has recovered (%d%%) with some urchins left (%d)" % [roundi(ecosystem.kelp_health() * 100), ecosystem.urchin_total()])
+		"within days the kelp has recovered (%d%%) with some urchins left (%d)" % [roundi(ecosystem.kelp_health() * 100), ecosystem.urchin_total()])
 
 	# --- Overbuilt: 6 habitats, 12 otters eat nearly every urchin; out of balance ---
 	for i in range(3, 6):
 		homes.append(build_mode.add_building(habitat_data, cells[i]))
 	ecosystem.settle_now()
-	days.call(4.0)
+	days.call(20.0)  # 12 otters take a while to come (one pup per parent at a time), then the urchins go
 	_expect(otter_count.call() > 6 and ecosystem.urchin_total() < ecosystem.beds().size() * 0.2,
 		"6 habitats: %d otters leave almost no urchins (%d)" % [otter_count.call(), ecosystem.urchin_total()])
 	_expect(health.of(self, kelp_region) < balanced, "more isn't better: the island is less healthy (%.2f vs %.2f)" % [

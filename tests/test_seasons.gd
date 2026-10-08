@@ -76,7 +76,7 @@ func _initialize() -> void:
 	nest.hatch()
 	var hatched: Array = babies.call()
 	var stayed: int = hatched.filter(func(a: Node) -> bool: return not a.leaving).size()
-	_expect(room > 0 and hatched.size() in [2, 4] and stayed == mini(room, hatched.size()),
+	_expect(room > 0 and hatched.size() in [2, 3, 4] and stayed == mini(room, hatched.size()),
 		"%d hatchlings (2-4 a nest): %d stay in the room there is (%d), the rest swim off" % [hatched.size(), stayed, room])
 	for baby: Node in hatched:
 		baby.free()

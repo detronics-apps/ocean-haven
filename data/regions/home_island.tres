@@ -16,8 +16,8 @@ node_name = "Seabird1"
 position = Vector2(-200, -80)
 home_radius = 420.0
 island_health = 0.3
-needs_trees = 5
-needs_planted = 1
+needs_trees = 16
+stay_trees = 8
 note = "A red-footed booby has come to nest in the palm you planted! Boobies circle over floating litter, showing you where it is."
 
 [sub_resource type="Resource" id="Arrival_Seabird2"]
@@ -27,8 +27,8 @@ node_name = "Seabird2"
 position = Vector2(150, -150)
 home_radius = 420.0
 island_health = 0.5
-needs_trees = 10
-needs_planted = 3
+needs_trees = 24
+stay_trees = 12
 note = "Another red-footed booby is nesting in your palms."
 
 [sub_resource type="Resource" id="Arrival_Seabird3"]
@@ -38,8 +38,8 @@ node_name = "Seabird3"
 position = Vector2(-80, 150)
 home_radius = 420.0
 island_health = 0.7
-needs_trees = 14
-needs_planted = 5
+needs_trees = 32
+stay_trees = 16
 note = "A third red-footed booby has joined them: your palms make a fine seabird colony."
 
 [sub_resource type="Resource" id="Arrival_Crab2"]
