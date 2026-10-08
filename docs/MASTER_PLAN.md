@@ -1091,24 +1091,26 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   mini-game).
 
 **Planned, not built yet (the user's list, still being planned: ask before building)**
-- **Growing up in three pictures.** Every animal and every plant gets three different pictures
-  for its life stages (baby / young / adult; sapling / young / full grown), not one picture
-  drawn smaller. Babies look like the real young: flamingo chicks are grey-white and fluffy, not
-  pink. Open: which species get all three (fish, urchins, clams, squid?), and whether kelp,
-  coral, seagrass and mangroves count as plants here.
-  Birds and reptiles that lay eggs get four: egg, baby, young, adult (green turtle, American
-  crocodile, red-footed booby, double-crested cormorant, American flamingo, Arctic tern, Arctic
-  skua). Open: is the egg drawn in its nest (turtle nest in the sand, flamingo mud mound, booby
-  nest in the palm, tern scrape on the rock) as part of the nest, or as its own picture.
-- **Every new animal comes from somewhere.** No animal ever just appears. A newcomer either
-  - is born: an adult of its kind goes to its sanctuary / habitat / zone, and one or two young
-    appear next to it there (e.g. a ringed seal hauls out at a Seal Pupping Zone and a pup
-    appears beside it); the parent then goes back to roaming and the young grow up; or
-  - travels in from another island (swims in, or flies in for birds), seen arriving.
-  Sanctuaries and habitats then make room for young, never make animals appear on their own
-  (today the Seal Pupping Zone, Otter Habitat, Crab Habitat and others spawn grown animals).
-  Open: does one adult do (a game simplification) or does a second have to arrive first; and
-  where newcomers come from on an island whose neighbours don't have that species yet.
+- **Growing up in pictures (decided so far).** Only animals that clearly change as they grow
+  get their own life-stage pictures (baby / young / adult), not one picture drawn smaller; ones
+  that barely change (fish, urchins, clams, squid...) stay as they are. Babies look like the real
+  young (flamingo chicks are grey-white and fluffy, not pink). Plants: only the trees (palms,
+  coastal trees, mangroves, shore pines: sapling / young / full grown). Egg-layers (birds and
+  reptiles) have an egg stage too, drawn as part of the nest (the nests that exist stay as they
+  are). Growing up goes by how fast the species grows in real life:
+  - fast: a new picture every day, grown up on day 3;
+  - medium: a new picture every 2nd day, grown up on day 5;
+  - slow: a new picture every 3rd day, grown up on day 7.
+  Still to confirm: which species are in which group, and which get pictures at all.
+- **Every new animal comes from somewhere (decided so far).** No animal ever just appears. A
+  newcomer is either born (an adult of its kind goes to its sanctuary / habitat / zone, one or
+  two young appear beside it there, then the parent goes back to roaming and the young grow up)
+  or travels in from another island (swims, or flies in for birds), seen arriving. Sanctuaries
+  and habitats make room for young; they never make grown animals appear (today the Seal Pupping
+  Zone, Otter Habitat, Crab Habitat and others do). One adult is enough at first: the animal the
+  island starts with (or the one the ranger rescues) is a mother-to-be. After that, some animals
+  are male and some female, and only females have young. Still to confirm: where a newcomer
+  comes from when no other island has its species.
 
 **Look and feel (the user's list, for later)**
 - ✅ A very subtle texture on sand, grass and rock tiles.
