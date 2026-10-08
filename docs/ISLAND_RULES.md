@@ -263,14 +263,15 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
     no progress, items, money or daily effects.
   - Each must be understood in 10 seconds, built on 3 shared frameworks (Grid, Mover, Sort).
 - **Rescue companions:** one per island, one at a time, named, 30 days of care, then released.
-  - Recovery only moves forward; no decay, timers or "feed me".
-  - Staff care for it while the ranger is away.
+  - Its care bars can go down (hunger, then health and calm), never to death: see 9b
+    ("Care can go bad, never to death"; this replaced the earlier "recovery only moves forward").
+  - It's ready to go home after its days in care; its bars freeze then.
   - Never "adopt" or "pet": "you're helping one get home".
 - **The ranger has a name, and people use it.** The ranger's replies are 2 options to pick from,
   never words put in their mouth.
-- **Animals come back because of what the ranger did**, gradually: at most one new arrival a
-  day per island, and arrivals need the ranger's own work (seabirds: palms the ranger planted),
-  not only what the island already had.
+- **Animals come back because of what the ranger did**, gradually (see 9b, "A limit is never
+  filled at once": each parent breeds at its own pace), and arrivals need the ranger's own work
+  (seabirds: enough trees, 8 a bird), not only what the island already had.
 - **The Build menu is short:** name, one line on what it does, cost.
 - **No preaching.** Wonder carries the message; balance is the central concept. The greatest
   reward is seeing creation recover.
