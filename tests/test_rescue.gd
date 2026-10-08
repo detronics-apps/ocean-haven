@@ -1,8 +1,9 @@
 extends SceneTree
 ## Rescue companions: once the Marine Search & Rescue Station is built, a young turtle found
 ## tangled and weak comes into the ranger's care. The ranger names it, then for 6 game days
-## cares for it on the vet table: feed, comfort, patch a wound, medicine (each once a day).
-## Its bars (health, fed, calm) only ever go up. Then it goes home tagged, in the shape the
+## cares for it on the vet table: comfort it until it's calm enough to eat, feed it until it's
+## full, medicine once a day (a hatchling has no wounds). The fed bar empties over a day and a
+## bit; then health and calm drop, but never to nothing. Then it goes home tagged, in the shape the
 ## care left it in, and is seen again some mornings: on its own island, or (a turtle) on the
 ## Mangrove Coast or the Reef, never the Arctic. Its name shows once the ranger meets it again.
 ## Run: godot --headless --path . --script res://tests/test_rescue.gd --quit-after 300000
@@ -50,11 +51,12 @@ func _initialize() -> void:
 	_expect(rescues.hatched(), "it hatches")
 	await process_frame
 
-	# --- A day's care: four things, each once a day; the bars only go up ---
+	# --- A hatchling: healthy, no wounds; it eats only once it's calm ---
 	content = screen.get("_content")
 	_expect(content.find_child("Bars", true, false) != null and content.find_child("Care", true, false).get_child_count() == 4,
 		"three bars, and four things to do")
-	var health_before: int = rescues.bar(&"health")
+	_expect(rescues.bar(&"health") >= 80 and rescues.wounds_left() == 0 and not rescues.can_do(&"patch"),
+		"just hatched: healthy (%d), no wounds to patch" % rescues.bar(&"health"))
 	var vet: Control = content.find_child("VetScene", true, false)
 	_expect(vet != null, "the vet room: the turtle hatchling on a towel on the counter")
 	var drag := func(scene: Control, from: Vector2, to: Vector2) -> void:
@@ -71,40 +73,74 @@ func _initialize() -> void:
 		release.pressed = false
 		release.position = to
 		scene.call("_gui_input", release)
-	var food_at: Vector2 = vet.call("_tool_slot", 0)
-	drag.call(vet, food_at, food_at + Vector2(0, -150))  # dropped somewhere else: nothing happens
-	_expect(rescues.can_do(&"feed"), "food dropped away from its mouth: not fed")
-	drag.call(vet, food_at, vet.call("_point", vet.rescue.mouth))
+	_expect(rescues.too_upset_to_eat() and not rescues.can_do(&"feed"), "a little unsettled (calm %d): it won't eat yet" % rescues.bar(&"calm"))
+	var calm_before: int = rescues.bar(&"calm")
+	(content.find_child("Comfort", true, false) as Button).pressed.emit()
 	await process_frame
-	await process_frame
-	_expect(rescues.bar(&"fed") > 20 and not rescues.can_do(&"feed"), "food dragged to its mouth: the Fed bar goes up, once a day")
+	_expect(rescues.bar(&"calm") > calm_before, "comforting it: calm goes up (the buttons work too: keyboard / controller)")
+	while rescues.can_do(&"comfort"):
+		rescues.care(&"comfort")
+	_expect(rescues.bar(&"calm") == 100, "comfort it as often as you like, until it's fully calm")
 	content = screen.get("_content")
 	vet = content.find_child("VetScene", true, false)
 	await process_frame  # (laid out)
-	var wounds: int = rescues.wounds_left()
-	drag.call(vet, vet.call("_tool_slot", 2), vet.call("_point", vet.rescue.wound_at))
+	var food_at: Vector2 = vet.call("_tool_slot", 0)
+	var fed_before: int = rescues.bar(&"fed")
+	drag.call(vet, food_at, food_at + Vector2(0, -150))  # dropped somewhere else: nothing happens
+	_expect(rescues.bar(&"fed") == fed_before, "food dropped away from its mouth: not fed")
+	drag.call(vet, food_at, vet.call("_point", vet.rescue.mouth))
 	await process_frame
-	_expect(rescues.wounds_left() == wounds - 1, "the plaster dragged onto the sore spot: patched")
-	_expect(rescues.bar(&"health") > health_before, "a wound patched: Health goes up")
-	content = screen.get("_content")
-	(content.find_child("Comfort", true, false) as Button).pressed.emit()
-	await process_frame
-	_expect(not rescues.can_do(&"comfort"), "the buttons still work too (keyboard / controller)")
+	_expect(rescues.bar(&"fed") == fed_before + 10 and rescues.can_do(&"feed"), "food dragged to its mouth: +10 fed, and it can have more")
+	while rescues.can_do(&"feed"):
+		rescues.care(&"feed")
+	_expect(rescues.bar(&"fed") == 100, "fed until the bar is full")
+	var health_now: int = rescues.bar(&"health")
+	rescues.care(&"medicine")
+	_expect(rescues.bar(&"health") > health_now and not rescues.can_do(&"medicine"), "medicine: health goes up, once a day")
 	screen.close()
+
+	# --- Left alone: the fed bar empties, then health and calm drop (never to nothing) ---
+	var start_day: int = clock.day
+	clock.advance(clock.DAY_LENGTH * 0.5)
+	_expect(rescues.bar(&"fed") < 70 and rescues.bar(&"fed") > 40 and not rescues.distressed(), "half a day later it's getting hungry (fed %d)" % rescues.bar(&"fed"))
+	_expect(rescues.bar(&"calm") < 100 and rescues.bar(&"calm") >= 50, "calm settles down a little, not below 50 (%d)" % rescues.bar(&"calm"))
+	var health_full: int = rescues.bar(&"health")
+	var calm_half: int = rescues.bar(&"calm")
+	clock.advance(clock.DAY_LENGTH)
+	_expect(rescues.bar(&"fed") == 0 and rescues.bar(&"health") < health_full and rescues.bar(&"calm") < calm_half and rescues.distressed(),
+		"hungry for too long: health drops, and it gets distressed (health %d, calm %d)" % [rescues.bar(&"health"), rescues.bar(&"calm")])
+	clock.advance(clock.DAY_LENGTH * 2)
+	_expect(rescues.bar(&"calm") < 50, "distressed: now calm drops below 50 (%d)" % rescues.bar(&"calm"))
+	_expect(rescues.bar(&"health") == 20 and rescues.bar(&"calm") >= 10, "but never to nothing: health stays at 20 (%d)" % rescues.bar(&"health"))
+	_expect(rescues.too_upset_to_eat(), "first it has to be calmed down again")
+	while rescues.can_do(&"comfort"):
+		rescues.care(&"comfort")
+	while rescues.can_do(&"feed"):
+		rescues.care(&"feed")
+	var mended: int = rescues.bar(&"health")
+	_expect(rescues.bar(&"calm") == 100 and rescues.bar(&"fed") == 100 and mended > 20, "calmed, then fed: health starts to mend (%d)" % mended)
+	_expect(clock.day > start_day, "")
 
 	# --- Caring every day until it's ready ---
 	for day in 6:
-		clock.advance(clock.DAY_LENGTH)
-		for action in [&"feed", &"comfort", &"patch", &"medicine"]:
+		clock.advance(clock.DAY_LENGTH * 0.5)
+		for action in [&"comfort", &"comfort", &"comfort", &"comfort", &"comfort", &"medicine"]:
 			rescues.care(action)
+		for bite in 10:
+			rescues.care(&"feed")
+		clock.advance(clock.DAY_LENGTH * 0.5)
+		for bite in 10:
+			rescues.care(&"comfort")
+			rescues.care(&"feed")
 	_expect(rescues.is_ready() and "Release Milo" in labels.call(), "after 6 days Milo is ready to go home")
-	_expect(rescues.shape() > 0.95, "cared for every day: in top shape (%.2f)" % rescues.shape())
+	_expect(rescues.shape() > 0.75, "cared for every day: in good shape (%.2f)" % rescues.shape())
 
 	# --- Saved while in care ---
+	var fed_saved: int = rescues.bar(&"fed")
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(rescues.to_dict()))
 	rescues.restore({})
 	rescues.restore(saved)
-	_expect(rescues.pet_name() == "Milo" and rescues.is_ready() and rescues.bar(&"fed") == 100, "the rescue in care is saved, bars and all")
+	_expect(rescues.pet_name() == "Milo" and rescues.is_ready() and rescues.bar(&"fed") == fed_saved, "the rescue in care is saved, bars and all (fed %d)" % rescues.bar(&"fed"))
 
 	# --- Release: tagged, on its island ---
 	screen.open_rescue()
@@ -112,7 +148,7 @@ func _initialize() -> void:
 	(content.find_child("Release", true, false) as Button).pressed.emit()
 	await process_frame
 	await process_frame
-	_expect(rescues.in_care() == null and rescues.done[&"home_turtle"].name == "Milo" and rescues.done[&"home_turtle"].shape > 0.95,
+	_expect(rescues.in_care() == null and rescues.done[&"home_turtle"].name == "Milo" and rescues.done[&"home_turtle"].shape > 0.75,
 		"released: Milo's story is kept, with the shape it went home in")
 	var milo: Node2D = world.get_node_or_null("Rescued_home_turtle")
 	_expect(milo != null and milo.data.id == &"green_turtle" and milo.get_node("Sprite2D").get_children().any(func(c: Node) -> bool: return c is TagBand),

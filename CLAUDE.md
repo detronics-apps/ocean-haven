@@ -17,7 +17,7 @@ missions that lead to action…) and add to it whenever the user corrects someth
 ## Game rules (non-negotiable)
 
 - **No combat.** No weapons, enemies, killing, boss fights or combat stats.
-- **Animals never die.** Rescued animals may show gentle care meters (health, hunger, injury) in the care mini-game, but they only ever get better, never die or get worse from neglect.
+- **Animals never die.** Rescued animals show care meters (health, fed, calm) in the care mini-game. They can go down (things can go bad, and kids should see that), but an animal never dies: health never drops below 20 % (Rescues.HEALTH_FLOOR).
 - **No levels or XP.** Progress is Ocean Impact (per-area restoration); new regions unlock through restoration progress, not player level.
 - **One currency: conservation funding.** No gems or other premium currency, no in-game purchases or donate buttons (kids' game). Real-world impact is a "Real Impact" page with links for parents.
 - **No failure states.** Never "you failed"; say what needs more help ("The beach needs more protection") and let the player retry.
@@ -449,7 +449,7 @@ Phase 4: rescue companions (data/rescues/, RescueData; `Rescues` autoload, saved
 animal at a time, one per island, found once RescueData.offer_when holds (Starting Island:
 a young green turtle once the rescue station is built). The ranger names it at the station
 (RescueScreen); a care moment a day (two choices: the other only explains why not); stages
-over 30 days, also while the ranger is away; never gets worse. Released, it lives on its
+over 30 days, also while the ranger is away. Released, it lives on its
 island with its name (world node "Rescued_<id>", respawned on load) and is listed in the
 Journal's This island tab.
 Phase 5: people on every island (data/people/, 12 in all), each island an objective-giver whose
@@ -564,7 +564,7 @@ egg-layers, RescueData.from_egg, hatch once named: the turtle and the flamingo; 
 born live, so it's a pup): care is done by hand, dragging the tray's things to it (food to its
 mouth or shaken over the tank: sprinkle; stroke or place: comfort_kind / comfort_tool; the
 plaster on wound_at; the dropper; buttons below too): feed / comfort /
-patch / medicine once a day each raise Health, Fed and Calm (never down); it goes home tagged
+patch / medicine raise Health, Fed and Calm, and they can drop again (see "Care bars" below); it goes home tagged
 (TagBand) in the shape the care left it in, which sets how often it's about each morning
 (Rescues.check_visits: its island or RescueData.visits, never elsewhere; "Rescued_<id>",
 ocean_world.place_tagged), its name showing once met again; rescues for every island (Reef
@@ -715,6 +715,15 @@ standing / resting / taking_flight / resting_pose / swimming), plus an uncounted
 
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
+
+Care bars (Rescues; the user's rule: things can go bad, never death): fed +10 a bite, as often
+as it isn't full, empties over 1.25 days (FED_LASTS); it only eats once calm is 80 % (EATS_FROM:
+comfort first, as often as it isn't full, +10). Health rises with medicine (once a day), a
+plaster per wound (rescued ones only: hatchlings start healthy, no wounds) and food; it only
+drops while fed is empty, never below 20 %. Calm only rises by comforting; left alone it
+settles to 50 % (not distressed), and only drops below that while health is dropping; a hurt
+rescue starts below 50 %. The bars freeze once it's ready to go home. The vet room shows them
+live and says what it needs now.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

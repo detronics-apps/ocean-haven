@@ -132,6 +132,11 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			for i in TOOLS.size():
+				if event.position.distance_to(_tool_slot(i)) < 34.0 and TOOLS[i] == &"feed" and Rescues.too_upset_to_eat() \
+						and Rescues.hatched() and Rescues.is_named():
+					hint.emit("%s is too upset to eat. Comfort it first, until it's calm." % Rescues.pet_name())
+					accept_event()
+					return
 				if event.position.distance_to(_tool_slot(i)) < 34.0 and Rescues.can_do(TOOLS[i]):
 					_dragging = TOOLS[i]
 					_at = event.position
@@ -253,7 +258,7 @@ func _draw() -> void:
 		draw_circle(at, 32.0, Color(1, 1, 1, 0.25 if can else 0.1))
 		if _dragging != action:
 			_draw_tool(_tool_kind(action), at, 1.0 if can else 0.35)
-		if not can and Rescues.hatched() and Rescues.is_named():
+		if not can and Rescues.hatched() and Rescues.is_named() and not (action == &"feed" and Rescues.too_upset_to_eat()):
 			draw_line(at + Vector2(14, 12), at + Vector2(20, 18), Color("7fe0a0"), 4.0)  # done: a tick
 			draw_line(at + Vector2(20, 18), at + Vector2(30, 4), Color("7fe0a0"), 4.0)
 		var label: String = ["Food", "Comfort", "Plaster", "Medicine"][i]
@@ -265,7 +270,7 @@ func _draw() -> void:
 
 
 func _comforted_today() -> bool:
-	return Rescues.hatched() and Rescues.is_named() and not Rescues.can_do(&"comfort") and not Rescues.is_ready()
+	return Rescues.hatched() and Rescues.is_named() and Rescues.bar(&"calm") >= Rescues.EATS_FROM and not Rescues.is_ready()
 
 
 func _comfort_spot() -> Vector2:

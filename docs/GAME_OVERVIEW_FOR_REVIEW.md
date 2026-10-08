@@ -59,7 +59,7 @@ for review. It describes:
 - **Animals never die**, and no species ever disappears from an island. Each species keeps at
   least 1. A declining species "moves away".
   - Injuries are never bad and never get worse.
-  - Care meters only ever go up.
+  - Care meters can go down (hunger, then health and calm), but never to nothing: no death.
 - **No levels or XP for the player.** Progress is the restoration of each island ("Ocean
   Impact"). New islands are unlocked through restoration, not by player level. (Buildings do have
   3 upgrade levels.)

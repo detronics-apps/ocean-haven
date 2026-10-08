@@ -1,8 +1,8 @@
 class_name RescueScreen
 extends OverlayScreen
 ## The rescue companion in the vet room (Rescues, VetScene): the young animal on the counter
-## (or in a fish tank), its three bars (health, fed, calm: they only ever go up), its day in
-## care and the four things the ranger does for it each day by hand: drag the food to its mouth,
+## (or in a fish tank), its three bars (health, fed, calm: they change as you watch, see
+## Rescues), its day in care and the four things the ranger does for it by hand: drag the food to its mouth,
 ## comfort it, put a plaster on its wound, the dropper to its mouth (the buttons below do the
 ## same, for keyboards and controllers). The first visit names it; egg-layers then hatch; after
 ## its days in care, the ranger takes it home, tagged.
@@ -12,6 +12,7 @@ const TABLE_EDGE := Color("90a4ae")
 const BAR_COLOURS := {&"health": Color("e05a5a"), &"fed": Color("e8a33a"), &"calm": Color("4aa3df")}
 
 var _feedback := ""
+var _live := 0.0
 
 
 func _enter_tree() -> void:
@@ -21,6 +22,39 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	super()
 	_title.text = "Rescue"
+
+
+## Keeps the bars and buttons up to date while it's open: the fed bar goes down as you watch.
+func _process(delta: float) -> void:
+	_live -= delta
+	if _live > 0.0 or not visible:
+		return
+	_live = 0.5
+	for name: StringName in Rescues.BARS:
+		var bar := _content.find_child(String(name), true, false) as ProgressBar
+		if bar:
+			bar.value = Rescues.bar(name)
+	var grid := _content.find_child("Care", true, false)
+	if grid:
+		for action: StringName in Rescues.ACTIONS:
+			var pick := grid.get_node_or_null(String(action).capitalize()) as Button
+			if pick:
+				pick.disabled = not Rescues.can_do(action)
+	var mood := _content.find_child("Mood", true, false) as Label
+	if mood:
+		mood.text = _mood_text()
+
+
+## What it needs now, in a line.
+func _mood_text() -> String:
+	var name := Rescues.pet_name()
+	if Rescues.distressed():
+		return "%s is hungry and losing strength: comfort it, then feed it." % name
+	if Rescues.too_upset_to_eat() and Rescues.bar(&"fed") < 100:
+		return "%s is too upset to eat: comfort it first (calm %d of %d)." % [name, Rescues.bar(&"calm"), Rescues.EATS_FROM]
+	if Rescues.bar(&"fed") < 100:
+		return "%s is calm and ready to eat." % name
+	return "%s is full and content. Its fed bar goes down through the day." % name
 
 
 func open_rescue() -> void:
@@ -90,7 +124,7 @@ func _fill() -> void:
 		for action: StringName in Rescues.ACTIONS:
 			var label: String = one.get("%s_label" % action)
 			if action == &"patch" and Rescues.wounds_left() <= 0:
-				label = "No wounds left to patch"
+				label = "No wounds to patch"
 			var pick := _button(label, func() -> void:
 				_feedback = Rescues.care(action)
 				refresh.call_deferred())
@@ -99,8 +133,12 @@ func _fill() -> void:
 			pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			grid.add_child(pick)
 		_content.add_child(grid)
-		if not Rescues.can_care():
-			_add_text("That's everything for today. Come back tomorrow: every day of care makes %s stronger." % Rescues.pet_name())
+		var mood := Label.new()
+		mood.name = "Mood"
+		mood.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		mood.add_theme_color_override("font_color", Color("f2d58a"))
+		mood.text = _mood_text()
+		_content.add_child(mood)
 	if _feedback != "":
 		_add_text(_feedback, 20, Color("f2d58a"))
 
@@ -133,7 +171,7 @@ func _vet_table(one: RescueData) -> Control:
 	return table
 
 
-## Health, fed and calm, 0-100 (they only ever go up).
+## Health, fed and calm, 0-100 (updated live: `_process`).
 func _bars() -> Control:
 	var box := VBoxContainer.new()
 	box.name = "Bars"

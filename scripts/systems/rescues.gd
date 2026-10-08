@@ -2,8 +2,16 @@ extends Node
 ## Autoload "Rescues": the rescue companions (data/rescues/, RescueData). One young animal at a
 ## time is in the ranger's care: found on an island (once its conditions hold and no other is
 ## being cared for), named by the ranger, and cared for on the vet table for RescueData.days
-## game days: each day it can be fed, comforted, have a wound patched and get medicine, each
-## once. Its bars (health, fed, calm) only ever go up. Then it goes home tagged, in the shape
+## game days. Its bars (health, fed, calm) go up with care and can go down again, but it never
+## dies and health never goes below HEALTH_FLOOR:
+## - fed: each bit of food adds GAINS.feed (feed as often as it isn't full); it empties over
+##   FED_LASTS days. It only eats once it's calm enough (EATS_FROM calm).
+## - health: medicine (once a day), patching a wound (rescued ones) and food raise it; it only
+##   drops while the fed bar is empty, and never below HEALTH_FLOOR.
+## - calm: comforting raises it (as often as it isn't full). Left alone it settles down to
+##   CALM_RESTING (still not distressed); it only drops below that while it's distressed:
+##   losing health because it's hungry. A rescued (hurt) one starts below CALM_RESTING.
+## A hatchling starts healthy, with no wounds. Then it goes home tagged, in the shape
 ## the care left it in: the better its shape, the more often it's seen again, some mornings on
 ## its own island, some on the islands it travels to (RescueData.visits), some days out at sea.
 ## Its name shows over it once the ranger has met it again. Saved.
@@ -17,10 +25,27 @@ signal sighted(rescue: RescueData, animal_name: String, region: RegionData)
 
 const BARS := [&"health", &"fed", &"calm"]
 const BAR_NAMES := {&"health": "Health", &"fed": "Fed", &"calm": "Calm"}
-## Where the bars start when it's found, and what each care action adds.
-const START := {&"health": 25, &"fed": 20, &"calm": 15}
+## Where the bars start: a rescued (hurt) one, and a hatchling.
+const START := {&"health": 35, &"fed": 30, &"calm": 30}
+const START_HATCHED := {&"health": 85, &"fed": 40, &"calm": 60}
 const ACTIONS := [&"feed", &"comfort", &"patch", &"medicine"]
-const GAINS := {&"feed": {&"fed": 18}, &"comfort": {&"calm": 18}, &"patch": {&"health": 15}, &"medicine": {&"health": 10}}
+## What each care action adds. Food and comfort can be given as often as the bar isn't full;
+## medicine once a day; a plaster for each wound.
+const GAINS := {&"feed": {&"fed": 10, &"health": 2}, &"comfort": {&"calm": 10}, &"patch": {&"health": 15}, &"medicine": {&"health": 10}}
+const REPEATS := [&"feed", &"comfort"]
+## Days a full fed bar lasts.
+const FED_LASTS := 1.25
+## Calm it needs before it will eat.
+const EATS_FROM := 80
+## Health lost a day while the fed bar is empty, and the lowest it ever gets.
+const HEALTH_LOSS := 40.0
+const HEALTH_FLOOR := 20.0
+## Left alone, calm settles down to this (not distressed) at CALM_SETTLE a day; while it's
+## losing health it drops at CALM_LOSS a day, down to CALM_FLOOR.
+const CALM_RESTING := 50.0
+const CALM_SETTLE := 20.0
+const CALM_LOSS := 40.0
+const CALM_FLOOR := 10.0
 ## A released one is about on a given morning with this chance, plus `SEEN_PER_SHAPE` x its shape.
 const SEEN_BASE := 0.25
 const SEEN_PER_SHAPE := 0.6
@@ -99,9 +124,56 @@ func is_ready() -> bool:
 	return one != null and days_in() >= one.days
 
 
-## A bar of the one in care, 0..100.
+## A bar of the one in care, 0..100 (as it is now: they change as time passes).
 func bar(name: StringName) -> int:
-	return int((current.get("bars", {}) as Dictionary).get(name, START.get(name, 0)))
+	_advance()
+	return roundi(float((current.get("bars", {}) as Dictionary).get(name, START.get(name, 0))))
+
+
+## Whether it's losing health now: hungry (fed bar empty) and not yet at the floor.
+func distressed() -> bool:
+	_advance()
+	var bars: Dictionary = current.get("bars", {})
+	return not current.is_empty() and float(bars.get(&"fed", 0)) <= 0.0 and float(bars.get(&"health", 0)) > HEALTH_FLOOR
+
+
+## Too upset to eat: it needs comforting first.
+func too_upset_to_eat() -> bool:
+	return not current.is_empty() and bar(&"calm") < EATS_FROM
+
+
+## Brings its bars up to now: the fed bar empties, then health and calm drop while it's
+## hungry; calm settles down to CALM_RESTING otherwise. Only while it's in care (named, hatched,
+## not yet ready to go home).
+func _advance() -> void:
+	if current.is_empty():
+		return
+	var now := GameClock.now()
+	var one := in_care()
+	if one:  # ready to go home: its bars stay as its care left them
+		now = minf(now, float(current.get("since", now)) + one.days)
+	var last := float(current.get("updated", now))
+	current.updated = now
+	if now <= last or not is_named() or not hatched():
+		return
+	var bars: Dictionary = current.get("bars", {})
+	var fed := float(bars.get(&"fed", 0))
+	var health := float(bars.get(&"health", 0))
+	var calm := float(bars.get(&"calm", 0))
+	var left := minf(now - last, 60.0)
+	while left > 0.0:
+		var step := minf(left, 0.01)
+		left -= step
+		fed = maxf(fed - 100.0 / FED_LASTS * step, 0.0)
+		if fed <= 0.0 and health > HEALTH_FLOOR:
+			health = maxf(health - HEALTH_LOSS * step, HEALTH_FLOOR)
+			calm = maxf(calm - CALM_LOSS * step, CALM_FLOOR)
+		elif calm > CALM_RESTING:
+			calm = maxf(calm - CALM_SETTLE * step, CALM_RESTING)
+	bars[&"fed"] = fed
+	bars[&"health"] = health
+	bars[&"calm"] = calm
+	current.bars = bars
 
 
 func wounds_left() -> int:
@@ -110,20 +182,25 @@ func wounds_left() -> int:
 
 ## Its shape, 0..1: the three bars together.
 func shape() -> float:
-	var total := 0
+	var total := 0.0
 	for name in BARS:
 		total += bar(name)
 	return total / (100.0 * BARS.size())
 
 
-## Whether `action` can be done today (once a day each; patching only while there's a wound).
+## Whether `action` can be done now: food and comfort whenever their bar isn't full (food
+## only once it's calm enough to eat), medicine once a day, patching while there's a wound.
 func can_do(action: StringName) -> bool:
 	if current.is_empty() or is_ready() or not is_named() or not hatched():
 		return false
-	if int((current.get("done", {}) as Dictionary).get(action, -1)) == GameClock.day:
+	if not action in REPEATS and int((current.get("done", {}) as Dictionary).get(action, -1)) == GameClock.day:
 		return false
 	if action == &"patch" and wounds_left() <= 0:
 		return false
+	if action == &"feed" and (too_upset_to_eat() or bar(&"fed") >= 100):
+		return false
+	if action == &"comfort":
+		return bar(&"calm") < 100
 	var gains: Dictionary = GAINS[action]
 	return gains.keys().any(func(b: StringName) -> bool: return bar(b) < 100)
 
@@ -133,14 +210,14 @@ func can_care() -> bool:
 	return ACTIONS.any(can_do)
 
 
-## Does `action` for it today: its bars go up. Returns what happens.
+## Does `action` for it: its bars go up. Returns what happens.
 func care(action: StringName) -> String:
 	if not can_do(action):
 		return ""
 	var one := in_care()
 	var bars: Dictionary = (current.get("bars", START) as Dictionary).duplicate()
 	for name: StringName in GAINS[action]:
-		bars[name] = mini(int(bars.get(name, START[name])) + int(GAINS[action][name]), 100)
+		bars[name] = minf(float(bars.get(name, START[name])) + float(GAINS[action][name]), 100.0)
 	current.bars = bars
 	var actions_done: Dictionary = (current.get("done", {}) as Dictionary).duplicate()
 	actions_done[action] = GameClock.day
@@ -223,8 +300,9 @@ func _offer() -> void:
 			if person.id == one.person:
 				someone = person
 		if someone and Array(one.offer_when).all(func(c: String) -> bool: return People.check(c, someone)):
-			current = {"id": String(one.id), "name": "", "since": GameClock.now(), "bars": START.duplicate(),
-				"wounds": one.wounds, "done": {}}
+			current = {"id": String(one.id), "name": "", "since": GameClock.now(),
+				"bars": (START_HATCHED if one.from_egg else START).duplicate(), "wounds": 0 if one.from_egg else one.wounds,
+				"done": {}, "updated": GameClock.now()}
 			found.emit(one)
 			return
 
@@ -236,6 +314,7 @@ func name_it(value: String) -> void:
 	var clean := value.strip_edges().left(16)
 	current.name = clean if clean != "" else in_care().species.display_name.get_slice(" ", in_care().species.display_name.get_slice_count(" ") - 1)
 	current.since = GameClock.now()  # its days in care start now
+	current.updated = GameClock.now()
 
 
 ## Back to the wild, tagged: it's recorded with the shape it's in, and starts on its island.
@@ -280,7 +359,7 @@ func restore(saved: Dictionary) -> void:
 	if current.has("bars"):  # JSON keys come back as strings
 		var bars := {}
 		for key in current.bars:
-			bars[StringName(key)] = int(current.bars[key])
+			bars[StringName(key)] = float(current.bars[key])
 		current.bars = bars
 		var actions := {}
 		for key in current.get("done", {}):

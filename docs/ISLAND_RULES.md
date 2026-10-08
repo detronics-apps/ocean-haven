@@ -294,6 +294,15 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   away (patrol boats near the shore) it counts little, so the ranger can fix it by moving
   things, not only by removing them.
 - **Islands the ranger isn't on are paused**, including patrol boats (no notes from far away).
+- **A limit is never filled at once.** What an island can hold says where it's heading (the
+  gauge's estimate), not how fast: each parent breeds again only once its last young are a
+  step on (eggs hatched, or out of the baby stage), several parents at once; a turtle nest
+  hatches 2-4; drifters come at most 3 a day per species.
+- **Tree-nesting birds need many trees**: 8 full-grown trees a bird to come, 4 a bird to stay.
+- **Care can go bad, never to death.** Rescue care bars drop (hunger, then health and calm
+  while it's hungry), so players see neglect matters, but health never goes below 20 %. Calm
+  and health are separate: medicine and food mend health, only comfort calms; it won't eat
+  until it's calm (80 %). A hatchling starts healthy and needs no plasters.
 
 ## 10. Code habits that avoided bugs
 
