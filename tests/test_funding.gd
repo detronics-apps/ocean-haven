@@ -149,7 +149,7 @@ func _initialize() -> void:
 
 	# --- Upgrades: 3 tiers, each +1 funding per piece; they cost funding + litter + wood ---
 	labels = building.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Upgrade (2/3)" in labels, "offers an upgrade (%s)" % [labels])
+	_expect("Upgrade" in labels, "offers an upgrade (%s)" % [labels])
 	inventory.take_item(&"wood", inventory.available(&"wood"))
 	funding.restore({"balance": 500})
 	building.upgrade()

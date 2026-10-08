@@ -186,7 +186,7 @@ func actions() -> Array:
 	if (data.makes or data.makes_from != &"") and not damaged:
 		list.append_array(_production_actions())
 	if tier < data.max_tier:
-		list.append({"label": "Upgrade (%d/%d)" % [tier + 1, data.max_tier], "do": upgrade})
+		list.append({"label": "Upgrade", "do": upgrade})  # (its level shows on the building: "Lv N/3")
 	if storage() > 0:
 		var carried := storable_carried()
 		if carried > 0:
