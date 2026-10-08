@@ -41,7 +41,7 @@ func _initialize() -> void:
 	_expect(card != null, "a card shows the animal that came back")
 	if card:
 		var labels: Array = card.find_children("*", "Label", true, false).map(func(l: Label) -> String: return l.text)
-		_expect(labels.any(func(t: String) -> bool: return t.begins_with("The first")), "the first of a species is a big moment (%s)" % [labels])
+		_expect(labels.any(func(t: String) -> bool: return t.contains("has come to the island") or t.contains("has joined the island")), "it says the animal came or joined, never \"the first\" (%s)" % [labels])
 		_expect(labels.any(func(t: String) -> bool: return t.contains("here now:")), "it says how many there are now")
 		_expect(card.find_children("*", "TextureRect", true, false).size() == 1, "with its picture")
 		_expect(card.mouse_filter == Control.MOUSE_FILTER_IGNORE, "and can't be tapped (never in the way)")

@@ -130,12 +130,13 @@ func funding_float(amount: int) -> void:
 
 
 ## An animal of `species` came to the island: a card with its picture, how many there are
-## now and why it came (`note`). The first time a species comes back it's a bigger moment.
+## now and why it came (`note`): "Another X has joined the island!" The first newcomer of a
+## species in the game gets a gold card and the island's people mention it.
 func show_return(species: AnimalData, note: String, region: RegionData = null) -> void:
 	var first := not Fleet.has_flag(StringName("returned_%s" % species.id))
 	Fleet.mark(StringName("returned_%s" % species.id))
 	if first and region:  # the island's people talk about it too
-		People.add_news(region.id, "Have you seen? A new %s has come to the island! The first newcomer in a long time. %s" % [
+		People.add_news(region.id, "Have you seen? Another %s has joined us here. %s" % [
 			species.display_name.to_lower(), note])
 	_cards.append({"species": species, "note": note, "first": first, "region": region})
 	if not _card_tween or not _card_tween.is_running():
@@ -177,12 +178,13 @@ func _next_card() -> void:
 	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(text)
 	var title := Label.new()
-	title.text = ("The first %s has come back!" if first else "Another %s has come!") % species.display_name.to_lower()
+	var here := _count_here(species, shown.region)
+	title.text = ("Another %s has joined the island!" if here > 1 else "A %s has come to the island!") % species.display_name.to_lower()
 	title.add_theme_font_size_override("font_size", 20)
 	title.add_theme_color_override("font_color", Color("ffd27a") if first else Color("7ff0e6"))
 	text.add_child(title)
 	var count := Label.new()
-	count.text = "%s here now: %d" % [species.display_name, _count_here(species, shown.region)]
+	count.text = "%s here now: %d" % [species.display_name, here]
 	count.add_theme_font_size_override("font_size", 15)
 	text.add_child(count)
 	var why := Label.new()

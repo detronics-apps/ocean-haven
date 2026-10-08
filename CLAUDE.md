@@ -611,8 +611,9 @@ on the web); the page plays like a music app (navigator.audioSession, iPhone sil
 button clicks (Sound connects to each BaseButton; meta "silent" opts out); `Sound.play(&"id")`
 for the rest. Progress feedback (ProgressCheer, never tappable): sparkles and a chime when the
 ranger's island passes a new 5 % of health, a card with the animal's picture when one comes
-to an island (HUD.animal_returned, called wherever animals arrive or settle; the first of a
-species is a bigger moment: Fleet flag "returned_<id>"), and "+N" rising from the funding.
+to an island (HUD.animal_returned, called wherever animals arrive or settle: "Another X has
+joined the island!", never "the first"; the first newcomer of a species is a gold card: Fleet
+flag "returned_<id>"), and "+N" rising from the funding.
 
 "What is this?" (BuildingInfo: its picture, BuildingData.description, stats and fact) depends
 on BuildingData.explains: Always for markers and enclosures (protection areas and zones, habitats,
