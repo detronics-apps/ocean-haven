@@ -9,11 +9,14 @@ extends Control
 ## its mouth. Each one done calls `cared` with the action (the screen then does Rescues.care).
 
 signal cared(action: StringName)
+## Stroked a step calmer (the screen does Rescues.care(&"comfort") without rebuilding, so the
+## stroking goes on).
+signal soothed
 ## Something was tried in the wrong place: what to do instead.
 signal hint(text: String)
 
-## Stroking this far over it (pixels) comforts it.
-const STROKE_DISTANCE := 650.0
+## Each time it's stroked this far (pixels), it calms a step (`soothed`), while you stroke.
+const STROKE_STEP := 140.0
 ## Shaking food over the tank this long feeds it.
 const SPRINKLE_SECONDS := 1.2
 const HATCH_SECONDS := 3.0
@@ -30,6 +33,7 @@ var _blink := 2.0
 var _dragging: StringName = &""
 var _at := Vector2.ZERO
 var _stroked := 0.0
+var _soothing := 0.0
 var _shaken := 0.0
 var _last := Vector2.ZERO
 var _crumbs: Array[Dictionary] = []
@@ -160,11 +164,17 @@ func _gui_input(event: InputEvent) -> void:
 					hint.emit("%s is too upset to eat. Comfort it first, until it's calm." % Rescues.pet_name())
 					accept_event()
 					return
+				if event.position.distance_to(_tool_slot(i)) < 34.0 and Rescues.can_do(TOOLS[i]) \
+						and Rescues.short_of_funding(TOOLS[i]) != "":
+					hint.emit(Rescues.short_of_funding(TOOLS[i]))
+					accept_event()
+					return
 				if event.position.distance_to(_tool_slot(i)) < 34.0 and Rescues.can_do(TOOLS[i]):
 					_dragging = TOOLS[i]
 					_at = event.position
 					_last = event.position
 					_stroked = 0.0
+					_soothing = 0.0
 					_shaken = 0.0
 					accept_event()
 					return
@@ -176,11 +186,15 @@ func _gui_input(event: InputEvent) -> void:
 		_at = event.position
 		if _dragging == &"comfort" and rescue.comfort_kind == &"stroke" and _animal_rect().grow(10.0).has_point(_at):
 			_stroked += _at.distance_to(_last)
+			_soothing += _at.distance_to(_last)
 			if randf() < 0.08:
 				_burst(_at, 1)
-			if _stroked >= STROKE_DISTANCE:
-				_done(&"comfort")
-				_dragging = &""
+			if _soothing >= STROKE_STEP:
+				_soothing = 0.0
+				_burst(_at, 3)
+				soothed.emit()
+				if not Rescues.can_do(&"comfort"):  # calm as can be
+					_done(&"")
 		_last = _at
 		accept_event()
 
@@ -212,8 +226,10 @@ func _drop(at: Vector2) -> void:
 					_done(&"comfort")
 				else:
 					hint.emit("Put it right by %s." % Rescues.pet_name())
+			elif _stroked >= STROKE_STEP:
+				cared.emit(&"")  # (stroked calmer: the screen catches up)
 			else:
-				hint.emit("Stroke it gently, back and forth, a little longer.")
+				hint.emit("Stroke it gently, back and forth.")
 
 
 func _done(action: StringName) -> void:

@@ -22,6 +22,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	super()
 	_title.text = "Rescue"
+	_ready_landscape()
 
 
 ## Keeps the bars and buttons up to date while it's open: the fed bar goes down as you watch.
@@ -52,6 +53,8 @@ func _mood_text() -> String:
 		return "%s is hungry and losing strength: comfort it, then feed it." % name
 	if Rescues.too_upset_to_eat() and Rescues.bar(&"fed") < 100:
 		return "%s is too upset to eat: comfort it first (calm %d of %d)." % [name, Rescues.bar(&"calm"), Rescues.EATS_FROM]
+	if Rescues.bar(&"fed") < 100 and Rescues.short_of_funding(&"feed") != "":
+		return "%s is hungry. %s: earn some first." % [name, Rescues.short_of_funding(&"feed")]
 	if Rescues.bar(&"fed") < 100:
 		return "%s is calm and ready to eat." % name
 	return "%s is full and content. Its fed bar goes down through the day." % name
@@ -62,6 +65,25 @@ func open_rescue() -> void:
 	open()
 
 
+func _ready_landscape() -> void:
+	get_viewport().size_changed.connect(func() -> void:
+		if visible:
+			refresh.call_deferred())  # (turned: the room fits the screen again)
+
+
+## A phone on its side (or a wide screen): the room fills the screen, the bars inside it.
+func _wide() -> bool:
+	var view := get_viewport().get_visible_rect().size
+	return view.x > view.y * 1.3
+
+
+## The height the room gets on a wide screen: all of the page below the title.
+func _room_height() -> float:
+	var scroll := _content.get_parent() as Control
+	var height := scroll.size.y if scroll and scroll.size.y > 100.0 else get_viewport().get_visible_rect().size.y - 110.0
+	return maxf(height - 10.0, 300.0)
+
+
 func _fill() -> void:
 	var one := Rescues.in_care()
 	if not one:
@@ -70,7 +92,8 @@ func _fill() -> void:
 		return
 	var species := one.species.display_name.to_lower()
 	_title.text = "%s, the young %s" % [Rescues.pet_name(), species] if Rescues.is_named() else "A young %s" % species
-	_content.add_child(_vet_table(one))
+	var table := _vet_table(one)
+	_content.add_child(table)
 	if not Rescues.is_named():
 		_add_text(one.intro)
 		var row := HBoxContainer.new()
@@ -94,10 +117,22 @@ func _fill() -> void:
 	if not Rescues.hatched():
 		_add_text("Watch: %s is hatching!" % Rescues.pet_name(), 22, Color("f2d58a"))
 		return
-	_add_text("Day %d of %d in care: %s is growing a little every day." % [day, one.days, Rescues.pet_name()], 22)
+	var in_room := _wide() and not Rescues.is_ready()
+	var room_panel: VBoxContainer = null
+	if in_room:
+		table.custom_minimum_size.y = _room_height()
+		room_panel = _room_panel(table.get_node("VetScene"))
+		var day_line := Label.new()
+		day_line.text = "Day %d of %d" % [day, one.days]
+		day_line.add_theme_font_size_override("font_size", 20)
+		room_panel.add_child(day_line)
+		room_panel.add_child(_bars())
+	else:
+		_add_text("Day %d of %d in care: %s is growing a little every day." % [day, one.days, Rescues.pet_name()], 22)
 	if day - 1 < one.day_texts.size():
 		_add_text(one.day_texts[day - 1].replace("{name}", Rescues.pet_name()))
-	_content.add_child(_bars())
+	if not in_room:
+		_content.add_child(_bars())
 	if Rescues.is_ready():
 		_add_text(one.ready_text.replace("{name}", Rescues.pet_name()))
 		_add_text("%s is %s: the better its shape, the more often you'll see it again." % [
@@ -115,7 +150,11 @@ func _fill() -> void:
 		tip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		tip.add_theme_color_override("font_color", Color("9fe3ff"))
 		tip.text = "Care for %s with your hands: drag the things on the counter to %s (or use the buttons)." % [Rescues.pet_name(), "the tank" if one.tank else "it"]
-		_content.add_child(tip)
+		if in_room:
+			tip.text = "Drag the things on the counter to %s." % ("the tank" if one.tank else "it")
+			room_panel.add_child(tip)
+		else:
+			_content.add_child(tip)
 		var grid := GridContainer.new()
 		grid.name = "Care"
 		grid.columns = 4
@@ -125,6 +164,8 @@ func _fill() -> void:
 			var label: String = one.get("%s_label" % action)
 			if action == &"patch" and Rescues.wounds_left() <= 0:
 				label = "No wounds to patch"
+			if Rescues.cost(action) > 0:
+				label += " (%d funding)" % Rescues.cost(action)
 			var pick := _button(label, func() -> void:
 				_feedback = Rescues.care(action)
 				refresh.call_deferred())
@@ -138,7 +179,11 @@ func _fill() -> void:
 		mood.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		mood.add_theme_color_override("font_color", Color("f2d58a"))
 		mood.text = _mood_text()
-		_content.add_child(mood)
+		if in_room:
+			room_panel.add_child(mood)
+			room_panel.move_child(mood, 2)  # (under the bars, above the drag hint)
+		else:
+			_content.add_child(mood)
 	if _feedback != "":
 		_add_text(_feedback, 20, Color("f2d58a"))
 
@@ -162,6 +207,9 @@ func _vet_table(one: RescueData) -> Control:
 		if action != &"":
 			_feedback = Rescues.care(action)
 		refresh.call_deferred())
+	scene.soothed.connect(func() -> void:
+		Rescues.care(&"comfort")
+		_live = 0.0)  # (the bars catch up at once)
 	scene.hint.connect(func(text: String) -> void:
 		var tip := _content.find_child("Hint", true, false) as Label
 		if tip:
@@ -169,6 +217,32 @@ func _vet_table(one: RescueData) -> Control:
 	table.add_child(scene)
 	table.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return table
+
+
+## A see-through panel on the room's wall (top left) for the day, the bars and what it needs.
+func _room_panel(scene: Control) -> VBoxContainer:
+	var panel := PanelContainer.new()
+	panel.name = "RoomPanel"
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.16, 0.22, 0.78)
+	style.set_corner_radius_all(10)
+	style.set_content_margin_all(10)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.position = Vector2(12, 12)
+	panel.custom_minimum_size.x = 340
+	scene.add_child(panel)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	panel.add_child(box)
+	_ignore_mouse.call_deferred(panel)  # drags on the room go through it
+	return box
+
+
+static func _ignore_mouse(node: Node) -> void:
+	if node is Control:
+		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for child in node.get_children():
+		_ignore_mouse(child)
 
 
 ## Health, fed and calm, 0-100 (updated live: `_process`).

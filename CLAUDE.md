@@ -724,6 +724,11 @@ drops while fed is empty, never below 20 %. Calm only rises by comforting; left 
 settles to 50 % (not distressed), and only drops below that while health is dropping; a hurt
 rescue starts below 50 %. The bars freeze once it's ready to go home. The vet room shows them
 live and says what it needs now.
+Care costs funding: each bite of food and each dose of medicine (RescueData.food_cost 2 /
+medicine_cost 10; comfort and plasters are free; without the funding it says what it costs).
+Stroking (comfort_kind "stroke") calms it a step every 140 px stroked, while stroking
+(VetScene.soothed). On a phone on its side the room fills the screen with the day, the bars and
+what it needs on a panel on its wall; the buttons are below it.
 
 Rescue pictures (the owner's art: docs/rescue_stages_sheet.jpg, one row per animal, six care
 days; the turtle row starts with it hatching): tools/cut_rescue_sheet.py cuts it into clean

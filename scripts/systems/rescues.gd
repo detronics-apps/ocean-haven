@@ -216,10 +216,28 @@ func can_care() -> bool:
 	return ACTIONS.any(can_do)
 
 
+## The funding `action` costs (food and medicine; comfort and plasters are free).
+func cost(action: StringName) -> int:
+	var one := in_care()
+	if not one:
+		return 0
+	return one.food_cost if action == &"feed" else one.medicine_cost if action == &"medicine" else 0
+
+
+## What's missing to pay for `action` ("" = it can be paid for).
+func short_of_funding(action: StringName) -> String:
+	if cost(action) <= Funding.balance:
+		return ""
+	return "%s costs %d funding (you have %d)" % ["Food" if action == &"feed" else "Medicine", cost(action), Funding.balance]
+
+
 ## Does `action` for it: its bars go up. Returns what happens.
 func care(action: StringName) -> String:
 	if not can_do(action):
 		return ""
+	if short_of_funding(action) != "":
+		return short_of_funding(action)
+	Funding.spend(cost(action))
 	var one := in_care()
 	var bars: Dictionary = (current.get("bars", START) as Dictionary).duplicate()
 	for name: StringName in GAINS[action]:

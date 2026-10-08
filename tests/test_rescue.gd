@@ -80,6 +80,30 @@ func _initialize() -> void:
 	(content.find_child("Comfort", true, false) as Button).pressed.emit()
 	await process_frame
 	_expect(rescues.bar(&"calm") > calm_before, "comforting it: calm goes up (the buttons work too: keyboard / controller)")
+	# Stroking it by hand: it calms a step at a time while you stroke (no need to let go).
+	content = screen.get("_content")
+	vet = content.find_child("VetScene", true, false)
+	await process_frame  # (laid out)
+	calm_before = rescues.bar(&"calm")
+	turtle.comfort_kind = &"stroke"  # (as the otter's grooming and the flamingo's duster)
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	press.position = vet.call("_tool_slot", 1)
+	vet.call("_gui_input", press)
+	var body: Rect2 = vet.call("_animal_rect")
+	for i in 4:  # (about 400 px: a few steps calmer, not yet fully calm)
+		var move := InputEventMouseMotion.new()
+		move.position = body.get_center() + Vector2(-body.size.x * 0.3 if i % 2 == 0 else body.size.x * 0.3, 0)
+		vet.call("_gui_input", move)
+	_expect(rescues.bar(&"calm") > calm_before and vet.get("_dragging") == &"comfort",
+		"stroking it: calm goes up as you stroke (%d -> %d)" % [calm_before, rescues.bar(&"calm")])
+	var lift := InputEventMouseButton.new()
+	lift.button_index = MOUSE_BUTTON_LEFT
+	lift.position = body.get_center()
+	vet.call("_gui_input", lift)
+	turtle.comfort_kind = &"place"
+	await process_frame
 	while rescues.can_do(&"comfort"):
 		rescues.care(&"comfort")
 	_expect(rescues.bar(&"calm") == 100, "comfort it as often as you like, until it's fully calm")
@@ -88,11 +112,20 @@ func _initialize() -> void:
 	await process_frame  # (laid out)
 	var food_at: Vector2 = vet.call("_tool_slot", 0)
 	var fed_before: int = rescues.bar(&"fed")
+	var funding := root.get_node("Funding")
+	funding.balance = 0
+	drag.call(vet, food_at, vet.call("_point", vet.call("_mouth")))
+	_expect(rescues.bar(&"fed") == fed_before and "funding" in rescues.care(&"feed"),
+		"no funding: no food (care costs funding: have some first)")
+	funding.balance = 100
+	await process_frame
 	drag.call(vet, food_at, food_at + Vector2(0, -150))  # dropped somewhere else: nothing happens
 	_expect(rescues.bar(&"fed") == fed_before, "food dropped away from its mouth: not fed")
 	drag.call(vet, food_at, vet.call("_point", vet.call("_mouth")))
 	await process_frame
-	_expect(rescues.bar(&"fed") == fed_before + 10 and rescues.can_do(&"feed"), "food dragged to its mouth: +10 fed, and it can have more")
+	_expect(rescues.bar(&"fed") == fed_before + 10 and rescues.can_do(&"feed") and funding.balance == 100 - turtle.food_cost,
+		"food dragged to its mouth: +10 fed, it cost %d funding, and it can have more" % turtle.food_cost)
+	funding.balance = 10000
 	while rescues.can_do(&"feed"):
 		rescues.care(&"feed")
 	_expect(rescues.bar(&"fed") == 100, "fed until the bar is full")

@@ -261,10 +261,13 @@ func _place_toast() -> void:
 	var buttons := _action_bar.get_children().filter(func(c: Node) -> bool: return c is Button and c.visible)
 	if not buttons.is_empty():
 		var bar := _action_bar.get_global_rect()
-		if (view.x + _toast.size.x) / 2.0 > bar.position.x - 8.0:
+		if (view.x + _toast.get_combined_minimum_size().x) / 2.0 > bar.position.x - 8.0:
 			bottom = minf(bottom, bar.position.y - view.y - 12.0)
+	var box := _toast.get_combined_minimum_size()
+	_toast.offset_left = -box.x / 2.0
+	_toast.offset_right = box.x / 2.0
 	_toast.offset_bottom = bottom
-	_toast.offset_top = bottom - _toast.size.y
+	_toast.offset_top = bottom - box.y
 
 
 ## A small "Saved" that fades in and out after every save, so you know progress is kept.
@@ -592,6 +595,13 @@ func show_toast(text: String, now := false, at := Vector2.INF) -> void:
 		_toast_tween.kill()
 	_note_shown[text] = clock
 	_toast_label.text = text
+	# As wide as its one line (a wrapping label with no width shrinks to one letter), never
+	# wider than the screen: then it wraps.
+	var font := _toast_label.get_theme_font("font")
+	var line_width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1,
+		_toast_label.get_theme_font_size("font_size")).x + 2.0
+	_toast_label.custom_minimum_size.x = minf(line_width, get_viewport().get_visible_rect().size.x - 60.0)
+	_toast.reset_size()
 	_toast.modulate.a = 1.0
 	var showing := clampf(1.8 + text.length() / 30.0, 2.5, 4.0)  # time to read it
 	_note_free_at = clock + showing + 0.4 + NOTE_GAP_SECONDS

@@ -61,6 +61,9 @@ extends Resource
 @export var day_texts: PackedStringArray = []
 ## Wounds to patch (one a day).
 @export var wounds := 1
+## Funding each bite of food and each dose of medicine costs (care isn't free: have funding first).
+@export var food_cost := 2
+@export var medicine_cost := 10
 ## Each care action: what the button says, and what happens.
 @export var feed_label: String
 @export_multiline var feed_result: String
