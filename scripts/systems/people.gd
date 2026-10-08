@@ -22,6 +22,8 @@ const LOW_FUNDING := 60
 const LOW_WOOD := 3
 ## News (something worth seeing that happened on an island) is told for this many days.
 const NEWS_DAYS := 3.0
+## How many times in a game each observation is said at most.
+const OBSERVATION_TIMES := 3
 
 ## Person id -> met.
 var _met := {}
@@ -44,6 +46,9 @@ var _last := {}
 var _repeats := {}
 ## "person/kind" -> the day they last reminded the ranger about it (funding, wood).
 var _reminded := {}
+## How often each observation ("person/id") has been said; the day each person last made one.
+var _observed := {}
+var _observed_day := {}
 ## What happened on the islands that the ranger may have missed: {"region", "day", "text"}
 ## (the newest is told once, by whoever the ranger talks to there next). Not saved.
 var _news: Array[Dictionary] = []
@@ -91,6 +96,31 @@ func _reminders(person: PersonData) -> Array[String]:
 		_reminded["%s/wood" % person.id] = today
 		lines.append(wood_tip(person))
 	return lines
+
+
+## Something `person` has noticed about the island's animals (PersonData.observations), at most
+## once a day each, only while it's there to see, and each one only a few times a game (the
+## least-said first). "" = nothing today.
+func observation(person: PersonData) -> String:
+	var today := GameClock.day
+	if int(_observed_day.get(person.id, -1)) == today:
+		return ""
+	var best: Array[TalkTopic] = []
+	var fewest := OBSERVATION_TIMES
+	for topic: TalkTopic in person.observations:
+		var said := int(_observed.get(_key(person, topic), 0))
+		if said > fewest or not Array(topic.when).all(func(c: String) -> bool: return check(c, person)):
+			continue
+		if said < fewest:
+			best.clear()
+			fewest = said
+		best.append(topic)
+	if best.is_empty() or fewest >= OBSERVATION_TIMES:
+		return ""
+	var topic: TalkTopic = best.pick_random()
+	_observed[_key(person, topic)] = fewest + 1
+	_observed_day[person.id] = today
+	return " ".join(topic.lines)
 
 
 ## How to earn more funding on `person`'s island: its own funding facilities (visitors pay to see
@@ -219,6 +249,10 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	var extra: Array[String] = []
 	if not first:
 		extra = _reminders(person)
+		if extra.is_empty():
+			var noticed := observation(person)
+			if noticed != "":
+				extra.append(noticed)
 	if person.role == &"objective":
 		var done := to_thank(person)
 		if done:
@@ -645,12 +679,15 @@ func _built(person: PersonData, id: StringName) -> int:
 
 func to_dict() -> Dictionary:
 	return {"met": _met.keys(), "given": _given.keys(), "thanked": _thanked.keys(), "heard": _heard.keys(),
-		"guesses": _guesses.duplicate(), "outcomes": _outcomes.keys()}
+		"guesses": _guesses.duplicate(), "outcomes": _outcomes.keys(), "observed": _observed.duplicate()}
 
 
 func restore(saved: Dictionary) -> void:
-	for into: Dictionary in [_met, _given, _thanked, _heard, _reveal, _last, _guesses, _outcomes]:
+	for into: Dictionary in [_met, _given, _thanked, _heard, _reveal, _last, _guesses, _outcomes, _observed, _observed_day]:
 		into.clear()
+	var observed: Dictionary = saved.get("observed", {})
+	for key in observed:
+		_observed[String(key)] = int(observed[key])
 	for id in saved.get("met", []):
 		_met[StringName(id)] = true
 	for key in saved.get("given", []):

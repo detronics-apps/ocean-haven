@@ -121,6 +121,24 @@ script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Want to know how we could make something differently? That's what I'm here for.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"parrotfish_sand"
+when = PackedStringArray("animals:parrotfish>=1")
+lines = PackedStringArray("Hear that crunching? Parrotfish bite off old coral and grind it up, and what comes out the other end is fine white sand. A lot of the reef's sand is made that way.")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"clams_filter"
+when = PackedStringArray("built:water_treatment_facility")
+lines = PackedStringArray("Giant clams filter the seawater all day long. That's why the water round the treatment facility is so clear.")
+
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"split_coral"
+when = PackedStringArray()
+lines = PackedStringArray("When a reef patch is full of coral, you can split it: a broken-off piece of coral can grow into a whole new colony. More patches, more reef.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"kai"
@@ -141,3 +159,4 @@ shirt = Color(0.95, 0.8, 0.3, 1)
 trousers = Color(0.25, 0.35, 0.45, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

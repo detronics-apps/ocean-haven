@@ -650,6 +650,16 @@ Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in ev
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).
 
+A living island: most species roam all round their island's waters (AnimalData.roams /
+roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area
+they belong to; crocodiles, polar bears, crabs and nesting birds keep to their places. After the
+Polar Ice Survey (Fleet flag "old_ice_shown") old-ice tiles show a little bluer than seasonal ice
+(a tint on the tile only, no outline). People's observations (PersonData.observations, TalkTopics
+with `when`): 26 things they've noticed about the animals (crabs dig up litter, otters crack
+urchins, flamingo legs show the depth, rubbish brings bears...); one is added after what they say
+when there's no news or tip, at most once a day each, only while it holds, each up to
+People.OBSERVATION_TIMES (3) a game, least-said first (saved "observed").
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 

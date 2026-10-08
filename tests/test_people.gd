@@ -207,6 +207,23 @@ func _initialize() -> void:
 	_expect(not texts.any(func(t: String) -> bool: return t.contains("Steve")), "(once)")
 	funding.balance = balance
 
+	# --- Observations: now and then someone mentions what the animals do (once a day, a few times a game) ---
+	var bram: Resource = load("res://data/people/bram.tres")
+	var noticed: Array = []
+	for i in 12:
+		clock.day += 1
+		var said: String = people.observation(bram)
+		if said != "":
+			noticed.append(said)
+		_expect(people.observation(bram) == "" or said == "", "(at most one a day)")
+	_expect(noticed.size() == people.OBSERVATION_TIMES and noticed.all(func(t: String) -> bool: return t.contains("noise and bright lights")),
+		"Bram: noise and light scare the deep away, said %d times, no more (the anglerfish one waits for anglerfish)" % noticed.size())
+	_expect(people.to_dict().observed.get("bram/noise_light", 0) == people.OBSERVATION_TIMES, "how often is saved")
+	var all_said := 0
+	for someone: Resource in people.all():
+		all_said += someone.observations.size()
+	_expect(all_said == 26, "26 observations across the islands (%d)" % all_said)
+
 	# --- The talk box: the game waits while they talk; a tap goes on ---
 	var box: Node = world.get_parent().find_child("TalkBox", true, false)
 	_expect(box != null, "the HUD adds a talk box")

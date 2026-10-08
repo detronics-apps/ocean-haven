@@ -130,6 +130,18 @@ script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Something happening to the fish? You come and tell me.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"crabs_channels"
+when = PackedStringArray("animals:mangrove_crab>=1")
+lines = PackedStringArray("The mangrove crabs dig and turn over the mud, which helps keep the channels from silting up. A few crabs help; too many and the banks crumble in.")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"snappers_reef"
+when = PackedStringArray("animals:juvenile_snapper>=1")
+lines = PackedStringArray("Young snappers grow up in the nursery pools, safe among the mangrove roots. When they're big enough, they swim out to the reef.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"rosa"
@@ -152,3 +164,4 @@ hat = 2
 hat_colour = Color(0.9, 0.85, 0.7, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])

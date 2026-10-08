@@ -114,6 +114,24 @@ script = ExtResource("2_t")
 id = &"light"
 lines = PackedStringArray("The light's still turning. Come by any time.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"crabs_dig"
+when = PackedStringArray("animals:ghost_crab>=1")
+lines = PackedStringArray("I watched one of your ghost crabs digging its burrow this morning, and it turned up an old bottle cap! Where the crabs dig, look for litter they've uncovered.")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"boobies_circle"
+when = PackedStringArray("animals:red_footed_booby>=1")
+lines = PackedStringArray("When the boobies circle low over one spot of sea, look underneath. More often than not there's something floating there that shouldn't be.")
+
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"boobies_nest"
+when = PackedStringArray("animals:red_footed_booby>=1")
+lines = PackedStringArray("The boobies nest up in the palms you planted. Before you cut a palm down, have a look up into it for a nest.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"tom"
@@ -134,3 +152,4 @@ hat = 2
 hat_colour = Color(0.17, 0.24, 0.4, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14"), SubResource("Topic_15"), SubResource("Topic_16"), SubResource("Topic_17")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

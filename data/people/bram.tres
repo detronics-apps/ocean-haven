@@ -70,6 +70,18 @@ script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("Forty years at sea, and I never knew what was under me. Now I do.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"anglerfish_light"
+when = PackedStringArray("animals:anglerfish>=1")
+lines = PackedStringArray("Anglerfish carry their own little light to lure their food. Where they live, a camera needs less of its own lamp.")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"noise_light"
+when = PackedStringArray()
+lines = PackedStringArray("In all my years at sea, I learned this: down in the deep, noise and bright lights scare things away. Keep it quiet and dark and they come back.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"bram"
@@ -90,3 +102,4 @@ hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])

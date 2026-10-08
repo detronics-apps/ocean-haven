@@ -186,6 +186,18 @@ script = ExtResource("2_t")
 id = &"watch"
 lines = PackedStringArray("What do you think is happening on this island? Keep watching: the animals will show you.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"dolphins_lead"
+when = PackedStringArray("animals:bottlenose_dolphin>=1")
+lines = PackedStringArray("Did you notice? Once a dolphin trusts you, after a little play it swims off ahead of your boat, and it's leading you to floating litter. Follow it!")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"turtles_quiet"
+when = PackedStringArray("built:turtle_protection_area")
+lines = PackedStringArray("Turtles want a quiet beach to nest. If anything else is built close to a protection area, within two tiles, they won't nest there. Docks and trees are fine.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"maya"
@@ -206,3 +218,4 @@ shirt = Color(0.18, 0.56, 0.51, 1)
 trousers = Color(0.54, 0.48, 0.33, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14"), SubResource("Topic_15"), SubResource("Topic_16")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])

@@ -42,3 +42,6 @@ extends Resource
 ## Said first while a polar bear is at camp (rubbish drew it in): they're nervous ("!" in red).
 @export_multiline var scared_line: String
 @export var topics: Array[TalkTopic] = []
+## Things they've noticed about the island's animals (one `lines` entry each, with `when`
+## conditions): now and then, one is added after what they say (People.observation).
+@export var observations: Array[TalkTopic] = []

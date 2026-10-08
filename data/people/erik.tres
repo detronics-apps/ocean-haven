@@ -46,6 +46,18 @@ script = ExtResource("2_t")
 id = &"chat"
 lines = PackedStringArray("The ice remembers everything. So do my notebooks.")
 
+[sub_resource type="Resource" id="Obs_0"]
+script = ExtResource("2_t")
+id = &"skua_trouble"
+when = PackedStringArray("animals:arctic_skua>=1")
+lines = PackedStringArray("The skua circles over trouble. When you see it going round and round, something down there needs help.")
+
+[sub_resource type="Resource" id="Obs_1"]
+script = ExtResource("2_t")
+id = &"rubbish_bears"
+when = PackedStringArray("animals:polar_bear>=1", "!flag:bear_at_camp")
+lines = PackedStringArray("A polar bear can smell food from a long way off. Keep rubbish away from the camp, or a bear will come to see what it is.")
+
 [resource]
 script = ExtResource("1_p")
 scared_line = "Stay close, {name}, there's a bear about! Forty winters up here and they still make my heart race. It's the rubbish that drew it: clear that, and it'll leave on its own."
@@ -67,3 +79,4 @@ hat = 2
 hat_colour = Color(0.6, 0.2, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
