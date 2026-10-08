@@ -2,8 +2,8 @@ class_name EndCredits
 extends CanvasLayer
 ## The end credits (data/ending/final_word.tres): the screen goes black, stars come out, and the
 ## text rolls slowly up and away into the distance, centred in big gold letters, like the
-## opening crawl of an old space film. Slow enough for slow readers; a tap doubles the speed
-## (tap again: back to normal). Played once when the final chapter first opens, and again from
+## opening crawl of an old space film. Slow enough for slow readers; the speed button (bottom
+## left) goes x1 -> x2 -> x3 -> x1 (also a tap on the text, or the interact key). Played once when the final chapter first opens, and again from
 ## the Observatory's "End credits" button. Close (top right) or the end returns to the game.
 
 signal finished
@@ -16,7 +16,7 @@ const SHADOW := Color("6b4a10")
 const BLACK_SECONDS := 2.5
 ## Rolling speed, in body-text line heights a second (slow readers: about 2.3 s a line).
 const LINES_PER_SECOND := 0.43
-const FAST := 2.0
+const SPEEDS := [1.0, 2.0, 3.0]
 ## How quickly the text shrinks into the distance (in screen heights: smaller = sooner).
 const DEPTH := 0.9
 
@@ -24,10 +24,10 @@ var _rows: Array[Dictionary] = []  # {"text", "size", "colour", "gap" (before), 
 var _total := 0.0
 var _offset := 0.0  # how far the text has rolled, px at full size
 var _time := 0.0
-var _fast := false
+var _speed := 0  # index into SPEEDS
 var _stars: Array[Vector3] = []
 var _canvas: Control
-var _speed_note: Label
+var _speed_button: Button
 var _laid_for := Vector2.ZERO
 
 
@@ -50,12 +50,14 @@ func _ready() -> void:
 	close.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE, 16)
 	close.pressed.connect(stop)
 	add_child(close)
-	_speed_note = Label.new()
-	_speed_note.name = "SpeedNote"
-	_speed_note.add_theme_color_override("font_color", Color(1, 0.9, 0.6, 0.55))
-	_speed_note.add_theme_font_size_override("font_size", 18)
-	_speed_note.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE, 16)
-	add_child(_speed_note)
+	_speed_button = Button.new()
+	_speed_button.name = "Speed"
+	_speed_button.custom_minimum_size = Vector2(88, 56)
+	_speed_button.add_theme_font_size_override("font_size", 24)
+	_speed_button.modulate = Color(1, 0.92, 0.7, 0.8)
+	_speed_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE, 24)
+	_speed_button.pressed.connect(toggle_speed)
+	add_child(_speed_button)
 	for i in 160:
 		_stars.append(Vector3(randf(), randf(), randf_range(0.3, 1.0)))
 
@@ -63,7 +65,7 @@ func _ready() -> void:
 func play() -> void:
 	_offset = 0.0
 	_time = 0.0
-	_fast = false
+	_speed = 0
 	_laid_for = Vector2.ZERO
 	visible = true
 	get_tree().paused = true
@@ -82,7 +84,12 @@ func is_playing() -> bool:
 
 
 func is_fast() -> bool:
-	return _fast
+	return _speed > 0
+
+
+## How fast it rolls now: 1, 2 or 3.
+func speed() -> float:
+	return SPEEDS[_speed]
 
 
 ## How far through the text it has rolled, 0..1.
@@ -113,12 +120,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## A tap: twice as fast, or back to normal.
 func toggle_speed() -> void:
-	_fast = not _fast
+	_speed = (_speed + 1) % SPEEDS.size()
 	_update_note()
 
 
 func _update_note() -> void:
-	_speed_note.text = "Tap: back to normal speed" if _fast else "Tap: faster"
+	_speed_button.text = "x%d" % roundi(SPEEDS[_speed])
 
 
 func _process(delta: float) -> void:
@@ -128,7 +135,7 @@ func _process(delta: float) -> void:
 	if _laid_for != _canvas.size:
 		_layout()
 	if _time > BLACK_SECONDS:
-		_offset += delta * LINES_PER_SECOND * _body_size() * 1.5 * (FAST if _fast else 1.0)
+		_offset += delta * LINES_PER_SECOND * _body_size() * 1.5 * speed()
 		if _offset > _total + _canvas.size.y * DEPTH * 2.3:
 			stop()
 			return

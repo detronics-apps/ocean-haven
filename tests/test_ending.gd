@@ -97,12 +97,17 @@ func _initialize() -> void:
 	for i in 60:
 		credits._process(1.0 / 30.0)
 	var fast: float = credits.progress() - slow
-	credits.toggle_speed()
+	var speed_button: Button = credits.find_child("Speed", true, false)
+	_expect(speed_button.text == "x2", "the speed button now reads x2")
+	speed_button.pressed.emit()
+	_expect(speed_button.text == "x3" and is_equal_approx(credits.speed(), 3.0), "then x3")
+	speed_button.pressed.emit()
+	_expect(speed_button.text == "x1", "then back to x1")
 	var before: float = credits.progress()
 	for i in 60:
 		credits._process(1.0 / 30.0)
 	var normal: float = credits.progress() - before
-	_expect(credits.is_playing() and is_equal_approx(fast, normal * 2.0), "a tap: twice as fast (%.4f vs %.4f)" % [fast, normal])
+	_expect(credits.is_playing() and is_equal_approx(fast, normal * 2.0), "x2: twice as fast (%.4f vs %.4f)" % [fast, normal])
 	var minutes: float = 1.0 / (normal * 30.0 / 60.0) / 60.0
 	_expect(minutes > 4.0, "slow enough for slow readers: about %.1f minutes at normal speed" % minutes)
 	credits.stop()
