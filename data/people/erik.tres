@@ -58,6 +58,18 @@ id = &"rubbish_bears"
 when = PackedStringArray("animals:polar_bear>=1", "!flag:bear_at_camp")
 lines = PackedStringArray("A polar bear can smell food from a long way off. Keep rubbish away from the camp, or a bear will come to see what it is.")
 
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"bear_young"
+when = PackedStringArray("young:polar_bear>=1")
+lines = PackedStringArray("A polar bear cub! It'll stay with its mother for about two years, learning to hunt seals on the ice.")
+
+[sub_resource type="Resource" id="Obs_3"]
+script = ExtResource("2_t")
+id = &"tern_young"
+when = PackedStringArray("young:arctic_tern>=1")
+lines = PackedStringArray("Tern chicks are speckled like the stones they hatch on. Hard to spot, so watch your step!")
+
 [resource]
 script = ExtResource("1_p")
 scared_line = "Stay close, {name}, there's a bear about! Forty winters up here and they still make my heart race. It's the rubbish that drew it: clear that, and it'll leave on its own."
@@ -79,4 +91,4 @@ hat = 2
 hat_colour = Color(0.6, 0.2, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3")])

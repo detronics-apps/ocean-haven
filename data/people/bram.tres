@@ -82,6 +82,12 @@ id = &"noise_light"
 when = PackedStringArray()
 lines = PackedStringArray("In all my years at sea, I learned this: down in the deep, noise and bright lights scare things away. Keep it quiet and dark and they come back.")
 
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"whale_young"
+when = PackedStringArray("young:sperm_whale>=1")
+lines = PackedStringArray("A sperm whale calf! When its mother dives deep for food, others in the group stay up near it and look after it.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"bram"
@@ -102,4 +108,4 @@ hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

@@ -76,6 +76,12 @@ id = &"clean_upstream"
 when = PackedStringArray()
 lines = PackedStringArray("The fishermen say the kelp grows back faster when the water drifting in from your Starting Island is clean. Everything out here is connected.")
 
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"cormorant_young"
+when = PackedStringArray("young:double_crested_cormorant>=1")
+lines = PackedStringArray("The cormorant chicks hatch with hardly any feathers, then grow dark fuzzy down. You'd never guess they'll be such sleek fishers.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"ines"
@@ -94,4 +100,4 @@ shirt = Color(0.75, 0.3, 0.3, 1)
 trousers = Color(0.3, 0.3, 0.38, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

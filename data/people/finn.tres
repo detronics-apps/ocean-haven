@@ -142,6 +142,12 @@ id = &"otters_urchins"
 when = PackedStringArray("animals:sea_otter>=1")
 lines = PackedStringArray("Watch an otter floating on its back: it cracks sea urchins open on its belly. Every urchin an otter eats is one less nibbling the kelp.")
 
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"otter_young"
+when = PackedStringArray("young:sea_otter>=1")
+lines = PackedStringArray("Did you see the otter pup? Its baby fur is so fluffy it floats like a cork: it can't dive yet. Its mother carries it on her belly.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"finn"
@@ -162,4 +168,4 @@ shirt = Color(0.2, 0.28, 0.35, 1)
 trousers = Color(0.15, 0.17, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

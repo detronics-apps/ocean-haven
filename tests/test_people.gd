@@ -184,6 +184,8 @@ func _initialize() -> void:
 	funding.balance = 20
 	inventory.restore({})
 	clock.day += 1
+	var fleet_before: Dictionary = root.get_node("Fleet").to_dict()
+	root.get_node("Fleet").restore({})  # (just getting started: the wood tip is for then)
 	people.talk(tom)  # (meeting him first: no reminders then)
 	people.finish_talk()
 	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
@@ -195,6 +197,7 @@ func _initialize() -> void:
 	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
 	people.finish_talk()
 	_expect(not texts.any(func(t: String) -> bool: return t.contains("running low") or t.contains("Short of wood")), "only once a day")
+	root.get_node("Fleet").restore(fleet_before)
 	var reef_giver: Resource = load("res://data/people/kai.tres")
 	_expect(people.wood_tip(reef_giver).contains("no trees to cut here") or world.get_tree().get_nodes_in_group("plants").size() > 0,
 		"an island without trees: bring stored wood from another island (%s)" % people.wood_tip(reef_giver))
@@ -222,7 +225,29 @@ func _initialize() -> void:
 	var all_said := 0
 	for someone: Resource in people.all():
 		all_said += someone.observations.size()
-	_expect(all_said == 26, "26 observations across the islands (%d)" % all_said)
+	_expect(all_said == 38, "38 observations across the islands, 12 of them about young ones (%d)" % all_said)
+	# A young flamingo on the Mangrove Coast: Rosa mentions how different the chick looks.
+	var chick: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	chick.set("data", load("res://data/animals/american_flamingo.tres"))
+	chick.set("young", true)
+	chick.set("born_at", clock.now())
+	chick.position = load("res://data/regions/mangrove_coast.tres").center
+	world.add_child(chick)
+	var chick_lines := []
+	for i in 30:
+		clock.day += 1
+		chick_lines.append(people.observation(load("res://data/people/rosa.tres")))
+	_expect(chick_lines.any(func(t: String) -> bool: return t.contains("not pink at all")), "Rosa: the flamingo chick is grey, not pink")
+	chick.free()
+	# The wood tip is only for getting started: not once the fleet has its first upgrade.
+	var fleet_now: Dictionary = root.get_node("Fleet").to_dict()
+	root.get_node("Fleet").restore({"installed": ["salvaged_sonar_core"]})
+	inventory.restore({})
+	clock.day += 1
+	var later: Array = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(not later.any(func(t: String) -> bool: return t.contains("Short of wood")), "later in the game: no more wood tips (%s)" % [later])
+	root.get_node("Fleet").restore(fleet_now)
 
 	# --- The talk box: the game waits while they talk; a tap goes on ---
 	var box: Node = world.get_parent().find_child("TalkBox", true, false)

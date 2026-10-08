@@ -70,6 +70,12 @@ id = &"mangroves_mud"
 when = PackedStringArray()
 lines = PackedStringArray("Mangrove roots catch the mud that the water carries. Channels beside grown mangroves stay clear much longer.")
 
+[sub_resource type="Resource" id="Obs_2"]
+script = ExtResource("2_t")
+id = &"crocodile_young"
+when = PackedStringArray("young:american_crocodile>=1")
+lines = PackedStringArray("A crocodile hatchling! Yellow with black stripes, small enough to sit in your hand. A mother crocodile gently carries her hatchlings to the water in her mouth.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"samuel"
@@ -88,4 +94,4 @@ shirt = Color(0.45, 0.55, 0.35, 1)
 trousers = Color(0.35, 0.28, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])

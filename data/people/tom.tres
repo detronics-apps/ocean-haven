@@ -132,6 +132,18 @@ id = &"boobies_nest"
 when = PackedStringArray("animals:red_footed_booby>=1")
 lines = PackedStringArray("The boobies nest up in the palms you planted. Before you cut a palm down, have a look up into it for a nest.")
 
+[sub_resource type="Resource" id="Obs_3"]
+script = ExtResource("2_t")
+id = &"turtle_young"
+when = PackedStringArray("young:green_turtle>=1")
+lines = PackedStringArray("Did you see the hatchlings? Tiny and dark, nothing like the big ones. A green turtle takes many years to grow up.")
+
+[sub_resource type="Resource" id="Obs_4"]
+script = ExtResource("2_t")
+id = &"booby_young"
+when = PackedStringArray("young:red_footed_booby>=1")
+lines = PackedStringArray("A booby chick! Just a ball of white fluff. It'll be brown for a while yet before it looks like its parents.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"tom"
@@ -152,4 +164,4 @@ hat = 2
 hat_colour = Color(0.17, 0.24, 0.4, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14"), SubResource("Topic_15"), SubResource("Topic_16"), SubResource("Topic_17")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3"), SubResource("Obs_4")])

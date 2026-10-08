@@ -568,7 +568,8 @@ ocean_world.place_tagged), its name showing once met again; rescues for every is
 seahorse, Deep Sea sixgill pup); hint-givers alternate island clues with pointers to anything
 open elsewhere (People.open_things); after what they say, people add (once a day each) what to do
 when funding (< 60: their island's funding facilities, upgrade the recycling centre) or wood (< 3:
-cut grown trees, replant, mind nests; or stored wood from an island with trees) runs low, and
+cut grown trees, replant, mind nests; or stored wood from an island with trees; only while
+getting started: before the fleet's first upgrade, People.WOOD_TIPS_UNTIL) runs low, and
 island news the ranger may have missed (People.add_news: rescued visitors, hatchlings, a species'
 first newcomer; told once, within 3 days); the giant squid has a step-by-step hint (DeepEcosystem.squid_hint: map the canyon, a camera, 70 % quiet,
 2 days on the island; Bram's squid topic "{advice:giant_squid}", condition "journal:X"); Glass Sort (GlassSort, Kai, the Glassworks: water-sort
@@ -666,9 +667,13 @@ they belong to; crocodiles, polar bears, crabs and nesting birds keep to their p
 Polar Ice Survey (Fleet flag "old_ice_shown") old-ice tiles show a little bluer than seasonal ice
 (a tint on the tile only, no outline). People's observations (PersonData.observations, TalkTopics
 with `when`): 26 things they've noticed about the animals (crabs dig up litter, otters crack
-urchins, flamingo legs show the depth, rubbish brings bears...); one is added after what they say
+urchins, flamingo legs show the depth, rubbish brings bears...), and 12 about young ones while
+one is on the island (condition "young:X": the grey flamingo chick, the white seal pup, the
+floating otter pup...); one is added after what they say
 when there's no news or tip, at most once a day each, only while it holds, each up to
-People.OBSERVATION_TIMES (3) a game, least-said first (saved "observed").
+People.OBSERVATION_TIMES (3) a game, least-said first (saved "observed"). Bram keeps a lighthouse on
+the little islet off the Deep Sea hook's base; the hook's inside (the canyon) is rock, with sand
+only in a line up from the base and round the east tip.
 
 Seeds that travel (AnimalData seeds_tree / seeds_from / seeds_to / seeds_max 6 / seeds_chance;
 Travellers.spread_seeds each morning on the ranger's island): once the Starting Island is

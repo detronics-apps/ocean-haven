@@ -20,6 +20,9 @@ const DELAY := 2.0
 ## how to get more (at most once a day each).
 const LOW_FUNDING := 60
 const LOW_WOOD := 3
+## The wood tip is for getting started: once the fleet has its first upgrade (the Starting
+## Island's story done) the ranger knows where wood comes from.
+const WOOD_TIPS_UNTIL := 1
 ## News (something worth seeing that happened on an island) is told for this many days.
 const NEWS_DAYS := 3.0
 ## How many times in a game each observation is said at most.
@@ -92,7 +95,7 @@ func _reminders(person: PersonData) -> Array[String]:
 	if Funding.balance < LOW_FUNDING and int(_reminded.get("%s/funding" % person.id, -1)) != today:
 		_reminded["%s/funding" % person.id] = today
 		lines.append(funding_tip(person))
-	if Inventory.available(&"wood") < LOW_WOOD and int(_reminded.get("%s/wood" % person.id, -1)) != today:
+	if Inventory.available(&"wood") < LOW_WOOD and Fleet.level() < WOOD_TIPS_UNTIL and int(_reminded.get("%s/wood" % person.id, -1)) != today:
 		_reminded["%s/wood" % person.id] = today
 		lines.append(wood_tip(person))
 	return lines
@@ -580,7 +583,7 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ## - numbers compared with >=, <=, >, <, =: "animals:X" (healthy residents of species X),
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
 ##   "tangled" (animals caught or hurt), "busy:X" (nesting areas too busy), "species"
-##   (species photographed), "missing_moments" (photo moments still to catch), "picked:X" (litter X ever picked up),
+##   (species photographed), "missing_moments" (photo moments still to catch), "picked:X" (litter X ever picked up), "young:X" (young of species X on the island now),
 ##   "installed" (discoveries in the fleet), "health"
 ##   (percent), "built:X".
 func check(condition: String, person: PersonData, first := false) -> bool:
@@ -650,6 +653,9 @@ func _number(name: String, person: PersonData) -> float:
 		"species": return Journal.photographed_species()
 		"missing_moments": return Journal.moments_total() - Journal.moments_caught()
 		"picked": return Inventory.picked.get(arg, 0)
+		"young":  # young ones of species `arg` on their island now (born, not grown yet)
+			return get_tree().get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
+				return a.data.id == arg and a.young and not a.unborn and not a.leaving and Regions.nearest(a.global_position) == region).size()
 		"installed": return Fleet.level()
 		"health": return IslandHealth.of(get_tree(), region) * 100.0
 		"built": return _built(person, arg)
