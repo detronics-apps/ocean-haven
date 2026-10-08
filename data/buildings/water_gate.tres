@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = 2
 id = &"water_gate"
 display_name = "Water Gate"
 description = "A wooden gate across a channel. Open, it lets fish through and flushes silt out, but the flats drain. Closed, it holds water on the flats for the flamingos, but blocks fish and lets silt settle. Every gate on the island sets the water level together."

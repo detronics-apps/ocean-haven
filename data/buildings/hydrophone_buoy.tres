@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = 2
 id = &"hydrophone_buoy"
 texture = ExtResource("2_t")
 only_on = &"deep_sea"

@@ -71,6 +71,8 @@ addons/                  third-party Godot plugins only
 
 ## Workflow
 
+- **Plan first.** Before building any change the user asks for, reply with a short plan (what
+  will change, the choices made, anything left out) and wait for their OK or corrections.
 - Work in small, playable steps. After each step the game must still run.
 - Commit after every working step with a clear message; never commit a broken project.
 - Don't edit `project.godot` or `.tscn` files by hand when the change is risky; prefer small, reviewable diffs and say what to check in the editor.
@@ -605,10 +607,10 @@ species is a bigger moment: Fleet flag "returned_<id>"), and "+N" rising from th
 
 "What is this?" (BuildingInfo: its picture, BuildingData.description, stats and fact) depends
 on BuildingData.explains: Always for markers and enclosures (protection areas and zones, habitats,
-sanctuaries, restoration sites, the drill site); When unclear for real buildings, only while none
+sanctuaries, restoration sites, the drill site, water gates, hydrophone buoys); When unclear for real buildings, only while none
 of their own buttons already says what they are (Missions, Recycle, Look in storage...:
-Building._says_what_it_is); Never for built items (docks, drawbridges, gates, buoys, cameras,
-boats, trees, the tent); and its picture shows what it does (the Glassworks' furnace and bottles, the refill
+Building._says_what_it_is); Never for built items (docks, drawbridges, deep cameras, boats,
+trees, the tent); and its picture shows what it does (the Glassworks' furnace and bottles, the refill
 bar's kegs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
 centres). Full-screen pages keep clear of a phone's home bar, corners and notch (SafeArea: the
 browser's safe-area insets, never less than a phone margin); activity level buttons wrap.

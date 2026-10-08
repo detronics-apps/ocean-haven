@@ -221,7 +221,9 @@ func _initialize() -> void:
 	_expect(asks_what.call(platform).is_empty(), "a building whose own button says what it is (Missions) doesn't")
 	var otters: Node2D = build_mode.add_building(load("res://data/buildings/otter_habitat.tres"), spot.call("otter_habitat", kelp.arrival + Vector2(-96, 160)))
 	_expect(asks_what.call(otters).size() == 1, "markers and enclosures (an Otter Habitat) always do")
-	for id in ["dock", "drawbridge", "hydrophone_buoy", "deep_camera", "palm_tree", "rowboat", "patrol_boat", "water_gate"]:
+	for id in ["water_gate", "hydrophone_buoy"]:
+		_expect(load("res://data/buildings/%s.tres" % id).explains == 2, "%s: always explained" % id)
+	for id in ["dock", "drawbridge", "deep_camera", "palm_tree", "rowboat", "patrol_boat"]:
 		_expect(load("res://data/buildings/%s.tres" % id).explains == 0, "%s is a built item: never" % id)
 	var no_fact: Array = Array(DirAccess.get_files_at("res://data/buildings")).filter(func(f: String) -> bool:
 		return f.ends_with(".tres") and f != "shovel.tres" and (load("res://data/buildings/" + f).fact == "" or load("res://data/buildings/" + f).description == ""))
