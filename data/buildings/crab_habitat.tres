@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = 2
 id = &"crab_habitat"
 display_name = "Crab Habitat"
 description = "A protected patch of soft mud where mangrove crabs can dig their burrows. Crab burrows drain the mud and slow the silting, but too many crabs undercut the banks."

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_mrs")
-explains = true
+explains = 1
 id = &"marine_rescue_station"
 display_name = "Marine Search & Rescue Station"
 description = "The Starting Island's special building. Spend funding to send out missions: a rescue boat to find animals in distress, and surveys of the island's litter, turtles and dolphins."

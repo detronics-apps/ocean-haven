@@ -192,7 +192,7 @@ func actions() -> Array:
 		if carried > 0:
 			list.append({"label": "Store everything (%d)" % carried, "do": store_all})
 		list.append({"label": "Look in storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
-	if data.explains:  # (real buildings only: not docks, buoys, cameras, zones or trees)
+	if data.explains == 2 or (data.explains == 1 and not list.any(_says_what_it_is)):
 		list.append({"label": "What is this?", "do": get_tree().call_group.bind("building_info", "open_for", self)})
 	if data.movable:
 		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
@@ -200,6 +200,16 @@ func actions() -> Array:
 		var sure := Time.get_ticks_msec() < _demolish_until
 		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.display_name), "do": demolish})
 	return list
+
+
+## Whether an action already says what the building is for (Missions, Recycle, Sleep, Look in
+## storage...): anything but moving, upgrading, repairing, securing or taking it down.
+static func _says_what_it_is(action: Dictionary) -> bool:
+	var label: String = action.label
+	for generic in ["Move ", "Demolish", "Tap again", "Upgrade", "Repair", "Secure"]:
+		if label.begins_with(generic):
+			return false
+	return true
 
 
 ## The rowboat moored here (an extra rowboat), if any.

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_kdc")
-explains = true
+explains = 1
 id = &"kelp_discovery_centre"
 display_name = "Kelp Discovery Centre"
 description = "Visitors learn about kelp forests, otters and food webs, and watch the forest through a big window. More otters on the island and a healthier forest, more visitors."

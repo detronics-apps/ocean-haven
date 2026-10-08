@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("1_akafq")
+explains = 2
 id = &"turtle_protection_area"
 display_name = "Turtle Protection Area"
 description = "A fenced, quiet spot on the beach where sea turtles can nest safely. Each one is home to up to 4 turtles."

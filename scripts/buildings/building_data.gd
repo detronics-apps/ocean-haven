@@ -169,9 +169,10 @@ extends Resource
 ## What interacting with it does: "" (nothing), "sleep", "explore" (the Exploration Ship) or
 ## "missions" (a signature facility: send missions, see Missions).
 @export var action: StringName
-## A real building someone might forget the purpose of (it looks like another house):
-## it offers "What is this?". Built items (docks, buoys, cameras, zones, trees) don't.
-@export var explains := false
+## When it offers "What is this?": Never (built items: docks, gates, buoys, cameras, boats,
+## trees), When unclear (real buildings: only while none of their own buttons, like Missions or
+## Recycle, already says what they are) or Always (markers and enclosures: zones, areas, habitats).
+@export_enum("Never", "When unclear", "Always") var explains: int = 0
 ## Short, accurate fact shown when it's built (and in "What is this?").
 @export_multiline var fact: String
 

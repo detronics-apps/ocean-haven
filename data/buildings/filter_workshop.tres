@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"filter_workshop"
 display_name = "Filter Workshop"
 description = "Kai's workshop makes filters for washing machines that catch plastic fibres before they go down the drain. No new microfibres reach the sea from the islands' laundry."

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+explains = 2
 id = &"quiet_den_area"
 texture = ExtResource("2_t")
 only_on = &"arctic_ocean"

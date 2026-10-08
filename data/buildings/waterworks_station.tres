@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"waterworks_station"
 display_name = "Mangrove Waterworks Station"
 description = "The Mangrove Coast's special building: it studies how water flows through the mangroves. Surveys show which pools are cut off, where channels silt up and whether the water level suits the flamingos; its teams clear channels and hold back silt."

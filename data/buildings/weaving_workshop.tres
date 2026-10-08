@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"weaving_workshop"
 display_name = "Weaving Workshop"
 description = "Local weavers make strong market baskets from nipa palm leaves, which grow among the mangroves. The fish market uses them instead of plastic bags: no new bags drift in on any island."

@@ -203,19 +203,26 @@ func _initialize() -> void:
 	_expect(home_tents.call() == tents_here, "it replaces the tent there, not the one on the Starting Island")
 	build_mode.cancel()
 
-	# --- Real buildings say what they're for; built items don't ---
-	world.get_node("Player").global_position = kelp.arrival
-	var glassworks: Node2D = build_mode.add_building(load("res://data/buildings/glassworks.tres"), _land_cell_near(build_mode, load("res://data/buildings/glassworks.tres"), kelp.arrival + Vector2(-160, 0)))
-	world.get_node("Player").global_position = glassworks.global_position + Vector2(0, 40)
-	var asks: Array = glassworks.actions().filter(func(a: Dictionary) -> bool: return a.label == "What is this?")
-	_expect(asks.size() == 1, "a building (the Glassworks) offers 'What is this?'")
+	# --- "What is this?": markers always, buildings only when nothing else says what they are ---
+	var asks_what := func(b: Node2D) -> Array:
+		world.get_node("Player").global_position = b.global_position + Vector2(0, 40)
+		return b.actions().filter(func(a: Dictionary) -> bool: return a.label == "What is this?")
+	var spot := func(id: String, near: Vector2) -> Vector2i:
+		return _land_cell_near(build_mode, load("res://data/buildings/%s.tres" % id), near)
+	var refill: Node2D = build_mode.add_building(load("res://data/buildings/refill_bar.tres"), spot.call("refill_bar", kelp.arrival + Vector2(-160, 0)))
+	var asks: Array = asks_what.call(refill)
+	_expect(asks.size() == 1, "a building with no button of its own (the Refill Bar) offers 'What is this?'")
 	asks[0].do.call()
 	var info: Node = world.get_parent().find_child("BuildingInfo", true, false)
 	var said := info.find_children("*", "Label", true, false).map(func(l: Label) -> String: return l.text)
-	_expect(info.visible and said.has(glassworks.data.description) and said.has(glassworks.data.fact), "it shows what it's for, and a real-life fact")
+	_expect(info.visible and said.has(refill.data.description) and said.has(refill.data.fact), "it shows what it's for, and a real-life fact")
 	info.close()
-	for id in ["dock", "drawbridge", "hydrophone_buoy", "deep_camera", "tent", "house", "palm_tree", "rowboat", "patrol_boat", "turtle_protection_area"]:
-		_expect(not load("res://data/buildings/%s.tres" % id).explains, "%s is a built item, not explained" % id)
+	var platform: Node2D = build_mode.add_building(load("res://data/buildings/kelp_research_platform.tres"), spot.call("kelp_research_platform", kelp.arrival + Vector2(160, 96)))
+	_expect(asks_what.call(platform).is_empty(), "a building whose own button says what it is (Missions) doesn't")
+	var otters: Node2D = build_mode.add_building(load("res://data/buildings/otter_habitat.tres"), spot.call("otter_habitat", kelp.arrival + Vector2(-96, 160)))
+	_expect(asks_what.call(otters).size() == 1, "markers and enclosures (an Otter Habitat) always do")
+	for id in ["dock", "drawbridge", "hydrophone_buoy", "deep_camera", "palm_tree", "rowboat", "patrol_boat", "water_gate"]:
+		_expect(load("res://data/buildings/%s.tres" % id).explains == 0, "%s is a built item: never" % id)
 	var no_fact: Array = Array(DirAccess.get_files_at("res://data/buildings")).filter(func(f: String) -> bool:
 		return f.ends_with(".tres") and f != "shovel.tres" and (load("res://data/buildings/" + f).fact == "" or load("res://data/buildings/" + f).description == ""))
 	_expect(no_fact.is_empty(), "every building has a description and a fact (%s)" % [no_fact])

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_krs")
+explains = 2
 id = &"kelp_restoration_site"
 display_name = "Kelp Restoration Site"
 description = "Young kelp grown on ropes under a marker buoy restores 3 of the island's most damaged kelp beds while it stands. It can't win against overgrazing: where urchins are too many, the kelp still declines."

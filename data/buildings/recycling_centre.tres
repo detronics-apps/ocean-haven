@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_xk2v5")
-explains = true
+explains = 1
 id = &"recycling_centre"
 display_name = "Recycling Centre"
 description = "Bring the litter you collect here and recycle it into conservation funding (3 per piece). Patrol boats' litter counts too. One on each island."

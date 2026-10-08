@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_ohab")
+explains = 2
 id = &"otter_habitat"
 display_name = "Otter Habitat"
 description = "A quiet, protected stretch of shore where sea otters can rest, feed and raise pups, if the kelp forest around it can feed them. It doesn't bring otters by itself."

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"eco_lodge"
 display_name = "Mangrove Eco-Lodge"
 description = "Visitors walk the boardwalks and watch the flamingos. More flamingos and a healthier coast, more visitors and funding."

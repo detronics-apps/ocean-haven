@@ -603,10 +603,12 @@ ranger's island passes a new 5 % of health, a card with the animal's picture whe
 to an island (HUD.animal_returned, called wherever animals arrive or settle; the first of a
 species is a bigger moment: Fleet flag "returned_<id>"), and "+N" rising from the funding.
 
-Real buildings that could be mistaken for another (BuildingData.explains: the research stations,
-visitor centres, litter fixes, Glassworks, recycling centre, water treatment) have "What is
-this?" (BuildingInfo: its picture, BuildingData.description, stats and fact); built items (docks,
-drawbridges, gates, buoys, cameras, boats, zones and areas, trees, the tent and house) don't, and its picture shows what it does (the Glassworks' furnace and bottles, the refill
+"What is this?" (BuildingInfo: its picture, BuildingData.description, stats and fact) depends
+on BuildingData.explains: Always for markers and enclosures (protection areas and zones, habitats,
+sanctuaries, restoration sites, the drill site); When unclear for real buildings, only while none
+of their own buttons already says what they are (Missions, Recycle, Look in storage...:
+Building._says_what_it_is); Never for built items (docks, drawbridges, gates, buoys, cameras,
+boats, trees, the tent); and its picture shows what it does (the Glassworks' furnace and bottles, the refill
 bar's kegs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
 centres). Full-screen pages keep clear of a phone's home bar, corners and notch (SafeArea: the
 browser's safe-area insets, never less than a phone margin); activity level buttons wrap.

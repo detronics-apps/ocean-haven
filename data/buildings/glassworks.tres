@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"glassworks"
 texture = ExtResource("2_t")
 only_on = &"tropical_reef"

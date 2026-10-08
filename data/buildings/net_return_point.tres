@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
-explains = true
+explains = 1
 id = &"net_return_point"
 display_name = "Net Return Point"
 description = "Fishers bring their worn-out nets and line here to be recycled, and every new net gets its boat's mark, so anything lost can be reported and fetched. No new lost nets or fishing line drift in on any island."
