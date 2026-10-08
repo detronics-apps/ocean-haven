@@ -136,11 +136,21 @@ func show_return(species: AnimalData, note: String, region: RegionData = null) -
 	var first := not Fleet.has_flag(StringName("returned_%s" % species.id))
 	Fleet.mark(StringName("returned_%s" % species.id))
 	if first and region:  # the island's people talk about it too
-		People.add_news(region.id, "Have you seen? Another %s has joined us here. %s" % [
-			species.display_name.to_lower(), note])
+		People.add_news(region.id, news_line(species, note))
 	_cards.append({"species": species, "note": note, "first": first, "region": region})
 	if not _card_tween or not _card_tween.is_running():
 		_next_card()
+
+
+## What the island's people say about it: the card's note once, never "joined" twice. Notes
+## that already name the animal ("Another dolphin has joined the pod: ...") are said as they
+## are; "It has come to ..." gets the animal's name.
+static func news_line(species: AnimalData, note: String) -> String:
+	if note.begins_with("It "):
+		note = "A new %s %s" % [species.display_name.to_lower(), note.substr(3)]
+	elif note == "":
+		note = "Another %s has joined us here." % species.display_name.to_lower()
+	return "Have you seen? " + note
 
 
 func _next_card() -> void:
