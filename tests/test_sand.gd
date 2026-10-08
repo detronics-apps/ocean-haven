@@ -45,7 +45,7 @@ func _initialize() -> void:
 	shovel.place(Vector2i(15, 0))
 	shovel.selected = Vector2i(15, 0)
 	var labels: Array = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels == ["Pick up sand", "Put shovel away"], "selected sand tile offers 'Pick up sand' (%s)" % [labels])
+	_expect(labels == ["Dig sand", "Put away"], "selected sand tile offers 'Pick up sand' (%s)" % [labels])
 	shovel.actions()[0].do.call()
 	_expect(_terrain(Vector2(15 * 32 + 16, 16)) == "water", "the beach tile is shallow water now")
 	_expect(inventory.count(&"sand") == 1 and inventory.total() == 0, "carrying 1 sand (it isn't litter)")
@@ -55,7 +55,7 @@ func _initialize() -> void:
 	await process_frame
 	shovel.selected = Vector2i(16, -1)
 	labels = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels == ["Place sand", "Put shovel away"], "selected shallow tile with sand: 'Place sand' (%s)" % [labels])
+	_expect(labels == ["Place sand", "Put away"], "selected shallow tile with sand: 'Place sand' (%s)" % [labels])
 	shovel.actions()[0].do.call()
 	_expect(_terrain(Vector2(16 * 32 + 16, -1 * 32 + 16)) == "sand", "the shallow tile is beach now")
 	_expect(inventory.count(&"sand") == 0, "used the sand")
@@ -81,7 +81,7 @@ func _initialize() -> void:
 	inventory.add(sand)
 	shovel.selected = Vector2i(19, 0)
 	labels = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels == ["Place sand", "Put shovel away"], "deep water: sand makes it shallow (%s)" % [labels])
+	_expect(labels == ["Place sand", "Put away"], "deep water: sand makes it shallow (%s)" % [labels])
 	shovel.actions()[0].do.call()
 	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "water", "deep water is shallows now")
 	inventory.add(sand)
@@ -130,7 +130,7 @@ func _initialize() -> void:
 	for i in 3:
 		shovel.selected = world_cell + Vector2i(i, 0)
 		var labels2: Array = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
-		if labels2.has("Dig up mud (makes a channel)"):
+		if labels2.has("Dig mud"):
 			shovel.actions()[0].do.call()
 			dug += 1
 	_expect(dug >= 2 and inventory.count(&"mud") == dug and _terrain(Terrain_centre(world_cell)) == "water",

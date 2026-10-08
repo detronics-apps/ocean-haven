@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Lab"
 accepts = &"coral_fragment"
 accepts_for = "the reef restoration team"
 explains = 1

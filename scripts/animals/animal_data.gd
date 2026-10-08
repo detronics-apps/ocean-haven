@@ -4,6 +4,8 @@ extends Resource
 
 @export var id: StringName
 @export var display_name: String
+## Its name on buttons, short ("Flamingo", "Station"); "" = display_name.
+@export var short_name := ""
 ## Top-down sprite, facing right (rotated to the swim direction).
 @export var sprite: Texture2D
 ## The picture for the Journal and cards ("" = `sprite`): flying birds use their standing side
@@ -194,3 +196,8 @@ func picture() -> Texture2D:
 @export var seeds_max := 6
 @export var seeds_chance := 0.4
 @export_multiline var seeds_news: String
+
+
+## Its name on buttons: short_name, or display_name.
+func button_name() -> String:
+	return short_name if short_name != "" else display_name

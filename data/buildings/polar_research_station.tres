@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Station"
 explains = 1
 id = &"polar_research_station"
 texture = ExtResource("2_t")

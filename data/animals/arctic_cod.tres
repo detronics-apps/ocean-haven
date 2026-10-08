@@ -19,6 +19,7 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Cod"
 roams = true
 id = &"arctic_cod"
 display_name = "Arctic Cod"

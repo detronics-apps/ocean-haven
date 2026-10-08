@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("1_akafq")
+short_name = "Turtle Area"
 explains = 2
 id = &"turtle_protection_area"
 display_name = "Turtle Protection Area"

@@ -81,7 +81,7 @@ func _initialize() -> void:
 	_expect(journal.photos(&"green_turtle") == 1 and turtle.actions().is_empty(),
 		"one photo of each animal a day (%s)" % [turtle.actions().map(func(a: Dictionary) -> String: return a.label)])
 	root.get_node("GameClock").day += 1
-	_expect(turtle.actions().size() == 1 and turtle.actions()[0].label == "Photo: Green Sea Turtle", "another photo the next day")
+	_expect(turtle.actions().size() == 1 and turtle.actions()[0].label == "Photo turtle", "another photo the next day")
 
 	if not _failed:
 		print("PASS")

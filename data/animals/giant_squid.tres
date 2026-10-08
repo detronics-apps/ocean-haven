@@ -19,6 +19,7 @@ when = PackedStringArray("surfaced")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Squid"
 id = &"giant_squid"
 display_name = "Giant Squid"
 sprite = ExtResource("2_t")

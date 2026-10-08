@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_urch")
+short_name = "Urchin"
 id = &"sea_urchin"
 display_name = "Purple Sea Urchin"
 sprite = ExtResource("2_urch")

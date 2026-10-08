@@ -267,7 +267,7 @@ func check_camp() -> void:
 	var rubbish := camp_rubbish()
 	if rubbish >= RUBBISH_DRAWS_BEAR and not Fleet.has_flag(BEAR_AT_CAMP):
 		Fleet.mark(BEAR_AT_CAMP)
-		get_tree().call_group("hud", "show_toast", "Rubbish at camp drew a polar bear in!")
+		get_tree().call_group("hud", "show_toast", "Rubbish at camp: polar bear nearby")
 	elif rubbish == 0 and Fleet.has_flag(BEAR_AT_CAMP):
 		Fleet.unmark(BEAR_AT_CAMP)
 		bear.restore_young(bear.global_position, _home_spot(BEAR))
@@ -545,7 +545,7 @@ func drill_progress() -> float:
 func _objective() -> void:
 	if not Fleet.has_flag(BALANCED_FLAG) and IslandHealth.of(get_tree(), region()) >= balanced_at:
 		Fleet.mark(BALANCED_FLAG)
-		get_tree().call_group("hud", "show_toast", "The Polar Ocean is doing well through the seasons! Now drill an ice core: build the Ice Core Drill Site on old ice and keep it there for 3 days.")
+		get_tree().call_group("hud", "show_toast", "Polar Ocean healthy")
 
 
 # --- Animals ---

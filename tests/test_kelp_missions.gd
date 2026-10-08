@@ -75,14 +75,14 @@ func _initialize() -> void:
 	rowboat.global_position = bed.global_position + Vector2(20, 0)
 	await process_frame
 	_expect(not journal.in_journal(&"sea_urchin"), "urchins aren't in the Journal before a photo")
-	var photo: Array = bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Photo: sea urchins")
+	var photo: Array = bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Photo urchins")
 	_expect(photo.size() == 1, "from the boat you can photograph a bed's urchins")
 	photo[0].do.call()
 	_expect(journal.in_journal(&"sea_urchin"), "and then they're in the Journal")
 
 	# --- Kelp beds can be moved: towed behind the boat, put down on the island's shallow water ---
 	var start: Vector2 = bed.global_position
-	bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Move kelp bed")[0].do.call()
+	bed.actions().filter(func(a: Dictionary) -> bool: return a.label == "Move bed")[0].do.call()
 	var target := Vector2.INF
 	for other: Node2D in ecosystem.beds():
 		for offset in [Vector2(80, 0), Vector2(-80, 0), Vector2(0, 80), Vector2(0, -80)]:
@@ -95,7 +95,7 @@ func _initialize() -> void:
 	_expect(not bed.carried and bed.global_position == target and bed.global_position != start, "and is put down there")
 	rowboat.global_position = kelp.center + Vector2(kelp.waters_radius * 0.95, 0)
 	bed.carried = true
-	_expect(bed.actions()[0].label != "Put kelp bed down here", "not out in the deep open ocean (%s)" % bed.actions()[0].label)
+	_expect(bed.actions()[0].label != "Put down", "not out in the deep open ocean (%s)" % bed.actions()[0].label)
 	bed.carried = false
 	_expect(ecosystem.to_dict().beds[String(bed.name)][4] == bed.position.x, "its new place is saved")
 	rowboat.restore_ashore()

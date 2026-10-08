@@ -242,7 +242,10 @@ foundations the mechanics sit on, not the mechanics themselves.
 - **No emoji in game text** (the font can't draw them); use drawn pictures instead.
 - **Notes are one short line, one at a time, and only about the island the ranger is on**
   (the owner: the big black box with long text, too often, overwhelmed play). Facts go in
-  the Journal; a busy moment shows the first note and the newest, never a pile.
+  the Journal; a busy moment shows the first note and the newest, never a pile. A note is a
+  hint ("be aware this happened"), not a conversation: no "You…!", no advice paragraphs.
+- **Buttons use short names** (a data `short_name` per animal and building, unique on its
+  island): "Photo flamingo", "Move station", never the full name or the island's name.
 
 ## 9. Story, people and activities (from the outside review, agreed by the owner)
 

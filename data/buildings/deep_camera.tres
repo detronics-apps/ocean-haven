@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Camera"
 id = &"deep_camera"
 texture = ExtResource("2_t")
 closed_texture = ExtResource("3_t")

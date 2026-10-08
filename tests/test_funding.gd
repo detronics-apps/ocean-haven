@@ -95,7 +95,7 @@ func _initialize() -> void:
 	player.global_position = home.global_position + Vector2(-50, 20)
 	inventory.add(load("res://data/items/wood.tres"), 3)
 	var labels: Array = home.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Look in storage" in labels and "Store everything (3)" in labels, "offers its storage, and storing what's carried (%s)" % [labels])
+	_expect("Storage" in labels and "Store all (3)" in labels, "offers its storage, and storing what's carried (%s)" % [labels])
 	inventory.store(load("res://data/items/wood.tres"), 3)  # (the storage menu: tests/test_storage.gd)
 	_expect(inventory.count(&"wood") == 0 and inventory.stored(&"wood") == 3, "wood stored in the house")
 	_expect(home.storage() == 4, "a house stores 4 of each")
@@ -135,7 +135,7 @@ func _initialize() -> void:
 	player.global_position = building.global_position + Vector2(-50, 20)
 	var before: int = funding.balance
 	var actions: Array = building.actions()
-	_expect(actions.size() > 0 and actions[0].label == "Recycle litter (7 carried)",
+	_expect(actions.size() > 0 and actions[0].label == "Recycle (7)",
 		"offers to recycle what you carry (%s)" % [actions.map(func(a: Dictionary) -> String: return a.label)])
 	actions[0].do.call()
 	await process_frame

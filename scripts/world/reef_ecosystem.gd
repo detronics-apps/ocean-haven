@@ -449,7 +449,7 @@ func _build_sand() -> int:
 			changed += 1
 	if changed > 0 and _sand_note_day != GameClock.day:
 		_sand_note_day = GameClock.day
-		get_tree().call_group("hud", "show_toast", "Parrotfish have made new sand to dig up")
+		get_tree().call_group("hud", "show_toast", "New sand from the parrotfish")
 	return changed
 
 
@@ -531,7 +531,7 @@ func _check_gear() -> void:
 		_gear_shark.home_radius = 200.0
 		Journal.record_gift(SHARK)
 	_gear_at = Vector2.INF
-	get_tree().call_group("hud", "show_toast", "The shark led you to lost fishing gear hidden on the reef! Collect it before it catches anything.")
+	get_tree().call_group("hud", "show_toast", "Shark found lost fishing gear")
 
 
 ## Where hidden gear is waiting (for the lab's survey), or INF.
@@ -628,7 +628,7 @@ func _objective() -> void:
 	if not Fleet.has_flag(restored_flag):
 		if IslandHealth.of(get_tree(), region()) >= restored_at:
 			Fleet.mark(restored_flag)
-			get_tree().call_group("hud", "show_toast", "The reef is alive again! Storms and waves break off dead coral: collect the rubble from the sea floor by boat (never living coral).")
+			get_tree().call_group("hud", "show_toast", "The reef is alive again")
 		else:
 			return
 	if Fleet.count_of(rubble_count) >= rubble_needed:

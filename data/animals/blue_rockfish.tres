@@ -19,6 +19,7 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_rock")
+short_name = "Rockfish"
 roams = true
 id = &"blue_rockfish"
 display_name = "Blue Rockfish"

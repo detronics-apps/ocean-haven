@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Net Point"
 explains = 1
 id = &"net_return_point"
 display_name = "Net Return Point"

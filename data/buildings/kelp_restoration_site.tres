@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_krs")
+short_name = "Kelp Site"
 explains = 2
 id = &"kelp_restoration_site"
 display_name = "Kelp Restoration Site"

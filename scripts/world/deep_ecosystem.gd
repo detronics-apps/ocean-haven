@@ -467,7 +467,7 @@ func _watch_for_squid(days: float) -> void:
 	if _squid_watch >= squid_days:
 		_squid_found = true
 		_spawn(SQUID, _home_spot(SQUID))
-		get_tree().call_group("hud", "show_toast", "Your camera filmed a giant squid in the canyon!")
+		get_tree().call_group("hud", "show_toast", "Giant squid filmed in the canyon")
 
 
 func squid_found() -> bool:
@@ -562,7 +562,7 @@ func _spread_oil() -> void:
 	var next := list[(_spill_source % (list.size() - 1)) + 1]
 	if not next.oily and randf() < 0.5:
 		next.oily = true
-		get_tree().call_group("hud", "show_toast", "The oil is spreading to %s. Find the source with a submarine dive, then contain it from the Outpost." % next.label())
+		get_tree().call_group("hud", "show_toast", "Oil spreading to %s" % next.label())
 	for sector in list:
 		if sector.oily and sector != source:
 			_add_oil(sector)
@@ -705,7 +705,7 @@ func _objective() -> void:
 		return
 	if known_count() >= mapped_needed and IslandHealth.of(get_tree(), region()) >= mapped_health:
 		Fleet.mark(MAPPED_FLAG)
-		get_tree().call_group("hud", "show_toast", "The deep is mapped and healthy! Somewhere in the old shipping lane lies a lost cargo module: send a Cargo Search from the Deep-Ocean Outpost.")
+		get_tree().call_group("hud", "show_toast", "The deep is mapped and healthy")
 
 
 func _cargo_sector() -> DeepSector:

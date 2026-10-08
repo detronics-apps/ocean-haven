@@ -86,8 +86,7 @@ static func arrive(tree: SceneTree, region: RegionData) -> void:
 			if Regions.nearest(spawner.area.get_center()) == region:
 				spawner.fill(region.arrival_litter)
 		# Say what this island is about and what to do here (the objective line keeps the pointer).
-		tree.call_group("hud", "show_toast", "Welcome to the %s!\n%s\nYour goal here: %s (see the top right for what to do next)." % [
-			region.display_name, region.description, region.objective])
+		tree.call_group("hud", "show_toast", "First visit: %s" % region.display_name)
 
 
 func _ranger_position() -> Vector2:

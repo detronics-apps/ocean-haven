@@ -40,6 +40,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Bear"
 resting_sprite = ExtResource("rest_1411")
 id = &"polar_bear"
 display_name = "Polar Bear"

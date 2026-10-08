@@ -66,7 +66,7 @@ func entangle() -> Array[Animal]:
 			animal.tangle(debris.item)
 			debris.remove()
 			caught.append(animal)
-			get_tree().call_group("hud", "show_toast", "A %s is caught in %s!" % [
+			get_tree().call_group("hud", "show_toast", "%s caught in %s" % [
 				animal.data.display_name.to_lower(), debris.item.display_name.to_lower()], false, animal.global_position)
 	return caught
 
@@ -101,7 +101,7 @@ func busy_waters(chance := -1.0) -> Animal:
 	var hit: Animal = at_risk.pick_random()
 	hit.injure()
 	get_tree().call_group("hud", "show_toast",
-		"A patrol boat hit a %s: too many boats" % hit.data.display_name.to_lower(), false, hit.global_position)
+		"Patrol boat hit a %s: too many boats" % hit.data.display_name.to_lower(), false, hit.global_position)
 	return hit
 
 
@@ -177,7 +177,7 @@ func spawn_one() -> Debris:
 	var oil := at_sea and randf() < oil_chance and IslandHealth.built(get_tree(), oil_needs) and _in_area(func(d: Debris) -> bool: return d.item == OIL) < max_oil
 	if oil and not Fleet.has_flag(&"oil_seen"):
 		Fleet.mark(&"oil_seen")
-		get_tree().call_group("hud", "show_toast", "Oil is drifting in: sail through it to clean it")
+		get_tree().call_group("hud", "show_toast", "Oil drifting in: sail through to clean")
 	return spawn_at(OIL if oil else item, spot, at_sea)
 
 

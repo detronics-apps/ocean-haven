@@ -55,6 +55,8 @@ you can scan the group you're working in.
 | Pinch zoom fought with walking | Fixed zoom steps, + / − buttons |
 | Sound silent on the web | Buses in the bus layout file |
 | Emoji in text showed as boxes | No emoji in game text |
+| Buttons repeated full names ("Move Mangrove Waterworks Station") | A short button name per thing in its data from the start; one- or two-word labels |
+| Notes written like chat ("You quietly watched the…!") | Notes are hints that something happened, not conversation |
 | Notes in a big black box, long text, many at once, news from other islands | One short line, one at a time, only the newest waits, only where the player is; design the note system in foundations |
 
 ## Art and visuals

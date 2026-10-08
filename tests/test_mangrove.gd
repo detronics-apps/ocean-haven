@@ -115,14 +115,14 @@ func _initialize() -> void:
 	eco.settle_now()
 	player.global_position = ground.to_global(ground.map_to_local(plug)) + Vector2(0, -20)
 	var here: Array = eco.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(here == ["Build a water gate here"], "the narrow channel is marked as a gate spot, and offers a gate (%s)" % [here])
+	_expect(here == ["Build gate"], "the narrow channel is marked as a gate spot, and offers a gate (%s)" % [here])
 	eco.actions()[0].do.call()
 	var gate: Node = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data.id == &"water_gate")[0]
 	_expect(gate.cell == plug_world and eco.actions().is_empty(), "built right there")
 	player.global_position = gate.global_position + Vector2(-40, 0)
 	await process_frame
 	var labels: Array = gate.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Close the gate" in labels, "a gate can be closed (%s)" % [labels])
+	_expect("Close gate" in labels, "a gate can be closed (%s)" % [labels])
 	gate.toggle_gate()
 	_expect(gate.gate_closed and eco.pools_connected() == 0 and eco.level_right(),
 		"closed: the pool is cut off again, but the flats hold water (level %d%%)" % roundi(eco.water_level() * 100.0))

@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Clam Beds"
 explains = 1
 id = &"water_treatment_facility"
 texture = ExtResource("2_t")

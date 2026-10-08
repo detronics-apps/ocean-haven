@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Depot"
 explains = 1
 id = &"box_return_depot"
 display_name = "Box Return Depot"

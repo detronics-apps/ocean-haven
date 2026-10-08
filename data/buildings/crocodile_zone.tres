@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Croc Zone"
 explains = 2
 id = &"crocodile_zone"
 display_name = "Crocodile Protection Zone"

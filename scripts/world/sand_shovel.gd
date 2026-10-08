@@ -147,7 +147,7 @@ func carried_material() -> ItemData:
 func actions() -> Array:
 	if not active:
 		return []
-	var list := [{"label": "Put shovel away", "do": stop}]
+	var list := [{"label": "Put away", "do": stop}]
 	# (for a controller or keyboard: one button to dig, one to fill, the first tiles that can)
 	var dig: Variant = null
 	var fill: Variant = null
@@ -167,7 +167,7 @@ func actions() -> Array:
 			else ("Place mud (makes a mud flat)" if what == "mud" else "Place sand"), "do": place.bind(fill)})
 	if dig != null:
 		var dug := material_at(dig)
-		list.push_front({"label": "Pick up sand" if dug == _sand else "Dig up mud (makes a channel)", "do": pick_up.bind(dig)})
+		list.push_front({"label": "Dig sand" if dug == _sand else "Dig mud", "do": pick_up.bind(dig)})
 	return list
 
 
@@ -183,7 +183,7 @@ func pick_up(cell: Vector2i) -> void:
 		var spawner: LitterSpawner = get_tree().get_first_node_in_group("litter_spawner")
 		if spawner:
 			spawner.dig_up_at(Terrain.centre_of(cell))
-			get_tree().call_group("hud", "show_toast", "You dug up some buried litter!\nPick it up before it drifts away.")
+			get_tree().call_group("hud", "show_toast", "Buried litter dug up")
 
 
 ## Shallow water -> beach, or deep water -> shallow, using the carried sand.

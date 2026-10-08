@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Station"
 explains = 1
 id = &"waterworks_station"
 display_name = "Mangrove Waterworks Station"

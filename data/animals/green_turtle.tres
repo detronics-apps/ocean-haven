@@ -33,6 +33,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_6nm75")
+short_name = "Turtle"
 lays_eggs = true
 roams = true
 travel_home = &"home_island"

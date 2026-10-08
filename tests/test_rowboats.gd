@@ -82,8 +82,8 @@ func _initialize() -> void:
 	player.global_position = tug.global_position + Vector2(0, -20)
 	tug.call("_board", false)
 	var labels: Array = tug.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Tow the other boat" in labels, "in a boat, another boat close by can be taken in tow (%s)" % [labels])
-	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Tow the other boat")[0].do.call()
+	_expect("Tow boat" in labels, "in a boat, another boat close by can be taken in tow (%s)" % [labels])
+	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Tow boat")[0].do.call()
 	tug.global_position = Vector2(700, 380)
 	await physics_frame
 	await physics_frame

@@ -120,7 +120,7 @@ func _initialize() -> void:
 	var target: Node = dark.back()
 	player.global_position = target.global_position
 	var labels: Array = target.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Mark for a dive" in labels, "close to a dark area, the ranger can mark it (%s)" % [labels])
+	_expect("Mark dive" in labels, "close to a dark area, the ranger can mark it (%s)" % [labels])
 	target.mark_for_dive()
 	var report: Dictionary = eco.run_mission(load("res://data/missions/deep_dive.tres"))
 	_expect(target.knowledge >= eco.dive_reveal - 0.01 and report.found == [target], "the dive revealed the marked area")

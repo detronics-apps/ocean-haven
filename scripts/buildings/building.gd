@@ -151,19 +151,19 @@ func actions() -> Array:
 	var list := []
 	if damaged:
 		var wood := _repair_wood()
-		list.append({"label": "Repair %s (%d wood)" % [data.display_name, wood], "do": repair, "helps": true})
+		list.append({"label": "Repair (%d wood)" % wood, "do": repair, "helps": true})
 	elif RareEvents.is_coming_to(Regions.nearest(global_position).id) and not secured and not data.storm_proof:
-		list.append({"label": "Secure for the storm", "do": func() -> void: secured = true, "helps": true})
+		list.append({"label": "Secure", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
-		list.append({"label": "Sleep until morning", "do": sleep})
+		list.append({"label": "Sleep", "do": sleep})
 	if data.action == &"sleep" and Inventory.count(&"clean_water") > 0:
-		list.append({"label": "Store %d clean water" % Inventory.count(&"clean_water"), "do": store_water})
+		list.append({"label": "Store %d water" % Inventory.count(&"clean_water"), "do": store_water})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
-		list.append({"label": "Open the gate" if gate_closed else "Close the gate", "do": toggle_gate})
+		list.append({"label": "Open gate" if gate_closed else "Close gate", "do": toggle_gate})
 	if data.action == &"bait":
-		list.append({"label": "Take the bait out" if gate_closed else "Bait the camera", "do": toggle_bait})
+		list.append({"label": "Unbait" if gate_closed else "Bait", "do": toggle_bait})
 	var rescue := Rescues.in_care()  # the young animal in the ranger's care is looked after here
 	if rescue and rescue.building == data.id and Regions.nearest(global_position).id == rescue.region:
 		var who := Rescues.pet_name() if Rescues.is_named() else "the young %s" % rescue.species.display_name.to_lower().get_slice(" ", rescue.species.display_name.get_slice_count(" ") - 1)
@@ -181,7 +181,7 @@ func actions() -> Array:
 		list.append({"label": "Give %d %s (+%d)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
 			n * item.grant_value], "do": give_away})
 	if recycle_value() > 0 and not damaged:  # (opens with nothing carried too: the litter stats are there)
-		list.append({"label": "Recycle litter (%d carried)" % Inventory.total() if Inventory.total() > 0 else "Recycling and litter stats",
+		list.append({"label": "Recycle (%d)" % Inventory.total() if Inventory.total() > 0 else "Recycling",
 			"do": get_tree().call_group.bind("recycle_menu", "open_for", self)})
 	if (data.makes or data.makes_from != &"") and not damaged:
 		list.append_array(_production_actions())
@@ -190,15 +190,15 @@ func actions() -> Array:
 	if storage() > 0:
 		var carried := storable_carried()
 		if carried > 0:
-			list.append({"label": "Store everything (%d)" % carried, "do": store_all})
-		list.append({"label": "Look in storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
+			list.append({"label": "Store all (%d)" % carried, "do": store_all})
+		list.append({"label": "Storage", "do": get_tree().call_group.bind("storage_menu", "open_for", self)})
 	if data.explains == 2 or (data.explains == 1 and not list.any(_says_what_it_is)):
 		list.append({"label": "What is this?", "do": get_tree().call_group.bind("building_info", "open_for", self)})
 	if data.movable:
-		list.append({"label": "Move " + data.display_name, "do": build_mode.start_move.bind(self)})
+		list.append({"label": "Move " + data.button_name().to_lower(), "do": build_mode.start_move.bind(self)})
 	if data.demolishable:
 		var sure := Time.get_ticks_msec() < _demolish_until
-		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.display_name), "do": demolish})
+		list.append({"label": ("Tap again to demolish" if sure else "Demolish " + data.button_name().to_lower()), "do": demolish})
 	return list
 
 

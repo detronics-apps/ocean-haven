@@ -39,6 +39,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_chj40")
+short_name = "Crab"
 lays_eggs = true
 id = &"ghost_crab"
 display_name = "Ghost Crab"

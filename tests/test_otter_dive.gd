@@ -30,7 +30,7 @@ func _initialize() -> void:
 	_expect(terrain.walkable(self, jetty.global_position), "the old jetty starts on the Kelp Forest's beach")
 	player.global_position = jetty.global_position + Vector2(10, 0)
 	var labels := func() -> Array: return jetty.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels.call() == ["Look at the old jetty"], "before Finn mentions it, it only explains itself (%s)" % [labels.call()])
+	_expect(labels.call() == ["Look"], "before Finn mentions it, it only explains itself (%s)" % [labels.call()])
 
 	# --- Finn asks about the urchins: the dive opens ---
 	world.get_node("BuildMode").add_building(load("res://data/buildings/kelp_research_platform.tres"),

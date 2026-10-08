@@ -67,7 +67,7 @@ func _process(_delta: float) -> void:
 		_show(revealed)
 	if revealed and litter_left() == 0 and not Fleet.has_flag(cleared_flag):
 		Fleet.mark(cleared_flag)
-		get_tree().call_group("hud", "show_toast", "The wreck is clear of litter! Something is glinting down there...")
+		get_tree().call_group("hud", "show_toast", "Wreck cleared")
 	if _treasure and is_instance_valid(_treasure):
 		_set_active(_treasure, revealed and Fleet.has_flag(cleared_flag))
 

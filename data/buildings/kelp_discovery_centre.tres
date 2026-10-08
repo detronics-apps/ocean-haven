@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_kdc")
+short_name = "Centre"
 explains = 1
 id = &"kelp_discovery_centre"
 display_name = "Kelp Discovery Centre"

@@ -43,6 +43,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_boo")
+short_name = "Booby"
 lays_eggs = true
 icon = ExtResource("rest_3043")
 floating_sprite = ExtResource("floa_8091")

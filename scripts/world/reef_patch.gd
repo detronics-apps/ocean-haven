@@ -87,7 +87,7 @@ func split() -> ReefPatch:
 	coral = SPLIT_TO
 	planted = SPLIT_TO
 	var fresh := reef.add_patch(spot, SPLIT_TO, SPLIT_TO)
-	get_tree().call_group("hud", "show_toast", "Split! Two patches of %d%% coral now: plant fragments on both to grow the reef bigger and more colourful." % roundi(SPLIT_TO * 100.0))
+	get_tree().call_group("hud", "show_toast", "Split: 2 patches of %d%%" % roundi(SPLIT_TO * 100.0))
 	return fresh
 
 

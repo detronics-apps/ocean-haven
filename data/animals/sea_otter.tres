@@ -41,6 +41,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_otter")
+short_name = "Otter"
 roams = true
 resting_sprite = ExtResource("rest_1201")
 id = &"sea_otter"

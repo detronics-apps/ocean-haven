@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Sanctuary"
 explains = 2
 id = &"deep_sanctuary"
 texture = ExtResource("2_t")

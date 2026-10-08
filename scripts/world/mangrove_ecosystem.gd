@@ -140,14 +140,14 @@ func actions() -> Array:
 	var at := ranger.global_position
 	for spot in _gate_spots:
 		if _world(spot).distance_to(at) <= LOOK_RANGE and not _gate_at(spot):
-			return [{"label": "Build a water gate here", "do": _build_gate.bind(spot)}]
+			return [{"label": "Build gate", "do": _build_gate.bind(spot)}]
 	for nest in _nests_at:
 		if nest.distance_to(at) <= LOOK_RANGE:
 			return [{"label": "Flamingo nest", "do": func() -> void:
 				get_tree().call_group("hud", "show_toast", "A flamingo nest: a mound of mud with a single egg on top. Flamingos build them on the mud flats while the water level is right (water level %s)." % _level_word())}]
 	for cell: Vector2i in _silt:
 		if silt_of(cell) > 0.2 and _world(cell).distance_to(at) <= LOOK_RANGE:
-			return [{"label": "Silting channel (%d%%)" % roundi(silt_of(cell) * 100.0), "do": func() -> void:
+			return [{"label": "Silt %d%%" % roundi(silt_of(cell) * 100.0), "do": func() -> void:
 				get_tree().call_group("hud", "show_toast", "Silt is settling in this channel (%d%%). At 100%% it turns back into mud. Water standing still silts fast; flowing water, a full-grown mangrove beside it, or the station's channel restoration help." % roundi(silt_of(cell) * 100.0))}]
 	return []
 
@@ -445,7 +445,7 @@ func _silt_up(cell: Vector2i) -> void:
 	if _silt_note_day != GameClock.day:
 		_silt_note_day = GameClock.day
 		get_tree().call_group("hud", "show_toast",
-			"A channel has silted up with mud. Dig it out again; mangroves beside it and flowing water slow the silt.")
+			"A channel silted up")
 
 
 ## Right away after the ranger digs, builds, or opens or closes a gate.
@@ -744,7 +744,7 @@ func _objective() -> void:
 		if pools_connected() >= pools_needed and IslandHealth.of(get_tree(), region()) >= flowing_at:
 			Fleet.mark(flowing_flag)
 			get_tree().call_group("hud", "show_toast",
-				"The water flows through the mangroves again! Healthy mangroves drop old branches: look for resin on them by the trees.")
+				"Water flowing through the mangroves")
 		else:
 			return
 	if Fleet.count_of(resin_count) >= resin_needed:

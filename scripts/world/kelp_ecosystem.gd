@@ -330,7 +330,7 @@ func settle() -> void:
 			continue
 		if otter.homeless_since < 0.0:
 			otter.homeless_since = GameClock.now()
-			get_tree().call_group("hud", "show_toast", "A sea otter needs an Otter Habitat")
+			get_tree().call_group("hud", "show_toast", "Otter needs a habitat")
 		elif GameClock.now() - otter.homeless_since >= homeless_days:
 			if otters().size() > 1:  # the last one stays on: no species ever disappears
 				_move_away(otter, "it had no quiet place to rest (an Otter Habitat)")
@@ -389,7 +389,7 @@ func _objective() -> void:
 		if IslandHealth.of(get_tree(), region()) >= balanced_at:
 			Fleet.mark(balanced_flag)
 			get_tree().call_group("hud", "show_toast",
-				"The Kelp Forest's food web is back in balance! Healthy kelp sheds old fronds: gather them from the water.")
+				"Kelp Forest food web in balance")
 		else:
 			return
 	if Fleet.count_of(shed_count) >= shed_needed:
@@ -417,7 +417,7 @@ func _follow(species: AnimalData, target: int) -> void:
 			going.set_nest_tree(null)
 		going.leaving = true
 		if species.flies:
-			get_tree().call_group("hud", "show_toast", "A %s has flown off: there aren't enough fish for it." % species.display_name)
+			get_tree().call_group("hud", "show_toast", "%s flew off: too few fish" % species.display_name)
 		return
 	if now.size() >= target:
 		return
@@ -457,7 +457,7 @@ func _follow(species: AnimalData, target: int) -> void:
 func _move_away(otter: Animal, why: String) -> void:
 	otter.leaving = true
 	otter.home_area = null
-	get_tree().call_group("hud", "show_toast", "A sea otter has moved away: %s." % why)
+	get_tree().call_group("hud", "show_toast", "Otter moved away: %s" % why)
 
 
 ## A new otter at `home`: a pup, born beside one of the island's otters there (Births).

@@ -19,6 +19,7 @@ when = PackedStringArray("night")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Snapper"
 id = &"juvenile_snapper"
 display_name = "Young Mangrove Snapper"
 sprite = ExtResource("2_t")

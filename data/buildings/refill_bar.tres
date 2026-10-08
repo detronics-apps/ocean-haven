@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Refill Bar"
 explains = 1
 id = &"refill_bar"
 display_name = "Harbour Refill Bar"

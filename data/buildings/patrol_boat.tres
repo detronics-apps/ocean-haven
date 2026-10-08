@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_h2gec")
+short_name = "Patrol Boat"
 id = &"patrol_boat"
 display_name = "Patrol Boat"
 description = "Place a buoy in the sea: a patrol boat sets out from your dock and collects the litter that washes into that area. Upgrade it to patrol a bigger area. Dolphins keep away from busy boats, and whales from their noise: patrol away from where the animals live. You can take a patrol boat down again."

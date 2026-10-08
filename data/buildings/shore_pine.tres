@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_dvrnw")
+short_name = "Pine"
 id = &"shore_pine"
 display_name = "Shore Pine"
 description = "Plant a pine sapling on sand, grass or rock. It grows a stage a day; a full-grown tree gives 2-3 wood and 1-2 saplings."

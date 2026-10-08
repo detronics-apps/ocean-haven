@@ -85,7 +85,7 @@ func visit(species: AnimalData, region: RegionData) -> Node2D:
 		_told[key] = true
 		if species.travel_news != "":
 			People.add_news(region.id, species.travel_news.replace("{from}", from.display_name))
-		get_tree().call_group("hud", "show_toast", "A %s has come all the way from the %s!" % [species.display_name.to_lower(), from.display_name])
+		get_tree().call_group("hud", "show_toast", "%s visiting from the %s" % [species.display_name, from.display_name])
 	return animal
 
 
@@ -117,8 +117,8 @@ func spread_seeds(species: AnimalData) -> Building:
 		_told[key] = true
 		if species.seeds_news != "":
 			People.add_news(to.id, species.seeds_news.replace("{from}", from.display_name))
-		get_tree().call_group("hud", "show_toast", "A little %s has sprouted on the %s! The %ss brought its seed from the %s." % [
-			species.seeds_tree.display_name.to_lower(), to.display_name, species.display_name.to_lower(), from.display_name])
+		get_tree().call_group("hud", "show_toast", "%s sprouted on the %s" % [
+			species.seeds_tree.display_name, to.display_name])
 	return tree
 
 

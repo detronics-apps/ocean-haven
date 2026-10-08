@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Workshop"
 explains = 1
 id = &"weaving_workshop"
 display_name = "Weaving Workshop"

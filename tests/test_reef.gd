@@ -140,7 +140,7 @@ func _initialize() -> void:
 	var body: GDScript = load("res://scripts/player/controlled_body.gd")
 	body.water_until = -1.0
 	labels = house.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Store 2 clean water" in labels, "at the house the ranger can store clean water (%s)" % [labels])
+	_expect("Store 2 water" in labels, "at the house the ranger can store clean water (%s)" % [labels])
 	house.store_water()
 	_expect(inventory.count(&"clean_water") == 0 and body.water_bottles(self) == 2, "2 bottles stored at home")
 	_expect(body.water_level(self) > 0.0, "while there's water at home, the boost is on")

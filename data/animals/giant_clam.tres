@@ -32,6 +32,7 @@ when = PackedStringArray("near_boat")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Clam"
 faces_movement = false
 id = &"giant_clam"
 display_name = "Giant Clam"

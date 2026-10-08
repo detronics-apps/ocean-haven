@@ -29,7 +29,7 @@ func actions() -> Array:
 	var ranger := ControlledBody.active(get_tree())
 	if not item.ranger_cleans or not ranger or ranger.global_position.distance_to(global_position) > 90.0:
 		return []
-	return [{"label": "%s: sail your boat into it" % item.display_name, "do": get_tree().call_group.bind("hud", "show_toast",
+	return [{"label": "%s: sail into it" % item.display_name, "do": get_tree().call_group.bind("hud", "show_toast",
 		"%s: only your boat can take it. Sail into it.\n%s" % [item.display_name, item.fact])}]
 
 

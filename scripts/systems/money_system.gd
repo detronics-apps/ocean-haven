@@ -69,7 +69,7 @@ func _pay_upkeep() -> void:
 			paid += building.data.upkeep
 			count += 1
 	if paid > 0:
-		get_tree().call_group("hud", "show_toast", "Morning upkeep: %d funding to look after %d building(s)." % [paid, count])
+		get_tree().call_group("hud", "show_toast", "Upkeep: -%d funding (%d buildings)" % [paid, count])
 
 
 func _on_photographed(animal: AnimalData, _count: int) -> void:

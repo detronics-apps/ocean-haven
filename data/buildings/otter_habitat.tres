@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_ohab")
+short_name = "Habitat"
 explains = 2
 id = &"otter_habitat"
 display_name = "Otter Habitat"

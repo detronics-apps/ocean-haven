@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_dvrnw")
+short_name = "Tree"
 id = &"coastal_tree"
 display_name = "Coastal Tree"
 description = "Plant a coastal sapling on sand or grass. It grows a stage a day; a full-grown tree gives 2-3 wood and 1-2 saplings."

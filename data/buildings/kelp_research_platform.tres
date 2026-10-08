@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_krp")
+short_name = "Platform"
 explains = 1
 id = &"kelp_research_platform"
 display_name = "Kelp Research Platform"

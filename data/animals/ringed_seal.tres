@@ -34,6 +34,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Seal"
 roams = true
 id = &"ringed_seal"
 display_name = "Ringed Seal"

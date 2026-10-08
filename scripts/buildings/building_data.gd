@@ -5,6 +5,8 @@ extends Resource
 
 @export var id: StringName
 @export var display_name: String
+## Its name on buttons, short ("Flamingo", "Station"); "" = display_name.
+@export var short_name := ""
 @export_multiline var description: String
 ## What it does, in one short line (the Build menu shows only the name, this and the cost).
 @export var summary: String
@@ -197,3 +199,8 @@ static func describe_cost(funding: int, litter: int, items: Dictionary) -> Strin
 		var item: ItemData = load("res://data/items/%s.tres" % item_id)
 		parts.append("%d %s" % [items[item_id], item.display_name.to_lower()])
 	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."
+
+
+## Its name on buttons: short_name, or display_name.
+func button_name() -> String:
+	return short_name if short_name != "" else display_name

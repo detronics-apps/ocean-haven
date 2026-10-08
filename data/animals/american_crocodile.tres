@@ -33,6 +33,7 @@ when = PackedStringArray("juvenile")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Crocodile"
 lays_eggs = true
 id = &"american_crocodile"
 display_name = "American Crocodile"

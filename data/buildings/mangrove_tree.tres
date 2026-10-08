@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_dvrnw")
+short_name = "Mangrove"
 id = &"mangrove_tree"
 display_name = "Red Mangrove"
 description = "Plant a mangrove propagule in the mud. It grows a stage a day; a full-grown mangrove gives 2-3 wood and 1-2 propagules. Mangroves trap mud, so channels silt up more slowly, and shelter young fish."

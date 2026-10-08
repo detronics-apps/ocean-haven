@@ -43,7 +43,7 @@ func _initialize() -> void:
 	var first: Node2D = get_nodes_in_group("plants")[0]
 	player.global_position = first.global_position + Vector2(-30, 10)
 	var labels: Array = first.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Cut down tree" in labels, "a tree next to you can be cut down")
+	_expect("Cut down" in labels, "a tree next to you can be cut down")
 	var count_before := get_nodes_in_group("plants").size()
 	first.actions()[0].do.call()
 	await process_frame
@@ -53,7 +53,7 @@ func _initialize() -> void:
 		"a full-grown island palm gives 2-3 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
 	inventory.add(load("res://data/items/wood.tres"), 6)
 	player.global_position = get_nodes_in_group("plants")[0].global_position + Vector2(-30, 10)
-	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full of wood", "can't cut with 6 wood in your arms")
+	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full", "can't cut with 6 wood in your arms")
 	inventory.take_item(&"wood", 6)
 	var palm: Resource = load("res://data/buildings/palm_tree.tres")
 	build_mode.start(palm)
@@ -66,9 +66,9 @@ func _initialize() -> void:
 	player.global_position = trunk.global_position + Vector2(-30, 0)
 	await process_frame
 	var palm_labels: Array = planted.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(not "Move Palm Tree" in palm_labels, "palms can't be moved: cut down and replant (%s)" % [palm_labels])
+	_expect(not "Move palm" in palm_labels, "palms can't be moved: cut down and replant (%s)" % [palm_labels])
 	var clock := root.get_node("GameClock")
-	_expect(trunk.stage() == 0 and trunk.actions()[0].label == "Dig up sapling", "a new palm is small: dig it up")
+	_expect(trunk.stage() == 0 and trunk.actions()[0].label == "Dig up", "a new palm is small: dig it up")
 	var palm_sprite: Sprite2D = trunk.get_node("Sprite2D")
 	_expect(palm_sprite.texture == trunk.stage_textures[0], "a sapling has its own picture (a sprouting coconut)")
 	clock.day += 1
@@ -139,7 +139,7 @@ func _initialize() -> void:
 	player.global_position = nest_palm.global_position + Vector2(-30, 10)
 	await process_frame
 	var tree_labels: Array = nest_palm.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(tree_labels == ["Move the nest"], "a tree with a nest can't be cut: move the nest first (%s)" % [tree_labels])
+	_expect(tree_labels == ["Move nest"], "a tree with a nest can't be cut: move the nest first (%s)" % [tree_labels])
 	nest_palm.cut_down()
 	await process_frame
 	_expect(is_instance_valid(nest_palm) and not nest_palm.is_queued_for_deletion(), "cutting it doesn't work while the nest is there")
@@ -147,7 +147,7 @@ func _initialize() -> void:
 	_expect(not nest_palm.has_nest() and bird.nest_tree != nest_palm and bird.nest_tree.nest_of == bird and not bird.perched,
 		"the nest moves to another full-grown palm (the bird takes off)")
 	tree_labels = nest_palm.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(tree_labels == ["Cut down tree"], "then the tree can be cut down (%s)" % [tree_labels])
+	_expect(tree_labels == ["Cut down"], "then the tree can be cut down (%s)" % [tree_labels])
 	_expect(root.get_node("SaveGame")._tree_nests().get("TestBooby", []) == [bird.nest_tree.global_position.x, bird.nest_tree.global_position.y],
 		"which tree has its nest is saved")
 	bird.free()

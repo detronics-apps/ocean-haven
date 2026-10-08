@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Dive Centre"
 explains = 1
 id = &"reef_diving_centre"
 texture = ExtResource("2_t")

@@ -56,7 +56,7 @@ func actions() -> Array:
 	if Activities.is_open(activity):
 		return [{"label": activity.verb, "helps": not Activities.story_done(activity),
 			"do": get_tree().call_group.bind("activity_" + activity.id, "open_activity", activity)}]
-	return [{"label": "Look at the %s" % activity.place_name, "do": get_tree().call_group.bind("hud", "show_toast", activity.closed_note)}]
+	return [{"label": "Look", "do": get_tree().call_group.bind("hud", "show_toast", activity.closed_note)}]
 
 
 ## What's in the way when building here.

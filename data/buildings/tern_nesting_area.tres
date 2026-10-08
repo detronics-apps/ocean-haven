@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Tern Area"
 explains = 2
 id = &"tern_nesting_area"
 texture = ExtResource("2_t")

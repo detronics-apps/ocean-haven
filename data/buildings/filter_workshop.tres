@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Filters"
 explains = 1
 id = &"filter_workshop"
 display_name = "Filter Workshop"

@@ -46,8 +46,8 @@ func _initialize() -> void:
 	player.global_position = house.global_position + Vector2(-50, 20)
 	inventory.add(wood, 3)
 	var labels: Array = house.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Look in storage" in labels and "Store everything (3)" in labels, "the house: look in storage, or store everything carried (%s)" % [labels])
-	house.actions().filter(func(a: Dictionary) -> bool: return a.label == "Look in storage")[0].do.call()
+	_expect("Storage" in labels and "Store all (3)" in labels, "the house: look in storage, or store everything carried (%s)" % [labels])
+	house.actions().filter(func(a: Dictionary) -> bool: return a.label == "Storage")[0].do.call()
 	_expect(menu.visible, "'Look in storage' opens the menu")
 	var content: Node = menu.get("_content")
 	_expect(content.has_node("wood") and content.has_node("sapling") and content.has_node("sand"),
@@ -67,8 +67,8 @@ func _initialize() -> void:
 		"an Exploration Ship's cargo hold: room for 99 of everything, wood too")
 	player.global_position = ship.global_position + Vector2(0, 40)
 	inventory.add(load("res://data/items/sand.tres"), 3)
-	_expect(ship.actions().any(func(a: Dictionary) -> bool: return a.label == "Look in storage"), "the ship offers its storage")
-	ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Look in storage")[0].do.call()
+	_expect(ship.actions().any(func(a: Dictionary) -> bool: return a.label == "Storage"), "the ship offers its storage")
+	ship.actions().filter(func(a: Dictionary) -> bool: return a.label == "Storage")[0].do.call()
 	content = menu.get("_content")
 	_expect(content.has_node("sand") and content.has_node("mud") and content.has_node("wood"),
 		"the ship's menu lists everything")

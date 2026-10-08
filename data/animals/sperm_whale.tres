@@ -38,6 +38,7 @@ bonus = true
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Whale"
 roams = true
 travel_home = &"deep_sea"
 travels_to = PackedStringArray("arctic_ocean", "kelp_forest", "home_island", "mangrove_coast", "tropical_reef")

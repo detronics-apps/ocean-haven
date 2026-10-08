@@ -10,6 +10,7 @@
 
 [resource]
 script = ExtResource("1_k7kwi")
+short_name = "Ship"
 id = &"expedition_boat"
 display_name = "Exploration Ship"
 description = "Makes this island Exploration Ready. Can be built once the island's objective is done. Moor it next to 2 dock planks, then walk up to it to upgrade the fleet with island discoveries and explore warmer or colder waters. Once the fleet has the Cargo Module (from the Deep Sea), its cargo hold stores 99 of everything (wood, saplings, sand, mud, clean water, coral fragments). One per island."

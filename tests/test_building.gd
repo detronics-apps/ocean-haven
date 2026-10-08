@@ -57,7 +57,7 @@ func _initialize() -> void:
 	await process_frame
 	await process_frame
 	var labels: Array = world.get_node("HUD/ActionZone/ActionBar").get_children().filter(func(b: Node) -> bool: return b is Button).map(func(b: Button) -> String: return b.text)
-	_expect("Move Tent" in labels, "a 'Move Tent' button appears in the action bar (%s)" % [labels])
+	_expect("Move tent" in labels, "a 'Move Tent' button appears in the action bar (%s)" % [labels])
 	# A tap just beside the buttons (a near miss) doesn't walk the ranger off.
 	var button: Control = world.get_node("HUD/ActionZone/ActionBar").get_children().filter(func(b: Node) -> bool: return b is Button)[0]
 	for miss in [button.get_global_rect().position + Vector2(-12, 10), button.get_global_rect().end + Vector2(0, 4)]:

@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		if not _warned_far:
 			_warned_far = true
 			get_tree().call_group("hud", "show_toast",
-				"This little boat can't go that far.\nBuild an Exploration Ship at your dock to discover other islands.")
+				"Too far for the rowboat")
 	elif from_centre.length() < region.waters_radius - 150.0:
 		_warned_far = false
 	if is_instance_valid(towing):
@@ -95,10 +95,10 @@ func actions() -> Array:
 		else:
 			var other := _boat_to_tow()
 			if other:
-				list.append({"label": "Tow the other boat", "do": tow.bind(other)})
+				list.append({"label": "Tow boat", "do": tow.bind(other)})
 		return list
 	if not controlled and _player_in_range() and _nearest_boat():
-		return [{"label": "Board boat", "do": _board}]
+		return [{"label": "Board", "do": _board}]
 	return []
 
 

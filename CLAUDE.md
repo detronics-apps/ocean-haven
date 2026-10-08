@@ -730,7 +730,13 @@ first line and sentence, at most 60 letters) in a small see-through box; one at 
 2.5 s pause, only the newest waits (a busy moment never piles up), the same note not again
 within 90 s; `now` for what the ranger just did; notes about another island are dropped (an
 `at` position: world things pass theirs; nests and hatchings via Journal.event_at). Facts
-stay in the Journal; funding shows only as the rising "+N".
+stay in the Journal; funding shows only as the rising "+N". Notes are hints that something
+happened ("Wreck cleared", "Otter moved away: …"), never chatty sentences.
+Buttons are short: animals and buildings have a short button name (AnimalData / BuildingData
+.short_name, button_name(): "Photo flamingo", "Move station", "Free dolphin"), unique on its
+island; fixed labels are one or two words (Sleep, Secure, Storage, Store all (N), Recycle (N),
+Open gate, Bait, Dig sand, Put away, Cut down, Board, Tow boat, Mark dive). The line above the
+buttons is short too ("Flamingo: ankle-deep, feeding").
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

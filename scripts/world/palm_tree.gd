@@ -87,7 +87,7 @@ func move_nest() -> void:
 	var bird := nest_of
 	bird.set_nest_tree(other)
 	get_tree().call_group("hud", "show_toast",
-		"You carefully moved the %s's nest to another palm.\nNow this one can be cut down." % bird.data.display_name)
+		"Nest moved")
 
 
 ## What the ranger can do with it right now, for the action bar: [{label, do}].
@@ -96,13 +96,13 @@ func actions() -> Array:
 	if not ranger is Player or ranger.global_position.distance_to(global_position) > CUT_RANGE:
 		return []
 	if stage() == SMALL:
-		return [{"label": "Dig up sapling", "do": cut_down}]
+		return [{"label": "Dig up", "do": cut_down}]
 	if has_nest():
-		return [{"label": "Move the nest", "do": move_nest}]
+		return [{"label": "Move nest", "do": move_nest}]
 	if Inventory.room_for(_wood) <= 0:
-		return [{"label": "Arms full of wood", "do": get_tree().call_group.bind("hud", "show_toast",
+		return [{"label": "Arms full", "do": get_tree().call_group.bind("hud", "show_toast",
 			"You can carry %d wood. Build with it, or store it in your Ranger House." % _wood.carry_limit)}]
-	return [{"label": "Cut down tree", "do": cut_down}]
+	return [{"label": "Cut down", "do": cut_down}]
 
 
 ## Small: the sapling back. Medium: 1-2 wood + 1 sapling. Full grown: 2-3 wood + 1-2 saplings.

@@ -100,9 +100,9 @@ func _initialize() -> void:
 	var bar: Node = world.get_node("HUD/ActionZone/ActionBar")
 	var labels: Array = bar.get_children().filter(func(b: Node) -> bool: return b is Button).map(func(b: Button) -> String: return b.text)
 	var info: Label = bar.get_node("Info")
-	_expect(info.visible and info.text.begins_with("Bottlenose Dolphin:"), "one info line about the nearest animal (%s)" % info.text)
-	_expect("Free the Bottlenose Dolphin" in labels and "Photo: Bottlenose Dolphin" in labels
-		and labels[0] == "Free the Bottlenose Dolphin",
+	_expect(info.visible and info.text.begins_with("Dolphin:"), "one info line about the nearest animal (%s)" % info.text)
+	_expect("Free dolphin" in labels and "Photo dolphin" in labels
+		and labels[0] == "Free dolphin",
 		"action bar offers both, helping first: %s" % [labels])
 	var e := InputEventAction.new()
 	e.action = &"interact"
@@ -115,7 +115,7 @@ func _initialize() -> void:
 	await process_frame
 	await process_frame
 	for button: Node in bar.get_children():
-		if button is Button and button.text == "Photo: Bottlenose Dolphin":
+		if button is Button and button.text == "Photo dolphin":
 			button.pressed.emit()
 	_expect(root.get_node("Journal").photos(&"bottlenose_dolphin") == journal_before + 1, "the Photo button takes a photo")
 
@@ -130,7 +130,7 @@ func _initialize() -> void:
 		await physics_frame
 	_expect(guide.is_relaxed() and guide.get("_guide_to") == null, "a trusting dolphin waits for you to play before it guides")
 	var play_labels: Array = guide.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect("Play with the Bottlenose Dolphin" in play_labels, "offers to play (%s)" % [play_labels])
+	_expect("Play" in play_labels, "offers to play (%s)" % [play_labels])
 	guide.actions().filter(func(a: Dictionary) -> bool: return a.label.begins_with("Play"))[0].do.call()
 	var guided := false
 	for i in 900:

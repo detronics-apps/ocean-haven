@@ -19,6 +19,7 @@ when = PackedStringArray("surfaced")
 
 [resource]
 script = ExtResource("1_s")
+short_name = "Sixgill"
 roams = true
 id = &"sixgill_shark"
 display_name = "Bluntnose Sixgill Shark"

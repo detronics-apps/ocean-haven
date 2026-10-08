@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_dva")
+short_name = "Viewing Area"
 explains = 2
 id = &"dolphin_viewing_area"
 display_name = "Dolphin Viewing Area"

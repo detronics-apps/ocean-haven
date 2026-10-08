@@ -38,7 +38,7 @@ func _initialize() -> void:
 	_expect((world.get_node("HUD/StatusColumn/EventNote") as Label).text.contains("Storm in 3 days on the Starting Island"), "the HUD says a storm is coming, when, and where")
 	var player: Node2D = world.get_node("Player")
 	player.global_position = area.global_position + Vector2(0, 50)
-	var secure: Array = area.actions().filter(func(a: Dictionary) -> bool: return a.label == "Secure for the storm")
+	var secure: Array = area.actions().filter(func(a: Dictionary) -> bool: return a.label == "Secure")
 	_expect(secure.size() == 1, "offers to secure the protection area")
 	secure[0].do.call()
 	_expect(area.secured and area.stats().contains("Secured"), "secured")

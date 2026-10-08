@@ -67,7 +67,7 @@ func actions() -> Array:
 		return [{"label": "%s: %s" % [label(), describe()], "do": _explain}]
 	var list := [{"label": "%s: %d%% known" % [label(), floori(knowledge * 100.0)], "do": _explain}]
 	if not dive_marked:
-		list.append({"label": "Mark for a dive", "do": mark_for_dive})
+		list.append({"label": "Mark dive", "do": mark_for_dive})
 	return list
 
 

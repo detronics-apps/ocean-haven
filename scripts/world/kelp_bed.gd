@@ -66,14 +66,14 @@ func actions() -> Array:
 		return []
 	if carried:
 		var problem := place_problem(ranger.global_position)
-		return [{"label": "Put kelp bed down here" if problem == "" else problem, "do": put_down}]
+		return [{"label": "Put down" if problem == "" else problem, "do": put_down}]
 	if ranger.global_position.distance_to(global_position) > REACH:
 		return []
 	var list := []
 	if urchin_count() > 0 and _urchin_photo_day != GameClock.day:
-		list.append({"label": "Photo: sea urchins", "do": photograph_urchins})
+		list.append({"label": "Photo urchins", "do": photograph_urchins})
 	if not get_tree().get_nodes_in_group("kelp_beds").any(func(b: Node) -> bool: return b.carried):
-		list.append({"label": "Move kelp bed", "do": pick_up})
+		list.append({"label": "Move bed", "do": pick_up})
 	return list
 
 

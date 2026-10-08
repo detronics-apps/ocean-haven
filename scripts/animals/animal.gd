@@ -328,10 +328,10 @@ func grow_up() -> void:
 		return  # (it just happens on islands the ranger isn't on)
 	var kind: String = data.display_name.get_slice(" ", data.display_name.get_slice_count(" ") - 1).to_lower()
 	if followed:
-		get_tree().call_group("hud", "show_toast", "A young %s has grown up" % kind, false, global_position)
+		get_tree().call_group("hud", "show_toast", "Young %s grown up" % kind, false, global_position)
 	elif _grow_note_day != GameClock.day:  # one note a day, however many grow up
 		_grow_note_day = GameClock.day
-		get_tree().call_group("hud", "show_toast", "Your young %ss have grown up" % kind, false, global_position)
+		get_tree().call_group("hud", "show_toast", "Young %ss grown up" % kind, false, global_position)
 
 
 ## A spot in its island's waters it can swim straight to, away from busy boats and as
@@ -654,22 +654,22 @@ func _react_to_ranger(delta: float) -> void:
 
 	if distance <= data.interact_distance:
 		_in_reach = true
-		var name := data.display_name
+		var name := data.button_name()
 		if not is_relaxed():
-			info = "%s: stay still so it can relax..." % name
+			info = "%s: stay still" % name
 		elif tangled:
-			info = "%s: it's caught - free it!" % name
+			info = "%s: caught" % name
 		elif injured:
-			info = "%s: it's hurt. Send a Rescue mission from your station to help it recover." % name
+			info = "%s: hurt (Rescue mission)" % name
 		elif photographed_today():
-			info = "%s: photographed today - see you tomorrow." % name
+			info = "%s: photographed today" % name
 		elif perched:
-			info = "%s: standing on its nest. Take a photo!" % name
+			info = "%s: on its nest" % name
 		else:
-			info = "%s: relaxed. Take a photo!" % name
+			info = "%s: relaxed" % name
 		var reading := water_reading()
 		if reading != "":
-			info = "%s %s" % [name, reading]
+			info = "%s: %s" % [name, reading]
 
 
 ## What a flamingo's legs say about the water level ("" = not a wader, or no flats here).
@@ -677,9 +677,9 @@ func water_reading() -> String:
 	var depth := _water_depth()
 	if depth == "":
 		return ""
-	return {"low": "with dry feet: the water's too low (close a gate).",
-		"right": "wading ankle-deep and feeding: the water level is just right.",
-		"high": "standing belly-deep, not feeding: the water's too high (open a gate)."}[depth]
+	return {"low": "dry feet, water too low",
+		"right": "ankle-deep, feeding",
+		"high": "belly-deep, water too high"}[depth]
 
 
 ## "low", "right" or "high" (the island's water level), or "" if it doesn't show it.
@@ -784,7 +784,7 @@ func _maybe_guide() -> void:
 		_swim_to(beside, State.GUIDE)
 	var ranger := ControlledBody.active(get_tree())
 	if ranger and ranger.global_position.distance_to(global_position) <= FOLLOW_HINT_RANGE:
-		info = "The %s found some litter - follow it!" % data.display_name.to_lower()
+		info = "%s found litter: follow" % data.button_name()
 
 
 func _nearest_floating_litter(within: float) -> Node2D:
@@ -837,7 +837,7 @@ func _maybe_carry(delta: float) -> void:
 		Journal.record_gift(data)
 		if _carry_note_day != GameClock.day:  # one note a day
 			_carry_note_day = GameClock.day
-			get_tree().call_group("hud", "show_toast", "A %s brought litter ashore" % data.display_name.to_lower(), false, global_position)
+			get_tree().call_group("hud", "show_toast", "%s brought litter ashore" % data.display_name.to_lower(), false, global_position)
 		_rest(1.0)
 	elif _state == State.REST:
 		_swim_to(_carry_shore, State.SWIM)
@@ -935,11 +935,11 @@ func actions() -> Array:
 		return []
 	var list := []
 	if tangled:
-		list.append({"label": "Free the %s" % data.display_name, "do": _interact, "helps": true})
+		list.append({"label": "Free %s" % data.button_name().to_lower(), "do": _interact, "helps": true})
 	elif not photographed_today():
-		list.append({"label": "Photo: %s" % data.display_name, "do": _interact, "helps": false})
+		list.append({"label": "Photo %s" % data.button_name().to_lower(), "do": _interact, "helps": false})
 	if data.guides_to_litter and not tangled and not young and not played:
-		list.append({"label": "Play with the %s" % data.display_name, "do": play})
+		list.append({"label": "Play", "do": play})
 	return list
 
 

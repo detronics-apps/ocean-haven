@@ -79,7 +79,7 @@ func _ready() -> void:
 	Fleet.objective_completed.connect(_on_objective_completed)
 	SaveGame.saved.connect(_flash_saved)
 	Funding.donations_waiting.connect(_on_donations_waiting)
-	GameClock.slept.connect(func() -> void: show_toast("Good morning! Day %d." % GameClock.day))
+	GameClock.slept.connect(func() -> void: show_toast("Day %d" % GameClock.day))
 	GameClock.new_day.connect(_on_new_day)
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
@@ -114,13 +114,13 @@ func _ready() -> void:
 	var rescue_screen := RescueScreen.new()  # the rescue companion (Rescues)
 	rescue_screen.name = "RescueScreen"
 	get_parent().add_child.call_deferred(rescue_screen)
-	Rescues.found.connect(func(r: RescueData) -> void: show_toast("A young %s needs your help!" % r.species.display_name.to_lower()))
+	Rescues.found.connect(func(r: RescueData) -> void: show_toast("A young %s needs help" % r.species.display_name.to_lower()))
 	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
-		show_toast("%s, the %s you rescued, is here!" % [animal_name, r.species.display_name.to_lower()]))
+		show_toast("%s (rescued %s) is here" % [animal_name, r.species.display_name.to_lower()]))
 	Journal.moment_caught.connect(func(animal: AnimalData, moment: PhotoMoment) -> void:
 		show_toast("New photo moment: %s" % moment.title.to_lower(), true))
 	Rescues.released.connect(func(r: RescueData, animal_name: String) -> void:
-		show_toast("%s is back in the wild!" % animal_name, true))
+		show_toast("%s released" % animal_name, true))
 	for activity_screen: ActivityScreen in [SonarSweep.new(), OtterDive.new(), ChannelFlow.new(), EchoDive.new(), IceMatch.new(), GlassSort.new()]:  # ranger activities (data/activities/)
 		activity_screen.name = activity_screen.get_script().get_global_name()
 		get_parent().add_child.call_deferred(activity_screen)
@@ -352,8 +352,8 @@ func voyage(region: RegionData, discovered := false) -> void:
 	tween.tween_callback(func() -> void: VoyageMap.arrive(get_tree(), region))
 	tween.tween_interval(0.6)
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
-	tween.tween_callback(func() -> void: show_toast("%s %s!\n%s" % [
-		"You discovered" if discovered else "You sailed to", region.display_name, region.description]))
+	tween.tween_callback(func() -> void: show_toast("%s %s" % [
+		"Discovered:" if discovered else "Arrived:", region.display_name]))
 
 
 ## Fades to black, sleeps until morning, fades back in.
@@ -444,12 +444,12 @@ func _check_unlocks() -> void:
 	minimap.visible = Fleet.is_installed(MINIMAP_NEEDS)
 	if minimap.visible and not Fleet.has_flag(&"minimap_shown"):
 		Fleet.mark(&"minimap_shown")
-		show_toast("New: your map, bottom left", true)
+		show_toast("Map unlocked (bottom left)", true)
 	if not Fleet.has_flag(HEALTH_FLAG):
 		for building: Building in get_tree().get_nodes_in_group("buildings"):
 			if building.data.facility == &"signature" and Regions.nearest(building.global_position).id != &"home_island":
 				Fleet.mark(HEALTH_FLAG)
-				show_toast("New: island health, top right", true)
+				show_toast("Island health unlocked (top right)", true)
 				break
 
 
@@ -500,7 +500,7 @@ func _on_earned(_amount: int, _reason: String) -> void:
 
 
 func _on_donations_waiting(building: Building, amount: int) -> void:
-	show_toast("Visitors left %d funding at your %s" % [amount, building.data.display_name], false, building.global_position)
+	show_toast("+%d funding waiting at the %s" % [amount, building.data.display_name], false, building.global_position)
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
@@ -508,11 +508,11 @@ func _on_item_added(item: ItemData, _count: int) -> void:
 
 
 func _on_discovered(animal: AnimalData) -> void:
-	show_toast("A %s! Take a photo for your Journal" % animal.display_name.to_lower())
+	show_toast("New: %s (take a photo)" % animal.display_name.to_lower())
 
 
 func _on_observed(animal: AnimalData) -> void:
-	show_toast("You watched the %s" % animal.display_name.to_lower())
+	show_toast("%s watched" % animal.display_name.to_lower())
 
 
 func _on_photographed(animal: AnimalData, count: int) -> void:
@@ -523,7 +523,7 @@ func _on_photographed(animal: AnimalData, count: int) -> void:
 
 
 func _on_helped(animal: AnimalData, _count: int) -> void:
-	show_toast("You freed the %s!" % animal.display_name.to_lower(), true)
+	show_toast("%s freed" % animal.display_name.to_lower(), true)
 
 
 func _on_gifted(animal: AnimalData) -> void:
@@ -531,11 +531,11 @@ func _on_gifted(animal: AnimalData) -> void:
 
 
 func _on_nested(animal: AnimalData) -> void:
-	show_toast("A %s is nesting" % animal.display_name.to_lower(), false, Journal.event_at)
+	show_toast("%s nesting" % animal.display_name.to_lower(), false, Journal.event_at)
 
 
 func _on_hatched(animal: AnimalData, count: int) -> void:
-	show_toast("%d hatchlings are heading for the sea" % count, false, Journal.event_at)
+	show_toast("%d hatchlings" % count, false, Journal.event_at)
 
 
 func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> void:
@@ -544,7 +544,7 @@ func _on_objective_completed(region: RegionData, discovery: DiscoveryData) -> vo
 
 func _on_mission_returned(mission: MissionData, found: int) -> void:
 	var report := mission.report if found > 0 else mission.report_none
-	show_toast("%s is back: see the report" % mission.display_name)
+	show_toast("%s back: report ready" % mission.display_name)
 
 
 func _on_built(building: Building) -> void:
