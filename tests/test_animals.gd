@@ -180,6 +180,15 @@ func _initialize() -> void:
 		and screen.find_child("Entry_ghost_crab", true, false) != null, "Journal lists dolphins and crabs")
 	screen.close()
 
+	# --- Roamers drift all round the island, not just round their home spot; crabs keep to theirs ---
+	var roamer: Node = dolphins[0]
+	roamer.tangled = false
+	var furthest := 0.0
+	for i in 60:
+		furthest = maxf(furthest, roamer._pick_target().distance_to(roamer._home))
+	_expect(roamer.data.roams and furthest > roamer.home_radius, "a dolphin roams beyond its home area (%.0f px)" % furthest)
+	_expect(not crabs[0].data.roams, "crabs keep to their beach")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

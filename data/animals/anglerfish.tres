@@ -19,6 +19,7 @@ when = PackedStringArray("surfaced")
 
 [resource]
 script = ExtResource("1_s")
+roams = true
 id = &"anglerfish"
 display_name = "Deep-sea Anglerfish"
 sprite = ExtResource("2_t")

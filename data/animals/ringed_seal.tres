@@ -26,6 +26,7 @@ when = PackedStringArray("young")
 
 [resource]
 script = ExtResource("1_s")
+roams = true
 id = &"ringed_seal"
 display_name = "Ringed Seal"
 sprite = ExtResource("2_t")

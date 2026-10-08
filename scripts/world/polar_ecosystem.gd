@@ -331,7 +331,37 @@ func _phase_changed(name: StringName) -> void:
 ## Puts every cell in the state the season calls for: old ice is ice (unless broken off),
 ## rings of water freeze up to `rings_now()`, the rest is water. Water near a boat doesn't
 ## freeze; ice under the ranger on foot doesn't melt until they step off.
+## Once an Ice Survey has run (Fleet flag OLD_ICE_SHOWN), old ice shows a soft blue with a thin
+## edge, so it can be told from seasonal ice by eye (real multi-year ice looks bluer, too).
+const OLD_ICE_SHOWN := &"old_ice_shown"
+const OLD_ICE_TINT := Color(0.45, 0.68, 0.95, 0.28)
+const OLD_ICE_EDGE := Color(0.25, 0.48, 0.82, 0.75)
+
+
+## Whether `cell` is old ice now (there all year, not broken off).
+func is_old_ice(cell: Vector2i) -> bool:
+	return _base.get(cell, Vector2i(-1, -1)) == ICE_TILE and not _broken.has(cell)
+
+
+func _draw() -> void:
+	if not Fleet.has_flag(OLD_ICE_SHOWN):
+		return
+	var half := Vector2(_ground.tile_set.tile_size) / 2.0
+	for cell: Vector2i in _base:
+		if not is_old_ice(cell):
+			continue
+		var at := to_local(_ground.to_global(_ground.map_to_local(cell)))
+		draw_rect(Rect2(at - half, half * 2.0), OLD_ICE_TINT)
+		for step: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if is_old_ice(cell + step):
+				continue
+			var mid := at + Vector2(step) * half
+			var across := Vector2(step.y, step.x) * half
+			draw_line(mid - across, mid + across, OLD_ICE_EDGE, 1.5)
+
+
 func apply_ice() -> void:
+	queue_redraw()
 	var rings := rings_now()
 	var boats := _boat_spots()
 	var ranger := ControlledBody.active(get_tree())
@@ -835,11 +865,14 @@ func _oldest_ice() -> Vector2:
 func run_mission(mission: MissionData) -> Dictionary:
 	match mission.effect:
 		&"ice_survey":
+			if not Fleet.has_flag(OLD_ICE_SHOWN):
+				Fleet.mark(OLD_ICE_SHOWN)
+				queue_redraw()
 			var risky := _buildings(&"seal_pupping_zone").filter(func(z: Building) -> bool: return not on_old_ice(z))
 			var found: Array = risky.duplicate()
 			if risky.is_empty():
 				found.append(_mark(_oldest_ice()))
-			return {"found": found, "detail": "It's %s. The old, thick ice is the white ice that's there in open water too: it lasts all season. %s" % [status_note().to_lower(),
+			return {"found": found, "detail": "It's %s. The old, thick ice now shows bluish, with a blue edge: it lasts all season. %s" % [status_note().to_lower(),
 				("%d pupping zone(s) stand on seasonal ice that will melt (marked): move them to old ice." % risky.size()) if risky
 				else "Your zones are all on old ice. The biggest stretch of old ice is marked."]}
 		&"corridor_check":

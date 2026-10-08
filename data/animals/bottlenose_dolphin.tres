@@ -25,6 +25,7 @@ when = PackedStringArray("near_boat")
 
 [resource]
 script = ExtResource("1_2r22d")
+roams = true
 travel_home = &"home_island"
 travels_to = PackedStringArray("kelp_forest", "mangrove_coast", "tropical_reef", "deep_sea")
 travel_chance = 0.35

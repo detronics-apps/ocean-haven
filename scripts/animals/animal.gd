@@ -929,6 +929,10 @@ func _pick_target() -> Vector2:
 		circling = litter != null
 		if litter:  # circling over it shows the ranger where it is
 			return litter.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 32.0)
+	if data.roams and not tangled and not injured and not young and randf() < data.roam_share:
+		var wander := _roam_spot()
+		if wander != Vector2.INF:
+			return wander
 	var spot := _home
 	# Boat-shy animals: the spot furthest from busy boats, if none is clear of them.
 	var furthest := Vector2.INF
@@ -948,6 +952,19 @@ func _pick_target() -> Vector2:
 	if in_habitat(spot):
 		return spot
 	return _home if in_habitat(_home) else global_position
+
+
+## A spot a little way off in its habitat, anywhere in its island's waters (INF = none found):
+## roamers drift all round the island like this.
+func _roam_spot() -> Vector2:
+	var island := Regions.nearest(_home)
+	for attempt in 16:
+		var spot := global_position + Vector2.from_angle(randf() * TAU) * randf_range(80.0, 320.0)
+		if spot.distance_to(island.center) > island.waters_radius * 0.92 or not in_habitat(spot):
+			continue
+		if not _near_busy_boat(spot):
+			return spot
+	return Vector2.INF
 
 
 ## Somewhere in its habitat, further from `danger` (so a crab runs along the beach

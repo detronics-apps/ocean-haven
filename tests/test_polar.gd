@@ -155,6 +155,12 @@ func _initialize() -> void:
 	var event: Resource = load("res://data/events/ice_breakup.tres")
 	_expect(event.min_gap_days == 30 and event.max_gap_days == 60 and event.ice_breakup > 0.0, "ice breakups come 30-60 days apart")
 
+	# --- After an Ice Survey, old ice shows bluish (it can be told by eye) ---
+	fleet.unmark(&"old_ice_shown")
+	eco.run_mission(load("res://data/missions/ice_survey.tres"))
+	var old_cells: Array = eco._base.keys().filter(func(c: Vector2i) -> bool: return eco.is_old_ice(c))
+	_expect(fleet.has_flag(&"old_ice_shown") and old_cells.size() > 0, "an ice survey shows the old ice (%d tiles)" % old_cells.size())
+
 	# --- Rubbish near camp draws a polar bear in; cleared, it wanders back to the ice ---
 	var tent: Node2D = build_mode.add_building(load("res://data/buildings/tent.tres"), terrain.cell_of(terrain.nearest(self, polar.arrival, ["rock", "ice"])))
 	player.global_position = tent.global_position + Vector2(0, 40)

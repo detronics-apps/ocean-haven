@@ -149,6 +149,13 @@ func picture() -> Texture2D:
 	return icon if icon else sprite
 
 
+## Wanders all round its island's waters (drifting a little way at a time), coming back to its
+## home area now and then, so the island is alive all round rather than one crowd per area.
+## Off for animals that keep to their zone (crocodiles, polar bears) or stay put (clams, seahorses).
+@export var roams := false
+## How often a roamer heads off somewhere new rather than back towards home (0..1).
+@export var roam_share := 0.7
+
 ## Wading birds whose legs show the water level (flamingos): ankle-deep and feeding when it's
 ## right, belly-deep when too high, dry feet when too low (MangroveEcosystem.water_reading).
 @export var shows_water_level := false

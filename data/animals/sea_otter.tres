@@ -27,6 +27,7 @@ when = PackedStringArray("on:water", "day")
 
 [resource]
 script = ExtResource("1_otter")
+roams = true
 resting_sprite = ExtResource("rest_1201")
 id = &"sea_otter"
 display_name = "Sea Otter"
