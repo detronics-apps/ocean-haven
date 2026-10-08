@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_sitting.svg" id="3_sit"]
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_standing.svg" id="4_stand"]
 [ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern_floating.svg" id="5_float"]
+[ext_resource type="Resource" path="res://data/buildings/shore_pine.tres" id="seed_pine"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -53,3 +54,7 @@ perch_seconds = Vector2(15, 30)
 lives_at = &"tern_nesting_area"
 adult_home_radius = 140.0
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2")])
+seeds_tree = ExtResource("seed_pine")
+seeds_from = &"deep_sea"
+seeds_to = &"arctic_ocean"
+seeds_news = "There's a little pine growing among the rocks! The terns stopped on the {from} on their way south, and brought a seed back with them."

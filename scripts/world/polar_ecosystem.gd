@@ -164,6 +164,19 @@ func phase_name() -> StringName:
 	return &"open"
 
 
+## How much snow lies on the island's trees, 0..1: it builds up while the sea freezes, is
+## deepest while it's frozen, melts away in the thaw and is gone in open water.
+func snow_cover() -> float:
+	var p := phase()
+	if p < FROZEN_FROM:
+		return p / FROZEN_FROM
+	if p < THAW_FROM:
+		return 1.0
+	if p < OPEN_FROM:
+		return 1.0 - (p - THAW_FROM) / (OPEN_FROM - THAW_FROM)
+	return 0.0
+
+
 ## How many rings of water are frozen at this point in the season.
 func rings_now() -> int:
 	var p := phase()

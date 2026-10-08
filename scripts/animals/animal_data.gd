@@ -169,3 +169,15 @@ func picture() -> Texture2D:
 @export var travels_to: PackedStringArray = []
 @export var travel_chance := 0.0
 @export_multiline var travel_news: String
+
+@export_group("Seeds")
+## Brings seeds of a tree from one island to another (Travellers.spread_seeds): while it's on
+## `seeds_to` and `seeds_from` is healthy (70 %), a morning may see a young `seeds_tree` sprout
+## there (with `seeds_chance`), up to `seeds_max` of them; the first time, the island's people
+## say so (`seeds_news`).
+@export var seeds_tree: BuildingData
+@export var seeds_from: StringName
+@export var seeds_to: StringName
+@export var seeds_max := 6
+@export var seeds_chance := 0.4
+@export_multiline var seeds_news: String

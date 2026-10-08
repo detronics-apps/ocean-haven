@@ -130,8 +130,27 @@ func stage() -> int:
 	return clampi(GameClock.day - planted.built_day, SMALL, GROWN) if planted else GROWN
 
 
+## Snow on its branches on an island with a snowy season (PolarEcosystem.snow_cover), at most
+## this many pixel rows deep.
+const SNOW_ROWS := 3.0
+const SNOW := preload("res://assets/effects/snow/snow_cap.gdshader")
+var _snow_from: Node
+var _snow_looked := false
+
+
 func _process(_delta: float) -> void:
 	$Sprite2D.scale = Vector2.ONE * STAGE_SIZE[stage()]
+	if not _snow_looked:
+		_snow_looked = true
+		var island := Regions.nearest(global_position)
+		for eco: Node in get_tree().get_nodes_in_group("ecosystems"):
+			if eco.has_method("snow_cover") and eco.region() == island:
+				_snow_from = eco
+				var snow := ShaderMaterial.new()
+				snow.shader = SNOW
+				$Sprite2D.material = snow
+	if _snow_from:
+		($Sprite2D.material as ShaderMaterial).set_shader_parameter("depth", _snow_from.snow_cover() * SNOW_ROWS)
 	var kind: PlantData = plant if plant else load("res://data/plants/coconut_palm.tres")
 	if not Journal.has_plant(kind.id):
 		var ranger := ControlledBody.active(get_tree())

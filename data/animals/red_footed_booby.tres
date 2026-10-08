@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_standing.svg" id="rest_3043"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_floating.svg" id="floa_8091"]
+[ext_resource type="Resource" path="res://data/buildings/palm_tree.tres" id="seed_palm"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -49,3 +50,11 @@ perched_sprite = ExtResource("3_boo")
 circles_litter = true
 can_tangle = true
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1")])
+travel_home = &"home_island"
+travels_to = PackedStringArray("tropical_reef")
+travel_chance = 0.35
+travel_news = "Boobies were fishing off the reef this morning! Red-footed boobies, all the way from the {from}."
+seeds_tree = ExtResource("seed_palm")
+seeds_from = &"home_island"
+seeds_to = &"tropical_reef"
+seeds_news = "Have you seen? A little palm has come up on the island, the first tree we've ever had here! The boobies from the {from} must have brought the seed."

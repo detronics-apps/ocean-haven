@@ -62,6 +62,9 @@ func morning() -> void:
 			_since[species.id] = GameClock.day
 		if here.id != species.travel_home and can_reach(species, here) and randf() < species.travel_chance:
 			visit(species, here)
+	for species: AnimalData in DataFiles.load_all("res://data/animals"):
+		if species.seeds_tree and here.id == species.seeds_to and randf() < species.seeds_chance:
+			spread_seeds(species)
 
 
 ## A visitor of `species` comes to `region` for the day. Returns it.
@@ -84,6 +87,61 @@ func visit(species: AnimalData, region: RegionData) -> Node2D:
 			People.add_news(region.id, species.travel_news.replace("{from}", from.display_name))
 		get_tree().call_group("hud", "show_toast", "A %s has come all the way from the %s!" % [species.display_name.to_lower(), from.display_name])
 	return animal
+
+
+## Health an island needs before its seeds travel (the birds come from a thriving island).
+var seeds_from_health := 0.7
+
+
+## A young tree sprouts on `species.seeds_to` from seeds it brought from `species.seeds_from`,
+## if one of them is there now (resident or visiting), that island is healthy, and there's room
+## and a free spot. Returns the new tree's building (null = none today).
+func spread_seeds(species: AnimalData) -> Building:
+	var to: RegionData = load("res://data/regions/%s.tres" % species.seeds_to)
+	var from: RegionData = load("res://data/regions/%s.tres" % species.seeds_from)
+	if not Regions.is_discovered(to) or not Regions.is_discovered(from) or IslandHealth.of(get_tree(), from) < seeds_from_health:
+		return null
+	var there := get_tree().get_nodes_in_group("animals").any(func(a: Node) -> bool:
+		return a.data == species and not a.leaving and Regions.nearest(a.global_position) == to)
+	if not there or sprouted(species.seeds_tree, to) >= species.seeds_max:
+		return null
+	var cell := _seed_spot(species.seeds_tree, to)
+	if cell == Vector2i(-99999, -99999):
+		return null
+	var build := get_tree().get_first_node_in_group("build_mode")
+	if not build:
+		return null
+	var tree: Building = build.add_building(species.seeds_tree, cell)
+	var key := "seeds/%s/%s" % [species.id, to.id]
+	if not _told.has(key):
+		_told[key] = true
+		if species.seeds_news != "":
+			People.add_news(to.id, species.seeds_news.replace("{from}", from.display_name))
+		get_tree().call_group("hud", "show_toast", "A little %s has sprouted on the %s! The %ss brought its seed from the %s." % [
+			species.seeds_tree.display_name.to_lower(), to.display_name, species.display_name.to_lower(), from.display_name])
+	return tree
+
+
+## How many trees of `data` grow on `region`.
+func sprouted(data: BuildingData, region: RegionData) -> int:
+	return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
+		return b.data == data and not b.is_queued_for_deletion() and Regions.nearest(b.global_position) == region).size()
+
+
+## A free tile on `region` the tree can grow on (nothing built, no tree, nobody there).
+func _seed_spot(data: BuildingData, region: RegionData) -> Vector2i:
+	for attempt in 30:
+		var near := region.center + Vector2.from_angle(randf() * TAU) * randf_range(0.0, region.waters_radius * 0.6)
+		var spot := Terrain.nearest(get_tree(), near, Array(data.terrain), 10)
+		if Terrain.at(get_tree(), spot) not in data.terrain or Regions.nearest(spot) != region:
+			continue
+		var cell := Terrain.cell_of(spot)
+		var taken := get_tree().get_nodes_in_group("buildings").any(func(b: Building) -> bool: return b.rect().has_point(cell)) \
+			or get_tree().get_nodes_in_group("plants").any(func(p: Node2D) -> bool: return Terrain.cell_of(p.global_position) == cell) \
+			or get_tree().get_nodes_in_group("occupies").any(func(o: Node) -> bool: return o.cells().has(cell))
+		if not taken:
+			return cell
+	return Vector2i(-99999, -99999)
 
 
 func _residents(species: AnimalData, region: RegionData) -> int:

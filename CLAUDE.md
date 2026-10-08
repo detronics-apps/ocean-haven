@@ -662,6 +662,14 @@ urchins, flamingo legs show the depth, rubbish brings bears...); one is added af
 when there's no news or tip, at most once a day each, only while it holds, each up to
 People.OBSERVATION_TIMES (3) a game, least-said first (saved "observed").
 
+Seeds that travel (AnimalData seeds_tree / seeds_from / seeds_to / seeds_max 6 / seeds_chance;
+Travellers.spread_seeds each morning on the ranger's island): once the Starting Island is
+thriving (70 %), red-footed boobies visit the Reef (they travel now: home_island -> tropical_reef)
+and little palms sprout there, the Reef's first trees; terns back from the healthy Deep Sea bring
+shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry snow
+(PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the tree's own pixels turn white,
+building up in the freeze, deepest when frozen, gone by open water).
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 
