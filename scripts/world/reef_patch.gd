@@ -48,21 +48,21 @@ func actions() -> Array:
 	var ranger := ControlledBody.active(get_tree())
 	if carried:
 		if _reef().spot_free(global_position, self):
-			return [{"label": "Set the reef patch down here", "do": set_down, "helps": true}]
-		return [{"label": "Can't set it down here: it needs free shallow water", "do": _explain_spot}]
+			return [{"label": "Put down", "do": set_down, "helps": true}]
+		return [{"label": "Can't put it here", "do": _explain_spot}]
 	if not ranger or ranger.global_position.distance_to(global_position) > REACH:
 		return []
 	var list := []
 	if coral >= FULL:
-		list.append({"label": "Split this patch (100% -> two of 35%)", "do": split, "helps": true})
+		list.append({"label": "Split", "do": split, "helps": true})
 	if planted >= 1.0:
-		list.append({"label": "Reef patch: fully planted (coral %d%%)" % roundi(coral * 100.0), "do": _explain})
+		list.append({"label": "Reef patch %d%%" % roundi(coral * 100.0), "do": _explain})
 	elif Inventory.available(&"coral_fragment") > 0:
-		list.append({"label": "Plant coral fragment (coral %d%%)" % roundi(coral * 100.0), "do": plant, "helps": true})
+		list.append({"label": "Plant coral (%d%%)" % roundi(coral * 100.0), "do": plant, "helps": true})
 	else:
-		list.append({"label": "Reef patch (coral %d%%)" % roundi(coral * 100.0), "do": _explain})
+		list.append({"label": "Reef patch %d%%" % roundi(coral * 100.0), "do": _explain})
 	if ranger is Boat and not _reef().carrying():
-		list.append({"label": "Move this reef patch", "do": pick_up})
+		list.append({"label": "Move", "do": pick_up})
 	return list
 
 

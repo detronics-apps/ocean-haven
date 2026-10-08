@@ -157,7 +157,7 @@ func actions() -> Array:
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep until morning", "do": sleep})
 	if data.action == &"sleep" and Inventory.count(&"clean_water") > 0:
-		list.append({"label": "Store %d clean water (move faster while it lasts)" % Inventory.count(&"clean_water"), "do": store_water})
+		list.append({"label": "Store %d clean water" % Inventory.count(&"clean_water"), "do": store_water})
 	if data.action == &"explore":
 		list.append({"label": "Explore", "do": get_tree().call_group.bind("explore_menu", "open")})
 	if data.action == &"gate":
@@ -178,8 +178,8 @@ func actions() -> Array:
 	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:
 		var item: ItemData = load("res://data/items/%s.tres" % data.accepts)
 		var n := Inventory.available(data.accepts)
-		list.append({"label": "Give %d %s to %s (+%d funding)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
-			data.accepts_for, n * item.grant_value], "do": give_away})
+		list.append({"label": "Give %d %s (+%d)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
+			n * item.grant_value], "do": give_away})
 	if recycle_value() > 0 and not damaged:  # (opens with nothing carried too: the litter stats are there)
 		list.append({"label": "Recycle litter (%d carried)" % Inventory.total() if Inventory.total() > 0 else "Recycling and litter stats",
 			"do": get_tree().call_group.bind("recycle_menu", "open_for", self)})
@@ -229,7 +229,7 @@ func _production_actions() -> Array:
 			else "Needs %d %s (%d now)" % [data.makes_from_count, input.display_name.to_lower(), have], "do": start_capability})
 	if data.makes_from_value > 0 and Fleet.has_flag(data.made_flag) and Inventory.available(data.makes_from) > 0:
 		var n := Inventory.available(data.makes_from)
-		list.append({"label": "Drop off %d %s (+%d funding)" % [n, data.makes_from, n * data.makes_from_value], "do": sell_input})
+		list.append({"label": "Drop off %d %s (+%d)" % [n, data.makes_from, n * data.makes_from_value], "do": sell_input})
 	if data.makes:
 		var take := mini(stock, Inventory.room_for(data.makes))
 		if take > 0:

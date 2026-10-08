@@ -91,7 +91,7 @@ func actions() -> Array:
 		if _shore_spot() != null:
 			list.append({"label": "Go ashore", "do": _go_ashore})
 		if is_instance_valid(towing):
-			list.append({"label": "Let go of the towed boat", "do": let_go})
+			list.append({"label": "Let go", "do": let_go})
 		else:
 			var other := _boat_to_tow()
 			if other:

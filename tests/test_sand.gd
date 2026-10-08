@@ -81,7 +81,7 @@ func _initialize() -> void:
 	inventory.add(sand)
 	shovel.selected = Vector2i(19, 0)
 	labels = shovel.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels == ["Place sand (makes it shallow)", "Put shovel away"], "deep water: sand makes it shallow (%s)" % [labels])
+	_expect(labels == ["Place sand", "Put shovel away"], "deep water: sand makes it shallow (%s)" % [labels])
 	shovel.actions()[0].do.call()
 	_expect(_terrain(Vector2(19 * 32 + 16, 16)) == "water", "deep water is shallows now")
 	inventory.add(sand)

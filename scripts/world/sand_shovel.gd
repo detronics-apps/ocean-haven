@@ -163,7 +163,7 @@ func actions() -> Array:
 	if fill != null:
 		var deep := Terrain.at(get_tree(), Terrain.centre_of(fill)) == ""
 		var what := carried_material().display_name.to_lower()
-		list.push_front({"label": ("Place %s (makes it shallow)" % what) if deep
+		list.push_front({"label": ("Place %s" % what) if deep
 			else ("Place mud (makes a mud flat)" if what == "mud" else "Place sand"), "do": place.bind(fill)})
 	if dig != null:
 		var dug := material_at(dig)

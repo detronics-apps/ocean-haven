@@ -88,7 +88,7 @@ func _initialize() -> void:
 	await physics_frame
 	await physics_frame
 	_expect(towed.global_position.distance_to(tug.global_position) <= tug.tow_gap + 1.0, "the towed boat follows behind")
-	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Let go of the towed boat")[0].do.call()
+	tug.actions().filter(func(a: Dictionary) -> bool: return a.label == "Let go")[0].do.call()
 	var towed_to: Vector2 = towed.global_position
 	tug.global_position = Vector2(500, 380)
 	await physics_frame
