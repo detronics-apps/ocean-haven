@@ -120,7 +120,7 @@ func _branching() -> Dictionary:
 		return SHALLOW if d <= 2 else (MID if d <= 4 else -1))
 
 
-## Deep Sea: a grassy, rocky hook curling round deep water; a beach runs along its inside.
+## Deep Sea: a grassy, rocky hook curling round deep water (the canyon), its inside rocky.
 func _hook() -> Dictionary:
 	var path := []  # [point, width]
 	for i in 78:  # over the top: from the east tip (curled down) round to the west
@@ -145,12 +145,18 @@ func _hook() -> Dictionary:
 		func(c: Vector2i) -> int:
 			for step in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 				if not mask.has(c + step) and inside.call(c + step):
-					return SAND
+					return SAND if _hook_beach(c) else ROCK
 			return ROCK)
 	return _finish(land, func(cell: Vector2i, d: int) -> int:
 		if inside.call(cell):
 			return SHALLOW if d <= 2 else (MID if d <= 3 else -1)  # deep water right inside the hook
 		return SHALLOW if d <= 1 else (MID if d <= 4 else -1))
+
+
+## The hook's only beaches: a line of sand up from its base, and a little beach round the
+## east tip. The rest of its inside is rock: the edge of the deep canyon.
+func _hook_beach(c: Vector2i) -> bool:
+	return (c.x <= 0 and c.y >= 4) or Vector2(c).distance_to(Vector2(10, 1)) <= 2.5
 
 
 ## Tropical Reef: a broken ring of sand and grass round a big shallow lagoon (coral comes later, as plants).
