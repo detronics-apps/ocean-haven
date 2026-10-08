@@ -42,6 +42,30 @@ func _initialize() -> void:
 	_expect(screen.find_child("Learned", true, false) == null and not fleet.has_flag(&"observatory_opened"),
 		"no reflection while some litter still starts somewhere")
 	_expect(screen.find_child("DownloadPoster", true, false) == null, "no poster before the whole ocean is connected")
+	# --- Tap an island: how it looked when the ranger first arrived, beside now ---
+	var journal := root.get_node("Journal")
+	journal.photos_dir = OS.get_temp_dir().path_join("bluehaven_test_island_photos")  # never the player's folder
+	DirAccess.make_dir_recursive_absolute(journal.photos_dir)
+	var then_image := Image.create(36, 20, false, Image.FORMAT_RGB8)
+	then_image.fill(Color(0.4, 0.4, 0.45))
+	then_image.save_png(journal.island_photo_path(&"home_island", "arrival"))
+	DirAccess.remove_absolute(journal.island_photo_path(&"home_island", "now"))
+	var panorama: Control = screen.find_child("Panorama", true, false)
+	var tap := InputEventMouseButton.new()
+	tap.button_index = MOUSE_BUTTON_LEFT
+	tap.pressed = true
+	var home_index: int = panorama.regions.find(load("res://data/regions/home_island.tres"))
+	tap.position = Vector2(panorama.size.x / panorama.regions.size() * (home_index + 0.5), panorama.size.y / 2.0)
+	panorama._gui_input(tap)
+	var island_view: Node = screen.get_node_or_null("IslandView")
+	_expect(island_view != null and (island_view.find_child("Then", true, false).find_child("Picture", true, false) as TextureRect).texture.get_width() == 36,
+		"tap the Starting Island: the picture from when you first arrived")
+	_expect(island_view.find_child("Now", true, false) != null and screen.find_children("*", "Label", true, false).any(
+		func(l: Label) -> bool: return l.text.begins_with("Now:") and l.text.contains("healthy")), "beside how it is now")
+	island_view.find_child("Back", true, false).pressed.emit()
+	await process_frame
+	_expect(screen.get_node_or_null("IslandView") == null and screen.visible, "Back: the Observatory again")
+	DirAccess.remove_absolute(journal.island_photo_path(&"home_island", "arrival"))
 	screen.close()
 
 	# --- Every source stopped: the final chapter ---

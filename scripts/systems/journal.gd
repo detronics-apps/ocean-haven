@@ -28,6 +28,90 @@ var _moments := {}
 ## Where the kept photos are (one small picture per moment; tests point it elsewhere).
 var photos_dir := "user://photos"
 
+## Pictures of each island for the Observatory: "arrival" (how it looked when the ranger first
+## got there, before helping it: litter and all) and "now" (kept up to date, once a day).
+const ISLAND_PHOTO_SIZE := Vector2i(640, 400)
+## How much of the island's waters a picture takes in (1 = all of them).
+const ISLAND_FRAMING := 0.6
+var _taking := false
+## Seconds on an island before its picture is taken (the litter has washed in, the view settled).
+const SETTLE_SECONDS := 6.0
+const CHECK_EVERY := 3.0
+var _island_check := 0.0
+var _here := &""
+var _here_for := 0.0
+var _now_day := {}
+
+
+func island_photo_path(region_id: StringName, kind: String) -> String:
+	return "%s/island_%s_%s.png" % [photos_dir, region_id, kind]
+
+
+## The kept picture of `region_id` ("arrival" or "now"), or null.
+func island_photo(region_id: StringName, kind: String) -> Texture2D:
+	var path := island_photo_path(region_id, kind)
+	if not FileAccess.file_exists(path):
+		return null
+	var image := Image.load_from_file(path)
+	return ImageTexture.create_from_image(image) if image else null
+
+
+func _process(delta: float) -> void:
+	_island_check += delta
+	if _island_check < CHECK_EVERY:
+		return
+	_island_check = 0.0
+	if get_tree().paused:
+		return  # (a menu or a talk is on screen)
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger:
+		return
+	var region := Regions.nearest(ranger.global_position)
+	if not Regions.is_discovered(region) or not Regions.in_reach(region, ranger.global_position):
+		_here = &""
+		return
+	if region.id != _here:
+		_here = region.id
+		_here_for = 0.0
+	_here_for += CHECK_EVERY
+	if _here_for < SETTLE_SECONDS:
+		return
+	if not FileAccess.file_exists(island_photo_path(region.id, "arrival")) and not Regions.helped(get_tree(), region):
+		take_island_photo(region, "arrival")
+	elif int(_now_day.get(region.id, -1)) != GameClock.day:
+		_now_day[region.id] = GameClock.day
+		take_island_photo(region, "now")
+
+
+## Keeps a picture of the whole island now (an offscreen camera over the world, so no menus
+## and nothing on screen changes) as `region`'s `kind` picture. False without a screen.
+func take_island_photo(region: RegionData, kind: String) -> bool:
+	var viewport := get_viewport()
+	if not viewport or DisplayServer.get_name() == "headless" or _taking:
+		return false
+	_taking = true
+	var shot := SubViewport.new()
+	shot.size = ISLAND_PHOTO_SIZE
+	shot.world_2d = viewport.world_2d
+	shot.render_target_update_mode = SubViewport.UPDATE_ONCE
+	shot.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	var camera := Camera2D.new()
+	camera.position = region.center
+	var across := region.waters_radius * 2.0 * ISLAND_FRAMING
+	camera.zoom = Vector2.ONE * minf(ISLAND_PHOTO_SIZE.x / across, ISLAND_PHOTO_SIZE.y / across)
+	shot.add_child(camera)
+	add_child(shot)
+	camera.make_current()
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	var image := shot.get_texture().get_image()
+	shot.queue_free()
+	_taking = false
+	if not image or image.is_empty():
+		return false
+	DirAccess.make_dir_recursive_absolute(photos_dir)
+	return image.save_png(island_photo_path(region.id, kind)) == OK
+
 
 func discover(animal: AnimalData) -> void:
 	if _found.has(animal.id):

@@ -51,6 +51,13 @@ func open() -> void:
 			play_credits()
 
 
+func close() -> void:
+	var view := get_node_or_null("IslandView")
+	if view:
+		view.free()
+	super()
+
+
 ## The end credits ("A Final Word"), over the Observatory.
 func play_credits() -> void:
 	_credits.play()
@@ -66,7 +73,13 @@ func _fill() -> void:
 	_panorama.name = "Panorama"
 	_panorama.regions = regions
 	_panorama.links = links()
+	_panorama.tapped.connect(show_island)
 	_content.add_child(_panorama)
+	var tap_note := Label.new()
+	tap_note.text = "Tap an island to see how it looked when you first arrived."
+	tap_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tap_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_content.add_child(tap_note)
 	var health: Array[String] = ["The whole ocean: %d %% healthy" % roundi(ocean_health() * 100.0)]
 	for region in regions:
 		if Regions.is_discovered(region) and not region.health.is_empty():
@@ -114,6 +127,87 @@ func _fill() -> void:
 	open_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	open_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_content.add_child(open_note)
+
+
+## One island then and now: the picture kept when the ranger first got there (litter and all)
+## beside how it looks now, and its health. A reminder of where they started.
+func show_island(region: RegionData) -> void:
+	if not Regions.is_discovered(region):
+		return
+	var old := get_node_or_null("IslandView")
+	if old:
+		old.free()
+	var view := ColorRect.new()
+	view.name = "IslandView"
+	view.color = Color("1f3a4d")
+	view.set_anchors_preset(Control.PRESET_FULL_RECT)
+	view.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(view)
+	var margin := MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	view.add_child(margin)
+	SafeArea.apply(margin, 24.0)
+	var page := VBoxContainer.new()
+	page.add_theme_constant_override("separation", 12)
+	margin.add_child(page)
+	var header := HBoxContainer.new()
+	page.add_child(header)
+	var title := Label.new()
+	title.text = region.display_name
+	title.add_theme_font_size_override("font_size", 28)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(title)
+	var back := Button.new()
+	back.name = "Back"
+	back.text = "< Back"
+	back.custom_minimum_size = Vector2(110, 48)
+	back.pressed.connect(view.queue_free)
+	header.add_child(back)
+	back.grab_focus.call_deferred()
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	page.add_child(scroll)
+	var pictures := HFlowContainer.new()
+	pictures.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pictures.alignment = FlowContainer.ALIGNMENT_CENTER
+	pictures.add_theme_constant_override("h_separation", 20)
+	pictures.add_theme_constant_override("v_separation", 16)
+	scroll.add_child(pictures)
+	var then: Texture2D = Journal.island_photo(region.id, "arrival")
+	pictures.add_child(_island_picture("When you first arrived", then, region, true,
+		"" if then else "No picture was kept of your first visit here (that was before the Observatory kept them)."))
+	var now: Texture2D = Journal.island_photo(region.id, "now")
+	pictures.add_child(_island_picture("Now: %d %% healthy" % roundi(IslandHealth.of(get_tree(), region) * 100.0), now, region, false, ""))
+
+
+func _island_picture(heading: String, picture: Texture2D, region: RegionData, damaged: bool, note: String) -> Control:
+	var column := VBoxContainer.new()
+	column.name = "Then" if damaged else "Now"
+	column.custom_minimum_size = Vector2(360, 0)
+	var label := Label.new()
+	label.text = heading
+	label.add_theme_font_size_override("font_size", 22)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(label)
+	var pic := TextureRect.new()
+	pic.name = "Picture"
+	pic.texture = picture if picture else region.map_icon
+	pic.custom_minimum_size = Vector2(360, 225)
+	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	if not picture:  # (just its map, in the colours of then or now)
+		pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		pic.modulate = IslandHealth.DAMAGED_TINT if damaged else Color.WHITE
+	column.add_child(pic)
+	if note != "":
+		var small := Label.new()
+		small.text = note
+		small.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		small.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		small.custom_minimum_size = Vector2(360, 0)
+		column.add_child(small)
+	return column
 
 
 ## The prize for the final chapter: the poster of the whole ocean, to download and keep.
@@ -245,6 +339,8 @@ static func closing_line(person: PersonData) -> String:
 ## The six islands side by side, with what joins them (only the links made) and little
 ## travellers moving along them.
 class Panorama extends Control:
+	## An island was tapped.
+	signal tapped(region: RegionData)
 	var regions: Array[RegionData] = []
 	var links: Array[Dictionary] = []
 	var _time := 0.0
@@ -256,6 +352,12 @@ class Panorama extends Control:
 	func _process(delta: float) -> void:
 		_time += delta
 		queue_redraw()
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not regions.is_empty():
+			var i := clampi(int(event.position.x / (size.x / regions.size())), 0, regions.size() - 1)
+			accept_event()
+			tapped.emit(regions[i])
 
 	func _spot(id: StringName) -> Vector2:
 		for i in regions.size():

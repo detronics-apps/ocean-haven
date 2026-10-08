@@ -670,6 +670,13 @@ shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry sn
 (PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the tree's own pixels turn white,
 building up in the freeze, deepest when frozen, gone by open water).
 
+Then and now (Observatory): the first time the ranger is on an island (6 s, before helping it:
+Regions.helped) the Journal keeps a picture of the whole island from an offscreen camera
+(Journal.take_island_photo: a SubViewport sharing the world, no HUD), and a "now" picture once a
+day after (user://photos/island_<id>_arrival|now.png). Tapping an island in the Observatory's
+Panorama shows "When you first arrived" beside "Now: N % healthy" (its map in damaged colours
+when no picture was kept, e.g. islands first visited before this existed).
+
 Later: more animals (seabirds, reef fish), plantable mangroves, net boats, sanctuary interiors
 (turtle rehab mini-game).
 
