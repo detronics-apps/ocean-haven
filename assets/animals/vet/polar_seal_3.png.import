@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du8sjup1qdqk1"
-path="res://.godot/imported/home_turtle_6.svg-86ca6f489ef5e4d9ac59ea6d6e4418db.ctex"
+uid="uid://7h1mbxeegv8r"
+path="res://.godot/imported/polar_seal_3.png-138b1820dc73af6131726808fa516bdd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/animals/vet/home_turtle_6.svg"
-dest_files=["res://.godot/imported/home_turtle_6.svg-86ca6f489ef5e4d9ac59ea6d6e4418db.ctex"]
+source_file="res://assets/animals/vet/polar_seal_3.png"
+dest_files=["res://.godot/imported/polar_seal_3.png-138b1820dc73af6131726808fa516bdd.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

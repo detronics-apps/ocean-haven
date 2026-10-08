@@ -1148,7 +1148,7 @@ func _flee_spot(danger: Vector2) -> Vector2:
 	for attempt in 24:
 		var spread := 1.2 if attempt < 8 else 1.7
 		var spot := global_position + away.rotated(randf_range(-spread, spread)) * randf_range(40.0, 112.0)
-		if in_habitat(spot) and spot.distance_to(danger) > global_position.distance_to(danger):
+		if in_habitat(spot) and spot.distance_to(danger) > global_position.distance_to(danger) + 30.0:  # really away
 			return spot
 	return global_position + away * 96.0
 

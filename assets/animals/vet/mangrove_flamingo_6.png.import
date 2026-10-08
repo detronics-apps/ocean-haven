@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7p4pcaospbyg"
-path="res://.godot/imported/home_turtle_2.svg-30735e10a5baa184a030aa4292c59ba3.ctex"
+uid="uid://bbmf7gnw64axv"
+path="res://.godot/imported/mangrove_flamingo_6.png-23ebb91676c1c7ca1d15b6712f2dc750.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/animals/vet/home_turtle_2.svg"
-dest_files=["res://.godot/imported/home_turtle_2.svg-30735e10a5baa184a030aa4292c59ba3.ctex"]
+source_file="res://assets/animals/vet/mangrove_flamingo_6.png"
+dest_files=["res://.godot/imported/mangrove_flamingo_6.png-23ebb91676c1c7ca1d15b6712f2dc750.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

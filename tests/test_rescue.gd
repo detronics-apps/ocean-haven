@@ -141,8 +141,17 @@ func _initialize() -> void:
 			rescues.care(&"comfort")
 			rescues.care(&"feed")
 	_expect(rescues.is_ready() and "Release Milo" in labels.call(), "after 6 days Milo is ready to go home")
-	_expect(rescues.stage() == 5 and turtle.picture(5) == turtle.stage_pictures[5] and turtle.size_at(5) > turtle.size_at(0) * 2.0,
-		"grown: its sixth picture, more than twice the size of the first")
+	var first: Image = turtle.picture(0).get_image()
+	var last: Image = turtle.picture(5).get_image()
+	var drawn := func(image: Image) -> int:
+		var n := 0
+		for y in image.get_height():
+			for x in image.get_width():
+				n += 1 if image.get_pixel(x, y).a > 0.5 else 0
+		return n
+	_expect(rescues.stage() == 5 and turtle.picture(5) == turtle.stage_pictures[5] and drawn.call(last) > drawn.call(first) * 2,
+		"grown: its sixth picture, much bigger than the first (the growth is in the pictures)")
+	_expect(turtle.hatching_picture != null, "and a picture of it hatching from its egg")
 	_expect(rescues.shape() > 0.75, "cared for every day: in good shape (%.2f)" % rescues.shape())
 
 	# --- Saved while in care ---

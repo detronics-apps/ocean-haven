@@ -362,6 +362,9 @@ func _draw_egg() -> void:
 	if t > 0.65:
 		draw_polyline(PackedVector2Array([Vector2(-6, -16), Vector2(-2, -28), Vector2(4, -20)]), Color("5a4a3a"), 2.0)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	if rescue.hatching_picture and t > 0.55:  # the little one pushing its way out
+		var side := minf(size.y * 0.5, 190.0)
+		draw_texture_rect(rescue.hatching_picture, Rect2(Vector2(size.x / 2.0 - side / 2.0, _counter_top() - side + 10.0), Vector2(side, side)), false)
 	if _hatching < 0.0:
 		draw_string(ThemeDB.fallback_font, middle + Vector2(-120, 70), "Something is moving inside...", HORIZONTAL_ALIGNMENT_CENTER, 240, 15, Color("5a4a3a"))
 

@@ -3,9 +3,18 @@
 [ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
 [ext_resource type="Resource" path="res://data/animals/american_flamingo.tres" id="2_t"]
 [ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo.svg" id="3_v"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_1.png" id="stage_1"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_2.png" id="stage_2"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_3.png" id="stage_3"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_4.png" id="stage_4"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_5.png" id="stage_5"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/mangrove_flamingo_6.png" id="stage_6"]
 
 [resource]
 script = ExtResource("1_r")
+stage_pictures = Array[Texture2D]([ExtResource("stage_1"), ExtResource("stage_2"), ExtResource("stage_3"), ExtResource("stage_4"), ExtResource("stage_5"), ExtResource("stage_6")])
+stage_sizes = PackedFloat32Array(1, 1, 1, 1, 1, 1)
+stage_points = Array[PackedVector2Array]([PackedVector2Array(0.535, 0.56, 0.535, 0.56, 0.674, 0.544, 0.534, 0.889), PackedVector2Array(0.577, 0.385, 0.577, 0.385, 0.714, 0.416, 0.544, 0.852), PackedVector2Array(0.643, 0.31, 0.643, 0.31, 0.755, 0.353, 0.559, 0.841), PackedVector2Array(0.65, 0.26, 0.65, 0.26, 0.768, 0.319, 0.556, 0.847), PackedVector2Array(0.68, 0.22, 0.68, 0.22, 0.782, 0.294, 0.566, 0.842), PackedVector2Array(0.67, 0.14, 0.67, 0.14, 0.809, 0.231, 0.572, 0.83)])
 id = &"mangrove_flamingo"
 region = &"mangrove_coast"
 species = ExtResource("2_t")

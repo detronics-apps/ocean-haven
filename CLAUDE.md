@@ -725,6 +725,15 @@ settles to 50 % (not distressed), and only drops below that while health is drop
 rescue starts below 50 %. The bars freeze once it's ready to go home. The vet room shows them
 live and says what it needs now.
 
+Rescue pictures (the owner's art: docs/rescue_stages_sheet.jpg, one row per animal, six care
+days; the turtle row starts with it hatching): tools/cut_rescue_sheet.py cuts it into clean
+pixel-art PNGs (background flooded away, snapped to the 4-px art grid, one canvas per animal so
+the growth is the sheet's own), sets RescueData.stage_pictures / stage_points (eyes, mouth,
+wound per picture: eyes found or set by hand, EYES) and hatching_picture; the vet room shows
+the day's picture (Rescues.stage) with its blink, feeding and plaster spots. The turtle and
+the flamingo hatch from a cracked egg (RescueData.egg_damaged) with a wound (flipper, leg);
+every rescue has a reason it needs care; a wound can always be patched.
+
 Notes (HUD.show_toast; the owner: too big, too wordy, too often): one short line (HUD.brief:
 first line and sentence, at most 60 letters) in a small see-through box; one at a time with a
 2.5 s pause, only the newest waits (a busy moment never piles up), the same note not again

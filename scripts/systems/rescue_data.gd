@@ -32,6 +32,8 @@ extends Resource
 ## For each stage picture, where on it (0..1) its eyes, mouth and wound are:
 ## [left eye, right eye, mouth, wound].
 @export var stage_points: Array[PackedVector2Array] = []
+## The young one coming out of its egg, shown as it hatches ("" = the egg just breaks open).
+@export var hatching_picture: Texture2D
 ## The egg it hatches from is damaged (cracked, a chip out of the shell): why it needs care.
 @export var egg_damaged := false
 ## Lives in water: kept in a fish tank on the counter (a seahorse, a young shark).

@@ -3,9 +3,18 @@
 [ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
 [ext_resource type="Resource" path="res://data/animals/seahorse.tres" id="2_t"]
 [ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse.svg" id="3_v"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_1.png" id="stage_1"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_2.png" id="stage_2"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_3.png" id="stage_3"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_4.png" id="stage_4"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_5.png" id="stage_5"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/reef_seahorse_6.png" id="stage_6"]
 
 [resource]
 script = ExtResource("1_r")
+stage_pictures = Array[Texture2D]([ExtResource("stage_1"), ExtResource("stage_2"), ExtResource("stage_3"), ExtResource("stage_4"), ExtResource("stage_5"), ExtResource("stage_6")])
+stage_sizes = PackedFloat32Array(1, 1, 1, 1, 1, 1)
+stage_points = Array[PackedVector2Array]([PackedVector2Array(0.544, 0.586, 0.544, 0.586, 0.617, 0.562, 0.522, 0.708), PackedVector2Array(0.557, 0.452, 0.557, 0.452, 0.665, 0.424, 0.519, 0.65), PackedVector2Array(0.566, 0.402, 0.566, 0.402, 0.698, 0.383, 0.523, 0.65), PackedVector2Array(0.58, 0.357, 0.58, 0.357, 0.716, 0.343, 0.534, 0.65), PackedVector2Array(0.599, 0.31, 0.599, 0.31, 0.748, 0.28, 0.529, 0.619), PackedVector2Array(0.61, 0.227, 0.61, 0.227, 0.766, 0.217, 0.539, 0.588)])
 id = &"reef_seahorse"
 region = &"tropical_reef"
 species = ExtResource("2_t")
