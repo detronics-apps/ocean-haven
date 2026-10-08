@@ -1123,6 +1123,13 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   Arctic cod, young snappers) drift in from beyond the map instead, as their larvae really do,
   swimming in from the island's edge.
 
+- **Photos of animals in their different poses (being planned).** Keep every photo moment there
+  is, and add one for each pose an animal is drawn in (flying / standing / floating / on its
+  nest; the seal on the ice or swimming; the otter swimming or floating on its back; the bear
+  walking or lying down; the turtle swimming or crawling up the beach; the dolphin and whale at
+  the surface or diving). Different places count too, even with the same picture (a crab on the
+  beach or in the water).
+
 **Look and feel (the user's list, for later)**
 - ✅ A very subtle texture on sand, grass and rock tiles.
 - ✅ Rock is warm stone now, no longer water-like (tiles, minimap, island maps).
