@@ -1103,7 +1103,7 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   - slow: a new picture every 3rd day, grown up on day 7.
   Groups (agreed): fast (day 3): ghost crab, mangrove crab, Arctic tern, Arctic skua; medium
   (day 5): red-footed booby, double-crested cormorant, American flamingo, sea otter, ringed seal;
-  slow (day 7): green turtle (hatchlings never nest), American crocodile, polar bear. No pictures, but young are smaller and follow their mother until full size, then go
+  slow (day 7): green turtle, American crocodile, polar bear. No pictures, but young are smaller and follow their mother until full size, then go
   their own way: bottlenose dolphin, sperm whale. No life-stage pictures: fish, sharks, urchins,
   clams, squid, seahorses.
 - **Every new animal comes from somewhere (decided; not an animal simulation).** How many of each
@@ -1114,9 +1114,11 @@ runaway has a cost; the ice core is a flag, not an item. Decided: Arctic, 3-day 
   dolphins and whales just its size), and once grown goes its own way. Young are male and female
   in turn (the last one born was female, so the next is male, and so on); the island's first
   animal is a female, so there's always a mother. Young don't have young of their own beyond
-  what the triggers ask for: no booms. Green turtles: only the island's first turtle (the
-  mother) nests. Her hatchlings grow up (slow: 7 days) and stay, or swim off into the open
-  ocean, but they never nest, not even the next spring: no turtles having turtles. Fish (blue rockfish, parrotfish,
+  what the triggers ask for: no booms. Green turtles (being talked through): the number
+  of turtles is still set by the island (how many the protection areas hold); any female can
+  nest; when there's room, enough hatchlings stay to fill it; when it's full, females still nest
+  now and then and every hatchling scuttles straight out to sea and off the map, as real ones do
+  (no parent looks after them). Fish (blue rockfish, parrotfish,
   Arctic cod, young snappers) drift in from beyond the map instead, as their larvae really do,
   swimming in from the island's edge.
 
