@@ -3,20 +3,29 @@
 [ext_resource type="Script" path="res://scripts/systems/rescue_data.gd" id="1_r"]
 [ext_resource type="Resource" path="res://data/animals/green_turtle.tres" id="2_t"]
 [ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle.svg" id="3_v"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_1.svg" id="stage_1"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_2.svg" id="stage_2"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_3.svg" id="stage_3"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_4.svg" id="stage_4"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_5.svg" id="stage_5"]
+[ext_resource type="Texture2D" path="res://assets/animals/vet/home_turtle_6.svg" id="stage_6"]
 
 [resource]
 script = ExtResource("1_r")
+stage_pictures = Array[Texture2D]([ExtResource("stage_1"), ExtResource("stage_2"), ExtResource("stage_3"), ExtResource("stage_4"), ExtResource("stage_5"), ExtResource("stage_6")])
+stage_points = Array[PackedVector2Array]([PackedVector2Array(0.688, 0.605, 0.839, 0.605, 0.856, 0.745, 0.55, 0.897), PackedVector2Array(0.723, 0.59, 0.855, 0.59, 0.871, 0.711, 0.589, 0.886), PackedVector2Array(0.754, 0.576, 0.869, 0.576, 0.883, 0.682, 0.622, 0.877), PackedVector2Array(0.781, 0.568, 0.882, 0.568, 0.894, 0.66, 0.651, 0.871), PackedVector2Array(0.805, 0.56, 0.893, 0.56, 0.903, 0.642, 0.677, 0.865), PackedVector2Array(0.826, 0.553, 0.902, 0.553, 0.911, 0.625, 0.7, 0.859)])
 id = &"home_turtle"
 region = &"home_island"
 species = ExtResource("2_t")
 building = &"marine_rescue_station"
 person = &"maya"
 offer_when = PackedStringArray("built:marine_rescue_station", "here")
-found_note = "Maya: \"The waves washed one turtle egg out of its nest, and it's lying on its own on the sand. It's nearly ready to hatch! Bring it to the rescue station, we'll keep it warm.\""
+found_note = "Maya: \"The waves washed one turtle egg out of its nest and knocked it about: the shell is cracked. The little one inside needs help to make it. Bring it to the rescue station!\""
 intro = "Maya: \"The little turtle inside is almost ready to come out. It isn't a pet: we're helping the hatchling get to the sea. Would you give it a name?\""
 days = 6
 tank = false
 from_egg = true
+egg_damaged = true
 egg_colour = Color(0.96, 0.94, 0.88, 1)
 mouth = Vector2(0.5, 0.37)
 wound_at = Vector2(0.8, 0.53)
@@ -27,7 +36,7 @@ comfort_kind = &"place"
 comfort_tool = &"cloth"
 vet_picture = ExtResource("3_v")
 day_texts = PackedStringArray("{name} has just hatched: tiny, with a soft shell and a bit of yolk still under its belly.", "{name} waves its flippers as if it's already swimming.", "{name} paddles laps of the shallow tub.", "{name} snapped up every shrimp this morning.", "{name}'s shell is getting harder, and it's grown!", "Bigger and strong: ready for the sea.")
-wounds = 0
+wounds = 1
 feed_label = "Feed: tiny shrimp"
 feed_result = "{name} snaps up the shrimp. Young green turtles eat small sea animals; only grown-ups live on seagrass."
 comfort_label = "A soft cloth over its tub: quiet and dim"

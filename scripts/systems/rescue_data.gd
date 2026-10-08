@@ -23,8 +23,17 @@ extends Resource
 @export_multiline var intro: String
 ## Game days in care before it goes home.
 @export var days := 6
-## It from the front, lying on the vet table.
+## It from the front, lying on the vet table (when it has no `stage_pictures`).
 @export var vet_picture: Texture2D
+## A picture for each day in care (6: newborn, young, growing, juvenile, sub-adult, grown),
+## drawn by tools/make_vet_stages.py, and how big it's drawn each day (share of full size).
+@export var stage_pictures: Array[Texture2D] = []
+@export var stage_sizes: PackedFloat32Array = PackedFloat32Array([0.4, 0.52, 0.65, 0.78, 0.9, 1.0])
+## For each stage picture, where on it (0..1) its eyes, mouth and wound are:
+## [left eye, right eye, mouth, wound].
+@export var stage_points: Array[PackedVector2Array] = []
+## The egg it hatches from is damaged (cracked, a chip out of the shell): why it needs care.
+@export var egg_damaged := false
 ## Lives in water: kept in a fish tank on the counter (a seahorse, a young shark).
 @export var tank := false
 ## Hatches from an egg on the table (turtles, flamingos), on the first day once it's named.
@@ -72,3 +81,34 @@ extends Resource
 
 func region_path() -> String:
 	return "res://data/regions/%s.tres" % region
+
+
+## Its picture on day `stage` in care (0 = the first).
+func picture(stage: int) -> Texture2D:
+	if not stage_pictures.is_empty():
+		return stage_pictures[clampi(stage, 0, stage_pictures.size() - 1)]
+	return vet_picture if vet_picture else species.sprite
+
+
+## How big it's drawn on day `stage` (share of its full size).
+func size_at(stage: int) -> float:
+	return stage_sizes[clampi(stage, 0, stage_sizes.size() - 1)] if not stage_sizes.is_empty() else 1.0
+
+
+func _point(stage: int, i: int, fallback: Vector2) -> Vector2:
+	if stage_points.is_empty():
+		return fallback
+	var points := stage_points[clampi(stage, 0, stage_points.size() - 1)]
+	return points[i] if i < points.size() else fallback
+
+
+func eyes_at(stage: int) -> PackedVector2Array:
+	return PackedVector2Array([_point(stage, 0, eyes[0]), _point(stage, 1, eyes[1])]) if eyes.size() >= 2 else eyes
+
+
+func mouth_at(stage: int) -> Vector2:
+	return _point(stage, 2, mouth)
+
+
+func wound_at_stage(stage: int) -> Vector2:
+	return _point(stage, 3, wound_at)

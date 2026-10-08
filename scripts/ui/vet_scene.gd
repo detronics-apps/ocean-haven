@@ -37,17 +37,40 @@ var _hearts: Array[Dictionary] = []
 var _hatching := -1.0
 ## The colour just above each eye (its eyelid when it blinks).
 var _lids: Array[Color] = []
+var _lids_stage := -1
 
 
 func _ready() -> void:
 	name = "VetScene"
 	custom_minimum_size = Vector2(620, 360)
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	if rescue and rescue.vet_picture:
-		var image := rescue.vet_picture.get_image()
-		for eye in rescue.eyes:  # the skin colour above each eye, for its eyelid
-			var at := Vector2i((Vector2(image.get_size()) * (eye - Vector2(0, 0.07))).clamp(Vector2.ZERO, Vector2(image.get_size() - Vector2i.ONE))) if image else Vector2i.ZERO
-			_lids.append(image.get_pixelv(at) if image else Color.WHITE)
+
+
+## The skin colour above each eye on today's picture, for its eyelids (worked out once a stage).
+func _lid_colours() -> Array[Color]:
+	var stage := Rescues.stage()
+	if stage == _lids_stage:
+		return _lids
+	_lids_stage = stage
+	_lids.clear()
+	var texture := rescue.picture(stage)
+	var image := texture.get_image() if texture else null
+	for eye in rescue.eyes_at(stage):
+		if image:
+			var at := Vector2i((Vector2(image.get_size()) * (eye - Vector2(0, 0.07))).clamp(Vector2.ZERO, Vector2(image.get_size() - Vector2i.ONE)))
+			_lids.append(image.get_pixelv(at))
+		else:
+			_lids.append(Color.WHITE)
+	return _lids
+
+
+## Where its mouth and wound are on today's picture (0..1 of it).
+func _mouth() -> Vector2:
+	return rescue.mouth_at(Rescues.stage())
+
+
+func _wound() -> Vector2:
+	return rescue.wound_at_stage(Rescues.stage())
 
 
 func _process(delta: float) -> void:
@@ -97,7 +120,7 @@ func _tank_rect() -> Rect2:
 
 ## Its picture's place: smaller at first, bigger every day; in the tank's water for water animals.
 func _animal_rect() -> Rect2:
-	var grown := lerpf(0.55, 1.0, Rescues.growth())
+	var grown := rescue.size_at(Rescues.stage()) if rescue else 1.0  # one size a day in care
 	var full := minf(size.y * 0.5, 190.0) * grown
 	var breathe := 1.0 + sin(_time * 2.2) * 0.025
 	var middle := Vector2(size.x / 2.0, _counter_top() - full * 0.42)
@@ -168,17 +191,17 @@ func _drop(at: Vector2) -> void:
 		&"feed":
 			if rescue.sprinkle:
 				hint.emit("Hold the food over the top of the tank and shake it in.")
-			elif at.distance_to(_point(rescue.mouth)) < 46.0:
+			elif at.distance_to(_point(_mouth())) < 46.0:
 				_done(&"feed")
 			else:
 				hint.emit("Bring the food right to its mouth.")
 		&"medicine":
-			if at.distance_to(_point(rescue.mouth)) < 46.0 or (rescue.tank and _tank_rect().has_point(at)):
+			if at.distance_to(_point(_mouth())) < 46.0 or (rescue.tank and _tank_rect().has_point(at)):
 				_done(&"medicine")
 			else:
 				hint.emit("Bring the dropper to its mouth." if not rescue.tank else "Drip the medicine into the tank.")
 		&"patch":
-			if at.distance_to(_point(rescue.wound_at)) < 46.0:
+			if at.distance_to(_point(_wound())) < 46.0:
 				_done(&"patch")
 			else:
 				hint.emit("Put the plaster on the sore spot (the red mark).")
@@ -293,23 +316,26 @@ func _tool_kind(action: StringName) -> StringName:
 
 func _draw_animal() -> void:
 	var r := _animal_rect()
-	var texture := rescue.vet_picture if rescue.vet_picture else rescue.species.sprite
+	var texture := rescue.picture(Rescues.stage())
 	if not rescue.tank:  # its shadow on the towel
 		draw_set_transform(Vector2(r.get_center().x, _counter_top() - 6.0), 0.0, Vector2(1.0, 0.18))
 		draw_circle(Vector2.ZERO, r.size.x * 0.36, Color(0, 0, 0, 0.15))
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	draw_texture_rect(texture, r, false)
 	if _blink < 0.0:  # blinking
-		for i in rescue.eyes.size():
-			var at := r.position + r.size * rescue.eyes[i]
-			draw_rect(Rect2(at - Vector2(r.size.x * 0.06, r.size.y * 0.045), Vector2(r.size.x * 0.12, r.size.y * 0.09)), _lids[i] if i < _lids.size() else Color.WHITE)
-			draw_line(at + Vector2(-r.size.x * 0.05, 0), at + Vector2(r.size.x * 0.05, 0), Color("2a1d14"), 2.0)
+		var eyes := rescue.eyes_at(Rescues.stage())
+		var lids := _lid_colours()
+		var lid := 0.06 if rescue.stage_points.is_empty() else 0.035
+		for i in eyes.size():
+			var at := r.position + r.size * eyes[i]
+			draw_rect(Rect2(at - Vector2(r.size.x * lid, r.size.y * lid * 0.75), Vector2(r.size.x * lid * 2.0, r.size.y * lid * 1.5)), lids[i] if i < lids.size() else Color.WHITE)
+			draw_line(at + Vector2(-r.size.x * lid * 0.85, 0), at + Vector2(r.size.x * lid * 0.85, 0), Color("2a1d14"), 2.0)
 	if Rescues.wounds_left() > 0 and not Rescues.is_ready():  # the sore spot
-		var w := r.position + r.size * rescue.wound_at
+		var w := r.position + r.size * _wound()
 		draw_circle(w, 7.0, Color(0.85, 0.2, 0.2, 0.75))
 		draw_circle(w, 11.0, Color(0.85, 0.2, 0.2, 0.25))
 	elif Rescues.is_named() and rescue.wounds > 0:  # patched: a plaster
-		_draw_tool(&"plaster", r.position + r.size * rescue.wound_at, 0.7)
+		_draw_tool(&"plaster", r.position + r.size * _wound(), 0.7)
 
 
 ## The egg on the towel: it rocks, cracks, and the young one pushes out.
@@ -326,6 +352,11 @@ func _draw_egg() -> void:
 	draw_polyline(egg + PackedVector2Array([egg[0]]), rescue.egg_colour.darkened(0.3), 2.0)
 	for i in 5:  # speckles
 		draw_circle(Vector2(-18 + i * 9, -10 + (i % 2) * 14), 2.0, rescue.egg_colour.darkened(0.2))
+	if rescue.egg_damaged:  # washed out and knocked about: a dent with a crack, a chip of shell gone
+		draw_polyline(PackedVector2Array([Vector2(8, 4), Vector2(16, -2), Vector2(14, 10), Vector2(24, 14)]), Color("6a5440"), 2.0)
+		var chip := PackedVector2Array([Vector2(18, -22), Vector2(26, -16), Vector2(22, -10), Vector2(15, -14)])
+		draw_colored_polygon(chip, rescue.egg_colour.darkened(0.45))
+		draw_polyline(chip + PackedVector2Array([chip[0]]), Color("6a5440"), 1.5)
 	if t > 0.3:  # cracks
 		draw_polyline(PackedVector2Array([Vector2(-20, -8), Vector2(-10, -16), Vector2(0, -6), Vector2(10, -18), Vector2(22, -8)]), Color("5a4a3a"), 2.0)
 	if t > 0.65:

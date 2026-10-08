@@ -11,7 +11,7 @@ extends Node
 ## - calm: comforting raises it (as often as it isn't full). Left alone it settles down to
 ##   CALM_RESTING (still not distressed); it only drops below that while it's distressed:
 ##   losing health because it's hungry. A rescued (hurt) one starts below CALM_RESTING.
-## A hatchling starts healthy, with no wounds. Then it goes home tagged, in the shape
+## A hatchling starts healthy; one from a damaged egg (RescueData.egg_damaged) has a wound. Then it goes home tagged, in the shape
 ## the care left it in: the better its shape, the more often it's seen again, some mornings on
 ## its own island, some on the islands it travels to (RescueData.visits), some days out at sea.
 ## Its name shows over it once the ranger has met it again. Saved.
@@ -102,6 +102,12 @@ func growth() -> float:
 	if not one:
 		return 1.0
 	return clampf(days_in() / maxf(one.days, 1.0), 0.0, 1.0)
+
+
+## Its stage in care, 0 (the first day: newborn) to 5 (the last: grown); its picture and size.
+func stage() -> int:
+	var one := in_care()
+	return clampi(int(days_in()), 0, 5) if one else 5
 
 
 func is_named() -> bool:
@@ -195,8 +201,8 @@ func can_do(action: StringName) -> bool:
 		return false
 	if not action in REPEATS and int((current.get("done", {}) as Dictionary).get(action, -1)) == GameClock.day:
 		return false
-	if action == &"patch" and wounds_left() <= 0:
-		return false
+	if action == &"patch":
+		return wounds_left() > 0  # a wound can always be patched, however well it is
 	if action == &"feed" and (too_upset_to_eat() or bar(&"fed") >= 100):
 		return false
 	if action == &"comfort":
@@ -301,7 +307,7 @@ func _offer() -> void:
 				someone = person
 		if someone and Array(one.offer_when).all(func(c: String) -> bool: return People.check(c, someone)):
 			current = {"id": String(one.id), "name": "", "since": GameClock.now(),
-				"bars": (START_HATCHED if one.from_egg else START).duplicate(), "wounds": 0 if one.from_egg else one.wounds,
+				"bars": (START_HATCHED if one.from_egg else START).duplicate(), "wounds": one.wounds,
 				"done": {}, "updated": GameClock.now()}
 			found.emit(one)
 			return

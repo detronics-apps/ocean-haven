@@ -55,8 +55,10 @@ func _initialize() -> void:
 	content = screen.get("_content")
 	_expect(content.find_child("Bars", true, false) != null and content.find_child("Care", true, false).get_child_count() == 4,
 		"three bars, and four things to do")
-	_expect(rescues.bar(&"health") >= 80 and rescues.wounds_left() == 0 and not rescues.can_do(&"patch"),
-		"just hatched: healthy (%d), no wounds to patch" % rescues.bar(&"health"))
+	_expect(rescues.bar(&"health") >= 80 and rescues.wounds_left() == 1 and turtle.egg_damaged,
+		"just hatched from its cracked egg: healthy (%d), with one wound on its flipper" % rescues.bar(&"health"))
+	_expect(turtle.stage_pictures.size() == 6 and turtle.stage_points.size() == 6 and rescues.stage() == 0,
+		"day 1: the first of its six pictures, one for each day in care")
 	var vet: Control = content.find_child("VetScene", true, false)
 	_expect(vet != null, "the vet room: the turtle hatchling on a towel on the counter")
 	var drag := func(scene: Control, from: Vector2, to: Vector2) -> void:
@@ -88,7 +90,7 @@ func _initialize() -> void:
 	var fed_before: int = rescues.bar(&"fed")
 	drag.call(vet, food_at, food_at + Vector2(0, -150))  # dropped somewhere else: nothing happens
 	_expect(rescues.bar(&"fed") == fed_before, "food dropped away from its mouth: not fed")
-	drag.call(vet, food_at, vet.call("_point", vet.rescue.mouth))
+	drag.call(vet, food_at, vet.call("_point", vet.call("_mouth")))
 	await process_frame
 	_expect(rescues.bar(&"fed") == fed_before + 10 and rescues.can_do(&"feed"), "food dragged to its mouth: +10 fed, and it can have more")
 	while rescues.can_do(&"feed"):
@@ -97,6 +99,12 @@ func _initialize() -> void:
 	var health_now: int = rescues.bar(&"health")
 	rescues.care(&"medicine")
 	_expect(rescues.bar(&"health") > health_now and not rescues.can_do(&"medicine"), "medicine: health goes up, once a day")
+	await process_frame
+	var vet_now: Control = screen.get("_content").find_child("VetScene", true, false)
+	await process_frame  # (laid out)
+	drag.call(vet_now, vet_now.call("_tool_slot", 2), vet_now.call("_point", vet_now.call("_wound")))
+	await process_frame
+	_expect(rescues.wounds_left() == 0, "the plaster dragged onto the flipper: patched")
 	screen.close()
 
 	# --- Left alone: the fed bar empties, then health and calm drop (never to nothing) ---
@@ -133,6 +141,8 @@ func _initialize() -> void:
 			rescues.care(&"comfort")
 			rescues.care(&"feed")
 	_expect(rescues.is_ready() and "Release Milo" in labels.call(), "after 6 days Milo is ready to go home")
+	_expect(rescues.stage() == 5 and turtle.picture(5) == turtle.stage_pictures[5] and turtle.size_at(5) > turtle.size_at(0) * 2.0,
+		"grown: its sixth picture, more than twice the size of the first")
 	_expect(rescues.shape() > 0.75, "cared for every day: in good shape (%.2f)" % rescues.shape())
 
 	# --- Saved while in care ---
