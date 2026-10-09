@@ -19,7 +19,7 @@ extends Resource
 ## Litter already about the island the first time the ranger arrives (years of it washed up
 ## before anyone looked after it), so it starts in poor health. The starting island gets
 ## its own at the start of a new game.
-@export var arrival_litter := 25
+@export var arrival_litter := 45
 ## How far from the middle a rowboat can go (its coastal waters).
 @export var waters_radius := 1100.0
 ## Where the ranger steps ashore after sailing here.
@@ -28,6 +28,9 @@ extends Resource
 @export var boat_mooring := Vector2.ZERO
 ## A little picture of the island for the Map (made by tools/generate_islands.gd).
 @export var map_icon: Texture2D
+## The part of the world its start picture shows (Journal.START_PICTURES; written by
+## tools/make_start_pictures.gd).
+@export var start_frame := Rect2()
 ## Fleet upgrade (discovery id) needed before exploring can find this island ("" = none).
 @export var requires: StringName
 

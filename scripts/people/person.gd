@@ -34,7 +34,7 @@ func _ready() -> void:
 		_place.global_position = data.spot + data.place_offset - Vector2(0, data.place.get_height())
 		_place.z_index = -1
 		add_child(_place)
-	add_child(_look())
+	add_child(look_of(data))
 	_news = Label.new()
 	_news.text = "!"
 	_news.add_theme_font_size_override("font_size", 28)
@@ -58,8 +58,9 @@ func _process(delta: float) -> void:
 	_news.add_theme_color_override("font_color", Color("ff6a4d") if People.nervous(data) else Color("f6d36b"))  # (red: scared)
 
 
-## Their layered look, from the avatar parts (no ranger profile: their own colours).
-func _look() -> Node2D:
+## Their layered look, from the avatar parts (no ranger profile: their own colours). Also
+## the Observatory's "Who you have met".
+static func look_of(data: PersonData) -> Node2D:
 	var look: Node2D = DataFiles.res(AVATAR).instantiate()
 	look.set_script(null)
 	var options: AvatarOptions = DataFiles.res(OPTIONS)

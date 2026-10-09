@@ -82,3 +82,4 @@ discovery = &"reef_limestone"
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_coral"), SubResource("Health_fish"), SubResource("Health_clams"), SubResource("Health_seahorses"), SubResource("Health_sharks")])
 objective = "Bring the coral reef back to life"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_restored"), SubResource("Goal_rubble")])
+start_frame = Rect2(19664.0, -848.0, 1728.0, 1728.0)

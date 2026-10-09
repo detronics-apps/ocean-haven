@@ -19,6 +19,7 @@ func _initialize() -> void:
 	root.add_child(world)
 	for i in 3:
 		await process_frame
+	var clock_day_end := func() -> void: root.get_node("Journal").call("_first_day_ended")
 	var map: Node = world.get_node("VoyageMap")
 	map.open()
 	_expect(map.find_child("Observatory", true, false) == null, "no Observatory before the fleet has all six")
@@ -44,22 +45,32 @@ func _initialize() -> void:
 	_expect(screen.find_child("DownloadPoster", true, false) == null, "no poster before the whole ocean is connected")
 	# --- Tap an island: the picture from when the ranger first arrived, to zoom into ---
 	var journal := root.get_node("Journal")
-	journal.photos_dir = OS.get_temp_dir().path_join("bluehaven_test_island_photos")  # never the player's folder
-	DirAccess.make_dir_recursive_absolute(journal.photos_dir)
-	var then_image := Image.create(360, 288, false, Image.FORMAT_RGB8)
-	then_image.fill(Color(0.4, 0.4, 0.45))
-	then_image.save_png(journal.island_photo_path(&"home_island"))
+	var start: Texture2D = journal.start_picture(&"home_island")
+	_expect(start != null and load("res://data/regions/home_island.tres").start_frame.size.x == start.get_width(),
+		"every island has the same start picture for everyone (and the part of the world it shows)")
+	world.get_node("Player").global_position = Vector2(64, 96)
+	journal.restore(journal.ids(), journal.details())
+	clock_day_end.call()
 	var panorama: Control = screen.find_child("Panorama", true, false)
+	var home_index: int = panorama.regions.find(load("res://data/regions/home_island.tres"))
+	_expect(panorama.healths[home_index].ends_with("%"), "each island's health under it (%s)" % [panorama.healths])
+	var links_body: Control = screen.find_child("Links", true, false)
+	_expect(not links_body.visible, "the sections start folded")
+	screen.open_section("Links")
+	_expect(links_body.visible, "tap 'How the islands help each other': it drops down")
+	await process_frame
 	var tap := InputEventMouseButton.new()
 	tap.button_index = MOUSE_BUTTON_LEFT
 	tap.pressed = true
-	var home_index: int = panorama.regions.find(load("res://data/regions/home_island.tres"))
 	tap.position = Vector2(panorama.size.x / panorama.regions.size() * (home_index + 0.5), panorama.size.y / 2.0)
 	panorama._gui_input(tap)
 	var island_view: Node = screen.get_node_or_null("IslandView")
 	var picture: Control = island_view.find_child("Picture", true, false) if island_view else null
-	_expect(picture != null and picture.texture.get_width() == 360 and island_view.find_child("Now", true, false) == null,
-		"tap the Starting Island: just the picture from when you first arrived")
+	var home: Resource = load("res://data/regions/home_island.tres")
+	_expect(picture != null and picture.texture == start and island_view.find_child("Now", true, false) == null,
+		"tap the Starting Island: its start picture")
+	_expect(picture.ranger_at.is_equal_approx(Vector2(64, 96) - home.start_frame.position),
+		"with the ranger where their first day there ended (%s)" % picture.ranger_at)
 	await process_frame
 	var fit: float = picture.scale_now()
 	island_view.find_child("ZoomIn", true, false).pressed.emit()
@@ -68,7 +79,6 @@ func _initialize() -> void:
 	island_view.find_child("Back", true, false).pressed.emit()
 	await process_frame
 	_expect(screen.get_node_or_null("IslandView") == null and screen.visible, "Back: the Observatory again")
-	DirAccess.remove_absolute(journal.island_photo_path(&"home_island"))
 	screen.close()
 
 	# --- Every source stopped: the final chapter ---
@@ -101,8 +111,14 @@ func _initialize() -> void:
 	_expect(learned != null and screen.find_child("Motto", true, false).text == "One ocean. Many places. Everything connected.",
 		"'What have you learned?', then: one ocean, many places, everything connected")
 	var texts: Array = []
-	for label: Node in learned.find_children("*", "Label", true, false):
+	for label: Node in screen.find_child("Helped", true, false).find_children("*", "Label", true, false):
 		texts.append(label.text)
+	screen.open_section("Links")
+	screen.open_section("Helped")
+	_expect(screen.find_child("Helped", true, false).visible and not screen.find_child("Links", true, false).visible,
+		"opening 'You've helped every island' folds the other section away")
+	_expect(screen.find_child("Met", true, false).get_child_count() == 12 and screen.find_child("Donations", true, false) != null,
+		"'Who you have met' has all twelve people, and Donations comes last")
 	_expect(texts.any(func(t: String) -> bool: return t.contains("otters came back")), "observations from the ranger's own game (%s)" % [texts])
 	var said: Array = []
 	for label: Node in screen.find_children("*", "Label", true, false):
@@ -128,6 +144,10 @@ func _initialize() -> void:
 	_expect(speed_button.text == "x2", "the speed button now reads x2")
 	speed_button.pressed.emit()
 	_expect(speed_button.text == "x3" and is_equal_approx(credits.speed(), 3.0), "then x3")
+	speed_button.pressed.emit()
+	_expect(speed_button.text == "x4", "then x4")
+	speed_button.pressed.emit()
+	_expect(speed_button.text == "x5" and is_equal_approx(credits.speed(), 5.0), "then x5")
 	speed_button.pressed.emit()
 	_expect(speed_button.text == "x1", "then back to x1")
 	var before: float = credits.progress()

@@ -19,7 +19,7 @@ missions that lead to action…) and add to it whenever the user corrects someth
 - **No combat.** No weapons, enemies, killing, boss fights or combat stats.
 - **Animals never die.** Rescued animals show care meters (health, fed, calm) in the care mini-game. They can go down (things can go bad, and kids should see that), but an animal never dies: health never drops below 20 % (Rescues.HEALTH_FLOOR).
 - **No levels or XP.** Progress is Ocean Impact (per-area restoration); new regions unlock through restoration progress, not player level.
-- **One currency: conservation funding.** No gems or other premium currency, no in-game purchases or donate buttons (kids' game). Real-world impact is a "Real Impact" page with links for parents.
+- **One currency: conservation funding.** No gems or other premium currency, no in-game purchases or donate buttons (kids' game). Real-world impact is a "Real Impact" page with links for parents. The one exception (the owner's choice): the Observatory's last section, Donations, after the ending: a "buy the creator a coffee" link, asking for parents' permission under 18.
 - **No failure states.** Never "you failed"; say what needs more help ("The beach needs more protection") and let the player retry.
 - **Conservation is positive.** Animals are cute but biologically recognisable; facts must be accurate.
 - **Education never interrupts play.** Facts go in the Ocean Journal / Discovery Cards, not blocking popups. No mandatory quizzes.
@@ -235,8 +235,8 @@ Step 2. Build in this order:
    (HealthFactor "clean" = litter within rowboat reach, "animals" = healthy residents: not hurt,
    caught or visiting; no oil). 100 % = no litter, no hurt or caught animals, fully populated
    (Starting Island: 6 turtles, 3 seabirds, 2 crabs, 2 dolphins). Ground colours go from muted to full with it (checked every 2 s); shown in the Journal.
-   The Starting Island starts with 1 turtle, 1 crab, 1 dolphin and ~30 litter (new game:
-   `start_litter`); more animals arrive as islands recover (RegionData.arrivals, `Arrivals`, saved):
+   The Starting Island starts with 1 turtle, 1 crab, 1 dolphin and 50 litter (new game:
+   `start_litter`; every other island's first visit brings 45: RegionData.arrival_litter); more animals arrive as islands recover (RegionData.arrivals, `Arrivals`, saved):
    2nd crab at 40 % health, 2nd dolphin at 65 %, then dolphins 3–5 and crabs 3–4 as 1–3 other
    islands become healthy (≥ 70 %).
 2. ✅ Wildlife Conservation Parks (funding facilities, BuildingData.facility = "funding", shown in
@@ -537,6 +537,19 @@ ocean's. Once every kind of litter is stopped at its source too (`final_chapter(
 game, then "One ocean. Many places. Everything connected." and each person's closing line
 (their "ending" topic, which they also say afterwards: flag "observatory_opened"). Maya's last
 question ("observatory") is answered by opening it. Play goes on.
+The Observatory's layout (the owner's): fixed at the top, the six islands with the white
+routes joining them (Panorama) and each one's health under it (tap one: its start picture, the same for everyone:
+assets/ui/islands/<id>_start.png, rendered by tools/make_start_pictures.gd from a new game's
+world (the island as it was made, muted, its start litter, its few starting animals;
+RegionData.start_frame), with the ranger's avatar drawn at true size where their first day on
+that island ended (Journal.start_spot, saved "start_spots"); + / - and arrow buttons zoom and
+pan); below, scrolling, the whole ocean's health and sections that drop down one at a time (open_section): How the
+islands help each other (Panorama + links(): clean water, fish, terns, travelling dolphins /
+whales / turtles, seeds, seagrass grazing, mapping, cargo, each fix, fibres, rescues), and in
+the final chapter You've helped every island (helped_stats + observations), What we hope you
+have learned (LEARNED + the motto), Who you have met (each person's picture, name, job,
+closing line), Your ocean poster, End credits (x1-x5), Donations (buymeacoffee.com/detronics,
+detronics.co.za).
 The prize: the final chapter shows the ocean poster (assets/ui/poster/ocean_poster.jpg) with
 "Download your ocean poster" (`ObservatoryScreen.download_poster`: the browser's download on the
 web, the Pictures folder elsewhere); before it, "Still watching" says a poster waits there.
@@ -662,7 +675,7 @@ Sanna and Erik get nervous (PersonData.scared_line, a red "!"), the skua circles
 keeps it away: cleared, it wanders back to the ice. Flamingos' legs show the Mangrove Coast's water
 level (AnimalData.shows_water_level: their note says dry feet / ankle-deep and feeding /
 belly-deep, and a shader, assets/effects/wading/, tints only the leg pixels in the water the
-tile's own colour, feet still showing, or hides the feet in mud; nothing on dry land). The end credits have an x1 / x2 / x3 speed button. Buttons keep short
+tile's own colour, feet still showing, or hides the feet in mud; nothing on dry land). The end credits have an x1 to x5 speed button (a phone tap counted once: touch and its mouse click used to step twice). Buttons keep short
 labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
@@ -691,12 +704,8 @@ shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry sn
 (PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the tree's own pixels turn white,
 building up in the freeze, deepest when frozen, gone by open water).
 
-When you first arrived (Observatory): the first time the ranger is on an island (6 s, before
-helping it: Regions.helped) the Journal keeps one picture of the whole island, litter and all,
-at full size (1:1 pixels, from an offscreen camera sharing the world: no HUD;
-Journal.take_island_photo, user://photos/island_<id>_arrival.png); taken once, never replaced,
-no "now" picture. Tapping an island in the Observatory's Panorama shows just that picture
-(IslandPicture: + / - and the wheel zoom in, drag to look round; a note if none was kept).
+When you first arrived (Observatory): see "The Observatory's layout" (start pictures; the
+old per-player screenshot is gone). No "now" picture.
 
 Births and growing up: the islands still decide when one more animal comes (same triggers and
 limits); Births.bring turns that newcomer into a young one born beside a grown one of its kind

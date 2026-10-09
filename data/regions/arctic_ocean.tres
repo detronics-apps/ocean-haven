@@ -90,3 +90,4 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Live with the seasons, and drill an ice core"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_balanced"), SubResource("Goal_core")])
 discovery = &"ice_core"
+start_frame = Rect2(24816.0, -688.0, 1568.0, 1504.0)

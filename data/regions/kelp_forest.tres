@@ -85,3 +85,4 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Restore the kelp forest's food web"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_balance"), SubResource("Goal_gather")])
 discovery_text = "Woven from the kelp you gathered, the Kelp Fibre is strong and light. Build an Exploration Ship here and install it: Deep-Water Equipment for rougher, deeper seas."
+start_frame = Rect2(4304.0, -816.0, 1536.0, 1696.0)

@@ -3,7 +3,7 @@ extends CanvasLayer
 ## The end credits (data/ending/final_word.tres): the screen goes black, stars come out, and the
 ## text rolls slowly up and away into the distance, centred in big gold letters, like the
 ## opening crawl of an old space film. Slow enough for slow readers; the speed button (bottom
-## left) goes x1 -> x2 -> x3 -> x1 (also a tap on the text, or the interact key). Played once when the final chapter first opens, and again from
+## left) goes x1 -> x2 -> x3 -> x4 -> x5 -> x1 (also a tap on the text, or the interact key). Played once when the final chapter first opens, and again from
 ## the Observatory's "End credits" button. Close (top right) or the end returns to the game.
 
 signal finished
@@ -16,7 +16,7 @@ const SHADOW := Color("6b4a10")
 const BLACK_SECONDS := 2.5
 ## Rolling speed, in body-text line heights a second (slow readers: about 2.3 s a line).
 const LINES_PER_SECOND := 0.43
-const SPEEDS := [1.0, 2.0, 3.0]
+const SPEEDS := [1.0, 2.0, 3.0, 4.0, 5.0]
 ## How quickly the text shrinks into the distance (in screen heights: smaller = sooner).
 const DEPTH := 0.9
 
@@ -87,7 +87,7 @@ func is_fast() -> bool:
 	return _speed > 0
 
 
-## How fast it rolls now: 1, 2 or 3.
+## How fast it rolls now: 1 to 5.
 func speed() -> float:
 	return SPEEDS[_speed]
 
@@ -103,9 +103,8 @@ func rows() -> Array[Dictionary]:
 
 
 func _on_input(event: InputEvent) -> void:
-	var tapped: bool = (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) \
-		or (event is InputEventScreenTouch and event.pressed)
-	if tapped:
+	# (A phone's tap also arrives as a mouse click: counting the touch too stepped twice.)
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		toggle_speed()
 
 

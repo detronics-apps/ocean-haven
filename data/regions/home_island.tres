@@ -179,3 +179,4 @@ goals = Array[ExtResource("2_goal")]([SubResource("Goal_found"), SubResource("Go
 discovery_text = "Cleaned and working again, the old sonar unit is the Salvaged Sonar Core! Build an Exploration Ship here and install it to find new islands."
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_turtles"), SubResource("Health_seabirds"), SubResource("Health_crabs"), SubResource("Health_dolphins")])
 arrivals = Array[ExtResource("4_arr")]([SubResource("Arrival_Crab2"), SubResource("Arrival_Dolphin1"), SubResource("Arrival_Dolphin3"), SubResource("Arrival_Crab3"), SubResource("Arrival_Dolphin4"), SubResource("Arrival_Crab4"), SubResource("Arrival_Dolphin5"), SubResource("Arrival_Seabird1"), SubResource("Arrival_Seabird2"), SubResource("Arrival_Seabird3")])
+start_frame = Rect2(-720.0, -592.0, 1504.0, 1280.0)

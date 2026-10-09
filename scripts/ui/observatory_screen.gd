@@ -23,6 +23,12 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	super()
 	_title.text = "Global Ocean Observatory"
+	# The six islands with the routes that join them stay at the top (the sections scroll below).
+	_panorama = Panorama.new()
+	_panorama.name = "Panorama"
+	_panorama.tapped.connect(show_island)
+	_page.add_child(_panorama)
+	_page.move_child(_panorama, 1)
 	_credits = EndCredits.new()
 	_credits.name = "EndCredits"
 	_credits.finished.connect(func() -> void: get_tree().paused = visible)
@@ -69,64 +75,187 @@ func credits() -> EndCredits:
 
 func _fill() -> void:
 	var regions := Regions.coldest_first()  # as they lie, colder to warmer
-	_panorama = Panorama.new()
-	_panorama.name = "Panorama"
+	var whole := Label.new()
+	whole.name = "OceanHealth"
+	whole.text = "The whole ocean: %d %% healthy" % roundi(ocean_health() * 100.0)
+	whole.add_theme_font_size_override("font_size", 22)
+	whole.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_content.add_child(whole)
 	_panorama.regions = regions
 	_panorama.links = links()
-	_panorama.tapped.connect(show_island)
-	_content.add_child(_panorama)
-	var tap_note := Label.new()
-	tap_note.text = "Tap an island to see how it looked when you first arrived."
-	tap_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	tap_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_content.add_child(tap_note)
-	var health: Array[String] = ["The whole ocean: %d %% healthy" % roundi(ocean_health() * 100.0)]
+	_panorama.healths.clear()
 	for region in regions:
-		if Regions.is_discovered(region) and not region.health.is_empty():
-			health.append("%s: %d %%" % [region.display_name, roundi(IslandHealth.of(get_tree(), region) * 100.0)])
-	_content.add_child(card(null, health))
-	var connected: Array[String] = ["How the islands help each other"]
+		var found := Regions.is_discovered(region)
+		_panorama.healths.append("%d %%" % roundi(IslandHealth.of(get_tree(), region) * 100.0) if found and not region.health.is_empty() else "")
+	# 1. How the islands help each other (the routes drawn on the islands above).
+	var connected := _section("How the islands help each other", "Links")
 	for link in _panorama.links:
-		connected.append("• " + link.text)
-	if connected.size() == 1:
-		connected.append("Nothing joins them yet that the Observatory can see.")
-	_content.add_child(card(null, connected))
+		connected.add_child(_line("- " + link.text))
+	if _panorama.links.is_empty():
+		connected.add_child(_line("Nothing joins them yet that the Observatory can see."))
 	if not final_chapter():
-		var watching: Array[String] = ["Still watching",
+		_content.add_child(card(null, ["Still watching",
 			"Some kinds of litter still start somewhere. Ask the islands' people where they come from.",
-			"Once the whole ocean is connected, a poster of it waits for you here."]
-		_content.add_child(card(null, watching))
+			"Once the whole ocean is connected, the rest of the Observatory opens here, with a poster to keep."]))
 		return
-	var reflection: Array[String] = ["You've helped every island. What have you learned?"]
-	reflection.append_array(observations())
-	var learned := card(null, reflection)
-	learned.name = "Learned"
-	_content.add_child(learned)
-	var motto := Label.new()
+	# 2. You've helped every island: what the ranger did, and what they saw happen.
+	var helped := _section("You've helped every island", "Helped")
+	for line in helped_stats():
+		helped.add_child(_line(line))
+	helped.add_child(_line("What you saw happen:", 20, Color("f2d58a")))
+	for line in observations():
+		helped.add_child(_line("- " + line))
+	# 3. What we hope you have learned.
+	var learned := _section("What we hope you have learned", "Learned")
+	for line in LEARNED:
+		learned.add_child(_line(line))
+	var motto := _line("One ocean. Many places. Everything connected.", 26, Color("f2d58a"))
 	motto.name = "Motto"
-	motto.text = "One ocean. Many places. Everything connected."
-	motto.add_theme_font_size_override("font_size", 26)
 	motto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	motto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_content.add_child(motto)
-	_content.add_child(_poster_card())
+	learned.add_child(motto)
+	# 4. Who you have met: everyone, with what they most want the ranger to take away.
+	var met := _section("Who you have met", "Met")
+	for person: PersonData in People.all():
+		met.add_child(_person_card(person))
+	# 5. The poster, 6. the end credits, 7. donations.
+	_section("Your ocean poster", "PosterSection").add_child(_poster_card())
+	var credits_box := _section("End credits", "Credits")
+	credits_box.add_child(_line("\"A Final Word\": the story of the ocean you've helped, rolling by. Tap to make it faster."))
 	var again := Button.new()
 	again.name = "EndCreditsButton"
-	again.text = "End credits"
+	again.text = "Play the end credits"
 	again.custom_minimum_size = Vector2(0, 64)
 	again.add_theme_font_size_override("font_size", 20)
 	again.pressed.connect(play_credits)
-	_content.add_child(again)
-	for person: PersonData in People.all():
-		var line := closing_line(person)
-		if line != "":
-			var said: Array[String] = ["%s · %s" % [person.display_name, person.job], "\"%s\"" % line]
-			_content.add_child(card(null, said))
-	var open_note := Label.new()
-	open_note.text = "The ocean goes on. Your islands are still there, and so are their animals."
-	open_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	credits_box.add_child(again)
+	var donate := _section("Donations", "Donations")
+	donate.add_child(_line(DONATE_TEXT))
+	donate.add_child(_link_button("buymeacoffee.com/detronics", DONATE_URL))
+	donate.add_child(_line("Or look for more projects at:"))
+	donate.add_child(_link_button("www.detronics.co.za", PROJECTS_URL))
+	var open_note := _line("The ocean goes on. Your islands are still there, and so are their animals.")
 	open_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_content.add_child(open_note)
+
+
+const DONATE_URL := "https://buymeacoffee.com/detronics"
+const PROJECTS_URL := "https://www.detronics.co.za/"
+const DONATE_TEXT := "If you like the game and its message, feel you learned something about the ocean and our impact on it, and you are able to (with your parents' permission if you are under 18), you can buy the creator a coffee to support more games like this:"
+## What the game set out to show (section 3).
+const LEARNED: Array[String] = [
+	"BlueHaven is about one big idea: the ocean is one connected place. What happens on one island reaches the others: clean water, young fish, travelling birds and whales, and litter too.",
+	"Every animal has a job. Otters keep urchins in check so kelp can grow, parrotfish make sand, giant clams clean the water, crabs dig up buried litter. When one comes back, others follow.",
+	"Nature recovers when it's given room: a quiet beach, old ice that lasts, pools joined to the sea, clear water. You didn't make the animals come back: you made the places they need.",
+	"Look and listen before you act. Surveys, cameras and a patient wait showed you where help was needed first, and sometimes the answer was to do less.",
+	"Cleaning up helps, but stopping litter where it starts helps more: refills instead of rings, baskets instead of bags, boxes that go back, nets that are marked and recycled, filters for laundry.",
+	"Real rangers, scientists, fishers and whole communities do this work every day. Small, patient actions add up: at your nearest beach or river, and in what you choose to buy and throw away.",
+]
+
+
+## A section that drops down when its title is tapped (the open one folds away). Returns
+## the box to fill; it starts folded.
+func _section(title: String, body_name: String) -> VBoxContainer:
+	var header := Button.new()
+	header.name = body_name + "Header"
+	header.text = "+  " + title
+	header.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	header.custom_minimum_size = Vector2(0, 60)
+	header.add_theme_font_size_override("font_size", 22)
+	_content.add_child(header)
+	var body := VBoxContainer.new()
+	body.name = body_name
+	body.visible = false
+	body.add_theme_constant_override("separation", 10)
+	_content.add_child(body)
+	header.pressed.connect(func() -> void: open_section(body_name))
+	return body
+
+
+## Opens section `body_name` (closing the others), or folds it if it's open.
+func open_section(body_name: String) -> void:
+	for child in _content.get_children():
+		if child is Button and child.name.ends_with("Header"):
+			var body := _content.get_node_or_null(String(child.name).trim_suffix("Header")) as Control
+			if not body:
+				continue
+			var show := body.name == body_name and not body.visible
+			body.visible = show
+			child.text = ("-  " if show else "+  ") + child.text.substr(3)
+
+
+func _line(text: String, size := 18, colour := Color.WHITE) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size", size)
+	label.add_theme_color_override("font_color", colour)
+	return label
+
+
+func _link_button(text: String, url: String) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.custom_minimum_size = Vector2(0, 56)
+	button.add_theme_font_size_override("font_size", 20)
+	button.pressed.connect(func() -> void: OS.shell_open(url))
+	return button
+
+
+## What the ranger did for the ocean, from their own game (section 2).
+func helped_stats() -> Array[String]:
+	var lines: Array[String] = []
+	var litter := 0
+	for id in Inventory.picked:
+		litter += Inventory.picked[id]
+	var stopped := 0
+	for id in [&"plastic_bottle", &"plastic_bag", &"six_pack_rings", &"foam_box", &"ghost_net", &"microfibres"]:
+		stopped += 1 if Fleet.stopped(id) else 0
+	var living := get_tree().get_nodes_in_group("animals").filter(func(a: Node) -> bool:
+		return not a.leaving and not a.visiting).size()
+	var trees := get_tree().get_nodes_in_group("buildings").filter(func(b: Node) -> bool:
+		return b.get_children().any(func(c: Node) -> bool: return c is PalmTree)).size()
+	var built := get_tree().get_nodes_in_group("buildings").size() - trees
+	lines.append("%d days looking after six islands." % GameClock.day)
+	lines.append("%d pieces of litter picked up, and %d of 6 kinds stopped where they start." % [litter, stopped])
+	lines.append("%d animals freed or helped when they were caught, hurt or trapped." % Journal.total_helped())
+	lines.append("%d animals living on your islands now, %d young hatched." % [living, Journal.total_hatched()])
+	lines.append("%d kinds of animal found, %d photo moments caught." % [Journal.found_count(), Journal.moments_caught()])
+	lines.append("%d things built for the islands, %d trees planted and still growing." % [built, trees])
+	var raised: Array[String] = []
+	for id in Rescues.done:
+		var rescue := Rescues.rescue(id)
+		if rescue:
+			raised.append("%s the %s" % [Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower()])
+	if not raised.is_empty():
+		lines.append("Raised in your care and taken home: %s." % ", ".join(raised))
+	var guesses := 0
+	for region: RegionData in Regions.all():
+		guesses += People.predictions(region.id).size()
+	if guesses > 0:
+		lines.append("%d predictions made, and watched to see what really happened." % guesses)
+	return lines
+
+
+## A person: their picture, full name, job, and what they most want the ranger to take away.
+func _person_card(person: PersonData) -> Control:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 14)
+	var frame := Control.new()
+	frame.custom_minimum_size = Vector2(80, 104)
+	var look := Person.look_of(person)
+	look.scale = Vector2(3, 3)
+	look.position = Vector2(40, 92)
+	frame.add_child(look)
+	row.add_child(frame)
+	var words := VBoxContainer.new()
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	words.add_child(_line(person.display_name, 20, Color("f2d58a")))
+	words.add_child(_line(person.job, 16, Color("9fe3ff")))
+	var line := closing_line(person)
+	if line != "":
+		words.add_child(_line("\"%s\"" % line.replace("{name}", RangerProfile.call_name())))
+	row.add_child(words)
+	return row
 
 
 ## One island as it was when the ranger first got there (litter and all): the whole island,
@@ -159,12 +288,22 @@ func show_island(region: RegionData) -> void:
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title)
-	var photo: Texture2D = Journal.island_photo(region.id)
+	var photo: Texture2D = Journal.start_picture(region.id)
 	var picture := IslandPicture.new()
 	picture.name = "Picture"
 	picture.texture = photo
+	if photo and region.start_frame.size.x > 0.0:  # the ranger, where their first day there ended
+		picture.ranger_at = (Journal.start_spot(region) - region.start_frame.position) * (photo.get_width() / region.start_frame.size.x)
 	picture.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if photo:
+		for pan: Array in [["<", Vector2.LEFT], ["^", Vector2.UP], ["v", Vector2.DOWN], [">", Vector2.RIGHT]]:
+			var move := Button.new()
+			move.name = "Pan" + String(pan[0]).replace("<", "Left").replace(">", "Right").replace("^", "Up").replace("v", "Down")
+			move.text = pan[0]
+			move.custom_minimum_size = Vector2(48, 48)
+			move.add_theme_font_size_override("font_size", 24)
+			move.pressed.connect(picture.pan_by.bind(pan[1]))
+			header.add_child(move)
 		for step: Array in [["-", -1], ["+", 1]]:
 			var button := Button.new()
 			button.name = "ZoomOut" if step[1] < 0 else "ZoomIn"
@@ -184,7 +323,7 @@ func show_island(region: RegionData) -> void:
 		page.add_child(picture)
 	else:
 		var note := Label.new()
-		note.text = "No picture was kept of your first visit here: that was before the Observatory kept them."
+		note.text = "There's no picture of this island yet."
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		page.add_child(note)
@@ -195,6 +334,9 @@ class IslandPicture extends Control:
 	const STEPS := 6
 	const MAX_ZOOM := 4.0
 	var texture: Texture2D
+	## Where the ranger stands on the picture (its pixels; INF = not drawn).
+	var ranger_at := Vector2.INF
+	var _ranger: Node2D
 	## 0 = all of it fits, STEPS - 1 = closest.
 	var step := 0
 	var _centre := Vector2(0.5, 0.5)  # (the spot shown in the middle, 0..1 of the picture)
@@ -203,12 +345,23 @@ class IslandPicture extends Control:
 	func _ready() -> void:
 		clip_contents = true
 		mouse_filter = Control.MOUSE_FILTER_STOP
+		if ranger_at != Vector2.INF:  # (the ranger's own look, as it is now)
+			_ranger = (DataFiles.res("res://scenes/player/avatar.tscn") as PackedScene).instantiate()
+			add_child(_ranger)
 
 	func scale_now() -> float:
 		if not texture or size.x <= 0.0:
 			return 1.0
 		var fit := minf(size.x / texture.get_width(), size.y / texture.get_height())
 		return fit * pow(maxf(MAX_ZOOM / fit, 1.0), float(step) / (STEPS - 1))
+
+	## Moves the view a third of the way across what's shown (the arrow buttons).
+	func pan_by(direction: Vector2) -> void:
+		if not texture:
+			return
+		var shown := Vector2(texture.get_size()) * scale_now()
+		_centre = (_centre + direction * size / shown / 3.0).clamp(Vector2.ZERO, Vector2.ONE)
+		queue_redraw()
 
 	func zoom_by(direction: int) -> void:
 		step = clampi(step + direction, 0, STEPS - 1)
@@ -240,6 +393,10 @@ class IslandPicture extends Control:
 			at.y = (size.y - shown.y) / 2.0
 		draw_texture_rect(texture, Rect2(at, shown), false)
 		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if _ranger:  # standing on the picture, as big as the island around it
+			var zoom := scale_now()
+			_ranger.position = at + ranger_at * zoom
+			_ranger.scale = Vector2.ONE * zoom
 
 
 ## The prize for the final chapter: the poster of the whole ocean, to download and keep.
@@ -324,6 +481,30 @@ func links() -> Array[Dictionary]:
 	if Fleet.has_flag(&"fibres_traced"):
 		list.append({"from": &"", "to": &"arctic_ocean", "text": "Fibres from laundry far away were trapped in the polar ice%s." % (
 			": the Reef's filters catch them now" if Fleet.stopped(&"microfibres") else "")})
+	for species: AnimalData in Travellers.travelling():  # animals spreading along the chain
+		if Travellers.reach(species) > 0:
+			var to_many: Array[StringName] = []
+			for id in species.travels_to:
+				if Travellers.can_reach(species, DataFiles.res("res://data/regions/%s.tres" % id)):
+					to_many.append(StringName(id))
+			if not to_many.is_empty():
+				list.append({"from": species.travel_home, "to": &"", "to_many": to_many,
+					"text": "%s from the %s now travel to %d of your other islands." % [plural(species.display_name),
+						(DataFiles.res("res://data/regions/%s.tres" % species.travel_home) as RegionData).display_name, to_many.size()]})
+	for species: AnimalData in DataFiles.load_all("res://data/animals"):  # seeds carried to a new island
+		if species.seeds_tree and species.seeds_to != &"":
+			var to: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_to)
+			if Regions.is_discovered(to) and Travellers.sprouted(species.seeds_tree, to) > 0:
+				list.append({"from": species.seeds_from, "to": species.seeds_to, "text": "%s carried seeds from the %s: %s grow on the %s now." % [
+					plural(species.display_name), (DataFiles.res("res://data/regions/%s.tres" % species.seeds_from) as RegionData).display_name,
+					plural(species.seeds_tree.display_name).to_lower(), to.display_name]})
+	for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
+		if ecosystem.has_method("turtle_grazing") and ecosystem.turtle_grazing():
+			list.append({"from": &"home_island", "to": &"tropical_reef", "text": "Green turtles from the Starting Island graze the Reef's seagrass: room for more seahorses."})
+	if Fleet.is_installed(&"reef_limestone"):
+		list.append({"from": &"tropical_reef", "to": &"deep_sea", "text": "The Reef's habitat mapping helps the Deep Sea's submarine dives map faster."})
+	if Fleet.is_installed(&"cargo_module"):
+		list.append({"from": &"deep_sea", "to": &"", "text": "The Deep Sea's cargo module: every ship carries what another island needs."})
 	for id in Rescues.done:
 		var seen: Array = Rescues.done[id].get("seen", [])
 		var rescue := Rescues.rescue(id)
@@ -331,6 +512,13 @@ func links() -> Array[Dictionary]:
 			list.append({"from": rescue.region, "to": StringName(seen[0]), "text": "%s, the %s you rescued, travels between healthy islands." % [
 				Rescues.done[id].get("name", ""), rescue.species.display_name.to_lower()]})
 	return list
+
+
+## "Red-footed Booby" -> "Red-footed Boobies", "Palm Tree" -> "Palm Trees".
+static func plural(name: String) -> String:
+	if name.ends_with("y") and not name.ends_with("ey"):
+		return name.left(-1) + "ies"
+	return name + "s"
 
 
 ## What the ranger saw happen, island by island, from their own game.
@@ -375,10 +563,12 @@ class Panorama extends Control:
 	signal tapped(region: RegionData)
 	var regions: Array[RegionData] = []
 	var links: Array[Dictionary] = []
+	## Each island's health ("72 %"; "" = not found yet), shown under it.
+	var healths: Array[String] = []
 	var _time := 0.0
 
 	func _ready() -> void:
-		custom_minimum_size = Vector2(0, 240)
+		custom_minimum_size = Vector2(0, 220)
 		process_mode = Node.PROCESS_MODE_ALWAYS
 
 	func _process(delta: float) -> void:
@@ -399,21 +589,28 @@ class Panorama extends Control:
 
 	func _centre(i: int) -> Vector2:
 		var step := size.x / maxf(regions.size(), 1)
-		return Vector2(step * (i + 0.5), size.y * 0.55)
+		return Vector2(step * (i + 0.5), size.y * 0.5)
 
 	func _draw() -> void:
 		draw_rect(Rect2(Vector2.ZERO, size), Color("2a7fa0"))
-		var tile := minf(size.x / maxf(regions.size(), 1) * 0.8, size.y * 0.55)
+		var tile := minf(size.x / maxf(regions.size(), 1) * 0.8, size.y * 0.5)
+		var font := get_theme_default_font()
 		for i in regions.size():
 			var region := regions[i]
 			var at := _centre(i) - Vector2.ONE * tile / 2.0
 			if region.map_icon:
 				draw_texture_rect(region.map_icon, Rect2(at, Vector2.ONE * tile), false,
 					Color.WHITE if Regions.is_discovered(region) else Color(0.5, 0.55, 0.6, 0.6))
-		var top := size.y * 0.55 - tile / 2.0
+			if i < healths.size() and healths[i] != "":  # its health under it
+				var width := size.x / maxf(regions.size(), 1)
+				draw_string(font, Vector2(width * i, at.y + tile + 24.0), healths[i], HORIZONTAL_ALIGNMENT_CENTER,
+					width, 18, Color("ffffff"))
+		var top := size.y * 0.5 - tile / 2.0
 		for link in links:
 			var targets: Array[StringName] = []
-			if link.to == &"":
+			if link.has("to_many"):
+				targets.assign(link.to_many)
+			elif link.to == &"":
 				for region in regions:
 					if region.id != link.from and Regions.is_discovered(region):
 						targets.append(region.id)

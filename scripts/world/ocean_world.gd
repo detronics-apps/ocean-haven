@@ -10,7 +10,7 @@ const TOUCH_SCALE := 1.5
 ## arrive (seconds).
 @export var tint_interval := 2.0
 ## A new game starts with this much litter about the Starting Island.
-@export var start_litter := 30
+@export var start_litter := 50
 
 
 func _ready() -> void:

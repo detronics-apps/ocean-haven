@@ -91,3 +91,4 @@ discovery = &"mangrove_resin"
 health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResource("Health_water"), SubResource("Health_mangroves"), SubResource("Health_fish"), SubResource("Health_nests"), SubResource("Health_crabs"), SubResource("Health_crocodiles")])
 objective = "Get the water flowing through the mangroves again"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_flowing"), SubResource("Goal_resin")])
+start_frame = Rect2(9424.0, -752.0, 1632.0, 1600.0)

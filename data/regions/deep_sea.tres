@@ -103,3 +103,4 @@ health = Array[ExtResource("3_health")]([SubResource("Health_clean"), SubResourc
 objective = "Understand the deep, and recover what was lost there"
 goals = Array[ExtResource("4_goal")]([SubResource("Goal_mapped"), SubResource("Goal_located"), SubResource("Goal_recovered")])
 discovery = &"cargo_module"
+start_frame = Rect2(14864.0, -784.0, 1248.0, 1696.0)
