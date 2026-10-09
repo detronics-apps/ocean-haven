@@ -9,46 +9,68 @@
 <link rel="apple-touch-icon" href="icon_180.png">
 <style>
   :root {
-    --ocean-deep: #12303f;
-    --ocean: #1f4a5e;
+    --ocean-deep: #0e2738;
+    --ocean: #17405a;
     --lagoon: #2a78a8;
-    --sand: #e6d5a4;
-    --leaf: #6f9a55;
+    --turquoise: #4fd1c5;
+    --sand: #ecdcae;
+    --coral: #f2877b;
+    --leaf: #5f9a4a;
     --text: #eef6f8;
     --muted: #b6cdd5;
+    --card: rgba(6, 22, 32, 0.5);
+    --line: rgba(182, 205, 213, 0.22);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     color: var(--text);
-    background: linear-gradient(180deg, var(--ocean-deep), var(--ocean) 60%, var(--lagoon));
+    background: linear-gradient(180deg, var(--ocean-deep), var(--ocean) 55%, var(--lagoon));
     min-height: 100vh;
-    line-height: 1.5;
+    line-height: 1.55;
   }
-  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+  main { max-width: 820px; margin: 0 auto; padding: 28px 16px 48px; }
   header { display: flex; align-items: center; gap: 16px; }
-  header img { width: 72px; height: 72px; image-rendering: pixelated; border-radius: 16px; }
-  h1 { font-size: 2.6rem; margin: 0; letter-spacing: 0.02em; }
-  .tagline { margin: 4px 0 0; color: var(--muted); font-size: 1.1rem; }
-  .screenshot {
-    width: 100%; margin: 28px 0 8px; border-radius: 14px; image-rendering: pixelated;
-    border: 3px solid rgba(230, 213, 164, 0.5); display: block;
+  header img { width: 64px; height: 64px; image-rendering: pixelated; border-radius: 14px; flex: none; }
+  h1 {
+    font-size: clamp(2.2rem, 7vw, 3.2rem); margin: 0; letter-spacing: 0.02em; line-height: 1.1;
+    background: linear-gradient(180deg, #8ff0e6, var(--turquoise) 60%, #2fa9b8);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .tagline { margin: 4px 0 0; color: var(--muted); font-size: 1.05rem; }
+  .hero { position: relative; margin: 24px 0 0; }
+  .hero img {
+    width: 100%; display: block; border-radius: 16px; image-rendering: pixelated;
+    border: 3px solid rgba(236, 220, 174, 0.55); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  }
+  .caption { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 0; }
   .play {
     display: block; text-align: center; margin: 24px 0; padding: 18px 24px;
     background: var(--leaf); color: #fff; text-decoration: none; font-size: 1.6rem; font-weight: 700;
-    border-radius: 14px; box-shadow: 0 6px 0 #4f7a3a;
+    border-radius: 14px; box-shadow: 0 6px 0 #437a32;
   }
-  .play:active { transform: translateY(3px); box-shadow: 0 3px 0 #4f7a3a; }
-  h2 { font-size: 1.3rem; margin: 32px 0 8px; color: var(--sand); }
-  ul, ol { padding-left: 22px; margin: 8px 0; }
-  li { margin: 6px 0; }
+  .play:active { transform: translateY(3px); box-shadow: 0 3px 0 #437a32; }
+  h2 { font-size: 1.3rem; margin: 36px 0 10px; color: var(--sand); }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
   .card {
-    background: rgba(8, 24, 32, 0.45); border: 1px solid rgba(182, 205, 213, 0.25);
+    background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 14px 18px; margin: 12px 0;
   }
+  .features .card { margin: 0; border-top: 4px solid var(--turquoise); }
+  .features .card:nth-child(2) { border-top-color: var(--coral); }
+  .features .card:nth-child(3) { border-top-color: var(--leaf); }
+  .features .card:nth-child(4) { border-top-color: var(--sand); }
   .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .card p { margin: 0; color: var(--muted); }
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin: 6px 0; }
+  .promise { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .promise li {
+    margin: 0; padding: 6px 12px; border-radius: 999px; font-size: 0.92rem;
+    background: rgba(79, 209, 197, 0.12); border: 1px solid rgba(79, 209, 197, 0.35);
+  }
+  details.card summary { cursor: pointer; font-weight: 700; }
   footer { margin-top: 40px; color: var(--muted); font-size: 0.9rem; text-align: center; }
 </style>
 </head>
@@ -62,37 +84,42 @@
     </div>
   </header>
 
-  <img class="screenshot" src="screenshot.png" alt="The ranger on a sandy island beach with palm trees, a tent and a rowboat; the island's health bar, goal and minimap around the edges.">
+  <div class="hero">
+    <img src="screenshot.png" alt="The Starting Island on day one: the ranger by the rowboat, Dr. Maya Okafor at her field camp and Tom by his lighthouse; litter on the beaches and in the lagoon, a tangled green turtle, a dolphin caught in a net, a ghost crab trapped in a bag and a tangled booby.">
+    <p class="caption">Day one: litter everywhere, and one turtle, dolphin, crab and booby, each needing help. Maya and Tom are waiting to show you where to start.</p>
+  </div>
 
   <a class="play" href="play/">Play BlueHaven</a>
 
   <h2>What you do</h2>
-  <ul>
-    <li>Sail your little boat and collect the litter washing into the sea.</li>
-    <li>Calmly help sea turtles, dolphins and crabs, and fill your Ocean Journal.</li>
-    <li>Build protected beaches where turtles nest and hatchlings reach the sea.</li>
-    <li>Recycle litter, earn conservation funding and grow your island.</li>
-    <li>Set sail for new islands once your home is looked after.</li>
+  <div class="features">
+    <div class="card"><h3>Clean up the sea</h3><p>Row your little boat and collect the litter washing in, then recycle it into conservation funding.</p></div>
+    <div class="card"><h3>Help the animals</h3><p>Calmly free tangled turtles, dolphins and seabirds, and care for a young rescue until it's ready to go home.</p></div>
+    <div class="card"><h3>Meet the islanders</h3><p>Maya the researcher and Tom the lighthouse keeper know what the island needs, and where to start.</p></div>
+    <div class="card"><h3>Watch it come alive</h3><p>Build nesting beaches and a rescue station; the colours, sounds and animals return as the island recovers.</p></div>
+  </div>
+  <ul class="promise">
+    <li>No fighting</li><li>Animals never die</li><li>No failing, just more to help</li><li>No in-game purchases</li><li>Real ocean facts in the Journal</li>
   </ul>
 
   <h2>Keep your progress on a phone</h2>
   <p>The game saves by itself. To make sure your phone keeps it, add BlueHaven to your home screen and always open it from there:</p>
-  <div class="card">
-    <h3>iPhone or iPad</h3>
+  <details class="card" open>
+    <summary>iPhone or iPad</summary>
     <ol>
       <li>Open <strong>Play BlueHaven</strong> in Safari.</li>
       <li>Tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>.</li>
       <li>Open BlueHaven from its new icon.</li>
     </ol>
-  </div>
-  <div class="card">
-    <h3>Android</h3>
+  </details>
+  <details class="card">
+    <summary>Android</summary>
     <ol>
       <li>Open <strong>Play BlueHaven</strong> in Chrome.</li>
       <li>Tap the <strong>&#8942;</strong> menu, then <strong>Install app</strong> (or <strong>Add to Home screen</strong>).</li>
       <li>Open BlueHaven from its new icon.</li>
     </ol>
-  </div>
+  </details>
   <p>Progress is kept on each device separately. Private browsing, or clearing your browser's data, removes it.</p>
 
   <footer>BlueHaven is a game in progress. Turn your phone sideways to play.</footer>
