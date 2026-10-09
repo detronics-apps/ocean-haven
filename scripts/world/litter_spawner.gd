@@ -113,6 +113,12 @@ func wash_up_at(spot: Vector2, floating: bool) -> Debris:
 	return spawn_at(_items.pick_random(), spot, floating)
 
 
+## A piece washed up on the land a little way from `spot` (however much is already about).
+func wash_up_near(spot: Vector2) -> Debris:
+	var at := Terrain.nearest(get_tree(), spot + Vector2.from_angle(randf() * TAU) * randf_range(48.0, 140.0), ["sand", "rock", "ice", "grass", "mud"])
+	return spawn_at(_items.pick_random(), at, false)
+
+
 ## Buried litter turned up at `spot` (the ranger's shovel), however much is already about.
 ## It floats: the sand it was in is gone. Returns it.
 func dig_up_at(spot: Vector2) -> Debris:

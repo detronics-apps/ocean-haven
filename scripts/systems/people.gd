@@ -687,7 +687,8 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ##   "nests" (nests on the island now), "nested:X" (nests ever), "litter" (in reach),
 ##   "tangled" (animals caught or hurt), "busy:X" (nesting areas too busy), "species"
 ##   (species photographed), "missing_moments" (photo moments still to catch), "picked:X" (litter X ever picked up), "young:X" (young of species X on the island now),
-##   "installed" (discoveries in the fleet), "health"
+##   "installed" (discoveries in the fleet), "health", "quiet" (the Deep Sea's quiet water, 0..100);
+##   "water_right" (the Mangrove Coast's water level suits the flamingos)
 ##   (percent), "built:X".
 func check(condition: String, person: PersonData, first := false) -> bool:
 	var negate := condition.begins_with("!")
@@ -729,6 +730,9 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 					if topic.id == arg and is_given(someone, topic) and not Fleet.goal_met(topic.objective):
 						result = true
 		"heard": result = _heard.keys().any(func(k: String) -> bool: return k.ends_with("/" + arg))
+		"water_right":  # the Mangrove Coast's water level suits the flamingos
+			var eco := IslandHealth.ecosystem(get_tree(), _region(person))
+			result = eco != null and eco.has_method("level_right") and eco.level_right()
 		_: push_warning("People: unknown condition '%s'" % condition)
 	return result != negate
 
@@ -738,6 +742,9 @@ func _number(name: String, person: PersonData) -> float:
 	var arg := StringName(name.get_slice(":", 1)) if ":" in name else &""
 	var region := _region(person)
 	match kind:
+		"quiet":  # how quiet the Deep Sea's water is, 0..100
+			var eco := IslandHealth.ecosystem(get_tree(), _region(person))
+			return eco.quiet() * 100.0 if eco and eco.has_method("quiet") else 0.0
 		"animals": return _animals(person, arg)
 		"nests":
 			return get_tree().get_nodes_in_group("nests").filter(func(n: Node2D) -> bool:

@@ -268,6 +268,14 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   see turtle tracks below his lighthouse again, Bram that his old crew's lost nets come out of
   the sea. They say it once; the ranger's work makes it come true, and they say what it means
   to them, once. A wish never becomes an objective.
+- **Every island breaks the shared pattern once**, so the islands never feel like the same
+  loop in new colours: the Kelp Forest's rescue comes first (Finn found the otter pup; the
+  platform is its vet room), the Mangrove Coast's two people disagree about the gates (the
+  ranger finds the balance between them), the Reef shows its beauty first (the last living
+  patch by Leilani's dive spot, already fading), the Deep Sea rewards going quiet first (the
+  sixgill pup only comes to quiet water), and on the Polar Ocean the bear comes first (the
+  first visit's litter by the camp draws it in on day one). Never by breaking another rule
+  (no storm in an island's first 15-25 days).
 - **After the ending the world carries on and comes together:** people visit each other's
   islands for a day, and now and then every rescued animal is out the same morning, only where
   it belongs (a seal pup never in warm water).

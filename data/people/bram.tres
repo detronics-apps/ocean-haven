@@ -96,6 +96,12 @@ lines = PackedStringArray("My old crew lost nets out here, years ago, and we nev
 outcome_when = PackedStringArray("stopped:ghost_net")
 outcome = "Old nets go back to the Net Return Point now, {name}, and new ones are marked. Nothing we lose is lost for good. That's a weight off an old sailor's chest."
 
+[sub_resource type="Resource" id="Quiet_0"]
+script = ExtResource("2_t")
+id = &"pup_quiet"
+when = PackedStringArray("built:deep_ocean_outpost", "quiet<70")
+lines = PackedStringArray("Some nights, when the sea's dead quiet, a young sixgill comes up near my light. Not lately: too many lamps and engines.", "Let the water go quiet and it might come again. Maybe it needs help.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"bram"
@@ -117,7 +123,7 @@ trousers = Color(0.25, 0.25, 0.28, 1)
 hat = 2
 hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Quiet_0"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "An old captain still likes a voyage, {name}. {host} and I have been swapping sea stories on the {island}."

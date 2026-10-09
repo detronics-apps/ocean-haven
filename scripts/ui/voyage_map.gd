@@ -85,6 +85,10 @@ static func arrive(tree: SceneTree, region: RegionData) -> void:
 		for spawner: LitterSpawner in tree.get_nodes_in_group("litter_spawner"):
 			if Regions.nearest(spawner.area.get_center()) == region:
 				spawner.fill(region.arrival_litter)
+				for person: PersonData in People.on(region.id):
+					for i in region.camp_litter:
+						spawner.wash_up_near(person.spot)
+					break  # (by the first person's camp)
 		# Say what this island is about and what to do here (the objective line keeps the pointer).
 		tree.call_group("hud", "show_toast", "First visit: %s" % region.display_name)
 

@@ -813,6 +813,17 @@ people, saying PersonData.visit_line, gone the next morning), and on reunion mor
 (Rescues.REUNION_CHANCE 20 %) every released rescue is out, on the ranger's island if it lives
 or visits there, else at home, with news from the island's people.
 
+Each island breaks the shared pattern once (ISLAND_RULES 9; tests/test_breaks.gd): Kelp, Finn
+found an otter pup at the jetty and the platform is wanted as its vet room; Mangrove, Rosa
+wants every gate open, Samuel some shut (his "gates_argue" / "gates_agree" topics; condition
+"water_right" = MangroveEcosystem.level_right); Reef, the patch nearest the dive guide starts
+as the last living one (ReefEcosystem.last_healthy_coral 0.7, planted in full) and fades
+unless the water is cleaned; Deep Sea, the sixgill pup is offered only at "quiet>=70" (a
+People.check number: DeepEcosystem.quiet x 100; Bram's "pup_quiet" hint); Polar, the island's
+people's places count as camp (PolarEcosystem._camp) and the first visit washes
+RegionData.camp_litter (3) pieces up by the camp (LitterSpawner.wash_up_near), so the bear
+comes on day one.
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

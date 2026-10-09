@@ -9,7 +9,7 @@
 script = ExtResource("2_t")
 id = &"hello"
 when = PackedStringArray("first")
-lines = PackedStringArray("Aloha, {name}! I'm Leilani. I take people diving here.", "I know where every current goes, and where it dumps its rubbish.")
+lines = PackedStringArray("Aloha, {name}! I'm Leilani. I take people diving here.", "Before anything else, come and see this: the last patch of living coral, right by my dive spot. This is what the whole reef looked like.", "It's fading, though. The water's too dirty for it.")
 
 [sub_resource type="Resource" id="Topic_1"]
 script = ExtResource("2_t")

@@ -36,6 +36,9 @@ extends Node2D
 ## Each morning each parrotfish feeding on healthy coral may build up one tile near it.
 @export var sand_chance := 0.25
 @export var healthy_coral := 0.5
+## The last living patch on a new game (by the dive guide): how much coral it starts with. It
+## fades towards what the water allows unless the ranger cleans the water in time.
+@export var last_healthy_coral := 0.7
 @export var sand_per_day := 3
 ## Most tiles the parrotfish can ever change (keeps the lagoon a lagoon).
 @export var sand_max := 40
@@ -121,6 +124,19 @@ func _place_patches() -> void:
 		patch.coral = lerpf(0.04, 0.15, KelpEcosystem._noise(Vector2i(i, 3)))
 		patch.planted = 0.15
 		add_child(patch)
+	# Beauty first: the patch nearest the dive guide is the last one still alive, already fading.
+	var guide: PersonData = null
+	for person: PersonData in People.on(region_id):
+		if person.role == &"hint":
+			guide = person
+	if guide:
+		var last: ReefPatch = null
+		for patch: ReefPatch in get_children().filter(func(c: Node) -> bool: return c is ReefPatch):
+			if not last or patch.global_position.distance_to(guide.spot) < last.global_position.distance_to(guide.spot):
+				last = patch
+		if last:
+			last.coral = last_healthy_coral
+			last.planted = 1.0
 
 
 func _terrain(cell: Vector2i) -> String:

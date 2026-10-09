@@ -247,12 +247,20 @@ func camp_rubbish() -> int:
 		return 0
 	return get_tree().get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
 		return (not d.is_queued_for_deletion() and d.item.is_litter and Regions.nearest(d.global_position) == region()
-			and camp.any(func(b: Building) -> bool: return b.global_position.distance_to(d.global_position) <= CAMP_RANGE))).size()
+			and camp.any(func(spot: Vector2) -> bool: return spot.distance_to(d.global_position) <= CAMP_RANGE))).size()
 
 
-func _camp() -> Array[Building]:
-	return _buildings_where(func(b: Building) -> bool:
-		return b.data.action == &"sleep" or b.data.id in [&"polar_research_station", &"polar_research_centre"])
+## Where people live on the island: the ranger's tent or house, the research station and
+## centre, and the island's own people's places (so the litter of a first visit, washed up by
+## their camp, draws the bear in on day one).
+func _camp() -> Array[Vector2]:
+	var spots: Array[Vector2] = []
+	for building in _buildings_where(func(b: Building) -> bool:
+			return b.data.action == &"sleep" or b.data.id in [&"polar_research_station", &"polar_research_centre"]):
+		spots.append(building.global_position)
+	for person: PersonData in People.on(region().id):
+		spots.append(person.spot)
+	return spots
 
 
 ## Draws the bear to camp, or sends it back to the ice (checked every couple of seconds while the
@@ -274,8 +282,8 @@ func check_camp() -> void:
 		get_tree().call_group("hud", "show_toast", "The rubbish is gone, and the polar bear is slowly wandering back to the ice.")
 	if Fleet.has_flag(BEAR_AT_CAMP):
 		var camp := _camp()
-		if not camp.is_empty() and bear.global_position.distance_to(camp[0].global_position) > 120.0:
-			bear.restore_young(bear.global_position, camp[0].global_position + Vector2(90, 40))
+		if not camp.is_empty() and bear.global_position.distance_to(camp[0]) > 120.0:
+			bear.restore_young(bear.global_position, camp[0] + Vector2(90, 40))
 
 
 func _buildings_where(which: Callable) -> Array[Building]:

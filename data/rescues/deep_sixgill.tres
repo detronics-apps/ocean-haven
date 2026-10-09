@@ -20,7 +20,7 @@ region = &"deep_sea"
 species = ExtResource("2_t")
 building = &"deep_ocean_outpost"
 person = &"imani"
-offer_when = PackedStringArray("built:deep_ocean_outpost", "here")
+offer_when = PackedStringArray("built:deep_ocean_outpost", "here", "quiet>=70")
 found_note = "Imani: \"The submarine found a young sixgill shark with a fishing hook stuck in its mouth. We brought it up slowly. Come to the outpost!\""
 intro = "Imani: \"This young sixgill was hooked on an old longline. It isn't a pet: we're helping it home to the deep. Will you give it a name?\""
 days = 6

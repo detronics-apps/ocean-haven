@@ -47,9 +47,9 @@ text = "Get the water flowing: link 4 nursery pools to the sea (island health 70
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"flowing"
-lines = PackedStringArray("The pools are full of silt, cut off from the sea. How do you think the little fish get in and out?", "> They can't! | Through channels?", "Then let's give them a way. The station has a map of the channels: try a Channel Flow there. And Samuel the boat builder knows these channels better than anyone.")
+lines = PackedStringArray("The pools are full of silt, cut off from the sea. How do you think the little fish get in and out?", "> They can't! | Through channels?", "Then let's give them a way. The station has a map of the channels: try a Channel Flow there.", "Open every water gate, I say: the fish need the sea. Samuel thinks I'm wrong. Ask him, if you must!")
 objective = SubResource("Goal_4")
-thanks = PackedStringArray("Look! Tiny snappers in the channels. When these pools fill with young fish, my nets aren't empty any more.")
+thanks = PackedStringArray("Look! Tiny snappers in the channels. When these pools fill with young fish, my nets aren't empty any more.", "Samuel and I argued about those gates for years. You found the balance between us.")
 reminder = PackedStringArray("How are the channels coming along? The station's water survey shows which pools are cut off.")
 
 [sub_resource type="Resource" id="Topic_5"]

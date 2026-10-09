@@ -15,7 +15,7 @@ lines = PackedStringArray("You're {name}? The one who brought the otters back? I
 script = ExtResource("2_t")
 id = &"hello"
 when = PackedStringArray("first")
-lines = PackedStringArray("Hi! You must be {name}. I'm Finn: I dive these waters.", "When I was a boy the kelp was so thick the sunlight came through green. Now it's mostly bare rock and urchins.")
+lines = PackedStringArray("Hi! You must be {name}. I'm Finn: I dive these waters.", "When I was a boy the kelp was so thick the sunlight came through green. Now it's mostly bare rock and urchins.", "And this morning I found an otter pup alone by the old jetty, crying for its mother. I've wrapped it in kelp to keep it floating, but it needs proper care.")
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
@@ -33,10 +33,10 @@ text = "Build the Kelp Research Platform"
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
 id = &"platform"
-lines = PackedStringArray("What do you think happened to the kelp?", "> Something ate it? | A storm?", "That's what I want to find out. A research platform out on the water would let us dive and study it. It's in your Make menu.")
+lines = PackedStringArray("That pup can't wait long. Where could we look after it?", "> A vet? | A shelter?", "A research platform out on the water has a vet room, and from there we can find out what happened to the kelp too. It's in your Make menu.")
 objective = SubResource("Goal_3")
-thanks = PackedStringArray("A platform! Now we can see what's really going on down there.")
-reminder = PackedStringArray("The Kelp Research Platform is in your Make menu. From there we can survey the whole forest.")
+thanks = PackedStringArray("A platform! Bring the pup in: its vet room is ready. And now we can see what's really going on down there.")
+reminder = PackedStringArray("The pup's still waiting by the jetty. The Kelp Research Platform is in your Make menu: it has a vet room.")
 
 [sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")

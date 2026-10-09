@@ -84,6 +84,19 @@ lines = PackedStringArray("My grandmother wove baskets from nipa palm. Nobody wa
 outcome_when = PackedStringArray("stopped:plastic_bag")
 outcome = "Baskets at the fish market again, {name}! I wove the first one myself. Grandma would be proud."
 
+[sub_resource type="Resource" id="Gates_0"]
+script = ExtResource("2_t")
+id = &"gates_argue"
+when = PackedStringArray("asked:flowing", "!flag:mangrove_flowing")
+lines = PackedStringArray("Rosa wants every gate open. Open them all and the pools drain at low water: the flamingos have nothing to wade in.", "She's right about the fish, mind. Some gates open, some shut: that's the trick.")
+
+[sub_resource type="Resource" id="Gates_1"]
+script = ExtResource("2_t")
+id = &"gates_agree"
+when = PackedStringArray("flag:mangrove_flowing", "water_right")
+once = true
+lines = PackedStringArray("Rosa came by this morning. We were both a bit right, she says. I say we were both a bit wrong.", "The pools are flowing and the flamingos are wading. That's what matters.")
+
 [resource]
 script = ExtResource("1_p")
 id = &"samuel"
@@ -103,7 +116,7 @@ hair_colour = Color(0.7, 0.7, 0.7, 1)
 shirt = Color(0.45, 0.55, 0.35, 1)
 trousers = Color(0.35, 0.28, 0.2, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Gates_1"), SubResource("Gates_0"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "I came to look at the boats on the {island}, {name}. {host} let me help mend one."

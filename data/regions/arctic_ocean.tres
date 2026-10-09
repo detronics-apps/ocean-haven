@@ -74,6 +74,7 @@ hint = "A Drill planning mission from the Polar Research Station shows the best 
 
 [resource]
 script = ExtResource("1_2asjv")
+camp_litter = 3
 id = &"arctic_ocean"
 display_name = "Polar Ocean"
 description = "Floes of ice and bare rock in cold water. The ice comes and goes with the seasons: what works in the freeze is wrong in the thaw. No trees grow here: bring wood with you."

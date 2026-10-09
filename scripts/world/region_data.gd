@@ -20,6 +20,9 @@ extends Resource
 ## before anyone looked after it), so it starts in poor health. The starting island gets
 ## its own at the start of a new game.
 @export var arrival_litter := 45
+## Of the first visit's litter, how many pieces wash up right by its people's camp (the Polar
+## Ocean: enough to draw the polar bear in on day one).
+@export var camp_litter := 0
 ## How far from the middle a rowboat can go (its coastal waters).
 @export var waters_radius := 1100.0
 ## Where the ranger steps ashore after sailing here.
