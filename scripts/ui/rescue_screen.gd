@@ -66,6 +66,7 @@ func open_rescue() -> void:
 
 
 func _ready_landscape() -> void:
+	(_content.get_parent() as Control).resized.connect(_fit_room)
 	get_viewport().size_changed.connect(func() -> void:
 		if visible:
 			refresh.call_deferred())  # (turned: the room fits the screen again)
@@ -77,11 +78,21 @@ func _wide() -> bool:
 	return view.x > view.y * 1.3
 
 
-## The height the room gets on a wide screen: all of the page below the title.
+## The height the room gets on a wide screen: all of the scrolling page below the title, so
+## the bars and everything to drag fit on one screen (the buttons are below it, a scroll away).
+## Kept in step with the page's real size (_fit_room): right after the phone turns, the page
+## still has the old height.
 func _room_height() -> float:
 	var scroll := _content.get_parent() as Control
-	var height := scroll.size.y if scroll and scroll.size.y > 100.0 else get_viewport().get_visible_rect().size.y - 110.0
-	return maxf(height - 10.0, 300.0)
+	return maxf(scroll.size.y - 8.0, 240.0)
+
+
+func _fit_room() -> void:
+	var table := _content.get_node_or_null("VetTable") as Control
+	if table and table.has_meta("fills_page"):
+		var height := _room_height()
+		if absf(table.custom_minimum_size.y - height) > 1.0:
+			table.custom_minimum_size.y = height
 
 
 func _fill() -> void:
@@ -120,7 +131,10 @@ func _fill() -> void:
 	var in_room := _wide() and not Rescues.is_ready()
 	var room_panel: VBoxContainer = null
 	if in_room:
+		table.set_meta("fills_page", true)
 		table.custom_minimum_size.y = _room_height()
+		_fit_room.call_deferred()
+		(table.get_node("VetScene") as Control).custom_minimum_size.y = 0.0  # (the table sets the height)
 		room_panel = _room_panel(table.get_node("VetScene"))
 		var day_line := Label.new()
 		day_line.text = "Day %d of %d" % [day, one.days]

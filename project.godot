@@ -14,6 +14,9 @@ config/name="BlueHaven"
 run/main_scene="res://scenes/world/ocean_world.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/ui/app_icon_512.png"
+boot_splash/bg_color=Color(0.0627451, 0.172549, 0.258824, 1)
+boot_splash/image="res://assets/ui/splash/splash.png"
+boot_splash/use_filter=false
 
 [autoload]
 

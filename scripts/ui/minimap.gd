@@ -92,9 +92,12 @@ func _draw() -> void:
 		_build_land()
 	if _land:
 		var tiles := WORLD_RADIUS / Terrain.TILE  # tiles from the ranger to the rim
-		var from := centre / Terrain.TILE - Vector2(_land_origin) - Vector2(tiles, tiles)
-		draw_texture_rect_region(_land, Rect2(Vector2.ZERO, Vector2(RADIUS, RADIUS) * 2.0),
-			Rect2(from, Vector2(tiles, tiles) * 2.0))
+		var source := Rect2(centre / Terrain.TILE - Vector2(_land_origin) - Vector2(tiles, tiles), Vector2(tiles, tiles) * 2.0)
+		# Only the part inside the picture (past its edge a texture repeats its last pixels: stripes).
+		var inside := source.intersection(Rect2(Vector2.ZERO, _land.get_size()))
+		if inside.has_area():
+			var per_tile := RADIUS * 2.0 / source.size.x
+			draw_texture_rect_region(_land, Rect2((inside.position - source.position) * per_tile, inside.size * per_tile), inside)
 	for boat: Node2D in get_tree().get_nodes_in_group("boat"):
 		if boat == ranger:
 			continue

@@ -128,6 +128,10 @@ itch.io is no longer kept up to date — don't rebuild the itch zip.
   the project (`tools/dump_data.gd`) and refuses to publish if they differ.
 - Test exported builds, not just the editor: the browser caches `index.pck` (use a fresh port for a
   local server), and headless can run an exported pack: `godot --headless --main-pack <pck> --script <abs path>`.
+- Loading screen: the boot splash `assets/ui/splash/splash.png` (drawn by `tools/make_splash.py`:
+  the BlueHaven title on the sea) and, on the web, a spinning pixel globe with a turtle swimming
+  round it as the loading bar (a canvas script in the Web Pages preset's head_include, which hides
+  Godot's own bar). Nothing about Detronics there.
 - The game shows its revision (`rN sha`, bottom left) from `version.txt`, written at publish time.
 - The installed app keeps the engine (`index.wasm`, ~39 MB) in its own cache across versions
   (`tools/patch_service_worker.py`, run by the publish script), so an update only downloads
@@ -741,7 +745,8 @@ live and says what it needs now.
 Care costs funding: each bite of food and each dose of medicine (RescueData.food_cost 2 /
 medicine_cost 10; comfort and plasters are free; without the funding it says what it costs).
 Stroking (comfort_kind "stroke") calms it a step every 140 px stroked, while stroking
-(VetScene.soothed). On a phone on its side the room fills the screen with the day, the bars and
+(VetScene.soothed). On a phone on its side the room (sized to the page's real height, following its resize, so the
+bars and everything to drag fit one screen; the buttons below may scroll) fills the screen with the day, the bars and
 what it needs on a panel on its wall; the buttons are below it.
 
 Rescue pictures (the owner's art: docs/rescue_stages_sheet.jpg, one row per animal, six care
