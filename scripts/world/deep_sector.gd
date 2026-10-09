@@ -63,12 +63,19 @@ func actions() -> Array:
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger or ranger.global_position.distance_to(global_position) > radius * 0.8:
 		return []
+	if known() or dive_marked:
+		return []
+	return [{"label": "Mark dive", "do": mark_for_dive}]
+
+
+## What's known of it (the line above the buttons).
+func info_line() -> String:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger or ranger.global_position.distance_to(global_position) > radius * 0.8:
+		return ""
 	if known():
-		return [{"label": "%s: %s" % [label(), describe()], "do": _explain}]
-	var list := [{"label": "%s: %d%% known" % [label(), floori(knowledge * 100.0)], "do": _explain}]
-	if not dive_marked:
-		list.append({"label": "Mark dive", "do": mark_for_dive})
-	return list
+		return "%s: %s%s" % [label(), describe(), ", lost gear" if gear_item != &"" and gear_found else ""]
+	return "%s: %d%% known%s" % [label(), floori(knowledge * 100.0), " (dive marked)" if dive_marked else ""]
 
 
 ## The Outpost's next dive goes here (only one area is marked at a time).

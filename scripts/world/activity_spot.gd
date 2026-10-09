@@ -56,7 +56,15 @@ func actions() -> Array:
 	if Activities.is_open(activity):
 		return [{"label": activity.verb, "helps": not Activities.story_done(activity),
 			"do": get_tree().call_group.bind("activity_" + activity.id, "open_activity", activity)}]
-	return [{"label": "Look", "do": get_tree().call_group.bind("hud", "show_toast", activity.closed_note)}]
+	return []
+
+
+## What it says while it's closed (the line above the buttons).
+func info_line() -> String:
+	var ranger := ControlledBody.active(get_tree())
+	if Activities.is_open(activity) or not ranger or ranger.global_position.distance_to(global_position) > RANGE:
+		return ""
+	return activity.closed_note.get_slice("\n", 0).get_slice(". ", 0).left(70)
 
 
 ## What's in the way when building here.

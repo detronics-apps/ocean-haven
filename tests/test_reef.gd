@@ -52,10 +52,18 @@ func _initialize() -> void:
 	player.global_position = patch.global_position + Vector2(20, 0)
 	inventory.add(load("res://data/items/coral_fragment.tres"), 3)
 	var labels: Array = patch.actions().map(func(a: Dictionary) -> String: return a.label)
-	_expect(labels.size() == 1 and labels[0].begins_with("Plant coral"), "beside a patch carrying a fragment: plant it (%s)" % [labels])
+	_expect(labels == ["Restore"], "beside a patch carrying a fragment: restore it (%s)" % [labels])
 	for i in 3:
 		patch.plant()
 	_expect(is_equal_approx(patch.planted, 0.9) and inventory.count(&"coral_fragment") == 0, "3 fragments planted")
+	inventory.add(load("res://data/items/coral_fragment.tres"), 1)
+	patch.planted = 1.0
+	_expect(not patch.actions().any(func(a: Dictionary) -> bool: return a.label == "Restore"),
+		"fully planted: no Restore button (it wouldn't do anything)")
+	patch.planted = 0.9
+	inventory.take_item(&"coral_fragment", 1)
+	patch._process(0.5)
+	_expect(patch.get_node("Health").visible and patch.get_node("Health").text.ends_with("%"), "its coral shows above it (%s)" % patch.get_node("Health").text)
 	var before: float = patch.coral
 	for i in 16:
 		eco.tick(0.25)

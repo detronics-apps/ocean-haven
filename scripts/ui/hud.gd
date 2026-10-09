@@ -378,6 +378,13 @@ func nearest_animal_info() -> String:
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger:
 		return ""
+	# Things close by that have something to say but nothing to press (`info_line`): the line
+	# above the buttons, never a button that only shows a note.
+	for thing: Node in get_tree().get_nodes_in_group("interactables"):
+		if thing.has_method("info_line"):
+			var line: String = thing.info_line()
+			if line != "":
+				return line
 	var best: Node2D = null
 	for animal: Node2D in get_tree().get_nodes_in_group("animals"):
 		if animal.get("info") and (not best or animal.global_position.distance_to(ranger.global_position)

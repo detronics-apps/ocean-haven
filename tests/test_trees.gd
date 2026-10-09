@@ -53,7 +53,8 @@ func _initialize() -> void:
 		"a full-grown island palm gives 2-3 wood and 1-2 saplings (%d, %d)" % [inventory.count(&"wood"), inventory.count(&"sapling")])
 	inventory.add(load("res://data/items/wood.tres"), 6)
 	player.global_position = get_nodes_in_group("plants")[0].global_position + Vector2(-30, 10)
-	_expect(get_nodes_in_group("plants")[0].actions()[0].label == "Arms full", "can't cut with 6 wood in your arms")
+	_expect(get_nodes_in_group("plants")[0].actions().is_empty() and get_nodes_in_group("plants")[0].info_line().begins_with("Arms full"),
+		"can't cut with 6 wood in your arms: no button, the line above says so")
 	inventory.take_item(&"wood", 6)
 	var palm: Resource = load("res://data/buildings/palm_tree.tres")
 	build_mode.start(palm)

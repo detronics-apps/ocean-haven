@@ -201,11 +201,20 @@ func grazing() -> float:
 
 
 ## The coral `patch` grows back to: as far as it's planted, held back by murky water and algae.
-func coral_target(patch: ReefPatch, sites: Array) -> float:
-	var target := patch.planted * (0.4 + 0.6 * water_quality()) * (0.5 + 0.5 * grazing())
+func coral_target(patch: ReefPatch, sites: Array, planted := -1.0) -> float:
+	var target := (patch.planted if planted < 0.0 else planted) * (0.4 + 0.6 * water_quality()) * (0.5 + 0.5 * grazing())
 	if patch in sites:
 		target += site_bonus
 	return clampf(maxf(target, 0.03), 0.0, 1.0)
+
+
+## Whether planting one more fragment on `patch` would raise its coral (the Restore button
+## only shows then).
+func planting_helps(patch: ReefPatch) -> bool:
+	if patch.planted >= 1.0:
+		return false
+	var sites := _restored_by_sites()
+	return coral_target(patch, sites, minf(patch.planted + ReefPatch.FRAGMENT, 1.0)) > maxf(patch.coral, coral_target(patch, sites)) + 0.005
 
 
 ## The patches the island's Coral Restoration Sites look after (the most damaged, anywhere).

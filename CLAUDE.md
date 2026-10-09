@@ -781,6 +781,12 @@ Buttons are short: animals and buildings have a short button name (AnimalData / 
 island; fixed labels are one or two words (Sleep, Secure, Storage, Store all (N), Recycle (N),
 Open gate, Bait, Dig sand, Put away, Cut down, Board, Tow boat, Mark dive). The line above the
 buttons is short too ("Flamingo: ankle-deep, feeding").
+A button only shows when pressing it would do something (the owner's rule): no buttons that only
+show a note; what a thing has to say goes on the line above the buttons (`info_line()` on any
+interactable: oil "sail into it", "Arms full", a closed activity spot, a dark area's "N% known",
+a reef patch that can't go down here). Reef patches show their coral % above them; "Restore"
+(plant a fragment) only while it would raise the coral (ReefEcosystem.planting_helps), "Split"
+only when there's room to split onto.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

@@ -100,9 +100,17 @@ func actions() -> Array:
 	if has_nest():
 		return [{"label": "Move nest", "do": move_nest}]
 	if Inventory.room_for(_wood) <= 0:
-		return [{"label": "Arms full", "do": get_tree().call_group.bind("hud", "show_toast",
-			"You can carry %d wood. Build with it, or store it in your Ranger House." % _wood.carry_limit)}]
+		return []  # (arms full: the line above the buttons says so)
 	return [{"label": "Cut down", "do": cut_down}]
+
+
+func info_line() -> String:
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger is Player or ranger.global_position.distance_to(global_position) > CUT_RANGE:
+		return ""
+	if stage() != SMALL and not has_nest() and Inventory.room_for(_wood) <= 0:
+		return "Arms full: %d wood. Build or store it" % _wood.carry_limit
+	return ""
 
 
 ## Small: the sapling back. Medium: 1-2 wood + 1 sapling. Full grown: 2-3 wood + 1-2 saplings.

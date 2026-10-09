@@ -42,6 +42,23 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	z_index = -1
+	_health = Label.new()
+	_health.name = "Health"
+	_health.add_theme_font_size_override("font_size", 22)
+	_health.add_theme_constant_override("outline_size", 6)
+	_health.add_theme_color_override("font_outline_color", Color.BLACK)
+	_health.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_health.scale = Vector2(0.5, 0.5)
+	_health.size = Vector2(80, 30)
+	_health.position = Vector2(-20, -34)  # above the patch (drawn at half size)
+	_health.z_index = 60
+	_health.visible = false
+	add_child(_health)
+
+
+## Its coral shown above it while the ranger is close ("72%").
+var _health: Label
+var _health_check := 0.0
 
 
 func actions() -> Array:
@@ -49,21 +66,38 @@ func actions() -> Array:
 	if carried:
 		if _reef().spot_free(global_position, self):
 			return [{"label": "Put down", "do": set_down, "helps": true}]
-		return [{"label": "Can't put it here", "do": _explain_spot}]
+		return []  # (the line above the buttons says why)
 	if not ranger or ranger.global_position.distance_to(global_position) > REACH:
 		return []
 	var list := []
-	if coral >= FULL:
+	if coral >= FULL and _can_split():
 		list.append({"label": "Split", "do": split, "helps": true})
-	if planted >= 1.0:
-		list.append({"label": "Reef patch %d%%" % roundi(coral * 100.0), "do": _explain})
-	elif Inventory.available(&"coral_fragment") > 0:
-		list.append({"label": "Plant coral (%d%%)" % roundi(coral * 100.0), "do": plant, "helps": true})
-	else:
-		list.append({"label": "Reef patch %d%%" % roundi(coral * 100.0), "do": _explain})
+	if Inventory.available(&"coral_fragment") > 0 and _reef().planting_helps(self):
+		list.append({"label": "Restore", "do": plant, "helps": true})  # (only when it would help)
 	if ranger is Boat and not _reef().carrying():
 		list.append({"label": "Move", "do": pick_up})
 	return list
+
+
+## Room to split onto (asked twice a second at most: it searches the water round it).
+func _can_split() -> bool:
+	var now := Time.get_ticks_msec()
+	if now - _split_checked_at > 500:
+		_split_checked_at = now
+		var reef := _reef()
+		_split_room = reef.patches().size() < reef.max_patches and reef.free_spot_near(global_position) != null
+	return _split_room
+
+
+var _split_checked_at := -10000
+var _split_room := false
+
+
+## Carried where it can't go down: the line above the buttons says so.
+func info_line() -> String:
+	if carried and not _reef().spot_free(global_position, self):
+		return "Reef patch: needs free shallow water"
+	return ""
 
 
 func _reef() -> ReefEcosystem:
@@ -106,7 +140,13 @@ func set_down() -> void:
 	get_tree().call_group("ecosystems", "settle_now")
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_health_check -= delta
+	if _health_check <= 0.0:
+		_health_check = 0.25
+		var ranger := ControlledBody.active(get_tree())
+		_health.visible = ranger != null and ranger.global_position.distance_to(global_position) <= REACH * 2.0
+		_health.text = "%d%%" % roundi(coral * 100.0)
 	if not carried:
 		return
 	var ranger := ControlledBody.active(get_tree())

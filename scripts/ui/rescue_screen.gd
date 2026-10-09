@@ -124,9 +124,9 @@ func _fill() -> void:
 		room_panel = _room_panel(table.get_node("VetScene"))
 		var day_line := Label.new()
 		day_line.text = "Day %d of %d" % [day, one.days]
-		day_line.add_theme_font_size_override("font_size", 20)
+		day_line.add_theme_font_size_override("font_size", 15)
 		room_panel.add_child(day_line)
-		room_panel.add_child(_bars())
+		room_panel.add_child(_bars(true))
 	else:
 		_add_text("Day %d of %d in care: %s is growing a little every day." % [day, one.days, Rescues.pet_name()], 22)
 	if day - 1 < one.day_texts.size():
@@ -151,7 +151,8 @@ func _fill() -> void:
 		tip.add_theme_color_override("font_color", Color("9fe3ff"))
 		tip.text = "Care for %s with your hands: drag the things on the counter to %s (or use the buttons)." % [Rescues.pet_name(), "the tank" if one.tank else "it"]
 		if in_room:
-			tip.text = "Drag the things on the counter to %s." % ("the tank" if one.tank else "it")
+			tip.text = "Drag the things to %s." % ("the tank" if one.tank else "it")
+			tip.add_theme_font_size_override("font_size", 12)
 			room_panel.add_child(tip)
 		else:
 			_content.add_child(tip)
@@ -163,7 +164,7 @@ func _fill() -> void:
 		for action: StringName in Rescues.ACTIONS:
 			var label: String = one.get("%s_label" % action)
 			if action == &"patch" and Rescues.wounds_left() <= 0:
-				label = "No wounds to patch"
+				continue  # (nothing left to patch: no button)
 			if Rescues.cost(action) > 0:
 				label += " (%d funding)" % Rescues.cost(action)
 			var pick := _button(label, func() -> void:
@@ -180,6 +181,7 @@ func _fill() -> void:
 		mood.add_theme_color_override("font_color", Color("f2d58a"))
 		mood.text = _mood_text()
 		if in_room:
+			mood.add_theme_font_size_override("font_size", 13)
 			room_panel.add_child(mood)
 			room_panel.move_child(mood, 2)  # (under the bars, above the drag hint)
 		else:
@@ -226,10 +228,10 @@ func _room_panel(scene: Control) -> VBoxContainer:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.08, 0.16, 0.22, 0.78)
 	style.set_corner_radius_all(10)
-	style.set_content_margin_all(10)
+	style.set_content_margin_all(6)
 	panel.add_theme_stylebox_override("panel", style)
-	panel.position = Vector2(12, 12)
-	panel.custom_minimum_size.x = 340
+	panel.position = Vector2(8, 8)
+	panel.custom_minimum_size.x = 200  # small: the animal is what matters here
 	scene.add_child(panel)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 6)
@@ -246,21 +248,26 @@ static func _ignore_mouse(node: Node) -> void:
 
 
 ## Health, fed and calm, 0-100 (updated live: `_process`).
-func _bars() -> Control:
+func _bars(compact := false) -> Control:
 	var box := VBoxContainer.new()
 	box.name = "Bars"
+	box.add_theme_constant_override("separation", 3 if compact else 4)
 	for name: StringName in Rescues.BARS:
 		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 10)
+		row.add_theme_constant_override("separation", 6 if compact else 10)
 		var label := Label.new()
 		label.text = Rescues.BAR_NAMES[name]
-		label.custom_minimum_size.x = 80
+		label.custom_minimum_size.x = 52 if compact else 80
+		if compact:
+			label.add_theme_font_size_override("font_size", 13)
 		row.add_child(label)
 		var bar := ProgressBar.new()
 		bar.name = String(name)
 		bar.max_value = 100
 		bar.value = Rescues.bar(name)
-		bar.custom_minimum_size = Vector2(240, 22)
+		bar.custom_minimum_size = Vector2(130, 14) if compact else Vector2(240, 22)
+		if compact:
+			bar.add_theme_font_size_override("font_size", 11)
 		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var fill := StyleBoxFlat.new()
 		fill.bg_color = BAR_COLOURS[name]

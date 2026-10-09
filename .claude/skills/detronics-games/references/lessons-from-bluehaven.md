@@ -56,6 +56,7 @@ you can scan the group you're working in.
 | Sound silent on the web | Buses in the bus layout file |
 | Emoji in text showed as boxes | No emoji in game text |
 | Buttons repeated full names ("Move Mangrove Waterworks Station") | A short button name per thing in its data from the start; one- or two-word labels |
+| "Reef patch 100%" buttons that only showed a note; "Plant coral" when it wouldn't help | A button only when pressing it does something; info goes on a line or above the thing |
 | Notes written like chat ("You quietly watched the…!") | Notes are hints that something happened, not conversation |
 | Notes in a big black box, long text, many at once, news from other islands | One short line, one at a time, only the newest waits, only where the player is; design the note system in foundations |
 
