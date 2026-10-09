@@ -22,9 +22,16 @@ Everything below broke at least once on BlueHaven.
   `application/boot_splash/image`, `bg_color` the same colour as the page, `use_filter=false`
   for pixel art). Drawn by a script (`tools/make_splash.py`) so it can be redrawn: the title on
   the game's world, lower part left empty for the loader.
-- The web loading bar is part of the brand: hide the engine's bar and draw a small animated
-  canvas in its place (BlueHaven: a spinning pixel globe with a turtle swimming round it; the
-  progress is the turtle's way round). It goes in the export preset's head include (a `<style>`
+- The splash has a see-through background and the page and engine use one solid colour behind
+  it: a picture with its own background is fitted to the screen and leaves bands of another
+  colour (dark and light blue) above and below it in portrait.
+- Small text in the splash at full resolution, not as scaled-up pixel letters (unreadable on a
+  phone).
+- The web loading bar is part of the brand, but keep it a plain bar the eye understands: hide
+  the engine's bar and draw a simple one just under the title (placed from the splash's own
+  layout, so it sits there in portrait and landscape), with the game's own character on it
+  (BlueHaven: the top-view turtle swimming at the bar's front). A globe the turtle swam round
+  was replaced: too far from the title, and less clear than a bar. It goes in the export preset's head include (a `<style>`
   and a `<script>`); the engine sets inline styles, so the CSS needs `!important`. Read the
   engine's own progress value, ease it, fall back to time when there's none; stop the animation
   once the canvas leaves the page.

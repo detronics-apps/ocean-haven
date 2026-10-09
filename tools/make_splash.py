@@ -1,25 +1,13 @@
 """BlueHaven's loading picture (application/boot_splash/image): the title in pixel letters
-over a dark ocean with a few waves; the web page's spinning globe and swimming turtle
-(export_presets.cfg head_include) sit in the space below the title.
+and the line under it, see-through around them; on the web a loading bar with the game's
+turtle swimming along it (export_presets.cfg head_include) sits just below.
 Run: python3 tools/make_splash.py"""
 from PIL import Image, ImageDraw, ImageFont
-import random
 
 W, H, PX = 240, 135, 4          # drawn small, scaled up 4x: crisp pixels
-OCEAN_TOP, OCEAN_BOTTOM = (16, 44, 66), (10, 30, 48)
-img = Image.new("RGB", (W, H))
-d = ImageDraw.Draw(img)
-for y in range(H):
-    t = y / H
-    d.line((0, y, W, y), fill=tuple(int(a + (b - a) * t) for a, b in zip(OCEAN_TOP, OCEAN_BOTTOM)))
-random.seed(7)
-for i in range(26):  # little wave crests
-    x, y = random.randrange(W), random.randrange(70, H - 4)
-    d.line((x, y, x + 3, y), fill=(42, 92, 120))
-    d.point((x + 1, y - 1), fill=(60, 120, 150))
-for i in range(30):  # bubbles / light flecks in the upper water
-    x, y = random.randrange(W), random.randrange(4, 60)
-    d.point((x, y), fill=(36, 80, 108))
+## See-through around the words: the page (and Godot's bg_color, #102c42) is the one ocean
+## colour behind it, filling the whole screen in portrait and landscape alike.
+img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 
 def pixel_text(text, size, colour_top, colour_bottom, outline):
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", size)
@@ -46,9 +34,16 @@ def pixel_text(text, size, colour_top, colour_bottom, outline):
     return out
 
 title = pixel_text("BlueHaven", 30, (190, 245, 240), (60, 190, 210), (8, 24, 38))
-img.paste(title, ((W - title.width) // 2, 16), title)
-sub = pixel_text("restore the ocean, one step at a time", 8, (230, 236, 210), (200, 210, 190), (8, 24, 38))
-img.paste(sub, ((W - sub.width) // 2, 16 + title.height + 4), sub)
+img.paste(title, ((W - title.width) // 2, 34), title)
 img = img.resize((W * PX, H * PX), Image.NEAREST)
+# The line under it at full resolution, so it reads easily (pixel letters at this size didn't).
+font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
+text = "restore the ocean, one step at a time"
+d = ImageDraw.Draw(img)
+top = (34 + title.height) * PX + 14
+width = d.textlength(text, font=font)
+d.text(((W * PX - width) / 2, top), text, font=font, fill=(232, 238, 214, 255), stroke_width=3, stroke_fill=(8, 24, 38, 255))
+## The web page's loading bar goes just under this line (export_presets.cfg: SUB_BOTTOM).
+print("subtitle bottom", top + 40)
 img.save("assets/ui/splash/splash.png")
 print("assets/ui/splash/splash.png", img.size)

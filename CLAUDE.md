@@ -132,9 +132,10 @@ itch.io is no longer kept up to date — don't rebuild the itch zip.
 - Test exported builds, not just the editor: the browser caches `index.pck` (use a fresh port for a
   local server), and headless can run an exported pack: `godot --headless --main-pack <pck> --script <abs path>`.
 - Loading screen: the boot splash `assets/ui/splash/splash.png` (drawn by `tools/make_splash.py`:
-  the BlueHaven title on the sea) and, on the web, a spinning pixel globe with a turtle swimming
-  round it as the loading bar (a canvas script in the Web Pages preset's head_include, which hides
-  Godot's own bar). Nothing about Detronics there; the subtitle is "restore the ocean, one step at a time" (the
+  the pixel BlueHaven title and a crisp line under it, see-through round them, so the one ocean
+  colour #102c42 = boot_splash/bg_color fills the whole screen) and, on the web, a loading bar
+  just under that line with the game's top-view turtle swimming at its front (the Web Pages
+  preset's head_include, which hides Godot's own bar; SUB_BOTTOM there = the line's bottom). Nothing about Detronics there; the subtitle is "restore the ocean, one step at a time" (the
 other islands are a surprise). The HUD's Map button only shows once an Exploration Ship is built
 (Fleet flag "map_shown"; older saves with another island found get it too).
 - The game shows its revision (`rN sha`, bottom left) from `version.txt`, written at publish time.
