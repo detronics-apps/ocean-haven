@@ -104,81 +104,41 @@ html, body { position: fixed; left: 0; top: 0; width: 100%; height: 100%; overfl
 </style>
 <meta name="mobile-web-app-capable" content="yes">
 <style>
-/* Loading: BlueHaven's own picture (the boot splash) with a spinning globe and a turtle
-   swimming once round it as the game downloads, in place of the plain bar. */
+/* Loading: one ocean colour fills the whole screen; BlueHaven's title (the boot splash, see-through
+   round its words) in the middle, and just under it a bar with the game's turtle swimming along it. */
 #status { background-color: #102c42 !important; }
 #status-progress { display: none !important; }
-#bh-loader { position: absolute; left: 50%; bottom: 7%; transform: translateX(-50%); width: min(40vmin, 240px); height: auto; image-rendering: pixelated; }
+#bh-loader { position: absolute; left: 50%; transform: translateX(-50%); width: min(70vw, 360px); height: 40px; }
+#bh-track { position: absolute; left: 0; right: 0; top: 24px; height: 6px; border-radius: 3px; background: rgba(160, 220, 240, 0.18); }
+#bh-fill { position: absolute; left: 0; top: 24px; height: 6px; border-radius: 3px; background: #4fd1c5; width: 0; }
+#bh-turtle { position: absolute; top: 4px; width: 39px; height: 33px; margin-left: -30px; image-rendering: pixelated; }
 </style>
 <script>
 window.addEventListener('DOMContentLoaded', function () {
 	var status = document.getElementById('status');
 	var bar = document.getElementById('status-progress');
 	if (!status) return;
-	var S = 96, C = 48, R = 25, ORBIT = 38;
-	var canvas = document.createElement('canvas');
-	canvas.id = 'bh-loader'; canvas.width = S; canvas.height = S;
-	status.appendChild(canvas);
-	var g = canvas.getContext('2d');
-	g.imageSmoothingEnabled = false;
-	var turtle = new Image();
-	turtle.src = 'data:image/png;base64,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';
-	// A little world map (land / sea), seeded so it's the same each time.
-	var MW = 64, MH = 32, land = [];
-	var seed = 11;
-	function rand() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-	var blobs = [];
-	for (var b = 0; b < 9; b++) blobs.push([rand() * MW, 6 + rand() * (MH - 12), 3 + rand() * 6]);
-	for (var y = 0; y < MH; y++) for (var x = 0; x < MW; x++) {
-		var on = false;
-		for (var k = 0; k < blobs.length; k++) {
-			var dx = Math.min(Math.abs(x - blobs[k][0]), MW - Math.abs(x - blobs[k][0])), dy = y - blobs[k][1];
-			if (dx * dx + dy * dy * 2.2 < blobs[k][2] * blobs[k][2]) on = true;
-		}
-		land.push(on);
-	}
-	var globe = g.createImageData(2 * R + 1, 2 * R + 1);
-	var spin = 0, start = performance.now(), shown = 0;
+	// Where the title's line ends on the 960 x 540 splash (tools/make_splash.py prints it).
+	var SUB_BOTTOM = 306;
+	var box = document.createElement('div');
+	box.id = 'bh-loader';
+	box.innerHTML = '<div id=bh-track></div><div id=bh-fill></div><img id=bh-turtle alt=>';
+	status.appendChild(box);
+	var fill = document.getElementById('bh-fill'), turtle = document.getElementById('bh-turtle');
+	turtle.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAWCAYAAADeiIy1AAAAAXNSR0IArs4c6QAAAWlJREFUSIljZCATqDjL/0cXu7P3ISMu9SzkWqJtLo1N6j8uy5jIsYgcgOEj9CDBFxxkW4QtSLjufcOIC4Z73xgYzDEN47r3jTiLYOD3gSdwtowkJ1aNyGpQ1Yr+v3T/NUYo4EwMBgZSOF2HC1y48AynHIpF0Pj4rwblKyhIMDAwMDA8ePACpwHoalj1hRiM9YXgwX12w01GDIsYGKDhjCW4YAYiA2wOsPHSQBf6f3bDTUZ48lZxlv+v4iz//5sSF07XkwLWTziKwmeBWYKc2mARjS/IYACXmsACaxQ+fTMsLBHABClJDDCwfsJRFF/BEwOsBNBTFP2PLTGQCtCDDiPVfVPiYmD4jlkYEBNfDAwMDEe23UDhY03esERBSWL4ffEdA0klA75cTg7AahGrgwycfX/5bawaFSNVMcTuL7+N1TcYFqGnPgYGBoY7WDRiq10ZGKDxex+ruzB9RK36Bx3QLcOS7XpSGycA/euRH5Lk7I0AAAAASUVORK5CYII=';
+	var start = performance.now(), shown = 0;
 	function frame(now) {
-		if (!document.body.contains(canvas) || status.style.visibility === 'hidden' && now - start > 2000 && !document.getElementById('status')) return;
-		g.clearRect(0, 0, S, S);
-		// The globe, turning.
-		spin += 0.004;
-		for (var py = -R; py <= R; py++) for (var px = -R; px <= R; px++) {
-			var i = ((py + R) * (2 * R + 1) + (px + R)) * 4;
-			var nx = px / R, ny = py / R, d = nx * nx + ny * ny;
-			if (d > 1) { globe.data[i + 3] = 0; continue; }
-			var lat = Math.asin(ny), lon = Math.asin(nx / Math.max(Math.cos(lat), 0.01)) + spin * 6.283;
-			var mx = Math.floor(((lon / 6.283) % 1 + 1) % 1 * MW), my = Math.floor((lat / 3.1416 + 0.5) * (MH - 1));
-			var shade = 0.7 + 0.3 * Math.sqrt(1 - d) - (nx > 0.35 ? 0.15 : 0);
-			var c = land[my * MW + mx] ? [92, 170, 90] : [42, 128, 176];
-			if (land[my * MW + mx] && (my < 4 || my > MH - 5)) c = [230, 240, 245];
-			globe.data[i] = c[0] * shade; globe.data[i + 1] = c[1] * shade; globe.data[i + 2] = c[2] * shade; globe.data[i + 3] = 255;
-		}
-		g.putImageData(globe, C - R, C - R);
-		// Its path round the globe, and how far the download has come.
-		var p = (bar && bar.max > 0 && bar.value >= 0 && bar.hasAttribute('value')) ? bar.value / bar.max : ((now - start) / 9000) % 1;
-		shown += (p - shown) * 0.08;
-		g.fillStyle = 'rgba(160, 220, 240, 0.35)';
-		for (var a = 0; a < 48; a++) {
-			var t = a / 48 * 6.283 - 1.5708;
-			g.fillRect(Math.round(C + Math.cos(t) * ORBIT), Math.round(C + Math.sin(t) * ORBIT), 1, 1);
-		}
-		g.fillStyle = 'rgba(190, 245, 240, 0.9)';
-		for (var a = 0; a <= shown * 48; a++) {
-			var t = a / 48 * 6.283 - 1.5708;
-			g.fillRect(Math.round(C + Math.cos(t) * ORBIT), Math.round(C + Math.sin(t) * ORBIT), 1, 1);
-		}
-		// The turtle swimming along it (a little bob as it paddles).
-		var ang = shown * 6.283 - 1.5708;
-		var bob = Math.sin(now / 180) * 1.2;
-		if (turtle.complete) {
-			g.save();
-			g.translate(C + Math.cos(ang) * (ORBIT + bob), C + Math.sin(ang) * (ORBIT + bob));
-			g.rotate(ang + 1.5708);
-			g.drawImage(turtle, -11, -11, 22, 22);
-			g.restore();
-		}
+		if (!document.body.contains(box)) return;
+		// Just under the title's line, wherever the splash sits (it's fitted to the screen).
+		var scale = Math.min(window.innerWidth / 960, window.innerHeight / 540);
+		box.style.top = Math.round(window.innerHeight / 2 + (SUB_BOTTOM - 270) * scale + 12) + 'px';
+		var p = (bar && bar.max > 0 && bar.hasAttribute('value')) ? bar.value / bar.max : 1 - Math.exp(-(now - start) / 6000);
+		shown += (Math.min(p, 1) - shown) * 0.08;
+		var width = box.clientWidth * shown;
+		fill.style.width = width + 'px';
+		// The turtle paddles at the front of the bar (a little bob and sway).
+		turtle.style.left = Math.max(width, 18) + 'px';
+		turtle.style.transform = 'translateY(' + (Math.sin(now / 160) * 1.5).toFixed(1) + 'px) rotate(' + (Math.sin(now / 320) * 6).toFixed(1) + 'deg)';
 		requestAnimationFrame(frame);
 	}
 	requestAnimationFrame(frame);
@@ -246,7 +206,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":5600516,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":5611044,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
