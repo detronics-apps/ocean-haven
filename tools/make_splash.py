@@ -47,7 +47,7 @@ def pixel_text(text, size, colour_top, colour_bottom, outline):
 
 title = pixel_text("BlueHaven", 30, (190, 245, 240), (60, 190, 210), (8, 24, 38))
 img.paste(title, ((W - title.width) // 2, 16), title)
-sub = pixel_text("restore the ocean, one island at a time", 8, (230, 236, 210), (200, 210, 190), (8, 24, 38))
+sub = pixel_text("restore the ocean, one step at a time", 8, (230, 236, 210), (200, 210, 190), (8, 24, 38))
 img.paste(sub, ((W - sub.width) // 2, 16 + title.height + 4), sub)
 img = img.resize((W * PX, H * PX), Image.NEAREST)
 img.save("assets/ui/splash/splash.png")

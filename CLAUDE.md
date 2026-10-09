@@ -111,6 +111,9 @@ addons/                  third-party Godot plugins only
 
 ## Website (GitHub Pages — where the phone should play)
 
+The home page's picture (web/screenshot.png) is rendered by `tools/make_home_picture.gd` (xvfb):
+the Starting Island as a new game starts, one of each animal, Maya and Tom at their places.
+
 `bash tools/publish_pages.sh` exports the "Web Pages" preset (an installable PWA) to
 `build/site/play/`, adds the home page from `web/` (Godot ignores it), and pushes the site to the
 `gh-pages` branch (checked out as a worktree at `build/gh-pages`). Served at
@@ -131,7 +134,9 @@ itch.io is no longer kept up to date — don't rebuild the itch zip.
 - Loading screen: the boot splash `assets/ui/splash/splash.png` (drawn by `tools/make_splash.py`:
   the BlueHaven title on the sea) and, on the web, a spinning pixel globe with a turtle swimming
   round it as the loading bar (a canvas script in the Web Pages preset's head_include, which hides
-  Godot's own bar). Nothing about Detronics there.
+  Godot's own bar). Nothing about Detronics there; the subtitle is "restore the ocean, one step at a time" (the
+other islands are a surprise). The HUD's Map button only shows once an Exploration Ship is built
+(Fleet flag "map_shown"; older saves with another island found get it too).
 - The game shows its revision (`rN sha`, bottom left) from `version.txt`, written at publish time.
 - The installed app keeps the engine (`index.wasm`, ~39 MB) in its own cache across versions
   (`tools/patch_service_worker.py`, run by the publish script), so an update only downloads

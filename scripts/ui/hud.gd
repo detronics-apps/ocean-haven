@@ -89,6 +89,7 @@ func _ready() -> void:
 	map_button.text = "Map"
 	map_button.focus_mode = Control.FOCUS_NONE
 	map_button.custom_minimum_size = Vector2(80, 44)
+	map_button.visible = false  # shown by _check_unlocks once there's a ship
 	map_button.pressed.connect(get_tree().call_group.bind("voyage_map", "open"))
 	var explore := ExploreMenu.new()  # opened only from the Exploration Ship, never from here
 	explore.name = "ExploreMenu"
@@ -450,6 +451,15 @@ func _process(delta: float) -> void:
 ## first island), the island health bar with the research station on the second island.
 const MINIMAP_NEEDS := &"salvaged_sonar_core"
 const HEALTH_FLAG := &"health_gauge"
+## The other islands are a surprise: the Map button only shows once an Exploration Ship is built.
+const MAP_FLAG := &"map_shown"
+
+
+func _ship_built() -> bool:
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if building.data.id == &"expedition_boat":
+			return true
+	return false
 
 
 func _check_unlocks() -> void:
@@ -459,6 +469,11 @@ func _check_unlocks() -> void:
 	if minimap.visible and not Fleet.has_flag(&"minimap_shown"):
 		Fleet.mark(&"minimap_shown")
 		show_toast("Map unlocked (bottom left)", true)
+	var map_button := find_child("MapButton", true, false) as Control
+	if map_button:
+		if not Fleet.has_flag(MAP_FLAG) and (Regions.discovered_count() > 1 or _ship_built()):
+			Fleet.mark(MAP_FLAG)
+		map_button.visible = Fleet.has_flag(MAP_FLAG)
 	if not Fleet.has_flag(HEALTH_FLAG):
 		for building: Building in get_tree().get_nodes_in_group("buildings"):
 			if building.data.facility == &"signature" and Regions.nearest(building.global_position).id != &"home_island":
