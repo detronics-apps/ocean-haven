@@ -42,6 +42,10 @@ var _hatching := -1.0
 ## The colour just above each eye (its eyelid when it blinks).
 var _lids: Array[Color] = []
 var _lids_stage := -1
+## Where an eyelid's colour is looked for (share of the picture from the eye).
+const LID_ABOVE: Array[Vector2] = [Vector2(0, -0.07), Vector2(0, -0.05), Vector2(-0.04, -0.06), Vector2(0.04, -0.06)]
+const LID_BESIDE: Array[Vector2] = [Vector2(-0.06, 0), Vector2(0.06, 0)]
+const LID_BELOW: Array[Vector2] = [Vector2(0, 0.06)]
 
 
 func _ready() -> void:
@@ -60,11 +64,21 @@ func _lid_colours() -> Array[Color]:
 	var texture := rescue.picture(stage)
 	var image := texture.get_image() if texture else null
 	for eye in rescue.eyes_at(stage):
-		if image:
-			var at := Vector2i((Vector2(image.get_size()) * (eye - Vector2(0, 0.07))).clamp(Vector2.ZERO, Vector2(image.get_size() - Vector2i.ONE)))
-			_lids.append(image.get_pixelv(at))
-		else:
+		if not image:
 			_lids.append(Color.WHITE)
+			continue
+		# The brightest skin a little above the eye (an eye near the edge of the head would
+		# otherwise take the dark outline's colour); beside it, then below, if nothing's there.
+		var best := Color(0, 0, 0, 0)
+		for spots: Array in [LID_ABOVE, LID_BESIDE, LID_BELOW]:
+			for offset: Vector2 in spots:
+				var at := Vector2i((Vector2(image.get_size()) * (eye + offset)).clamp(Vector2.ZERO, Vector2(image.get_size() - Vector2i.ONE)))
+				var colour := image.get_pixelv(at)
+				if colour.a > 0.5 and (best.a == 0.0 or colour.get_luminance() > best.get_luminance()):
+					best = colour
+			if best.a > 0.0:
+				break
+		_lids.append(best if best.a > 0.0 else Color.WHITE)
 	return _lids
 
 

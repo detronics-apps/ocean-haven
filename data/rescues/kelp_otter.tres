@@ -14,7 +14,7 @@
 script = ExtResource("1_r")
 stage_pictures = Array[Texture2D]([ExtResource("stage_1"), ExtResource("stage_2"), ExtResource("stage_3"), ExtResource("stage_4"), ExtResource("stage_5"), ExtResource("stage_6")])
 stage_sizes = PackedFloat32Array(1, 1, 1, 1, 1, 1)
-stage_points = Array[PackedVector2Array]([PackedVector2Array(0.51, 0.69, 0.64, 0.69, 0.64, 0.676, 0.556, 0.886), PackedVector2Array(0.64, 0.49, 0.79, 0.475, 0.728, 0.542, 0.583, 0.866), PackedVector2Array(0.69, 0.45, 0.835, 0.44, 0.777, 0.516, 0.596, 0.875), PackedVector2Array(0.69, 0.435, 0.84, 0.43, 0.772, 0.516, 0.604, 0.875), PackedVector2Array(0.754, 0.4, 0.87, 0.415, 0.81, 0.495, 0.613, 0.872), PackedVector2Array(0.717, 0.33, 0.87, 0.315, 0.797, 0.444, 0.603, 0.891)])
+stage_points = Array[PackedVector2Array]([PackedVector2Array(0.51, 0.69, 0.64, 0.69, 0.64, 0.676, 0.556, 0.886), PackedVector2Array(0.64, 0.49, 0.762, 0.47, 0.728, 0.542, 0.583, 0.866), PackedVector2Array(0.69, 0.45, 0.835, 0.44, 0.777, 0.516, 0.596, 0.875), PackedVector2Array(0.69, 0.435, 0.84, 0.43, 0.772, 0.516, 0.604, 0.875), PackedVector2Array(0.754, 0.4, 0.908, 0.392, 0.81, 0.495, 0.613, 0.872), PackedVector2Array(0.717, 0.33, 0.87, 0.315, 0.797, 0.444, 0.603, 0.891)])
 id = &"kelp_otter"
 region = &"kelp_forest"
 species = ExtResource("2_t")
