@@ -133,8 +133,8 @@ itch.io is no longer kept up to date — don't rebuild the itch zip.
   local server), and headless can run an exported pack: `godot --headless --main-pack <pck> --script <abs path>`.
 - Loading screen: the boot splash `assets/ui/splash/splash.png` (drawn by `tools/make_splash.py`:
   the pixel BlueHaven title and a crisp line under it, see-through round them, so the one ocean
-  colour #102c42 = boot_splash/bg_color fills the whole screen) and, on the web, a loading bar
-  just under that line with the game's top-view turtle swimming at its front (the Web Pages
+  colour #102c42 = boot_splash/bg_color fills the whole screen) and, on the web, a little pixel
+  globe turning above the title and a loading bar just under that line with the game's top-view turtle swimming at its front (the Web Pages
   preset's head_include, which hides Godot's own bar; SUB_BOTTOM there = the line's bottom). Nothing about Detronics there; the subtitle is "restore the ocean, one step at a time" (the
 other islands are a surprise). The HUD's Map button only shows once an Exploration Ship is built
 (Fleet flag "map_shown"; older saves with another island found get it too).
@@ -686,7 +686,8 @@ Sanna and Erik get nervous (PersonData.scared_line, a red "!"), the skua circles
 keeps it away: cleared, it wanders back to the ice. Flamingos' legs show the Mangrove Coast's water
 level (AnimalData.shows_water_level: their note says dry feet / ankle-deep and feeding /
 belly-deep, and a shader, assets/effects/wading/, tints only the leg pixels in the water the
-tile's own colour, feet still showing, or hides the feet in mud; nothing on dry land). The end credits have an x1 to x5 speed button (a phone tap counted once: touch and its mouse click used to step twice). Buttons keep short
+tile's own colour, feet still showing, or hides the feet in mud; nothing on dry land). The end credits start at x3 (EndCredits.START_SPEED) and have an x1 to x5 speed button; Close and
+the speed button keep inside the phone's safe area (SafeArea) (a phone tap counted once: touch and its mouse click used to step twice). Buttons keep short
 labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene

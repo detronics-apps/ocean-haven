@@ -31,7 +31,8 @@ Everything below broke at least once on BlueHaven.
   the engine's bar and draw a simple one just under the title (placed from the splash's own
   layout, so it sits there in portrait and landscape), with the game's own character on it
   (BlueHaven: the top-view turtle swimming at the bar's front). A globe the turtle swam round
-  was replaced: too far from the title, and less clear than a bar. It goes in the export preset's head include (a `<style>`
+  was moved: the bar shows the progress, and the globe turns on its own just above the title.
+  Centre the character on the bar's line, not resting on top of it. It goes in the export preset's head include (a `<style>`
   and a `<script>`); the engine sets inline styles, so the CSS needs `!important`. Read the
   engine's own progress value, ease it, fall back to time when there's none; stop the animation
   once the canvas leaves the page.

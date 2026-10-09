@@ -17,6 +17,8 @@ const BLACK_SECONDS := 2.5
 ## Rolling speed, in body-text line heights a second (slow readers: about 2.3 s a line).
 const LINES_PER_SECOND := 0.43
 const SPEEDS := [1.0, 2.0, 3.0, 4.0, 5.0]
+## They start rolling at x3 (the owner's choice); the button steps on from there.
+const START_SPEED := 2
 ## How quickly the text shrinks into the distance (in screen heights: smaller = sooner).
 const DEPTH := 0.9
 
@@ -28,6 +30,7 @@ var _speed := 0  # index into SPEEDS
 var _stars: Array[Vector3] = []
 var _canvas: Control
 var _speed_button: Button
+var _close: Button
 var _laid_for := Vector2.ZERO
 
 
@@ -47,28 +50,46 @@ func _ready() -> void:
 	close.text = "Close"
 	close.custom_minimum_size = Vector2(96, 48)
 	close.modulate = Color(1, 1, 1, 0.55)
-	close.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE, 16)
 	close.pressed.connect(stop)
 	add_child(close)
+	_close = close
 	_speed_button = Button.new()
 	_speed_button.name = "Speed"
 	_speed_button.custom_minimum_size = Vector2(88, 56)
 	_speed_button.add_theme_font_size_override("font_size", 24)
 	_speed_button.modulate = Color(1, 0.92, 0.7, 0.8)
-	_speed_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE, 24)
 	_speed_button.pressed.connect(toggle_speed)
 	add_child(_speed_button)
+	_place_buttons()
+	get_viewport().size_changed.connect(_place_buttons)
 	for i in 160:
 		_stars.append(Vector3(randf(), randf(), randf_range(0.3, 1.0)))
+
+
+## Close top right and the speed button bottom left, inside a phone's rounded corners, notch
+## and home bar (SafeArea), in portrait and landscape.
+func _place_buttons() -> void:
+	var m := SafeArea.margins(get_viewport(), 12.0)
+	_close.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_close.offset_left = -m.z - _close.custom_minimum_size.x
+	_close.offset_right = -m.z
+	_close.offset_top = m.y
+	_close.offset_bottom = m.y + _close.custom_minimum_size.y
+	_speed_button.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	_speed_button.offset_left = m.x
+	_speed_button.offset_right = m.x + _speed_button.custom_minimum_size.x
+	_speed_button.offset_top = -m.w - _speed_button.custom_minimum_size.y
+	_speed_button.offset_bottom = -m.w
 
 
 func play() -> void:
 	_offset = 0.0
 	_time = 0.0
-	_speed = 0
+	_speed = START_SPEED
 	_laid_for = Vector2.ZERO
 	visible = true
 	get_tree().paused = true
+	_place_buttons()
 	_update_note()
 
 

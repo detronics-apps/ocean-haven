@@ -135,16 +135,13 @@ func _initialize() -> void:
 		"'A Final Word', all the way to the last line (%d rows)" % rows.size())
 	for i in 200:  # (past the black)
 		credits._process(1.0 / 30.0)
-	var slow: float = credits.progress()
-	credits.toggle_speed()
+	var speed_button: Button = credits.find_child("Speed", true, false)
+	_expect(speed_button.text == "x3" and is_equal_approx(credits.speed(), 3.0), "the credits start at x3")
+	var rolled: float = credits.progress()
 	for i in 60:
 		credits._process(1.0 / 30.0)
-	var fast: float = credits.progress() - slow
-	var speed_button: Button = credits.find_child("Speed", true, false)
-	_expect(speed_button.text == "x2", "the speed button now reads x2")
-	speed_button.pressed.emit()
-	_expect(speed_button.text == "x3" and is_equal_approx(credits.speed(), 3.0), "then x3")
-	speed_button.pressed.emit()
+	var fast: float = credits.progress() - rolled
+	credits.toggle_speed()
 	_expect(speed_button.text == "x4", "then x4")
 	speed_button.pressed.emit()
 	_expect(speed_button.text == "x5" and is_equal_approx(credits.speed(), 5.0), "then x5")
@@ -154,7 +151,12 @@ func _initialize() -> void:
 	for i in 60:
 		credits._process(1.0 / 30.0)
 	var normal: float = credits.progress() - before
-	_expect(credits.is_playing() and is_equal_approx(fast, normal * 2.0), "x2: twice as fast (%.4f vs %.4f)" % [fast, normal])
+	speed_button.pressed.emit()
+	_expect(speed_button.text == "x2", "then x2")
+	_expect(credits.is_playing() and is_equal_approx(fast, normal * 3.0), "x3: three times as fast (%.4f vs %.4f)" % [fast, normal])
+	var close: Control = credits.find_child("Close", true, false)
+	var seen := Rect2(Vector2.ZERO, credits.get_viewport().get_visible_rect().size)
+	_expect(seen.encloses(close.get_global_rect()) and seen.encloses(speed_button.get_global_rect()), "Close and the speed button are on the screen")
 	var minutes: float = 1.0 / (normal * 30.0 / 60.0) / 60.0
 	_expect(minutes > 4.0, "slow enough for slow readers: about %.1f minutes at normal speed" % minutes)
 	credits.stop()
