@@ -19,6 +19,12 @@ BlueHaven.
   contradicts existing rules.
 - **"For later" / "future items"** inside a message: don't build them. Add them to the plan's
   parked list and mention them at the next midway review.
+- **Messages while you work.** New requests often arrive mid-task. Finish and commit the step
+  you're on (never leave it broken), then do the new ones; a later message can change an
+  earlier one ("the home image should show how it starts" replaced the restored picture just
+  built), so re-read them all before building the next piece.
+- **"Relook at all of them"** means check every one (all six rescue animals, every stage), fix
+  the wrong ones, and say which were fine.
 - **Interrupting** ("stop", a rejected tool call): stop at once. Wait. If they then say "keep it
   as it was", revert everything touched for it (code, tests, docs), show it's clean, stop.
 

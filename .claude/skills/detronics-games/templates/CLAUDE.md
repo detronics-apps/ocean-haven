@@ -24,6 +24,8 @@
 - Static typing; class names PascalCase; signals between unrelated nodes.
 - Tunable numbers are exported or in data, with units in a comment.
 - Data, not code, defines content.
+- Performance: never `load()` or list folders in game code (one cached loader); nothing per
+  frame loops over every tile or flood-fills (cache, rebuild on change).
 
 ## Workflow
 - Instructions vs discussion: instructions are built straight away; discussion gets a plan and
@@ -37,6 +39,8 @@
 
 ## Publishing (where the owner plays)
 `<publish command>` → <URL>. After a batch of playable changes; tell the owner the revision.
+The game's own splash and web loader (nothing about the company, no spoilers); the home page
+picture rendered from a new game. Check UI changes at 390x844 and 844x390.
 
 ## Milestones
 **<0.1 — vertical slice>** …

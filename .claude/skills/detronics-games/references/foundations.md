@@ -53,6 +53,9 @@ Compatibility renderer), BlueHaven's stack; translate if the game uses another e
   open/return, never mid-load.
 - Compare the exported data with the project before publishing (refuse if they differ).
 - Publish after a batch of playable changes, not every commit; tell the owner the revision.
+- The game's own loading screen from the first publish: boot splash + a branded web loader
+  (phone-and-web.md), nothing about the company, no spoilers.
+- A home page whose picture is rendered from a new game (how it really starts).
 
 ## Phone-first UI (day 1)
 - Input actions only (no hard-coded keys); touch, controller and keyboard all work.
@@ -74,6 +77,12 @@ Compatibility renderer), BlueHaven's stack; translate if the game uses another e
 - A mini-game base (start page, timer, levels, hearts, records, finish) and 2-3 shared
   frameworks for mini-games (grid, mover, sort).
 - A "what is this?" info card for things that aren't self-explanatory.
+
+## Performance rules (in CLAUDE.md from day 1)
+- One cached loader for data and pictures; never `load()` or list folders in game code.
+- Nothing per frame loops over every tile or flood-fills; cache it, rebuild on change (one place
+  changes tiles and sends a signal). Slow work runs a few times a second.
+- Measure on the biggest area before guessing.
 
 ## Art pipeline
 - Placeholder SVGs with a script that adds a 1-px darker outline; import with Nearest filter.

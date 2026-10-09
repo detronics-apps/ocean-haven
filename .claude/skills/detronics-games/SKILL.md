@@ -1,6 +1,6 @@
 ---
 name: detronics-games
-description: Detronics' way of making a game with Claude, from the first idea to a finished, published, calibrated game. Use it whenever the owner starts a new game, asks to plan or build a game feature, area, level, character, mini-game, story, save system, ending, balance or calibration pass, or says "detronics-games". It covers how the owner communicates (plan vs build), the phases (vision, systems model, foundations, vertical slice, area-by-area build, midway review, story layer, ending, calibration), the ripple check before every change, and the lessons learned building BlueHaven (Godot 4, phone web app, ~290 commits in 12 days).
+description: Detronics' way of making a game with Claude, from the first idea to a finished, published, calibrated game. Use it whenever the owner starts a new game, asks to plan or build a game feature, area, level, character, mini-game, story, save system, ending, balance or calibration pass, or says "detronics-games". It covers how the owner communicates (plan vs build), the phases (vision, systems model, foundations, vertical slice, area-by-area build, midway review, story layer, ending, calibration), the ripple check before every change, and the lessons learned building BlueHaven (Godot 4, phone web app, ~300 commits in 14 days): loading screen, home page, speed, phone portrait/landscape, storms, the ending and where donations go.
 ---
 
 # Detronics games
@@ -27,8 +27,8 @@ Read the reference files when you reach their phase; don't load them all at once
 | Setting up the project (before any content) | [references/foundations.md](references/foundations.md) |
 | Building any step | [references/build-loop.md](references/build-loop.md) |
 | Before every change, however small | [references/ripple-check.md](references/ripple-check.md) |
-| People, story, mini-games, the ending | [references/story-and-ending.md](references/story-and-ending.md) |
-| Phone / web / publishing | [references/phone-and-web.md](references/phone-and-web.md) |
+| People, story, mini-games, storms, the ending, donations | [references/story-and-ending.md](references/story-and-ending.md) |
+| Phone / web / publishing, loading screen, home page, portrait + landscape, speed | [references/phone-and-web.md](references/phone-and-web.md) |
 | Starting a project or an area | [templates/](templates/) |
 | To avoid repeating a known mistake | [references/lessons-from-bluehaven.md](references/lessons-from-bluehaven.md) |
 
@@ -119,11 +119,15 @@ mini-game, photos and the journal, seasonal moments, travelling characters, cros
 ### Phase 8 — The ending
 The final chapter: a place that shows everything the player connected, each person's closing
 line, credits that roll, the prize (BlueHaven: a downloadable poster), and play carries on.
+Donations only here, as the last section, after the ending (a coffee link for parents, with
+permission asked for players under 18).
 
 ### Phase 9 — Calibration and phone polish
 Only now tune numbers: a day-by-day model of a full playthrough (all areas, real costs) against
 the length target; tune the tunables, never the equations. Then phone play batches: the owner
-plays, sends numbered issues, each one fixed and ripple-checked.
+plays, sends numbered issues, each one fixed and ripple-checked. Include a speed pass (the
+phone browser lags first in the busiest area: measure, then cache) and a portrait + landscape
+pass of every full-screen page.
 
 ## Before every change: the ripple check
 Never change one thing alone. Before editing, answer (ripple-check.md has the full list):

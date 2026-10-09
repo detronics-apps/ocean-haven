@@ -30,6 +30,8 @@ you can scan the group you're working in.
 |---|---|
 | 3 houses × level 3 stored 90 of everything | Shared buildings stay modest |
 | Lots of funding, nothing to buy; wood the bottleneck | Model the economy end to end (phase 9) |
+| Care was free, so it meant nothing | Small costs on care (food, medicine), comfort free; say the cost when it can't be paid |
+| Too little to clean up at the start | Enough litter that the first hour is busy (BlueHaven: 50 / 45 per area) |
 | A treeless island couldn't get wood | Check each area can be done with what it provides; shared storage |
 | Recycling all litter at once blocked buildings that needed litter | Choices (25/50/75/100 %), few things cost litter |
 | A tree's saplings: the owner's "fix" would have given more | Show the current numbers before changing them |
@@ -59,6 +61,14 @@ you can scan the group you're working in.
 | "Reef patch 100%" buttons that only showed a note; "Plant coral" when it wouldn't help | A button only when pressing it does something; info goes on a line or above the thing |
 | Notes written like chat ("You quietly watched the…!") | Notes are hints that something happened, not conversation |
 | Notes in a big black box, long text, many at once, news from other islands | One short line, one at a time, only the newest waits, only where the player is; design the note system in foundations |
+| A note box one character wide | Minimum widths on text boxes |
+| The engine's logo while loading; the owner asked for the game's own | Splash + branded web loader in foundations (phone-and-web.md) |
+| Landscape care room twice the screen's height (sized before layout, with the portrait height) | Size from the container's real size, follow `resized`; check 844x390 |
+| After turning the iPhone the page sat half off the screen | Pin the page; reset viewport + scroll on orientation change |
+| A tap counted twice (touch + emulated mouse) | Handle one input path per button |
+| A light-blue stripe down the minimap | Clip texture regions to the image |
+| Splash said "one island at a time" and the Map button showed from day one: spoiled the surprise | No hints of later content until it's earned |
+| Home picture showed a restored island with many animals | Show the game as it really starts |
 
 ## Art and visuals
 | What happened | Rule |
@@ -71,6 +81,8 @@ you can scan the group you're working in.
 | A wreck's buoy looked like something to pick up | Nothing decorative may look interactive |
 | Brown humps nobody understood | Everything drawn explains itself close up |
 | Otter journal icon had movement lines | Icons are clean pictures, no motion marks |
+| An otter's second eye sat on its nose in the care room (points set by hand per picture) | Overlay the points on each picture and look; check every stage, not just the first |
+| The start picture's avatar drawn 4x too big | Draw characters on pictures at true size |
 
 ## Data and code
 | What happened | Rule |
