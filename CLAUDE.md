@@ -321,8 +321,7 @@ Balance tweaks: islands the ranger isn't on are paused (no storms, tangling, pat
 ecosystem change; a little litter on return; `Regions.ranger_on`); one recycling centre per
 island; tangled seabirds wait on their nest; mission cards count runs per island; sea otters carry
 floating litter near them ashore (AnimalData.carries_litter_ashore). Rare events: a random 30–60 days apart
-(EventData.min_gap_days / max_gap_days), warned 3–4 days ahead, never in the ranger's first 2 days
-back on an island (RareEvents.calm_days).
+(EventData.min_gap_days / max_gap_days); see "Storms" below for how they play out now.
 
 **MVP 0.6 — "Mangrove Coast" (current).** Design: `docs/MASTER_PLAN.md` Step 4 (draft 2, approved).
 Built so far: the shovel digs mud (carry 3, storable; mud on shallows makes flats); red mangroves
@@ -738,6 +737,22 @@ wound per picture: eyes found or set by hand, EYES) and hatching_picture; the ve
 the day's picture (Rescues.stage) with its blink, feeding and plaster spots. The turtle and
 the flamingo hatch from a cracked egg (RescueData.egg_damaged) with a wound (flipper, leg);
 every rescue has a reason it needs care; a wound can always be patched.
+
+Storms (the owner's design; RareEvents, docs/MASTER_PLAN.md "Rare events"): warned 2 days
+ahead, only while the ranger is on the island (EventData.warning_days); the event's clouds
+gather beyond its rowboat waters (StormClouds, StormClouds.nearness: thin and further out 2 days
+ahead, thick at the edge the day before) and round the minimap's rim; its people get a red
+"!" (PersonData.storm_worry). On its day, STRIKE_AFTER 10 s after the ranger is on the island,
+StormWeather passes over for 10 s (the game runs; clear 1.5 tiles round the ranger, fading into
+the storm over 4 more: assets/effects/storm/storm_fog.gdshader; the six looks:
+EventData.weather storm / swell / flood / hurricane / oil / blizzard), then it strikes. The
+day after: 5 s of its end at once; later: only the aftermath, on arrival. It strikes whether
+the ranger is there or not; no calm days. Aftermath: 20–35 litter on any ground plus 8
+floating (EventData.litter_washed / _max / litter_floating; none for the oil spill:
+LitterSpawner.storm_litter); damaged buildings show a warning sign and offer only "Fix"
+(EventData.repair_funding 20 + repair_wood 1); the Flash Flood silts natural narrow channels
+too; no notes: the island's people are shaken (RareEvents.shaken, saved) and say what it was
+like (PersonData.storm_after) until the ranger talks to them.
 
 Notes (HUD.show_toast; the owner: too big, too wordy, too often): one short line (HUD.brief:
 first line and sentence, at most 60 letters) in a small see-through box; one at a time with a

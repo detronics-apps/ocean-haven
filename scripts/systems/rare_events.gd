@@ -1,10 +1,14 @@
 extends Node
 ## Autoload "RareEvents": each morning, an island's rare event (EventData) may be warned about
-## (not within min_gap_days of the last one); a warning_days later it strikes. The ranger
-## prepares by securing buildings (Building.secured); afterwards they repair what was damaged
-## and clean up the litter. A storm may also hurt a few animals (never badly: a Rescue
-## mission helps them recover) and wash over nests turtle monitoring didn't protect.
-## Nothing is ever "failed": it's always recoverable.
+## (not within min_gap_days of the last one); warning_days later is its day. Clouds gather
+## beyond the island's rowboat waters on the warning days (StormClouds, the minimap's rim) and
+## its people get nervous. On its day, once the ranger has been on the island STRIKE_AFTER
+## seconds, it strikes: its weather passes over for STORM_SECONDS (StormWeather), then the
+## damage is done. Coming the day after, the ranger catches its end (TAIL_SECONDS). Away for
+## both, they come back to the aftermath only. The ranger prepares by securing buildings
+## (Building.secured); afterwards they fix what was damaged and clean up the litter. A storm may
+## also hurt a few animals (never badly: a Rescue mission helps them recover) and wash over
+## nests turtle monitoring didn't protect. Nothing is ever "failed": it's always recoverable.
 
 signal warned(event: EventData)
 signal struck(event: EventData, damaged: int)
@@ -16,15 +20,21 @@ var _last_day := {}
 var _coming := {}
 ## Region id -> GameClock.now() until which visibility underwater is poor (missions slower).
 var _murky := {}
-## Nothing strikes an island the ranger isn't on, nor in their first `calm_days` back on it
-## (the time between events keeps counting while they're away, so one can come soon after).
-@export var calm_days := 2
+## On its day, the storm strikes once the ranger has been on its island this long ...
+const STRIKE_AFTER := 10.0
+## ... and passes over in this long; the day after, they only see its end.
+const STORM_SECONDS := 10.0
+const TAIL_SECONDS := 5.0
+## Real seconds the ranger has been on the island they're on.
+var _here_for := 0.0
+## Event id -> its weather is passing over now (it strikes when that's done).
+var _passing := {}
+## Person id -> shaken by the storm on their island: nervous until the ranger talks to them.
+var _shaken := {}
 ## An island's first event comes between these many days after the ranger first gets there
 ## (later ones: the event's min_gap_days..max_gap_days after the last).
 @export var first_gap_min := 15
 @export var first_gap_max := 25
-## Region id -> day the ranger last came back to it.
-var _back_on := {}
 ## Region id -> the first day the ranger was ever on it: an island's first event never comes
 ## sooner than first_gap_min days after that (arriving late in the game is no reason for a storm).
 var _first_on := {}
@@ -40,10 +50,11 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_here_for += delta
 	_check -= delta
 	if _check > 0.0:
 		return
-	_check = 1.0
+	_check = 0.5
 	var ranger := ControlledBody.active(get_tree())
 	if not ranger:
 		return
@@ -54,9 +65,34 @@ func _process(delta: float) -> void:
 			if Regions.is_discovered(region) and not _first_on.has(region.id):
 				_first_on[region.id] = GameClock.day
 	_arrived_day(here)
-	if here != _current and _current != &"?":
-		_back_on[here] = GameClock.day  # back on this island: calm for a couple of days
+	if here != _current:
+		_here_for = 0.0
 	_current = here
+	_due_here(here)
+
+
+## A storm due on the ranger's island: on its day it strikes once they've been here
+## STRIKE_AFTER seconds (its weather passes over first); the day after, they see its end at
+## once; later still, they've missed it: only the aftermath.
+func _due_here(here: StringName) -> void:
+	for event: EventData in all():
+		if event.region != here or not _coming.has(event.id) or _passing.has(event.id):
+			continue
+		var late: int = GameClock.day - int(_coming[event.id])
+		if late < 0 or (late == 0 and _here_for < STRIKE_AFTER):
+			continue
+		if late >= 2:
+			strike(event)  # missed it
+			continue
+		var seconds := STORM_SECONDS if late == 0 else TAIL_SECONDS
+		_passing[event.id] = true
+		var weather := get_tree().get_first_node_in_group("storm_weather")
+		if weather:
+			weather.play(event, seconds, late > 0)
+		get_tree().create_timer(seconds, false).timeout.connect(func() -> void:
+			_passing.erase(event.id)
+			if _coming.has(event.id):
+				strike(event))
 
 
 ## The first day the ranger was on `region_id` (today, if they never were: its timer starts
@@ -84,10 +120,9 @@ func _window(event: EventData) -> Vector2i:
 	return Vector2i(event.min_gap_days, event.max_gap_days)
 
 
-## Whether `event` may strike on `day`: the ranger is on its island and has been for calm_days.
-func _can_strike(event: EventData, day: int) -> bool:
-	return Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
-		and day >= int(_back_on.get(event.region, -999)) + calm_days
+## Whether `event` may be warned for `day`: the ranger is on its island.
+func _can_strike(event: EventData, _day: int) -> bool:
+	return Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region))
 
 
 static func all() -> Array[EventData]:
@@ -99,16 +134,12 @@ static func all() -> Array[EventData]:
 
 func _on_new_day(day: int) -> void:
 	for event: EventData in all():
-		# Only on the island the ranger is on, and not in their first calm_days back: a warned
-		# event waits until then; none is warned for an island they're not on.
+		# Only warned for the island the ranger is on; once warned it comes on its day whether
+		# they're there or not (_due_here: the ranger sees it, its end, or only the aftermath).
 		if _coming.has(event.id) and _too_soon(event, _coming[event.id]):
 			_coming.erase(event.id)  # (warned before the island's timer started: called off)
 		elif _coming.has(event.id):
-			if day >= _coming[event.id]:
-				if _can_strike(event, day):
-					strike(event)
-				else:
-					_coming[event.id] = day + 1
+			pass
 		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
 				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
@@ -136,12 +167,37 @@ func when(event_id: StringName) -> String:
 	return "today" if days <= 0 else "tomorrow" if days == 1 else "in %d days" % days
 
 
-## What's coming, for the HUD ("" = nothing).
+## What's coming, for the HUD ("" = nothing; not once its day has gone).
 func warning_text() -> String:
 	for event: EventData in all():
-		if _coming.has(event.id):
+		if _coming.has(event.id) and int(_coming[event.id]) >= GameClock.day:
 			return event.banner.replace("{when}", when(event.id))
 	return ""
+
+
+## Days until the storm heading for `region_id` (-1 = none; 0 = today, not struck yet).
+func days_until(region_id: StringName) -> int:
+	for event: EventData in all():
+		if event.region == region_id and _coming.has(event.id):
+			return maxi(int(_coming[event.id]) - GameClock.day, 0)
+	return -1
+
+
+## The event heading for `region_id` (null = none).
+func coming_to(region_id: StringName) -> EventData:
+	for event: EventData in all():
+		if event.region == region_id and _coming.has(event.id):
+			return event
+	return null
+
+
+## Whether `person_id` was shaken by a storm and hasn't talked to the ranger since.
+func shaken(person_id: StringName) -> bool:
+	return _shaken.has(person_id)
+
+
+func calm_down(person_id: StringName) -> void:
+	_shaken.erase(person_id)
 
 
 func is_coming() -> bool:
@@ -171,8 +227,12 @@ func strike(event: EventData) -> int:
 			damaged += 1
 		building.secured = false
 	for spawner: LitterSpawner in get_tree().get_nodes_in_group("litter_spawner"):
-		if Regions.nearest(spawner.area.get_center()).id == event.region:
-			spawner.wash_up_beaches(event.litter_washed)
+		if Regions.nearest(spawner.area.get_center()).id == event.region and event.litter_washed > 0:
+			spawner.storm_litter(randi_range(event.litter_washed, maxi(event.litter_washed_max, event.litter_washed)),
+				event.litter_floating)
+	for person: PersonData in People.all():
+		if person.region == event.region and person.storm_after != "":
+			_shaken[person.id] = true  # they'll want to talk about it
 	# Nests turtle monitoring hasn't protected are washed over (one egg still hatches).
 	var nests_hit := 0
 	for nest: Nest in get_tree().get_nodes_in_group("nests"):
@@ -198,16 +258,7 @@ func strike(event: EventData) -> int:
 				ecosystem.oil_spill(event.oil_patches)
 	if event.visibility_days > 0.0:
 		_murky[event.region] = GameClock.now() + event.visibility_days
-	struck.emit(event, damaged)
-	if hurt > 0 or nests_hit > 0 or torn > 0:
-		var lines: Array[String] = []
-		if hurt > 0:
-			lines.append("%d hurt" % hurt)
-		if torn > 0:
-			lines.append("%d kelp bed(s) torn" % torn)
-		if nests_hit > 0:
-			lines.append("%d nest(s) washed over" % nests_hit)
-		get_tree().call_group("hud", "show_toast", "After the storm: " + ", ".join(lines))
+	struck.emit(event, damaged)  # (no note: the island's people say what happened)
 	return damaged
 
 
@@ -249,7 +300,7 @@ static func for_region(region_id: StringName) -> EventData:
 ## For the save file.
 func to_dict() -> Dictionary:
 	return {"last_day": _last_day.duplicate(), "coming": _coming.duplicate(), "murky": _murky.duplicate(),
-		"back_on": _back_on.duplicate(), "first_on": _first_on.duplicate()}
+		"first_on": _first_on.duplicate(), "shaken": _shaken.keys()}
 
 
 func restore(saved: Dictionary) -> void:
@@ -261,15 +312,16 @@ func restore(saved: Dictionary) -> void:
 	var coming: Dictionary = saved.get("coming", {})
 	for id in coming:
 		_coming[StringName(id)] = int(coming[id])
-	_back_on.clear()
-	var back: Dictionary = saved.get("back_on", {})
-	for id in back:
-		_back_on[StringName(id)] = int(back[id])
 	_first_on.clear()
 	var first: Dictionary = saved.get("first_on", {})
 	for id in first:
 		_first_on[StringName(id)] = int(first[id])
 	_fill_first_on = not saved.has("first_on")
+	_shaken.clear()
+	for id in saved.get("shaken", []):
+		_shaken[StringName(id)] = true
+	_passing.clear()
+	_here_for = 0.0
 	_current = &"?"
 	_murky.clear()
 	var murky: Dictionary = saved.get("murky", {})

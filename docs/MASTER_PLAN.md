@@ -426,6 +426,16 @@ Outpost's submarines locate the Cargo Module; the Polar Research Station drills 
 
 ## Rare events
 
+How they play out (the owner's design): two days ahead the event's clouds gather on the sea
+beyond the island's rowboat waters (and round the minimap's rim), thicker and nearer each day,
+the HUD warns and the island's people get nervous (red "!"). On its day it passes over 10 s
+after the ranger is on the island: 10 s in which only about 3–4 tiles round them can be seen,
+the rest is the storm in its own look (coastal storm, heavy swell, flash flood, hurricane, oil
+slick, blizzard breaking the ice). Coming the day after, they catch its last 5 s; away for both,
+they come back to the aftermath. Every storm but the oil spill strews 20–35 litter all over
+the island and some at sea; damaged buildings show a warning sign and offer only Fix (20
+funding + 1 wood); the people talk about it until the ranger has heard them out.
+
 One rare event per island. It **tests the island's main mechanic** — never a new mechanic or
 mini-game. The player should think "I've built this ecosystem; now it has to withstand a
 disturbance", not "another mini-game".
@@ -1037,7 +1047,7 @@ season), cod. All of these are scaled by **planning for the season** (`scales_al
 zones that are on ice lasting until their pups are grown. Several setups reach 100 %: fewer zones
 on the best old ice, or more zones moved between seasons.
 
-**Rare event — Major Ice Breakup:** warned 3–4 days ahead, 30–60 days apart like the others.
+**Rare event — Major Ice Breakup:** a snowstorm that breaks the ice, warned 2 days ahead, 30–60 days apart like the others.
 - **During:** a big piece of ice breaks off (tiles turn to water). Corridors are cut, and zones
   on it go into the water and need moving (never lost).
 - **After:** ice survey, then move the zones; the corridors form again at the next freeze.

@@ -145,6 +145,32 @@ func wash_up_beaches(count: int) -> void:
 		spawn_at(_items.pick_random(), beach.pick_random(), false)
 
 
+## After a storm: `count` pieces strewn all over the island (any ground, never on a building),
+## and `floating` more in its rowboat waters. The full mix: storms bring up old litter too.
+func storm_litter(count: int, floating: int) -> void:
+	var region := Regions.nearest(area.get_center())
+	var land: Array[Vector2] = []
+	for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
+		for cell in ground.get_used_cells():
+			var spot := ground.to_global(ground.map_to_local(cell))
+			var terrain: String = ground.get_cell_tile_data(cell).get_custom_data("terrain")
+			if terrain != "water" and terrain != "" and area.has_point(spot) and Regions.nearest(spot) == region:
+				land.append(spot)
+	var built: Array[Rect2i] = []
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		built.append(building.rect())
+	land = land.filter(func(spot: Vector2) -> bool:
+		return not built.any(func(r: Rect2i) -> bool: return r.has_point(Terrain.cell_of(spot))))
+	land.shuffle()
+	for i in mini(count, land.size()):
+		var jitter := Vector2(randf_range(-8, 8), randf_range(-8, 8))
+		spawn_at(_items.pick_random(), land[i] + jitter, false)
+	for i in floating:
+		var spot: Variant = _free_spot(true)
+		if spot != null:
+			spawn_at(_items.pick_random(), spot, true)
+
+
 ## Fills its area up to `count` pieces (a new game starts with plenty to clean up).
 func fill(count: int) -> void:
 	var usual := max_litter

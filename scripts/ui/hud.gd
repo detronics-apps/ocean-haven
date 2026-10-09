@@ -96,6 +96,11 @@ func _ready() -> void:
 	var weather := StormWeather.new()  # a storm's weather when it strikes
 	weather.name = "StormWeather"
 	add_child(weather)
+	move_child(weather, 0)  # over the world, under the buttons, bars and notes
+	var clouds := StormClouds.new()  # a storm gathering beyond the island's waters
+	clouds.name = "StormClouds"
+	add_child(clouds)
+	move_child(clouds, 0)
 	var observatory := ObservatoryScreen.new()  # the whole ocean (from the Map)
 	observatory.name = "ObservatoryScreen"
 	get_parent().add_child.call_deferred(observatory)
@@ -139,7 +144,6 @@ func _ready() -> void:
 	Missions.sent.connect(func(m: MissionData) -> void: show_toast("%s: back in %s" % [m.display_name, Missions.time_left()], true))
 	Missions.returned.connect(_on_mission_returned)
 	RareEvents.warned.connect(func(e: EventData) -> void: show_toast("%s coming %s" % [e.display_name, RareEvents.when(e.id)], true))
-	RareEvents.struck.connect(func(e: EventData, damaged: int) -> void: show_toast(e.aftermath % damaged if "%d" in e.aftermath else e.aftermath))
 	# What's coming (a storm warning), under the clock until it arrives.
 	_event_note = Label.new()
 	_event_note.name = "EventNote"

@@ -30,7 +30,11 @@ var damaged := false:
 		damaged = value
 		if is_node_ready():
 			_sprite.modulate = DAMAGED_TINT if damaged else Color.WHITE
+			_damage_icon.visible = damaged
 const DAMAGED_TINT := Color(0.62, 0.55, 0.5)
+const DAMAGE_ICON := preload("res://assets/ui/storm/damaged.svg")
+## A warning sign above it while it's damaged (all it offers then is Fix).
+var _damage_icon: Sprite2D
 ## Extra reach from the rowboat.
 const BOAT_REACH := 40.0
 ## Its upkeep was paid this morning (unpaid: not looked after today).
@@ -75,6 +79,13 @@ func _ready() -> void:
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
 	_show_tier()
+	_damage_icon = Sprite2D.new()
+	_damage_icon.name = "DamageIcon"
+	_damage_icon.texture = DAMAGE_ICON
+	_damage_icon.scale = Vector2(1.5, 1.5)
+	_damage_icon.z_index = 50
+	_damage_icon.position = Vector2(0, -data.size.y * Terrain.TILE / 2.0 - 16.0)
+	add_child(_damage_icon)
 	damaged = damaged  # show it
 	if not data.fleet_textures.is_empty():
 		_show_fleet_level()
@@ -149,10 +160,9 @@ func actions() -> Array:
 	if not ranger_is_near() or (build_mode and build_mode.is_active()) or not visible:
 		return []
 	var list := []
-	if damaged:
-		var wood := _repair_wood()
-		list.append({"label": "Repair (%d wood)" % wood, "do": repair, "helps": true})
-	elif RareEvents.is_coming_to(Regions.nearest(global_position).id) and not secured and not data.storm_proof:
+	if damaged:  # only fixing it, until it's fixed
+		return [{"label": "Fix (%d + %d wood)" % [_repair_funding(), _repair_wood()], "do": repair, "helps": true}]
+	if RareEvents.is_coming_to(Regions.nearest(global_position).id) and not secured and not data.storm_proof:
 		list.append({"label": "Secure", "do": func() -> void: secured = true, "helps": true})
 	if data.action == &"sleep" and GameClock.is_night():
 		list.append({"label": "Sleep", "do": sleep})
@@ -206,7 +216,7 @@ func actions() -> Array:
 ## storage...): anything but moving, upgrading, repairing, securing or taking it down.
 static func _says_what_it_is(action: Dictionary) -> bool:
 	var label: String = action.label
-	for generic in ["Move ", "Demolish", "Tap again", "Upgrade", "Repair", "Secure"]:
+	for generic in ["Move ", "Demolish", "Tap again", "Upgrade", "Fix", "Secure"]:
 		if label.begins_with(generic):
 			return false
 	return true
@@ -482,14 +492,22 @@ func upgrade() -> void:
 		data.display_name, tier, data.max_tier, better])
 
 
-## Fixes storm damage, if the ranger has the wood.
+## Fixes storm damage, if the ranger has the funding and the wood (carried or stored).
 func repair() -> void:
 	var wood := _repair_wood()
-	if not Inventory.use(&"wood", wood):
-		get_tree().call_group("hud", "show_toast", "Repairing your %s needs %d wood." % [data.display_name, wood])
+	var funding := _repair_funding()
+	if Inventory.available(&"wood") < wood or Funding.balance < funding:
+		get_tree().call_group("hud", "show_toast", "Fixing needs %d funding + %d wood" % [funding, wood], true)
 		return
+	Inventory.use(&"wood", wood)
+	Funding.spend(funding)
 	damaged = false
-	get_tree().call_group("hud", "show_toast", "%s repaired!" % data.display_name)
+	get_tree().call_group("hud", "show_toast", "%s fixed" % data.button_name(), true)
+
+
+func _repair_funding() -> int:
+	var event := RareEvents.for_region(Regions.nearest(global_position).id)
+	return event.repair_funding if event else 20
 
 
 func _repair_wood() -> int:

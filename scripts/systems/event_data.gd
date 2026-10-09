@@ -13,9 +13,10 @@ extends Resource
 ## predictable), on its island. Days away count, but it never strikes while the ranger is away.
 @export var min_gap_days := 30
 @export var max_gap_days := 60
-## Days between the warning and the event: a random number between these.
-@export var warning_days := 3
-@export var warning_days_max := 4
+## Days between the warning and the event: a random number between these (clouds gather on
+## the horizon on those days).
+@export var warning_days := 2
+@export var warning_days_max := 2
 ## Shown when it's coming ...
 @export var warning: String
 ## ... and in short on the HUD until it strikes.
@@ -24,10 +25,14 @@ extends Resource
 @export var aftermath: String
 ## Each unsecured building (not storm-proof) is damaged with this chance.
 @export var damage_chance := 0.6
-## Litter washed up onto the island's beaches.
+## Litter it leaves all over the island (a random number from litter_washed to
+## litter_washed_max, on any ground), and floating in its rowboat waters.
 @export var litter_washed := 10
-## What repairing one damaged building costs (wood).
+@export var litter_washed_max := 10
+@export var litter_floating := 0
+## What fixing one damaged building costs.
 @export var repair_wood := 1
+@export var repair_funding := 20
 ## Species it can hurt (never badly, never for good): up to injured_max of them on the island
 ## are injured until a Rescue mission helps them recover (fewer during a boat patrol).
 @export var injures: PackedStringArray = []

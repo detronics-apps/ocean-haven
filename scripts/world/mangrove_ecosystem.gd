@@ -716,13 +716,18 @@ func project() -> Dictionary:
 func flood(amount: float) -> int:
 	var reach := connected()
 	var hit := 0
-	for cell in channels():
+	var cells := channels()
+	for spot in _gate_spots:  # the island's own narrow channels silt too (open gates flush it)
+		if not spot in cells:
+			cells.append(spot)
+	for cell in cells:
 		if _occupied(cell):
 			continue
 		_silt[cell] = silt_of(cell) + amount * (0.5 if reach.has(cell) else 1.0)
 		if _silt[cell] >= 1.0:
 			_silt_up(cell)
 			hit += 1
+	_find_gate_spots()
 	settle()
 	return hit
 

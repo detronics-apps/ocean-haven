@@ -70,7 +70,6 @@ func _ready() -> void:
 	Journal.helped.connect(func(_animal: AnimalData, _count: int) -> void: play(&"free"))
 	Journal.hatched.connect(func(_animal: AnimalData, _count: int) -> void: play(&"hatch"))
 	GameClock.slept.connect(play.bind(&"morning"))
-	RareEvents.struck.connect(func(_event: EventData, _damaged: int) -> void: play(&"thunder"))
 	Missions.returned.connect(func(_mission: MissionData, _found: int) -> void: play(&"page"))
 
 

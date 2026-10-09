@@ -190,7 +190,7 @@ Every island is its own game with its own lesson:
 - **Islands you're not on are paused:** no storms, no animals getting caught, no ecosystem change.
   Only a little litter builds up while you're away.
 - **Rare events:**
-  - one per island, a random 30–60 days apart, warned 3–4 days ahead;
+  - one per island, a random 30–60 days apart, warned 2 days ahead;
   - you "Secure" buildings to prepare;
   - damage is always recoverable (repairs; a Rescue mission for injured animals);
   - **each island's storm timer starts when you first reach that island.**

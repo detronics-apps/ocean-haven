@@ -41,6 +41,11 @@ extends Resource
 @export_group("Talk")
 ## Said first while a polar bear is at camp (rubbish drew it in): they're nervous ("!" in red).
 @export_multiline var scared_line: String
+## A storm (RareEvents) heading for their island: what they say while it's coming ("!" in red) ...
+@export_multiline var storm_worry: String
+## ... and after it (still a red "!" until the ranger talks to them): what it was like, and
+## could the ranger help clean up and fix the damage.
+@export_multiline var storm_after: String
 @export var topics: Array[TalkTopic] = []
 ## Things they've noticed about the island's animals (one `lines` entry each, with `when`
 ## conditions): now and then, one is added after what they say (People.observation).

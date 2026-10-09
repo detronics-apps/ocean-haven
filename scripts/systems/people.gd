@@ -230,9 +230,19 @@ func has_news(person: PersonData) -> bool:
 	return question != null and not is_given(person, question)
 
 
-## Whether `person` is nervous: a polar bear is at camp on their island (rubbish drew it in).
+## Whether `person` is nervous: a polar bear is at camp on their island (rubbish drew it in),
+## a storm is heading their way, or one has just been and they haven't talked about it yet.
 func nervous(person: PersonData) -> bool:
-	return person.scared_line != "" and Fleet.has_flag(&"bear_at_camp")
+	return (person.scared_line != "" and Fleet.has_flag(&"bear_at_camp")) or storm_line(person) != ""
+
+
+## What they say about a storm on their island right now ("" = nothing).
+func storm_line(person: PersonData) -> String:
+	if RareEvents.shaken(person.id):
+		return person.storm_after
+	if RareEvents.is_coming_to(person.region) and RareEvents.days_until(person.region) >= 0:
+		return person.storm_worry
+	return ""
 
 
 ## Talks to `person`: the lines they say now, as [{"who": name, "text": line}]. Asking a
@@ -242,8 +252,12 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	_met[person.id] = true
 	talked.emit(person)
 	var said: Array[String] = []
-	if nervous(person):
+	if person.scared_line != "" and Fleet.has_flag(&"bear_at_camp"):
 		said.append(person.scared_line)
+	var storm := storm_line(person)
+	if storm != "":
+		said.append(storm)
+		RareEvents.calm_down(person.id)  # (after the storm: talked it over)
 	var greeting := _chat(person, first, true)
 	if greeting:
 		said.append_array(greeting.lines)

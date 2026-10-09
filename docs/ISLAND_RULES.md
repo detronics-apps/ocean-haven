@@ -53,9 +53,11 @@ foundations the mechanics sit on, not the mechanics themselves.
   gets its first one immediately. Taking something down makes its animals react right away.
 - **Islands the ranger isn't on are paused**, so time spent on one island never costs
   progress on another (`Regions.ranger_on`):
-  - no storms happen there, and never in the ranger's first 2 days back. The time between
-    storms (a random 30–60 days, never predictable) keeps counting while they're away, so
-    one can come soon after they return; it's always warned 3–4 days ahead;
+  - no storm is warned there. Once warned (2 days ahead, while the ranger is on the island) a
+    storm comes on its day whether they're there or not: there that day, it passes over 10 s
+    after they arrive; the day after, they catch its last 5 s; later, only its aftermath. The
+    time between storms (a random 30–60 days, never predictable) keeps counting while they're
+    away, so one can come soon after they return;
   - no animals get caught, and patrol boats hurt none;
   - the ecosystem waits.
 
