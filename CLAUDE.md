@@ -557,8 +557,8 @@ pan); below, scrolling, the whole ocean's health and sections that drop down one
 islands help each other (Panorama + links(): clean water, fish, terns, travelling dolphins /
 whales / turtles, seeds, seagrass grazing, mapping, cargo, each fix, fibres, rescues), and in
 the final chapter You've helped every island (helped_stats + observations), What we hope you
-have learned (LEARNED: the owner's six paragraphs on caring for nature, not facts about the
-animals; + the motto), Who you have met (each person's picture, name, job,
+have learned (LEARNED: short and to the point: appreciate nature and its complexity, and help
+it find its balance in the future; never facts about the animals; + the motto), Who you have met (each person's picture, name, job,
 closing line), Your ocean poster, End credits (x1-x5), Donations (buymeacoffee.com/detronics,
 detronics.co.za).
 The prize: the final chapter shows the ocean poster (assets/ui/poster/ocean_poster.jpg) with

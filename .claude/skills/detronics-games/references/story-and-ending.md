@@ -90,11 +90,11 @@ are built with them in mind.
   did (numbers from their own game), what we hope you learned (+ the motto), who you met (each
   person's picture, name, job, closing line), the prize, the credits, donations. No second row
   of pictures and scores above the fixed part.
-- "What we hope you learned" is the game's purpose, in the owner's words, not a list of facts
-  or mechanics ("crabs dig up litter", "every animal has a job" missed the point). BlueHaven's:
-  all life is connected; caring takes patience, and knowing when to help and when to step back;
-  prepare for storms and rebuild; stop litter before it reaches nature; we all share the work;
-  we are part of nature. Ask the owner for it rather than writing it from the systems.
+- "What we hope you learned" is the game's purpose, short and to the point, not a list of facts
+  or mechanics ("crabs dig up litter", "every animal has a job" missed the point; a long essay
+  was too much). BlueHaven's: appreciate nature more and how complex it is, and in the future
+  help it find its balance (when to help, when to step back, stopping harm at its start). Ask
+  the owner for it rather than writing it from the systems.
 - A question with answers from the player's own game ("What have you learned?"), each person's
   closing line, then the credits: black screen, slow rolling text with a speed button (x1-x5),
   the prize (a poster to download).

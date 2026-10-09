@@ -142,14 +142,11 @@ const DONATE_URL := "https://buymeacoffee.com/detronics"
 const PROJECTS_URL := "https://www.detronics.co.za/"
 const DONATE_TEXT := "If you like the game and its message, feel you learned something about the ocean and our impact on it, and you are able to (with your parents' permission if you are under 18), you can buy the creator a coffee to support more games like this:"
 ## What we hope the player takes away from the whole game (section 3): not facts about the
-## animals, but what caring for nature means (the owner's words, fitted to the game).
+## animals, but to appreciate nature and its complexity, and to help it find its balance.
 const LEARNED: Array[String] = [
-	"Nature is full of wonderful things, and all living things are connected. Animals, plants, land and water all need each other, from one island to the next. When we care for nature, we help protect the many forms of life that share our world.",
-	"Caring takes time, patience and kindness. Sometimes animals need our help, and sometimes we need to fix places that have been hurt. But nature can also heal on its own if we give it time and space. Learning when to help and when to step back is an important part of caring.",
-	"Nature can change in ways we cannot control. Storms can damage homes and habitats, and animals may lose the places they need. We can prepare for these events, help where we can and rebuild when the storm has passed. We can also learn from what happened and find better ways to protect life next time.",
-	"Picking up litter helps, but stopping litter from reaching nature is even better. We can reuse things, make less waste and find better ways to make and use the things we need. Instead of cleaning up the same mess again and again, we should ask, \"How can we stop this from happening in the first place?\"",
-	"Looking after nature is something we all share. The things we do every day can affect animals and places far away, even when we cannot see it. Families, communities, businesses and the people who make the rules can all help. We may not be able to fix every problem alone, but we can all do our part.",
-	"Most of all, we hope you have learned that we are part of nature, not separate from it. Every choice we make can help or harm the world around us. By caring for living things, fixing what has been damaged and finding ways to stop harm before it happens, we can help nature thrive and keep its wonders alive for the children who come after us.",
+	"We hope you have learned to appreciate nature more: how wonderful it is, and how complex. Animals, plants, land and water all depend on each other, and a change in one place reaches places far away.",
+	"Caring for nature is about finding the balance: knowing when to help and when to step back, preparing for what we can't control, and stopping harm before it starts instead of cleaning up the same mess again and again.",
+	"We are part of nature, not separate from it. In the future, look at the world around you and ask how you can help it find its balance, so its wonders are still there for the children who come after us.",
 ]
 
 
