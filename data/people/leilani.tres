@@ -70,6 +70,14 @@ id = &"turtle_seagrass"
 when = PackedStringArray("built:seagrass_protection_area")
 lines = PackedStringArray("Green turtles graze the seagrass like cows on a lawn. Grazed seagrass grows back thicker, so turtles help the seahorses' meadows.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("When I was a new dive guide, I saw the coral spawn: pink clouds rising on a summer night.", "I want my divers to see it too.")
+outcome_when = PackedStringArray("flag:seen_coral_spawning")
+outcome = "My divers saw the coral spawn, {name}. One of them cried. So did I, a little."
+
 [resource]
 script = ExtResource("1_p")
 id = &"leilani"
@@ -91,3 +99,5 @@ trousers = Color(0.95, 0.9, 0.8, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
+want = SubResource("Want")
+visit_line = "Hello from the {island}, {name}! {host} is showing me what lives here."

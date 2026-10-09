@@ -70,6 +70,14 @@ id = &"tern_young"
 when = PackedStringArray("young:arctic_tern>=1")
 lines = PackedStringArray("Tern chicks are speckled like the stones they hatch on. Hard to spot, so watch your step!")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("My grandfather started this weather log. Every spring he wrote: the terns are back.", "The last pages just say: none.")
+outcome_when = PackedStringArray("flag:seen_terns_arriving")
+outcome = "I wrote it in Grandad's log today, {name}: the terns are back. First time in years."
+
 [resource]
 script = ExtResource("1_p")
 scared_line = "Stay close, {name}, there's a bear about! Forty winters up here and they still make my heart race. It's the rubbish that drew it: clear that, and it'll leave on its own."
@@ -94,3 +102,5 @@ hat_colour = Color(0.6, 0.2, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3")])
+want = SubResource("Want")
+visit_line = "I came to see the weather on the {island}, {name}. {host} says it's always like this. Imagine!"

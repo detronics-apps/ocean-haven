@@ -264,6 +264,13 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 - **Every person is a way of understanding the ocean**, with a general job title so they're
   useful on every island.
 - **Hint-givers give advice, never objectives.**
+- **Every person has a want of their own** (PersonData.want), beyond their job: Tom hopes to
+  see turtle tracks below his lighthouse again, Bram that his old crew's lost nets come out of
+  the sea. They say it once; the ranger's work makes it come true, and they say what it means
+  to them, once. A wish never becomes an objective.
+- **After the ending the world carries on and comes together:** people visit each other's
+  islands for a day, and now and then every rescued animal is out the same morning, only where
+  it belongs (a seal pup never in warm water).
 - **Ranger activities (mini-games) are real work, done with a person.**
   - Only the first, story play gives something.
   - Afterwards the activity is at a permanent place, replayed only for fun and personal bests:

@@ -82,6 +82,14 @@ id = &"cormorant_young"
 when = PackedStringArray("young:double_crested_cormorant>=1")
 lines = PackedStringArray("The cormorant chicks hatch with hardly any feathers, then grow dark fuzzy down. You'd never guess they'll be such sleek fishers.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("I cook for the whole harbour, and everything I buy comes wrapped in plastic.", "I'd love a kitchen where nothing gets thrown away.")
+outcome_when = PackedStringArray("stopped:six_pack_rings")
+outcome = "The drinks come in kegs now, {name}, and I fill people's own cups. My bin is half empty!"
+
 [resource]
 script = ExtResource("1_p")
 id = &"ines"
@@ -103,3 +111,5 @@ trousers = Color(0.3, 0.3, 0.38, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "I came to taste the cooking on the {island}, {name}. {host} has given me three new recipes already."

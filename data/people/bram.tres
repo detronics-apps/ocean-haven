@@ -88,6 +88,14 @@ id = &"whale_young"
 when = PackedStringArray("young:sperm_whale>=1")
 lines = PackedStringArray("A sperm whale calf! When its mother dives deep for food, others in the group stay up near it and look after it.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("My old crew lost nets out here, years ago, and we never went back for them.", "I still think about the animals caught in them.")
+outcome_when = PackedStringArray("stopped:ghost_net")
+outcome = "Old nets go back to the Net Return Point now, {name}, and new ones are marked. Nothing we lose is lost for good. That's a weight off an old sailor's chest."
+
 [resource]
 script = ExtResource("1_p")
 id = &"bram"
@@ -111,3 +119,5 @@ hat_colour = Color(0.15, 0.18, 0.3, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_nets"), SubResource("Topic_squid"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "An old captain still likes a voyage, {name}. {host} and I have been swapping sea stories on the {island}."

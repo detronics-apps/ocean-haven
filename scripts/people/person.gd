@@ -25,7 +25,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	name = "Person_%s" % data.id
+	name = ("Visitor_%s" if data.role == People.VISITOR else "Person_%s") % data.id
 	if data.place:
 		_place = Sprite2D.new()
 		_place.texture = data.place

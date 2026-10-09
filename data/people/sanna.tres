@@ -141,6 +141,14 @@ id = &"seal_young"
 when = PackedStringArray("young:ringed_seal>=1")
 lines = PackedStringArray("A ringed seal pup, all white and woolly! It's born in a snow den on the ice, hidden from the bears.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("Under the ice you can hear the seals calling. When I first came here it was like a choir.", "Now it's nearly silent.")
+outcome_when = PackedStringArray("health>=70")
+outcome = "I lowered a microphone under the ice last night, {name}. Seals calling everywhere, like the choir I remember."
+
 [resource]
 script = ExtResource("1_p")
 scared_line = "{name}! There's a polar bear right by camp! It must smell the rubbish lying about. Please clear it up, quickly, and it'll wander back to the ice."
@@ -167,3 +175,5 @@ hat_colour = Color(0.85, 0.85, 0.9, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "It's so warm here on the {island}, {name}! {host} has been very patient with all my questions."

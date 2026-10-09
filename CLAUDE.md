@@ -801,6 +801,18 @@ a reef patch that can't go down here). Reef patches show their coral % above the
 (plant a fragment) only while it would raise the coral (ReefEcosystem.planting_helps), "Split"
 only when there's room to split onto.
 
+People's own wants (PersonData.want, People.want_line / wish_came_true; ISLAND_RULES 9): each of
+the twelve hopes for something of their own, said once after a talk without news or tips
+(`lines`, when `when` holds), and once it comes true (`outcome_when`: Tom a nest, Maya 10
+turtles, Finn / Rosa / Sanna their island at 70 %, Ines / Samuel / Bram rings / bags / ghost
+nets stopped, Kai glass made, Leilani and Erik the coral spawning and the terns seen, Imani the
+giant squid) they say what it means, once (saved in what's been heard). After the ending
+(flag "observatory_opened"): someone met on another island visits the ranger's island for the
+day (People.visit, VISIT_CHANCE 35 % a morning: a Person in group "visitors" beside one of its
+people, saying PersonData.visit_line, gone the next morning), and on reunion mornings
+(Rescues.REUNION_CHANCE 20 %) every released rescue is out, on the ranger's island if it lives
+or visits there, else at home, with news from the island's people.
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

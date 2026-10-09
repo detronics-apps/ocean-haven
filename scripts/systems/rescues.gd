@@ -35,6 +35,8 @@ const GAINS := {&"feed": {&"fed": 10, &"health": 2}, &"comfort": {&"calm": 10}, 
 const REPEATS := [&"feed", &"comfort"]
 ## Days a full fed bar lasts.
 const FED_LASTS := 1.25
+## After the ending: the chance each morning that every released rescue is out together.
+const REUNION_CHANCE := 0.2
 ## Calm it needs before it will eat.
 const EATS_FROM := 80
 ## Health lost a day while the fed bar is empty, and the lowest it ever gets.
@@ -259,21 +261,37 @@ func _ready() -> void:
 ## A morning: each released one is somewhere today (its shape decides how often it's about):
 ## its own island, one of the islands it travels to, or out at sea.
 func check_visits() -> void:
+	var ranger := ControlledBody.active(get_tree())
+	var here := String(Regions.nearest(ranger.global_position).id) if ranger else ""
+	# After the ending, now and then they're all out the same morning: a reunion.
+	var reunion := Fleet.has_flag(&"observatory_opened") and done.size() > 1 and randf() < REUNION_CHANCE
+	if reunion and here != "":
+		People.add_news(StringName(here), "Every animal you rescued is out and about today, {name}. A reunion! Look for their tags.")
 	for id in done:
 		var one := rescue(id)
 		if not one:
 			continue
 		var record: Dictionary = done[id]
-		record.where = _roll_where(one, float(record.get("shape", 0.6)))
+		record.where = _reunion_where(one, here) if reunion else _roll_where(one, float(record.get("shape", 0.6)))
 		if record.where != "" and record.where != String(one.region):
 			var seen: Array = record.get("seen", [])
 			if not record.where in seen:
 				seen.append(record.where)
 			record.seen = seen
 		_place(one, record)
-		var ranger := ControlledBody.active(get_tree())
 		if ranger and record.where != String(one.region) and record.where == String(Regions.nearest(ranger.global_position).id):
 			sighted.emit(one, String(record.get("name", "")), DataFiles.res("res://data/regions/%s.tres" % record.where))
+
+
+## Where `one` is on a reunion day: on the ranger's island if it's its home or one it visits,
+## otherwise at home (never somewhere it doesn't belong).
+func _reunion_where(one: RescueData, here: String) -> String:
+	if here == String(one.region):
+		return here
+	for id in one.visits:
+		if String(id) == here and Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % id)):
+			return here
+	return String(one.region)
 
 
 func _roll_where(one: RescueData, how_well: float) -> String:

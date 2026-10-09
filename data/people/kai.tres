@@ -139,6 +139,14 @@ id = &"split_coral"
 when = PackedStringArray()
 lines = PackedStringArray("When a reef patch is full of coral, you can split it: a broken-off piece of coral can grow into a whole new colony. More patches, more reef.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("This whole island is made of sand. I'm sure we could make something useful from it.", "I just haven't found the way yet.")
+outcome_when = PackedStringArray("flag:glass_made")
+outcome = "Glass, {name}! From the parrotfish's sand. I keep holding the first bottle up to the light."
+
 [resource]
 script = ExtResource("1_p")
 id = &"kai"
@@ -162,3 +170,5 @@ trousers = Color(0.25, 0.35, 0.45, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "I wanted to see how things are done on the {island}, {name}. {host} has some clever ideas."

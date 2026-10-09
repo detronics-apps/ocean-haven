@@ -26,6 +26,9 @@ are built with them in mind.
   while getting started), observations about the animals (each a few times a game).
 - The player has a name the people use. The player's replies are 2 choices, never words put in
   their mouth.
+- Every person has a **want of their own** beyond their job (a nest below the lighthouse,
+  lost nets out of the sea), said once, made true by the player's work, paid off in one line.
+  It gives supporting characters a reason to care and the player a personal reward.
 - People stand where they make sense (on land; an office for someone whose work is at sea).
 - Predictions: a person asks what the player thinks will happen, keeps the guess, and later says
   what happened. No score.
@@ -99,6 +102,8 @@ are built with them in mind.
   closing line, then the credits: black screen, slow rolling text with a speed button (x1-x5),
   the prize (a poster to download).
 - Play goes on afterwards; the credits can be replayed.
+- After the ending the world comes together: people visit each other's places, and the
+  player's rescued animals have reunion days (only where each belongs).
 
 ## Donations (the one exception to "no money asks")
 - Only after the ending, as the **last** section of the final place: a "buy the creator a

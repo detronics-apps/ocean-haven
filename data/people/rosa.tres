@@ -148,6 +148,14 @@ id = &"flamingo_young"
 when = PackedStringArray("young:american_flamingo>=1")
 lines = PackedStringArray("Have you seen the flamingo chick? It's grey and fluffy, not pink at all! Flamingos turn pink from the food they eat, and it takes a couple of years.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("My family fished these pools for years. When the pools went quiet, we stopped.", "I want to show my son where the young fish grow.")
+outcome_when = PackedStringArray("health>=70")
+outcome = "I took my son to the pools at dawn, {name}. Little snappers everywhere, darting between the roots. He wants to be a fisher, the careful kind."
+
 [resource]
 script = ExtResource("1_p")
 id = &"rosa"
@@ -173,3 +181,5 @@ hat_colour = Color(0.9, 0.85, 0.7, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "So this is the {island}, {name}! {host} and I have been talking about fish since breakfast."

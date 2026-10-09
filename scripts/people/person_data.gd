@@ -47,6 +47,13 @@ extends Resource
 ## could the ranger help clean up and fix the damage.
 @export_multiline var storm_after: String
 @export var topics: Array[TalkTopic] = []
+## Something of their own they hope for (a reason to care beyond their job): `lines` say it,
+## once, after a talk once `when` holds; `outcome` is what they say, once, when it comes true
+## (`outcome_when`), because of what the ranger did (People.want_line).
+@export var want: TalkTopic
+## After the ending they sometimes visit another island (People.visit): what they say there.
+## "{island}" is the island they're visiting, "{host}" who they came to see.
+@export_multiline var visit_line: String
 ## Things they've noticed about the island's animals (one `lines` entry each, with `when`
 ## conditions): now and then, one is added after what they say (People.observation).
 @export var observations: Array[TalkTopic] = []

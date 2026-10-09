@@ -56,7 +56,9 @@ func _initialize() -> void:
 	await physics_frame
 	var fled := false
 	for i in 600:  # until it relaxes (it may swim off a little first)
-		if rowboat.global_position.distance_to(dolphin.global_position) > 60.0:
+		if rowboat.global_position.distance_to(dolphin.global_position) > 250.0:  # (it roams the whole island: catch up)
+			rowboat.global_position = dolphin.global_position + dolphin.global_position.direction_to(rowboat.global_position) * 200.0
+		elif rowboat.global_position.distance_to(dolphin.global_position) > 60.0:
 			rowboat.global_position = rowboat.global_position.move_toward(dolphin.global_position, 2.5)  # 150 px/s
 		await physics_frame
 		fled = fled or dolphin.get("_state") == 2
@@ -149,6 +151,7 @@ func _initialize() -> void:
 	var digger: Node2D = world.get_node("Crab2")
 	digger.data.dig_chance = 1.0
 	player.global_position = digger.global_position + Vector2(0, -60)
+	digger._digs.clear()  # (the 2-a-day limit is shared by all crabs: another may have dug earlier in this test)
 	var before_gifts: int = journal.gifts(&"ghost_crab")
 	for i in 900:
 		await physics_frame

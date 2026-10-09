@@ -210,6 +210,14 @@ id = &"dolphin_young"
 when = PackedStringArray("young:bottlenose_dolphin>=1")
 lines = PackedStringArray("There's a dolphin calf! It swims tucked in close to its mother, riding along in the water she pushes. It stays with her for years.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("My mum studied turtles here when I was little. Her old notebook says the beach was full of them.", "One day I'd like to write a good number in it again.")
+outcome_when = PackedStringArray("animals:green_turtle>=10")
+outcome = "Ten turtles, {name}! I wrote it in Mum's notebook today, under her old counts. The beach is coming back."
+
 [resource]
 script = ExtResource("1_p")
 id = &"maya"
@@ -233,3 +241,5 @@ trousers = Color(0.54, 0.48, 0.33, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14"), SubResource("Topic_15"), SubResource("Topic_16")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3")])
+want = SubResource("Want")
+visit_line = "I had to see the {island} for myself, {name}. {host} and I have been comparing notebooks all morning."

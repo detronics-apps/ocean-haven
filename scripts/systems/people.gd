@@ -27,6 +27,10 @@ const WOOD_TIPS_UNTIL := 1
 const NEWS_DAYS := 3.0
 ## How many times in a game each observation is said at most.
 const OBSERVATION_TIMES := 3
+## After the ending: the chance each morning that someone from another island visits.
+const VISIT_CHANCE := 0.35
+## A visiting person's role (People.visit).
+const VISITOR := &"visitor"
 
 ## Person id -> met.
 var _met := {}
@@ -57,6 +61,8 @@ var _observed_day := {}
 var _news: Array[Dictionary] = []
 ## Questions asked in the talk going on now: [person, topic].
 var _pending: Array = []
+## Whether today's visitor has been talked to.
+var _visit_heard := false
 var _people: Array[PersonData] = []
 
 
@@ -65,6 +71,7 @@ func _ready() -> void:
 
 
 func _listen() -> void:
+	GameClock.new_day.connect(func(_day: int) -> void: visit())
 	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
 		add_news(region.id, "Did you see? %s, the %s you rescued, is about the island today! Look for the bright tag." % [
 			animal_name, r.species.display_name.to_lower()]))
@@ -124,6 +131,80 @@ func observation(person: PersonData) -> String:
 	_observed[_key(person, topic)] = fewest + 1
 	_observed_day[person.id] = today
 	return " ".join(topic.lines)
+
+
+## What `person` hopes for (PersonData.want), said once after a talk once it can be; and once
+## it's come true, what that means to them, said once. "" = nothing new.
+func want_line(person: PersonData) -> String:
+	var want := person.want
+	if not want:
+		return ""
+	var key := "%s/want" % person.id
+	if not _heard.has(key):
+		if not Array(want.when).all(func(c: String) -> bool: return check(c, person)):
+			return ""
+		_heard[key] = true
+		return " ".join(want.lines)
+	if not _heard.has(key + "/done") and wish_came_true(person):
+		_heard[key + "/done"] = true
+		return want.outcome
+	return ""
+
+
+## Whether what `person` hopes for has come true.
+func wish_came_true(person: PersonData) -> bool:
+	return person.want != null and not person.want.outcome_when.is_empty() \
+		and Array(person.want.outcome_when).all(func(c: String) -> bool: return check(c, person))
+
+
+## After the ending (flag "observatory_opened"), someone the ranger has met on another island
+## sometimes comes over for the day (VISIT_CHANCE each morning): they stand beside one of the
+## ranger's island's people and say their PersonData.visit_line. Gone the next morning.
+func visit() -> Node:
+	for old in get_tree().get_nodes_in_group("visitors"):
+		old.queue_free()
+	var ranger := ControlledBody.active(get_tree())
+	if not Fleet.has_flag(&"observatory_opened") or not ranger or randf() >= VISIT_CHANCE:
+		return null
+	var here := Regions.nearest(ranger.global_position).id
+	var hosts := on(here)
+	var guests := all().filter(func(p: PersonData) -> bool: return p.region != here and has_met(p) and p.visit_line != "")
+	if hosts.is_empty() or guests.is_empty():
+		return null
+	return visit_by(guests.pick_random(), hosts.pick_random())
+
+
+## `guest` visits `host` today (see visit()).
+func visit_by(guest: PersonData, host: PersonData) -> Node:
+	var world := get_tree().get_first_node_in_group("ocean_world")
+	if not world:
+		return null
+	var data := guest.duplicate() as PersonData
+	data.region = host.region
+	data.role = VISITOR
+	data.place = null
+	data.moves_to = &""
+	data.want = null
+	data.scared_line = ""
+	data.storm_worry = ""
+	data.storm_after = ""
+	data.observations = []
+	data.spot = host.spot
+	for node: Node2D in get_tree().get_nodes_in_group("people"):
+		if node.get("data") == host:
+			data.spot = node.global_position
+	data.spot += Vector2(Terrain.TILE, 0)
+	var line := TalkTopic.new()
+	line.id = &"visit"
+	line.lines = PackedStringArray([guest.visit_line.replace("{island}", _region(host).display_name).replace("{host}", host.short_name)])
+	var topics: Array[TalkTopic] = [line]
+	data.topics = topics
+	_visit_heard = false
+	var someone := Person.new()
+	someone.data = data
+	someone.add_to_group("visitors")
+	world.add_child(someone)
+	return someone
 
 
 ## How to earn more funding on `person`'s island: its own funding facilities (visitors pay to see
@@ -220,6 +301,8 @@ func to_thank(person: PersonData) -> TalkTopic:
 
 ## Whether they've something new for the ranger (a question, or a thank-you): shown above them.
 func has_news(person: PersonData) -> bool:
+	if person.role == VISITOR:
+		return not _visit_heard
 	if not has_met(person) or nervous(person):
 		return true
 	if person.role != &"objective":
@@ -264,8 +347,14 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		_told(person, greeting)
 	# News and low funding / wood come after whatever they had to say (not when first met).
 	var extra: Array[String] = []
-	if not first:
+	if person.role == VISITOR:
+		_visit_heard = true
+	elif not first:
 		extra = _reminders(person)
+		if extra.is_empty():  # (a wish waits for a talk without news or tips)
+			var wish := want_line(person)
+			if wish != "":
+				extra.append(wish)
 		if extra.is_empty():
 			var noticed := observation(person)
 			if noticed != "":

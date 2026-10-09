@@ -144,6 +144,14 @@ id = &"booby_young"
 when = PackedStringArray("young:red_footed_booby>=1")
 lines = PackedStringArray("A booby chick! Just a ball of white fluff. It'll be brown for a while yet before it looks like its parents.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("When I was a boy I'd count turtle tracks below this lighthouse before school. Every summer, dozens.", "I'd love to see tracks down there just once more.")
+outcome_when = PackedStringArray("nested:green_turtle>=1")
+outcome = "I saw tracks below the lighthouse this morning, {name}. Just like when I was a boy. Thank you."
+
 [resource]
 script = ExtResource("1_p")
 id = &"tom"
@@ -152,7 +160,7 @@ short_name = "Tom"
 job = "Lighthouse keeper"
 region = &"home_island"
 role = &"hint"
-storm_worry = "See those clouds gathering out to sea, {name}? Forty years at the light and I still don't like that colour. A storm's coming. Tie things down!"
+storm_worry = "See those clouds gathering out to sea, {name}? Fifty years at the light and I still don't like that colour. A storm's coming. Tie things down!"
 storm_after = "Phew! The lamp held, but what a night, {name}! Rubbish blown all over the island and out on the water. Help me get it cleaned up, and fix anything the wind broke?"
 spot = Vector2(-48, 372)
 where = "at the lighthouse"
@@ -167,3 +175,5 @@ hat_colour = Color(0.17, 0.24, 0.4, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11"), SubResource("Topic_12"), SubResource("Topic_13"), SubResource("Topic_14"), SubResource("Topic_15"), SubResource("Topic_16"), SubResource("Topic_17")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3"), SubResource("Obs_4")])
+want = SubResource("Want")
+visit_line = "Fifty years I kept my light on one island, {name}. Now I've seen the {island} with my own eyes. {host} showed me round."

@@ -76,6 +76,14 @@ id = &"crocodile_young"
 when = PackedStringArray("young:american_crocodile>=1")
 lines = PackedStringArray("A crocodile hatchling! Yellow with black stripes, small enough to sit in your hand. A mother crocodile gently carries her hatchlings to the water in her mouth.")
 
+[sub_resource type="Resource" id="Want"]
+script = ExtResource("2_t")
+id = &"want"
+when = PackedStringArray()
+lines = PackedStringArray("My grandmother wove baskets from nipa palm. Nobody wanted them once plastic bags were so cheap.", "I'd like to see her baskets back at the market.")
+outcome_when = PackedStringArray("stopped:plastic_bag")
+outcome = "Baskets at the fish market again, {name}! I wove the first one myself. Grandma would be proud."
+
 [resource]
 script = ExtResource("1_p")
 id = &"samuel"
@@ -97,3 +105,5 @@ trousers = Color(0.35, 0.28, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+want = SubResource("Want")
+visit_line = "I came to look at the boats on the {island}, {name}. {host} let me help mend one."
