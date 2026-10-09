@@ -79,7 +79,7 @@ func actions() -> Array:
 
 func photograph_urchins() -> void:
 	_urchin_photo_day = GameClock.day
-	var urchin: AnimalData = load("res://data/animals/sea_urchin.tres")
+	var urchin: AnimalData = DataFiles.res("res://data/animals/sea_urchin.tres")
 	Journal.discover(urchin)
 	Journal.photograph(urchin)
 

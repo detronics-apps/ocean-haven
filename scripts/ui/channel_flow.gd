@@ -63,8 +63,8 @@ func _start_board(config: Vector3i) -> void:
 	_spin.clear()
 	_linked_before.clear()
 	_sparks.clear()
-	_fish_texture = (load("res://data/animals/juvenile_snapper.tres") as AnimalData).sprite
-	_flamingo = (load("res://data/animals/american_flamingo.tres") as AnimalData).sprite
+	_fish_texture = (DataFiles.res("res://data/animals/juvenile_snapper.tres") as AnimalData).sprite
+	_flamingo = (DataFiles.res("res://data/animals/american_flamingo.tres") as AnimalData).sprite
 	_add_button("Show me one (+5 s)", hint, "Hint")
 	_flow()
 

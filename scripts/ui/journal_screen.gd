@@ -171,7 +171,7 @@ func _rescues() -> Control:
 			var seen: Array = Rescues.done[id].get("seen", [])
 			if not seen.is_empty():
 				lines.append("  Seen since near: %s" % ", ".join(seen.map(func(r: String) -> String:
-					return (load("res://data/regions/%s.tres" % r) as RegionData).display_name)))
+					return (DataFiles.res("res://data/regions/%s.tres" % r) as RegionData).display_name)))
 	if lines.size() == 1:
 		return null
 	var picture: Texture2D = caring.species.picture() if caring else null

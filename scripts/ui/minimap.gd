@@ -14,12 +14,59 @@ const HOME_COLOUR := Color("f28c38")
 const BOAT_COLOUR := Color("8a5a36")
 
 
+## The islands' ground as one small picture, a pixel a tile (drawn round the ranger, cut to a
+## circle by CIRCLE): building it from every tile each frame cost several ms. Rebuilt when a
+## tile changes (SaveGame.tile_changed) and now and then (loading).
+var _land: ImageTexture
+var _land_origin := Vector2i.ZERO
+var _land_dirty := true
+var _land_age := 0.0
+const REBUILD_EVERY := 10.0
+const CIRCLE := preload("res://assets/effects/minimap/circle.gdshader")
+
+
 func _ready() -> void:
 	custom_minimum_size = Vector2(RADIUS, RADIUS) * 2.0
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var circle := ShaderMaterial.new()
+	circle.shader = CIRCLE
+	circle.set_shader_parameter("centre", Vector2(RADIUS, RADIUS))
+	circle.set_shader_parameter("radius", RADIUS + 3.0)
+	material = circle
+	SaveGame.tile_changed.connect(func() -> void: _land_dirty = true)
 
 
-func _process(_delta: float) -> void:
+func _build_land() -> void:
+	var cells := {}
+	var low := Vector2i(1 << 30, 1 << 30)
+	var high := -low
+	for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
+		for cell in ground.get_used_cells():
+			var terrain: String = ground.get_cell_tile_data(cell).get_custom_data("terrain")
+			if not TERRAIN_COLOURS.has(terrain):
+				continue
+			var at := Terrain.cell_of(ground.to_global(ground.map_to_local(cell)))
+			cells[at] = TERRAIN_COLOURS[terrain]
+			low = Vector2i(mini(low.x, at.x), mini(low.y, at.y))
+			high = Vector2i(maxi(high.x, at.x), maxi(high.y, at.y))
+	if cells.is_empty():
+		return
+	var image := Image.create_empty(high.x - low.x + 1, high.y - low.y + 1, false, Image.FORMAT_RGBA8)
+	for at: Vector2i in cells:
+		image.set_pixelv(at - low, cells[at])
+	_land_origin = low
+	if _land and _land.get_size() == Vector2(image.get_size()):
+		_land.update(image)
+	else:
+		_land = ImageTexture.create_from_image(image)
+
+
+func _process(delta: float) -> void:
+	_land_age += delta
+	if _land_age >= REBUILD_EVERY:
+		_land_age = 0.0
+		_land_dirty = true
 	queue_redraw()
 
 
@@ -40,13 +87,14 @@ func _draw() -> void:
 	if not ranger:
 		return
 	var centre := ranger.global_position
-	var cell_size := Terrain.TILE * RADIUS / WORLD_RADIUS + 0.6
-	for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
-		for cell in ground.get_used_cells():
-			var point: Array = map_point(ground.to_global(ground.map_to_local(cell)), centre)
-			if point[1]:
-				var colour: Color = TERRAIN_COLOURS.get(ground.get_cell_tile_data(cell).get_custom_data("terrain"), OCEAN)
-				draw_rect(Rect2(point[0] - Vector2.ONE * cell_size / 2.0, Vector2.ONE * cell_size), colour)
+	if _land_dirty:
+		_land_dirty = false
+		_build_land()
+	if _land:
+		var tiles := WORLD_RADIUS / Terrain.TILE  # tiles from the ranger to the rim
+		var from := centre / Terrain.TILE - Vector2(_land_origin) - Vector2(tiles, tiles)
+		draw_texture_rect_region(_land, Rect2(Vector2.ZERO, Vector2(RADIUS, RADIUS) * 2.0),
+			Rect2(from, Vector2(tiles, tiles) * 2.0))
 	for boat: Node2D in get_tree().get_nodes_in_group("boat"):
 		if boat == ranger:
 			continue

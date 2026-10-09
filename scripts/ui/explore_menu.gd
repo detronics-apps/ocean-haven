@@ -67,7 +67,7 @@ func _fill() -> void:
 ## once its discovery has been found).
 func _equipment_card() -> Control:
 	var level := Fleet.level()
-	var ship: BuildingData = load("res://data/buildings/expedition_boat.tres")
+	var ship: BuildingData = DataFiles.res("res://data/buildings/expedition_boat.tres")
 	var picture := ship.fleet_textures[mini(level, ship.fleet_textures.size()) - 1] if level > 0 else ship.texture
 	var lines: Array[String] = ["Current equipment: Level %d" % level]
 	var can := Fleet.installed().map(func(d: DiscoveryData) -> String: return d.capability)

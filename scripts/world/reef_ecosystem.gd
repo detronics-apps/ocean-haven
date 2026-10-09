@@ -89,7 +89,7 @@ func _ready() -> void:
 
 
 func region() -> RegionData:
-	return load("res://data/regions/%s.tres" % region_id)
+	return DataFiles.res("res://data/regions/%s.tres" % region_id)
 
 
 func patches() -> Array[ReefPatch]:
@@ -164,10 +164,10 @@ func _spot_plants() -> void:
 		return
 	for patch in patches():
 		if patch.global_position.distance_to(ranger.global_position) <= 90.0:
-			Journal.discover_plant(load("res://data/plants/reef_coral.tres"))
+			Journal.discover_plant(DataFiles.res("res://data/plants/reef_coral.tres"))
 	for home in _homes(SEAHORSE):
 		if home.global_position.distance_to(ranger.global_position) <= 90.0:
-			Journal.discover_plant(load("res://data/plants/turtle_grass.tres"))
+			Journal.discover_plant(DataFiles.res("res://data/plants/turtle_grass.tres"))
 
 
 func tick(days: float) -> void:
@@ -393,7 +393,7 @@ func _patch_water(patch: ReefPatch) -> Vector2:
 
 
 func _spawn(species: AnimalData, spot: Vector2) -> Animal:
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
 	var world := get_tree().get_first_node_in_group("player").get_parent()
@@ -419,9 +419,9 @@ func _seed() -> void:
 	_spawn(PARROTFISH, _patch_water(list[0]))
 	_spawn(CLAM, _patch_water(list[1 % list.size()]))
 	var seahorse := _spawn(SEAHORSE, _patch_water(list[2 % list.size()]))
-	seahorse.tangle(load("res://data/items/plastic_bag.tres"))
+	seahorse.tangle(DataFiles.res("res://data/items/plastic_bag.tres"))
 	var shark := _spawn(SHARK, _patch_water(list[3 % list.size()]))
-	shark.tangle(load("res://data/items/fishing_line.tres"))
+	shark.tangle(DataFiles.res("res://data/items/fishing_line.tres"))
 
 
 ## Each morning: parrotfish build up a little sand, and a shark may find lost fishing gear.
@@ -526,7 +526,7 @@ func _check_gear() -> void:
 		if Regions.nearest(s.area.get_center()).id == region_id:
 			spawner = s
 	if spawner:
-		spawner.spawn_at(load("res://data/items/%s.tres" % _gear_item), _gear_at, true)
+		spawner.spawn_at(DataFiles.res("res://data/items/%s.tres" % _gear_item), _gear_at, true)
 	if is_instance_valid(_gear_shark):
 		_gear_shark.home_radius = 200.0
 		Journal.record_gift(SHARK)

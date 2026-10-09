@@ -18,8 +18,8 @@ const CAN_PLACE := Color(0.5, 0.8, 1.0, 0.9)
 ## Chance that scooping up sand turns up a piece of buried litter (like a digging crab).
 @export var litter_chance := 0.1
 
-var _sand: ItemData = load("res://data/items/sand.tres")
-var _mud: ItemData = load("res://data/items/mud.tres")
+var _sand: ItemData = DataFiles.res("res://data/items/sand.tres")
+var _mud: ItemData = DataFiles.res("res://data/items/mud.tres")
 ## Holding the shovel right now.
 var active := false
 ## The tile the ranger tapped (one of the 8 around them), or null.

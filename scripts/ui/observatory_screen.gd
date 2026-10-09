@@ -304,7 +304,7 @@ func ocean_health() -> float:
 ## The connections the ranger has made: [{"from", "to" (region ids, "" = every island), "text"}].
 func links() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
-	var found := func(id: String) -> bool: return Regions.is_discovered(load("res://data/regions/%s.tres" % id))
+	var found := func(id: String) -> bool: return Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % id))
 	if found.call("kelp_forest"):
 		list.append({"from": &"home_island", "to": &"kelp_forest", "text": "Clean water from the Starting Island helps the kelp grow back."})
 	if Fleet.has_flag(&"mangrove_flowing") and found.call("tropical_reef"):

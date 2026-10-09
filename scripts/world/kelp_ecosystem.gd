@@ -85,7 +85,7 @@ func _ready() -> void:
 
 
 func region() -> RegionData:
-	return load("res://data/regions/%s.tres" % region_id)
+	return DataFiles.res("res://data/regions/%s.tres" % region_id)
 
 
 func beds() -> Array[KelpBed]:
@@ -158,8 +158,8 @@ func _process(_delta: float) -> void:
 ## caught in a ghost net — it needs help, then a quiet place to rest (an Otter Habitat).
 func _seed() -> void:
 	_seeded = true
-	var otter := _spawn(load("res://data/animals/sea_otter.tres"), beds()[0].global_position)
-	otter.tangle(load("res://data/items/ghost_net.tres"))
+	var otter := _spawn(DataFiles.res("res://data/animals/sea_otter.tres"), beds()[0].global_position)
+	otter.tangle(DataFiles.res("res://data/items/ghost_net.tres"))
 	for i in 2:
 		_spawn(FISH, beds()[(i + 3) % beds().size()].global_position)
 	_spawn(CORMORANT, region().center + Vector2(0, -120))
@@ -167,7 +167,7 @@ func _seed() -> void:
 
 ## Puts a grown animal of `species` into the world at `spot` (saved like the island's own).
 func _spawn(species: AnimalData, spot: Vector2) -> Animal:
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
 	var world := get_tree().get_first_node_in_group("player").get_parent()
@@ -312,7 +312,7 @@ func settle_now() -> void:
 ## conditions; the ecosystem decides. At most one change per habitat each time. Then fish
 ## follow the kelp, and cormorants the fish.
 func settle() -> void:
-	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var species: AnimalData = DataFiles.res("res://data/animals/sea_otter.tres")
 	var homes := _habitats(species)
 	var all := otters()
 	var before := all.size()
@@ -425,7 +425,7 @@ func _follow(species: AnimalData, target: int) -> void:
 		return  # nothing new comes until the ranger has helped the island (Regions.helped)
 	if not Births.can_have(get_tree(), species, region()):
 		return  # its parents' last young are still too little (or one drifted in just now)
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)  # grown: saved like the island's own
 	var world := get_tree().get_first_node_in_group("player").get_parent()
@@ -462,7 +462,7 @@ func _move_away(otter: Animal, why: String) -> void:
 
 ## A new otter at `home`: a pup, born beside one of the island's otters there (Births).
 func _new_otter(species: AnimalData, home: Building, _all: Array[Animal]) -> void:
-	var otter: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var otter: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	otter.data = species
 	otter.home_area = home
 	otter.home_radius = species.adult_home_radius
@@ -569,7 +569,7 @@ func _nearest_otter_home(point: Vector2) -> float:
 
 ## The island's otters, what the forest can feed, and what each habitat is doing.
 func _otter_report() -> String:
-	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var species: AnimalData = DataFiles.res("res://data/animals/sea_otter.tres")
 	var homes := _habitats(species)
 	if homes.is_empty():
 		return "No otters without a quiet place to rest: build an Otter Habitat on the shore."
@@ -615,9 +615,9 @@ func balance_report() -> String:
 		advice = "The food web is close to balance."
 	var link := ""
 	if upstream_clean() >= 0.5:
-		link = " Clean water from the %s is helping the kelp grow back faster." % (load("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
+		link = " Clean water from the %s is helping the kelp grow back faster." % (DataFiles.res("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
 	else:
-		link = " Litter around the %s is slowing the kelp's recovery here: the ocean is connected." % (load("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
+		link = " Litter around the %s is slowing the kelp's recovery here: the ocean is connected." % (DataFiles.res("res://data/regions/%s.tres" % upstream_region) as RegionData).display_name
 	return chain + " " + advice + link
 
 
@@ -625,7 +625,7 @@ func balance_report() -> String:
 func upstream_clean() -> float:
 	if upstream_region == &"":
 		return 0.0
-	var upstream: RegionData = load("res://data/regions/%s.tres" % upstream_region)
+	var upstream: RegionData = DataFiles.res("res://data/regions/%s.tres" % upstream_region)
 	for factor: HealthFactor in upstream.health:
 		if factor.kind == &"clean" and factor.target == &"":
 			return IslandHealth.score(get_tree(), upstream, factor)
@@ -644,7 +644,7 @@ func kelp_health() -> float:
 ## run forward on copies (habitats, restoration and hurt or caught otters as they are).
 ## Returns counts for IslandHealth.of's `projected`: "kelp" (%), "urchins", and animals by id.
 func project() -> Dictionary:
-	var species: AnimalData = load("res://data/animals/sea_otter.tres")
+	var species: AnimalData = DataFiles.res("res://data/animals/sea_otter.tres")
 	var list := beds()
 	var health: Array[float] = []
 	var urchins: Array[float] = []

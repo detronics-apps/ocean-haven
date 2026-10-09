@@ -284,7 +284,7 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	for id in species_ids:
 		var path := "res://data/animals/%s.tres" % id
 		if ResourceLoader.exists(path):
-			_found[StringName(id)] = load(path)
+			_found[StringName(id)] = DataFiles.res(path)
 	_observed.clear()
 	for id in saved_details.get("observed", []):
 		_observed[StringName(id)] = true
@@ -303,7 +303,7 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	for id in saved_details.get("plants", []):
 		var plant_path := "res://data/plants/%s.tres" % id
 		if ResourceLoader.exists(plant_path):
-			_plants[StringName(id)] = load(plant_path)
+			_plants[StringName(id)] = DataFiles.res(plant_path)
 
 
 func _restore_counts(into: Dictionary[StringName, int], saved: Dictionary) -> void:

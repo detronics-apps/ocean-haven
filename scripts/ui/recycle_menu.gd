@@ -76,7 +76,7 @@ func _add_stats() -> void:
 	table.add_theme_constant_override("v_separation", 6)
 	_content.add_child(table)
 	for id: StringName in KINDS:
-		var item: ItemData = load("res://data/items/%s.tres" % id)
+		var item: ItemData = DataFiles.res("res://data/items/%s.tres" % id)
 		var picture := TextureRect.new()
 		picture.texture = item.icon
 		picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST

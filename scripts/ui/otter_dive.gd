@@ -106,9 +106,9 @@ func _start_board(config: Vector3i) -> void:
 	_life.clear()
 	if _litter_icons.is_empty():
 		for path: String in LITTER_ICONS:
-			_litter_icons.append(load(path))
+			_litter_icons.append(DataFiles.res(path))
 		for path: String in FISH_SPRITES:
-			_fish_textures.append((load(path) as AnimalData).sprite)
+			_fish_textures.append((DataFiles.res(path) as AnimalData).sprite)
 	_place_ahead(0.4, 3.0)
 	for i in 4:
 		_add_life(randf_range(0.0, 1.0))

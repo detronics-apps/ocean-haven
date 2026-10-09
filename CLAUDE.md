@@ -68,6 +68,12 @@ addons/                  third-party Godot plugins only
 - Tunable numbers are `@export` vars or live in `data/`, not magic numbers in code.
 - **Data, not code, defines content.** Adding a new animal, item, building or quest must mean adding a data file (Godot `Resource` `.tres` preferred, JSON acceptable), not writing a new script.
 - No speculative abstractions: build what the current milestone needs.
+- **Performance (the phone plays it in a browser):** never call `load()` in game code: use
+  `DataFiles.res(path)` (loaded once, kept) or `preload`; `DataFiles.load_all` is cached too.
+  `load()` and folder listings go to the disk / the web pack on every call, and made every frame
+  lag. Per-frame code (`_process`, `_physics_process`, `_draw`) never loops over every tile or
+  does a flood fill: cache it (the minimap's land picture, rebuilt on SaveGame.tile_changed; the
+  Mangrove's `connected()`), and work that can wait runs a few times a second.
 
 ## Workflow
 

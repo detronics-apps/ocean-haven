@@ -57,7 +57,7 @@ func morning() -> void:
 		return
 	var here := Regions.nearest(ranger.global_position)
 	for species in travelling():
-		var home: RegionData = load("res://data/regions/%s.tres" % species.travel_home)
+		var home: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.travel_home)
 		if not _since.has(species.id) and Regions.is_discovered(home) and _residents(species, home) > 0:
 			_since[species.id] = GameClock.day
 		if here.id != species.travel_home and can_reach(species, here) and randf() < species.travel_chance:
@@ -70,7 +70,7 @@ func morning() -> void:
 ## A visitor of `species` comes to `region` for the day. Returns it.
 func visit(species: AnimalData, region: RegionData) -> Node2D:
 	var world := get_tree().get_first_node_in_group("player").get_parent()
-	var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Node2D = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.set("data", species)
 	animal.set("visiting", true)
 	animal.name = "Traveller_%s" % species.id
@@ -80,7 +80,7 @@ func visit(species: AnimalData, region: RegionData) -> Node2D:
 	world.add_child(animal)
 	world.move_child(animal, world.get_node("Player").get_index())
 	var key := "%s/%s" % [species.id, region.id]
-	var from: RegionData = load("res://data/regions/%s.tres" % species.travel_home)
+	var from: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.travel_home)
 	if not _told.has(key):
 		_told[key] = true
 		if species.travel_news != "":
@@ -97,8 +97,8 @@ var seeds_from_health := 0.7
 ## if one of them is there now (resident or visiting), that island is healthy, and there's room
 ## and a free spot. Returns the new tree's building (null = none today).
 func spread_seeds(species: AnimalData) -> Building:
-	var to: RegionData = load("res://data/regions/%s.tres" % species.seeds_to)
-	var from: RegionData = load("res://data/regions/%s.tres" % species.seeds_from)
+	var to: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_to)
+	var from: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_from)
 	if not Regions.is_discovered(to) or not Regions.is_discovered(from) or IslandHealth.of(get_tree(), from) < seeds_from_health:
 		return null
 	var there := get_tree().get_nodes_in_group("animals").any(func(a: Node) -> bool:

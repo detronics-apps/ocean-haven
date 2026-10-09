@@ -34,8 +34,8 @@ var _nest: Sprite2D
 @export var plant: PlantData
 const SPOT_RANGE := 90.0
 
-var _wood: ItemData = load("res://data/items/wood.tres")
-@onready var _sapling: ItemData = sapling if sapling else load("res://data/items/sapling.tres")
+var _wood: ItemData = DataFiles.res("res://data/items/wood.tres")
+@onready var _sapling: ItemData = sapling if sapling else DataFiles.res("res://data/items/sapling.tres")
 
 
 func _enter_tree() -> void:
@@ -142,18 +142,23 @@ var _snow_looked := false
 
 
 var _grown_texture: Texture2D
+var _shown_stage := -1
+var _plant_kind: PlantData
+var _look_again := 0.0
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var sprite: Sprite2D = $Sprite2D
 	if not _grown_texture:
 		_grown_texture = sprite.texture
 	var now := stage()
-	if stage_textures.size() >= 2:
-		sprite.texture = stage_textures[now] if now < GROWN else _grown_texture
-		sprite.scale = Vector2.ONE
-	else:
-		sprite.scale = Vector2.ONE * STAGE_SIZE[now]
+	if now != _shown_stage:  # (only when it grows: setting the picture every frame cost time)
+		_shown_stage = now
+		if stage_textures.size() >= 2:
+			sprite.texture = stage_textures[now] if now < GROWN else _grown_texture
+			sprite.scale = Vector2.ONE
+		else:
+			sprite.scale = Vector2.ONE * STAGE_SIZE[now]
 	if not _snow_looked:
 		_snow_looked = true
 		var island := Regions.nearest(global_position)
@@ -165,8 +170,16 @@ func _process(_delta: float) -> void:
 				$Sprite2D.material = snow
 	if _snow_from:
 		($Sprite2D.material as ShaderMaterial).set_shader_parameter("depth", _snow_from.snow_cover() * SNOW_ROWS)
-	var kind: PlantData = plant if plant else load("res://data/plants/coconut_palm.tres")
-	if not Journal.has_plant(kind.id):
-		var ranger := ControlledBody.active(get_tree())
-		if ranger and ranger.global_position.distance_to(global_position) <= SPOT_RANGE:
-			Journal.discover_plant(kind)
+	# Found for the Journal the first time the ranger comes close (looked at twice a second).
+	_look_again -= delta
+	if _look_again > 0.0:
+		return
+	_look_again = 0.5
+	if not _plant_kind:
+		_plant_kind = plant if plant else DataFiles.res("res://data/plants/coconut_palm.tres")
+	if Journal.has_plant(_plant_kind.id):
+		set_process(_snow_from != null or get_parent() is Building)  # nothing left to do for an old, found tree
+		return
+	var ranger := ControlledBody.active(get_tree())
+	if ranger and ranger.global_position.distance_to(global_position) <= SPOT_RANGE:
+		Journal.discover_plant(_plant_kind)

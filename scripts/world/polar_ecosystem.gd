@@ -91,7 +91,7 @@ func _ready() -> void:
 
 
 func region() -> RegionData:
-	return load("res://data/regions/%s.tres" % region_id)
+	return DataFiles.res("res://data/regions/%s.tres" % region_id)
 
 
 func _terrain(cell: Vector2i) -> String:
@@ -646,7 +646,7 @@ func _home_spot(species: AnimalData) -> Vector2:
 
 
 func _spawn(species: AnimalData, spot: Vector2, visiting := false) -> Animal:
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
 	animal.visiting = visiting
@@ -670,7 +670,7 @@ func _seed() -> void:
 	apply_ice()
 	_measure_open()
 	var seal := _spawn(SEAL, _home_spot(SEAL))
-	seal.tangle(load("res://data/items/ghost_net.tres"))
+	seal.tangle(DataFiles.res("res://data/items/ghost_net.tres"))
 	_spawn(BEAR, _home_spot(BEAR))
 	_spawn(COD, _home_spot(COD))
 	_spawn(COD, _home_spot(COD))

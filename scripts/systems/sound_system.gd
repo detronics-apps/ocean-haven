@@ -97,7 +97,7 @@ func play(id: StringName, volume_db := 0.0, vary := 0.05) -> void:
 	_last_played[id] = now
 	if not _sfx.has(id):
 		var path := SFX_DIR + String(id) + ".wav"
-		_sfx[id] = load(path) if ResourceLoader.exists(path) else null
+		_sfx[id] = DataFiles.res(path) if ResourceLoader.exists(path) else null
 	if not _sfx[id]:
 		return
 	var player := _sfx_players[_next_sfx]

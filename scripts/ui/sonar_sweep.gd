@@ -67,7 +67,7 @@ func _start_board(config: Vector3i) -> void:
 	cells.shuffle()
 	var story := not Activities.story_done(activity)
 	for i in mini(config.z, cells.size()):
-		_things[cells[i]] = WRECK if (story and i == 0) or (not story and i % 4 == 0) else (load(LITTER[i % LITTER.size()]) as ItemData).icon
+		_things[cells[i]] = WRECK if (story and i == 0) or (not story and i % 4 == 0) else (DataFiles.res(LITTER[i % LITTER.size()]) as ItemData).icon
 	_fish.clear()
 	for i in 4:
 		_fish.append({"pos": Vector2(randf() * _cols, randf() * _rows), "speed": randf_range(0.3, 0.7) * (1.0 if randf() < 0.5 else -1.0)})

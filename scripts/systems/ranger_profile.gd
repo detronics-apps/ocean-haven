@@ -22,7 +22,7 @@ const DEFAULT_LOOK := {
 	"hat": 1, "hat_colour": 0, "backpack": 1, "boat": 0,
 }
 
-var options: AvatarOptions = load("res://data/avatar/avatar_options.tres")
+var options: AvatarOptions = DataFiles.res("res://data/avatar/avatar_options.tres")
 var look: Dictionary = DEFAULT_LOOK.duplicate()
 ## Has the player been through the avatar creator yet?
 var created := false

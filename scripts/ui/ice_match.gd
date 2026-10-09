@@ -63,8 +63,8 @@ func _start_board(config: Vector3i) -> void:
 	_snow.clear()
 	for i in 40:
 		_snow.append(Vector2(randf(), randf()))
-	_cod = (load("res://data/animals/arctic_cod.tres") as AnimalData).sprite
-	_seal = (load("res://data/animals/ringed_seal.tres") as AnimalData).sprite
+	_cod = (DataFiles.res("res://data/animals/arctic_cod.tres") as AnimalData).sprite
+	_seal = (DataFiles.res("res://data/animals/ringed_seal.tres") as AnimalData).sprite
 	_area = Control.new()
 	_area.name = "Map"
 	_area.set_anchors_preset(Control.PRESET_FULL_RECT)

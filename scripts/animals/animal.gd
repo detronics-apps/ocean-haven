@@ -1372,7 +1372,7 @@ func _lay() -> void:
 
 
 func _finish_laying() -> void:
-	var nest: Node2D = load(NEST_SCENE).instantiate()
+	var nest: Node2D = DataFiles.res(NEST_SCENE).instantiate()
 	nest.set("species", data)
 	nest.set("area", home_area)
 	nest.set("mother", self)

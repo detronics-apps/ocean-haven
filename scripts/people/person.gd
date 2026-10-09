@@ -60,9 +60,9 @@ func _process(delta: float) -> void:
 
 ## Their layered look, from the avatar parts (no ranger profile: their own colours).
 func _look() -> Node2D:
-	var look: Node2D = load(AVATAR).instantiate()
+	var look: Node2D = DataFiles.res(AVATAR).instantiate()
 	look.set_script(null)
-	var options: AvatarOptions = load(OPTIONS)
+	var options: AvatarOptions = DataFiles.res(OPTIONS)
 	look.get_node("Skin").modulate = data.skin
 	look.get_node("Shirt").modulate = data.shirt
 	look.get_node("Trousers").modulate = data.trousers

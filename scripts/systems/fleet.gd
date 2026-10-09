@@ -174,7 +174,7 @@ func has_flag(flag: StringName) -> bool:
 
 static func discovery(id: StringName) -> DiscoveryData:
 	var path := "res://data/discoveries/%s.tres" % id
-	return load(path) if id != &"" and ResourceLoader.exists(path) else null
+	return DataFiles.res(path) if id != &"" and ResourceLoader.exists(path) else null
 
 
 func has_found(id: StringName) -> bool:

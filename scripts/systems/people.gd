@@ -344,7 +344,7 @@ func _clue(person: PersonData) -> PackedStringArray:
 			&"clean":
 				advice = "Every piece of litter you pick up counts, in the water and on the shore."
 			&"animals", &"help":
-				var species: AnimalData = load("res://data/animals/%s.tres" % factor.target) if ResourceLoader.exists("res://data/animals/%s.tres" % factor.target) else null
+				var species: AnimalData = DataFiles.res("res://data/animals/%s.tres" % factor.target) if ResourceLoader.exists("res://data/animals/%s.tres" % factor.target) else null
 				advice = "Free any that are caught. %s" % (species.help_fact if species else "")
 			_:
 				advice = "Ask %s what the research shows: the station's surveys can tell you more." % _giver_name(person)
@@ -383,14 +383,14 @@ func open_things(here: StringName) -> Array[String]:
 				into.append("%s %s is still waiting on you: %s." % [someone.short_name, on_island, question.objective.text.to_lower()])
 	var caring := Rescues.in_care()
 	if caring:
-		var island: RegionData = load(caring.region_path())
+		var island: RegionData = DataFiles.res(caring.region_path())
 		var who := Rescues.pet_name() if Rescues.is_named() else "a young %s" % caring.species.display_name.to_lower()
 		(near if caring.region == here else away).append("%s is waiting for you on the vet table on the %s." % [who, island.display_name])
 	else:
 		for one: RescueData in Rescues.all():
-			var island: RegionData = load(one.region_path())
+			var island: RegionData = DataFiles.res(one.region_path())
 			if not Rescues.done.has(one.id) and Regions.is_discovered(island):
-				var building: BuildingData = load("res://data/buildings/%s.tres" % one.building)
+				var building: BuildingData = DataFiles.res("res://data/buildings/%s.tres" % one.building)
 				var built := get_tree().get_nodes_in_group("buildings").any(func(b: Building) -> bool:
 					return b.data.id == one.building and Regions.nearest(b.global_position) == island)
 				(near if one.region == here else away).append(("An animal on the %s needs looking after: go to the %s there." if built
@@ -625,7 +625,7 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"installed": result = Fleet.is_installed(arg)
 		"met": result = _met.has(arg)
 		"season": result = GameClock.season() == arg
-		"found": result = Regions.is_discovered(load("res://data/regions/%s.tres" % arg))
+		"found": result = Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % arg))
 		"stopped": result = Fleet.stopped(arg)
 		"journal": result = Journal.has(arg)  # photographed (in the Journal)
 		"soon":  # seasonal moment `arg` is on, or starts within a week
@@ -678,7 +678,7 @@ func _number(name: String, person: PersonData) -> float:
 
 
 func _region(person: PersonData) -> RegionData:
-	return load("res://data/regions/%s.tres" % person.region)
+	return DataFiles.res("res://data/regions/%s.tres" % person.region)
 
 
 ## Healthy residents of species `id` on their island.

@@ -196,7 +196,7 @@ static func describe_cost(funding: int, litter: int, items: Dictionary) -> Strin
 	if litter > 0:
 		parts.append("%d recycled litter" % litter)
 	for item_id in items:
-		var item: ItemData = load("res://data/items/%s.tres" % item_id)
+		var item: ItemData = DataFiles.res("res://data/items/%s.tres" % item_id)
 		parts.append("%d %s" % [items[item_id], item.display_name.to_lower()])
 	return "Needs " + " + ".join(parts) + "." if parts else "Free to build."
 

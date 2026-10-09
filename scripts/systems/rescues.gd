@@ -273,7 +273,7 @@ func check_visits() -> void:
 		_place(one, record)
 		var ranger := ControlledBody.active(get_tree())
 		if ranger and record.where != String(one.region) and record.where == String(Regions.nearest(ranger.global_position).id):
-			sighted.emit(one, String(record.get("name", "")), load("res://data/regions/%s.tres" % record.where))
+			sighted.emit(one, String(record.get("name", "")), DataFiles.res("res://data/regions/%s.tres" % record.where))
 
 
 func _roll_where(one: RescueData, how_well: float) -> String:
@@ -281,7 +281,7 @@ func _roll_where(one: RescueData, how_well: float) -> String:
 		return ""  # out at sea today
 	var places: Array[String] = [String(one.region), String(one.region)]  # home most often
 	for id in one.visits:
-		if Regions.is_discovered(load("res://data/regions/%s.tres" % id)):
+		if Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % id)):
 			places.append(String(id))
 	return places.pick_random()
 

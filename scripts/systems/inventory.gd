@@ -128,7 +128,7 @@ func restore(counts: Dictionary, stored_counts: Dictionary = {}) -> void:
 	for id in counts:
 		var path := "res://data/items/%s.tres" % id
 		if ResourceLoader.exists(path):
-			_set_count(load(path), int(counts[id]))
+			_set_count(DataFiles.res(path), int(counts[id]))
 	_stored.clear()
 	for id in stored_counts:
 		_stored[StringName(id)] = int(stored_counts[id])

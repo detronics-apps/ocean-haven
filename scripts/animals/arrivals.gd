@@ -18,9 +18,12 @@ static var _arrived := {}
 static func check(world: Node) -> Array[Node2D]:
 	var tree := world.get_tree()
 	var came: Array[Node2D] = []
-	var healthy := Regions.all().filter(func(r: RegionData) -> bool: return IslandHealth.of(tree, r) >= HEALTHY)
+	var health_of := {}  # (worked out once each: it counts every animal and piece of litter)
 	for region: RegionData in Regions.all():
-		var health := IslandHealth.of(tree, region)
+		health_of[region] = IslandHealth.of(tree, region)
+	var healthy := Regions.all().filter(func(r: RegionData) -> bool: return health_of[r] >= HEALTHY)
+	for region: RegionData in Regions.all():
+		var health: float = health_of[region]
 		var trees := grown_trees(tree, region)
 		var planted := grown_trees(tree, region, true)
 		for arrival: ArrivalData in region.arrivals:

@@ -149,7 +149,7 @@ func hatch() -> void:
 	for i in count:
 		var stays := not storm_hit and (species.stay_per_nest <= 0 or i < species.stay_per_nest)
 		var home := _area_with_room() if stays else null
-		var baby: Node2D = load(ANIMAL_SCENE).instantiate()
+		var baby: Node2D = DataFiles.res(ANIMAL_SCENE).instantiate()
 		baby.set("data", species)
 		baby.set("young", true)
 		baby.set("born_at", GameClock.now())

@@ -154,6 +154,7 @@ func actions() -> Array:
 
 func _ready() -> void:
 	_ground = get_parent().get_node("Ground")
+	SaveGame.tile_changed.connect(func() -> void: _tiles_version += 1)
 	for cell in _ground.get_used_cells():
 		if _terrain(cell) in LAND:
 			_base_land[cell] = true
@@ -169,7 +170,7 @@ func _ready() -> void:
 
 
 func region() -> RegionData:
-	return load("res://data/regions/%s.tres" % region_id)
+	return DataFiles.res("res://data/regions/%s.tres" % region_id)
 
 
 func _terrain(cell: Vector2i) -> String:
@@ -238,12 +239,28 @@ func _flood(blocked: Dictionary) -> Dictionary:
 
 ## Water linked to the sea right now (closed gates block it; so do channel tiles in
 ## `also_blocked`).
+## (Read only: the same answer is kept until a tile or a gate changes, or a few seconds pass:
+## filling the whole island took ~9 ms and it's asked often.)
 func connected(also_blocked: Dictionary = {}) -> Dictionary:
 	var blocked := also_blocked.duplicate()
 	for gate in gates():
 		if gate.gate_closed:
 			blocked[_cell(Terrain.centre_of(gate.cell))] = true
-	return _flood(blocked)
+	var key := "%d %s" % [_tiles_version, blocked.keys()]
+	var now := Time.get_ticks_msec()
+	if key == _reach_key and now - _reach_at < REACH_KEEP_MSEC:
+		return _reach
+	_reach = _flood(blocked)
+	_reach_key = key
+	_reach_at = now
+	return _reach
+
+
+var _reach := {}
+var _reach_key := ""
+var _reach_at := 0
+var _tiles_version := 0
+const REACH_KEEP_MSEC := 3000
 
 
 func gates() -> Array[Building]:
@@ -585,7 +602,7 @@ func _spot_for(species: AnimalData) -> Vector2:
 
 ## Puts a grown animal of `species` into the world at `spot` (saved like the island's own).
 func _spawn(species: AnimalData, spot: Vector2) -> Animal:
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
 	var world := get_tree().get_first_node_in_group("player").get_parent()
@@ -607,7 +624,7 @@ func _seed() -> void:
 	_seeded = true
 	var spots := flats()
 	var crab := _spawn(CRAB, _world(spots[0]) if not spots.is_empty() else region().center)
-	crab.tangle(load("res://data/items/plastic_bag.tres"))
+	crab.tangle(DataFiles.res("res://data/items/plastic_bag.tres"))
 	for i in 2:
 		_spawn(FISH, Terrain.nearest(get_tree(), region().center + Vector2(-260 + i * 40, 60), ["water"]))
 	_spawn(FLAMINGO, _world(spots[spots.size() / 2]) if not spots.is_empty() else region().center)

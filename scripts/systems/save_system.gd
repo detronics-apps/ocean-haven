@@ -7,6 +7,8 @@ extends Node
 ## a page before that finishes); loading uses whichever copy is newest.
 
 signal saved
+## A ground tile changed at runtime (digging, silting, ice): the minimap redraws its picture.
+signal tile_changed
 
 const PATH := "user://save.json"
 const VERSION := 1
@@ -85,6 +87,7 @@ func record_tile(ground: TileMapLayer, local_cell: Vector2i, atlas: Vector2i) ->
 		_tile_edits[key] = {}
 	_tile_edits[key]["%d,%d" % [local_cell.x, local_cell.y]] = [atlas.x, atlas.y]
 	get_tree().call_group("terrain_edges", "cell_changed", ground, local_cell)  # rounded corners
+	tile_changed.emit()
 	_dirty = true
 
 
@@ -393,7 +396,7 @@ func load_from(world: Node, path: String) -> bool:
 		var animal := world.get_node_or_null(animal_name)
 		var item_path := "res://data/items/%s.tres" % tangles[animal_name]
 		if animal and ResourceLoader.exists(item_path):
-			animal.tangle(load(item_path))
+			animal.tangle(DataFiles.res(item_path))
 	for animal_name: String in state.get("injured_animals", []):  # hurt by a storm, not rescued yet
 		var animal := world.get_node_or_null(animal_name)
 		if animal:
@@ -413,7 +416,7 @@ func load_from(world: Node, path: String) -> bool:
 		var item_path := "res://data/items/%s.tres" % entry.get("item", "")
 		var pos: Array = entry.get("pos", [])
 		if ResourceLoader.exists(item_path) and pos.size() == 2:
-			spawner.spawn_at(load(item_path), Vector2(pos[0], pos[1]), bool(entry.get("floating", true)))
+			spawner.spawn_at(DataFiles.res(item_path), Vector2(pos[0], pos[1]), bool(entry.get("floating", true)))
 	for animal_name: String in state.get("nest_days", {}):
 		var animal := world.get_node_or_null(animal_name)
 		if animal:
@@ -422,7 +425,7 @@ func load_from(world: Node, path: String) -> bool:
 		var species := _species(entry.get("species", ""))
 		var pos: Array = entry.get("pos", [])
 		if species and pos.size() == 2:
-			var nest: Nest = load(Animal.NEST_SCENE).instantiate()
+			var nest: Nest = DataFiles.res(Animal.NEST_SCENE).instantiate()
 			nest.species = species
 			nest.laid_at = float(entry.get("laid_at", 0.0))
 			nest.protected_until = float(entry.get("protected_until", -1.0))
@@ -441,7 +444,7 @@ func load_from(world: Node, path: String) -> bool:
 				same.born_at = float(entry.get("born_at", 0.0))
 				same.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
 				continue
-			var baby: Animal = load(Nest.ANIMAL_SCENE).instantiate()
+			var baby: Animal = DataFiles.res(Nest.ANIMAL_SCENE).instantiate()
 			baby.data = species
 			baby.young = not entry.get("adult", false)
 			baby.born_at = float(entry.get("born_at", 0.0))  # older saves: old enough to grow up now
@@ -455,13 +458,13 @@ func load_from(world: Node, path: String) -> bool:
 			baby.restore_young(Vector2(pos[0], pos[1]), Vector2(home[0], home[1]))
 			var caught_in := "res://data/items/%s.tres" % entry.get("tangled", "")
 			if entry.get("tangled", "") != "" and ResourceLoader.exists(caught_in):
-				baby.tangle(load(caught_in))
+				baby.tangle(DataFiles.res(caught_in))
 	var build_mode: BuildMode = world.get_node("BuildMode")
 	for entry: Dictionary in state.get("buildings", []):
 		var data_path := "res://data/buildings/%s.tres" % entry.get("id", "")
 		var cell: Array = entry.get("cell", [])
 		if ResourceLoader.exists(data_path) and cell.size() == 2:
-			var building := build_mode.add_building(load(data_path), Vector2i(int(cell[0]), int(cell[1])))
+			var building := build_mode.add_building(DataFiles.res(data_path), Vector2i(int(cell[0]), int(cell[1])))
 			building.add_funds(int(entry.get("funds", 0)))
 			building.tier = int(entry.get("tier", 1))
 			building.built_day = int(entry.get("built_day", -100))  # older saves: palms fully grown
@@ -501,7 +504,7 @@ func load_from(world: Node, path: String) -> bool:
 	if relocked:
 		get_tree().call_group("hud", "show_toast", "Some islands need your fleet's upgrades first. Explore them again once your fleet is ready!")
 	if "TurtleSanctuarySite" in state.get("built", []):  # saves from before free placement
-		build_mode.add_building(load("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
+		build_mode.add_building(DataFiles.res("res://data/buildings/turtle_protection_area.tres"), Vector2i(8, -1))
 	ControlledBody.water_until = float(state.get("water_until", -1.0))
 	var p: Array = state.get("player", [])
 	if p.size() == 2:
@@ -527,7 +530,7 @@ func load_from(world: Node, path: String) -> bool:
 	var moved_home := Regions.nearest(own.global_position).id != &"home_island"
 	if moved_home:
 		var was_at := Regions.nearest(own.global_position)
-		own.global_position = (load("res://data/regions/home_island.tres") as RegionData).boat_mooring
+		own.global_position = (DataFiles.res("res://data/regions/home_island.tres") as RegionData).boat_mooring
 		if state.get("aboard", false):  # they were out in it: ashore where they landed
 			(world.get_node("Player") as Node2D).global_position = was_at.arrival
 	if state.get("aboard", false) and not moved_home:
@@ -580,4 +583,4 @@ func _tree_nests() -> Dictionary:
 
 func _species(id: String) -> AnimalData:
 	var path := "res://data/animals/%s.tres" % id
-	return load(path) if id and ResourceLoader.exists(path) else null
+	return DataFiles.res(path) if id and ResourceLoader.exists(path) else null

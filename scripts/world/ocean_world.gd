@@ -45,7 +45,7 @@ func _ready() -> void:
 		$AvatarCreator.open()
 		await $AvatarCreator.closed
 	if not _has_home():
-		$BuildMode.start(load(TENT_PATH), true)
+		$BuildMode.start(DataFiles.res(TENT_PATH), true)
 
 
 ## A released rescue companion, tagged, where it is today (Rescues: its own island, an island it
@@ -60,14 +60,14 @@ func place_tagged(rescue: RescueData, record: Dictionary) -> Node2D:
 	var where := String(record.get("where", ""))
 	if where == "":
 		return null
-	var region: RegionData = load("res://data/regions/%s.tres" % where)
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % where)
 	var at := region.arrival
 	if where == String(rescue.region):
 		for building: Building in get_tree().get_nodes_in_group("buildings"):
 			if building.data.id == rescue.building and Regions.nearest(building.global_position) == region:
 				at = building.global_position
 	var habitat: Array = Array(rescue.species.habitat_terrain)
-	var animal: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Node2D = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.name = node_name
 	animal.set("data", rescue.species)
 	animal.set("visiting", where != String(rescue.region))

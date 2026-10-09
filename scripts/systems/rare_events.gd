@@ -122,7 +122,7 @@ func _window(event: EventData) -> Vector2i:
 
 ## Whether `event` may be warned for `day`: the ranger is on its island.
 func _can_strike(event: EventData, _day: int) -> bool:
-	return Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region))
+	return Regions.ranger_on(get_tree(), DataFiles.res("res://data/regions/%s.tres" % event.region))
 
 
 static func all() -> Array[EventData]:
@@ -140,8 +140,8 @@ func _on_new_day(day: int) -> void:
 			_coming.erase(event.id)  # (warned before the island's timer started: called off)
 		elif _coming.has(event.id):
 			pass
-		elif Regions.ranger_on(get_tree(), load("res://data/regions/%s.tres" % event.region)) \
-				and Regions.is_discovered(load("res://data/regions/%s.tres" % event.region)) \
+		elif Regions.ranger_on(get_tree(), DataFiles.res("res://data/regions/%s.tres" % event.region)) \
+				and Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
 			var since: int = day - maxi(_last_day.get(event.id, 0), _arrived_day(event.region))
 			var window := _window(event)

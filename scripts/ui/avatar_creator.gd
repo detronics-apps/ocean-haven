@@ -82,7 +82,7 @@ func _build() -> void:
 	TextPrompt.attach(_name, "Your ranger's name")
 	_preview_box = Control.new()
 	_left.add_child(_preview_box)
-	_preview = load("res://scenes/player/avatar.tscn").instantiate()
+	_preview = DataFiles.res("res://scenes/player/avatar.tscn").instantiate()
 	_preview_box.add_child(_preview)
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override("separation", 8)

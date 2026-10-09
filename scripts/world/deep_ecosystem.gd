@@ -105,7 +105,7 @@ func _ready() -> void:
 
 
 func region() -> RegionData:
-	return load("res://data/regions/%s.tres" % region_id)
+	return DataFiles.res("res://data/regions/%s.tres" % region_id)
 
 
 func sectors() -> Array[DeepSector]:
@@ -426,7 +426,7 @@ func _water_near(point: Vector2) -> Vector2:
 
 
 func _spawn(species: AnimalData, spot: Vector2) -> Animal:
-	var animal: Animal = load("res://scenes/animals/animal.tscn").instantiate()
+	var animal: Animal = DataFiles.res("res://scenes/animals/animal.tscn").instantiate()
 	animal.data = species
 	animal.born_at = maxf(GameClock.now() - species.grow_days, 0.0)
 	var world := get_tree().get_first_node_in_group("player").get_parent()
@@ -450,7 +450,7 @@ func _seed() -> void:
 	if list.size() < LAYOUT.size():
 		return
 	var whale := _spawn(WHALE, _water_near(list[1].global_position))
-	whale.tangle(load("res://data/items/fishing_line.tres"))
+	whale.tangle(DataFiles.res("res://data/items/fishing_line.tres"))
 	_spawn(ANGLER, _water_near(list[2].global_position))
 	_spawn(SHARK, _water_near(list[3].global_position))
 
@@ -481,7 +481,7 @@ func _surface_gear(sector: DeepSector) -> void:
 	sector.gear_found = true
 	var spawner := _spawner()
 	if spawner:
-		spawner.spawn_at(load("res://data/items/%s.tres" % sector.gear_item), _water_near(sector.global_position), true)
+		spawner.spawn_at(DataFiles.res("res://data/items/%s.tres" % sector.gear_item), _water_near(sector.global_position), true)
 
 
 ## Surfaced gear that has been collected is gone for good (collecting it counts towards gear

@@ -237,10 +237,10 @@ func _keep_visitor() -> void:
 
 
 func _new_visitor() -> Node2D:
-	var visitor: Node2D = load(Nest.ANIMAL_SCENE).instantiate()
+	var visitor: Node2D = DataFiles.res(Nest.ANIMAL_SCENE).instantiate()
 	visitor.name = VISITOR_NAME
 	visitor.set("visiting", true)
-	visitor.set("data", load(DOLPHIN))
+	visitor.set("data", DataFiles.res(DOLPHIN))
 	visitor.set("home_radius", 220.0)
 	var region: RegionData = _region if _region else Regions.all()[0]
 	var spot := region.center + Vector2(region.waters_radius * 0.55, 0)
@@ -298,6 +298,6 @@ func restore(saved: Dictionary) -> void:
 	var path := "res://data/missions/%s.tres" % saved.get("mission", "")
 	var region_path := "res://data/regions/%s.tres" % saved.get("region", "")
 	if saved.has("mission") and ResourceLoader.exists(path) and ResourceLoader.exists(region_path):
-		active = load(path)
-		_region = load(region_path)
+		active = DataFiles.res(path)
+		_region = DataFiles.res(region_path)
 		_back_at = float(saved.get("back_at", 0.0))

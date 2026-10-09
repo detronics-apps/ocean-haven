@@ -186,7 +186,7 @@ func actions() -> Array:
 	if data.action == &"missions" and not damaged:
 		list.append({"label": "Missions", "do": get_tree().call_group.bind("mission_menu", "open")})
 	if data.accepts != &"" and Inventory.available(data.accepts) > 0 and not damaged:
-		var item: ItemData = load("res://data/items/%s.tres" % data.accepts)
+		var item: ItemData = DataFiles.res("res://data/items/%s.tres" % data.accepts)
 		var n := Inventory.available(data.accepts)
 		list.append({"label": "Give %d %s (+%d)" % [n, item.display_name.to_lower() + ("s" if n != 1 else ""),
 			n * item.grant_value], "do": give_away})
@@ -233,7 +233,7 @@ func boat() -> Boat:
 func _production_actions() -> Array:
 	var list := []
 	if data.makes_from != &"" and loaded == 0 and not Fleet.has_flag(data.made_flag):
-		var input: ItemData = load("res://data/items/%s.tres" % data.makes_from)
+		var input: ItemData = DataFiles.res("res://data/items/%s.tres" % data.makes_from)
 		var have := Inventory.available(data.makes_from)
 		list.append({"label": ("Put in %d %s" % [data.makes_from_count, input.display_name.to_lower()]) if have >= data.makes_from_count
 			else "Needs %d %s (%d now)" % [data.makes_from_count, input.display_name.to_lower(), have], "do": start_capability})
@@ -350,7 +350,7 @@ func demolish() -> void:
 			animal.set("home_area", null)
 	var wood: int = data.cost_items.get(&"wood", 0) / 2
 	if wood > 0:
-		Inventory.add(load("res://data/items/wood.tres"), wood, false)
+		Inventory.add(DataFiles.res("res://data/items/wood.tres"), wood, false)
 	remove_from_group("buildings")
 	get_tree().call_group.call_deferred("ecosystems", "settle_now")  # its animals react straight away
 	get_tree().call_group("hud", "show_toast", "%s taken down.%s" % [data.display_name,
@@ -378,7 +378,7 @@ func _update_drawbridge() -> void:
 
 ## Gives every spare `accepts` item (carried and stored) to its project, for a grant.
 func give_away() -> void:
-	var item: ItemData = load("res://data/items/%s.tres" % data.accepts)
+	var item: ItemData = DataFiles.res("res://data/items/%s.tres" % data.accepts)
 	var n := Inventory.available(item.id)
 	if n <= 0 or not Inventory.use(item.id, n):
 		return
@@ -557,7 +557,7 @@ func stats() -> String:
 
 func _numbers() -> String:
 	if data.watches != &"":
-		var kind: String = load("res://data/animals/%s.tres" % data.watches).display_name
+		var kind: String = DataFiles.res("res://data/animals/%s.tres" % data.watches).display_name
 		return "%ss: %d" % [kind.get_slice(" ", kind.get_slice_count(" ") - 1), animals_in_view()]
 	if data.action == &"missions":
 		return "Back in %s" % Missions.time_left() if Missions.active else ""
@@ -573,7 +573,7 @@ func _numbers() -> String:
 	if capacity() > 0:
 		var kind := "Turtles"
 		if data.hosts != &"":
-			var name: String = load("res://data/animals/%s.tres" % data.hosts).display_name
+			var name: String = DataFiles.res("res://data/animals/%s.tres" % data.hosts).display_name
 			kind = name.get_slice(" ", name.get_slice_count(" ") - 1) + "s"
 		lines.append("%s %d/%d" % [kind, animals_here(), capacity()])
 		var busy := too_busy()

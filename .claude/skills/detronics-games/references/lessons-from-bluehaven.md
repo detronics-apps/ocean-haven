@@ -81,6 +81,7 @@ you can scan the group you're working in.
 | Repacking a scene baked in instance overrides | Edit only the lines you mean in scene files |
 | Float edge: exactly 1.0 day counted as "less than 1" | Small epsilon on time comparisons |
 | A flaky mini-game test | Log it, fix it; don't call it a flake and move on |
+| The game lagged (worst on the Mangrove): `load()` / folder listings every frame hit the disk; the minimap redrew every tile each frame; a whole-island flood fill ran on every ask | Cache loads (DataFiles.res), cache per-tile pictures and fills, measure (gdb stack samples, per-script timing) before guessing |
 
 ## Story and design
 | What happened | Rule |
