@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s3g_watch"
+node = 3
+order = 1
+question = "How can we help if we don't know what's wrong?"
+activate = PackedStringArray("guessed:guess_nest", "guessed:guess_kelp", "guessed:guess_pools", "guessed:guess_parrotfish", "guessed:guess_whales", "guessed:guess_pups")
+evidence = PackedStringArray("w_nest | guessed:guess_nest & nested:green_turtle>=1 | I guessed \"{guess:guess_nest}\" about the quiet sand. What happened: a turtle nested there.", "w_kelp | guessed:guess_kelp & animals:sea_otter>=2@kelp_forest & kelp_dense:6 | I guessed \"{guess:guess_kelp}\" about the kelp. What happened: the otters came back, and the kelp grew thick again.", "w_pools | guessed:guess_pools & pools_linked:1 & animals:juvenile_snapper>=4@mangrove_coast | I guessed \"{guess:guess_pools}\" about the pools. What happened: young fish were living in them again.", "w_parrot | guessed:guess_parrotfish & reef_regrown | I guessed \"{guess:guess_parrotfish}\" about the parrotfish. What happened: coral grew back where they were feeding.", "w_whales | guessed:guess_whales & quiet>=70@deep_sea & animals:sperm_whale>=1@deep_sea | I guessed \"{guess:guess_whales}\" about the whales. What happened: in the quiet water, the whales stayed.", "w_pups | guessed:guess_pups & pup_old_ice & polar_phase:open | I guessed \"{guess:guess_pups}\" about the seal pups. What happened: a pup on old ice was still there when the thaw ended.")
+answer = PackedStringArray("2: w_nest, w_kelp, w_pools, w_parrot, w_whales, w_pups")
+statements = PackedStringArray("Twice I made a guess, then watched. {g0.1} {g0.2} Watching showed me what really happens.")
+guarantee = &"L"

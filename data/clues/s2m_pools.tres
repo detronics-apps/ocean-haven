@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s2m_pools"
+node = 2
+order = 1
+island = &"mangrove_coast"
+question = "Why are Rosa's nets empty?"
+activate = PackedStringArray("met:rosa")
+evidence = PackedStringArray("cut | found:mangrove_coast & pools_linked_max:0 & animals:juvenile_snapper<=2@mangrove_coast | The nursery pools were cut off from the sea, and only a few young fish lived here.", "linked | pools_linked:1 | Water flowed into a nursery pool again.", "fish | pools_linked:1 & animals:juvenile_snapper>=4@mangrove_coast | There were more young fish.")
+answer = PackedStringArray("1: cut", "1: linked", "1: fish")
+statements = PackedStringArray("The nursery pools were cut off from the sea, and only a few young fish lived here. After water flowed into the pools again, there were more young fish.")
+guarantee = &"L"

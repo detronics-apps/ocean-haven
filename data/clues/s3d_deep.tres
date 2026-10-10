@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s3d_deep"
+node = 3
+order = 0
+island = &"deep_sea"
+question = "What lives in the dark?"
+activate = PackedStringArray("met:imani")
+evidence = PackedStringArray("mapped | deep_mapped:1 | I mapped one of the dark areas.", "whale | ^journal:sperm_whale | the sperm whale", "angler | ^journal:anglerfish | the anglerfish", "sixgill | ^journal:sixgill_shark | the sixgill shark", "squid | ^journal:giant_squid | the giant squid")
+answer = PackedStringArray("1: mapped", "2: whale, angler, sixgill, squid")
+statements = PackedStringArray("The dark water held animals new to my Journal: {g1.1} and {g1.2}. Mapping it and watching helped me find them.")
+guarantee = &"L"

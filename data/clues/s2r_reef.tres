@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s2r_reef"
+node = 2
+order = 2
+island = &"tropical_reef"
+question = "Why is the reef grey?"
+activate = PackedStringArray("met:kai")
+evidence = PackedStringArray("regrown | reef_regrown | Coral grew back on a patch I planted, and parrotfish were there.")
+answer = PackedStringArray("1: regrown")
+statements = PackedStringArray("Coral grew back on the patch I planted. Parrotfish were there as the coral returned.")
+guarantee = &"L"

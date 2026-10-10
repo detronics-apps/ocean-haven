@@ -19,6 +19,12 @@ var _quiet_next := false
 var _askers := {}
 
 
+func _ready() -> void:
+	# A survey the ranger has read (the Otter Dive's first play runs one too): "surveyed_<mission>".
+	Missions.returned.connect(func(mission: MissionData, _found: int) -> void:
+		Fleet.mark(StringName("surveyed_" + String(mission.id))))
+
+
 func _process(delta: float) -> void:
 	_timer += delta
 	if _timer >= CHECK_SECONDS:
@@ -128,6 +134,15 @@ func fill(one: ClueData, text: String, seen: Array) -> String:
 		var in_group: Array = seen.filter(func(id: String) -> bool: return id in groups[n].ids)
 		for k in in_group.size():
 			text = text.replace("{g%d.%d}" % [n, k + 1], texts.get(in_group[k], ""))
+	while "{guess:" in text:  # the ranger's guess for prediction topic `id`
+		var at := text.find("{guess:")
+		var end := text.find("}", at)
+		var topic := text.substr(at + 7, end - at - 7)
+		var guess := ""
+		for key: String in People._guesses:
+			if key.ends_with("/" + topic):
+				guess = String(People._guesses[key])
+		text = text.substr(0, at) + guess.trim_prefix("> ") + text.substr(end + 1)
 	while "{rescue:" in text:
 		var at := text.find("{rescue:")
 		var end := text.find("}", at)
@@ -166,9 +181,56 @@ func holds(condition: String, one: ClueData) -> bool:
 			result = _visitor_in_sight(StringName(arg))
 		"no_trees":  # island `arg` has no trees at all
 			result = _trees_on(StringName(arg)) == 0
+		"kelp_overgrazed", "kelp_overgrazed_max", "kelp_dense", "pools_linked", "pools_linked_max", \
+				"reef_regrown", "pup_old_ice", "polar_phase", "deep_mapped":
+			result = _observed(kind, arg)
 		_:
 			return People.check(condition, _asker(island))
 	return result != negate
+
+
+## What the ranger can see of an island's ecosystem, only while they're on it (docs/CLUE_BOARD.md
+## rule 2: what's drawn on screen, never a health flag). The island is the one `kind` is about.
+func _observed(kind: String, arg: String) -> bool:
+	var island: StringName = {"kelp": &"kelp_forest", "pools": &"mangrove_coast", "reef": &"tropical_reef",
+		"pup": &"arctic_ocean", "polar": &"arctic_ocean", "deep": &"deep_sea"}[kind.get_slice("_", 0)]
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % island)
+	var eco := IslandHealth.ecosystem(get_tree(), region)
+	if eco == null or not Regions.ranger_on(get_tree(), region):
+		return false
+	var n := int(arg)
+	match kind:
+		"kelp_overgrazed", "kelp_overgrazed_max":  # beds the urchins have grazed down
+			var grazed: int = eco.beds().filter(func(b: Node) -> bool: return b.urchins >= eco.overgrazed_at).size()
+			return grazed >= n if kind == "kelp_overgrazed" else grazed <= n
+		"kelp_dense":  # thick, healthy beds
+			return eco.beds().filter(func(b: Node) -> bool: return b.health >= eco.healthy_bed_at).size() >= n
+		"pools_linked":
+			return eco.pools_connected() >= n
+		"pools_linked_max":
+			return eco.pools_connected() <= n
+		"reef_regrown":  # a patch the ranger planted, grown back, with parrotfish there
+			for patch: Node2D in eco.patches():
+				if Fleet.has_flag(StringName("coral_planted_" + patch.name)) and patch.coral >= eco.healthy_coral \
+						and _species_near(&"parrotfish", patch.global_position, 160.0):
+					return true
+			return false
+		"pup_old_ice":  # a young ringed seal on old ice
+			for animal: Node2D in get_tree().get_nodes_in_group("animals"):
+				if animal.data.id == &"ringed_seal" and animal.young and not animal.leaving \
+						and eco.is_old_ice(Terrain.cell_of(animal.global_position)):
+					return true
+			return false
+		"polar_phase":
+			return eco.phase_name() == StringName(arg)
+		"deep_mapped":
+			return eco.known_count() >= n
+	return false
+
+
+func _species_near(species: StringName, point: Vector2, distance: float) -> bool:
+	return get_tree().get_nodes_in_group("animals").any(func(a: Node2D) -> bool:
+		return a.data.id == species and not a.leaving and a.global_position.distance_to(point) <= distance)
 
 
 ## How near an animal must be to the ranger to count as seen.

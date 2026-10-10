@@ -165,6 +165,7 @@ func plant() -> void:
 	if not Inventory.use(&"coral_fragment", 1):
 		return
 	planted += FRAGMENT
+	Fleet.mark(StringName("coral_planted_" + name))  # (the Clue Board: a patch the ranger planted)
 	get_tree().call_group("ecosystems", "settle_now")
 	get_tree().call_group("hud", "show_toast", "Coral fragment planted. It grows a little each day while the water is clean and parrotfish keep the algae down.")
 

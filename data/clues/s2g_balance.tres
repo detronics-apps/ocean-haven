@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s2g_balance"
+node = 2
+order = 9
+question = "Why does a whole place change when one thing goes missing?"
+activate = PackedStringArray("clue:s2k_kelp", "clue:s2m_pools")
+evidence = PackedStringArray("ex_k | clue:s2k_kelp | In the Kelp Forest, with hardly any otters, urchins had grazed the kelp bare", "ex_m | clue:s2m_pools | On the Mangrove Coast, while the nursery pools were cut off from the sea, only a few young fish lived there")
+answer = PackedStringArray("2: ex_k, ex_m")
+statements = PackedStringArray("{g0.1}. {g0.2}. Living things depend on each other, and on the place they live.")
+guarantee = &"L"

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s2k_kelp"
+node = 2
+order = 0
+island = &"kelp_forest"
+question = "Why did the kelp disappear?"
+activate = PackedStringArray("met:finn")
+evidence = PackedStringArray("few | found:kelp_forest & animals:sea_otter<=1@kelp_forest | There were hardly any otters in the forest.", "grazed | flag:surveyed_urchin_pressure_survey & kelp_overgrazed:6 | The urchin count showed the urchins had grazed the beds bare.", "back | animals:sea_otter>=2@kelp_forest | Otters came back to the forest.", "fewer | animals:sea_otter>=2@kelp_forest & kelp_overgrazed_max:2 | With the otters back, hardly any beds were overgrazed.", "kelp | animals:sea_otter>=2@kelp_forest & kelp_dense:6 | The kelp grew thick again.")
+answer = PackedStringArray("1: few", "1: grazed", "1: back", "1: fewer", "1: kelp")
+statements = PackedStringArray("There were hardly any otters, and urchins had grazed the forest bare. When the otters came back, the urchins grew fewer and the kelp grew again.")
+guarantee = &"L"
