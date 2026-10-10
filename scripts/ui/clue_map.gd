@@ -521,6 +521,29 @@ static func question_of(one: ClueData) -> String:
 	return Clues.fill(one, one.question, [])
 
 
+## A note pinned at the top of the board, over everything (e.g. "you can always find the clues
+## here"), until the Journal closes.
+func pin_note(text: String) -> void:
+	var old := get_node_or_null("PinnedNote")
+	if old:
+		old.free()
+	var note := PanelContainer.new()
+	note.name = "PinnedNote"
+	note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := _paper(Color("f6efd9"))
+	style.set_content_margin_all(16)
+	note.add_theme_stylebox_override("panel", style)
+	var label := _label(text, 22, COLOURS[&"ink"])
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	note.add_child(label)
+	add_child(note)
+	var width := minf(size.x - FRAME * 2.0 - 40.0, 640.0)
+	note.custom_minimum_size = Vector2(width, 0)
+	note.reset_size()
+	note.position = Vector2((size.x - width) / 2.0, FRAME + 46.0)
+	note.rotation_degrees = -1.0
+
+
 # --- Zoom, pan, focus ---
 
 func set_step(to: int) -> void:
@@ -537,8 +560,9 @@ func set_step(to: int) -> void:
 func _apply_zoom() -> void:
 	_canvas.scale = Vector2.ONE * zoom_steps[step]
 	# The overview shows the shape of the story: tokens only, the text comes back closer in.
-	for card: Control in _cards.values():
-		card.get_node("Text").visible = step > 0
+	for id in _cards:  # (the turtle's question and the globe keep their words, even right out)
+		var one := Clues.card(id)
+		_cards[id].get_node("Text").visible = step > 0 or one.big or one.kind == &"globe"
 	_threads.queue_redraw()  # (the string keeps its width on screen)
 
 
@@ -611,18 +635,24 @@ func show_detail(id: StringName) -> void:
 			pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 			row.add_child(pic)
 		_detail_text.add_child(row)
-	for member in members(one):
-		if Clues.is_answered(member.id):
-			_detail_text.add_child(_label("You wondered: " + question_of(member), 16, Color("6b5a44")))
-			_detail_text.add_child(_label(Clues.statement(member), 22, Color("1f4f73")))
-		elif Clues.is_open(member.id):
-			_detail_text.add_child(_label(question_of(member), 22, COLOURS[&"ink"]))
-		else:
-			_detail_text.add_child(_label(member.clue_text, 22, COLOURS[&"ink"]))
-		if Clues.is_open(member.id) and Clues.is_found(member.id):
-			_detail_text.add_child(_label("Field note: " + member.clue_text, 16, Color("6b5a44")))
-		for line in Clues.evidence_texts(member):
-			_detail_text.add_child(_label("• " + line, 18, COLOURS[&"ink"]))
+	# One short sentence (the question, or the answer once it's blue), then what was seen; nothing
+	# said twice.
+	var sentence := ""
+	if _any_answered(one):
+		sentence = one.short if one.short != "" else Clues.statement(one)
+	elif _any_open(one):
+		sentence = one.title if one.title != "" else question_of(one)
+	else:
+		sentence = one.clue_text
+	_detail_text.add_child(_label(sentence, 22, Color("1f4f73") if _any_answered(one) else COLOURS[&"ink"]))
+	var said := [sentence.to_lower()]
+	if _any_open(one):  # (a planted clue on its own just says what it is)
+		for member in members(one):
+			for line in Clues.evidence_texts(member):
+				if line.to_lower() in said or (member.clue_text != "" and _similar(line, member.clue_text)):
+					continue
+				said.append(line.to_lower())
+				_detail_text.add_child(_label("• " + line, 18, COLOURS[&"ink"]))
 	for link in _links(one):
 		var chip := Button.new()
 		chip.text = link.text
@@ -647,6 +677,17 @@ func show_detail(id: StringName) -> void:
 	_detail_text.add_child(close)
 	_detail.visible = true
 	_place_detail()
+
+
+## Whether two lines say much the same (most of the shorter one's words are in the other).
+static func _similar(a: String, b: String) -> bool:
+	var words_a := Array(a.to_lower().replace(".", "").replace(",", "").split(" ", false))
+	var words_b := Array(b.to_lower().replace(".", "").replace(",", "").split(" ", false))
+	var shorter := words_a if words_a.size() <= words_b.size() else words_b
+	var longer := words_b if shorter == words_a else words_a
+	if shorter.is_empty():
+		return false
+	return shorter.filter(func(w: String) -> bool: return w in longer).size() >= shorter.size() * 0.6
 
 
 ## Visible cards this one came from or leads to: [{id, text}].

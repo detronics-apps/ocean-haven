@@ -680,4 +680,13 @@ as one note. The net-tag note is a luggage tag with the hook island on it.
 
 **Zoom:** "everything fits", then steps of about 1.5x up to 1.15x (no big jump).
 
+**Showing the board at the start:** after the first talk with Tom the Journal opens on the Clue
+Board (once; Fleet flag "clue_board_shown"). When the first turtle is freed (the tag: O2's
+`opens_board`) it opens again, with a note pinned at the top: "As you go on with your journey, you
+can always find the clues here. The Clue Board won't open by itself again." (If the turtle came
+first, Tom's opening is skipped.) The big turtle note and the globe keep their words even zoomed
+right out. Tapping a note shows one short sentence (the question, or the answer once it's blue)
+and what was seen, nothing said twice. The tag's picture is the hook island's black logo
+(`tools/make_hook_logo.gd`). Maya's first question asks for photos of the animals (one photo).
+
 **Not built yet:** the optional List toggle (§1).

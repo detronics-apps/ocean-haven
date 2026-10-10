@@ -580,6 +580,14 @@ func _give(person: PersonData, topic: TalkTopic) -> void:
 
 ## The talk is over: the questions just asked turn into objectives DELAY seconds later.
 func finish_talk() -> void:
+	# The first talk with Tom starts the turtle story: show the Clue Board once, so the ranger knows
+	# it's there (Fleet flag "clue_board_shown").
+	# (Not once the turtle's tag has opened it: that time says it won't open by itself again.)
+	if _met.has(&"tom") and not Fleet.has_flag(&"clue_board_shown") and not Fleet.has_flag(&"board_opened_o2_net_tag"):
+		Fleet.mark(&"clue_board_shown")
+		Clues.check()
+		get_tree().create_timer(0.4, false).timeout.connect(func() -> void:
+			get_tree().call_group("journal_screen", "open_clues"))
 	for asked: Array in _pending:
 		var person: PersonData = asked[0]
 		var topic: TalkTopic = asked[1]

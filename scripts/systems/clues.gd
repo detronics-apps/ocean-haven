@@ -98,6 +98,10 @@ func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
 	if quiet:
 		return
 	changed.emit(one, what)
+	if one.opens_board != "" and what in [&"found", &"open"] and not Fleet.has_flag(StringName("board_opened_" + String(one.id))):
+		Fleet.mark(StringName("board_opened_" + String(one.id)))
+		get_tree().create_timer(1.2, false).timeout.connect(func() -> void:
+			get_tree().call_group("journal_screen", "open_clues", one.opens_board))
 	if what in [&"found", &"open", &"answered"]:  # a quiet note, never a popup (evidence: no note)
 		get_tree().call_group("hud", "show_toast", "New on your Clue Board" if what != &"answered"
 			else "A question on your Clue Board turned blue")

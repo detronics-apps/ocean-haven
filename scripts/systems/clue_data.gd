@@ -37,6 +37,9 @@ extends Resource
 @export var group: StringName = &""
 ## The note the board starts with: bigger, with a bigger picture (the turtle's question).
 @export var big := false
+## The first time this card shows, the Journal opens on the Clue Board with this note at the top
+## (the net tag, when the first turtle is freed). "" = it doesn't.
+@export_multiline var opens_board: String
 ## A planted clue shown before the question appears (optional), and what reveals it.
 @export_multiline var clue_text: String
 @export var discover: PackedStringArray = []

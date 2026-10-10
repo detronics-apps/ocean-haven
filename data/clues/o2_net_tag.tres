@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/ui/maps/hook_island.png" id="2_hook"]
+[ext_resource type="Texture2D" path="res://assets/ui/clues/hook_logo.png" id="2_hook"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -22,3 +22,4 @@ picture_style = &"tag"
 section = &"trash"
 links = PackedStringArray("people", "places")
 short = "The Hook's lost net"
+opens_board = "As you go on with your journey, you can always find the clues here. The Clue Board won't open by itself again."

@@ -32,9 +32,26 @@ func _initialize() -> void:
 	_expect(not turtle.tangled and fleet.has_flag(&"net_tag_found"), "freeing it finds the tag")
 	clues.check()
 	_expect(clues.is_found(&"o2_net_tag") and not clues.is_open(&"o2_net_tag"), "the tag is pinned as a clue, no question yet")
+	var journal_screen: Node = world.get_node("JournalScreen")
+	await create_timer(1.6).timeout
+	var pinned: Node = journal_screen.find_child("PinnedNote", true, false)
+	_expect(journal_screen.visible and journal_screen.tab == &"clues" and pinned != null
+		and pinned.get_child(0).text.contains("always find the clues here"), "freeing the turtle opens the Clue Board, with its note")
+	journal_screen.close()
+	fleet.unmark(&"board_opened_o2_net_tag")
+	clues._state.erase(&"o2_net_tag")
+	clues.check(true)
+	_expect(not journal_screen.visible, "(after loading, the board doesn't pop open)")
 
 	var tom: Resource = load("res://data/people/tom.tres")
 	_expect(not _said(people.talk(tom) + people.talk(tom)).contains("from the net your first turtle"), "a new game's Tom has no tag to hand over")
+	people.finish_talk()
+	await create_timer(0.8).timeout
+	_expect(journal_screen.visible and journal_screen.tab == &"clues", "after the first talk with Tom the Journal opens on the Clue Board")
+	journal_screen.close()
+	people.finish_talk()
+	await create_timer(0.8).timeout
+	_expect(not journal_screen.visible, "only that once")
 
 	# The Map shows the hook-shaped island: now there's a question.
 	fleet.mark(&"map_opened")

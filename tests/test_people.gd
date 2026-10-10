@@ -47,7 +47,7 @@ func _initialize() -> void:
 	root.get_node("RangerProfile").set_ranger_name("Sam")
 	var lines: Array = people.talk(maya)
 	var texts: Array = lines.map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("three different kinds of animal")),
+	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("photos of the animals")),
 		"Maya introduces herself and asks who still lives here")
 	_expect(texts[0].contains("Sam, the new ranger"), "she calls the ranger by their name (%s)" % texts[0])
 	var replies: Array = lines.filter(func(l: Dictionary) -> bool: return l.has("options"))
@@ -56,7 +56,7 @@ func _initialize() -> void:
 	_expect(not hud.objective_text().begins_with("Goal:"), "the objective doesn't show while she's still talking")
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
-	_expect(hud.objective_text() == "Goal: Photograph 3 different kinds of animal: 0 / 3",
+	_expect(hud.objective_text() == "Goal: Photograph an animal",
 		"a moment later it's the ranger's objective (%s)" % hud.objective_text())
 	_expect(people.notebook().size() == 1, "and it's in the notebook")
 	var reminder: Array = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
@@ -69,7 +69,7 @@ func _initialize() -> void:
 	_expect(hud.objective_text().begins_with("Done! Go back to Maya"), "photos done: go back to Maya (%s)" % hud.objective_text())
 	_expect(people.has_news(maya), "a '!' above her")
 	texts = people.talk(maya).map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts[0].contains("Every one of them does something") and texts.any(func(t: String) -> bool: return t.contains("search and rescue station")),
+	_expect(texts[0].contains("Every animal here does something") and texts.any(func(t: String) -> bool: return t.contains("search and rescue station")),
 		"she thanks the ranger and asks about a search and rescue station")
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout

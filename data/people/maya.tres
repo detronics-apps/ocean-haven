@@ -32,15 +32,15 @@ lines = PackedStringArray("When we started, we thought we were helping six islan
 [sub_resource type="Resource" id="Goal_4"]
 script = ExtResource("3_g")
 kind = &"photos"
-amount = 3
-text = "Photograph 3 different kinds of animal"
+amount = 1
+text = "Photograph an animal"
 
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"photos"
-lines = PackedStringArray("Who do you think still lives on this island?", "> Turtles, maybe? | I'm not sure.", "Let's find out together! Could you photograph three different kinds of animal for me? Walk up slowly, so they stay calm.")
+lines = PackedStringArray("Who do you think still lives on this island?", "> Turtles, maybe? | I'm not sure.", "Let's find out together! Could you take some photos of the animals here for me? Walk up slowly, so they stay calm.")
 objective = SubResource("Goal_4")
-thanks = PackedStringArray("Look at these, {name}! Every one of them does something for this island, even the little ones.", "Now I want to know what changed for them.")
+thanks = PackedStringArray("Look at this, {name}! Every animal here does something for this island, even the little ones.", "Now I want to know what changed for them.")
 reminder = PackedStringArray("Any luck with the photos? Walk up slowly and the animals stay calm.")
 
 [sub_resource type="Resource" id="Goal_5"]

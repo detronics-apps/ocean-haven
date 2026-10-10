@@ -62,6 +62,22 @@ func show_tab(id: StringName) -> void:
 		refresh()
 
 
+## Opens the Journal on the Clue Board (after the first talk with Tom; when the turtle is freed),
+## if anything's on it, with `note` pinned at the top of the board (if any).
+func open_clues(note := "") -> void:
+	if not clues_open():
+		return
+	tab = CLUES
+	page = null
+	if visible:
+		refresh()
+	else:
+		open()
+	var board := _content.find_child("ClueMap", true, false)
+	if board and note != "":
+		board.call_deferred("pin_note", note)
+
+
 ## Opens an animal's own page (its photo moments and what it's like in real life).
 func open_animal(animal: AnimalData) -> void:
 	tab = ANIMALS

@@ -91,8 +91,8 @@ func _initialize() -> void:
 	map.tap(map.size / 2.0)
 	_expect(map._detail.visible and map._focus == &"s4a_sources", "a tap on a card opens its details")
 	var texts: Array = map._detail_text.get_children().filter(func(c: Node) -> bool: return c is Label).map(func(l: Label) -> String: return l.text)
-	_expect(texts.any(func(t: String) -> bool: return t.contains("harbour cafe")), "the details show the statement: %s" % [texts])
-	_expect(texts.any(func(t: String) -> bool: return t.begins_with("You wondered:")), "and what was wondered")
+	_expect(texts[1] == "People, on land and boats" and texts.filter(func(t: String) -> bool: return t.begins_with("• ")).size() == 2,
+		"one short sentence (the answer), then what was seen, nothing twice: %s" % [texts])
 
 	# A drag pans; it isn't a tap.
 	var before: Vector2 = map._canvas.position
