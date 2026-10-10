@@ -113,6 +113,11 @@ func _fill() -> void:
 	motto.name = "Motto"
 	motto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	learned.add_child(motto)
+	# The Clue Board's last card: a question left open for the player (never answered, by anyone).
+	var question := _line("Who created all of this?", 22, Color("f6e7b8"))
+	question.name = "FinalQuestion"
+	question.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	learned.add_child(question)
 	# 4. Who you have met: everyone, with what they most want the ranger to take away.
 	var met := _section("Who you have met", "Met")
 	for person: PersonData in People.all():

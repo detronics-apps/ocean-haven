@@ -110,6 +110,10 @@ func _initialize() -> void:
 		return
 	_expect(learned != null and screen.find_child("Motto", true, false).text == "One ocean. Many places. Everything connected.",
 		"'What have you learned?', then: one ocean, many places, everything connected")
+	var motto_node: Node = screen.find_child("Motto", true, false)
+	var question: Node = screen.find_child("FinalQuestion", true, false)
+	_expect(question != null and question.text == "Who created all of this?" and question.get_index() == motto_node.get_index() + 1,
+		"then the Clue Board's open question, right after the motto")
 	var texts: Array = []
 	for label: Node in screen.find_child("Helped", true, false).find_children("*", "Label", true, false):
 		texts.append(label.text)
