@@ -2,15 +2,14 @@ extends OverlayScreen
 ## The Ocean Journal, in tabs. Island: the island the ranger is on now, its health
 ## and objective (and the discovery it gave), and the save code. Animals: every species in
 ## data/animals/; discovered ones show what you've learned (observed, photos, helped),
-## the rest are "???" to find. Plants: data/plants/ likewise. Ocean (once every fleet
-## upgrade is installed): the whole ocean, island by island.
+## the rest are "???" to find. Plants: data/plants/ likewise. Clues: the Clue Board (ClueMap).
+## (The whole ocean, island by island, is the Global Ocean Observatory's, not the Journal's.)
 
 const ISLAND := &"island"
 const ANIMALS := &"animals"
 const PLANTS := &"plants"
-const OCEAN := &"ocean"
 const CLUES := &"clues"
-const TAB_NAMES := {ISLAND: "This island", ANIMALS: "Animals", PLANTS: "Plants", OCEAN: "Ocean", CLUES: "Clues"}
+const TAB_NAMES := {ISLAND: "This island", ANIMALS: "Animals", PLANTS: "Plants", CLUES: "Clues"}
 
 ## The tab showing (kept between visits).
 var tab := ISLAND
@@ -32,7 +31,7 @@ func _ready() -> void:
 	tabs.name = "Tabs"
 	tabs.add_theme_constant_override("separation", 8)
 	var group := ButtonGroup.new()
-	for id: StringName in [ISLAND, ANIMALS, PLANTS, OCEAN, CLUES]:
+	for id: StringName in [ISLAND, ANIMALS, PLANTS, CLUES]:
 		var button := Button.new()
 		button.name = "Tab_" + id
 		button.text = TAB_NAMES[id]
@@ -78,15 +77,7 @@ static func clues_open() -> bool:
 	return Clues.cards().any(func(card: ClueData) -> bool: return Clues.is_visible(card.id))
 
 
-## The whole-ocean tab opens once the fleet has every upgrade.
-static func ocean_open() -> bool:
-	return Fleet.level() >= DataFiles.load_all("res://data/discoveries").size()
-
-
 func _fill() -> void:
-	_tab_buttons[OCEAN].visible = ocean_open()
-	if tab == OCEAN and not ocean_open():
-		tab = ISLAND
 	_tab_buttons[CLUES].visible = clues_open()
 	if tab == CLUES and not clues_open():
 		tab = ISLAND
@@ -108,9 +99,6 @@ func _fill() -> void:
 		for plant: PlantData in DataFiles.load_all("res://data/plants"):
 			if not only_found or Journal.has_plant(plant.id):
 				_content.add_child(_plant_entry(plant))
-		return
-	if tab == OCEAN:
-		_ocean()
 		return
 	if tab == CLUES:
 		var board := ClueMap.new()
@@ -464,34 +452,3 @@ func _plant_entry(plant: PlantData) -> Control:
 	entry.name = "Plant_" + plant.id
 	return entry
 
-
-## Every island at a glance, and what the ranger has done across the whole ocean.
-func _ocean() -> void:
-	var tree := get_tree()
-	var species := DataFiles.load_all("res://data/animals")
-	var plants := DataFiles.load_all("res://data/plants")
-	var helped := 0
-	var hatched := 0
-	var photos := 0
-	for animal: AnimalData in species:
-		helped += Journal.helped_count(animal.id)
-		hatched += Journal.hatched_count(animal.id)
-		photos += Journal.photos(animal.id)
-	var total := card(null, ["The whole ocean", "Fleet upgrades: %d of %d. Species found: %d of %d. Plants found: %d of %d." % [
-		Fleet.level(), DataFiles.load_all("res://data/discoveries").size(),
-		species.filter(func(a: AnimalData) -> bool: return Journal.in_journal(a.id)).size(), species.size(),
-		plants.filter(func(p: PlantData) -> bool: return Journal.has_plant(p.id)).size(), plants.size()],
-		"Litter collected: %d. Animals helped: %d. Hatchlings: %d. Photos: %d." % [Inventory.litter_collected, helped, hatched, photos]])
-	total.name = "OceanTotals"
-	_content.add_child(total)
-	for region: RegionData in Regions.all():
-		if not Regions.is_discovered(region):
-			continue
-		var health := IslandHealth.of(tree, region)
-		var lines: Array[String] = [region.display_name]
-		if health >= 0.0:
-			lines.append("Health %d%%, heading for %d%%." % [roundi(health * 100.0), roundi(IslandHealth.heading(tree, region) * 100.0)])
-		lines.append("Objective: %s." % ("done" if Fleet.objective_done(region) else "not yet") if not region.goals.is_empty() else "")
-		var entry := card(region.map_icon, lines)
-		entry.name = "Ocean_" + region.id
-		_content.add_child(entry)

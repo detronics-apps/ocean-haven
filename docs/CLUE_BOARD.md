@@ -633,4 +633,10 @@ s7r_events, s7g_keep_going, s7me_part · final_who.
   island observations kelp_overgrazed(_max):N, kelp_dense:N, pools_linked(_max):N, reef_regrown,
   pup_old_ice, polar_phase:X, deep_mapped:N. People gained `helped:species`.
 
+**Look (owner's picture, Oct 2026):** a cork pin board in a wooden frame, a "BLUEHAVEN — CLUE BOARD"
+title plank and a "CLUES JOURNAL" plank. Notes are paper, tilted a little, with a brass pin each:
+cream = a question (in capitals), blue = answered, tan = a field note (a planted clue), ochre = the
+final question. The node titles are tan paper tags. Red string runs pin to pin, sagging a little,
+over the notes. Zoom buttons are bottom right. The details panel is a sheet of paper.
+
 **Not built yet:** the optional List toggle (§1).

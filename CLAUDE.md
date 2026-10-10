@@ -331,7 +331,7 @@ health gauge shows now vs where it's heading (IslandHealth.heading / KelpEcosyst
 buildings can be used from the rowboat; patrol boats (max 6, area 120/160/200 by tier) hurt
 boat-shy animals when under 65 % of the island's water is free of them; 3 Dolphin Viewing
 Areas; 10 turtles for full health; mission icons (MissionData.icon); Journal Plants tab
-(data/plants/) and an Ocean tab after all 6 upgrades.
+(data/plants/). (The Journal's Ocean tab was removed: the Global Ocean Observatory shows the whole ocean.)
 
 Balance tweaks: islands the ranger isn't on are paused (no storms, tangling, patrol injuries or
 ecosystem change; a little litter on return; `Regions.ranger_on`); one recycling centre per

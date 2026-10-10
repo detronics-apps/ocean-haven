@@ -212,17 +212,15 @@ func _initialize() -> void:
 		texts += label.text
 	_expect(texts.contains("Coconut Palm") and screen.find_child("Plant_giant_kelp", true, false) != null,
 		"the Plants tab shows it, and ??? for plants still to find")
-	_expect(not screen.find_child("Tab_ocean", true, false).visible, "the Ocean tab waits for every fleet upgrade")
 	var fleet := root.get_node("Fleet")
 	var all_ids := []
 	for d in DirAccess.get_files_at("res://data/discoveries"):
 		if d.ends_with(".tres"):
 			all_ids.append(d.get_basename())
 	fleet.restore({"found": all_ids, "installed": all_ids})
-	screen.show_tab(&"ocean")
 	screen.refresh()
-	_expect(screen.find_child("Tab_ocean", true, false).visible and screen.find_child("OceanTotals", true, false) != null
-		and screen.find_child("Ocean_home_island", true, false) != null, "with all 6 upgrades: the whole ocean's stats")
+	_expect(screen.find_child("Tab_ocean", true, false) == null and screen.find_child("OceanTotals", true, false) == null,
+		"no Ocean page in the Journal, even with all 6 upgrades: the Global Ocean Observatory shows the whole ocean")
 	screen.close()
 	fleet.restore({})
 	player.global_position = Vector2.ZERO
