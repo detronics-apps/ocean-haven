@@ -68,6 +68,12 @@ func _initialize() -> void:
 	_expect(not turtle.tangled, "freed from the net")
 	_expect(inventory.count(&"ghost_net") == 1, "the net goes into the inventory")
 	_expect(journal.helped_count(&"green_turtle") == 1, "help recorded in the journal")
+	# Freeing the first turtle opens the Clue Board (the tag); like the player, close it to go on.
+	await create_timer(3.5).timeout
+	var journal_screen: Node = get_first_node_in_group("journal_screen")
+	_expect(journal_screen != null and journal_screen.visible, "freeing the first turtle opens the Clue Board")
+	if journal_screen and journal_screen.visible:
+		journal_screen.close()
 	for i in 260:
 		await physics_frame  # quiet watching
 	_expect(journal.has_observed(&"green_turtle"), "observed after watching quietly")
