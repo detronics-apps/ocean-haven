@@ -9,7 +9,8 @@ const ISLAND := &"island"
 const ANIMALS := &"animals"
 const PLANTS := &"plants"
 const OCEAN := &"ocean"
-const TAB_NAMES := {ISLAND: "This island", ANIMALS: "Animals", PLANTS: "Plants", OCEAN: "Ocean"}
+const CLUES := &"clues"
+const TAB_NAMES := {ISLAND: "This island", ANIMALS: "Animals", PLANTS: "Plants", OCEAN: "Ocean", CLUES: "Clues"}
 
 ## The tab showing (kept between visits).
 var tab := ISLAND
@@ -31,7 +32,7 @@ func _ready() -> void:
 	tabs.name = "Tabs"
 	tabs.add_theme_constant_override("separation", 8)
 	var group := ButtonGroup.new()
-	for id: StringName in [ISLAND, ANIMALS, PLANTS, OCEAN]:
+	for id: StringName in [ISLAND, ANIMALS, PLANTS, OCEAN, CLUES]:
 		var button := Button.new()
 		button.name = "Tab_" + id
 		button.text = TAB_NAMES[id]
@@ -72,6 +73,11 @@ func open_animal(animal: AnimalData) -> void:
 		open()
 
 
+## The Clues tab shows once there's something on the Clue Board.
+static func clues_open() -> bool:
+	return Clues.cards().any(func(card: ClueData) -> bool: return Clues.is_visible(card.id))
+
+
 ## The whole-ocean tab opens once the fleet has every upgrade.
 static func ocean_open() -> bool:
 	return Fleet.level() >= DataFiles.load_all("res://data/discoveries").size()
@@ -80,6 +86,9 @@ static func ocean_open() -> bool:
 func _fill() -> void:
 	_tab_buttons[OCEAN].visible = ocean_open()
 	if tab == OCEAN and not ocean_open():
+		tab = ISLAND
+	_tab_buttons[CLUES].visible = clues_open()
+	if tab == CLUES and not clues_open():
 		tab = ISLAND
 	(_tab_buttons[tab] as Button).set_pressed_no_signal(true)
 	var species := DataFiles.load_all("res://data/animals")
@@ -102,6 +111,12 @@ func _fill() -> void:
 		return
 	if tab == OCEAN:
 		_ocean()
+		return
+	if tab == CLUES:
+		var board := ClueMap.new()
+		board.name = "ClueMap"
+		board.custom_minimum_size = Vector2(0, maxf(320.0, get_viewport().get_visible_rect().size.y - 200.0))
+		_content.add_child(board)
 		return
 	var ranger := ControlledBody.active(get_tree())
 	var region := Regions.nearest(ranger.global_position if ranger else Vector2.ZERO)

@@ -81,8 +81,12 @@ func _check_card(one: ClueData, quiet: bool) -> void:
 
 
 func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
-	if not quiet:
-		changed.emit(one, what)
+	if quiet:
+		return
+	changed.emit(one, what)
+	if what in [&"found", &"open", &"answered"]:  # a quiet note, never a popup (evidence: no note)
+		get_tree().call_group("hud", "show_toast", "New on your Clue Board" if what != &"answered"
+			else "A question on your Clue Board turned blue")
 
 
 ## Whether any of `alternatives` ("a & b" each) holds.
