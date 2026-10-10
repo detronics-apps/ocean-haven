@@ -72,6 +72,18 @@ func _initialize() -> void:
 	for i in range(1, map.zoom_steps.size()):
 		biggest_jump = maxf(biggest_jump, map.zoom_steps[i] / map.zoom_steps[i - 1])
 	_expect(map.zoom_steps.size() >= 4 and biggest_jump <= 1.55, "even zoom steps, no big jump (%s)" % [map.zoom_steps])
+	map.set_step(0)
+	_expect(is_equal_approx(map.string_alpha(), 1.0), "zoomed right out the string is solid")
+	map.set_step(1)
+	var nearer: float = map.string_alpha()
+	map.set_step(map.zoom_steps.size() - 1)
+	_expect(nearer < 1.0 and map.string_alpha() < nearer, "closer in the string fades, more the closer (%.2f, %.2f)" % [nearer, map.string_alpha()])
+	var toggle: Button = map.find_child("StringsToggle", true, false)
+	var was: bool = map.detailed
+	toggle.pressed.emit()
+	_expect(toggle != null and map.detailed != was and toggle.text.ends_with("detailed" if map.detailed else "simple"),
+		"a button switches between simple and detailed strings")
+	toggle.pressed.emit()
 
 	# A tap opens the card's details (the answered S4.A shows its statement).
 	var card: Control = map._cards[&"s4a_sources"]

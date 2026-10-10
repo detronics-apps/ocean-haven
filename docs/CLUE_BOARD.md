@@ -667,7 +667,10 @@ globe last). The circle is as small as it can be with clear cork (90 px) between
 **Strings:** a note's links (ClueData.links) to the other sections its story touches. Zoomed right
 out, one string per two sections with anything in common (tag to tag); closer in, each note's own
 strings. Every section is strung to the globe. All strings are the same red, 3.5 px on screen at
-every zoom.
+every zoom. A "Strings: simple / detailed" button (by the zoom buttons; kept while the game runs)
+chooses: simple shows only the section-to-section strings at every zoom; detailed shows each note's
+own strings once zoomed in. The string is solid only zoomed right out; closer in it fades (40 %
+down to 18 % at the closest step) so the words on the notes read through it.
 
 **Notes say little:** a short question (ClueData.title) and a short answer (ClueData.short); the
 full sentences are in the details on a tap. Pictures say the rest: one card per thing seen

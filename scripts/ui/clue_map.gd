@@ -107,6 +107,19 @@ func _ready() -> void:
 		_paper_button(button, Color("e7dcc0"))
 		button.pressed.connect(func() -> void: set_step(step + sign))
 		zoom_bar.add_child(button)
+	var strings := Button.new()  # simple (section to section) or detailed (each note's own) strings
+	strings.name = "StringsToggle"
+	strings.custom_minimum_size = Vector2(0, 48)
+	strings.focus_mode = Control.FOCUS_NONE
+	_paper_button(strings, Color("e7dcc0"))
+	strings.text = _strings_label()
+	strings.pressed.connect(func() -> void:
+		detailed = not detailed
+		strings.text = _strings_label()
+		_place_zoom_bar()
+		_threads.queue_redraw())
+	zoom_bar.add_child(strings)
+	zoom_bar.move_child(strings, 0)
 	_detail = PanelContainer.new()
 	_detail.name = "Detail"
 	_detail.visible = false
@@ -195,7 +208,7 @@ func rebuild() -> void:
 		zoom_steps.append(zoom_steps[-1] * ZOOM_STEP)
 	zoom_steps.append(ZOOM_MAX)
 	step = mini(step, zoom_steps.size() - 1)
-	(get_node("ZoomBar") as Control).position = size - Vector2(108, 52) - Vector2(FRAME, FRAME) - Vector2(8, 8)
+	_place_zoom_bar()
 	_apply_zoom()
 	if _focus != &"" and _cards.has(_focus):
 		centre_on(_cards[_focus])
@@ -689,15 +702,40 @@ func _label(text: String, font_size: int, colour: Color) -> Label:
 
 # --- String, pins and the board ---
 
+## Detailed strings (each note's own, when zoomed in) or simple (section to section only). Kept
+## while the game runs.
+static var detailed := false
+
+
+static func _strings_label() -> String:
+	return "Strings: detailed" if detailed else "Strings: simple"
+
+
+## The zoom and string buttons, bottom right inside the frame.
+func _place_zoom_bar() -> void:
+	var bar := get_node("ZoomBar") as Control
+	bar.reset_size()
+	bar.position = size - bar.get_combined_minimum_size() - Vector2(FRAME, FRAME) - Vector2(8, 8)
+
+
+## How strong the string is: solid when zoomed right out, fainter the closer in (so the words on
+## the notes show through it).
+func string_alpha() -> float:
+	if step == 0 or zoom_steps.size() < 2:
+		return 1.0
+	return lerpf(0.4, 0.18, float(step - 1) / maxf(zoom_steps.size() - 2, 1.0))
+
+
 func _draw_threads() -> void:
-	# The links between sections. Right out: one string for each two sections with anything in
-	# common, tag to tag. Closer in: from each note to the tag of every section its story touches.
+	# The links between sections. Simple (and always right out): one string for each two sections
+	# with anything in common, tag to tag. Detailed, closer in: from each note to the tag of every
+	# section its story touches.
 	var joined := {}
 	for id in _cards:
 		for section: StringName in Clues.card(id).links:
 			if not _pins.has(section):
 				continue
-			if step > 0:
+			if step > 0 and detailed:
 				_thread(_cards[id], _pins[section], &"link")
 				continue
 			var own: StringName = Clues.card(id).section
@@ -743,8 +781,9 @@ func _thread(from: Control, to: Control, kind: StringName) -> void:
 		points.append(a.lerp(b, t) + sag * sin(t * PI))
 	# Every string the same, and the same width on screen at every zoom (`kind` only says why it's there).
 	var width := STRING_PX / _canvas.scale.x
-	_threads.draw_polyline(points, (COLOURS[&"string"] as Color).darkened(0.45), width * 1.4, true)
-	_threads.draw_polyline(points, COLOURS[&"string"], width, true)
+	var alpha := string_alpha()
+	_threads.draw_polyline(points, Color((COLOURS[&"string"] as Color).darkened(0.45), alpha), width * 1.4, true)
+	_threads.draw_polyline(points, Color(COLOURS[&"string"], alpha), width, true)
 
 
 ## A few degrees of tilt, always the same for the same note.
