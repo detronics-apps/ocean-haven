@@ -718,6 +718,7 @@ func check(condition: String, person: PersonData, first := false) -> bool:
 		"found": result = Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % arg))
 		"stopped": result = Fleet.stopped(arg)
 		"journal": result = Journal.has(arg)  # photographed (in the Journal)
+		"helped": result = Journal.helped_count(arg) >= 1  # one freed or helped (e.g. the first turtle)
 		"soon":  # seasonal moment `arg` is on, or starts within a week
 			var event := SeasonEvent.find(arg)
 			result = event != null and event.days_until() <= 7

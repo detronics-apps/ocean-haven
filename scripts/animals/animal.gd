@@ -40,6 +40,10 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 @export var injured := false
 ## Added to the inventory when the ranger frees it (the line is litter too).
 @export var tangle_item: ItemData
+## Freeing it marks this Fleet flag and shows `free_note` (the first turtle's net carries an old
+## tag: the Clue Board's planted clue, "net_tag_found").
+@export var frees_flag: StringName
+@export_multiline var free_note: String
 ## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
 @export var young := false
 ## GameClock.now() when it hatched here (-1 = it didn't: it was always here, or arrived).
@@ -986,6 +990,10 @@ func _interact() -> void:
 			Inventory.add(tangle_item)
 		SaveGame.mark_freed(self)
 		Journal.help(data)
+		if frees_flag != &"" and not Fleet.has_flag(frees_flag):
+			Fleet.mark(frees_flag)
+			if free_note != "":
+				get_tree().call_group("hud", "show_toast", free_note)
 	elif not photographed_today():
 		photo_day = GameClock.day
 		Journal.photograph(data)

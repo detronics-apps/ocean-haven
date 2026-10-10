@@ -21,6 +21,7 @@ func _ready() -> void:
 
 
 func _fill() -> void:
+	Fleet.mark(&"map_opened")  # (the Clue Board: the hook-shaped island is seen on the Map)
 	if ObservatoryScreen.is_open_to_ranger():  # the whole ocean, once the fleet has all six
 		var observatory := BuildMode._big_button("Global Ocean Observatory", Color("2a78a8"))
 		observatory.name = "Observatory"

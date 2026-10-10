@@ -289,6 +289,14 @@ func show_detail(id: StringName) -> void:
 		child.free()
 	var head := _label(SLOTS[one.node], 16, Color("a9c8da"))
 	_detail_text.add_child(head)
+	if one.picture:
+		var pic := TextureRect.new()
+		pic.texture = one.picture
+		pic.custom_minimum_size = Vector2(0, 96)
+		pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		_detail_text.add_child(pic)
 	if Clues.is_answered(id):
 		_detail_text.add_child(_label("You wondered: " + one.question, 16, Color("cfe3ef")))
 		_detail_text.add_child(_label(Clues.statement(one), 22, Color("8fc6ee")))

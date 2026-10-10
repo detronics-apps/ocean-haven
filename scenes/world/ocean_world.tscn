@@ -118,7 +118,9 @@ floating = false
 [node name="GreenTurtle" parent="." unique_id=159053969 instance=ExtResource("7_tch0r")]
 position = Vector2(-650, 40)
 tangled = true
-tangle_item = ExtResource("6_elm8k")
+tangle_item = ExtResource("14_fas81")
+frees_flag = &"net_tag_found"
+free_note = "An old tag hangs from the net: a hook-shaped mark and worn letters, ...OOK."
 
 [node name="Crab1" parent="." unique_id=1040757570 instance=ExtResource("7_tch0r")]
 position = Vector2(-368, -176)

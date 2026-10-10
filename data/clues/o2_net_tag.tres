@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/hook_island.png" id="2_hook"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"o2_net_tag"
+node = 0
+order = 1
+clue_text = "An old tag was on the turtle's net: a hook-shaped mark and worn letters, ...OOK."
+discover = PackedStringArray("flag:net_tag_found")
+question = "Where is the hook-shaped place?"
+activate = PackedStringArray("flag:net_tag_found & flag:map_opened", "flag:net_tag_found & found:kelp_forest", "flag:net_tag_found & found:mangrove_coast")
+evidence = PackedStringArray("tag | flag:net_tag_found | The turtle's net carried an old tag with a hook-shaped mark.", "hook_seen | flag:map_opened & !found:deep_sea | On the Map, one island far out is shaped like a hook.", "at_hook | found:deep_sea | My ship found the Deep Sea: a rocky hook round deep water.", "bram | heard:hook_tag | Bram knew the mark: the Hook, his old trawler. A storm tore that net off them out here, years ago.")
+answer = PackedStringArray("1: tag", "1: at_hook", "1: bram")
+statements = PackedStringArray("The tag's mark belonged to the Hook, Bram's old trawler. He lost a net in the Deep Sea years ago, and it was this net, found on our beach.")
+picture = ExtResource("2_hook")
+leads_to = PackedStringArray("s4c_nets")
+guarantee = &"L"

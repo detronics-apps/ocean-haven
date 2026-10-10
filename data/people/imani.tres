@@ -173,6 +173,13 @@ lines = PackedStringArray("Nobody has ever filmed a giant squid in these waters.
 outcome_when = PackedStringArray("journal:giant_squid")
 outcome = "You saw the squid, {name}! I've looked at your picture a hundred times. Ten-year-old me is jumping up and down."
 
+[sub_resource type="Resource" id="Topic_tag"]
+script = ExtResource("2_t")
+id = &"tag_nudge"
+when = PackedStringArray("flag:net_tag_found", "!heard:hook_tag")
+lines = PackedStringArray("That tag of yours, the hook mark? It's old. Ask Bram at the lighthouse: he fished these waters forty years.")
+once = true
+
 [resource]
 script = ExtResource("1_p")
 id = &"imani"
@@ -194,7 +201,7 @@ hair_colour = Color(0.08, 0.06, 0.05, 1)
 shirt = Color(0.85, 0.45, 0.2, 1)
 trousers = Color(0.2, 0.22, 0.26, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_9b"), SubResource("Topic_9c"), SubResource("Topic_10")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_tag"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_9b"), SubResource("Topic_9c"), SubResource("Topic_10")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
 want = SubResource("Want")
 visit_line = "I flew in to see the {island}, {name}. {host} wanted to hear all about the deep."

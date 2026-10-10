@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s4c_nets"
+node = 4
+order = 2
+island = &"deep_sea"
+question = "Can we tell where a lost net came from?"
+activate = PackedStringArray("clue:o2_net_tag", "heard:gear")
+evidence = PackedStringArray("traced | clue:o2_net_tag | Bram's net could be traced to his boat: it carried a mark.", "unmarked | flag:gear_recovered | The three pieces of lost gear I brought up from the deep had no mark at all.", "netpoint | stopped:ghost_net | The Net Return Point takes old nets, and new ones get their boat's mark.")
+answer = PackedStringArray("1: traced", "1: unmarked", "1: netpoint")
+statements = PackedStringArray("Bram's net could be traced back to his boat because it carried a mark. The nets I brought up from the deep had none. Now new nets get their boat's mark, and old ones go to the Net Return Point.")
+guarantee = &"L"
