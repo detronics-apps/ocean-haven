@@ -297,6 +297,16 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 - **The Build menu is short:** name, one line on what it does, cost.
 - **No preaching.** Wonder carries the message; balance is the central concept. The greatest
   reward is seeing creation recover.
+- **The Clue Board (`docs/CLUE_BOARD.md`) only says what the player saw or did.**
+  - A gameplay mechanic is never evidence for a lesson: the litter-finding animals, parrotfish
+    sand, clams' clean water, health %, `*_balanced` flags, health gates, fixes that work
+    everywhere.
+  - Ecological claims need observations; people's lines only back story facts (whose net it was).
+  - A statement claims no more than its evidence. Where a lesson rests on the order things
+    happened, it says "after", never "because". The board never decides anything in the game.
+- **Never present an invented mechanic as a fact**, anywhere: seabirds don't really carry palm or
+  pine seeds, so the people and the Observatory say a tree came up after the birds came, and
+  wonder how.
 
 ## 9b. Learned from playing on the phone (owner's corrections)
 

@@ -489,13 +489,14 @@ func links() -> Array[Dictionary]:
 				list.append({"from": species.travel_home, "to": &"", "to_many": to_many,
 					"text": "%s from the %s now travel to %d of your other islands." % [plural(species.display_name),
 						(DataFiles.res("res://data/regions/%s.tres" % species.travel_home) as RegionData).display_name, to_many.size()]})
-	for species: AnimalData in DataFiles.load_all("res://data/animals"):  # seeds carried to a new island
+	for species: AnimalData in DataFiles.load_all("res://data/animals"):  # trees new to an island
 		if species.seeds_tree and species.seeds_to != &"":
 			var to: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_to)
 			if Regions.is_discovered(to) and Travellers.sprouted(species.seeds_tree, to) > 0:
-				list.append({"from": species.seeds_from, "to": species.seeds_to, "text": "%s carried seeds from the %s: %s grow on the %s now." % [
-					plural(species.display_name), (DataFiles.res("res://data/regions/%s.tres" % species.seeds_from) as RegionData).display_name,
-					plural(species.seeds_tree.display_name).to_lower(), to.display_name]})
+				# Said as what was seen, never as how: seabirds don't really carry palm or pine seeds.
+				list.append({"from": species.seeds_from, "to": species.seeds_to, "text": "%s grow on the %s now, the first trees there, since %s started coming from the %s." % [
+					plural(species.seeds_tree.display_name), to.display_name, plural(species.display_name).to_lower(),
+					(DataFiles.res("res://data/regions/%s.tres" % species.seeds_from) as RegionData).display_name]})
 	for ecosystem: Node in get_tree().get_nodes_in_group("ecosystems"):
 		if ecosystem.has_method("turtle_grazing") and ecosystem.turtle_grazing():
 			list.append({"from": &"home_island", "to": &"tropical_reef", "text": "Green turtles from the Starting Island graze the Reef's seagrass: room for more seahorses."})

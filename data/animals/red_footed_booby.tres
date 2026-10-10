@@ -79,6 +79,6 @@ travel_news = "Boobies were fishing off the reef this morning! Red-footed boobie
 seeds_tree = ExtResource("seed_palm")
 seeds_from = &"home_island"
 seeds_to = &"tropical_reef"
-seeds_news = "Have you seen? A little palm has come up on the island, the first tree we've ever had here! The boobies from the {from} must have brought the seed."
+seeds_news = "Have you seen? A little palm has come up on the island, the first tree we've ever had here! It came up while the boobies from the {from} were visiting. I wonder how it got here?"
 grow_days = 4.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])

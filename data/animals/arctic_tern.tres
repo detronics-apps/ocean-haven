@@ -80,6 +80,6 @@ moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource(
 seeds_tree = ExtResource("seed_pine")
 seeds_from = &"deep_sea"
 seeds_to = &"arctic_ocean"
-seeds_news = "There's a little pine growing among the rocks! The terns stopped on the {from} on their way south, and brought a seed back with them."
+seeds_news = "There's a little pine growing among the rocks! It came up after the terns came back from the {from}. I wonder how a seed got all the way out here?"
 grow_days = 2.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])
