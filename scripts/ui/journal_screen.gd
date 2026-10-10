@@ -115,7 +115,7 @@ func _fill() -> void:
 	if tab == CLUES:
 		var board := ClueMap.new()
 		board.name = "ClueMap"
-		board.custom_minimum_size = Vector2(0, maxf(320.0, get_viewport().get_visible_rect().size.y - 200.0))
+		board.custom_minimum_size = Vector2(0, maxf(320.0, get_viewport().get_visible_rect().size.y - 240.0))
 		_content.add_child(board)
 		return
 	var ranger := ControlledBody.active(get_tree())

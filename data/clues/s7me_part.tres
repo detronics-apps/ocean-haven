@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s7me_part"
+node = 7
+order = 2
+question = "What is my part in all this?"
+activate = PackedStringArray("stopped:six_pack_rings", "stopped:foam_box", "stopped:microfibres")
+evidence = PackedStringArray("prevent | clue:s4b_prevent | Stopping litter where it started did what cleaning up couldn't.", "choices | clue:s5g_choices | What I do changes what happens.", "going | clue:s7g_keep_going | When things went wrong, I kept going.")
+answer = PackedStringArray("1: prevent", "1: choices", "1: going")
+statements = PackedStringArray("I'm part of this ocean too. What I choose can help it come back.")
+leads_to = PackedStringArray("final_who")
+guarantee = &"L"

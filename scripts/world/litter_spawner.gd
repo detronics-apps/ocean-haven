@@ -66,6 +66,7 @@ func entangle() -> Array[Animal]:
 			animal.tangle(debris.item)
 			debris.remove()
 			caught.append(animal)
+			get_tree().call_group("clue_watchers", "animal_caught", animal)
 			get_tree().call_group("hud", "show_toast", "%s caught in %s" % [
 				animal.data.display_name.to_lower(), debris.item.display_name.to_lower()], false, animal.global_position)
 	return caught
@@ -100,6 +101,7 @@ func busy_waters(chance := -1.0) -> Animal:
 		return null
 	var hit: Animal = at_risk.pick_random()
 	hit.injure()
+	get_tree().call_group("clue_watchers", "patrol_hit", hit)
 	get_tree().call_group("hud", "show_toast",
 		"Patrol boat hit a %s: too many boats" % hit.data.display_name.to_lower(), false, hit.global_position)
 	return hit
@@ -210,7 +212,9 @@ func spawn_one() -> Debris:
 	if oil and not Fleet.has_flag(&"oil_seen"):
 		Fleet.mark(&"oil_seen")
 		get_tree().call_group("hud", "show_toast", "Oil drifting in: sail through to clean")
-	return spawn_at(OIL if oil else item, spot, at_sea)
+	var drifted := spawn_at(OIL if oil else item, spot, at_sea)
+	get_tree().call_group("clue_watchers", "litter_washed_in", drifted)  # (the Clue Board: what drifts in)
+	return drifted
 
 
 ## A pollution survey searches further than the ranger can see: `count` more pieces of

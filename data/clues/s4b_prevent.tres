@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s4b_prevent"
+node = 4
+order = 1
+question = "If we stop it where it starts, does it stop coming?"
+activate = PackedStringArray("clue:s4a_sources", "asked:refill", "asked:weaving", "asked:boxes", "asked:netpoint")
+evidence = PackedStringArray("kept_rings | kept_coming:six_pack_rings | I kept picking up plastic rings, and more kept coming.", "kept_bags | kept_coming:plastic_bag | I kept picking up plastic bags, and more kept coming.", "kept_foam | kept_coming:foam_box | I kept picking up foam boxes, and more kept coming.", "kept_nets | kept_coming:ghost_net | I kept picking up lost nets and line, and more kept coming.", "done_rings | flag:rings_traced & kept_coming:six_pack_rings & stopped:six_pack_rings & prevented:six_pack_rings | I kept picking up plastic rings, and more kept coming. Then the harbour cafe changed: it serves drinks from kegs now. After that, no new rings washed up, though other litter still did.", "done_bags | flag:bags_traced & kept_coming:plastic_bag & stopped:plastic_bag & prevented:plastic_bag | I kept picking up plastic bags, and more kept coming. Then the fish market changed: it sends fish home in woven baskets now. After that, no new bags washed up, though other litter still did.", "done_foam | flag:foam_traced & kept_coming:foam_box & stopped:foam_box & prevented:foam_box | I kept picking up foam boxes, and more kept coming. Then the fishing boats changed: they use boxes that come back now. After that, no new foam boxes washed up, though other litter still did.", "done_nets | flag:gear_traced & kept_coming:ghost_net & stopped:ghost_net & prevented:ghost_net | I kept picking up lost nets and line, and more kept coming. Then the fishing boats changed: old nets go to the Net Return Point now, and new ones carry their boat's mark. After that, no new nets or line washed up, though other litter still did.")
+answer = PackedStringArray("1: done_rings, done_bags, done_foam, done_nets")
+statements = PackedStringArray("{g0.1} Stopping it where it started did what cleaning up couldn't.")
+guarantee = &"L"

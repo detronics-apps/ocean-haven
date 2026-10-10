@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s7r_events"
+node = 7
+order = 0
+question = "What happens when something big undoes my work?"
+activate = PackedStringArray("memo:warned/coastal_storm", "memo:warned/underwater_storm", "memo:warned/flash_flood", "memo:warned/hurricane", "memo:warned/oil_spill", "memo:warned/ice_breakup", "memo:struck/coastal_storm", "memo:struck/underwater_storm", "memo:struck/flash_flood", "memo:struck/hurricane", "memo:struck/oil_spill", "memo:struck/ice_breakup")
+evidence = PackedStringArray("rec_storm | memo:recovered/coastal_storm & memo:fixed/coastal_storm | The storm damaged my buildings and washed litter ashore. I fixed them and cleared the litter.", "rec_storm_l | memo:recovered/coastal_storm & !memo:fixed/coastal_storm | The storm washed litter ashore. I cleared it.", "rec_swell | memo:recovered/underwater_storm | The swell tore up the kelp. Over the next days the torn beds grew thick again.", "rec_flood | memo:recovered/flash_flood | The flood silted the channels and cut pools off. Once they were dug out, the pools joined the sea again.", "rec_hurricane | memo:recovered/hurricane | The hurricane broke coral and washed litter up. The broken patches grew back.", "rec_oil | memo:recovered/oil_spill | Oil came up in the deep. It was contained, and I cleaned up the oil I could see.", "rec_ice | memo:recovered/ice_breakup | A big piece of ice broke away. In the next freeze, the ice froze back over.", "prep_storm | memo:prepared/coastal_storm | What I'd secured before the storm came through.", "prep_hurricane | memo:prepared/hurricane | What I'd secured before the hurricane came through.")
+answer = PackedStringArray("1: rec_storm, rec_storm_l, rec_swell, rec_flood, rec_hurricane, rec_oil, rec_ice")
+statements = PackedStringArray("rec_storm, prep_storm => {g0.1} What I'd secured came through better.", "rec_hurricane, prep_hurricane => {g0.1} What I'd secured came through better.", "{g0.1}")
+leads_to = PackedStringArray("s7g_keep_going")
+guarantee = &"O"

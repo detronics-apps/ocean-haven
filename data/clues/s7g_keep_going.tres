@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s7g_keep_going"
+node = 7
+order = 1
+question = "What do we do when things go wrong?"
+activate = PackedStringArray("open:s7r_events", "memo:litter_back", "memo:caught_again")
+evidence = PackedStringArray("g_beach | memo:litter_back_cleaned | litter washed back onto the beach after I'd cleaned it, so I cleaned it again", "g_freed | memo:freed_again | an animal I'd freed got caught again, so I freed it again", "g_storm | clue:s7r_events & memo:recovered/coastal_storm | the storm damaged the island, and I helped it recover", "g_swell | clue:s7r_events & memo:recovered/underwater_storm | the swell tore up the kelp, and it grew back", "g_flood | clue:s7r_events & memo:recovered/flash_flood | the flood cut the pools off, and I dug them out", "g_hurricane | clue:s7r_events & memo:recovered/hurricane | the hurricane broke the coral, and it grew back", "g_oil | clue:s7r_events & memo:recovered/oil_spill | oil came up, and I cleaned up what I could see", "g_ice | clue:s7r_events & memo:recovered/ice_breakup | the ice broke up, and it froze back over in the next freeze")
+answer = PackedStringArray("1: g_beach, g_freed, g_storm, g_swell, g_flood, g_hurricane, g_oil, g_ice")
+statements = PackedStringArray("Setbacks happen: {g0.1}. I kept going.")
+leads_to = PackedStringArray("s7me_part")
+guarantee = &"L"

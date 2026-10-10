@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s5a_too_much"
+node = 5
+order = 0
+question = "Can helping go wrong?"
+activate = PackedStringArray("memo:area_busy", "memo:patrol_hurt", "memo:dive_drove", "memo:bait_crowd")
+evidence = PackedStringArray("busy | memo:area_busy & memo:busy_then_nested | I built right beside the turtle area. When I gave it quiet sand all round, a turtle nested there.", "boats | memo:patrol_hurt & memo:patrol_settled | My patrol boats crowded the water, and a boat-shy animal was hurt. When I gave the animals more room, no more were hurt.", "noise | memo:dive_drove & memo:dive_quiet_stayed | When I sent the submarine down, its noise drove a whale away. Once the dive was over and the water was quiet, the whales stayed.", "bait | memo:bait_crowd & memo:bait_settled | The bait at my camera drew in too many sharks. Once the bait was gone, they drifted off.")
+answer = PackedStringArray("1: busy, boats, noise, bait")
+statements = PackedStringArray("Something I built or did to help disturbed wildlife. {g0.1}")
+guarantee = &"O"

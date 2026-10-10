@@ -585,3 +585,52 @@ The build step "6. Seeds" is removed from §10.
 preview, check desktop, 375×812 and 812×375 (same cards and threads; focus kept on rotate). Play a
 new game to the first quiet nest (O1 blue, O2 pinned). Load a far-along save (fills in, no
 duplicates, no blue card without its evidence).
+
+---
+
+## As built (Oct 2026)
+
+**Code:** `scripts/systems/clue_data.gd` (ClueData), `scripts/systems/clues.gd` (the `Clues`
+autoload: checks every 2 s, watches the world, saved as `"clues"` with its `_memo`),
+`scripts/ui/clue_map.gd` (ClueMap, the Journal's Clues tab), cards in `data/clues/` (30).
+Tests: `test_clue_board`, `test_clue_map`, `test_net_tag`, `test_clue_ocean`, `test_clue_islands`,
+`test_clue_setbacks` (plus a check in `test_save`).
+
+**Card ids:** o1_turtles, o2_net_tag · s1_beyond · s2k_kelp, s2m_pools, s2r_reef, s2p_pups,
+s2g_balance · s3d_deep, s3g_watch · s4a_sources, s4b_prevent, s4c_nets, s4d_fibres ·
+s5a_too_much, s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar, s6n_<rescue> (6) ·
+s7r_events, s7g_keep_going, s7me_part · final_who.
+
+**Build checks (§7), as resolved:**
+1. Parrotfish grazing and patch seaweed aren't drawn → S2.R uses its second statement ("Parrotfish
+   were there as the coral returned"). A patch counts only if the ranger planted it (Fleet flag
+   `coral_planted_<patch>`, set by ReefPatch.plant).
+2. A pup moving off melting ice isn't tracked → `pup_moved` and the Polar example in S2.G are dropped.
+3. Pups aren't tracked one by one → S2.P uses its narrow statement (born on old ice, still there
+   when the thaw ended).
+4. The urchin count isn't per bed → S2.K is about the whole forest ("grazed the forest bare").
+5. Booby bands: not needed (R-visitor).
+6. The dive → whale left → whales stayed sequence is recorded (Clues._watch_deep).
+
+**Other choices made while building:**
+- S4.B's "area" is the island's rowboat reach. Only litter that drifts in counts (LitterSpawner's
+  drift): a storm or a dig can still bring up an old piece of a stopped kind.
+- O1 opens on meeting Maya or Tom, or freeing the first turtle (no "saw it tangled" flag).
+- S4.C opens on O2 answered, or hearing about the lost gear (`heard:gear`).
+- S5.A "boats" recovers once the patrol boats leave the island's water ≥ 65 % free
+  (`PatrolBoat.free_water_share`, LitterSpawner.min_free_water) with no hits for 3 mornings.
+- S7.R's recovery, per event, as seen:
+  - storm: buildings fixed, litter in reach ≤ 3;
+  - swell: as many dense beds as before the warning;
+  - flood: as many linked pools as before;
+  - hurricane: the reef's coral back to 95 % of before;
+  - oil: no oil patches left;
+  - ice breakup: frozen again.
+- The game tells the board through the group `clue_watchers` (litter_washed_in, animal_caught,
+  animal_freed, patrol_hit, bird_left) and through RareEvents' and Missions' signals.
+- Conditions the board adds to People's: clue:, open:, guessed:, visited:, sprouted:, released:,
+  rescue_here:, rescue_away:, visitor_here:, no_trees:, memo:, prevented:, kept_coming:, and the
+  island observations kelp_overgrazed(_max):N, kelp_dense:N, pools_linked(_max):N, reef_regrown,
+  pup_old_ice, polar_phase:X, deep_mapped:N. People gained `helped:species`.
+
+**Not built yet:** the optional List toggle (§1).

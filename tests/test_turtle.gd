@@ -1,7 +1,7 @@
 extends SceneTree
 ## Turtle: wanders without touching land or straying from home; is discovered;
 ## swims off when the ranger rushes at it; relaxes when the ranger stays still,
-## then can be freed from fishing line, observed and photographed — never fleeing
+## then can be freed from the old ghost net (its tag: the Clue Board), observed and photographed — never fleeing
 ## from a calm ranger.
 ## Run: godot --headless --path . --script res://tests/test_turtle.gd --quit-after 100000
 
@@ -17,7 +17,7 @@ func _initialize() -> void:
 	var turtle: Node2D = world.get_node("GreenTurtle")  # untyped: Animal uses autoloads
 	var player: Node2D = world.get_node("Player")
 	var home := turtle.global_position
-	_expect(turtle.tangled, "starts tangled in fishing line")
+	_expect(turtle.tangled, "starts tangled in an old ghost net")
 
 	# --- Wanders for 10 s, always in water, near home ---
 	var moved := false
@@ -65,8 +65,8 @@ func _initialize() -> void:
 	_interact()
 	for i in 5:
 		await physics_frame
-	_expect(not turtle.tangled, "freed from the fishing line")
-	_expect(inventory.count(&"fishing_line") == 1, "the line goes into the inventory")
+	_expect(not turtle.tangled, "freed from the net")
+	_expect(inventory.count(&"ghost_net") == 1, "the net goes into the inventory")
 	_expect(journal.helped_count(&"green_turtle") == 1, "help recorded in the journal")
 	for i in 260:
 		await physics_frame  # quiet watching

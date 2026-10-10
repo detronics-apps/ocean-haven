@@ -17,9 +17,16 @@ var _timer := 0.0
 var _quiet_next := false
 ## Island id -> a stand-in PersonData, so People.check's island conditions can be used.
 var _askers := {}
+## What the board has watched happen in the world, in order (see "Watching the world"): string
+## keys, e.g. "cleared/foam_box@home_island", "struck/coastal_storm". Saved.
+var _memo := {}
 
 
 func _ready() -> void:
+	add_to_group("clue_watchers")  # (litter, animals, birds and boats tell the board what happened)
+	RareEvents.warned.connect(_event_warned)
+	RareEvents.struck.connect(_event_struck)
+	GameClock.new_day.connect(func(_day: int) -> void: _morning())
 	# A survey the ranger has read (the Otter Dive's first play runs one too): "surveyed_<mission>".
 	Missions.returned.connect(func(mission: MissionData, _found: int) -> void:
 		Fleet.mark(StringName("surveyed_" + String(mission.id))))
@@ -51,6 +58,7 @@ func card(id: StringName) -> ClueData:
 
 ## Moves every card on as far as the game now allows. `quiet`: no "changed" signals (loading).
 func check(quiet := false) -> void:
+	_watch()
 	# Twice, so a card answered this check can open the cards that wait for it ("clue:id").
 	for _pass in 2:
 		for one in cards():
@@ -179,6 +187,12 @@ func holds(condition: String, one: ClueData) -> bool:
 			result = later and _rescue_in_sight(StringName(arg), kind == "rescue_away")
 		"visitor_here":  # a visiting animal of species `arg` in sight on the ranger's island
 			result = _visitor_in_sight(StringName(arg))
+		"memo":  # something the board watched happen (see "Watching the world")
+			result = _memo.has(arg)
+		"prevented":  # litter kind `arg`: kept coming, its source fixed, then none for 3 mornings
+			result = _memo.keys().any(func(k: String) -> bool: return k.begins_with("after/%s@" % arg) and int(_memo[k]) >= PREVENTED_MORNINGS)
+		"kept_coming":  # litter kind `arg` came back after the ranger had cleared it, before its fix
+			result = _memo.keys().any(func(k: String) -> bool: return k.begins_with("back/%s@" % arg))
 		"no_trees":  # island `arg` has no trees at all
 			result = _trees_on(StringName(arg)) == 0
 		"kelp_overgrazed", "kelp_overgrazed_max", "kelp_dense", "pools_linked", "pools_linked_max", \
@@ -282,6 +296,241 @@ func _asker(island: StringName) -> PersonData:
 	return _askers[island]
 
 
+# --- Watching the world (docs/CLUE_BOARD.md rules 2 and 6: seen, and in order) ---
+
+## The litter kinds whose source can be fixed (S4.B), and the kind each counts as.
+const FIXABLE := {&"six_pack_rings": &"six_pack_rings", &"plastic_bag": &"plastic_bag", &"foam_box": &"foam_box",
+	&"ghost_net": &"ghost_net", &"fishing_line": &"ghost_net"}
+## Mornings after a fix with none of that litter drifting in.
+const PREVENTED_MORNINGS := 3
+
+
+func _here() -> RegionData:
+	var ranger := ControlledBody.active(get_tree())
+	return Regions.nearest(ranger.global_position) if ranger else null
+
+
+## Pieces of litter in the ranger's reach on `region` (only `kind`, if given; nets count line too).
+func _litter_on(region: RegionData, kind: StringName = &"") -> int:
+	var count := 0
+	for debris: Node2D in get_tree().get_nodes_in_group("debris"):
+		if debris.is_queued_for_deletion() or not debris.item.is_litter or Regions.nearest(debris.global_position) != region:
+			continue
+		if Regions.in_reach(region, debris.global_position) and (kind == &"" or FIXABLE.get(debris.item.id, &"") == kind):
+			count += 1
+	return count
+
+
+## Every check: what the ranger can see now, on the island they're on.
+func _watch() -> void:
+	var here := _here()
+	if here == null:
+		return
+	var at := String(here.id)
+	for kind in [&"six_pack_rings", &"plastic_bag", &"foam_box", &"ghost_net"]:
+		if not Fleet.stopped(kind) and _litter_on(here, kind) == 0:
+			_memo["cleared/%s@%s" % [kind, at]] = GameClock.day
+	# A whole beach cleared, litter back, cleared again (S7.G).
+	var litter := _litter_on(here)
+	if litter == 0 and _memo.has("beach_back/" + at):
+		_memo["beach_again/" + at] = GameClock.day
+		_memo["litter_back_cleaned"] = at
+	elif litter == 0:
+		_memo["beach_clear/" + at] = GameClock.day
+	elif _memo.has("beach_clear/" + at):
+		_memo["beach_back/" + at] = GameClock.day
+		_memo["litter_back"] = at
+	_watch_turtle_areas(here)
+	if here.id == &"deep_sea":
+		_watch_deep(IslandHealth.ecosystem(get_tree(), here))
+	_watch_events(here)
+
+
+## A turtle area too busy, then a nest there once it's quiet (S5.A "busy").
+func _watch_turtle_areas(here: RegionData) -> void:
+	for area: Node2D in get_tree().get_nodes_in_group("buildings"):
+		if area.data.id != &"turtle_protection_area" or Regions.nearest(area.global_position) != here:
+			continue
+		var key := "busy/%s" % area.name
+		if area.too_busy() != null:
+			_memo[key] = GameClock.day
+			_memo["area_busy"] = String(area.name)
+		elif _memo.has(key) and _nest_near(area.global_position):
+			_memo["busy_then_nested"] = String(area.name)
+
+
+func _nest_near(point: Vector2) -> bool:
+	for nest: Node2D in get_tree().get_nodes_in_group("nests"):
+		if nest.global_position.distance_to(point) <= 96.0:
+			return true
+	return false
+
+
+## A dive's noise drives a whale away; once it's over and quiet, whales stay (S5.A "noise").
+## Baited cameras draw too many sixgills in; with the bait out, they drift off (S5.A "bait").
+func _watch_deep(eco: Node) -> void:
+	if eco == null:
+		return
+	var whales: int = eco.working(DataFiles.res("res://data/animals/sperm_whale.tres")).size()
+	var sharks: int = eco.working(DataFiles.res("res://data/animals/sixgill_shark.tres")).size()
+	var diving: bool = eco._dive_noise_until > GameClock.now()
+	var calm: bool = eco.quiet() >= eco.whale_quiet
+	if not diving:
+		if _memo.has("dive/whales") and _memo.has("dive_drove") and calm and whales >= int(_memo["dive/whales"]):
+			_memo["dive_quiet_stayed"] = GameClock.day
+		elif not _memo.has("dive/whales"):
+			_memo["calm/whales"] = whales if calm else 0
+	elif not _memo.has("dive/whales") and int(_memo.get("calm/whales", 0)) >= 2:
+		_memo["dive/whales"] = int(_memo["calm/whales"])  # whales were staying when it went down
+	elif _memo.has("dive/whales") and whales < int(_memo["dive/whales"]):
+		_memo["dive_drove"] = GameClock.day
+	var baited := false
+	for camera: Building in eco._of(&"deep_camera"):
+		baited = baited or camera.baited()
+	if not baited and not _memo.has("bait_crowd"):
+		_memo["bait/base"] = sharks
+	elif baited and sharks > int(_memo.get("bait/base", 1)) + 1:
+		_memo["bait_crowd"] = GameClock.day
+	elif not baited and _memo.has("bait_crowd") and sharks <= int(_memo.get("bait/base", 1)):
+		_memo["bait_settled"] = GameClock.day
+
+
+## Litter drifting in (LitterSpawner.spawn_one only: a storm or a dig can still bring up old pieces).
+func litter_washed_in(debris: Node2D) -> void:
+	if debris == null or not debris.item.is_litter:
+		return
+	var at := String(Regions.nearest(debris.global_position).id)
+	var kind: StringName = FIXABLE.get(debris.item.id, &"")
+	if kind != &"" and not Fleet.stopped(kind) and _memo.has("cleared/%s@%s" % [kind, at]):
+		_memo["back/%s@%s" % [kind, at]] = GameClock.day  # it kept coming after the ranger cleared it
+	if kind == &"" or not Fleet.stopped(kind):
+		_memo["other/" + at] = GameClock.day  # (other litter still drifting in)
+
+
+## Each morning on an island: after a fix, a morning with other litter but none of that kind; after
+## a patrol-boat hit, mornings with fewer boats and no more hits.
+func _morning() -> void:
+	var here := _here()
+	if here == null:
+		return
+	var at := String(here.id)
+	for kind in [&"six_pack_rings", &"plastic_bag", &"foam_box", &"ghost_net"]:
+		if Fleet.stopped(kind) and _memo.has("back/%s@%s" % [kind, at]) and int(_memo.get("other/" + at, -9)) >= GameClock.day - 1:
+			var key := "after/%s@%s" % [kind, at]
+			_memo[key] = int(_memo.get(key, 0)) + 1
+	# (the boats crowd the water when less than this share of it is free: LitterSpawner.min_free_water)
+	if _memo.has("patrol/" + at) and int(_memo.get("patrol_hit_day/" + at, -9)) < GameClock.day - PREVENTED_MORNINGS \
+			and PatrolBoat.free_water_share(get_tree(), here) >= FREE_WATER:
+		_memo["patrol_settled"] = at
+
+
+## The share of an island's water patrol boats must leave free for boat-shy animals.
+const FREE_WATER := 0.65
+
+
+## An animal caught in litter left near it (S5.G), or caught again after being freed (S7.G).
+func animal_caught(animal: Node2D) -> void:
+	_memo["caught_by_litter"] = String(animal.data.display_name).to_lower()
+	if _memo.has("freed/" + animal.name):
+		_memo["caught_again/" + animal.name] = GameClock.day
+		_memo["caught_again"] = String(animal.data.display_name).to_lower()
+
+
+func animal_freed(animal: Node2D) -> void:
+	if _memo.has("caught_again/" + animal.name):
+		_memo["freed_again"] = String(animal.data.display_name).to_lower()
+	_memo["freed/" + animal.name] = GameClock.day
+
+
+## Patrol boats crowded the water and hit a boat-shy animal (S5.A "boats").
+func patrol_hit(animal: Node2D) -> void:
+	var region := Regions.nearest(animal.global_position)
+	var at := String(region.id)
+	_memo["patrol/" + at] = GameClock.day
+	_memo["patrol_hit_day/" + at] = GameClock.day
+	_memo["patrol_hurt"] = String(animal.data.display_name).to_lower()
+
+
+## A tree-nesting bird flew off: too few trees left for it (S5.G).
+func bird_left(animal: Node2D) -> void:
+	_memo["bird_left"] = String(animal.data.display_name).to_lower()
+
+
+## A rare event: warned (what it was like before), struck (what it damaged), then recovered.
+func _event_warned(event: EventData) -> void:
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % event.region)
+	_memo["warned/" + String(event.id)] = {"before": _event_measure(event, region)}
+
+
+func _event_struck(event: EventData, damaged: int) -> void:
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % event.region)
+	var id := String(event.id)
+	var warned: Dictionary = _memo.get("warned/" + id, {})
+	_memo["struck/" + id] = {"day": GameClock.day, "damaged": damaged, "before": warned.get("before", _event_measure(event, region))}
+	_memo.erase("recovered/" + id)
+	var secured_came_through := false
+	var unsecured_damaged := false
+	for building: Building in get_tree().get_nodes_in_group("buildings"):
+		if Regions.nearest(building.global_position) != region or building.data.storm_proof:
+			continue
+		secured_came_through = secured_came_through or (building.secured and not building.damaged)
+		unsecured_damaged = unsecured_damaged or (not building.secured and building.damaged)
+	if secured_came_through and unsecured_damaged:
+		_memo["prepared/" + id] = GameClock.day
+
+
+## What the event damages, measured the same way before and after.
+func _event_measure(event: EventData, region: RegionData) -> float:
+	var eco := IslandHealth.ecosystem(get_tree(), region)
+	if eco == null:
+		return 0.0
+	match event.id:
+		&"underwater_storm":
+			var dense := 0
+			for bed: Node in eco.beds():
+				if bed.health >= eco.healthy_bed_at:
+					dense += 1
+			return dense
+		&"flash_flood":
+			return eco.pools_connected()
+		&"hurricane":
+			return eco.total_coral()
+	return 0.0
+
+
+## Every check on an event's island after it struck: repaired, and its damage healed again.
+func _watch_events(here: RegionData) -> void:
+	for event: EventData in RareEvents.all():
+		var id := String(event.id)
+		if not _memo.has("struck/" + id) or event.region != here.id or _memo.has("recovered/" + id):
+			continue
+		var struck: Dictionary = _memo["struck/" + id]
+		if GameClock.day <= int(struck.day):
+			continue  # (not the day it struck)
+		var fixed := true
+		for building: Building in get_tree().get_nodes_in_group("buildings"):
+			if building.damaged and Regions.nearest(building.global_position) == here:
+				fixed = false
+		var healed := false
+		match event.id:
+			&"coastal_storm":
+				healed = _litter_on(here) <= 3
+			&"underwater_storm", &"flash_flood":
+				healed = _event_measure(event, here) >= float(struck.before)
+			&"hurricane":
+				healed = _event_measure(event, here) >= float(struck.before) * 0.95
+			&"oil_spill":
+				healed = not get_tree().get_nodes_in_group("debris").any(func(d: Node2D) -> bool:
+					return d.item.id == &"oil_patch" and Regions.nearest(d.global_position) == here)
+			&"ice_breakup":
+				var eco := IslandHealth.ecosystem(get_tree(), here)
+				healed = eco != null and eco.phase_name() == &"frozen"
+		if fixed and healed:
+			_memo["recovered/" + id] = GameClock.day
+			if int(struck.damaged) > 0:
+				_memo["fixed/" + id] = GameClock.day
+
+
 # --- What the board shows ---
 
 func is_found(id: StringName) -> bool:
@@ -320,11 +569,16 @@ func statement(one: ClueData) -> String:
 # --- Saving ---
 
 func to_dict() -> Dictionary:
-	return _state.duplicate(true)
+	var saved := _state.duplicate(true)
+	saved["_memo"] = _memo.duplicate(true)
+	return saved
 
 
 func restore(saved: Dictionary) -> void:
 	_state.clear()
+	_memo = (saved.get("_memo", {}) as Dictionary).duplicate(true)
 	_quiet_next = true
 	for id in saved:
+		if id == "_memo":
+			continue
 		_state[StringName(id)] = (saved[id] as Dictionary).duplicate(true)

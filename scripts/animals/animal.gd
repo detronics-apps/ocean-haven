@@ -990,6 +990,7 @@ func _interact() -> void:
 			Inventory.add(tangle_item)
 		SaveGame.mark_freed(self)
 		Journal.help(data)
+		get_tree().call_group("clue_watchers", "animal_freed", self)
 		if frees_flag != &"" and not Fleet.has_flag(frees_flag):
 			Fleet.mark(frees_flag)
 			if free_note != "":

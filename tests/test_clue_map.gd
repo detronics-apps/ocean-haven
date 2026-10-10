@@ -24,7 +24,7 @@ func _initialize() -> void:
 	await process_frame
 	map.rebuild()
 	var wide := _layout(map)
-	_expect(map.landscape() and wide.cards.size() == 3, "landscape: the 3 visible cards (%s)" % [wide.cards.keys()])
+	_expect(map.landscape() and wide.cards.size() == 4, "landscape: the 4 visible cards (S1.1, S4.A, S4.B, S4.D) (%s)" % [wide.cards.keys()])
 	_expect(wide.pins.size() == 9 and wide.pins[0].x < wide.pins[4].x and is_equal_approx(wide.pins[0].y, wide.pins[4].y),
 		"landscape: 9 slots, the spine runs left to right")
 	var lit: Array = map._pins.values().filter(func(p: Button) -> bool: return not p.text.ends_with("…"))

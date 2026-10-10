@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s5g_choices"
+node = 5
+order = 1
+question = "Does what I do change what happens?"
+activate = PackedStringArray("open:s5a_too_much", "memo:caught_by_litter", "memo:bird_left", "clue:s2k_kelp", "clue:s2m_pools", "clue:s2r_reef")
+evidence = PackedStringArray("g_area | built:turtle_protection_area & nested:green_turtle>=1 | When I made a quiet turtle area, a turtle nested there.", "g_channel | pools_linked:1 & animals:juvenile_snapper>=4@mangrove_coast | When I opened the water to a nursery pool, young fish came to live there.", "g_coral | reef_regrown | When I planted coral, it grew back.", "b_litter | memo:caught_by_litter | When I left litter lying near an animal, it got caught in it.", "b_trees | memo:bird_left | When there were too few trees left, a bird that nests in them flew off.", "b_help | open:s5a_too_much | Something I built or did to help disturbed wildlife.")
+answer = PackedStringArray("1: g_area, g_channel, g_coral", "1: b_litter, b_trees, b_help")
+statements = PackedStringArray("{g0.1} {g1.1} What I do changes what happens.")
+guarantee = &"L"

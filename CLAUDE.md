@@ -824,12 +824,18 @@ people's places count as camp (PolarEcosystem._camp) and the first visit washes
 RegionData.camp_litter (3) pieces up by the camp (LitterSpawner.wash_up_near), so the bear
 comes on day one.
 
-**Clue Board (building now).** Spec: `docs/CLUE_BOARD.md` (the only one; rules in ISLAND_RULES
-9). A connected map of what the player has understood: the opening turtle mystery, 7 nodes and
-the final question "Who created all of this?". Cards are data (`data/clues/*.tres`, ClueData),
-checked by the `Clues` autoload with People's conditions: the first activation that holds opens a
-card, evidence is kept even before that, and answers stick (blue). It never affects the game.
-The seed news and the Observatory's tree link say what was seen, not that birds carried seeds.
+**Clue Board ✅** Spec and "As built" notes: `docs/CLUE_BOARD.md` (the only one; rules in
+ISLAND_RULES 9). A connected map of what the player has understood (Journal → Clues tab,
+ClueMap: left to right in landscape, top to bottom in portrait, zoom steps, tap for details):
+the opening turtle mystery, 7 nodes, and the final question "Who created all of this?" (never
+answered). 30 cards are data (`data/clues/*.tres`, ClueData), checked by the `Clues` autoload
+with People's conditions plus its own observations (only while the ranger is on that island,
+never health flags). The first activation that holds opens a card, evidence is kept even before
+that, and answers stick (blue), their statements fixed from the evidence that answered them. The
+game tells it what happened through the `clue_watchers` group. It never affects the game. The
+first turtle's ghost net carries the hook tag (Animal.frees_flag "net_tag_found"; Tom hands it
+over on old saves; Bram's "hook_tag"). The seed news and the Observatory's tree link say what was
+seen, not that birds carried seeds.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
