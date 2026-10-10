@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6n_reef_seahorse"
+node = 6
+order = 13
+island = &"tropical_reef"
+question = "Will I see {rescue:reef_seahorse} again?"
+activate = PackedStringArray("released:reef_seahorse")
+evidence = PackedStringArray("again | ^rescue_here:reef_seahorse | I saw {rescue:reef_seahorse} again, out in the wild with its bright tag.")
+answer = PackedStringArray("1: again")
+statements = PackedStringArray("I saw {rescue:reef_seahorse} again, living wild, its bright tag flashing.")
+guarantee = &"O"

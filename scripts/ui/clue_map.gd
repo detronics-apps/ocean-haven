@@ -210,7 +210,12 @@ static func card_text(one: ClueData) -> String:
 		return Clues.statement(one)
 	if not Clues.is_open(one.id):
 		return "📌 " + one.clue_text
-	return "? " + one.question
+	return "? " + question_of(one)
+
+
+## The card's question, its names filled in ({rescue:id}).
+static func question_of(one: ClueData) -> String:
+	return Clues.fill(one, one.question, [])
 
 
 # --- Zoom, pan, focus ---
@@ -298,10 +303,10 @@ func show_detail(id: StringName) -> void:
 		pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_detail_text.add_child(pic)
 	if Clues.is_answered(id):
-		_detail_text.add_child(_label("You wondered: " + one.question, 16, Color("cfe3ef")))
+		_detail_text.add_child(_label("You wondered: " + question_of(one), 16, Color("cfe3ef")))
 		_detail_text.add_child(_label(Clues.statement(one), 22, Color("8fc6ee")))
 	elif Clues.is_open(id):
-		_detail_text.add_child(_label(one.question, 22, Color("f3e9cf")))
+		_detail_text.add_child(_label(question_of(one), 22, Color("f3e9cf")))
 	else:
 		_detail_text.add_child(_label(one.clue_text, 22, Color("f6dd8c")))
 	if Clues.is_open(id) and Clues.is_found(id):
@@ -345,7 +350,7 @@ func _links(one: ClueData) -> Array[Dictionary]:
 
 
 static func _short(one: ClueData) -> String:
-	return Clues.statement(one) if Clues.is_answered(one.id) else one.question if Clues.is_open(one.id) else one.clue_text
+	return Clues.statement(one) if Clues.is_answered(one.id) else question_of(one) if Clues.is_open(one.id) else one.clue_text
 
 
 ## The kinds of thread from `a` to `b`: &"led" (a.leads_to has b), &"planted" ("~b"),

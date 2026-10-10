@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6n_kelp_otter"
+node = 6
+order = 11
+island = &"kelp_forest"
+question = "Will I see {rescue:kelp_otter} again?"
+activate = PackedStringArray("released:kelp_otter")
+evidence = PackedStringArray("again | ^rescue_here:kelp_otter | I saw {rescue:kelp_otter} again, out in the wild with its bright tag.")
+answer = PackedStringArray("1: again")
+statements = PackedStringArray("I saw {rescue:kelp_otter} again, living wild, its bright tag flashing.")
+guarantee = &"O"

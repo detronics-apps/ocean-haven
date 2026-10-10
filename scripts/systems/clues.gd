@@ -157,11 +157,59 @@ func holds(condition: String, one: ClueData) -> bool:
 			result = Travellers._told.keys().any(func(k: String) -> bool: return k.begins_with(arg + "/"))
 		"sprouted":  # a tree came up on island `arg` from the Travellers' seeds
 			result = Travellers._told.keys().any(func(k: String) -> bool: return k.begins_with("seeds/") and k.ends_with("/" + arg))
-		"rescue_away":  # released rescue `arg` was seen on another island
-			result = not (Rescues.done.get(StringName(arg), Rescues.done.get(arg, {})).get("seen", []) as Array).is_empty()
+		"released": result = Rescues.done.has(StringName(arg)) or Rescues.done.has(arg)
+		"rescue_here", "rescue_away":  # released rescue `arg` in sight (away: visiting another island)
+			var record: Dictionary = Rescues.done.get(StringName(arg), Rescues.done.get(arg, {}))
+			var later := GameClock.day > int(record.get("day", GameClock.day))  # (not the release itself)
+			result = later and _rescue_in_sight(StringName(arg), kind == "rescue_away")
+		"visitor_here":  # a visiting animal of species `arg` in sight on the ranger's island
+			result = _visitor_in_sight(StringName(arg))
+		"no_trees":  # island `arg` has no trees at all
+			result = _trees_on(StringName(arg)) == 0
 		_:
 			return People.check(condition, _asker(island))
 	return result != negate
+
+
+## How near an animal must be to the ranger to count as seen.
+const SIGHT := 600.0
+
+
+## Animals on the ranger's island near enough to see.
+func _in_sight() -> Array[Node]:
+	var ranger := ControlledBody.active(get_tree())
+	var seen: Array[Node] = []
+	if not ranger:
+		return seen
+	var here := Regions.nearest(ranger.global_position)
+	for animal: Node2D in get_tree().get_nodes_in_group("animals"):
+		if not animal.is_queued_for_deletion() and Regions.nearest(animal.global_position) == here \
+				and animal.global_position.distance_to(ranger.global_position) <= SIGHT:
+			seen.append(animal)
+	return seen
+
+
+func _rescue_in_sight(id: StringName, away: bool) -> bool:
+	for animal in _in_sight():
+		if StringName(animal.get_meta("rescue_id", &"")) == id and (not away or animal.visiting):
+			return true
+	return false
+
+
+func _visitor_in_sight(species: StringName) -> bool:
+	for animal in _in_sight():
+		if animal.data.id == species and animal.visiting and not animal.has_meta("rescue_id"):
+			return true
+	return false
+
+
+func _trees_on(island: StringName) -> int:
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % island)
+	var count := 0
+	for building: Node2D in get_tree().get_nodes_in_group("buildings"):
+		if Regions.nearest(building.global_position) == region and building.get_children().any(func(c: Node) -> bool: return c is PalmTree):
+			count += 1
+	return count
 
 
 func _asker(island: StringName) -> PersonData:

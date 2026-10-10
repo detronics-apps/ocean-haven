@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6g_ocean"
+node = 6
+order = 1
+question = "Does what happens on one island reach another?"
+activate = PackedStringArray("clue:o2_net_tag", "flag:fibres_traced", "clue:s6t_travel")
+evidence = PackedStringArray("net | clue:o2_net_tag | A net lost in the Deep Sea ended up on our beach.", "threads | flag:fibres_traced | Threads from washing clothes went out to sea and were trapped in the polar ice.", "animals | clue:s6t_travel | Animals travel between my islands.")
+answer = PackedStringArray("1: net", "1: threads", "1: animals")
+statements = PackedStringArray("It's all one ocean. A net lost in the Deep Sea ended up on our beach; threads from washing clothes went out to sea and were trapped in the polar ice; and animals travel between islands.")
+guarantee = &"L"

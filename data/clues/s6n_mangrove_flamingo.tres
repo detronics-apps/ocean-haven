@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6n_mangrove_flamingo"
+node = 6
+order = 12
+island = &"mangrove_coast"
+question = "Will I see {rescue:mangrove_flamingo} again?"
+activate = PackedStringArray("released:mangrove_flamingo")
+evidence = PackedStringArray("again | ^rescue_here:mangrove_flamingo | I saw {rescue:mangrove_flamingo} again, out in the wild with its bright tag.")
+answer = PackedStringArray("1: again")
+statements = PackedStringArray("I saw {rescue:mangrove_flamingo} again, living wild, its bright tag flashing.")
+guarantee = &"O"

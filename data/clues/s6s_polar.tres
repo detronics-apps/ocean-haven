@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6s_polar"
+node = 6
+order = 3
+island = &"arctic_ocean"
+question = "How did a tree start growing on the ice?"
+activate = PackedStringArray("sprouted:arctic_ocean")
+evidence = PackedStringArray("bare | found:arctic_ocean & no_trees:arctic_ocean | When I first came, the Polar Ocean had no trees at all.", "birds | animals:arctic_tern>=1@arctic_ocean | Arctic terns nest on the rocks here.", "sprout | sprouted:arctic_ocean | A little pine came up among the rocks.")
+answer = PackedStringArray("1: bare", "1: birds", "1: sprout")
+statements = PackedStringArray("The Polar Ocean had no trees. A little pine came up among the rocks, where the terns nest.")
+guarantee = &"O"

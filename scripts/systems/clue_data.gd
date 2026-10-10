@@ -3,7 +3,10 @@ extends Resource
 ## One card on the Clue Board (docs/CLUE_BOARD.md): a question the player has a reason to ask,
 ## the evidence they see or do, and the statement it turns into (blue) once the evidence holds.
 ## Conditions are People.check's ("flag:x", "found:x", "nested:green_turtle>=1"...), plus the
-## Clues autoload's own ("clue:id" answered, "open:id" visible, "helped:species", "visited:species"...).
+## Clues autoload's own: "clue:id" answered, "open:id" visible, "guessed:topic", "visited:species"
+## (a traveller came to the ranger's island), "sprouted:island", "released:rescue",
+## "rescue_here:rescue" / "rescue_away:rescue" and "visitor_here:species" (in sight of the ranger),
+## "no_trees:island".
 ## A condition list is written "a & b" (all must hold); an island-specific condition can end in
 ## "@island_id" (default: `island`).
 

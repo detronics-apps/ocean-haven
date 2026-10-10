@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6n_home_turtle"
+node = 6
+order = 10
+island = &"home_island"
+question = "Will I see {rescue:home_turtle} again?"
+activate = PackedStringArray("released:home_turtle")
+evidence = PackedStringArray("again | ^rescue_here:home_turtle | I saw {rescue:home_turtle} again, out in the wild with its bright tag.")
+answer = PackedStringArray("1: again")
+statements = PackedStringArray("I saw {rescue:home_turtle} again, living wild, its bright tag flashing.")
+guarantee = &"O"

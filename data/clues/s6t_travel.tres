@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6t_travel"
+node = 6
+order = 0
+question = "Can animals travel between islands?"
+activate = PackedStringArray("rescue_away:home_turtle", "rescue_away:mangrove_flamingo", "journal:arctic_tern & visitor_here:arctic_tern", "visited:bottlenose_dolphin", "visited:green_turtle", "visited:sperm_whale", "visited:red_footed_booby", "heard:terns", "heard:terns_travel")
+evidence = PackedStringArray("r_turtle | rescue_away:home_turtle | {rescue:home_turtle}, the green turtle I rescued on the Starting Island, turned up on another of my islands", "r_flamingo | rescue_away:mangrove_flamingo | {rescue:mangrove_flamingo}, the flamingo I rescued on the Mangrove Coast, turned up on another of my islands", "r_tern | journal:arctic_tern & visitor_here:arctic_tern | Arctic terns, like those that nest on the Polar Ocean, rested on another of my islands while the Polar terns were away", "r_dolphin | visited:bottlenose_dolphin | bottlenose dolphins from the Starting Island came to another of my islands", "r_green | visited:green_turtle | a green turtle from the Starting Island came to another of my islands", "r_whale | visited:sperm_whale | a sperm whale from the Deep Sea came to another of my islands", "r_booby | visited:red_footed_booby | red-footed boobies from the Starting Island came to the Reef")
+answer = PackedStringArray("2: r_turtle, r_flamingo, r_tern, r_dolphin, r_green, r_whale, r_booby")
+statements = PackedStringArray("Animals travel between islands, like I do: {g0.1}, and {g0.2}. Animals from other islands can use an island I look after.")
+leads_to = PackedStringArray("s6g_ocean")
+guarantee = &"L"

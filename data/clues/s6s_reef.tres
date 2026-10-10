@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s6s_reef"
+node = 6
+order = 2
+island = &"tropical_reef"
+question = "How did a tree start growing on the Reef?"
+activate = PackedStringArray("sprouted:tropical_reef")
+evidence = PackedStringArray("bare | found:tropical_reef & no_trees:tropical_reef | When I first came, the Reef had no trees at all.", "birds | visitor_here:red_footed_booby | Red-footed boobies from the Starting Island were visiting the Reef.", "sprout | sprouted:tropical_reef | A little palm came up on the Reef.")
+answer = PackedStringArray("1: bare", "1: birds", "1: sprout")
+statements = PackedStringArray("The Reef had no trees. After boobies from the Starting Island began visiting, a little palm came up: the Reef's first tree.")
+guarantee = &"O"
