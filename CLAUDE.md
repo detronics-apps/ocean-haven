@@ -111,6 +111,10 @@ addons/                  third-party Godot plugins only
 
 ## Website (GitHub Pages — where the phone should play)
 
+The home page has "Play BlueHaven" and "Start a new game" (asks first, then opens play/?new=1;
+SaveGame.attach sees ?new=1, erases the save file and its localStorage copy, and puts the address
+back to play/ so a reload doesn't start over again).
+
 The home page's picture (web/screenshot.png) is rendered by `tools/make_home_picture.gd` (xvfb):
 the Starting Island as a new game starts, one of each animal, Maya and Tom at their places.
 

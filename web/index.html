@@ -51,6 +51,8 @@
     border-radius: 14px; box-shadow: 0 6px 0 #437a32;
   }
   .play:active { transform: translateY(3px); box-shadow: 0 3px 0 #437a32; }
+  .play.new-game { background: #6b4f2e; box-shadow: 0 6px 0 #4a3520; font-size: 1.15rem; padding: 12px 20px; margin-top: -8px; }
+  .play.new-game:active { box-shadow: 0 3px 0 #4a3520; }
   h2 { font-size: 1.3rem; margin: 36px 0 10px; color: var(--sand); }
   .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
   .card {
@@ -90,6 +92,7 @@
   </div>
 
   <a class="play" href="play/">Play BlueHaven</a>
+  <a class="play new-game" href="play/?new=1" onclick="return confirm('Start a new game? Your current progress will be lost.');">Start a new game</a>
 
   <h2>What you do</h2>
   <div class="features">

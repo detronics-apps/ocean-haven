@@ -48,6 +48,8 @@ func attach(world: Node) -> bool:
 	if world != get_tree().current_scene:
 		return false
 	_world = world
+	if _new_game_asked():
+		erase(PATH)
 	new_game = not load_from(world, PATH)
 	Inventory.changed.connect(func(_i, _c): _dirty = true)
 	Journal.discovered.connect(func(_a): _dirty = true)
@@ -72,6 +74,26 @@ func attach(world: Node) -> bool:
 	RangerProfile.look_changed.connect(func(): _dirty = true)
 	(world.get_node("BuildMode") as BuildMode).built.connect(func(_b): _dirty = true)
 	return true
+
+
+## The website's "New game" button opens the game with ?new=1: start over. The address is put
+## back to plain play/ at once, so reloading later doesn't start over again.
+func _new_game_asked() -> bool:
+	if not OS.has_feature("web"):
+		return false
+	var asked: Variant = JavaScriptBridge.eval("(function () { try { return new URLSearchParams(location.search).get('new') === '1'; } catch (e) { return false; } })()")
+	if asked == true:
+		JavaScriptBridge.eval("try { history.replaceState(null, '', location.pathname); } catch (e) {}")
+		return true
+	return false
+
+
+## Throws away the save at `path` (the file and, on the web, its localStorage copy): a new game.
+func erase(path: String) -> void:
+	if FileAccess.file_exists(path):
+		DirAccess.remove_absolute(path)
+	if OS.has_feature("web"):
+		JavaScriptBridge.eval("try { localStorage.removeItem(%s); } catch (e) {}" % JSON.stringify("bluehaven:" + path))
 
 
 func mark_collected(debris: Node) -> void:
