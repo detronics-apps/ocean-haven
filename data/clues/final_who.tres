@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"final_who"
+node = 8
+order = 0
+kind = &"final"
+question = "Who created all of this?"
+activate = PackedStringArray("flag:observatory_opened")
+guarantee = &"G"

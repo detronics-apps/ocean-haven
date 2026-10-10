@@ -125,6 +125,8 @@ func _initialize() -> void:
 	var echo: Resource = load("res://data/activities/echo_dive.tres")
 	root.get_node("Activities").restore({"done": ["echo_dive"], "bests": {"echo_dive": {"0": 21.5}}})
 	root.get_node("Activities").reached(echo, 1, 1234.0)
+	var clues := root.get_node("Clues")
+	clues.restore({"o1_turtles": {"open": 2, "ev": ["caught"]}, "s1_beyond": {"open": 3, "ev": ["island"], "done": 4, "text": "There are other islands out there."}})
 	var picked_before: Dictionary = _inventory.picked.duplicate()
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
@@ -144,6 +146,7 @@ func _initialize() -> void:
 	load("res://scripts/ui/camera_zoom.gd").set_level(1.0)
 	root.get_node("Sound").load_state({})
 	root.get_node("Activities").restore({})
+	clues.restore({})
 	_journal.restore([])
 	clock.day = 1
 	clock.time_of_day = 0.3
@@ -152,6 +155,8 @@ func _initialize() -> void:
 	world = _new_world()
 	_expect(_save.load_from(world, PATH), "loaded")
 	_expect(profile.look["hair"] == 3 and profile.created, "avatar look restored")
+	_expect(clues.is_open(&"o1_turtles") and clues.is_answered(&"s1_beyond") and not clues.is_answered(&"o1_turtles")
+		and clues.statement(clues.card(&"s1_beyond")) == "There are other islands out there.", "Clue Board restored (open, answered, its statement)")
 	_expect(root.get_node("Funding").balance == 77, "funding restored")
 	_expect(world.get_node("StarterIsland/Palm3").is_queued_for_deletion(), "a cut-down tree stays cut down")
 	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")

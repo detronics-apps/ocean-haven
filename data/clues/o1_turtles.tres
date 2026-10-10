@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"o1_turtles"
+node = 0
+order = 0
+question = "Where did all the turtles go?"
+activate = PackedStringArray("met:maya", "met:tom", "flag:saw_tangled")
+evidence = PackedStringArray("caught | helped:green_turtle | A turtle was caught in litter, and I freed it.", "quiet_nest | nested:green_turtle>=1 | A turtle nested on quiet, protected sand.")
+answer = PackedStringArray("1: caught", "1: quiet_nest")
+statements = PackedStringArray("Litter can catch turtles. On quiet, protected sand, a turtle nested on our beach.")
+leads_to = PackedStringArray("s1_beyond")
+guarantee = &"L"

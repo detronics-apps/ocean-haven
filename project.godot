@@ -34,6 +34,7 @@ Activities="*res://scripts/systems/activities.gd"
 Rescues="*res://scripts/systems/rescues.gd"
 Sound="*res://scripts/systems/sound_system.gd"
 Travellers="*res://scripts/systems/travellers.gd"
+Clues="*res://scripts/systems/clues.gd"
 
 [display]
 

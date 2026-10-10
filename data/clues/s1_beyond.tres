@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s1_beyond"
+node = 1
+order = 0
+question = "Is there more out there than our island?"
+activate = PackedStringArray("asked:wreck", "heard:wreck", "flag:wreck_found")
+evidence = PackedStringArray("wreck | flag:wreck_found | We found an old wreck off the coast.", "sonar | flag:sonar_recovered | Its old sonar unit still worked.", "fitted | installed:salvaged_sonar_core | With the sonar, a ship could find its way.", "kelp | found:kelp_forest | My ship found the Kelp Forest.", "mangrove | found:mangrove_coast | My ship found the Mangrove Coast.")
+answer = PackedStringArray("1: kelp, mangrove")
+statements = PackedStringArray("There are other islands out there. Our island isn't the whole ocean.")
+guarantee = &"G"

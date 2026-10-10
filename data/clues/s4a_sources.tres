@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"s4a_sources"
+node = 4
+order = 0
+question = "Where does the litter come from?"
+activate = PackedStringArray("flag:rings_asked", "flag:bags_asked", "flag:foam_asked", "flag:gear_asked", "flag:fibres_asked", "heard:litter")
+evidence = PackedStringArray("rings | flag:rings_traced | the plastic rings came from the harbour cafe's cans", "bags | flag:bags_traced | the plastic bags came from the fish market up the coast", "foam | flag:foam_traced | the foam boxes came from fishing boats that used them once", "gear | flag:gear_traced | the lost nets and line came from fishing boats: none of it marked, and nowhere to take old nets", "fibres | flag:fibres_traced | the tiny threads came off clothes in the wash and went down the drain to the sea")
+answer = PackedStringArray("2: rings, bags, foam, gear, fibres")
+statements = PackedStringArray("Litter doesn't come from nowhere: {g0.1}, and {g0.2}.")
+guarantee = &"G"
