@@ -25,20 +25,37 @@ func _initialize() -> void:
 	map.rebuild()
 	var wide := _layout(map)
 	_expect(map.landscape() and wide.cards.size() == 4, "landscape: the 4 visible cards (S1.1, S4.A, S4.B, S4.D) (%s)" % [wide.cards.keys()])
-	_expect(wide.pins.keys() == [1, 4], "no placeholders: only the nodes with notes have a tag (%s)" % [wide.pins.keys()])
-	_expect(wide.pins[1].x > wide.pins[4].x and wide.pins[1].y < wide.pins[4].y,
-		"round the circle clockwise from the top: node 1 up on the right, node 4 at the bottom")
-	_expect(wide.cards[&"s4a_sources"].y > wide.pins[4].y, "node 4's notes fan outward (down) from its tag")
+	_expect(wide.pins.keys() == [&"places", &"trash", &"better_ways"],
+		"no placeholders: only the sections holding notes have a tag (%s)" % [wide.pins.keys()])
+	var near := func(layout: Dictionary, card: StringName, section: StringName) -> bool:
+		var at: Vector2 = layout.cards[card]
+		for other in layout.pins:
+			if other != section and at.distance_to(layout.pins[other]) < at.distance_to(layout.pins[section]):
+				return false
+		return true
+	_expect(near.call(wide, &"s4a_sources", &"trash") and near.call(wide, &"s4d_fibres", &"trash")
+		and near.call(wide, &"s1_beyond", &"places") and near.call(wide, &"s4b_prevent", &"better_ways"),
+		"each note sits with its own section's tag")
 
 	map.size = Vector2(400, 820)
 	await process_frame
 	map.rebuild()
 	var tall := _layout(map)
 	_expect(not map.landscape() and tall.cards.keys() == wide.cards.keys(), "portrait: the same cards")
-	_expect(tall.pins[1].x > tall.pins[4].x and tall.pins[1].y < tall.pins[4].y and tall.cards[&"s4a_sources"].y > tall.pins[4].y,
-		"portrait: the same circle")
+	_expect(tall.pins.keys() == wide.pins.keys() and near.call(tall, &"s4a_sources", &"trash"), "portrait: the same sections")
 	var fan: Node = map._cards[&"s4a_sources"].get_node_or_null("Pictures")
-	_expect(fan != null and fan.get_child_count() == 5, "S4.A shows the five kinds of litter, fanned out like cards")
+	_expect(fan != null and fan.get_child_count() == 2, "S4.A shows a card for each litter traced so far (rings, foam boxes)")
+	_expect(map.card_text(clues.card(&"s4a_sources")) == "People, on land and boats", "an answered note says its short answer")
+
+	# Rescues seen again: one note, a picture card for each animal seen.
+	var saved: Dictionary = clues.to_dict()
+	saved[&"s6n_home_turtle"] = {"open": 1, "ev": ["again"]}
+	saved[&"s6n_polar_seal"] = {"open": 1, "ev": ["again"]}
+	clues.restore(saved)
+	map.rebuild()
+	var seen_again: Node = map._cards.get(&"s6n_home_turtle")
+	_expect(seen_again != null and not map._cards.has(&"s6n_polar_seal"), "the rescues seen again are one note")
+	_expect(seen_again.get_node("Pictures").get_child_count() == 2, "with the turtle and the seal pup on it")
 	map.set_step(0)
 	var overview: float = map.STRING_PX / map._canvas.scale.x
 	map.set_step(2)
@@ -49,8 +66,12 @@ func _initialize() -> void:
 	_expect(map.step == 0 and map._canvas.scale.x <= 0.6, "opens on the whole board")
 	map.set_step(2)
 	_expect(map.step == 2 and is_equal_approx(map._canvas.scale.x, map.zoom_steps[2]), "+ steps in")
-	map.set_step(9)
-	_expect(map.step == 2, "zoom stays within its steps")
+	map.set_step(99)
+	_expect(map.step == map.zoom_steps.size() - 1, "zoom stays within its steps")
+	var biggest_jump := 0.0
+	for i in range(1, map.zoom_steps.size()):
+		biggest_jump = maxf(biggest_jump, map.zoom_steps[i] / map.zoom_steps[i - 1])
+	_expect(map.zoom_steps.size() >= 4 and biggest_jump <= 1.55, "even zoom steps, no big jump (%s)" % [map.zoom_steps])
 
 	# A tap opens the card's details (the answered S4.A shows its statement).
 	var card: Control = map._cards[&"s4a_sources"]

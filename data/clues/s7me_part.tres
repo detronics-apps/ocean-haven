@@ -16,3 +16,7 @@ statements = PackedStringArray("I'm part of this ocean too. What I choose can he
 leads_to = PackedStringArray("final_who")
 guarantee = &"L"
 picture = ExtResource("2_pic")
+section = &"people"
+links = PackedStringArray("better_ways")
+title = "My part?"
+short = "I'm part of it"

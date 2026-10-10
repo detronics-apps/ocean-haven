@@ -639,18 +639,38 @@ cream = a question (in capitals), blue = answered, tan = a field note (a planted
 final question. The node titles are tan paper tags. Red string runs pin to pin, sagging a little,
 over the notes. Zoom buttons are bottom right. The details panel is a sheet of paper.
 
-**Layout (owner's shape, Oct 2026; replaces the straight spine of §1):** a circle round the globe.
-"It's all connected", the loading screen's globe (`conclusion_globe`, kind "globe", shown once the
-Observatory opens; `tools/make_globe.py`), is pinned big in the middle, on top of the string that
-meets there. The story goes round it clockwise from the top: the turtle first (where did they go?),
-then nodes 1-7, each node's notes fanning outward from its tag, every node strung to the globe. A
-node only shows once it has a note: no placeholders. One string runs off to the side of the
-globe, across a blank space, to "Who created all of this?" (`final_who`, node 9), which appears
-when the end credits start (Fleet flag "credits_rolled", set by EndCredits.play). Portrait is the
-same circle, a little taller than wide. Every string is the same, and the same width on screen at
-every zoom (so closer in it's thinner beside the notes). Notes show the game's own pictures in
-colour (ClueData.picture), several fanned out like a hand of cards (ClueData.pictures: the kinds of
-litter, the predictions' animals); the net-tag note shows a luggage tag with the hook island on it
-(ClueData.picture_style "tag"). No generic icons.
+**Layout (owner's sections, Oct 2026; replaces the 7-node spine of §1):** the notes, triggers and
+evidence above are unchanged; each note sits in one of the owner's sections (ClueData.section):
+People (story threads that start or end with a person), Trash, Animals, Places, Storms, Plants,
+Land & Water, Disturbance and Better ways. The sections sit round the globe ("It's all connected",
+the loading screen's globe, big, in the middle, over the string; `tools/make_globe.py`), Animals at
+the top, so the turtle's question (ClueData.big: a bigger note and turtle) starts the board. A
+section shows only once it holds a note (no placeholders). "Who created all of this?" hangs off the
+globe on one string, from when the end credits start (Fleet flag "credits_rolled").
+
+| Section | Notes |
+|---|---|
+| People | S3.G guesses · S7.Me my part |
+| Trash | O2 net tag · S4.A sources · S4.D fibres |
+| Animals | O1 turtles · S2.R reef · S2.G one thing missing · S3.D the dark · S6.T travel · S6.N seen again (6 cards, one note) |
+| Places | S1.1 more out there · S6.G one ocean |
+| Storms | S7.R big events · S7.G setbacks |
+| Plants | S2.K kelp · S6.S new trees (2 cards, one note) |
+| Land & Water | S2.M pools · S2.P pups |
+| Disturbance | S5.A helping harms · S5.G choices |
+| Better ways | S4.B stop it · S4.C marked nets |
+
+**Strings:** a note's links (ClueData.links) to the other sections its story touches. Zoomed right
+out, one string per two sections with anything in common (tag to tag); closer in, each note's own
+strings. Every section is strung to the globe. All strings are the same red, 3.5 px on screen at
+every zoom.
+
+**Notes say little:** a short question (ClueData.title) and a short answer (ClueData.short); the
+full sentences are in the details on a tap. Pictures say the rest: one card per thing seen
+(ClueData.evidence_pictures: evidence id -> the game's own picture), fanned like a hand of cards,
+growing as the ranger finds more. Notes in one group (ClueData.group: "trees", "seen_again") show
+as one note. The net-tag note is a luggage tag with the hook island on it.
+
+**Zoom:** "everything fits", then steps of about 1.5x up to 1.15x (no big jump).
 
 **Not built yet:** the optional List toggle (§1).

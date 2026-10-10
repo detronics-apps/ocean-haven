@@ -22,6 +22,21 @@ extends Resource
 @export var kind := &"question"
 ## The island its conditions are about when they don't name one.
 @export var island := &"home_island"
+## Its section on the board (ClueMap.SECTIONS: &"people", &"trash", &"animals", &"places",
+## &"storms", &"plants", &"land_water", &"disturbance", &"better_ways"; &"centre" for the globe and
+## the final question), and the other sections its story touches (strung to them).
+@export var section: StringName = &"animals"
+@export var links: PackedStringArray = []
+## What the note says on the board: a short question (2-5 words; "" on a tag note: the tag says it),
+## then a short answer once it's answered. The full question and statement are in its details.
+@export var title: String
+@export var short: String
+## A picture card for each piece of evidence (id -> picture), added to the note as it's seen.
+@export var evidence_pictures: Dictionary = {}
+## Notes with the same group show as one note on the board (e.g. "seen_again": the rescues).
+@export var group: StringName = &""
+## The note the board starts with: bigger, with a bigger picture (the turtle's question).
+@export var big := false
 ## A planted clue shown before the question appears (optional), and what reveals it.
 @export_multiline var clue_text: String
 @export var discover: PackedStringArray = []

@@ -1,6 +1,9 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/squid/giant_squid.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/shark/sixgill_shark.svg" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/anglerfish/anglerfish.svg" id="2_pic"]
 
 [resource]
@@ -15,4 +18,13 @@ evidence = PackedStringArray("mapped | deep_mapped:1 | I mapped one of the dark 
 answer = PackedStringArray("1: mapped", "2: whale, angler, sixgill, squid")
 statements = PackedStringArray("The dark water held animals new to my Journal: {g1.1} and {g1.2}. Mapping it and watching helped me find them.")
 guarantee = &"L"
-picture = ExtResource("2_pic")
+section = &"animals"
+links = PackedStringArray("places")
+title = "What lives in the dark?"
+short = "Life we hadn't seen"
+evidence_pictures = {
+"whale": ExtResource("10_ev"),
+"angler": ExtResource("2_pic"),
+"sixgill": ExtResource("11_ev"),
+"squid": ExtResource("12_ev")
+}

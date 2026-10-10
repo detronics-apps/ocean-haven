@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" path="res://assets/items/six_pack_rings.svg" id="3_pic"]
 [ext_resource type="Texture2D" path="res://assets/items/foam_box.svg" id="4_pic"]
 [ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="5_pic"]
-[ext_resource type="Texture2D" path="res://assets/items/plastic_bottle.svg" id="6_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -18,5 +17,13 @@ evidence = PackedStringArray("rings | flag:rings_traced | the plastic rings came
 answer = PackedStringArray("2: rings, bags, foam, gear, fibres")
 statements = PackedStringArray("Litter doesn't come from nowhere: {g0.1}, and {g0.2}.")
 guarantee = &"G"
-picture = ExtResource("2_pic")
-pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic"), ExtResource("5_pic"), ExtResource("6_pic")])
+section = &"trash"
+links = PackedStringArray("people")
+title = "Where does litter come from?"
+short = "People, on land and boats"
+evidence_pictures = {
+"rings": ExtResource("3_pic"),
+"bags": ExtResource("2_pic"),
+"foam": ExtResource("4_pic"),
+"gear": ExtResource("5_pic")
+}

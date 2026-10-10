@@ -13,3 +13,5 @@ discover = PackedStringArray("flag:observatory_opened")
 picture = ExtResource("2_pic")
 leads_to = PackedStringArray("final_who")
 guarantee = &"G"
+section = &"centre"
+short = "It's all connected"

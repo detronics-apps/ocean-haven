@@ -1,9 +1,11 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/items/oil_patch.svg" id="13_ev"]
+[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/items/mud.svg" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/items/shed_kelp.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/items/plastic_bottle.svg" id="2_pic"]
-[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="3_pic"]
-[ext_resource type="Texture2D" path="res://assets/items/wood.svg" id="4_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -17,5 +19,15 @@ answer = PackedStringArray("1: rec_storm, rec_storm_l, rec_swell, rec_flood, rec
 statements = PackedStringArray("rec_storm, prep_storm => {g0.1} What I'd secured came through better.", "rec_hurricane, prep_hurricane => {g0.1} What I'd secured came through better.", "{g0.1}")
 leads_to = PackedStringArray("s7g_keep_going")
 guarantee = &"O"
-picture = ExtResource("2_pic")
-pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic")])
+section = &"storms"
+links = PackedStringArray("trash")
+title = "What if a storm undoes my work?"
+short = "It recovers"
+evidence_pictures = {
+"rec_storm": ExtResource("2_pic"),
+"rec_storm_l": ExtResource("2_pic"),
+"rec_swell": ExtResource("10_ev"),
+"rec_flood": ExtResource("11_ev"),
+"rec_hurricane": ExtResource("12_ev"),
+"rec_oil": ExtResource("13_ev")
+}

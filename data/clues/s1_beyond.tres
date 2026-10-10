@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/mangrove_island.png" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/ui/maps/kelp_island.png" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/items/old_sonar_unit.svg" id="2_pic"]
 
 [resource]
@@ -15,3 +17,11 @@ answer = PackedStringArray("1: kelp, mangrove")
 statements = PackedStringArray("There are other islands out there. Our island isn't the whole ocean.")
 guarantee = &"G"
 picture = ExtResource("2_pic")
+section = &"places"
+links = PackedStringArray("trash")
+title = "More out there?"
+short = "Other islands"
+evidence_pictures = {
+"kelp": ExtResource("10_ev"),
+"mangrove": ExtResource("11_ev")
+}

@@ -19,3 +19,6 @@ picture = ExtResource("2_hook")
 leads_to = PackedStringArray("s4c_nets")
 guarantee = &"L"
 picture_style = &"tag"
+section = &"trash"
+links = PackedStringArray("people", "places")
+short = "The Hook's lost net"

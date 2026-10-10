@@ -17,5 +17,13 @@ evidence = PackedStringArray("kept_rings | kept_coming:six_pack_rings | I kept p
 answer = PackedStringArray("1: done_rings, done_bags, done_foam, done_nets")
 statements = PackedStringArray("{g0.1} Stopping it where it started did what cleaning up couldn't.")
 guarantee = &"L"
-picture = ExtResource("2_pic")
-pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic"), ExtResource("5_pic")])
+section = &"better_ways"
+links = PackedStringArray("trash")
+title = "Stop it at the start?"
+short = "Stopped, not cleaned"
+evidence_pictures = {
+"done_rings": ExtResource("2_pic"),
+"done_bags": ExtResource("3_pic"),
+"done_foam": ExtResource("4_pic"),
+"done_nets": ExtResource("5_pic")
+}

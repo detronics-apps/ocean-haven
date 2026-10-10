@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/buildings/source/net_return_point.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="2_pic"]
-[ext_resource type="Texture2D" path="res://assets/items/fishing_line.svg" id="3_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -16,5 +16,11 @@ evidence = PackedStringArray("traced | clue:o2_net_tag | Bram's net could be tra
 answer = PackedStringArray("1: traced", "1: unmarked", "1: netpoint")
 statements = PackedStringArray("Bram's net could be traced back to his boat because it carried a mark. The nets I brought up from the deep had none. Now new nets get their boat's mark, and old ones go to the Net Return Point.")
 guarantee = &"L"
+section = &"better_ways"
+links = PackedStringArray("trash")
 picture = ExtResource("2_pic")
-pictures = Array[Texture2D]([ExtResource("3_pic")])
+title = "Whose net?"
+short = "Marked nets come home"
+evidence_pictures = {
+"netpoint": ExtResource("10_ev")
+}

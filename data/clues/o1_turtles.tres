@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_pic"]
 
 [resource]
@@ -16,3 +17,11 @@ statements = PackedStringArray("Litter can catch turtles. On quiet, protected sa
 leads_to = PackedStringArray("s1_beyond")
 guarantee = &"L"
 picture = ExtResource("2_pic")
+section = &"animals"
+links = PackedStringArray("people")
+big = true
+title = "Where did the turtles go?"
+short = "Quiet sand brings them back"
+evidence_pictures = {
+"caught": ExtResource("10_ev")
+}

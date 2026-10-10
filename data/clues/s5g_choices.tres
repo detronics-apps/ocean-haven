@@ -1,7 +1,12 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/items/coral_fragment.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.svg" id="15_ev"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.svg" id="14_ev"]
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="13_ev"]
+[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/snapper/juvenile_snapper.svg" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="10_ev"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,4 +19,14 @@ evidence = PackedStringArray("g_area | built:turtle_protection_area & nested:gre
 answer = PackedStringArray("1: g_area, g_channel, g_coral", "1: b_litter, b_trees, b_help")
 statements = PackedStringArray("{g0.1} {g1.1} What I do changes what happens.")
 guarantee = &"L"
-picture = ExtResource("2_pic")
+section = &"disturbance"
+title = "Do my choices matter?"
+short = "Yes, both ways"
+evidence_pictures = {
+"g_area": ExtResource("10_ev"),
+"g_channel": ExtResource("11_ev"),
+"g_coral": ExtResource("12_ev"),
+"b_litter": ExtResource("13_ev"),
+"b_trees": ExtResource("14_ev"),
+"b_help": ExtResource("15_ev")
+}

@@ -15,4 +15,10 @@ evidence = PackedStringArray("again | ^rescue_here:reef_seahorse | I saw {rescue
 answer = PackedStringArray("1: again")
 statements = PackedStringArray("I saw {rescue:reef_seahorse} again, living wild, its bright tag flashing.")
 guarantee = &"O"
-picture = ExtResource("2_pic")
+section = &"animals"
+title = "Will I see them again?"
+short = "I saw them again"
+evidence_pictures = {
+"again": ExtResource("2_pic")
+}
+group = &"seen_again"

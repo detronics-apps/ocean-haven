@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/parrotfish/parrotfish.svg" id="2_pic"]
 
 [resource]
@@ -15,4 +16,10 @@ evidence = PackedStringArray("regrown | reef_regrown | Coral grew back on a patc
 answer = PackedStringArray("1: regrown")
 statements = PackedStringArray("Coral grew back on the patch I planted. Parrotfish were there as the coral returned.")
 guarantee = &"L"
+section = &"animals"
 picture = ExtResource("2_pic")
+title = "Why a grey reef?"
+short = "Coral grows back"
+evidence_pictures = {
+"regrown": ExtResource("10_ev")
+}

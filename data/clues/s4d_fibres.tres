@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/buildings/source/filter_workshop.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/buildings/polar/ice_core_drill.svg" id="2_pic"]
 
 [resource]
@@ -15,4 +16,11 @@ evidence = PackedStringArray("report | flag:fibres_traced | Under the microscope
 answer = PackedStringArray("1: report", "1: filter")
 statements = PackedStringArray("Tiny plastic threads come off clothes in the wash, go down the drain and out to sea, and the freezing sea ice trapped them here. A filter in the washing machine can catch some of them first.")
 guarantee = &"RT"
-picture = ExtResource("2_pic")
+section = &"trash"
+links = PackedStringArray("land_water")
+title = "Plastic in the ice?"
+short = "Laundry reaches the ice"
+evidence_pictures = {
+"report": ExtResource("2_pic"),
+"filter": ExtResource("10_ev")
+}

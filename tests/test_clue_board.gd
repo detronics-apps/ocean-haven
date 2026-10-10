@@ -27,6 +27,9 @@ func _initialize() -> void:
 		_expect(groups_ok, "%s: every answer group names its own evidence, and can be met" % card.id)
 		_expect(card.kind in [&"final", &"globe"] or not card.answer.is_empty(), "%s: a question has an answer" % card.id)
 		_expect(not card.activate.is_empty() or not card.discover.is_empty(), "%s: something makes it appear" % card.id)
+		var sections := [&"people", &"trash", &"animals", &"places", &"storms", &"plants", &"land_water", &"disturbance", &"better_ways"]
+		_expect(card.section in sections + [&"centre"] and Array(card.links).all(func(x: String) -> bool: return StringName(x) in sections),
+			"%s: in a section (%s), linked only to sections" % [card.id, card.section])
 		_expect(card.statements.is_empty() == (card.kind in [&"final", &"globe"]), "%s: a statement unless it's the globe or the final question" % card.id)
 	# The source phrases say what the Trace reports say.
 	var reports := {"rings": ["trace_rings", "cafe"], "bags": ["trace_bags", "fish market"], "foam": ["trace_foam", "fishing boats"],

@@ -1,6 +1,11 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby.svg" id="14_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="13_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo.svg" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="10_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="2_pic"]
 
 [resource]
@@ -15,4 +20,16 @@ answer = PackedStringArray("2: r_turtle, r_flamingo, r_tern, r_dolphin, r_green,
 statements = PackedStringArray("Animals travel between islands, like I do: {g0.1}, and {g0.2}. Animals from other islands can use an island I look after.")
 leads_to = PackedStringArray("s6g_ocean")
 guarantee = &"L"
-picture = ExtResource("2_pic")
+section = &"animals"
+links = PackedStringArray("places")
+title = "Do animals travel?"
+short = "Animals travel between islands"
+evidence_pictures = {
+"r_turtle": ExtResource("10_ev"),
+"r_flamingo": ExtResource("11_ev"),
+"r_tern": ExtResource("12_ev"),
+"r_dolphin": ExtResource("2_pic"),
+"r_green": ExtResource("10_ev"),
+"r_whale": ExtResource("13_ev"),
+"r_booby": ExtResource("14_ev")
+}

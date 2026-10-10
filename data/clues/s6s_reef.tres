@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.svg" id="10_ev"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -15,4 +15,11 @@ evidence = PackedStringArray("bare | found:tropical_reef & no_trees:tropical_ree
 answer = PackedStringArray("1: bare", "1: birds", "1: sprout")
 statements = PackedStringArray("The Reef had no trees. After boobies from the Starting Island began visiting, a little palm came up: the Reef's first tree.")
 guarantee = &"O"
-picture = ExtResource("2_pic")
+section = &"plants"
+links = PackedStringArray("places")
+title = "Where did the tree come from?"
+short = "Trees on a new island"
+evidence_pictures = {
+"sprout": ExtResource("10_ev")
+}
+group = &"trees"

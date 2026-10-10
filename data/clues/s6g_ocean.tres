@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="11_ev"]
+[ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="10_ev"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,4 +15,11 @@ evidence = PackedStringArray("net | clue:o2_net_tag | A net lost in the Deep Sea
 answer = PackedStringArray("1: net", "1: threads", "1: animals")
 statements = PackedStringArray("It's all one ocean. A net lost in the Deep Sea ended up on our beach; threads from washing clothes went out to sea and were trapped in the polar ice; and animals travel between islands.")
 guarantee = &"L"
-picture = ExtResource("2_pic")
+section = &"places"
+links = PackedStringArray("trash", "animals")
+title = "Does it reach other islands?"
+short = "One ocean"
+evidence_pictures = {
+"net": ExtResource("10_ev"),
+"animals": ExtResource("11_ev")
+}
