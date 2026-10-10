@@ -38,8 +38,12 @@ extends Resource
 ## "=>" is the default. Placeholders: {gN.k} = the text of the k-th piece recorded for answer
 ## group N; {rescue:id} = that rescue's name.
 @export var statements: PackedStringArray = []
-## A picture shown with the card's details (e.g. the net tag's hook mark).
+## The game's own picture on the note (and with its details): an animal, an item, a boat...
 @export var picture: Texture2D
+## More pictures, fanned out with it like a hand of cards (e.g. the kinds of litter).
+@export var pictures: Array[Texture2D] = []
+## &"" (as it is) or &"tag": on a luggage tag (the old net's tag, with the hook island on it).
+@export var picture_style: StringName = &""
 ## Cards this one leads to (drawn as threads once both are visible).
 @export var leads_to: PackedStringArray = []
 ## Guarantee class for the docs and tests: &"G", &"RT", &"L" or &"O".

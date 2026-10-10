@@ -18,3 +18,4 @@ statements = PackedStringArray("The tag's mark belonged to the Hook, Bram's old 
 picture = ExtResource("2_hook")
 leads_to = PackedStringArray("s4c_nets")
 guarantee = &"L"
+picture_style = &"tag"

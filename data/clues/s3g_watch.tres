@@ -1,7 +1,12 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/ui/missions/wildlife_monitoring.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="3_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/snapper/juvenile_snapper.svg" id="4_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/parrotfish/parrotfish.svg" id="5_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="6_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="7_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -15,3 +20,4 @@ answer = PackedStringArray("2: w_nest, w_kelp, w_pools, w_parrot, w_whales, w_pu
 statements = PackedStringArray("Twice I made a guess, then watched. {g0.1} {g0.2} Watching showed me what really happens.")
 guarantee = &"L"
 picture = ExtResource("2_pic")
+pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic"), ExtResource("5_pic"), ExtResource("6_pic"), ExtResource("7_pic")])

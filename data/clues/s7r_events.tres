@@ -1,7 +1,9 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/ui/storm/damaged.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bottle.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="3_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/wood.svg" id="4_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -16,3 +18,4 @@ statements = PackedStringArray("rec_storm, prep_storm => {g0.1} What I'd secured
 leads_to = PackedStringArray("s7g_keep_going")
 guarantee = &"O"
 picture = ExtResource("2_pic")
+pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic")])

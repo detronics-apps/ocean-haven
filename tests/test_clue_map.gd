@@ -25,21 +25,27 @@ func _initialize() -> void:
 	map.rebuild()
 	var wide := _layout(map)
 	_expect(map.landscape() and wide.cards.size() == 4, "landscape: the 4 visible cards (S1.1, S4.A, S4.B, S4.D) (%s)" % [wide.cards.keys()])
-	_expect(wide.pins.size() == 8 and wide.pins[0].x < wide.pins[1].x and wide.pins[1].x < wide.pins[4].x,
-		"landscape: 8 node tags, the story runs left to right")
-	var lit: Array = map._pins.values().filter(func(p: Button) -> bool: return not p.text.ends_with("…"))
-	_expect(lit.size() == 2, "only the slots holding a card are lit (1 and 4): %d" % lit.size())
+	_expect(wide.pins.keys() == [1, 4], "no placeholders: only the nodes with notes have a tag (%s)" % [wide.pins.keys()])
+	_expect(wide.pins[1].x > wide.pins[4].x and wide.pins[1].y < wide.pins[4].y,
+		"round the circle clockwise from the top: node 1 up on the right, node 4 at the bottom")
+	_expect(wide.cards[&"s4a_sources"].y > wide.pins[4].y, "node 4's notes fan outward (down) from its tag")
 
 	map.size = Vector2(400, 820)
 	await process_frame
 	map.rebuild()
 	var tall := _layout(map)
 	_expect(not map.landscape() and tall.cards.keys() == wide.cards.keys(), "portrait: the same cards")
-	_expect(tall.pins[0].y < tall.pins[1].y and tall.pins[1].y < tall.pins[4].y, "portrait: the story runs top to bottom")
-	_expect(tall.cards[&"s4a_sources"].y > tall.pins[3].y and wide.cards[&"s4a_sources"].x > wide.pins[3].x,
-		"a node's notes are with its tag, after the nodes before it")
+	_expect(tall.pins[1].x > tall.pins[4].x and tall.pins[1].y < tall.pins[4].y and tall.cards[&"s4a_sources"].y > tall.pins[4].y,
+		"portrait: the same circle")
+	var fan: Node = map._cards[&"s4a_sources"].get_node_or_null("Pictures")
+	_expect(fan != null and fan.get_child_count() == 5, "S4.A shows the five kinds of litter, fanned out like cards")
+	map.set_step(0)
+	var overview: float = map.STRING_PX / map._canvas.scale.x
+	map.set_step(2)
+	_expect(overview > map.STRING_PX / map._canvas.scale.x, "the string keeps its width on screen: thinner beside the notes closer in")
 
 	# Zoom steps and the overview fit.
+	map.set_step(0)
 	_expect(map.step == 0 and map._canvas.scale.x <= 0.6, "opens on the whole board")
 	map.set_step(2)
 	_expect(map.step == 2 and is_equal_approx(map._canvas.scale.x, map.zoom_steps[2]), "+ steps in")

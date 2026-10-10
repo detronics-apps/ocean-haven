@@ -1,6 +1,0 @@
-[gd_resource type="ShaderMaterial" format=3]
-
-[ext_resource type="Shader" path="res://assets/effects/sketch/sketch.gdshader" id="1_sketch"]
-
-[resource]
-shader = ExtResource("1_sketch")

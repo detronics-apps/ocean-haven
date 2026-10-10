@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
 [ext_resource type="Texture2D" path="res://assets/items/six_pack_rings.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="3_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/foam_box.svg" id="4_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="5_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -15,3 +18,4 @@ answer = PackedStringArray("1: done_rings, done_bags, done_foam, done_nets")
 statements = PackedStringArray("{g0.1} Stopping it where it started did what cleaning up couldn't.")
 guarantee = &"L"
 picture = ExtResource("2_pic")
+pictures = Array[Texture2D]([ExtResource("3_pic"), ExtResource("4_pic"), ExtResource("5_pic")])

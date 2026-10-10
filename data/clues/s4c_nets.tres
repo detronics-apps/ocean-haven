@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
 [ext_resource type="Texture2D" path="res://assets/items/ghost_net.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/items/fishing_line.svg" id="3_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -16,3 +17,4 @@ answer = PackedStringArray("1: traced", "1: unmarked", "1: netpoint")
 statements = PackedStringArray("Bram's net could be traced back to his boat because it carried a mark. The nets I brought up from the deep had none. Now new nets get their boat's mark, and old ones go to the Net Return Point.")
 guarantee = &"L"
 picture = ExtResource("2_pic")
+pictures = Array[Texture2D]([ExtResource("3_pic")])

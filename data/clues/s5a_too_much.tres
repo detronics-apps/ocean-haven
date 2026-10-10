@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/ui/missions/disturbance_check.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
