@@ -26,7 +26,7 @@ const SECTION_NAMES := {&"animals": "Animals", &"plants": "Plants", &"places": "
 	&"disturbance": "Disturbance", &"centre": "It's all connected"}
 const CARD := Vector2(280, 130)
 const GAP := Vector2(40, 30)
-const PIN := Vector2(230, 64)
+const PIN := Vector2(300, 86)
 
 ## Zoom steps: 0 = the whole board fits (set on layout), then node and close-up.
 var zoom_steps: Array[float] = [0.4, 0.6, 0.9, 1.15]
@@ -154,42 +154,19 @@ func rebuild() -> void:
 				continue
 			groups_shown[one.group] = true
 		by_section[one.section] = by_section.get(one.section, []) + [one]
-	# Centres first, round the globe at 0, 0, then shifted to the margin.
+	# Centres first, round the globe at 0, 0, then shifted to the margin. The circle is as small as
+	# it can be with no two sections' notes overlapping (it grows a little at a time until they don't).
 	var tag_centres := {}
 	var card_centres := {}
-	var radius := Vector2(1150.0, 820.0) if landscape() else Vector2(820.0, 1150.0)
-	for i in SECTIONS.size():
-		var section: StringName = SECTIONS[i]
-		var cards: Array = by_section.get(section, [])
-		if cards.is_empty():
-			continue  # (no placeholders: a section shows once it holds a note)
-		var angle := deg_to_rad(-90.0 + i * 360.0 / SECTIONS.size())  # Animals at the top, then clockwise
-		var out := Vector2(cos(angle), sin(angle))
-		tag_centres[section] = out * radius
-		# Its notes fan outward from the tag: rows away from the globe, two side by side once there are
-		# 4+ (a big note takes a row of its own).
-		var across := out.orthogonal()
-		var columns := 2 if cards.size() >= 4 else 1
-		var along := absf(out.x) * PIN.x / 2.0 + absf(out.y) * PIN.y / 2.0 + GAP.y
-		var row: Array = []
-		var queue := cards.duplicate()
-		while not queue.is_empty():
-			var one: ClueData = queue.pop_front()
-			row.append(one)
-			if queue.is_empty() or note_size(one) != CARD or note_size(queue[0]) != CARD or row.size() >= columns:
-				var largest := Vector2.ZERO
-				for note: ClueData in row:
-					largest = largest.max(note_size(note))
-				var depth := absf(out.x) * largest.x + absf(out.y) * largest.y
-				var width := absf(across.x) * (largest.x + GAP.x) + absf(across.y) * (largest.y + GAP.y)
-				for k in row.size():
-					card_centres[row[k].id] = tag_centres[section] + out * (along + depth / 2.0) \
-						+ across * (k - (row.size() - 1) / 2.0) * width
-				along += depth + absf(out.x) * GAP.x + absf(out.y) * GAP.y
-				row.clear()
-	# The globe in the middle; the question off to its side, across a blank space.
-	for one: ClueData in by_section.get(&"centre", []):
-		card_centres[one.id] = Vector2.ZERO if one.kind == &"globe" else Vector2(GLOBE_NOTE.x * 0.5 + CARD.x * 0.9, -GLOBE_NOTE.y * 0.75)
+	var shape := Vector2(1.0, 0.72) if landscape() else Vector2(0.72, 1.0)
+	var radius := 300.0
+	for attempt in 60:
+		tag_centres.clear()
+		card_centres.clear()
+		_place_sections(by_section, shape * radius, tag_centres, card_centres)
+		if not _overlapping(tag_centres, card_centres):
+			break
+		radius *= 1.08
 	var low := Vector2(INF, INF)
 	var high := -low
 	for centre: Vector2 in tag_centres.values():
@@ -228,6 +205,69 @@ func rebuild() -> void:
 	_threads.queue_redraw()
 
 
+## Puts every section's heading on the circle (`radius`: its half width and height) and its notes
+## round the heading: in the cells of a grid around it, the cell facing away from the globe first,
+## then the ones beside it, the side facing the globe last (a big note takes its cell and the two
+## next to it).
+func _place_sections(by_section: Dictionary, radius: Vector2, tag_centres: Dictionary, card_centres: Dictionary) -> void:
+	var cell := CARD + GAP
+	for i in SECTIONS.size():
+		var section: StringName = SECTIONS[i]
+		var cards: Array = by_section.get(section, [])
+		if cards.is_empty():
+			continue  # (no placeholders: a section shows once it holds a note)
+		var angle := deg_to_rad(-90.0 + i * 360.0 / SECTIONS.size())  # Animals at the top, then clockwise
+		var out := Vector2(cos(angle), sin(angle))
+		var heading: Vector2 = out * radius
+		tag_centres[section] = heading
+		var spots: Array[Vector2i] = []
+		for gy in range(-2, 3):
+			for gx in range(-1, 2):
+				if Vector2i(gx, gy) != Vector2i.ZERO:
+					spots.append(Vector2i(gx, gy))
+		var ring := func(spot: Vector2i) -> float:  # (nearest ring first, outward before inward)
+			return maxi(absi(spot.x), absi(spot.y)) * 10.0 - Vector2(spot).normalized().dot(out)
+		spots.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return ring.call(a) < ring.call(b))
+		var taken := {}
+		var ordered := cards.filter(func(c: ClueData) -> bool: return c.big) + cards.filter(func(c: ClueData) -> bool: return not c.big)
+		for one: ClueData in ordered:
+			for spot in spots:
+				if taken.has(spot) or (one.big and (taken.has(spot + Vector2i(1, 0)) or taken.has(spot - Vector2i(1, 0)))):
+					continue
+				taken[spot] = true
+				if one.big:  # (wider and taller: the cells either side are its too)
+					taken[spot + Vector2i(1, 0)] = true
+					taken[spot - Vector2i(1, 0)] = true
+				var offset := Vector2(spot) * cell
+				if one.big:
+					offset.y += signf(offset.y) * (START_NOTE.y - CARD.y) / 2.0
+				card_centres[one.id] = heading + offset
+				break
+	# The globe in the middle; the question off to its side, across a blank space.
+	for one: ClueData in by_section.get(&"centre", []):
+		card_centres[one.id] = Vector2.ZERO if one.kind == &"globe" else Vector2(GLOBE_NOTE.x * 0.5 + CARD.x * 0.9, -GLOBE_NOTE.y * 0.75)
+
+
+## Clear cork kept between two sections (half of it round each side's notes).
+const SECTION_GAP := 90.0
+
+
+## Whether any two notes or headings from different sections (or the middle) overlap.
+func _overlapping(tag_centres: Dictionary, card_centres: Dictionary) -> bool:
+	var boxes: Array = []  # [rect, section]
+	for section in tag_centres:
+		boxes.append([Rect2(tag_centres[section] - PIN / 2.0, PIN).grow(SECTION_GAP), section])
+	for id in card_centres:
+		var one := Clues.card(id)
+		var size := note_size(one)
+		boxes.append([Rect2(card_centres[id] - size / 2.0, size).grow(SECTION_GAP), one.section])
+	for i in boxes.size():
+		for j in range(i + 1, boxes.size()):
+			if boxes[i][1] != boxes[j][1] and (boxes[i][0] as Rect2).intersects(boxes[j][0]):
+				return true
+	return false
+
+
 ## A note's size: the globe and the turtle's starting question are bigger than the rest.
 static func note_size(one: ClueData) -> Vector2:
 	return GLOBE_NOTE if one.kind == &"globe" else START_NOTE if one.big else CARD
@@ -245,7 +285,7 @@ func _pin(section: StringName, at: Vector2) -> Control:
 	pin.pivot_offset = PIN / 2.0
 	pin.rotation_degrees = _tilt(String(section)) * 0.6
 	_paper_button(pin, COLOURS[&"tag"])
-	pin.add_theme_font_size_override("font_size", 16)
+	pin.add_theme_font_size_override("font_size", 26)
 	pin.mouse_filter = Control.MOUSE_FILTER_IGNORE  # (taps are worked out by the map: drags pan)
 	_canvas.add_child(pin)
 	return pin
