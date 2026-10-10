@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/snapper/juvenile_snapper.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("cut | found:mangrove_coast & pools_linked_max:0 & 
 answer = PackedStringArray("1: cut", "1: linked", "1: fish")
 statements = PackedStringArray("The nursery pools were cut off from the sea, and only a few young fish lived here. After water flowed into the pools again, there were more young fish.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

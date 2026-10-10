@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/items/wood.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ answer = PackedStringArray("1: g_beach, g_freed, g_storm, g_swell, g_flood, g_hu
 statements = PackedStringArray("Setbacks happen: {g0.1}. I kept going.")
 leads_to = PackedStringArray("s7me_part")
 guarantee = &"L"
+picture = ExtResource("2_pic")

@@ -5,9 +5,8 @@
 [resource]
 script = ExtResource("1_clue")
 id = &"final_who"
-node = 8
-order = 0
+node = 9
 kind = &"final"
 question = "Who created all of this?"
-activate = PackedStringArray("flag:observatory_opened")
+activate = PackedStringArray("flag:credits_rolled")
 guarantee = &"G"

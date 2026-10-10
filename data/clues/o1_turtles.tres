@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ answer = PackedStringArray("1: caught", "1: quiet_nest")
 statements = PackedStringArray("Litter can catch turtles. On quiet, protected sand, a turtle nested on our beach.")
 leads_to = PackedStringArray("s1_beyond")
 guarantee = &"L"
+picture = ExtResource("2_pic")

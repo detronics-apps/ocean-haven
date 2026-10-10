@@ -12,11 +12,13 @@ extends Resource
 
 ## Unique id (e.g. &"o1_turtles").
 @export var id: StringName
-## Where it sits on the board: 0 the opening, 1-7 the core nodes, 8 the final question.
-@export_range(0, 8) var node := 1
+## Where it sits on the board: 0 the opening, 1-7 the core nodes, 8 "It's all connected" (the
+## globe), 9 the final question.
+@export_range(0, 9) var node := 1
 ## Order within its node (lower = nearer the spine).
 @export var order := 0
-## &"question" (most), &"clue" (a pinned detail, no question of its own), &"final" (never answered).
+## &"question" (most), &"clue" (a pinned detail, no question of its own), &"globe" (the note it
+## all comes together in: a picture and its words), &"final" (never answered).
 @export var kind := &"question"
 ## The island its conditions are about when they don't name one.
 @export var island := &"home_island"

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/items/coral_fragment.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -13,3 +14,4 @@ evidence = PackedStringArray("g_area | built:turtle_protection_area & nested:gre
 answer = PackedStringArray("1: g_area, g_channel, g_coral", "1: b_litter, b_trees, b_help")
 statements = PackedStringArray("{g0.1} {g1.1} What I do changes what happens.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

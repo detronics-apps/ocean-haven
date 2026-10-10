@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/urchin/sea_urchin.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -13,3 +14,4 @@ evidence = PackedStringArray("ex_k | clue:s2k_kelp | In the Kelp Forest, with ha
 answer = PackedStringArray("2: ex_k, ex_m")
 statements = PackedStringArray("{g0.1}. {g0.2}. Living things depend on each other, and on the place they live.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

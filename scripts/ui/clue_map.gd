@@ -1,10 +1,14 @@
 class_name ClueMap
 extends Control
-## The Clue Board as one connected map (docs/CLUE_BOARD.md §1). A spine of 9 slots in reading
-## order (the opening, nodes 1-7, the final question), each slot's visible cards in a cluster
-## across it, and threads between cards: "led to" (solid), "evidence from" (dotted: a card whose
-## evidence or answer waits on another card) and "planted -> payoff" (gold, dashed: leads_to "~id").
-## Landscape lays the spine left to right, portrait top to bottom; only the mapping changes.
+## The Clue Board as one connected map (docs/CLUE_BOARD.md §1), shaped like the story (the
+## owner's layout): it starts with one note (the turtle: where did they go?), splits as it goes on
+## into more and more parallel lines (one column a node, its notes side by side), then comes back
+## together into one: "It's all connected", the loading screen's globe pinned to the board. Last,
+## one string runs off to the side, across a blank space, to "Who created all of this?" (shown
+## once the end credits have started). Threads between cards: "led to" (solid), "evidence from"
+## (a card whose evidence or answer waits on another card) and "planted -> payoff" (dashed:
+## leads_to "~id"); every lit node joins the globe.
+## Landscape reads left to right, portrait top to bottom; only the direction changes.
 ## Fixed zoom steps (+ / -), drag to pan, tap a slot to zoom to it, tap a card for its details.
 ## It looks like a cork pin board in a wooden frame: paper notes, tilted a little, pinned with brass
 ## pins and joined with red string (cream: a question, blue: answered, tan: a field note, ochre:
@@ -13,10 +17,11 @@ extends Control
 ## The slots' titles (0 = the opening, 8 = the final question).
 const SLOTS := ["Where did the turtles go?", "There's more out there", "Living things depend on each other",
 	"Watch first", "Stop it where it starts", "What we do matters", "One ocean", "We're part of it",
-	"Who created all of this?"]
+	"It's all connected", "Who created all of this?"]
 const CARD := Vector2(280, 130)
 const GAP := Vector2(40, 30)
 const PIN := Vector2(230, 64)
+
 ## Zoom steps: 0 = the whole board fits (set on layout), then node and close-up.
 var zoom_steps: Array[float] = [0.4, 0.8, 1.15]
 var step := 0
@@ -27,6 +32,11 @@ const COLOURS := {
 	&"cork": Color("a8794c"), &"speck": Color("7d5534"), &"wood": Color("6b4426"), &"wood_light": Color("8a5a33"),
 	&"ink": Color("2a241c"), &"string": Color("b3262b"), &"brass": Color("c9a24a"),
 }
+## A note's sketch: its picture drawn as a pencil sketch, bottom right.
+const SKETCH := 64.0
+## The note everything comes together in, and the question after it.
+const GLOBE := &"conclusion_globe"
+const SKETCH_LOOK := preload("res://assets/effects/sketch/sketch_material.tres")
 ## The wooden frame's width, and the title plank.
 const FRAME := 16.0
 const TITLE := "BLUEHAVEN — CLUE BOARD"
@@ -124,30 +134,52 @@ func rebuild() -> void:
 	for one: ClueData in clues.cards():
 		if clues.is_visible(one.id):
 			by_slot[one.node] = by_slot.get(one.node, []) + [one]
-	var main := 0.0  # how far along the spine (portrait: rows used so far)
-	var extent := Vector2.ZERO
-	for slot in SLOTS.size():
+	# Centres first, along the story (main) and across it (cross), then shifted to the margin.
+	var tag_centres := {}
+	var card_centres := {}
+	var card_main := CARD.x if landscape() else CARD.y
+	var card_cross := CARD.y if landscape() else CARD.x
+	var gap_main := GAP.x * 2.5 if landscape() else GAP.y * 2.5
+	var gap_cross := GAP.y if landscape() else GAP.x * 0.5
+	var per_lane := 5 if landscape() else 3  # (more notes than this: another lane alongside)
+	var main := 0.0
+	for slot in 8:
 		var cards: Array = by_slot.get(slot, [])
-		var pin_at: Vector2
-		if landscape():
-			pin_at = Vector2(slot * (CARD.x + GAP.x), 0)
-		else:
-			pin_at = Vector2(0, main)
-		_pins[slot] = _pin(slot, pin_at, not cards.is_empty())
+		var lanes := maxi(1, ceili(cards.size() / float(per_lane)))
+		var in_lane := mini(cards.size(), per_lane)
+		var half := (in_lane * (card_cross + gap_cross) - gap_cross) / 2.0
+		var tag_cross := -half - gap_cross - (PIN.y if landscape() else PIN.x) / 2.0
+		tag_centres[slot] = _along(main + card_main / 2.0, tag_cross if cards.size() > 0 else 0.0)
 		for i in cards.size():
-			var at: Vector2
-			if landscape():
-				at = pin_at + Vector2(0, PIN.y + GAP.y + i * (CARD.y + GAP.y))
-			else:
-				at = pin_at + Vector2(PIN.x + GAP.x + (i % 2) * (CARD.x + GAP.x), (i / 2) * (CARD.y + GAP.y))
-			_cards[cards[i].id] = _card(cards[i], at)
-			extent = extent.max(at + CARD)
-		extent = extent.max(pin_at + PIN)
-		if not landscape():
-			main += maxf(PIN.y, ceilf(cards.size() / 2.0) * (CARD.y + GAP.y)) + GAP.y
+			var lane := i / per_lane
+			var place := i % per_lane
+			var count := mini(cards.size() - lane * per_lane, per_lane)
+			var cross := (place - (count - 1) / 2.0) * (card_cross + gap_cross)
+			card_centres[cards[i].id] = _along(main + card_main / 2.0 + lane * (card_main + gap_main * 0.4), cross)
+		main += lanes * card_main + (lanes - 1) * gap_main * 0.4 + gap_main
+	# It all comes back together into one note: the globe. Then, off to the side, the question.
+	for one: ClueData in by_slot.get(8, []):
+		card_centres[one.id] = _along(main + card_main / 2.0, 0.0)
+	for one: ClueData in by_slot.get(9, []):
+		card_centres[one.id] = _along(main + card_main * 1.5 + gap_main * 2.0, -card_cross * 2.2)
+	var low := Vector2(INF, INF)
+	var high := -low
+	for centre: Vector2 in tag_centres.values():
+		low = low.min(centre - PIN / 2.0)
+		high = high.max(centre + PIN / 2.0)
+	for centre: Vector2 in card_centres.values():
+		low = low.min(centre - CARD / 2.0)
+		high = high.max(centre + CARD / 2.0)
+	var margin := Vector2(GAP.x, GAP.y + 40)  # (clear of the frame's title plank)
+	for slot in tag_centres:
+		_pins[slot] = _pin(slot, tag_centres[slot] - PIN / 2.0 - low + margin, by_slot.has(slot))
+	for slot in SLOTS.size():
+		for one: ClueData in by_slot.get(slot, []):
+			_cards[one.id] = _card(one, card_centres[one.id] - CARD / 2.0 - low + margin)
+	var extent := high - low + margin * 2.0
 	_canvas.move_child(_threads, -1)  # (string and pins over the notes)
-	_threads.size = extent + GAP
-	_canvas.size = extent + GAP
+	_threads.size = extent
+	_canvas.size = extent
 	var inside := size - Vector2(FRAME, FRAME) * 2.0 - Vector2(0, 70)  # (within the frame and planks)
 	zoom_steps[0] = clampf(minf(inside.x / _canvas.size.x, inside.y / _canvas.size.y), 0.15, 0.6)
 	(get_node("ZoomBar") as Control).position = size - Vector2(108, 52) - Vector2(FRAME, FRAME) - Vector2(8, 8)
@@ -158,6 +190,12 @@ func rebuild() -> void:
 		_canvas.position = (size - _canvas.size * _canvas.scale) / 2.0
 	_place_detail()
 	_threads.queue_redraw()
+
+
+## A point `main` along the story and `cross` across it (landscape: right and down; portrait:
+## down and right).
+func _along(main: float, cross: float) -> Vector2:
+	return Vector2(main, cross) if landscape() else Vector2(cross, main)
 
 
 func _pin(slot: int, at: Vector2, lit: bool) -> Control:
@@ -202,17 +240,29 @@ func _card(one: ClueData, at: Vector2) -> Control:
 	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	label.offset_left = 14
 	label.offset_top = 20  # (below the pin)
-	label.offset_right = -14 - (40 if one.picture else 0)
+	label.offset_right = -14 - (SKETCH - 6.0 if one.picture else 0.0)
 	label.offset_bottom = -10
-	if one.picture:  # a little sketch in the corner (e.g. the hook-shaped tag)
+	if one.kind == &"globe":  # the loading screen's globe, pinned up in full colour, the words under it
+		var globe := TextureRect.new()
+		globe.texture = one.picture
+		globe.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		globe.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		globe.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		globe.position = Vector2(CARD.x / 2.0 - 40, 16)
+		globe.size = Vector2(80, 80)
+		globe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		panel.add_child(globe)
+		label.offset_top = CARD.y - 34
+		label.offset_right = -14
+	elif one.picture:  # a little sketch in the corner (e.g. the hook-shaped tag)
 		var sketch := TextureRect.new()
 		sketch.texture = one.picture
 		sketch.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		sketch.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		sketch.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		sketch.modulate = Color(0.55, 0.42, 0.28, 0.85)  # (pencil-brown, like a sketch)
-		sketch.position = Vector2(CARD.x - 56, CARD.y - 56)
-		sketch.size = Vector2(46, 46)
+		sketch.material = SKETCH_LOOK  # (pencil-brown, like a sketch)
+		sketch.position = CARD - Vector2(SKETCH + 8, SKETCH + 8)
+		sketch.size = Vector2(SKETCH, SKETCH)
 		sketch.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		panel.add_child(sketch)
 	panel.set_meta("state", state)
@@ -229,7 +279,7 @@ func _card(one: ClueData, at: Vector2) -> Control:
 
 ## &"question", &"clue" (a planted detail, no question yet), &"answered" or &"final".
 func _state_of(one: ClueData) -> StringName:
-	if one.kind == &"final":
+	if one.kind == &"final" or one.kind == &"globe":
 		return &"final"
 	if Clues.is_answered(one.id):
 		return &"answered"
@@ -243,7 +293,7 @@ static func card_text(one: ClueData) -> String:
 	if Clues.is_answered(one.id):
 		return Clues.statement(one)
 	if not Clues.is_open(one.id):
-		return one.clue_text
+		return one.clue_text.to_upper() if one.kind == &"globe" else one.clue_text
 	return question_of(one).to_upper()
 
 
@@ -435,21 +485,21 @@ func _draw_threads() -> void:
 				continue
 			for kind in _thread_kinds(a, b):
 				_thread(_cards[a.id], _cards[b.id], kind)
-	# Every lit slot joins the final question once it shows (its faint strings).
-	if _cards.has(&"final_who"):
+	# It all comes together: every lit node joins the globe once it's pinned up.
+	if _cards.has(GLOBE):
 		for slot in range(8):
 			if (_pins[slot] as Button).text.ends_with("…"):
 				continue
-			_thread(_pins[slot], _cards[&"final_who"], &"faint")
+			_thread(_pins[slot], _cards[GLOBE], &"faint")
 	# A brass pin on every note and lit tag, over the string.
 	for note: Control in _cards.values() + _pins.values():
 		if note is Button and (note as Button).text.ends_with("…"):
 			continue
 		var head := pin_point(note)
-		_threads.draw_circle(head + Vector2(2, 3), 8.0, Color(0, 0, 0, 0.35))
-		_threads.draw_circle(head, 8.0, (COLOURS[&"brass"] as Color).darkened(0.3))
-		_threads.draw_circle(head - Vector2(1.5, 1.5), 5.5, COLOURS[&"brass"])
-		_threads.draw_circle(head - Vector2(3, 3), 2.0, Color(1, 0.95, 0.75, 0.9))
+		_threads.draw_circle(head + Vector2(2, 3), 10.0, Color(0, 0, 0, 0.35))
+		_threads.draw_circle(head, 10.0, (COLOURS[&"brass"] as Color).darkened(0.3))
+		_threads.draw_circle(head - Vector2(1.5, 1.5), 7.0, COLOURS[&"brass"])
+		_threads.draw_circle(head - Vector2(3.5, 3.5), 2.5, Color(1, 0.95, 0.75, 0.9))
 
 
 ## Where a note's pin is: the middle of its top edge, turned with the note.
@@ -469,15 +519,16 @@ func _thread(from: Control, to: Control, kind: StringName) -> void:
 	var red: Color = COLOURS[&"string"]
 	match kind:
 		&"led":
-			_threads.draw_polyline(points, red.darkened(0.45), 6.0, true)
-			_threads.draw_polyline(points, red, 4.0, true)
+			_threads.draw_polyline(points, red.darkened(0.45), 9.0, true)
+			_threads.draw_polyline(points, red, 6.0, true)
 		&"evidence":
-			_threads.draw_polyline(points, Color(red, 0.8), 3.0, true)
+			_threads.draw_polyline(points, red.darkened(0.45), 6.5, true)
+			_threads.draw_polyline(points, Color(red, 0.9), 4.5, true)
 		&"planted":
 			for i in range(0, points.size() - 1, 2):
-				_threads.draw_line(points[i], points[i + 1], red, 3.0, true)
+				_threads.draw_line(points[i], points[i + 1], red, 6.0, true)
 		&"faint":
-			_threads.draw_polyline(points, Color(red, 0.4), 2.5, true)
+			_threads.draw_polyline(points, Color(red, 0.45), 4.0, true)
 
 
 ## A few degrees of tilt, always the same for the same note.

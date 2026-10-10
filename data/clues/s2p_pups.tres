@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("born | pup_old_ice | A seal pup was born on old ic
 answer = PackedStringArray("1: born", "1: thaw", "1: stayed")
 statements = PackedStringArray("A seal pup was born on old ice and was still there when the thaw ended. Seasonal ice melted away.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

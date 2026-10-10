@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/ui/globe/globe.png" id="2_pic"]
+
+[resource]
+script = ExtResource("1_clue")
+id = &"conclusion_globe"
+node = 8
+kind = &"globe"
+clue_text = "It's all connected"
+discover = PackedStringArray("flag:observatory_opened")
+picture = ExtResource("2_pic")
+leads_to = PackedStringArray("final_who")
+guarantee = &"G"

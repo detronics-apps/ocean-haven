@@ -25,9 +25,9 @@ func _initialize() -> void:
 		var groups_ok: bool = card.answer_groups().all(func(g: Dictionary) -> bool:
 			return int(g.need) >= 1 and int(g.need) <= g.ids.size() and Array(g.ids).all(func(id: String) -> bool: return id in ids))
 		_expect(groups_ok, "%s: every answer group names its own evidence, and can be met" % card.id)
-		_expect(card.kind == &"final" or not card.answer.is_empty(), "%s: a question has an answer" % card.id)
+		_expect(card.kind in [&"final", &"globe"] or not card.answer.is_empty(), "%s: a question has an answer" % card.id)
 		_expect(not card.activate.is_empty() or not card.discover.is_empty(), "%s: something makes it appear" % card.id)
-		_expect(card.statements.is_empty() == (card.kind == &"final"), "%s: a statement unless it's the final question" % card.id)
+		_expect(card.statements.is_empty() == (card.kind in [&"final", &"globe"]), "%s: a statement unless it's the globe or the final question" % card.id)
 	# The source phrases say what the Trace reports say.
 	var reports := {"rings": ["trace_rings", "cafe"], "bags": ["trace_bags", "fish market"], "foam": ["trace_foam", "fishing boats"],
 		"gear": ["trace_gear", "fishing boats"], "fibres": ["study_fibres", "wash"]}
@@ -95,7 +95,10 @@ func _initialize() -> void:
 		"S4.A names exactly the two sources traced: %s" % said)
 	fleet.mark(&"observatory_opened")
 	clues.check()
-	_expect(clues.is_open(&"final_who") and not clues.is_answered(&"final_who"), "the final question shows, and is never answered")
+	_expect(clues.is_found(&"conclusion_globe") and not clues.is_open(&"final_who"), "the Observatory pins the globe up: it's all connected")
+	fleet.mark(&"credits_rolled")
+	clues.check()
+	_expect(clues.is_open(&"final_who") and not clues.is_answered(&"final_who"), "the credits bring the final question, never answered")
 
 	# --- An old save fills in quietly ---
 	var notes := [0]

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/otter/sea_otter.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("few | found:kelp_forest & animals:sea_otter<=1@kel
 answer = PackedStringArray("1: few", "1: grazed", "1: back", "1: fewer", "1: kelp")
 statements = PackedStringArray("There were hardly any otters, and urchins had grazed the forest bare. When the otters came back, the urchins grew fewer and the kelp grew again.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

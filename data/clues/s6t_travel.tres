@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ answer = PackedStringArray("2: r_turtle, r_flamingo, r_tern, r_dolphin, r_green,
 statements = PackedStringArray("Animals travel between islands, like I do: {g0.1}, and {g0.2}. Animals from other islands can use an island I look after.")
 leads_to = PackedStringArray("s6g_ocean")
 guarantee = &"L"
+picture = ExtResource("2_pic")

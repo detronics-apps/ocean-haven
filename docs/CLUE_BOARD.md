@@ -639,4 +639,15 @@ cream = a question (in capitals), blue = answered, tan = a field note (a planted
 final question. The node titles are tan paper tags. Red string runs pin to pin, sagging a little,
 over the notes. Zoom buttons are bottom right. The details panel is a sheet of paper.
 
+**Layout (owner's shape, Oct 2026; replaces the straight spine of §1):** the story starts with one
+note on the left (the turtle: where did they go?), splits into more and more parallel lines as it
+goes right (one column a node, its notes side by side, a second lane past 5), then comes back
+together into one note: "It's all connected", the loading screen's globe pinned up in colour
+(`conclusion_globe`, kind "globe", shown once the Observatory opens; every lit node's tag is
+strung to it; picture made by `tools/make_globe.py`). Last, one string runs off to the side,
+across a blank space, to "Who created all of this?" (`final_who`, node 9), which appears when
+the end credits start (Fleet flag "credits_rolled", set by EndCredits.play). Portrait runs the same
+shape top to bottom (3 notes across a row). Every note has a pencil sketch of its animal, item or
+survey (ClueData.picture through `assets/effects/sketch/sketch.gdshader`). The string is thick.
+
 **Not built yet:** the optional List toggle (§1).

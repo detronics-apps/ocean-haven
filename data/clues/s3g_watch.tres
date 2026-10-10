@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/wildlife_monitoring.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -13,3 +14,4 @@ evidence = PackedStringArray("w_nest | guessed:guess_nest & nested:green_turtle>
 answer = PackedStringArray("2: w_nest, w_kelp, w_pools, w_parrot, w_whales, w_pups")
 statements = PackedStringArray("Twice I made a guess, then watched. {g0.1} {g0.2} Watching showed me what really happens.")
 guarantee = &"L"
+picture = ExtResource("2_pic")

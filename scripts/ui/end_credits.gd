@@ -83,6 +83,7 @@ func _place_buttons() -> void:
 
 
 func play() -> void:
+	Fleet.mark(&"credits_rolled")  # (the Clue Board's last string: "Who created all of this?")
 	_offset = 0.0
 	_time = 0.0
 	_speed = START_SPEED

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/ui/missions/rescue_boat.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ answer = PackedStringArray("1: prevent", "1: choices", "1: going")
 statements = PackedStringArray("I'm part of this ocean too. What I choose can help it come back.")
 leads_to = PackedStringArray("final_who")
 guarantee = &"L"
+picture = ExtResource("2_pic")

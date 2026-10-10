@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("bare | found:arctic_ocean & no_trees:arctic_ocean 
 answer = PackedStringArray("1: bare", "1: birds", "1: sprout")
 statements = PackedStringArray("The Polar Ocean had no trees. A little pine came up among the rocks, where the terns nest.")
 guarantee = &"O"
+picture = ExtResource("2_pic")

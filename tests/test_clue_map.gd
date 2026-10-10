@@ -25,8 +25,8 @@ func _initialize() -> void:
 	map.rebuild()
 	var wide := _layout(map)
 	_expect(map.landscape() and wide.cards.size() == 4, "landscape: the 4 visible cards (S1.1, S4.A, S4.B, S4.D) (%s)" % [wide.cards.keys()])
-	_expect(wide.pins.size() == 9 and wide.pins[0].x < wide.pins[4].x and is_equal_approx(wide.pins[0].y, wide.pins[4].y),
-		"landscape: 9 slots, the spine runs left to right")
+	_expect(wide.pins.size() == 8 and wide.pins[0].x < wide.pins[1].x and wide.pins[1].x < wide.pins[4].x,
+		"landscape: 8 node tags, the story runs left to right")
 	var lit: Array = map._pins.values().filter(func(p: Button) -> bool: return not p.text.ends_with("…"))
 	_expect(lit.size() == 2, "only the slots holding a card are lit (1 and 4): %d" % lit.size())
 
@@ -35,8 +35,9 @@ func _initialize() -> void:
 	map.rebuild()
 	var tall := _layout(map)
 	_expect(not map.landscape() and tall.cards.keys() == wide.cards.keys(), "portrait: the same cards")
-	_expect(tall.pins[0].y < tall.pins[4].y and is_equal_approx(tall.pins[0].x, tall.pins[4].x), "portrait: the spine runs top to bottom")
-	_expect(tall.cards[&"s4a_sources"].x > tall.pins[4].x, "portrait: a slot's cards sit beside its pin")
+	_expect(tall.pins[0].y < tall.pins[1].y and tall.pins[1].y < tall.pins[4].y, "portrait: the story runs top to bottom")
+	_expect(tall.cards[&"s4a_sources"].y > tall.pins[3].y and wide.cards[&"s4a_sources"].x > wide.pins[3].x,
+		"a node's notes are with its tag, after the nodes before it")
 
 	# Zoom steps and the overview fit.
 	_expect(map.step == 0 and map._canvas.scale.x <= 0.6, "opens on the whole board")

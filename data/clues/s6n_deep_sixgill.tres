@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/shark/sixgill_shark.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("again | ^rescue_here:deep_sixgill | I saw {rescue:
 answer = PackedStringArray("1: again")
 statements = PackedStringArray("I saw {rescue:deep_sixgill} again, living wild, its bright tag flashing.")
 guarantee = &"O"
+picture = ExtResource("2_pic")

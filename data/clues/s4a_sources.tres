@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -13,3 +14,4 @@ evidence = PackedStringArray("rings | flag:rings_traced | the plastic rings came
 answer = PackedStringArray("2: rings, bags, foam, gear, fibres")
 statements = PackedStringArray("Litter doesn't come from nowhere: {g0.1}, and {g0.2}.")
 guarantee = &"G"
+picture = ExtResource("2_pic")

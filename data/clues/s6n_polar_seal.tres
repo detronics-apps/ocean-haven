@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
+[ext_resource type="Texture2D" path="res://assets/animals/seal/ringed_seal.svg" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")
@@ -14,3 +15,4 @@ evidence = PackedStringArray("again | ^rescue_here:polar_seal | I saw {rescue:po
 answer = PackedStringArray("1: again")
 statements = PackedStringArray("I saw {rescue:polar_seal} again, living wild, its bright tag flashing.")
 guarantee = &"O"
+picture = ExtResource("2_pic")
