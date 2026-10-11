@@ -24,7 +24,8 @@ static func ask_code() -> void:
 
 ## Whether the ranger asked for a new game in the box (taken only once).
 static func take_new_game() -> bool:
-	return JavaScriptBridge.eval("(function(){var n=!!window.__bhNew;window.__bhNew=false;return n;})()", true) == true
+	var asked: Variant = JavaScriptBridge.eval("(function(){var n=window.__bhNew?'yes':'';window.__bhNew=false;return n;})()", true)
+	return asked is String and asked == "yes"  # (a string: a JS true doesn't come back as one here)
 
 
 ## The code the ranger loaded in the box ("" while there's none); taken only once.

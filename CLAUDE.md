@@ -115,7 +115,7 @@ The home page has "Play BlueHaven" and "Start a new game" (asks first, then open
 SaveGame.attach sees ?new=1, erases the save file and its localStorage copy, and puts the address
 back to play/ so a reload doesn't start over again). In the game, the Journal's "Load save code" box has "Start a new game" (asks first;
 SaveGame.start_over: play/?new=1 on the web; elsewhere a button under it after Load). On the web
-SaveGame.erase leaves an empty save.json rather than deleting it: a deleted file never reaches the
+SaveGame.erase writes `{"erased": true}` over save.json (= no save) rather than deleting or emptying it: neither reaches the
 browser's storage, so a reload brought the old save back.
 
 The home page's picture (web/screenshot.png) is rendered by `tools/make_home_picture.gd` (xvfb):

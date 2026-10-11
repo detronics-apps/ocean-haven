@@ -81,8 +81,8 @@ func attach(world: Node) -> bool:
 func _new_game_asked() -> bool:
 	if not OS.has_feature("web"):
 		return false
-	var asked: Variant = JavaScriptBridge.eval("(function () { try { return new URLSearchParams(location.search).get('new') === '1'; } catch (e) { return false; } })()")
-	if asked == true:
+	var asked: Variant = JavaScriptBridge.eval("(function () { try { return new URLSearchParams(location.search).get('new') === '1' ? 'yes' : ''; } catch (e) { return ''; } })()")
+	if asked is String and asked == "yes":  # (a string: a JS true doesn't come back as one)
 		JavaScriptBridge.eval("try { history.replaceState(null, '', location.pathname); } catch (e) {}")
 		return true
 	return false
@@ -100,13 +100,18 @@ func start_over() -> void:
 	get_tree().quit()
 
 
+## What an erased save holds on the web (a new game).
+const ERASED := "{\"erased\": true}"
+
+
 ## Throws away the save at `path` (the file and, on the web, its localStorage copy): a new game.
 func erase(path: String) -> void:
 	if OS.has_feature("web"):
-		# A deleted file isn't passed on to the browser's storage (only a file closed after
-		# writing is), so a reload could bring the old save back: leave an empty one (= no save).
+		# A deleted (or emptied) file isn't passed on to the browser's storage, so a reload brought
+		# the old save back: write ERASED over it instead (= no save).
 		var blank := FileAccess.open(path, FileAccess.WRITE)
 		if blank:
+			blank.store_string(ERASED)
 			blank.close()
 	elif FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
@@ -364,6 +369,8 @@ func _web_backup_read(path: String) -> String:
 ## The newest readable save text: the file, or on the web possibly the localStorage copy.
 func _newest_save_text(path: String) -> String:
 	var file_text := FileAccess.get_file_as_string(path) if FileAccess.file_exists(path) else ""
+	if file_text == ERASED:
+		file_text = ""
 	if not OS.has_feature("web"):
 		return file_text
 	var backup := _web_backup_read(path)
