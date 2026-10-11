@@ -64,9 +64,11 @@ func show_tab(id: StringName) -> void:
 
 ## Opens the Journal on the Clue Board (after the first talk with Tom; when the turtle is freed),
 ## if anything's on it, with `note` pinned at the top of the board (if any).
+## Opens by itself at most twice a game (Fleet flags "board_auto_1" / "board_auto_2"), never again.
 func open_clues(note := "") -> void:
-	if not clues_open():
+	if not clues_open() or Fleet.has_flag(&"board_auto_2"):
 		return
+	Fleet.mark(&"board_auto_2" if Fleet.has_flag(&"board_auto_1") else &"board_auto_1")
 	tab = CLUES
 	page = null
 	if visible:

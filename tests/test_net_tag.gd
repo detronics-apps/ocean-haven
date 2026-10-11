@@ -52,6 +52,8 @@ func _initialize() -> void:
 	people.finish_talk()
 	await create_timer(0.8).timeout
 	_expect(not journal_screen.visible, "only that once")
+	journal_screen.open_clues("again?")
+	_expect(not journal_screen.visible, "after opening by itself twice, the Clue Board never opens by itself again")
 
 	# The Map shows the hook-shaped island: now there's a question.
 	fleet.mark(&"map_opened")

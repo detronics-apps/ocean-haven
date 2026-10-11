@@ -679,7 +679,7 @@ logo on the tag.
 **Showing the board at the start:** after the first talk with Tom the Journal opens on the Clue
 Board (once; Fleet flag "clue_board_shown"). When the first turtle is freed (the tag: O2's
 `opens_board`) it opens again, with a note pinned at the top: "As you go on with your journey, you
-can always find the clues here. The Clue Board won't open by itself again." (If the turtle came
+can always find the clues here. The Clue Board won't open by itself again." Never more than twice a game, whatever asks (JournalScreen.open_clues: Fleet flags "board_auto_1" / "board_auto_2"). (If the turtle came
 first, Tom's opening is skipped.) The big turtle note and the globe keep their words even zoomed
 right out. Tapping a note shows one short sentence (the question, or the answer once it's blue)
 and what was seen, nothing said twice. The tag's picture is the hook island's black logo
