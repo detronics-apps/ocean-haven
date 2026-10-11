@@ -714,7 +714,7 @@ the little islet off the Deep Sea hook's base; the hook's inside (the canyon) is
 only in a line up from the base and round the east tip.
 
 Seeds that travel (AnimalData seeds_tree / seeds_from / seeds_to / seeds_max 6 / seeds_chance;
-Travellers.spread_seeds each morning on the ranger's island): once the Starting Island is
+Travellers.spread_seeds every morning, wherever the ranger is; away from the ranger a visit that would have come counts): once the Starting Island is
 thriving (70 %), red-footed boobies visit the Reef (they travel now: home_island -> tropical_reef)
 and little palms sprout there, the Reef's first trees; terns back from the healthy Deep Sea bring
 shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry snow

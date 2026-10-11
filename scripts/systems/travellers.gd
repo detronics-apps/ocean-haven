@@ -62,9 +62,10 @@ func morning() -> void:
 			_since[species.id] = GameClock.day
 		if here.id != species.travel_home and can_reach(species, here) and randf() < species.travel_chance:
 			visit(species, here)
+	# Seeds every morning, wherever the ranger is (the trees are waiting when they get there).
 	for species: AnimalData in DataFiles.load_all("res://data/animals"):
-		if species.seeds_tree and here.id == species.seeds_to and randf() < species.seeds_chance:
-			spread_seeds(species)
+		if species.seeds_tree and randf() < species.seeds_chance:
+			spread_seeds(species, here)
 
 
 ## A visitor of `species` comes to `region` for the day. Returns it.
@@ -94,15 +95,18 @@ var seeds_from_health := 0.7
 
 
 ## A young tree sprouts on `species.seeds_to` from seeds it brought from `species.seeds_from`,
-## if one of them is there now (resident or visiting), that island is healthy, and there's room
-## and a free spot. Returns the new tree's building (null = none today).
-func spread_seeds(species: AnimalData) -> Building:
+## if one of them is there now (resident or visiting; on an island the ranger isn't on, a visit
+## that would have come today counts), that island is healthy, and there's room and a free spot.
+## Returns the new tree's building (null = none today).
+func spread_seeds(species: AnimalData, here: RegionData = null) -> Building:
 	var to: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_to)
 	var from: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.seeds_from)
 	if not Regions.is_discovered(to) or not Regions.is_discovered(from) or IslandHealth.of(get_tree(), from) < seeds_from_health:
 		return null
 	var there := get_tree().get_nodes_in_group("animals").any(func(a: Node) -> bool:
 		return a.data == species and not a.leaving and Regions.nearest(a.global_position) == to)
+	if not there and here and here != to and String(to.id) in species.travels_to and can_reach(species, to):
+		there = randf() < species.travel_chance  # (they visited where the ranger couldn't see)
 	if not there or sprouted(species.seeds_tree, to) >= species.seeds_max:
 		return null
 	var cell := _seed_spot(species.seeds_tree, to)

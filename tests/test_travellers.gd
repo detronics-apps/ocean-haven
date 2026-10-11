@@ -85,6 +85,16 @@ func _initialize() -> void:
 		travellers.spread_seeds(booby)
 	_expect(travellers.sprouted(palm, reef) == booby.seeds_max, "up to %d palms (%d)" % [booby.seeds_max, travellers.sprouted(palm, reef)])
 	booby_visitor.free()
+	for tree in get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data == palm and b != sprout and regions.nearest(b.global_position) == reef):
+		tree.free()
+	travellers.get("_since")[booby.id] = clock.day - 100  # (they've spread as far as the Reef)
+	var unseen: Node = null
+	for i in 40:  # (the ranger on the Starting Island: no booby to be seen on the Reef)
+		unseen = travellers.spread_seeds(booby, region.call("home_island"))
+		if unseen:
+			break
+	_expect(unseen != null and regions.nearest(unseen.global_position) == reef,
+		"seeds every morning wherever the ranger is: a palm comes up on the Reef while they're away")
 	var tern: Resource = load("res://data/animals/arctic_tern.tres")
 	var pine: Resource = load("res://data/buildings/shore_pine.tres")
 	var arctic: Resource = region.call("arctic_ocean")
