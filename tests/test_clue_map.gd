@@ -93,6 +93,10 @@ func _initialize() -> void:
 	var texts: Array = map._detail_text.get_children().filter(func(c: Node) -> bool: return c is Label).map(func(l: Label) -> String: return l.text)
 	_expect(texts[1] == "People, on land and boats" and texts.filter(func(t: String) -> bool: return t.begins_with("• ")).size() == 2,
 		"one short sentence (the answer), then what was seen, nothing twice: %s" % [texts])
+	map.set_step(2)
+	map._canvas.position = Vector2(map.size.x * 0.25, map.size.y) # (the board's top edge low: bare cork above it)
+	map.tap(Vector2(map.size.x * 0.25, 8))
+	_expect(not map._detail.visible and map._focus == &"" and map.step == 0, "a tap on the bare cork: back to the whole board, the note closed")
 
 	# A drag pans; it isn't a tap.
 	var before: Vector2 = map._canvas.position

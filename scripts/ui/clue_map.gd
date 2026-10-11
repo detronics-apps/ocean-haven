@@ -611,7 +611,8 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 
 
-## A tap at `at` (in the map's own coordinates): a card shows its details, a slot zooms to it.
+## A tap at `at` (in the map's own coordinates): a card shows its details, a slot zooms to it, the
+## bare cork goes back to the whole board.
 func tap(at: Vector2) -> void:
 	if _detail.visible and _detail.get_rect().has_point(at):
 		return
@@ -625,6 +626,10 @@ func tap(at: Vector2) -> void:
 			set_step(maxi(step, 1))
 			centre_on(_pins[slot])
 			return
+	# The bare cork: back to the whole board, any open note closed.
+	_detail.visible = false
+	_focus = &""
+	set_step(0)
 
 
 # --- Detail panel ---
