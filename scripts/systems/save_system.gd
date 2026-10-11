@@ -92,17 +92,23 @@ func _new_game_asked() -> bool:
 ## fresh start for every system); elsewhere the save is erased and the game restarts.
 func start_over() -> void:
 	_world = null  # (no autosave over it on the way out)
+	erase(PATH)
 	if OS.has_feature("web"):
 		JavaScriptBridge.eval("location.href = location.pathname + '?new=1';")
 		return
-	erase(PATH)
 	OS.create_process(OS.get_executable_path(), OS.get_cmdline_args())
 	get_tree().quit()
 
 
 ## Throws away the save at `path` (the file and, on the web, its localStorage copy): a new game.
 func erase(path: String) -> void:
-	if FileAccess.file_exists(path):
+	if OS.has_feature("web"):
+		# A deleted file isn't passed on to the browser's storage (only a file closed after
+		# writing is), so a reload could bring the old save back: leave an empty one (= no save).
+		var blank := FileAccess.open(path, FileAccess.WRITE)
+		if blank:
+			blank.close()
+	elif FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
 	if OS.has_feature("web"):
 		JavaScriptBridge.eval("try { localStorage.removeItem(%s); } catch (e) {}" % JSON.stringify("bluehaven:" + path))

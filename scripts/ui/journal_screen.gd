@@ -221,7 +221,8 @@ func _backup_card() -> Control:
 	_code_status = status
 	var paste := BuildMode._big_button("Load save code", Color("2a78a8"))
 	row.add_child(paste)
-	# After Load: a way to start over instead (asks first: a second tap).
+	# After Load: a way to start over instead (asks first: a second tap). On the web it's in the
+	# load box itself (WebCodeBox), so the button here is only for other platforms.
 	var fresh := BuildMode._big_button("Start a new game", Color("b5533c"))
 	fresh.name = "NewGame"
 	fresh.visible = false
@@ -234,7 +235,7 @@ func _backup_card() -> Control:
 		status.text = "This starts again from the beginning. Copy your save code first if you want to keep it.")
 	paste.pressed.connect(func() -> void:
 		status.text = _load_code()
-		fresh.visible = true)
+		fresh.visible = not OS.has_feature("web"))
 	box.add_child(fresh)  # (its own line: three buttons in a row don't fit a phone)
 	box.add_child(status)
 	return panel
@@ -281,6 +282,10 @@ func _process(delta: float) -> void:
 	if _code_check > 0.0:
 		return
 	_code_check = 0.3
+	if WebCodeBox.take_new_game():
+		_waiting_for_code = false
+		SaveGame.start_over()
+		return
 	var code := WebCodeBox.take()
 	if code != "":
 		_waiting_for_code = false

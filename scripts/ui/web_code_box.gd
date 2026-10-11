@@ -18,8 +18,13 @@ static func show_code(code: String) -> void:
 
 ## Asks for a code: paste it, or load a saved file. The game picks it up with take().
 static func ask_code() -> void:
-	JavaScriptBridge.eval(_box_js("Load a save code", "Paste your whole save code (it starts with BH1:), or load a save file. This replaces your current progress.",
+	JavaScriptBridge.eval(_box_js("Load a save code", "Paste your whole save code (it starts with BH1:), or load a save file. This replaces your current progress. Or start a new game.",
 		"", false))
+
+
+## Whether the ranger asked for a new game in the box (taken only once).
+static func take_new_game() -> bool:
+	return JavaScriptBridge.eval("(function(){var n=!!window.__bhNew;window.__bhNew=false;return n;})()", true) == true
 
 
 ## The code the ranger loaded in the box ("" while there's none); taken only once.
@@ -48,7 +53,11 @@ static func _box_js(title: String, note: String, code: String, showing: bool) ->
 		r.onload = function(){ area.value = r.result; msg.textContent = 'Loaded the file: tap Load.'; }; r.readAsText(f); };
 	panel.appendChild(file);
 	add('Load from a file', function(){ file.click(); });
-	add('Cancel', close);"""
+	add('Cancel', close);
+	var fresh = document.createElement('button'); fresh.textContent = 'Start a new game';
+	fresh.style.cssText = %s; fresh.style.background = '#b5533c'; fresh.style.display = 'block'; fresh.style.marginTop = '18px';
+	fresh.onclick = function(){ if (confirm('Start a new game? Your current progress will be lost.')) { window.__bhNew = true; close(); } };
+	panel.appendChild(fresh);""" % JSON.stringify(BUTTON)
 	return """(function(){
 	var old = document.getElementById('bh-code-box'); if (old) old.remove();
 	var box = document.createElement('div'); box.id = 'bh-code-box'; box.style.cssText = %s;
