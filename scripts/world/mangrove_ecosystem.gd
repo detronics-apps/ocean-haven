@@ -98,6 +98,9 @@ var _nests_at: Array[Vector2] = []
 ## Narrow channels (water with land on both sides) where a water gate can go, marked with
 ## two little posts.
 var _gate_spots: Array[Vector2i] = []
+## Water a gate needs behind it, in tiles along the channel (and at least 1 in front): no posts
+## where a channel just ends in mud.
+@export var gate_water_behind := 2
 const GATE := preload("res://data/buildings/water_gate.tres")
 
 
@@ -105,9 +108,30 @@ func _find_gate_spots() -> void:
 	_gate_spots.clear()
 	var land := func(c: Vector2i) -> bool: return _terrain(c) in LAND
 	for cell in _ground.get_used_cells():
-		if _is_water(cell) and ((land.call(cell + Vector2i.LEFT) and land.call(cell + Vector2i.RIGHT))
-				or (land.call(cell + Vector2i.UP) and land.call(cell + Vector2i.DOWN))):
+		if not _is_water(cell):
+			continue
+		var along := Vector2i.ZERO  # the way the channel runs (banks on the other two sides)
+		if land.call(cell + Vector2i.LEFT) and land.call(cell + Vector2i.RIGHT):
+			along = Vector2i.UP
+		elif land.call(cell + Vector2i.UP) and land.call(cell + Vector2i.DOWN):
+			along = Vector2i.LEFT
+		if along == Vector2i.ZERO:
+			continue
+		# A gate holds water back: water on both sides of it, at least `gate_water_behind` on one.
+		var ahead := _water_run(cell, along)
+		var behind := _water_run(cell, -along)
+		if mini(ahead, behind) >= 1 and maxi(ahead, behind) >= gate_water_behind:
 			_gate_spots.append(cell)
+
+
+## Water tiles in a row from `cell` (not counting it) going `step`, up to 8 (open sea counts).
+func _water_run(cell: Vector2i, step: Vector2i) -> int:
+	var count := 0
+	var at := cell + step
+	while count < 8 and (_is_water(at) or _terrain(at) == "sea"):
+		count += 1
+		at += step
+	return count
 
 
 func _gate_at(cell: Vector2i) -> Building:

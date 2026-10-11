@@ -370,7 +370,8 @@ and landscape, and the web page re-measures the window after the phone is turned
 Litter: only tents, Ranger Houses and recycling centres (6 litter, and 6 per upgrade:
 BuildingData.upgrade_litter) are built with litter; everything else costs funding and wood (its
 old litter cost added as 3 funding a piece). A recycling centre opens a menu (RecycleMenu):
-recycle 25 / 50 / 75 / 100 % of the carried litter. Mangrove gate spots (narrow channels) are
+recycle 25 / 50 / 75 / 100 % of the carried litter. Mangrove gate spots (narrow channels, one tile wide, with water on both sides and at least
+`gate_water_behind` (2) tiles of it on one side) are
 marked with posts and offer "Build a water gate here". Menu scroll bars are finger-wide.
 
 **MVP 0.7 — "Tropical Reef" (current).** Design: `docs/MASTER_PLAN.md` Step 5 (the user's spec,

@@ -203,14 +203,8 @@ Each specific card is activated by its island's first "it used to be…" hello.
 | ex_P | Polar Ocean | "when seasonal ice melted, a pup living on it had to move" |
 
 ### 3 — Watch first
-**S3.D · What lives in the dark?** (L)
-- Activate: `met:imani`
-- Evidence:
-  - `mapped`: 🔭 a dark area mapped
-  - `new_X`: 🆕 species X **added to the Journal for the first time** after this card appeared (the Journal records each species' first photo once: `Journal.has` turns true then). X ∈ {sperm whale, anglerfish, sixgill shark, giant squid}
-- Answer: `mapped + 2 of [new_*]`
-- Statement: *The dark water held animals new to my Journal: the {X1} and the {X2}. Mapping it and watching helped me find them.*
-- It doesn't claim the player had never seen them, only that they were new to the Journal.
+**S3.D · What lives in the dark?** — removed (owner review): it only said "I photographed new
+animals", which the Journal already shows, and connected to nothing else on the board.
 
 **S3.G · How can we help if we don't know what's wrong?** (L)
 - Activate: the first prediction asked
@@ -452,7 +446,7 @@ answered and never blue; faint threads run to every lit pin.
 |---|---|
 | **G** | S1.1, S4.A, F |
 | **RT** | S4.D (asked, reported and fixed are all ending prerequisites; colder-first completes it 6th) |
-| **L** | O1, O2, S2.K, S2.M, S2.R, S2.P, S2.G, S3.D, S3.G, S4.B, S4.C, S5.G, S6.G, S6.T, S7.G, S7.Me |
+| **L** | O1, O2, S2.K, S2.M, S2.R, S2.P, S2.G, S3.G, S4.B, S4.C, S5.G, S6.G, S6.T, S7.G, S7.Me |
 | **O** | S2.W (only with willow), S5.A, S6.N, S6.S, S7.R |
 
 - S6.T moves from O to L: travelling dolphins, turtles and whales spread by themselves along the
@@ -597,7 +591,7 @@ Tests: `test_clue_board`, `test_clue_map`, `test_net_tag`, `test_clue_ocean`, `t
 `test_clue_setbacks` (plus a check in `test_save`).
 
 **Card ids:** o1_turtles, o2_net_tag · s1_beyond · s2k_kelp, s2m_pools, s2r_reef, s2p_pups,
-s2g_balance · s3d_deep, s3g_watch · s4a_sources, s4b_prevent, s4c_nets, s4d_fibres ·
+s2g_balance · s3g_watch · s4a_sources, s4b_prevent, s4c_nets, s4d_fibres ·
 s5a_too_much, s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar, s6n_<rescue> (6) ·
 s7r_events, s7g_keep_going, s7me_part · final_who.
 
@@ -652,7 +646,7 @@ globe on one string, from when the end credits start (Fleet flag "credits_rolled
 |---|---|
 | People | S3.G guesses · S7.Me my part |
 | Trash | O2 net tag · S4.A sources · S4.D fibres |
-| Animals | O1 turtles · S2.R reef · S2.G one thing missing · S3.D the dark · S6.T travel · S6.N seen again (6 cards, one note) |
+| Animals | O1 turtles · S2.R reef · S2.G one thing missing · S6.T travel · S6.N seen again (6 cards, one note) |
 | Places | S1.1 more out there · S6.G one ocean |
 | Storms | S7.R big events · S7.G setbacks |
 | Plants | S2.K kelp · S6.S new trees (2 cards, one note) |
@@ -666,7 +660,8 @@ globe last). The circle is as small as it can be with clear cork (90 px) between
 
 **Strings:** a note's links (ClueData.links) to the other sections its story touches. Zoomed right
 out, one string per two sections with anything in common (tag to tag); closer in, each note's own
-strings. Every section is strung to the globe. All strings are the same red, 3.5 px on screen at
+strings. Every section is strung to the globe. Every note's story is strung to every section it touches (e.g. the turtle caught in litter: Animals ↔
+Trash; the tag: Trash ↔ Animals; stories with a person: ↔ People). All strings are the same red, 3.5 px on screen at
 every zoom. A "Strings: simple / detailed" button (by the zoom buttons; kept while the game runs)
 chooses: simple shows only the section-to-section strings at every zoom; detailed shows each note's
 own strings once zoomed in. The string is solid only zoomed right out; closer in it fades (40 %
@@ -676,7 +671,8 @@ down to 18 % at the closest step) so the words on the notes read through it.
 full sentences are in the details on a tap. Pictures say the rest: one card per thing seen
 (ClueData.evidence_pictures: evidence id -> the game's own picture), fanned like a hand of cards,
 growing as the ranger finds more. Notes in one group (ClueData.group: "trees", "seen_again") show
-as one note. The net-tag note is a luggage tag with the hook island on it.
+as one note. The net-tag note is a close-up: the ghost net with the luggage tag on it, the hook island's black
+logo on the tag.
 
 **Zoom:** "everything fits", then steps of about 1.5x up to 1.15x (no big jump).
 

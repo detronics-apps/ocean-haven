@@ -30,3 +30,4 @@ evidence_pictures = {
 "b_trees": ExtResource("14_ev"),
 "b_help": ExtResource("15_ev")
 }
+links = PackedStringArray("trash", "plants")

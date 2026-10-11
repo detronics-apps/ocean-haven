@@ -30,6 +30,14 @@ func _initialize() -> void:
 	var eco: Node = world.get_node("MangroveIsland/Ecosystem")
 	var ground: TileMapLayer = world.get_node("MangroveIsland/Ground")
 
+	# --- Gate spots: only across a real channel, water on both sides (2+ behind), never a dead end ---
+	var spots: Array = eco._gate_spots
+	_expect(not spots.is_empty() and spots.all(func(c: Vector2i) -> bool:
+		var along := Vector2i.UP if eco._terrain(c + Vector2i.LEFT) in eco.LAND else Vector2i.LEFT
+		var a: int = eco._water_run(c, along)
+		var b: int = eco._water_run(c, -along)
+		return mini(a, b) >= 1 and maxi(a, b) >= eco.gate_water_behind), "every gate spot has water behind it (%d spots)" % spots.size())
+
 	# --- Arriving: every species there but struggling, the pools cut off, health near 0 ---
 	_expect(eco.pool_count() == 5 and eco.pools_connected() == 0, "5 nursery pools, all cut off by silt (%d linked)" % eco.pools_connected())
 	var crabs: Array = eco.living(load("res://data/animals/mangrove_crab.tres"))

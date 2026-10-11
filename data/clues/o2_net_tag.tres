@@ -20,6 +20,6 @@ leads_to = PackedStringArray("s4c_nets")
 guarantee = &"L"
 picture_style = &"tag"
 section = &"trash"
-links = PackedStringArray("people", "places")
+links = PackedStringArray("people", "places", "animals")
 short = "The Hook's lost net"
 opens_board = "As you go on with your journey, you can always find the clues here. The Clue Board won't open by itself again."

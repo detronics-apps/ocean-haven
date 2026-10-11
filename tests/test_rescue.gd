@@ -138,6 +138,9 @@ func _initialize() -> void:
 	drag.call(vet_now, vet_now.call("_tool_slot", 2), vet_now.call("_point", vet_now.call("_wound")))
 	await process_frame
 	_expect(rescues.wounds_left() == 0, "the plaster dragged onto the flipper: patched")
+	var now_vet: Control = screen.get("_content").find_child("VetScene", true, false)
+	_expect(now_vet != null and (now_vet.get("_hearts") as Array).any(func(p: Dictionary) -> bool: return p.kind == &"patch"),
+		"it reacts to each kind of care: stars for a plaster (hearts, a fish and sparkles for the rest)")
 	screen.close()
 
 	# --- Left alone: the fed bar empties, then health and calm drop (never to nothing) ---

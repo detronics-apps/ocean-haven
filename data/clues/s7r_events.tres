@@ -20,7 +20,7 @@ statements = PackedStringArray("rec_storm, prep_storm => {g0.1} What I'd secured
 leads_to = PackedStringArray("s7g_keep_going")
 guarantee = &"O"
 section = &"storms"
-links = PackedStringArray("trash")
+links = PackedStringArray("trash", "land_water", "plants")
 title = "What if a storm undoes my work?"
 short = "It recovers"
 evidence_pictures = {

@@ -37,7 +37,7 @@ var _soothing := 0.0
 var _shaken := 0.0
 var _last := Vector2.ZERO
 var _crumbs: Array[Dictionary] = []
-var _hearts: Array[Dictionary] = []
+static var _hearts: Array[Dictionary] = []  # (static: they keep floating up when the screen rebuilds after a care)
 var _hatching := -1.0
 ## The colour just above each eye (its eyelid when it blinks).
 var _lids: Array[Color] = []
@@ -248,13 +248,39 @@ func _drop(at: Vector2) -> void:
 
 func _done(action: StringName) -> void:
 	_dragging = &""
-	_burst(_animal_rect().get_center() + Vector2(0, -_animal_rect().size.y * 0.3), 6)
+	_burst(_animal_rect().get_center() + Vector2(0, -_animal_rect().size.y * 0.3), 6, action)
 	cared.emit(action)
 
 
-func _burst(at: Vector2, count: int) -> void:
+## Little pictures that float up from the animal: hearts when comforted, a fish when fed, green
+## sparkles for medicine, gold stars for a plaster.
+func _burst(at: Vector2, count: int, kind := &"comfort") -> void:
 	for i in count:
-		_hearts.append({"pos": at + Vector2(randf_range(-30, 30), randf_range(-10, 10)), "life": randf_range(0.8, 1.4)})
+		_hearts.append({"pos": at + Vector2(randf_range(-30, 30), randf_range(-10, 10)), "life": randf_range(0.8, 1.4), "kind": kind})
+
+
+func _draw_pop(pop: Dictionary) -> void:
+	var at: Vector2 = pop.pos
+	match pop.kind:
+		&"feed":  # a little fish: yum
+			var fish := Color("ffa94d")
+			draw_set_transform(at, 0.0, Vector2(1.0, 0.6))
+			draw_circle(Vector2.ZERO, 10.0, fish)
+			draw_set_transform(Vector2.ZERO)
+			draw_colored_polygon(PackedVector2Array([at + Vector2(7, 0), at + Vector2(17, -7), at + Vector2(17, 7)]), fish)
+			draw_circle(at + Vector2(-5, -1), 1.8, Color("1f2a36"))
+		&"medicine":  # a green sparkle
+			var green := Color("7fe0a0")
+			draw_line(at + Vector2(-10, 0), at + Vector2(10, 0), green, 5.0)
+			draw_line(at + Vector2(0, -10), at + Vector2(0, 10), green, 5.0)
+			draw_circle(at, 3.0, Color(1, 1, 1, 0.8))
+		&"patch":  # a gold star
+			var points := PackedVector2Array()
+			for i in 10:
+				points.append(at + Vector2.from_angle(-PI / 2.0 + i * PI / 5.0) * (11.0 if i % 2 == 0 else 5.0))
+			draw_colored_polygon(points, Color("ffd966"))
+		_:
+			ActivityScreen.draw_heart(self, at)
 
 
 ## Does `action` the way it's done by hand (tests, and keyboard / controller users).
@@ -318,8 +344,8 @@ func _draw() -> void:
 		draw_string(ThemeDB.fallback_font, at + Vector2(-34, 46), label, HORIZONTAL_ALIGNMENT_CENTER, 68, 13, Color(1, 1, 1, 0.9 if can else 0.5))
 	if _dragging != &"":
 		_draw_tool(_tool_kind(_dragging), _at, 1.0)
-	for heart in _hearts:
-		ActivityScreen.draw_heart(self, heart.pos)
+	for pop in _hearts:
+		_draw_pop(pop)
 
 
 func _comforted_today() -> bool:

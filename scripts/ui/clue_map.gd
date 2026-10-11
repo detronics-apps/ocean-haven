@@ -48,6 +48,8 @@ const PICTURE := 64.0
 const STRING_PX := 3.5
 ## The note everything comes together in, and the question after it.
 const GLOBE := &"conclusion_globe"
+## The old net the tag hangs on (the tag note's close-up).
+const NET_PICTURE := preload("res://assets/items/ghost_net.svg")
 const GLOBE_NOTE := Vector2(440, 360)
 ## The note the board starts with (the turtle's question), bigger than the rest.
 const START_NOTE := Vector2(420, 230)
@@ -367,8 +369,22 @@ func _card(one: ClueData, at: Vector2) -> Control:
 			fan.position = Vector2(16, note.y - PICTURE - 12)
 			panel.add_child(fan)
 			label.offset_bottom = -(PICTURE + 14)  # (the words above the picture cards)
-	elif one.picture_style == &"tag" and one.picture:
-		panel.add_child(_luggage_tag(one.picture))
+	elif one.picture_style == &"tag" and one.picture:  # a close-up: the old net, its tag hanging on it
+		var net := TextureRect.new()
+		net.texture = NET_PICTURE
+		net.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		net.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		net.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		net.size = Vector2(150, 104)
+		net.position = Vector2(18, note.y - net.size.y - 8)
+		net.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		panel.add_child(net)
+		var tag := _luggage_tag(one.picture)
+		tag.scale = Vector2.ONE * 1.5
+		tag.position = Vector2(150, note.y - tag.size.y * 1.5 - 4)
+		panel.add_child(tag)
+		label.offset_right = -14
+		label.offset_bottom = -(net.size.y + 6)  # (any words above the picture)
 	elif not fan_pictures.is_empty():
 		var fan := _picture_fan(fan_pictures)
 		fan.position = note - Vector2(PICTURE + 10, PICTURE + 8)
