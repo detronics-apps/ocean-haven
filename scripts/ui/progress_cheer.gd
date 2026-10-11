@@ -4,7 +4,8 @@ extends Control
 ## pause): sparkles round the ranger and a chime each time the island they're on gets 5 %
 ## healthier than it has been (STEP); a card with the animal's picture when one comes back to
 ## an island (a bigger one the first time a species comes back: Fleet flag "returned_<id>");
-## and a "+N" rising from the funding when money comes in.
+## and a "+N" rising from the funding when money comes in; a pinned paper note when something is
+## added to the Clue Board (gold-edged and sparkling when a question is answered).
 
 ## Health steps worth a sparkle.
 const STEP := 0.05
@@ -142,6 +143,13 @@ func show_return(species: AnimalData, note: String, region: RegionData = null) -
 		_next_card()
 
 
+## Something new on the Clue Board: a note in the card queue.
+func show_clue(one: ClueData, what: StringName) -> void:
+	_cards.append({"clue": one, "what": what})
+	if not _card_tween or not _card_tween.is_running():
+		_next_card()
+
+
 ## What the island's people say about it: the card's note once, never "joined" twice. Notes
 ## that already name the animal ("Another dolphin has joined the pod: ...") are said as they
 ## are; "It has come to ..." gets the animal's name.
@@ -160,6 +168,9 @@ func _next_card() -> void:
 	if _cards.is_empty():
 		return
 	var shown: Dictionary = _cards.pop_front()
+	if shown.has("clue"):
+		_clue_card(shown.clue, shown.what)
+		return
 	var species: AnimalData = shown.species
 	var first: bool = shown.first
 	Sound.play(&"first_arrive" if first else &"arrive", 0.0, 0.0)
@@ -211,6 +222,87 @@ func _next_card() -> void:
 	_card_tween.tween_property(_card, "modulate:a", 1.0, 0.3)
 	_card_tween.tween_callback(func() -> void: sparkle(_card.get_global_rect().get_center(), 22 if first else 10))
 	_card_tween.tween_interval(CARD_SECONDS + (1.5 if first else 0.0))
+	_card_tween.tween_property(_card, "modulate:a", 0.0, 0.5)
+	_card_tween.tween_callback(_next_card)
+
+
+## A paper note pinned to the top of the screen, tilted a little like on the board: what's new
+## (a clue, a question, an answer), its picture and its words.
+func _clue_card(one: ClueData, what: StringName) -> void:
+	var answered := what == &"answered"
+	Sound.play(&"first_arrive" if answered else &"page", 0.0, 0.0)
+	_card = PanelContainer.new()
+	_card.name = "ClueCard"
+	_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("f6efd9")
+	style.border_color = Color("ffd27a") if answered else Color("c9b78f")
+	style.set_border_width_all(4 if answered else 2)
+	style.set_corner_radius_all(4)
+	style.set_content_margin_all(14)
+	style.content_margin_top = 20
+	style.shadow_color = Color(0, 0, 0, 0.35)
+	style.shadow_size = 6
+	style.shadow_offset = Vector2(3, 4)
+	_card.add_theme_stylebox_override("panel", style)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 14)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_card.add_child(row)
+	var pictures := ClueMap.pictures_of(one)
+	if not pictures.is_empty():
+		var picture := TextureRect.new()
+		picture.texture = pictures[0]
+		picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.custom_minimum_size = Vector2(64, 64)
+		row.add_child(picture)
+	var text := VBoxContainer.new()
+	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(text)
+	var head := Label.new()
+	head.text = {&"found": "NEW CLUE", &"open": "NEW QUESTION", &"answered": "ANSWERED!"}[what]
+	head.add_theme_font_size_override("font_size", 15)
+	head.add_theme_color_override("font_color", Color("b8862b") if answered else Color("c0392b"))
+	text.add_child(head)
+	var line := Label.new()
+	if answered:
+		line.text = one.short if one.short != "" else Clues.statement(one)
+	elif what == &"open":
+		line.text = one.title if one.title != "" else ClueMap.question_of(one)
+	else:
+		line.text = one.clue_text
+	line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	line.custom_minimum_size.x = 300
+	line.add_theme_font_size_override("font_size", 19)
+	line.add_theme_color_override("font_color", Color("1f4f73") if answered else Color("3a2f25"))
+	text.add_child(line)
+	var where := Label.new()
+	where.text = "On your Clue Board (Journal)"
+	where.add_theme_font_size_override("font_size", 13)
+	where.add_theme_color_override("font_color", Color("8a7a60"))
+	text.add_child(where)
+	var card := _card
+	card.draw.connect(func() -> void:  # the red push pin at the top
+		var top := Vector2(card.size.x / 2.0, 9.0)
+		card.draw_circle(top + Vector2(1, 2), 7.0, Color(0, 0, 0, 0.3))
+		card.draw_circle(top, 7.0, Color("d0453a"))
+		card.draw_circle(top + Vector2(-2, -2), 2.5, Color(1, 1, 1, 0.6)))
+	add_child(_card)
+	_card.reset_size()
+	_card.pivot_offset = _card.size / 2.0
+	_card.rotation_degrees = -1.5
+	var rest := Vector2((size.x - _card.size.x) / 2.0, 104.0)
+	_card.position = rest - Vector2(0, 40)
+	_card.modulate.a = 0.0
+	_card_tween = _card.create_tween()
+	_card_tween.set_parallel(true)
+	_card_tween.tween_property(_card, "modulate:a", 1.0, 0.3)
+	_card_tween.tween_property(_card, "position", rest, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_card_tween.set_parallel(false)
+	_card_tween.tween_callback(func() -> void: sparkle(_card.get_global_rect().get_center(), 22 if answered else 8))
+	_card_tween.tween_interval(CARD_SECONDS + (1.0 if answered else 0.0))
 	_card_tween.tween_property(_card, "modulate:a", 0.0, 0.5)
 	_card_tween.tween_callback(_next_card)
 

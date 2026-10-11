@@ -32,6 +32,11 @@ func _initialize() -> void:
 	_expect(not turtle.tangled and fleet.has_flag(&"net_tag_found"), "freeing it finds the tag")
 	clues.check()
 	_expect(clues.is_found(&"o2_net_tag") and not clues.is_open(&"o2_net_tag"), "the tag is pinned as a clue, no question yet")
+	await process_frame
+	var cheer: Node = world.find_child("ProgressCheer", true, false)
+	_expect(cheer.find_child("ClueCard", true, false) != null
+		and (cheer.get("_cards") as Array).any(func(c: Dictionary) -> bool: return c.get("clue") == clues.card(&"o2_net_tag") and c.what == &"found"),
+		"pinned notes slide in, one at a time: the tag's NEW CLUE waits its turn")
 	var journal_screen: Node = world.get_node("JournalScreen")
 	await create_timer(1.6).timeout
 	var pinned: Node = journal_screen.find_child("PinnedNote", true, false)

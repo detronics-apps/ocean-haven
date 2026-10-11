@@ -681,7 +681,9 @@ Board (once; Fleet flag "clue_board_shown"). When the first turtle is freed (the
 `opens_board`) it opens again, with a note pinned at the top: "As you go on with your journey, you
 can always find the clues here. The Clue Board won't open by itself again." Never more than twice a game, whatever asks (JournalScreen.open_clues: Fleet flags "board_auto_1" / "board_auto_2"). (If the turtle came
 first, Tom's opening is skipped.) The big turtle note and the globe keep their words even zoomed
-right out. Tapping the bare cork closes any open note and goes back to the whole board. Tapping a note shows one short sentence (the question, or the answer once it's blue)
+right out. Anything added (a clue, a question, an answer) slides in at the top as a pinned paper note with its
+picture (ProgressCheer.show_clue, in the animal cards' queue; "NEW CLUE" / "NEW QUESTION" /
+"ANSWERED!", gold-edged with sparkles for an answer); never a popup, nothing to tap. Tapping the bare cork closes any open note and goes back to the whole board. Tapping a note shows one short sentence (the question, or the answer once it's blue)
 and what was seen, nothing said twice. The tag's picture is the hook island's black logo
 (`tools/make_hook_logo.gd`). Maya's first question asks for photos of the animals (one photo).
 
