@@ -655,8 +655,9 @@ globe on one string, from when the end credits start (Fleet flag "credits_rolled
 | Better ways | S4.B stop it · S4.C marked nets |
 
 **Each section is a cluster:** a bigger heading with its notes round it, in a grid of spots
-around the heading (the spot facing away from the globe first, then beside, the side facing the
-globe last). The circle is as small as it can be with clear cork (90 px) between sections.
+around the heading, lined up towards and away from the globe (outer side first), sideways only
+when that line fills, so the sections sit close round a small circle. The circle is as small as
+it can be with clear cork (90 px) between sections.
 
 **Strings:** a note's links (ClueData.links) to the other sections its story touches. Zoomed right
 out, one string per two sections with anything in common (tag to tag); closer in, each note's own

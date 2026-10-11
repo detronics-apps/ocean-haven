@@ -174,14 +174,14 @@ func rebuild() -> void:
 	var tag_centres := {}
 	var card_centres := {}
 	var shape := Vector2(1.0, 0.72) if landscape() else Vector2(0.72, 1.0)
-	var radius := 300.0
+	var radius := 200.0
 	for attempt in 60:
 		tag_centres.clear()
 		card_centres.clear()
 		_place_sections(by_section, shape * radius, tag_centres, card_centres)
 		if not _overlapping(tag_centres, card_centres):
 			break
-		radius *= 1.08
+		radius *= 1.03
 	var low := Vector2(INF, INF)
 	var high := -low
 	for centre: Vector2 in tag_centres.values():
@@ -221,9 +221,9 @@ func rebuild() -> void:
 
 
 ## Puts every section's heading on the circle (`radius`: its half width and height) and its notes
-## round the heading: in the cells of a grid around it, the cell facing away from the globe first,
-## then the ones beside it, the side facing the globe last (a big note takes its cell and the two
-## next to it).
+## round the heading: in the cells of a grid around it, in a line through the heading towards and
+## away from the globe (the outer side first), then beside it (a big note takes its cell and the
+## two next to it).
 func _place_sections(by_section: Dictionary, radius: Vector2, tag_centres: Dictionary, card_centres: Dictionary) -> void:
 	var cell := CARD + GAP
 	for i in SECTIONS.size():
@@ -236,23 +236,32 @@ func _place_sections(by_section: Dictionary, radius: Vector2, tag_centres: Dicti
 		var heading: Vector2 = out * radius
 		tag_centres[section] = heading
 		var spots: Array[Vector2i] = []
-		for gy in range(-2, 3):
-			for gx in range(-1, 2):
+		for gy in range(-3, 4):
+			for gx in range(-2, 3):
 				if Vector2i(gx, gy) != Vector2i.ZERO:
 					spots.append(Vector2i(gx, gy))
-		var ring := func(spot: Vector2i) -> float:  # (nearest ring first, outward before inward)
-			return maxi(absi(spot.x), absi(spot.y)) * 10.0 - Vector2(spot).normalized().dot(out)
+		# Notes line up towards and away from the globe (out first), not along the circle, so the
+		# sections can sit close together round a small circle; sideways only when that fills up.
+		var ring := func(spot: Vector2i) -> float:
+			var offset := Vector2(spot) * cell
+			var along := offset.dot(out)
+			return absf(offset.dot(out.orthogonal())) * 2.0 + absf(along) - along * 0.1
 		spots.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return ring.call(a) < ring.call(b))
 		var taken := {}
 		var ordered := cards.filter(func(c: ClueData) -> bool: return c.big) + cards.filter(func(c: ClueData) -> bool: return not c.big)
 		for one: ClueData in ordered:
 			for spot in spots:
-				if taken.has(spot) or (one.big and (taken.has(spot + Vector2i(1, 0)) or taken.has(spot - Vector2i(1, 0)))):
+				# (a big note is wider and taller: the cells either side, and the row it reaches into
+				# away from the heading, are its too)
+				var covers: Array[Vector2i] = [spot]
+				if one.big:
+					var reach := Vector2i(0, 1 if spot.y >= 0 else -1)
+					for dx in [-1, 0, 1]:
+						covers.append_array([spot + Vector2i(dx, 0), spot + Vector2i(dx, 0) + reach])
+				if covers.any(func(c: Vector2i) -> bool: return taken.has(c)):
 					continue
-				taken[spot] = true
-				if one.big:  # (wider and taller: the cells either side are its too)
-					taken[spot + Vector2i(1, 0)] = true
-					taken[spot - Vector2i(1, 0)] = true
+				for c in covers:
+					taken[c] = true
 				var offset := Vector2(spot) * cell
 				if one.big:
 					offset.y += signf(offset.y) * (START_NOTE.y - CARD.y) / 2.0
@@ -271,11 +280,11 @@ const SECTION_GAP := 90.0
 func _overlapping(tag_centres: Dictionary, card_centres: Dictionary) -> bool:
 	var boxes: Array = []  # [rect, section]
 	for section in tag_centres:
-		boxes.append([Rect2(tag_centres[section] - PIN / 2.0, PIN).grow(SECTION_GAP), section])
+		boxes.append([Rect2(tag_centres[section] - PIN / 2.0, PIN).grow(SECTION_GAP / 2.0), section])
 	for id in card_centres:
 		var one := Clues.card(id)
 		var size := note_size(one)
-		boxes.append([Rect2(card_centres[id] - size / 2.0, size).grow(SECTION_GAP), one.section])
+		boxes.append([Rect2(card_centres[id] - size / 2.0, size).grow(SECTION_GAP / 2.0), one.section])
 	for i in boxes.size():
 		for j in range(i + 1, boxes.size()):
 			if boxes[i][1] != boxes[j][1] and (boxes[i][0] as Rect2).intersects(boxes[j][0]):
