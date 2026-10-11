@@ -220,8 +220,22 @@ func _backup_card() -> Control:
 	row.add_child(copy)
 	_code_status = status
 	var paste := BuildMode._big_button("Load save code", Color("2a78a8"))
-	paste.pressed.connect(func() -> void: status.text = _load_code())
 	row.add_child(paste)
+	# After Load: a way to start over instead (asks first: a second tap).
+	var fresh := BuildMode._big_button("Start a new game", Color("b5533c"))
+	fresh.name = "NewGame"
+	fresh.visible = false
+	fresh.pressed.connect(func() -> void:
+		if fresh.has_meta("sure"):
+			SaveGame.start_over()
+			return
+		fresh.set_meta("sure", true)
+		fresh.text = "Tap again: erase all progress"
+		status.text = "This starts again from the beginning. Copy your save code first if you want to keep it.")
+	paste.pressed.connect(func() -> void:
+		status.text = _load_code()
+		fresh.visible = true)
+	box.add_child(fresh)  # (its own line: three buttons in a row don't fit a phone)
 	box.add_child(status)
 	return panel
 

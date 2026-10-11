@@ -88,6 +88,18 @@ func _new_game_asked() -> bool:
 	return false
 
 
+## Starts a new game (Journal: "Start a new game"): the page reloads with ?new=1 on the web (a
+## fresh start for every system); elsewhere the save is erased and the game restarts.
+func start_over() -> void:
+	_world = null  # (no autosave over it on the way out)
+	if OS.has_feature("web"):
+		JavaScriptBridge.eval("location.href = location.pathname + '?new=1';")
+		return
+	erase(PATH)
+	OS.create_process(OS.get_executable_path(), OS.get_cmdline_args())
+	get_tree().quit()
+
+
 ## Throws away the save at `path` (the file and, on the web, its localStorage copy): a new game.
 func erase(path: String) -> void:
 	if FileAccess.file_exists(path):

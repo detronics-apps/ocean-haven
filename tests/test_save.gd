@@ -294,6 +294,15 @@ func _initialize() -> void:
 	_expect(_save.save_to(world, PATH) and FileAccess.file_exists(PATH), "(a save to start over from)")
 	_save.erase(PATH)
 	_expect(not FileAccess.file_exists(PATH) and not _save.load_from(world, PATH), "a new game: the save is gone, nothing to load")
+	# The Journal's save code card: after Load, a "Start a new game" button that asks first.
+	var card: Control = world.get_node("JournalScreen").call("_backup_card")
+	var fresh: Button = card.find_child("NewGame", true, false)
+	var load_button: Button = card.find_children("*", "Button", true, false).filter(func(b: Button) -> bool: return b.text == "Load save code")[0]
+	_expect(fresh != null and not fresh.visible, "no new-game button until Load is pressed")
+	load_button.pressed.emit()
+	fresh.pressed.emit()
+	_expect(fresh.visible and fresh.text.begins_with("Tap again"), "after Load: Start a new game, which asks first (a second tap)")
+	card.free()
 	world.free()
 
 	for f in [PATH, PATH + ".bad"]:
