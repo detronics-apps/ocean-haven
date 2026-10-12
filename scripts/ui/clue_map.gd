@@ -475,10 +475,19 @@ func _luggage_tag(picture: Texture2D) -> Control:
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	logo.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	logo.position = Vector2(5, 20)
-	logo.size = tag.size - Vector2(10, 26)
+	logo.position = Vector2(5, 18)
+	logo.size = tag.size - Vector2(10, 36)
 	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tag.add_child(logo)
+	var worn := Label.new()  # (the rest of the word worn away: DEEP, for the Deep Sea)
+	worn.text = "…EEP"
+	worn.add_theme_font_size_override("font_size", 11)
+	worn.add_theme_color_override("font_color", Color(0.24, 0.18, 0.1, 0.7))
+	worn.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	worn.position = Vector2(0, tag.size.y - 18)
+	worn.size = Vector2(tag.size.x, 16)
+	worn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tag.add_child(worn)
 	return tag
 
 

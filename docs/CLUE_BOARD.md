@@ -100,7 +100,7 @@ Notation: `A + B` = both groups; `2 of [...]`; `…_k` = the same k throughout (
 
 **O2 · The net tag** (clue → question; L)
 - Clue: 🆕`net_tag_found` when the first turtle is freed (new games: its net is a ghost net with a
-  worn tag, a hook-shaped mark and "…OOK"; old saves: "Tom kept the tag from your first turtle's
+  worn tag, a hook-shaped mark and "…EEP" (the Deep Sea); old saves: "Tom kept the tag from your first turtle's
   net").
 - Question *Where is the hook-shaped place?* activates on: 🔭 the Map open with the hook-shaped
   Deep Sea greyed out · any second island found. (Since `8909dbe` the Map button only appears

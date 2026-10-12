@@ -158,7 +158,7 @@ outcome = "I saw tracks below the lighthouse this morning, {name}. Just like whe
 script = ExtResource("2_t")
 id = &"tag_kept"
 when = PackedStringArray("helped:green_turtle", "!flag:net_tag_found")
-lines = PackedStringArray("Here, {name}. I kept this from the net your first turtle was caught in.", "An old tag: a hook-shaped mark and some letters, worn away. ...OOK. I've never seen a boat with that mark round here.")
+lines = PackedStringArray("Here, {name}. I kept this from the net your first turtle was caught in.", "An old tag: a hook-shaped mark and some letters, worn away. ...EEP. I've never seen a boat with that mark round here.")
 once = true
 marks = &"net_tag_found"
 
