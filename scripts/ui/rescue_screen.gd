@@ -106,7 +106,7 @@ func _fill() -> void:
 	var table := _vet_table(one)
 	_content.add_child(table)
 	if not Rescues.is_named():
-		_add_text(one.intro)
+		_add_text(Rescues.intro())
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
 		var field := LineEdit.new()

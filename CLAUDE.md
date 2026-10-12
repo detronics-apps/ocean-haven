@@ -761,6 +761,11 @@ live and says what it needs now.
 Care reactions: dragging a tool or pressing its button (both go through VetScene.do_care) pops
 icons (hearts, a fish, green sparkles, gold stars) and the animal moves its own way
 (RescueData.reactions per action: hop / wiggle / squash / bob / shiver / puff).
+Storm rescues (Rescues.storm_count, saved): once an island's own rescue has gone home, a storm
+striking that island hurts another young one of its kind; it's brought in like the first (when
+offer_when holds), never while another is in care (it waits its turn), at most Rescues.MAX_TIMES
+(3) of each kind in all. It's named and cared for the same way; released, its name is kept in
+done[id].others (ponytail: not placed in the world; the first one stays the tagged one about).
 Care costs funding: each bite of food and each dose of medicine (RescueData.food_cost 2 /
 medicine_cost 10; comfort and plasters are free; without the funding it says what it costs).
 Stroking (comfort_kind "stroke") calms it a step every 140 px stroked, while stroking

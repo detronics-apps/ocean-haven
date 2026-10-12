@@ -248,6 +248,31 @@ func _initialize() -> void:
 	await process_frame
 	_expect(world.get_node("Rescued_home_turtle").get_node("NameTag").visible, "met again (a photo): 'Milo' over it from now on")
 
+	# --- A storm hurts another young turtle: it can be cared for too, one at a time, 3 in all ---
+	var storm: Resource = load("res://data/events/coastal_storm.tres")
+	rescues.storm_count.clear()
+	root.get_node("RareEvents").struck.emit(storm, 0)
+	rescues.call("_offer")
+	_expect(rescues.in_care() == turtle and rescues.current.get("storm", false) and rescues.call("intro").contains("storm hurt another young"),
+		"after the storm another young turtle is brought in, once Milo has gone home")
+	root.get_node("RareEvents").struck.emit(storm, 0)  # (a second storm while one is in care: it waits its turn)
+	rescues.current.name = "Pip"
+	rescues.current.since = clock.now() - turtle.days - 1.0
+	rescues.release()
+	_expect(rescues.in_care() == null and rescues.storm_count[&"home_turtle"] == 1 and rescues.done[&"home_turtle"].name == "Milo"
+		and "Pip" in rescues.done[&"home_turtle"].others, "Pip goes home too; Milo stays the turtle that's seen about")
+	rescues.call("_offer")
+	_expect(rescues.in_care() == turtle and rescues.times(&"home_turtle") == 3, "the second storm's turtle comes next: the third in all")
+	rescues.current.since = clock.now() - turtle.days - 1.0
+	rescues.release()
+	root.get_node("RareEvents").struck.emit(storm, 0)
+	rescues.call("_offer")
+	_expect(rescues.in_care() == null, "never more than 3 cared for of one kind")
+	var saved_rescues: Dictionary = rescues.to_dict()
+	rescues.restore({})
+	rescues.restore(saved_rescues)
+	_expect(rescues.storm_count[&"home_turtle"] == 2, "storm rescues are saved")
+
 	# --- Every island's rescue is complete ---
 	for id in ["home_turtle", "kelp_otter", "mangrove_flamingo", "reef_seahorse", "deep_sixgill", "polar_seal"]:
 		var one: Resource = load("res://data/rescues/%s.tres" % id)

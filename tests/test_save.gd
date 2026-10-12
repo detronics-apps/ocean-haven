@@ -118,7 +118,8 @@ func _initialize() -> void:
 	(people.get("_guesses") as Dictionary)["maya/guess_nest"] = "A turtle will nest!"
 	(people.get("_observed") as Dictionary)["bram/noise_light"] = 2
 	people.finish_talk()
-	root.get_node("Rescues").restore({"current": {"id": "home_turtle", "name": "Milo", "since": 2.0, "stage": 1, "cared": -1}})
+	root.get_node("Rescues").restore({"current": {"id": "home_turtle", "name": "Milo", "since": 2.0, "stage": 1, "cared": -1},
+		"storm_count": {"kelp_otter": 1}, "storm_waiting": ["mangrove_flamingo"]})
 	_inventory.picked[&"foam_box"] = 4
 	_inventory.picked_on[&"kelp_forest"] = 12
 	load("res://scripts/ui/camera_zoom.gd").set_level(1.4)
@@ -205,6 +206,8 @@ func _initialize() -> void:
 	_expect(root.get_node("People").predictions(&"home_island").size() == 1, "the ranger's predictions are remembered")
 	_expect(int((root.get_node("People").get("_observed") as Dictionary).get("bram/noise_light", 0)) == 2, "how often people have mentioned each observation is remembered")
 	_expect(root.get_node("Rescues").pet_name() == "Milo", "the young animal in the ranger's care is remembered")
+	_expect(root.get_node("Rescues").storm_count.get(&"kelp_otter") == 1 and &"mangrove_flamingo" in root.get_node("Rescues")._storm_waiting,
+		"storm rescues (cared for, and waiting) are remembered")
 	var caught: Node = world.get_node_or_null("Dolphin1")
 	_expect(caught != null and world.get_node_or_null("Crab2") != null, "animals that arrived are back")
 	_expect(caught.tangled and caught.tangle_item.id == &"fishing_line", "an animal caught again is still caught")

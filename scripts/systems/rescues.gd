@@ -58,6 +58,12 @@ var current := {}
 ## Rescue id -> {"name", "day", "shape" (0..1), "met", "where" (island id today, "" = at sea),
 ## "seen" [other islands it's turned up on]} once released.
 var done := {}
+## A storm can hurt another young one of an island's rescue animal: once the island's own one has
+## gone home, it can be cared for too (one at a time, like every rescue), at most MAX_TIMES in all
+## per rescue, the first one included. Rescue id -> storm ones cared for; ids waiting their turn.
+const MAX_TIMES := 3
+var storm_count := {}
+var _storm_waiting: Array[StringName] = []
 var _all: Array[RescueData] = []
 var _check := 0.0
 
@@ -256,6 +262,29 @@ func care(action: StringName) -> String:
 
 func _ready() -> void:
 	GameClock.new_day.connect(func(_day: int) -> void: check_visits())
+	RareEvents.struck.connect(_on_storm)
+
+
+## How many of rescue `id` the ranger has cared for, the one in care included.
+func times(id: StringName) -> int:
+	return (1 if done.has(id) else 0) + int(storm_count.get(id, 0)) + (1 if String(current.get("id", "")) == String(id) else 0)
+
+
+## A storm struck `event`'s island: another young one of its rescue animal may need help.
+func _on_storm(event: EventData, _damaged: int) -> void:
+	for one: RescueData in all():
+		if one.region == event.region and done.has(one.id) and not one.id in _storm_waiting and times(one.id) < MAX_TIMES:
+			_storm_waiting.append(one.id)
+
+
+## What's said when it's first brought in (before it's named).
+func intro() -> String:
+	var one := in_care()
+	if not one:
+		return ""
+	if current.get("storm", false):
+		return "The storm hurt another young %s. It isn't a pet: we'll help it get strong, then it goes home. Would you give it a name?" 			% one.species.display_name.to_lower()
+	return one.intro
 
 
 ## A morning: each released one is somewhere today (its shape decides how often it's about):
@@ -347,6 +376,21 @@ func _offer() -> void:
 				"done": {}, "updated": GameClock.now()}
 			found.emit(one)
 			return
+	# Then one hurt by a storm, if its island's people can bring it in now.
+	for id in _storm_waiting.duplicate():
+		var one := rescue(id)
+		var someone: PersonData = null
+		for person: PersonData in People.all():
+			if one and person.id == one.person:
+				someone = person
+		if not one or times(id) >= MAX_TIMES:
+			_storm_waiting.erase(id)
+		elif someone and Array(one.offer_when).all(func(c: String) -> bool: return People.check(c, someone)):
+			_storm_waiting.erase(id)
+			current = {"id": String(one.id), "name": "", "since": GameClock.now(), "storm": true, "hatched": true,
+				"bars": START.duplicate(), "wounds": maxi(one.wounds, 1), "done": {}, "updated": GameClock.now()}
+			found.emit(one)
+			return
 
 
 ## The ranger names it (the first visit).
@@ -365,6 +409,14 @@ func release() -> void:
 	if not one or not is_ready():
 		return
 	var animal_name := pet_name()
+	if current.get("storm", false):  # (the island's own tagged one stays the one that's seen about)
+		storm_count[one.id] = int(storm_count.get(one.id, 0)) + 1
+		var others: Array = done[one.id].get("others", [])
+		others.append(animal_name)
+		done[one.id].others = others
+		current = {}
+		released.emit(one, animal_name)
+		return
 	done[one.id] = {"name": animal_name, "day": GameClock.day, "shape": shape(), "met": true, "where": String(one.region), "seen": []}
 	current = {}
 	released.emit(one, animal_name)
@@ -387,7 +439,8 @@ func _fill(text: String) -> String:
 
 
 func to_dict() -> Dictionary:
-	return {"current": current.duplicate(true), "done": done.duplicate(true)}
+	return {"current": current.duplicate(true), "done": done.duplicate(true), "storm_count": storm_count.duplicate(),
+		"storm_waiting": _storm_waiting.map(func(id: StringName) -> String: return String(id))}
 
 
 func restore(saved: Dictionary) -> void:
@@ -409,6 +462,13 @@ func restore(saved: Dictionary) -> void:
 		current.done = actions
 	if not rescue(StringName(current.get("id", ""))):
 		current = {}
+	storm_count.clear()
+	var counts: Dictionary = saved.get("storm_count", {})
+	for id in counts:
+		storm_count[StringName(id)] = int(counts[id])
+	_storm_waiting.clear()
+	for id in saved.get("storm_waiting", []):
+		_storm_waiting.append(StringName(id))
 	done.clear()
 	var released_ones: Dictionary = saved.get("done", {})
 	for id in released_ones:
