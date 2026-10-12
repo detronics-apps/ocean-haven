@@ -189,19 +189,6 @@ func upgrade_cost_text() -> String:
 	return describe_cost(upgrade_funding, upgrade_litter, upgrade_items)
 
 
-## The upgrade's cost, short, for its button: "120 funding, 6 litter, 2 wood" ("" = free).
-func upgrade_cost_short() -> String:
-	var parts: Array[String] = []
-	if upgrade_funding > 0:
-		parts.append("%d funding" % upgrade_funding)
-	if upgrade_litter > 0:
-		parts.append("%d litter" % upgrade_litter)
-	for item_id in upgrade_items:
-		var item: ItemData = DataFiles.res("res://data/items/%s.tres" % item_id)
-		parts.append("%d %s" % [upgrade_items[item_id], item.display_name.to_lower()])
-	return ", ".join(parts)
-
-
 static func describe_cost(funding: int, litter: int, items: Dictionary) -> String:
 	var parts: Array[String] = []
 	if funding > 0:
