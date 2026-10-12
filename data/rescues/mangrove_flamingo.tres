@@ -50,3 +50,4 @@ ready_text = "Rosa: \"{name} has had six days of care. Shall we let it go to the
 release_text = "You walk {name} to the flats. The flock calls, and {name} hurries to join them, a bright band on one leg."
 fact = "Flamingos are ringed with coloured leg bands, so people can recognise each bird from far away with binoculars."
 visits = PackedStringArray("tropical_reef")
+reactions = {&"feed": &"bob", &"comfort": &"puff", &"medicine": &"shiver", &"patch": &"hop"}

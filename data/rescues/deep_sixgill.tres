@@ -48,3 +48,4 @@ medicine_result = "A shot of medicine stops the wound from getting infected."
 ready_text = "Imani: \"{name} has had six days of care. Shall we take it back down?\""
 release_text = "The submarine carries {name} down into the dark. It swims away slowly into the deep, a bright tag on its fin."
 fact = "Scientists tag sharks to follow where they go: some sixgills swim up towards the surface at night and back down by day."
+reactions = {&"feed": &"squash", &"comfort": &"wiggle", &"medicine": &"shiver", &"patch": &"bob"}

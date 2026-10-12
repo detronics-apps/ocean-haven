@@ -37,7 +37,11 @@ var _soothing := 0.0
 var _shaken := 0.0
 var _last := Vector2.ZERO
 var _crumbs: Array[Dictionary] = []
-static var _hearts: Array[Dictionary] = []  # (static: they keep floating up when the screen rebuilds after a care)
+static var _hearts: Array[Dictionary] = []
+## Its move when cared for (static, like the pops: it carries on when the screen rebuilds).
+static var _react := {}
+const REACT_SECONDS := 0.9
+const DEFAULT_REACTIONS := {&"feed": &"squash", &"comfort": &"wiggle", &"medicine": &"shiver", &"patch": &"hop"}  # (static: they keep floating up when the screen rebuilds after a care)
 var _hatching := -1.0
 ## The colour just above each eye (its eyelid when it blinks).
 var _lids: Array[Color] = []
@@ -110,6 +114,8 @@ func _process(delta: float) -> void:
 		crumb.pos += crumb.vel * delta
 		crumb.life -= delta
 	_crumbs = _crumbs.filter(func(c: Dictionary) -> bool: return c.life > 0.0)
+	if _react.get("left", 0.0) > 0.0:
+		_react.left -= delta
 	for heart in _hearts:
 		heart.pos.y -= 40.0 * delta
 		heart.life -= delta
@@ -147,6 +153,18 @@ func _animal_rect() -> Rect2:
 		middle = tank.get_center() + Vector2(sin(_time * 0.8) * 18.0, sin(_time * 1.3) * 6.0 + 8.0)
 		full = minf(full, tank.size.y * 0.75)
 	var size_now := Vector2(full, full * breathe)
+	# Reacting to care: a little move of its own (RescueData.reactions), over REACT_SECONDS.
+	var left: float = _react.get("left", 0.0)
+	if left > 0.0:
+		var t := 1.0 - left / REACT_SECONDS
+		var fade := sin(t * PI)
+		match _react.kind:
+			&"hop": middle.y -= absf(sin(t * TAU * 1.5)) * full * 0.12
+			&"wiggle": middle.x += sin(t * TAU * 3.0) * full * 0.06 * fade
+			&"shiver": middle.x += sin(t * TAU * 9.0) * full * 0.02 * fade
+			&"bob": middle.y += sin(t * TAU) * full * 0.08
+			&"squash": size_now *= Vector2(1.0 + 0.12 * absf(sin(t * TAU * 1.5)), 1.0 - 0.1 * absf(sin(t * TAU * 1.5)))
+			&"puff": size_now *= 1.0 + 0.12 * fade
 	return Rect2(middle - size_now / 2.0, size_now)
 
 
@@ -248,6 +266,8 @@ func _drop(at: Vector2) -> void:
 
 func _done(action: StringName) -> void:
 	_dragging = &""
+	if action != &"" and rescue:
+		_react = {"kind": rescue.reactions.get(action, DEFAULT_REACTIONS.get(action, &"hop")), "left": REACT_SECONDS}
 	_burst(_animal_rect().get_center() + Vector2(0, -_animal_rect().size.y * 0.3), 6, action)
 	cared.emit(action)
 

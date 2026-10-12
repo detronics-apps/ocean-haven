@@ -23,7 +23,7 @@ extends Resource
 ## The island its conditions are about when they don't name one.
 @export var island := &"home_island"
 ## Its section on the board (ClueMap.SECTIONS: &"people", &"trash", &"animals", &"places",
-## &"storms", &"plants", &"land_water", &"disturbance", &"better_ways"; &"centre" for the globe and
+## &"storms", &"plants", &"land_water", &"better_ways"; &"centre" for the globe and
 ## the final question), and the other sections its story touches (strung to them).
 @export var section: StringName = &"animals"
 @export var links: PackedStringArray = []

@@ -758,6 +758,9 @@ drops while fed is empty, never below 20 %. Calm only rises by comforting; left 
 settles to 50 % (not distressed), and only drops below that while health is dropping; a hurt
 rescue starts below 50 %. The bars freeze once it's ready to go home. The vet room shows them
 live and says what it needs now.
+Care reactions: dragging a tool or pressing its button (both go through VetScene.do_care) pops
+icons (hearts, a fish, green sparkles, gold stars) and the animal moves its own way
+(RescueData.reactions per action: hop / wiggle / squash / bob / shiver / puff).
 Care costs funding: each bite of food and each dose of medicine (RescueData.food_cost 2 /
 medicine_cost 10; comfort and plasters are free; without the funding it says what it costs).
 Stroking (comfort_kind "stroke") calms it a step every 140 px stroked, while stroking

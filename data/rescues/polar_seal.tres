@@ -48,3 +48,4 @@ medicine_result = "A shot from the vet, and {name}'s breathing is easier."
 ready_text = "Sanna: \"{name} has had six days of care. Shall we take it to the edge of the old ice?\""
 release_text = "You set {name} down on the old ice. It sniffs the air, slides to the edge... and slips into the water, a bright tag on its flipper."
 fact = "Seal rescue centres tag the pups they release on a flipper, so they can be recognised if they haul out on a beach again."
+reactions = {&"feed": &"squash", &"comfort": &"wiggle", &"medicine": &"shiver", &"patch": &"bob"}

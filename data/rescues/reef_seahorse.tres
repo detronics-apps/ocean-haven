@@ -48,3 +48,4 @@ medicine_result = "A short bath with medicine in it helps {name}'s skin heal."
 ready_text = "Kai: \"{name} has had six days of care. Shall we take it home to the seagrass?\""
 release_text = "You lower {name} into the seagrass. It wraps its tail round a stem and turns as green as the leaves, a tiny bright tag on its neck."
 fact = "Scientists mark seahorses with tiny coloured tags to learn how far they travel: many stay close to home their whole lives."
+reactions = {&"feed": &"bob", &"comfort": &"puff", &"medicine": &"wiggle", &"patch": &"hop"}

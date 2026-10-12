@@ -182,8 +182,13 @@ func _fill() -> void:
 			if Rescues.cost(action) > 0:
 				label += " (%d funding)" % Rescues.cost(action)
 			var pick := _button(label, func() -> void:
-				_feedback = Rescues.care(action)
-				refresh.call_deferred())
+				# Through the vet room, like doing it by hand: it reacts (pops, its own move).
+				var vet := _content.find_child("VetScene", true, false) as VetScene
+				if vet:
+					vet.do_care(action)
+				else:
+					_feedback = Rescues.care(action)
+					refresh.call_deferred())
 			pick.name = String(action).capitalize()
 			pick.disabled = not Rescues.can_do(action)
 			pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL

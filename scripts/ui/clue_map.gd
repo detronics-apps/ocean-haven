@@ -20,10 +20,10 @@ extends Control
 
 ## The sections, clockwise round the globe from the top (ClueData.section: their ids).
 const SECTIONS := [&"animals", &"plants", &"places", &"trash", &"storms", &"better_ways", &"people",
-	&"land_water", &"disturbance"]
+	&"land_water"]
 const SECTION_NAMES := {&"animals": "Animals", &"plants": "Plants", &"places": "Places", &"trash": "Trash",
 	&"storms": "Storms", &"better_ways": "Better ways", &"people": "People", &"land_water": "Land & Water",
-	&"disturbance": "Disturbance", &"centre": "It's all connected"}
+	&"centre": "It's all connected"}
 const CARD := Vector2(280, 130)
 const GAP := Vector2(40, 30)
 const PIN := Vector2(300, 86)

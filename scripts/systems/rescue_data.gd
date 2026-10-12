@@ -55,6 +55,9 @@ extends Resource
 ## used: "brush", "duster", "cloth", "twig", "ice", "hand".
 @export var comfort_kind: StringName = &"stroke"
 @export var comfort_tool: StringName = &"hand"
+## How it moves when cared for, per care action ("feed", "comfort", "medicine", "patch"): "hop",
+## "wiggle", "squash" (a happy chomp), "bob", "shiver" or "puff" (fluffs up). Each animal its own.
+@export var reactions: Dictionary = {}
 
 @export_group("Care")
 ## How it's doing on each day in care ("{name}" is its name).

@@ -636,7 +636,7 @@ over the notes. Zoom buttons are bottom right. The details panel is a sheet of p
 **Layout (owner's sections, Oct 2026; replaces the 7-node spine of §1):** the notes, triggers and
 evidence above are unchanged; each note sits in one of the owner's sections (ClueData.section):
 People (story threads that start or end with a person), Trash, Animals, Places, Storms, Plants,
-Land & Water, Disturbance and Better ways. The sections sit round the globe ("It's all connected",
+Land & Water and Better ways (Disturbance was dropped in the r338 review: its note went to People). The sections sit round the globe ("It's all connected",
 the loading screen's globe, big, in the middle, over the string; `tools/make_globe.py`), Animals at
 the top, so the turtle's question (ClueData.big: a bigger note and turtle) starts the board. A
 section shows only once it holds a note (no placeholders). "Who created all of this?" hangs off the
@@ -644,14 +644,13 @@ globe on one string, from when the end credits start (Fleet flag "credits_rolled
 
 | Section | Notes |
 |---|---|
-| People | S7.Me my part |
+| People | S5.G choices · S7.Me my part |
 | Trash | O2 net tag · S4.A sources · S4.D fibres |
 | Animals | O1 turtles · S2.G one thing missing · S6.T travel |
 | Places | S6.G one ocean |
 | Storms | (none since the r338 review; the section shows once a note holds it) |
 | Plants | S2.K kelp · S6.S new trees (2 cards, one note) |
 | Land & Water | S2.M pools |
-| Disturbance | S5.G choices |
 | Better ways | S4.B stop it · S4.C marked nets |
 
 **Each section is a cluster:** a bigger heading with its notes round it, in a grid of spots

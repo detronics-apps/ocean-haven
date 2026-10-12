@@ -104,6 +104,14 @@ func _initialize() -> void:
 	vet.call("_gui_input", lift)
 	turtle.comfort_kind = &"place"
 	await process_frame
+	var comfort_button: Button = screen.get("_content").find_child("Comfort", true, false)
+	_expect(comfort_button != null and not comfort_button.disabled, "(the Comfort button)")
+	comfort_button.pressed.emit()
+	var vet_now_too: Control = screen.get("_content").find_child("VetScene", true, false)
+	_expect((vet_now_too.get("_react") as Dictionary).get("kind") == turtle.reactions[&"comfort"]
+		and (vet_now_too.get("_hearts") as Array).any(func(p: Dictionary) -> bool: return p.kind == &"comfort"),
+		"the Comfort button makes it react too: hearts, and the turtle's own wiggle")
+	await process_frame
 	while rescues.can_do(&"comfort"):
 		rescues.care(&"comfort")
 	_expect(rescues.bar(&"calm") == 100, "comfort it as often as you like, until it's fully calm")

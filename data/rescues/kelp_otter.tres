@@ -48,3 +48,4 @@ medicine_result = "A quick shot from the vet, and {name} is breathing easier."
 ready_text = "Finn: \"{name} has had six days of care. Shall we take it to the kelp?\""
 release_text = "You carry {name} to the edge of the kelp. {name} floats on its back for a moment, looks at you... and dives, a bright tag on its back foot."
 fact = "Aquariums raise stranded sea otter pups, sometimes with adult otters as foster mothers, and release them into the wild."
+reactions = {&"feed": &"hop", &"comfort": &"bob", &"medicine": &"shiver", &"patch": &"wiggle"}

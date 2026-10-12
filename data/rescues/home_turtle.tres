@@ -52,3 +52,4 @@ ready_text = "Maya: \"{name} has had six days of care. Shall we take it down to 
 release_text = "You carry {name} down to the water. A moment's pause... and {name} swims off into the waves, the bright tag on its flipper flashing."
 fact = "Sea turtle rescue centres care for turtles hurt by fishing gear, boats and plastic, and tag them before they go back to sea, so they can be recognised if they are seen again."
 visits = PackedStringArray("mangrove_coast", "tropical_reef")
+reactions = {&"feed": &"squash", &"comfort": &"wiggle", &"medicine": &"shiver", &"patch": &"hop"}
