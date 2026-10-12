@@ -801,6 +801,15 @@ LitterSpawner.storm_litter); damaged buildings show a warning sign and offer onl
 too; no notes: the island's people are shaken (RareEvents.shaken, saved) and say what it was
 like (PersonData.storm_after) until the ranger talks to them.
 
+The storm storyline (the Clue Board's Storms note, "What does a storm bring?"): a storm stirs up
+old litter, even kinds that have stopped coming (LitterSpawner.OLD_PIECES), damages what wasn't
+secured, hurts a young animal (storm rescues), and brings good too: the island's people help fix
+the damage ("fixed, with Tom's help"), a seed washes ashore and a young tree comes up somewhere
+new (EventData.seeds_tree: palms for the storm and hurricane, a mangrove for the flood, a coastal
+tree for the swell), and a flash flood's rain brings water back to dry mangrove flats for a few
+days (MangroveEcosystem.flood_water). Erik says warmer seas feed stronger storms (a line only,
+never a mechanic). Fleet flag "storm_struck".
+
 Notes (HUD.show_toast; the owner: too big, too wordy, too often): one short line (HUD.brief:
 first line and sentence, at most 60 letters) in a small see-through box; one at a time with a
 2.5 s pause, only the newest waits (a busy moment never piles up), the same note not again
@@ -847,7 +856,7 @@ comes on day one.
 ISLAND_RULES 9). A connected map of what the player has understood (Journal → Clues tab,
 ClueMap: left to right in landscape, top to bottom in portrait, zoom steps, tap for details):
 the opening turtle mystery, 7 nodes, and the final question "Who created all of this?" (never
-answered). 17 cards are data (`data/clues/*.tres`, ClueData), checked by the `Clues` autoload
+answered). 18 cards are data (`data/clues/*.tres`, ClueData), checked by the `Clues` autoload
 with People's conditions plus its own observations (only while the ranger is on that island,
 never health flags). The first activation that holds opens a card, evidence is kept even before
 that, and answers stick (blue), their statements fixed from the evidence that answered them. The

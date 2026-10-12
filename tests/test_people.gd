@@ -224,7 +224,7 @@ func _initialize() -> void:
 	var all_said := 0
 	for someone: Resource in people.all():
 		all_said += someone.observations.size()
-	_expect(all_said == 38, "38 observations across the islands, 12 of them about young ones (%d)" % all_said)
+	_expect(all_said == 39, "39 observations across the islands, 12 of them about young ones (%d)" % all_said)
 	# A young flamingo on the Mangrove Coast: Rosa mentions how different the chick looks.
 	var chick: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
 	chick.set("data", load("res://data/animals/american_flamingo.tres"))

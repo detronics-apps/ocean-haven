@@ -254,6 +254,16 @@ func strike(event: EventData) -> int:
 				ecosystem.oil_spill(event.oil_patches)
 	if event.visibility_days > 0.0:
 		_murky[event.region] = GameClock.now() + event.visibility_days
+	if event.seeds_tree:  # the storm washed a seed ashore: a young tree comes up somewhere new
+		var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % event.region)
+		var cell: Vector2i = Travellers.call("_seed_spot", event.seeds_tree, region)
+		var build := get_tree().get_first_node_in_group("build_mode")
+		if build and cell != Vector2i(-99999, -99999):
+			build.add_building(event.seeds_tree, cell)
+			People.add_news(event.region, "The storm washed a seed ashore, {name}. A little %s has come up where there wasn't one." \
+				% event.seeds_tree.display_name.to_lower())
+			get_tree().call_group("clue_watchers", "storm_seed")
+	Fleet.mark(&"storm_struck")
 	struck.emit(event, damaged)  # (no note: the island's people say what happened)
 	return damaged
 

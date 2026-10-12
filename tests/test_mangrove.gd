@@ -60,6 +60,13 @@ func _initialize() -> void:
 	_expect(eco.water_depth_word() == "high" and flamingo.water_reading().contains("belly-deep"), "too high: standing belly-deep")
 	eco.base_level = 0.0
 	_expect(eco.water_depth_word() == "low" and flamingo.water_reading().contains("dry feet"), "too low: dry feet")
+	eco.base_level = eco.level_low - eco.flood_water * 0.5  # (dry, but a flood's rain is enough)
+	var clue_board := root.get_node("Clues")
+	clue_board._memo.erase("storm_water")
+	eco.flood(0.0)
+	_expect(eco.water_depth_word() != "low" and clue_board._memo.has("storm_water"),
+		"a flash flood's rain brings water back to the dry flats for a while")
+	eco.set("_flood_water_until", -1.0)
 	eco.base_level = base
 	# Only the leg pixels in water or mud change, never a box round it; on dry land nothing.
 	var terrain_script: GDScript = load("res://scripts/world/terrain.gd")

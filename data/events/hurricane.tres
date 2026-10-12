@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EventData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+[ext_resource type="Resource" path="res://data/buildings/palm_tree.tres" id="seed_tree"]
 
 [resource]
 script = ExtResource("1_evt")
@@ -22,3 +23,4 @@ repair_wood = 1
 kelp_damage = 0.4
 kelp_damaged_share = 0.5
 weather = &"hurricane"
+seeds_tree = ExtResource("seed_tree")

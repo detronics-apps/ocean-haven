@@ -390,6 +390,7 @@ func _offer() -> void:
 			current = {"id": String(one.id), "name": "", "since": GameClock.now(), "storm": true, "hatched": true,
 				"bars": START.duplicate(), "wounds": maxi(one.wounds, 1), "done": {}, "updated": GameClock.now()}
 			found.emit(one)
+			get_tree().call_group("clue_watchers", "storm_rescue")
 			return
 
 

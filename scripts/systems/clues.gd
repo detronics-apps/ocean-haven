@@ -459,6 +459,29 @@ func bird_left(animal: Node2D) -> void:
 	_memo["bird_left"] = String(animal.data.display_name).to_lower()
 
 
+## What a storm brought (the Storms note): old litter stirred up, the island's people helping fix
+## the damage, a young animal hurt, a seed washed ashore, water back on dry flats.
+func old_litter_stirred() -> void:
+	_memo["storm_old_litter"] = GameClock.day
+
+
+func fixed_together() -> void:
+	if _memo.has("storm_hit"):
+		_memo["storm_together"] = GameClock.day
+
+
+func storm_rescue() -> void:
+	_memo["storm_rescue"] = GameClock.day
+
+
+func storm_seed() -> void:
+	_memo["storm_seed"] = GameClock.day
+
+
+func storm_water() -> void:
+	_memo["storm_water"] = GameClock.day
+
+
 ## A rare event: warned (what it was like before), struck (what it damaged), then recovered.
 func _event_warned(event: EventData) -> void:
 	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % event.region)
@@ -480,6 +503,10 @@ func _event_struck(event: EventData, damaged: int) -> void:
 		unsecured_damaged = unsecured_damaged or (not building.secured and building.damaged)
 	if secured_came_through and unsecured_damaged:
 		_memo["prepared/" + id] = GameClock.day
+		_memo["storm_prepared"] = id
+	_memo["storm_hit"] = id
+	if event.litter_washed > 0:
+		_memo["storm_litter"] = id
 
 
 ## What the event damages, measured the same way before and after.

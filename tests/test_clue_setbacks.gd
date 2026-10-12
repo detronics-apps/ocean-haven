@@ -61,6 +61,35 @@ func _initialize() -> void:
 	clues.check()
 	_expect(clues.is_open(&"s5g_choices") and not clues.is_answered(&"s5g_choices"), "a bad result alone isn't the answer")
 
+	# --- Storms (S7.S): what a storm takes, and what it brings ---
+	var events := root.get_node("RareEvents")
+	var storm: Resource = load("res://data/events/coastal_storm.tres")
+	var palm: Resource = load("res://data/buildings/palm_tree.tres")
+	var palms := func() -> int:
+		return root.get_tree().get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data == palm and not b.is_queued_for_deletion()).size()
+	var palms_before: int = palms.call()
+	var chance: float = storm.damage_chance
+	storm.damage_chance = 1.0
+	var hut: Node = null
+	for b: Node in root.get_tree().get_nodes_in_group("buildings"):
+		if not b.data.storm_proof and b.data != palm:
+			hut = b
+			break
+	events.strike(storm)
+	storm.damage_chance = chance
+	clues.check()
+	_expect(clues.is_open(&"s7s_storms") and clues._memo.has("storm_litter"), "a storm struck: what does a storm bring?")
+	_expect(palms.call() == palms_before + 1, "it washed a seed ashore: a young palm came up (%d -> %d)" % [palms_before, palms.call()])
+	_expect(clues._memo.has("storm_old_litter"), "it stirred up old foam boxes, a kind that had stopped coming")
+	_expect(hut != null and hut.damaged, "(an unsecured building was damaged)")
+	root.get_node("Funding").balance = 100
+	root.get_node("Inventory").add(load("res://data/items/wood.tres"))
+	hut.repair()
+	clues.check()
+	var stormy: String = clues.statement(clues.card(&"s7s_storms"))
+	_expect(not hut.damaged and clues.is_answered(&"s7s_storms") and stormy.contains("A storm takes, and it brings"),
+		"fixed with the island's people: it takes, and it brings (%s)" % stormy)
+
 	# --- The board's memory is saved ---
 	var saved: Dictionary = clues.to_dict()
 	clues.restore({})

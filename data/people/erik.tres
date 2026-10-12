@@ -58,6 +58,12 @@ id = &"rubbish_bears"
 when = PackedStringArray("animals:polar_bear>=1", "!flag:bear_at_camp")
 lines = PackedStringArray("A polar bear can smell food from a long way off. Keep rubbish away from the camp, or a bear will come to see what it is.")
 
+[sub_resource type="Resource" id="Obs_storm"]
+script = ExtResource("2_t")
+id = &"warmer_storms"
+when = PackedStringArray("flag:storm_struck")
+lines = PackedStringArray("Forty winters of notebooks, {name}. The storms come stronger now than when I started. Warmer seas give them more to feed on.")
+
 [sub_resource type="Resource" id="Obs_2"]
 script = ExtResource("2_t")
 id = &"bear_young"
@@ -101,6 +107,6 @@ hat = 2
 hat_colour = Color(0.6, 0.2, 0.2, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3"), SubResource("Obs_storm")])
 want = SubResource("Want")
 visit_line = "I came to see the weather on the {island}, {name}. {host} says it's always like this. Imagine!"

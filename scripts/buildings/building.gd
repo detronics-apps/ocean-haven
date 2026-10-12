@@ -502,7 +502,13 @@ func repair() -> void:
 	Inventory.use(&"wood", wood)
 	Funding.spend(funding)
 	damaged = false
-	get_tree().call_group("hud", "show_toast", "%s fixed" % data.button_name(), true)
+	var island := Regions.nearest(global_position).id
+	var helpers := People.on(island)
+	if not helpers.is_empty():  # the island's people come out and help after a storm
+		get_tree().call_group("hud", "show_toast", "%s fixed, with %s's help" % [data.button_name(), helpers.pick_random().short_name], true)
+		get_tree().call_group("clue_watchers", "fixed_together")
+	else:
+		get_tree().call_group("hud", "show_toast", "%s fixed" % data.button_name(), true)
 
 
 func _repair_funding() -> int:

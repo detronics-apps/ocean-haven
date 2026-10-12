@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EventData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+[ext_resource type="Resource" path="res://data/buildings/coastal_tree.tres" id="seed_tree"]
 
 [resource]
 script = ExtResource("1_evt")
@@ -24,3 +25,4 @@ kelp_damaged_share = 0.5
 visibility_days = 2.0
 slow_missions = 1.5
 weather = &"swell"
+seeds_tree = ExtResource("seed_tree")

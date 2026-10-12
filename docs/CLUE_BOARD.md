@@ -591,7 +591,7 @@ Tests: `test_clue_board`, `test_clue_map`, `test_net_tag`, `test_clue_ocean`, `t
 `test_clue_setbacks` (plus a check in `test_save`).
 
 **Card ids:** o1_turtles, o2_net_tag · s2k_kelp, s2m_pools, s2g_balance · s4a_sources, s4b_prevent,
-s4c_nets, s4d_fibres · s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar · s7me_part ·
+s4c_nets, s4d_fibres · s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar · s7me_part, s7s_storms ·
 conclusion_globe, final_who. (Owner review, r338 scores: every note scoring 5 or below on how much
 it proves "it's all connected" was removed: S1.1, S2.P, S2.R, S3.G, S5.A, S6.N, S7.R, S7.G.)
 
@@ -648,7 +648,7 @@ globe on one string, from when the end credits start (Fleet flag "credits_rolled
 | Trash | O2 net tag · S4.A sources · S4.D fibres |
 | Animals | O1 turtles · S2.G one thing missing · S6.T travel |
 | Places | S6.G one ocean |
-| Storms | (none since the r338 review; the section shows once a note holds it) |
+| Storms | S7.S what a storm brings (old litter, unsecured damage, a hurt animal; people helping, a washed-up seed, water on dry flats) |
 | Plants | S2.K kelp · S6.S new trees (2 cards, one note) |
 | Land & Water | S2.M pools |
 | Better ways | S4.B stop it · S4.C marked nets |

@@ -346,7 +346,15 @@ func grown_mangroves(all := false) -> Array[Node2D]:
 func water_level() -> float:
 	var closed := gates().filter(func(g: Building) -> bool: return g.gate_closed).size()
 	var open := gates().size() - closed
-	return clampf(base_level + closed * level_per_closed - open * level_per_open, 0.0, 1.0)
+	var rain := flood_water if GameClock.now() < _flood_water_until else 0.0
+	return clampf(base_level + closed * level_per_closed - open * level_per_open + rain, 0.0, 1.0)
+
+
+## A flash flood's rain also brings water back to the flats for a few days: dry flats come
+## right for the flamingos for a while (the good a storm can bring).
+@export var flood_water := 0.3
+@export var flood_water_days := 2.0
+var _flood_water_until := -1.0
 
 
 ## The water level in a word, for the flamingos' legs: "low", "right" or "high".
@@ -755,6 +763,10 @@ func project() -> Dictionary:
 
 
 func flood(amount: float) -> int:
+	var was_dry := water_depth_word() == "low"
+	_flood_water_until = GameClock.now() + flood_water_days
+	if was_dry and water_depth_word() != "low":
+		get_tree().call_group("clue_watchers", "storm_water")
 	var reach := connected()
 	var hit := 0
 	var cells := channels()
@@ -910,11 +922,13 @@ func to_dict() -> Dictionary:
 	var silt := {}
 	for cell: Vector2i in _silt:
 		silt["%d,%d" % [cell.x, cell.y]] = _silt[cell]
-	return {"last_tick": _last_tick, "seeded": _seeded, "silt": silt, "sediment_until": _sediment_until}
+	return {"last_tick": _last_tick, "seeded": _seeded, "silt": silt, "sediment_until": _sediment_until,
+		"flood_water_until": _flood_water_until}
 
 
 func restore(saved: Dictionary) -> void:
 	_last_tick = float(saved.get("last_tick", -1.0))
+	_flood_water_until = float(saved.get("flood_water_until", -1.0))
 	_seeded = bool(saved.get("seeded", false))
 	_sediment_until = float(saved.get("sediment_until", -1.0))
 	_silt.clear()

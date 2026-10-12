@@ -155,6 +155,10 @@ func wash_up_beaches(count: int) -> void:
 
 ## After a storm: `count` pieces strewn all over the island (any ground, never on a building),
 ## and `floating` more in its rowboat waters. The full mix: storms bring up old litter too.
+## Pieces of kinds that have stopped coming a storm can still stir up from the sea floor.
+const OLD_PIECES := 2
+
+
 func storm_litter(count: int, floating: int) -> void:
 	var region := Regions.nearest(area.get_center())
 	var land: Array[Vector2] = []
@@ -170,9 +174,15 @@ func storm_litter(count: int, floating: int) -> void:
 	land = land.filter(func(spot: Vector2) -> bool:
 		return not built.any(func(r: Rect2i) -> bool: return r.has_point(Terrain.cell_of(spot))))
 	land.shuffle()
+	# Old litter stirred up from the sea floor: even kinds that have stopped coming (up to OLD_PIECES).
+	var old := DataFiles.load_all("res://data/items").filter(func(item: ItemData) -> bool:
+		return item.is_litter and Fleet.stopped(item.id))
 	for i in mini(count, land.size()):
 		var jitter := Vector2(randf_range(-8, 8), randf_range(-8, 8))
-		spawn_at(_items.pick_random(), land[i] + jitter, false)
+		var stirred := not old.is_empty() and i < OLD_PIECES
+		spawn_at(old.pick_random() if stirred else _items.pick_random(), land[i] + jitter, false)
+		if stirred:
+			get_tree().call_group("clue_watchers", "old_litter_stirred")
 	for i in floating:
 		var spot: Variant = _free_spot(true)
 		if spot != null:

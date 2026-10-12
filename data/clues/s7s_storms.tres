@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ClueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_c"]
+
+[resource]
+script = ExtResource("1_c")
+id = &"s7s_storms"
+node = 7
+order = 1
+question = "What does a storm bring?"
+activate = PackedStringArray("memo:storm_hit")
+evidence = PackedStringArray("litter | memo:storm_litter | The storm washed old litter ashore.", "old | memo:storm_old_litter | It even stirred up kinds that had stopped coming, from the sea floor.", "prepared | memo:storm_prepared | What I'd secured came through; what I hadn't was damaged.", "rescue | memo:storm_rescue | It hurt a young animal, and I cared for it until it was strong.", "together | memo:storm_together | The island's people came out and helped me fix what it broke.", "seed | memo:storm_seed | It washed a seed ashore, and a little tree came up where there wasn't one.", "water | memo:storm_water | Its rain brought water back to the dry mangrove flats.")
+answer = PackedStringArray("2: litter, old, prepared, rescue", "1: together, seed, water")
+statements = PackedStringArray("{g0.1} {g0.2} {g1.1} A storm takes, and it brings.")
+guarantee = &"O"
+section = &"storms"
+title = "What does a storm bring?"
+short = "It takes, and it brings"
+links = PackedStringArray("trash", "people", "animals", "plants", "land_water", "places")
