@@ -191,11 +191,15 @@ func _initialize() -> void:
 	people.finish_talk()
 	_expect(texts.any(func(t: String) -> bool: return t.contains("Funding's running low") and t.contains("Dolphin Viewing Area")),
 		"low funding: Tom names the island's funding facilities (%s)" % [texts])
-	_expect(texts.any(func(t: String) -> bool: return t.contains("Short of wood") and t.contains("sapling") and t.contains("nesting")),
-		"low wood: cut a grown tree, replant, mind the nests")
+	_expect(not texts.any(func(t: String) -> bool: return t.contains("Short of wood")), "one tip at a time: not the wood one too")
 	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
 	people.finish_talk()
-	_expect(not texts.any(func(t: String) -> bool: return t.contains("running low") or t.contains("Short of wood")), "only once a day")
+	_expect(texts.any(func(t: String) -> bool: return t.contains("Short of wood") and t.contains("sapling") and t.contains("nesting"))
+		and not texts.any(func(t: String) -> bool: return t.contains("running low")),
+		"next talk, the other tip: low wood (cut a grown tree, replant, mind the nests)")
+	texts = people.talk(tom).map(func(l: Dictionary) -> String: return l.text)
+	people.finish_talk()
+	_expect(not texts.any(func(t: String) -> bool: return t.contains("running low") or t.contains("Short of wood")), "each only once a day")
 	root.get_node("Fleet").restore(fleet_before)
 	var reef_giver: Resource = load("res://data/people/kai.tres")
 	_expect(people.wood_tip(reef_giver).contains("no trees to cut here") or world.get_tree().get_nodes_in_group("plants").size() > 0,
