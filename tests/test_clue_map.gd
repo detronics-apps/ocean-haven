@@ -40,6 +40,14 @@ func _initialize() -> void:
 	map.size = Vector2(400, 820)
 	await process_frame
 	map.rebuild()
+	map.pin_note("As you go on with your journey, you can always find the clues here. The Clue Board won't open by itself again.")
+	await process_frame
+	await process_frame
+	var pinned: Control = map.get_node("PinnedNote")
+	_expect(pinned.size.y < map.size.y * 0.4, "on a phone the pinned note is only as tall as its words (%d of %d)" % [pinned.size.y, map.size.y])
+	map.tap(Vector2(200, 700))
+	await process_frame
+	_expect(not is_instance_valid(pinned), "a tap on the board puts the note away")
 	var tall := _layout(map)
 	_expect(not map.landscape() and tall.cards.keys() == wide.cards.keys(), "portrait: the same cards")
 	_expect(tall.pins.keys() == wide.pins.keys() and near.call(tall, &"s4a_sources", &"trash"), "portrait: the same sections")

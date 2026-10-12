@@ -583,7 +583,15 @@ func pin_note(text: String) -> void:
 	add_child(note)
 	var width := minf(size.x - FRAME * 2.0 - 40.0, 640.0)
 	note.custom_minimum_size = Vector2(width, 0)
+	label.custom_minimum_size.x = width - 32.0
 	note.reset_size()
+	# Wrapped text only knows its height once it's been laid out at its width (a frame later):
+	# until then it would be as tall as one word a line, so the note settles then, unseen till then.
+	note.modulate.a = 0.0
+	get_tree().process_frame.connect(func() -> void:
+		if is_instance_valid(note):
+			note.reset_size()
+			note.modulate.a = 1.0, CONNECT_ONE_SHOT)
 	note.position = Vector2((size.x - width) / 2.0, FRAME + 46.0)
 	note.rotation_degrees = -1.0
 
@@ -642,6 +650,10 @@ func _gui_input(event: InputEvent) -> void:
 ## A tap at `at` (in the map's own coordinates): a card shows its details, a slot zooms to it, the
 ## bare cork goes back to the whole board.
 func tap(at: Vector2) -> void:
+	var pinned := get_node_or_null("PinnedNote")
+	if pinned:  # (a tap anywhere on the board puts the pinned note away)
+		pinned.queue_free()
+		return
 	if _detail.visible and _detail.get_rect().has_point(at):
 		return
 	var on_canvas := (at - _canvas.position) / _canvas.scale.x

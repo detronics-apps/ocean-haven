@@ -874,7 +874,8 @@ if the ranger hadn't done something: a topic says TalkTopic.instead (when instea
 rather than its lines (Maya's station question once the ranger has been out in a boat: Fleet flag
 "boat_used"; Tom's hello once a turtle area is built); questions already done are skipped.
 The Clue Board never opens by itself over a talk or another page (it waits), and its pinned note
-has a "Got it" button.
+is only as tall as its words (sized a frame after it's added: wrapped text) with a "Got it" button;
+a tap anywhere on the board puts it away too.
 
 Ocean Day (People.ocean_day; the owner's pick for the one-year mark): from the first day of year
 two, the first time the ranger is on the Starting Island (it waits for them), one person they've
