@@ -68,6 +68,23 @@ func _initialize() -> void:
 	_expect(not newcomer.young and newcomer.parent == null and sprite.texture == crab_data.sprite
 		and newcomer.home().distance_to(spot) < 1.0, "grown (day 3 for a crab): the grown picture, and its own spot")
 
+	# --- Young birds: their own flying and sitting pictures, drawn smaller ---
+	var booby_data: Resource = load("res://data/animals/red_footed_booby.tres")
+	var chick: Node2D = load("res://scenes/animals/animal.tscn").instantiate()
+	chick.set("data", booby_data)
+	chick.set("young", true)
+	root.add_child(chick)
+	await process_frame
+	chick.born_at = clock.now()
+	var chick_sprite: Sprite2D = chick.get_node("Sprite2D")
+	chick._state = chick.State.SWIM  # (on the move: flying)
+	chick._pose()
+	_expect(chick_sprite.texture == booby_data.young_flying_sprites[0] and chick_sprite.scale.x < 1.0, "a booby chick on the move: its own flying picture, small")
+	chick._state = chick.State.REST
+	chick._pose()
+	_expect(chick_sprite.texture == booby_data.young_sitting_sprites[0], "landed: the chick sits")
+	chick.free()
+
 	# --- Growth groups: fast 3 days, medium 5, slow 7 ---
 	var groups := {2.0: ["ghost_crab", "mangrove_crab", "arctic_tern", "arctic_skua"],
 		4.0: ["red_footed_booby", "double_crested_cormorant", "american_flamingo", "sea_otter", "ringed_seal", "bottlenose_dolphin"],

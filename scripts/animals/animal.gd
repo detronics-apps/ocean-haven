@@ -1194,8 +1194,19 @@ func _lives_on_land() -> bool:
 ## Turns to swim the way it's going, or (crabs) just flips left/right.
 ## Walkers with more than one picture: standing still, walking, or flying off when startled.
 func _pose() -> void:
-	if _own_young_picture():  # growing up: its young picture, whatever it's doing
+	if _own_young_picture():  # growing up: its young picture (a bird's flying or sitting one too)
 		var stage_picture: Texture2D = data.young_sprites[stage()]
+		var landed := _state == State.REST and not circling
+		var flying := (data.flies and not landed) or (_state == State.FLEE and data.flying_sprite != null)
+		var drawn_from_grown := false  # (the flying and sitting ones are the grown bird's size: shown smaller)
+		if flying and data.young_flying_sprites.size() > stage():
+			stage_picture = data.young_flying_sprites[stage()]
+			drawn_from_grown = true
+		elif data.young_sitting_sprites.size() > stage() and (perched or (landed and stage() == 0)
+				or (_state == State.REST and not data.flies and data.perched_sprite != null and _sit_on_mound())):
+			stage_picture = data.young_sitting_sprites[stage()]  # (a baby sits whenever it's down)
+			drawn_from_grown = true
+		_sprite.scale = Vector2.ONE * ((0.55 if stage() == 0 else 0.75) if drawn_from_grown else 1.0)
 		if _sprite.texture != stage_picture:
 			_sprite.texture = stage_picture
 			_sprite.rotation = 0.0

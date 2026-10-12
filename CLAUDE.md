@@ -735,7 +735,10 @@ then keeps its own spot. Fish, clams and squid drift in from the island's edge
 (AnimalData.drifts_in). Growth: grow_days 2 / 4 / 6 (grown on day 3, 5 or 7), two young
 stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_sprites:
 crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
-polar bears); dolphins, whales and sharks just grow. Trees show sapling and young pictures
+polar bears); dolphins, whales and sharks just grow. Young birds also fly and sit in their own colours
+(AnimalData.young_flying_sprites / young_sitting_sprites, [baby, young], drawn by
+`tools/make_young_birds.py` from the grown bird's pictures, shown at 55 % / 75 %): a baby sits
+whenever it's down, an older one on the nest. Trees show sapling and young pictures
 (PalmTree.stage_textures). Turtles: while their protection areas have room any grown turtle
 nests again once her own last nest has hatched (Nest.mother), several at once; a nest hatches
 2-4 (AnimalData.hatchlings / hatchlings_max), those with room stay, the rest swim off. Breeding

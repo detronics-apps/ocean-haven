@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-1 -1 20 16" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  <g id="art">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#394528"/>
+  <rect x="2" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="13" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="5" y="6" width="8" height="5" fill="#352828"/>
+  <rect x="4" y="7" width="7" height="3" fill="#3d2e2d"/>
+  <rect x="0" y="6" width="5" height="1" fill="#3d2e2d"/>
+  <rect x="1" y="7" width="3" height="1" fill="#3d2e2d"/>
+  <rect x="11" y="3" width="4" height="4" fill="#352828"/>
+  <rect x="11" y="5" width="2" height="2" fill="#43322d"/>
+  <rect x="11" y="2" width="4" height="1" fill="#3d2e2d"/>
+  <rect x="14" y="4" width="1" height="1" fill="#716653"/>
+  <rect x="15" y="4" width="2" height="1" fill="#3d2e2d"/>
+  <rect x="16" y="5" width="1" height="1" fill="#3d2e2d"/>
+  </g>
+</g><g transform="translate(1 0)">
+  <g id="art">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#394528"/>
+  <rect x="2" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="13" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="5" y="6" width="8" height="5" fill="#352828"/>
+  <rect x="4" y="7" width="7" height="3" fill="#3d2e2d"/>
+  <rect x="0" y="6" width="5" height="1" fill="#3d2e2d"/>
+  <rect x="1" y="7" width="3" height="1" fill="#3d2e2d"/>
+  <rect x="11" y="3" width="4" height="4" fill="#352828"/>
+  <rect x="11" y="5" width="2" height="2" fill="#43322d"/>
+  <rect x="11" y="2" width="4" height="1" fill="#3d2e2d"/>
+  <rect x="14" y="4" width="1" height="1" fill="#716653"/>
+  <rect x="15" y="4" width="2" height="1" fill="#3d2e2d"/>
+  <rect x="16" y="5" width="1" height="1" fill="#3d2e2d"/>
+  </g>
+</g><g transform="translate(0 -1)">
+  <g id="art">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#394528"/>
+  <rect x="2" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="13" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="5" y="6" width="8" height="5" fill="#352828"/>
+  <rect x="4" y="7" width="7" height="3" fill="#3d2e2d"/>
+  <rect x="0" y="6" width="5" height="1" fill="#3d2e2d"/>
+  <rect x="1" y="7" width="3" height="1" fill="#3d2e2d"/>
+  <rect x="11" y="3" width="4" height="4" fill="#352828"/>
+  <rect x="11" y="5" width="2" height="2" fill="#43322d"/>
+  <rect x="11" y="2" width="4" height="1" fill="#3d2e2d"/>
+  <rect x="14" y="4" width="1" height="1" fill="#716653"/>
+  <rect x="15" y="4" width="2" height="1" fill="#3d2e2d"/>
+  <rect x="16" y="5" width="1" height="1" fill="#3d2e2d"/>
+  </g>
+</g><g transform="translate(0 1)">
+  <g id="art">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#394528"/>
+  <rect x="2" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="13" y="10" width="2" height="1" fill="#45502e"/>
+  <rect x="5" y="6" width="8" height="5" fill="#352828"/>
+  <rect x="4" y="7" width="7" height="3" fill="#3d2e2d"/>
+  <rect x="0" y="6" width="5" height="1" fill="#3d2e2d"/>
+  <rect x="1" y="7" width="3" height="1" fill="#3d2e2d"/>
+  <rect x="11" y="3" width="4" height="4" fill="#352828"/>
+  <rect x="11" y="5" width="2" height="2" fill="#43322d"/>
+  <rect x="11" y="2" width="4" height="1" fill="#3d2e2d"/>
+  <rect x="14" y="4" width="1" height="1" fill="#716653"/>
+  <rect x="15" y="4" width="2" height="1" fill="#3d2e2d"/>
+  <rect x="16" y="5" width="1" height="1" fill="#3d2e2d"/>
+  </g>
+</g></g>
+  <g id="art" data-size="18 14" data-box="0 0 18 14">
+  <g id="art">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#6f7f4a"/>
+  <rect x="2" y="10" width="2" height="1" fill="#8a9a5a"/>
+  <rect x="13" y="10" width="2" height="1" fill="#8a9a5a"/>
+  <rect x="5" y="6" width="8" height="5" fill="#5a4a3e"/>
+  <rect x="4" y="7" width="7" height="3" fill="#6c5a4c"/>
+  <rect x="0" y="6" width="5" height="1" fill="#6c5a4c"/>
+  <rect x="1" y="7" width="3" height="1" fill="#6c5a4c"/>
+  <rect x="11" y="3" width="4" height="4" fill="#5a4a3e"/>
+  <rect x="11" y="5" width="2" height="2" fill="#7a6450"/>
+  <rect x="11" y="2" width="4" height="1" fill="#6c5a4c"/>
+  <rect x="14" y="4" width="1" height="1" fill="#e8d9b0"/>
+  <rect x="15" y="4" width="2" height="1" fill="#6c5a4c"/>
+  <rect x="16" y="5" width="1" height="1" fill="#6c5a4c"/>
+  </g>
+</g>
+</svg>

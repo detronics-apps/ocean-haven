@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_floating.svg" id="floa_2326"]
 [ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_baby.svg" id="young_0"]
 [ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_young.svg" id="young_1"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_baby_flying.svg" id="ybaby_flying"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_baby_sitting.svg" id="ybaby_sitting"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_young_flying.svg" id="yyoung_flying"]
+[ext_resource type="Texture2D" path="res://assets/animals/cormorant/cormorant_young_sitting.svg" id="yyoung_sitting"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -70,3 +74,5 @@ can_tangle = true
 moments = Array[ExtResource("pm_script")]([SubResource("Moment_0"), SubResource("Moment_1"), SubResource("Moment_2"), SubResource("Moment_3"), SubResource("Moment_4")])
 grow_days = 4.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])
+young_flying_sprites = Array[Texture2D]([ExtResource("ybaby_flying"), ExtResource("yyoung_flying")])
+young_sitting_sprites = Array[Texture2D]([ExtResource("ybaby_sitting"), ExtResource("yyoung_sitting")])

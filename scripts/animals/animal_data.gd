@@ -150,6 +150,10 @@ extends Resource
 ## grown one). Each stage lasts half of grow_days: fast growers (grow_days 2) are grown on
 ## their 3rd day, medium (4) on the 5th, slow (6) on the 7th.
 @export var young_sprites: Array[Texture2D] = []
+## Birds: the young ones flying (from above) and sitting (on the nest) too, [baby, young], drawn
+## by tools/make_young_birds.py from the grown bird's own pictures (empty = the young picture).
+@export var young_flying_sprites: Array[Texture2D] = []
+@export var young_sitting_sprites: Array[Texture2D] = []
 ## New ones drift in from beyond the island's edge instead of being born there (fish, clams,
 ## squid: their eggs and larvae drift in the open sea before they settle).
 @export var drifts_in := false

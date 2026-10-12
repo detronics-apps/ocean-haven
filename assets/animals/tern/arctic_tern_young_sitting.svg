@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-1 -1 20 16" shape-rendering="crispEdges">
+  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
+  <g id="outline"><g transform="translate(-1 0)">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#494543"/>
+  <rect x="2" y="10" width="2" height="1" fill="#56504d"/><rect x="13" y="10" width="2" height="1" fill="#56504d"/>
+  <rect x="5" y="6" width="8" height="5" fill="#757575"/>
+  <rect x="4" y="7" width="7" height="3" fill="#524b4b"/>
+  <rect x="1" y="6" width="4" height="1" fill="#524b4b"/><rect x="2" y="7" width="2" height="1" fill="#524b4b"/>
+  <rect x="11" y="3" width="4" height="4" fill="#757575"/>
+  <rect x="11" y="2" width="4" height="2" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#171728"/>
+  <rect x="15" y="4" width="3" height="1" fill="#521a1a"/>
+</g><g transform="translate(1 0)">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#494543"/>
+  <rect x="2" y="10" width="2" height="1" fill="#56504d"/><rect x="13" y="10" width="2" height="1" fill="#56504d"/>
+  <rect x="5" y="6" width="8" height="5" fill="#757575"/>
+  <rect x="4" y="7" width="7" height="3" fill="#524b4b"/>
+  <rect x="1" y="6" width="4" height="1" fill="#524b4b"/><rect x="2" y="7" width="2" height="1" fill="#524b4b"/>
+  <rect x="11" y="3" width="4" height="4" fill="#757575"/>
+  <rect x="11" y="2" width="4" height="2" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#171728"/>
+  <rect x="15" y="4" width="3" height="1" fill="#521a1a"/>
+</g><g transform="translate(0 -1)">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#494543"/>
+  <rect x="2" y="10" width="2" height="1" fill="#56504d"/><rect x="13" y="10" width="2" height="1" fill="#56504d"/>
+  <rect x="5" y="6" width="8" height="5" fill="#757575"/>
+  <rect x="4" y="7" width="7" height="3" fill="#524b4b"/>
+  <rect x="1" y="6" width="4" height="1" fill="#524b4b"/><rect x="2" y="7" width="2" height="1" fill="#524b4b"/>
+  <rect x="11" y="3" width="4" height="4" fill="#757575"/>
+  <rect x="11" y="2" width="4" height="2" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#171728"/>
+  <rect x="15" y="4" width="3" height="1" fill="#521a1a"/>
+</g><g transform="translate(0 1)">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#494543"/>
+  <rect x="2" y="10" width="2" height="1" fill="#56504d"/><rect x="13" y="10" width="2" height="1" fill="#56504d"/>
+  <rect x="5" y="6" width="8" height="5" fill="#757575"/>
+  <rect x="4" y="7" width="7" height="3" fill="#524b4b"/>
+  <rect x="1" y="6" width="4" height="1" fill="#524b4b"/><rect x="2" y="7" width="2" height="1" fill="#524b4b"/>
+  <rect x="11" y="3" width="4" height="4" fill="#757575"/>
+  <rect x="11" y="2" width="4" height="2" fill="#171728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#171728"/>
+  <rect x="15" y="4" width="3" height="1" fill="#521a1a"/>
+</g></g>
+  <g id="art" data-size="18 14" data-box="0 0 18 14">
+  
+  <rect x="1" y="11" width="16" height="3" fill="#8a8578"/>
+  <rect x="2" y="10" width="2" height="1" fill="#a8a294"/><rect x="13" y="10" width="2" height="1" fill="#a8a294"/>
+  <rect x="5" y="6" width="8" height="5" fill="#f2f2f0"/>
+  <rect x="4" y="7" width="7" height="3" fill="#9e978c"/>
+  <rect x="1" y="6" width="4" height="1" fill="#9e978c"/><rect x="2" y="7" width="2" height="1" fill="#9e978c"/>
+  <rect x="11" y="3" width="4" height="4" fill="#f2f2f0"/>
+  <rect x="11" y="2" width="4" height="2" fill="#1e1e22"/>
+  <rect x="14" y="4" width="1" height="1" fill="#1e1e22"/>
+  <rect x="15" y="4" width="3" height="1" fill="#a04a3a"/>
+</g>
+</svg>
