@@ -142,6 +142,8 @@ func _board(check_range := true) -> bool:
 	if check_range and (not _player_in_range() or not _nearest_boat()):
 		return false
 	_player.set_aboard(true)
+	if check_range and not Fleet.has_flag(&"boat_used"):
+		Fleet.mark(&"boat_used")  # (people stop asking as if the ranger had never been out in one)
 	# Show the ranger (with their current look) sitting in the boat, behind the hull.
 	_driver = _player.get_node("Look").duplicate()
 	_driver.position = Vector2(-2, 2)

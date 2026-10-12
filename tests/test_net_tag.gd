@@ -9,6 +9,8 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
+	root.get_node("People")._met[&"tom"] = true  # (the first turtle only shows once Tom is met)
 	await process_frame
 	var clues := root.get_node("Clues")
 	var fleet := root.get_node("Fleet")
@@ -41,7 +43,11 @@ func _initialize() -> void:
 	await create_timer(1.6).timeout
 	var pinned: Node = journal_screen.find_child("PinnedNote", true, false)
 	_expect(journal_screen.visible and journal_screen.tab == &"clues" and pinned != null
-		and pinned.get_child(0).text.contains("always find the clues here"), "freeing the turtle opens the Clue Board, with its note")
+		and (pinned.find_children("*", "Label", true, false)[0] as Label).text.contains("always find the clues here"), "freeing the turtle opens the Clue Board, with its note")
+	var got_it: Button = pinned.find_child("GotIt", true, false)
+	got_it.pressed.emit()
+	await process_frame
+	_expect(not is_instance_valid(pinned) and journal_screen.visible, "Got it closes the note (it never traps the ranger)")
 	journal_screen.close()
 	fleet.unmark(&"board_opened_o2_net_tag")
 	clues._state.erase(&"o2_net_tag")

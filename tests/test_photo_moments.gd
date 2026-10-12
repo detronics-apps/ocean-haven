@@ -10,6 +10,7 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
 	await process_frame
 	var journal := root.get_node("Journal")
 	journal.photos_dir = OS.get_temp_dir().path_join("bluehaven_test_photos")  # never the player's folder

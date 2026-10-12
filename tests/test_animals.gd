@@ -10,6 +10,7 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
 	await process_frame
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)

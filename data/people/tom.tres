@@ -16,6 +16,8 @@ script = ExtResource("2_t")
 id = &"hello"
 when = PackedStringArray("first")
 lines = PackedStringArray("A new ranger! {name}, isn't it? I'm Tom. I've kept this lighthouse for fifty years.", "When I was a boy, this beach was covered in turtle tracks every summer. Now I hardly see any.", "Turtles need a quiet stretch of sand to nest. Maybe you could give them one?")
+instead_when = PackedStringArray("built:turtle_protection_area")
+instead = PackedStringArray("A new ranger! {name}, isn't it? I'm Tom. I've kept this lighthouse for fifty years.", "When I was a boy, this beach was covered in turtle tracks every summer. Now I hardly see any.", "And you've already given them a quiet stretch of sand. Now we watch for them.")
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")

@@ -44,6 +44,10 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 ## tag: the Clue Board's planted clue, "net_tag_found").
 @export var frees_flag: StringName
 @export_multiline var free_note: String
+## Hidden (not seen, nothing to do with it) until this People condition holds: the first turtle
+## waits for "met:tom", so it's found after Tom tells the ranger the turtles are gone.
+@export var shows_after := ""
+var _show_check := 0.0
 ## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
 @export var young := false
 ## GameClock.now() when it hatched here (-1 = it didn't: it was always here, or arrived).
@@ -161,6 +165,9 @@ func _ready() -> void:
 		var wading := ShaderMaterial.new()
 		wading.shader = WADING
 		_sprite.material = wading
+	if shows_after != "" and not People.check(shows_after, null):
+		visible = false
+		remove_from_group("interactables")  # (_enter_tree put it there)
 	_bandage = Sprite2D.new()
 	_bandage.texture = BANDAGE
 	_bandage.position = Vector2(0, -12)
@@ -284,6 +291,14 @@ func crawl_to_sea() -> void:
 
 
 func _process(delta: float) -> void:
+	if shows_after != "" and not visible:
+		_show_check -= delta
+		if _show_check <= 0.0:
+			_show_check = 0.5
+			if People.check(shows_after, null):
+				visible = true
+				add_to_group("interactables")
+		return
 	if data.dives:
 		_breathe(delta)
 	if young and not leaving and data.grow_days > 0.0 and born_at >= 0.0:
@@ -940,7 +955,7 @@ func actions() -> Array:
 	var list := []
 	if tangled:
 		list.append({"label": "Free %s" % data.button_name().to_lower(), "do": _interact, "helps": true})
-	elif not photographed_today():
+	elif not photographed_today() and has_camera():
 		list.append({"label": "Photo %s" % data.button_name().to_lower(), "do": _interact, "helps": false})
 	if data.guides_to_litter and not tangled and not young and not played:
 		list.append({"label": "Play", "do": play})
@@ -995,7 +1010,7 @@ func _interact() -> void:
 			Fleet.mark(frees_flag)
 			if free_note != "":
 				get_tree().call_group("hud", "show_toast", free_note)
-	elif not photographed_today():
+	elif not photographed_today() and has_camera():
 		photo_day = GameClock.day
 		Journal.photograph(data)
 		_photo_moment()
@@ -1074,6 +1089,12 @@ func _snapshot() -> Image:
 
 ## How much a photo shows around the animal, in tiles.
 const PHOTO_TILES := Vector2(4, 3)
+
+
+## The ranger has a camera: Maya hands hers over when she asks for photos (Fleet flag "camera";
+## older saves with a photo already taken have one).
+static func has_camera() -> bool:
+	return Fleet.has_flag(&"camera") or Journal.photographed_species() > 0
 
 
 func photographed_today() -> bool:

@@ -11,6 +11,7 @@ var _bottle: ItemData = load("res://data/items/plastic_bottle.tres")
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
 	_world = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(_world)
 	_player = _world.get_node("Player")

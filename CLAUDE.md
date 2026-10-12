@@ -845,6 +845,16 @@ first turtle's ghost net carries the hook tag (Animal.frees_flag "net_tag_found"
 over on old saves; Bram's "hook_tag"). The seed news and the Observatory's tree link say what was
 seen, not that birds carried seeds.
 
+The first minutes (the owner: a push line only works if the timing is right): Maya's first talk is
+short: hello, her camera (Fleet flag "camera": photos need it, Animal.has_camera), then "go and
+see Tom" (skipped if Tom was met first). The first turtle stays hidden until Tom is met
+(Animal.shows_after "met:tom"), and its Clue Board question starts with Tom. People never ask as
+if the ranger hadn't done something: a topic says TalkTopic.instead (when instead_when holds)
+rather than its lines (Maya's station question once the ranger has been out in a boat: Fleet flag
+"boat_used"; Tom's hello once a turtle area is built); questions already done are skipped.
+The Clue Board never opens by itself over a talk or another page (it waits), and its pinned note
+has a "Got it" button.
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

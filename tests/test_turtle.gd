@@ -9,6 +9,8 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
+	root.get_node("People")._met[&"tom"] = true  # (the first turtle only shows once Tom is met)
 	await process_frame
 	var journal := root.get_node("Journal")  # autoloads: looked up at runtime
 	var inventory := root.get_node("Inventory")

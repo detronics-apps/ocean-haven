@@ -47,12 +47,11 @@ func _initialize() -> void:
 	root.get_node("RangerProfile").set_ranger_name("Sam")
 	var lines: Array = people.talk(maya)
 	var texts: Array = lines.map(func(l: Dictionary) -> String: return l.text)
-	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("photos of the animals")),
-		"Maya introduces herself and asks who still lives here")
+	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("take my old camera"))
+		and texts.any(func(t: String) -> bool: return t.contains("go and see Tom")) and texts.size() == 3,
+		"Maya's first talk is short: hello, her camera, then off to Tom (%s)" % [texts])
 	_expect(texts[0].contains("Sam, the new ranger"), "she calls the ranger by their name (%s)" % texts[0])
-	var replies: Array = lines.filter(func(l: Dictionary) -> bool: return l.has("options"))
-	_expect(replies.size() == 1 and replies[0].who == "Sam" and replies[0].options.size() == 2,
-		"the ranger picks one of 2 replies (%s)" % [replies])
+	_expect(root.get_node("Fleet").has_flag(&"camera"), "she gave the ranger her camera")
 	_expect(not hud.objective_text().begins_with("Goal:"), "the objective doesn't show while she's still talking")
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout

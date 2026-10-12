@@ -8,6 +8,7 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("People")._met[&"tom"] = true  # (the first turtle only shows once Tom is met)
 	await process_frame
 	var journal := root.get_node("Journal")  # autoloads: looked up at runtime
 	var clock := root.get_node("GameClock")

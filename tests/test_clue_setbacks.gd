@@ -9,6 +9,7 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("Fleet").mark(&"camera")  # (Maya's camera: photos need it)
 	await process_frame
 	var clues := root.get_node("Clues")
 	var fleet := root.get_node("Fleet")

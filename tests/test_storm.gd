@@ -13,6 +13,7 @@ var _failed := false
 
 
 func _initialize() -> void:
+	root.get_node("People")._met[&"tom"] = true  # (the first turtle only shows once Tom is met)
 	await process_frame
 	var events := root.get_node("RareEvents")
 	var clock := root.get_node("GameClock")

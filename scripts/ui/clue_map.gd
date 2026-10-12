@@ -554,13 +554,23 @@ func pin_note(text: String) -> void:
 		old.free()
 	var note := PanelContainer.new()
 	note.name = "PinnedNote"
-	note.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := _paper(Color("f6efd9"))
 	style.set_content_margin_all(16)
 	note.add_theme_stylebox_override("panel", style)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 10)
+	note.add_child(column)
 	var label := _label(text, 22, COLOURS[&"ink"])
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	note.add_child(label)
+	column.add_child(label)
+	var got_it := Button.new()  # (it always closes: a note must never trap the ranger)
+	got_it.name = "GotIt"
+	got_it.text = "Got it"
+	got_it.custom_minimum_size = Vector2(140, 48)
+	got_it.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_paper_button(got_it, Color("e7dcc0"))
+	got_it.pressed.connect(note.queue_free)
+	column.add_child(got_it)
 	add_child(note)
 	var width := minf(size.x - FRAME * 2.0 - 40.0, 640.0)
 	note.custom_minimum_size = Vector2(width, 0)

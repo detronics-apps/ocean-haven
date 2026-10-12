@@ -16,6 +16,10 @@ extends Resource
 ## split by "|" ("> A rock? | Treasure!"); what they say next fits either.
 ## "{name}" is the ranger's name, "{count:green_turtle}" how many there are on the island now.
 @export var lines: PackedStringArray = []
+## Said instead of `lines` when these conditions all hold: the ranger has already done what the
+## talk leads up to (been out in a boat, cleared the litter...), so nobody asks as if they hadn't.
+@export var instead_when: PackedStringArray = []
+@export var instead: PackedStringArray = []
 ## The question's objective (null = just a talk: a hint, a story, a reaction).
 @export var objective: ObjectiveGoal
 ## Said when the ranger comes back with the objective done.

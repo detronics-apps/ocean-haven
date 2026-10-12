@@ -68,6 +68,11 @@ func show_tab(id: StringName) -> void:
 func open_clues(note := "") -> void:
 	if not clues_open() or Fleet.has_flag(&"board_auto_2"):
 		return
+	# Never on top of a talk or another full-screen page: it waits until they're closed.
+	var talk := get_tree().get_first_node_in_group("talk_box")
+	if (talk and talk.is_open()) or (get_tree().paused and not visible):
+		get_tree().create_timer(0.5).timeout.connect(open_clues.bind(note))
+		return
 	Fleet.mark(&"board_auto_2" if Fleet.has_flag(&"board_auto_1") else &"board_auto_1")
 	tab = CLUES
 	page = null

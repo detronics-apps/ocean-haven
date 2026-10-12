@@ -343,7 +343,7 @@ func talk(person: PersonData) -> Array[Dictionary]:
 		RareEvents.calm_down(person.id)  # (after the storm: talked it over)
 	var greeting := _chat(person, first, true)
 	if greeting:
-		said.append_array(greeting.lines)
+		said.append_array(spoken(greeting, person))
 		_told(person, greeting)
 	# News and low funding / wood come after whatever they had to say (not when first met).
 	var extra: Array[String] = []
@@ -382,9 +382,9 @@ func talk(person: PersonData) -> Array[Dictionary]:
 				predict = _prediction(person)
 				if predict:
 					predict_from = said.size()
-					said.append_array(predict.lines)
+					said.append_array(spoken(predict, person))
 		elif question:
-			said.append_array(question.lines)
+			said.append_array(spoken(question, person))
 			_give(person, question)
 		if not said.is_empty():
 			said.append_array(extra)
@@ -406,7 +406,7 @@ func talk(person: PersonData) -> Array[Dictionary]:
 				clue = _pointer(person, turn / 2) if turn % 2 == 0 else _clue(person)
 				if clue.is_empty():
 					clue = _clue(person) if turn % 2 == 0 else _pointer(person, turn / 2)
-			said.append_array(clue if not clue.is_empty() else topic.lines)
+			said.append_array(clue if not clue.is_empty() else spoken(topic, person))
 			_told(person, topic)
 	said.append_array(extra)
 	return _lines(person, said)
@@ -698,6 +698,13 @@ func _holds(topic: TalkTopic, person: PersonData, first: bool) -> bool:
 ##   "installed" (discoveries in the fleet), "health", "quiet" (the Deep Sea's quiet water, 0..100);
 ##   "water_right" (the Mangrove Coast's water level suits the flamingos)
 ##   (percent), "built:X".
+## What `topic` says now: its `instead` lines once the ranger has already done what it leads up to.
+func spoken(topic: TalkTopic, person: PersonData) -> PackedStringArray:
+	if not topic.instead.is_empty() and not topic.instead_when.is_empty() 			and Array(topic.instead_when).all(func(c: String) -> bool: return check(c, person)):
+		return topic.instead
+	return topic.lines
+
+
 func check(condition: String, person: PersonData, first := false) -> bool:
 	var negate := condition.begins_with("!")
 	var text := condition.trim_prefix("!")
