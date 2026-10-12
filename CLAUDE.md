@@ -285,7 +285,8 @@ Step 2. Build in this order:
    washes up; unprotected nests are washed over (1 egg hatches) and up to 3 turtles / seabirds
    are injured (never badly) until a Rescue mission helps them (MASTER_PLAN "Rare events")
 
-Tweaks after 0.4: upgradable buildings show "Lv N/3"; a Ranger House stores 4 / 8 / 10 of each by
+Tweaks after 0.4: upgradable buildings show "Lv N/3" (the Make menu says "Each upgrade: ..." under
+the build cost; the building's button stays just "Upgrade": buttons are actions, not notices); a Ranger House stores 4 / 8 / 10 of each by
 level (BuildingData.storage_per_tier); saplings: carry 5, storable, spare ones given to coastal replanting at the Research
 Station (BuildingData.accepts, ItemData.grant_value: 5 funding each); Research Station 400 funding
 + 20 litter + 10 wood, Exploration Ship 600 + 20 litter + 8 wood (exploring itself stays free).

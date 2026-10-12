@@ -145,6 +145,9 @@ func _initialize() -> void:
 	_expect(paused, "menu pauses the game")
 	_expect(menu.find_child("Entry_dock", true, false).find_child("Build", true, false) != null,
 		"affordable building offers Build")
+	_expect(_entry_text(menu, "Entry_recycling_centre").contains("Each upgrade:") and _entry_text(menu, "Entry_recycling_centre").contains("funding"),
+		"the Make menu says what an upgrade costs (%s)" % _entry_text(menu, "Entry_recycling_centre"))
+	_expect(not _entry_text(menu, "Entry_dock").contains("Each upgrade"), "(nothing to upgrade: no upgrade line)")
 	_expect(_entry_text(menu, "Entry_turtle_protection_area").contains("as many as you can"),
 		"protection areas at their limit say so")
 	_expect(menu.find_child("Entry_house", true, false).find_child("Build", true, false) == null,
