@@ -56,43 +56,6 @@ func _initialize() -> void:
 		"S4.B: kept coming, fixed, none for 3 mornings while other litter came: %s" % said)
 	_expect(not clues._memo.keys().any(func(k: String) -> bool: return k.begins_with("back/plastic_bag")), "(bags were never seen coming back)")
 
-	# --- S7.G: freed, caught again, freed again ---
-	var dolphin: Node2D = world.get_node("Dolphin2")
-	if dolphin.tangled:
-		dolphin._interact()
-	dolphin.tangle(load("res://data/items/ghost_net.tres"))
-	clues.animal_caught(dolphin)
-	_expect(clues._memo.has("caught_again") and not clues._memo.has("freed_again"), "caught again: not yet a recovery")
-	dolphin._interact()
-	clues.check()
-	_expect(clues.is_answered(&"s7g_keep_going") and clues.statement(clues.card(&"s7g_keep_going")).contains("so I freed it again"),
-		"S7.G: freed again after it was caught again")
-
-	# --- S7.R: a storm damages a building; fixed and the beach cleared the next day ---
-	var storm: Resource = load("res://data/events/coastal_storm.tres")
-	clues._event_warned(storm)
-	clues.check()
-	_expect(clues.is_open(&"s7r_events"), "the warning raises the question")
-	var hut: Node = null
-	for b: Node in root.get_tree().get_nodes_in_group("buildings"):
-		if not b.data.storm_proof:
-			hut = b
-			break
-	hut.damaged = true
-	clues._event_struck(storm, 1)
-	clues.check()
-	_expect(not clues.is_answered(&"s7r_events"), "not answered the day it struck")
-	clock.day += 1
-	clues.check()
-	_expect(not clues.is_answered(&"s7r_events"), "still damaged: no answer")
-	hut.damaged = false
-	for debris: Node in root.get_tree().get_nodes_in_group("debris"):
-		debris.free()
-	await process_frame
-	clues.check()
-	_expect(clues.is_answered(&"s7r_events") and clues.statement(clues.card(&"s7r_events")).contains("I fixed them"),
-		"fixed and cleared: S7.R says what happened (%s)" % clues.statement(clues.card(&"s7r_events")))
-
 	# --- S5.G: a bad thing the ranger let happen, a good thing the ranger did ---
 	clues.animal_caught(world.get_node("Crab1"))
 	clues.check()

@@ -67,40 +67,12 @@ func _initialize() -> void:
 	_expect(not clues.is_open(&"s2m_pools"), "(no question until Rosa asks)")
 
 	# --- S2.R: a patch the ranger planted, grown back, parrotfish there ---
-	var reef_region: Resource = load("res://data/regions/tropical_reef.tres")
-	player.global_position = reef_region.arrival
-	for i in 5:
-		await process_frame
-	var reef: Node = world.get_node("ReefIsland/Ecosystem")
-	reef.set_process(false)
-	people.talk(load("res://data/people/kai.tres"))
-	var patch: Node2D = reef.patches()[0]
-	patch.coral = 0.9
-	clues.check()
-	_expect(not clues.is_answered(&"s2r_reef"), "a patch the ranger didn't plant doesn't count")
-	fleet.mark(StringName("coral_planted_" + patch.name))
-	reef._spawn(load("res://data/animals/parrotfish.tres"), patch.global_position)
-	clues.check()
-	var reef_said: String = clues.statement(clues.card(&"s2r_reef"))
-	_expect(clues.is_answered(&"s2r_reef") and reef_said.contains("Parrotfish were there") and not reef_said.contains("because"),
-		"planted, grown back, parrotfish there: answered, no cause claimed (%s)" % reef_said)
-
 	# --- S2.G from two islands ---
 	clues._state[&"s2m_pools"] = {"open": 1, "ev": ["cut", "linked", "fish"], "done": 1, "text": "(pools)"}
 	clues.check()
 	var said: String = clues.statement(clues.card(&"s2g_balance"))
 	_expect(clues.is_answered(&"s2g_balance") and said.contains("In the Kelp Forest") and said.contains("Mangrove Coast")
 		and not said.contains("everything"), "S2.G names its two islands: %s" % said)
-
-	# --- S3.G: two guesses, and what was seen ---
-	people._guesses["maya/guess_nest"] = "Nothing, yet."
-	journal._nests[&"green_turtle"] = 1
-	player.global_position = kelp_region.arrival
-	await process_frame
-	clues.check()
-	var watched: String = clues.statement(clues.card(&"s3g_watch"))
-	_expect(clues.is_answered(&"s3g_watch") and watched.contains("Nothing, yet.") and watched.contains("It grows back!"),
-		"S3.G keeps both guesses, right or not, beside what happened: %s" % watched)
 
 	if _failed:
 		quit(1)

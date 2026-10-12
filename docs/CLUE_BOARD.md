@@ -590,10 +590,10 @@ autoload: checks every 2 s, watches the world, saved as `"clues"` with its `_mem
 Tests: `test_clue_board`, `test_clue_map`, `test_net_tag`, `test_clue_ocean`, `test_clue_islands`,
 `test_clue_setbacks` (plus a check in `test_save`).
 
-**Card ids:** o1_turtles, o2_net_tag · s1_beyond · s2k_kelp, s2m_pools, s2r_reef, s2p_pups,
-s2g_balance · s3g_watch · s4a_sources, s4b_prevent, s4c_nets, s4d_fibres ·
-s5a_too_much, s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar, s6n_<rescue> (6) ·
-s7r_events, s7g_keep_going, s7me_part · final_who.
+**Card ids:** o1_turtles, o2_net_tag · s2k_kelp, s2m_pools, s2g_balance · s4a_sources, s4b_prevent,
+s4c_nets, s4d_fibres · s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar · s7me_part ·
+conclusion_globe, final_who. (Owner review, r338 scores: every note scoring 5 or below on how much
+it proves "it's all connected" was removed: S1.1, S2.P, S2.R, S3.G, S5.A, S6.N, S7.R, S7.G.)
 
 **Build checks (§7), as resolved:**
 1. Parrotfish grazing and patch seaweed aren't drawn → S2.R uses its second statement ("Parrotfish
@@ -644,14 +644,14 @@ globe on one string, from when the end credits start (Fleet flag "credits_rolled
 
 | Section | Notes |
 |---|---|
-| People | S3.G guesses · S7.Me my part |
+| People | S7.Me my part |
 | Trash | O2 net tag · S4.A sources · S4.D fibres |
-| Animals | O1 turtles · S2.R reef · S2.G one thing missing · S6.T travel · S6.N seen again (6 cards, one note) |
-| Places | S1.1 more out there · S6.G one ocean |
-| Storms | S7.R big events · S7.G setbacks |
+| Animals | O1 turtles · S2.G one thing missing · S6.T travel |
+| Places | S6.G one ocean |
+| Storms | (none since the r338 review; the section shows once a note holds it) |
 | Plants | S2.K kelp · S6.S new trees (2 cards, one note) |
-| Land & Water | S2.M pools · S2.P pups |
-| Disturbance | S5.A helping harms · S5.G choices |
+| Land & Water | S2.M pools |
+| Disturbance | S5.G choices |
 | Better ways | S4.B stop it · S4.C marked nets |
 
 **Each section is a cluster:** a bigger heading with its notes round it, in a grid of spots
@@ -671,7 +671,7 @@ down to 18 % at the closest step) so the words on the notes read through it.
 **Notes say little:** a short question (ClueData.title) and a short answer (ClueData.short); the
 full sentences are in the details on a tap. Pictures say the rest: one card per thing seen
 (ClueData.evidence_pictures: evidence id -> the game's own picture), fanned like a hand of cards,
-growing as the ranger finds more. Notes in one group (ClueData.group: "trees", "seen_again") show
+growing as the ranger finds more. Notes in one group (ClueData.group: "trees") show
 as one note. The net-tag note is a close-up: the ghost net with the luggage tag on it, the hook island's black
 logo on the tag.
 

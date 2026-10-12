@@ -79,13 +79,10 @@ func _initialize() -> void:
 	_expect(clues.is_answered(&"t_card") and clues.statement(test) == "Saw A, then Saw B and Saw C.", "never goes back")
 	(DataFiles._folders["res://data/clues"] as Array).erase(test)
 
-	# --- Real cards: S1.1, S4.A, the final question ---
+	# --- Real cards: S4.A, the final question ---
 	clues.restore({})
 	fleet.restore({})
 	clues.check()
-	fleet.mark(&"wreck_found")
-	clues.check()
-	_expect(clues.is_open(&"s1_beyond") and not clues.is_answered(&"s1_beyond"), "S1.1: the wreck raises the question, not the answer")
 	fleet.mark(&"rings_asked")
 	fleet.mark(&"rings_traced")
 	clues.check()
@@ -112,7 +109,7 @@ func _initialize() -> void:
 	for i in 3:
 		await create_timer(1.1).timeout
 	clues.set_process(false)
-	_expect(clues.is_open(&"s1_beyond") and notes[0] == 0, "after loading, the board catches up without a note per card")
+	_expect(clues.is_open(&"s4a_sources") and notes[0] == 0, "after loading, the board catches up without a note per card")
 
 	if _failed:
 		quit(1)

@@ -30,19 +30,6 @@ func _initialize() -> void:
 	var player: Node2D = world.get_node("Player")
 	var reef: Resource = load("res://data/regions/tropical_reef.tres")
 
-	# --- S6.N: released, then seen again another day ---
-	rescues.restore({"done": {"home_turtle": {"name": "Milo", "day": 10, "met": true, "where": "home_island", "seen": []}}})
-	clues.check()
-	_expect(clues.is_open(&"s6n_home_turtle"), "released: will I see Milo again?")
-	var milo: Node2D = world.place_tagged(load("res://data/rescues/home_turtle.tres"), rescues.done[&"home_turtle"])
-	player.global_position = milo.global_position + Vector2(40, 0)
-	clues.check()
-	_expect(not clues.is_answered(&"s6n_home_turtle"), "not answered on the day it was released")
-	clock.day = 12
-	clues.check()
-	_expect(clues.is_answered(&"s6n_home_turtle") and clues.statement(clues.card(&"s6n_home_turtle")).contains("Milo"), "seen again: answered, by name")
-	_expect(not clues.is_open(&"s6t_travel"), "Milo at home says nothing about travelling")
-
 	# --- S6.S and S6.T on the Reef ---
 	player.global_position = reef.arrival
 	await process_frame

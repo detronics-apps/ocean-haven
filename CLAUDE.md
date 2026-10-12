@@ -836,7 +836,7 @@ comes on day one.
 ISLAND_RULES 9). A connected map of what the player has understood (Journal → Clues tab,
 ClueMap: left to right in landscape, top to bottom in portrait, zoom steps, tap for details):
 the opening turtle mystery, 7 nodes, and the final question "Who created all of this?" (never
-answered). 30 cards are data (`data/clues/*.tres`, ClueData), checked by the `Clues` autoload
+answered). 17 cards are data (`data/clues/*.tres`, ClueData), checked by the `Clues` autoload
 with People's conditions plus its own observations (only while the ranger is on that island,
 never health flags). The first activation that holds opens a card, evidence is kept even before
 that, and answers stick (blue), their statements fixed from the evidence that answered them. The
