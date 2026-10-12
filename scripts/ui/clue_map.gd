@@ -201,6 +201,20 @@ func rebuild() -> void:
 	_canvas.move_child(_threads, -1)  # (string and pins over the notes)
 	if _cards.has(GLOBE):  # (the globe in the middle stays on top of all the string that meets there)
 		_canvas.move_child(_cards[GLOBE], -1)
+	for id in _cards:  # (the final question over the globe, with its own red pin)
+		if Clues.card(id).kind == &"final":
+			_canvas.move_child(_cards[id], -1)
+			_cards[id].rotation_degrees = 8.0
+			var red := Control.new()
+			red.name = "RedPin"
+			red.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			red.position = Vector2(_cards[id].size.x / 2.0, 12.0)
+			red.draw.connect(func() -> void:
+				red.draw_circle(Vector2(2, 3), 10.0, Color(0, 0, 0, 0.35))
+				red.draw_circle(Vector2.ZERO, 10.0, Color("9c2a22"))
+				red.draw_circle(Vector2(-1.5, -1.5), 7.0, Color("d0453a"))
+				red.draw_circle(Vector2(-3.5, -3.5), 2.5, Color(1, 0.85, 0.8, 0.9)))
+			_cards[id].add_child(red)
 	_threads.size = extent
 	_canvas.size = extent
 	var inside := size - Vector2(FRAME, FRAME) * 2.0 - Vector2(0, 70)  # (within the frame and planks)
@@ -269,7 +283,8 @@ func _place_sections(by_section: Dictionary, radius: Vector2, tag_centres: Dicti
 				break
 	# The globe in the middle; the question off to its side, across a blank space.
 	for one: ClueData in by_section.get(&"centre", []):
-		card_centres[one.id] = Vector2.ZERO if one.kind == &"globe" else Vector2(GLOBE_NOTE.x * 0.5 + CARD.x * 0.9, -GLOBE_NOTE.y * 0.75)
+		# (the final question pinned over the globe's top-right corner, the owner's layout)
+		card_centres[one.id] = Vector2.ZERO if one.kind == &"globe" else Vector2(GLOBE_NOTE.x * 0.5 - CARD.x * 0.15, -GLOBE_NOTE.y * 0.5 + CARD.y * 0.1)
 
 
 ## Clear cork kept between two sections (half of it round each side's notes).
@@ -850,12 +865,9 @@ func _draw_threads() -> void:
 	if _cards.has(GLOBE):
 		for section in _pins:
 			_thread(_pins[section], _cards[GLOBE], &"to_globe")
-		for next: String in Clues.card(GLOBE).leads_to:
-			if _cards.has(StringName(next)):
-				_thread(_cards[GLOBE], _cards[StringName(next)], &"led")
-	# A brass pin on every note and tag, over the string.
+	# A brass pin on every note and tag, over the string (the final question has its own red one).
 	for note: Control in _cards.values() + _pins.values():
-		if note != _cards.get(GLOBE):
+		if note != _cards.get(GLOBE) and not note.has_node("RedPin"):
 			_draw_pin(_threads, pin_point(note))
 
 

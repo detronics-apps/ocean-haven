@@ -10,10 +10,10 @@ node = 6
 order = 2
 island = &"tropical_reef"
 question = "How did a tree start growing on the Reef?"
-activate = PackedStringArray("sprouted:tropical_reef")
-evidence = PackedStringArray("bare | found:tropical_reef & no_trees:tropical_reef | When I first came, the Reef had no trees at all.", "birds | visitor_here:red_footed_booby | Red-footed boobies from the Starting Island were visiting the Reef.", "sprout | sprouted:tropical_reef | A little palm came up on the Reef.", "nest | heard:booby_trees | Leilani says boobies nest in trees: one day the new palms could hold their nests.")
-answer = PackedStringArray("1: bare", "1: birds", "1: sprout", "1: nest")
-statements = PackedStringArray("The Reef had no trees. After boobies from the Starting Island began visiting, a little palm came up: the Reef's first tree. Boobies nest in trees, so one day it could hold their nests.")
+activate = PackedStringArray("flag:sprouted_tropical_reef")
+evidence = PackedStringArray("bare | found:tropical_reef & no_trees:tropical_reef | When I first came, the Reef had no trees at all.", "birds | visitor_here:red_footed_booby | Red-footed boobies from the Starting Island were visiting the Reef.", "sprout | flag:sprouted_tropical_reef | A little palm came up on the Reef.", "storm | memo:storm_seed | In the hurricane a coconut washed ashore: coconuts float, and storms carry them to new shores.", "nest | heard:booby_trees | Leilani says boobies nest in trees: one day the new palms could hold their nests.")
+answer = PackedStringArray("1: bare", "1: birds, storm", "1: sprout", "1: nest")
+statements = PackedStringArray("storm => The Reef had no trees. In the hurricane a coconut washed ashore, and a little palm came up: coconuts float, and storms carry them to new shores. Boobies nest in trees, so one day it could hold their nests.", "The Reef had no trees. After boobies from the Starting Island began visiting, a little palm came up: the Reef's first tree. Boobies nest in trees, so one day it could hold their nests.")
 guarantee = &"O"
 section = &"plants"
 links = PackedStringArray("places", "animals", "people")

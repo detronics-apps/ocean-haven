@@ -265,6 +265,7 @@ func strike(event: EventData) -> int:
 			People.add_news(event.region, "The storm washed a seed ashore, {name}. A little %s has come up where there wasn't one." \
 				% event.seeds_tree.display_name.to_lower())
 			get_tree().call_group("clue_watchers", "storm_seed")
+			Fleet.mark(StringName("sprouted_" + String(event.region)))
 	Fleet.mark(&"storm_struck")
 	struck.emit(event, damaged)  # (no note: the island's people say what happened)
 	return damaged
