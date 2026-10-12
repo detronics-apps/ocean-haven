@@ -196,7 +196,8 @@ func actions() -> Array:
 	if (data.makes or data.makes_from != &"") and not damaged:
 		list.append_array(_production_actions())
 	if tier < data.max_tier:
-		list.append({"label": "Upgrade", "do": upgrade})  # (its level shows on the building: "Lv N/3")
+		var price := data.upgrade_cost_short()  # (the cost on the button, the owner: it was nowhere to be seen)
+		list.append({"label": "Upgrade (%s)" % price if price != "" else "Upgrade", "do": upgrade})  # (its level shows: "Lv N/3")
 	if storage() > 0:
 		var carried := storable_carried()
 		if carried > 0:
