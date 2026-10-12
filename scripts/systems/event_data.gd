@@ -56,6 +56,6 @@ extends Resource
 @export var needs_building: StringName = &""
 ## Ice breakups: the share of one floe's old ice that breaks away (it freezes back next freeze).
 @export var ice_breakup := 0.0
-## A seed it washes ashore: a young tree of this kind comes up on a free spot of its island
-## (null = none: the oil spill, the ice).
+## A seed it washes ashore: a young tree of this kind comes up on a free spot of its island, only
+## while that island has no trees at all (null = none). Only the Reef's hurricane has one: a palm.
 @export var seeds_tree: BuildingData

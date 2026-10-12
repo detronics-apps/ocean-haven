@@ -123,6 +123,9 @@ func _initialize() -> void:
 	reef_tree._process(0.0)
 	_expect(reef_tree.get_node("Sprite2D").material == null, "no snow on the Reef")
 
+	var snapper: Resource = load("res://data/animals/juvenile_snapper.tres")
+	_expect(travellers.travelling().has(snapper) and snapper.travels_to.has("tropical_reef"),
+		"young snappers raised in the mangrove pools swim out to the Reef")
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

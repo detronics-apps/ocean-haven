@@ -56,7 +56,13 @@ func _initialize() -> void:
 	for i in 2:
 		kelp._spawn(otter_data, kelp.beds()[i].global_position)
 	clues.check()
-	_expect(clues.is_answered(&"s2k_kelp"), "otters back, then fewer urchins and thick kelp: answered")
+	_expect(not clues.is_answered(&"s2k_kelp"), "otters back, fewer urchins, thick kelp: the chain goes on (fish, birds)")
+	var rockfish: Resource = load("res://data/animals/blue_rockfish.tres")
+	for i in 4:
+		kelp._spawn(rockfish, kelp.beds()[i].global_position)
+	clues.check()
+	_expect(clues.is_answered(&"s2k_kelp") and clues.statement(clues.card(&"s2k_kelp")).contains("fish came back"),
+		"otters back, then fewer urchins, thick kelp and fish back in it: answered")
 
 	# --- S2.M: the pools cut off, seen on the Mangrove Coast ---
 	player.global_position = load("res://data/regions/mangrove_coast.tres").arrival

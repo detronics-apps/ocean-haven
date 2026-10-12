@@ -116,6 +116,7 @@ func spread_seeds(species: AnimalData, here: RegionData = null) -> Building:
 	if not build:
 		return null
 	var tree: Building = build.add_building(species.seeds_tree, cell)
+	Fleet.mark(StringName("sprouted_" + String(to.id)))  # (people can talk about it)
 	var key := "seeds/%s/%s" % [species.id, to.id]
 	if not _told.has(key):
 		_told[key] = true

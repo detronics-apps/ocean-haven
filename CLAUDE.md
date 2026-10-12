@@ -683,7 +683,8 @@ rests on its back, the polar bear lies down to rest.
 Travelling animals (`Travellers` autoload, saved "travellers"; AnimalData.travel_home /
 travels_to / travel_chance / travel_news): bottlenose dolphins (from the Starting Island; never
 the Arctic), sperm whales (from the Deep Sea; everywhere) and green turtles (from the Starting
-Island to the Mangrove Coast and the Reef) spread one island further along the chain every
+Island to the Mangrove Coast and the Reef; young snappers from the Mangrove Coast's pools to the
+Reef) spread one island further along the chain every
 DAYS_PER_STEP (8) days once they live at home, so the whale reaches the Reef last; a morning
 visitor comes for the day to the ranger's island (visiting), and the first time on an island its
 people mention it (People.add_news). Rescued companions visit more often. A green turtle on the
@@ -804,9 +805,9 @@ like (PersonData.storm_after) until the ranger talks to them.
 The storm storyline (the Clue Board's Storms note, "What does a storm bring?"): a storm stirs up
 old litter, even kinds that have stopped coming (LitterSpawner.OLD_PIECES), damages what wasn't
 secured, hurts a young animal (storm rescues), and brings good too: the island's people help fix
-the damage ("fixed, with Tom's help"), a seed washes ashore and a young tree comes up somewhere
-new (EventData.seeds_tree: palms for the storm and hurricane, a mangrove for the flood, a coastal
-tree for the swell), and a flash flood's rain brings water back to dry mangrove flats for a few
+the damage ("fixed, with Tom's help"), a seed washes ashore and a young tree comes up, only on an island with no
+trees yet and only a kind that grows there (EventData.seeds_tree: the Reef's hurricane, a palm;
+never other islands' trees mixed in), and a flash flood's rain brings water back to dry mangrove flats for a few
 days (MangroveEcosystem.flood_water). Erik says warmer seas feed stronger storms (a line only,
 never a mechanic). Fleet flag "storm_struck".
 

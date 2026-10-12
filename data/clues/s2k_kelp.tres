@@ -13,12 +13,12 @@ order = 0
 island = &"kelp_forest"
 question = "Why did the kelp disappear?"
 activate = PackedStringArray("met:finn")
-evidence = PackedStringArray("few | found:kelp_forest & animals:sea_otter<=1@kelp_forest | There were hardly any otters in the forest.", "grazed | flag:surveyed_urchin_pressure_survey & kelp_overgrazed:6 | The urchin count showed the urchins had grazed the beds bare.", "back | animals:sea_otter>=2@kelp_forest | Otters came back to the forest.", "fewer | animals:sea_otter>=2@kelp_forest & kelp_overgrazed_max:2 | With the otters back, hardly any beds were overgrazed.", "kelp | animals:sea_otter>=2@kelp_forest & kelp_dense:6 | The kelp grew thick again.")
-answer = PackedStringArray("1: few", "1: grazed", "1: back", "1: fewer", "1: kelp")
-statements = PackedStringArray("There were hardly any otters, and urchins had grazed the forest bare. When the otters came back, the urchins grew fewer and the kelp grew again.")
+evidence = PackedStringArray("few | found:kelp_forest & animals:sea_otter<=1@kelp_forest | There were hardly any otters in the forest.", "grazed | flag:surveyed_urchin_pressure_survey & kelp_overgrazed:6 | The urchin count showed the urchins had grazed the beds bare.", "back | animals:sea_otter>=2@kelp_forest | Otters came back to the forest.", "fewer | animals:sea_otter>=2@kelp_forest & kelp_overgrazed_max:2 | With the otters back, hardly any beds were overgrazed.", "kelp | animals:sea_otter>=2@kelp_forest & kelp_dense:6 | The kelp grew thick again.", "fish | animals:blue_rockfish>=4@kelp_forest | Fish came back to live in the thick kelp.", "birds | animals:double_crested_cormorant>=2@kelp_forest | Then cormorants came to fish there, nesting in the island's trees.")
+answer = PackedStringArray("1: few", "1: grazed", "1: back", "1: fewer", "1: kelp", "1: fish, birds")
+statements = PackedStringArray("birds => There were hardly any otters, and urchins had grazed the forest bare. When the otters came back, the urchins grew fewer and the kelp grew again. Then cormorants came to fish there, nesting in the island's trees.", "There were hardly any otters, and urchins had grazed the forest bare. When the otters came back, the urchins grew fewer and the kelp grew again, and fish came back to live in it.")
 guarantee = &"L"
 section = &"plants"
-links = PackedStringArray("animals", "people")
+links = PackedStringArray("animals", "people", "land_water")
 picture = ExtResource("2_pic")
 title = "Why no kelp?"
 short = "Otters keep kelp alive"

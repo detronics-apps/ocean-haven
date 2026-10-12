@@ -51,8 +51,13 @@ func _initialize() -> void:
 		clock.day += 1
 		clues._morning()
 		clues.check()
+	_expect(clues._memo.has("gone/foam_box@home_island") and not clues.is_answered(&"s4b_prevent"),
+		"S4.B waits until it's seen gone on another island too")
+	clues._memo["gone/foam_box@kelp_forest"] = clock.day  # (a morning on the Kelp Forest: other litter, no foam)
+	clues.check()
 	var said: String = clues.statement(clues.card(&"s4b_prevent"))
-	_expect(clues.is_answered(&"s4b_prevent") and said.contains("foam boxes") and said.contains("though other litter still did"),
+	_expect(clues.is_answered(&"s4b_prevent") and said.contains("foam boxes") and said.contains("though other litter still did")
+		and said.contains("other islands too"),
 		"S4.B: kept coming, fixed, none for 3 mornings while other litter came: %s" % said)
 	_expect(not clues._memo.keys().any(func(k: String) -> bool: return k.begins_with("back/plastic_bag")), "(bags were never seen coming back)")
 
@@ -79,7 +84,18 @@ func _initialize() -> void:
 	storm.damage_chance = chance
 	clues.check()
 	_expect(clues.is_open(&"s7s_storms") and clues._memo.has("storm_litter"), "a storm struck: what does a storm bring?")
-	_expect(palms.call() == palms_before + 1, "it washed a seed ashore: a young palm came up (%d -> %d)" % [palms_before, palms.call()])
+	_expect(palms.call() == palms_before, "the Starting Island has trees: no washed-up seed there (never other trees mixed in)")
+	var hurricane: Resource = load("res://data/events/hurricane.tres")
+	var reef_palms := func() -> int:
+		return root.get_tree().get_nodes_in_group("buildings").filter(func(b: Node) -> bool:
+			return b.data == palm and regions.nearest(b.global_position).id == &"tropical_reef").size()
+	regions.discover(load("res://data/regions/tropical_reef.tres"))
+	var reef_before: int = reef_palms.call()
+	events.strike(hurricane)
+	_expect(reef_before == 0 and reef_palms.call() == 1 and clues._memo.has("storm_seed"),
+		"a hurricane on the treeless Reef washes a palm seed ashore: its first little palm")
+	events.strike(hurricane)
+	_expect(reef_palms.call() == 1, "once the Reef has a tree, no more storm seeds")
 	_expect(clues._memo.has("storm_old_litter"), "it stirred up old foam boxes, a kind that had stopped coming")
 	_expect(hut != null and hut.damaged, "(an unsecured building was damaged)")
 	root.get_node("Funding").balance = 100

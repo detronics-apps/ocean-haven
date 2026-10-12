@@ -590,6 +590,13 @@ autoload: checks every 2 s, watches the world, saved as `"clues"` with its `_mem
 Tests: `test_clue_board`, `test_clue_map`, `test_net_tag`, `test_clue_ocean`, `test_clue_islands`,
 `test_clue_setbacks` (plus a check in `test_save`).
 
+**Stronger notes (owner, after the r338 scores):** each 6 or 7 now ties to another island or
+section with something seen: O1 needs the tag's answer (the net came from the Deep Sea); S4.B
+needs the fixed kind seen gone on a second island; S2.K goes on to fish back in the kelp (or
+cormorants nesting in trees); S2.M needs young snappers from the pools seen on the Reef (they
+travel now); S6.S needs Leilani's word that boobies nest in trees; S5.G counts storm
+preparation either way; S7.Me needs three people's own wishes come true.
+
 **Card ids:** o1_turtles, o2_net_tag · s2k_kelp, s2m_pools, s2g_balance · s4a_sources, s4b_prevent,
 s4c_nets, s4d_fibres · s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar · s7me_part, s7s_storms ·
 conclusion_globe, final_who. (Owner review, r338 scores: every note scoring 5 or below on how much

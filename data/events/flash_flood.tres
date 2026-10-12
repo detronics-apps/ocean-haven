@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="EventData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_s"]
-[ext_resource type="Resource" path="res://data/buildings/mangrove_tree.tres" id="seed_tree"]
 
 [resource]
 script = ExtResource("1_s")
@@ -22,4 +21,3 @@ litter_floating = 8
 repair_wood = 1
 flood_silt = 0.7
 weather = &"flood"
-seeds_tree = ExtResource("seed_tree")

@@ -194,6 +194,9 @@ func holds(condition: String, one: ClueData) -> bool:
 			result = _memo.has(arg)
 		"prevented":  # litter kind `arg`: kept coming, its source fixed, then none for 3 mornings
 			result = _memo.keys().any(func(k: String) -> bool: return k.begins_with("after/%s@" % arg) and int(_memo[k]) >= PREVENTED_MORNINGS)
+		"stopped_elsewhere":  # a fixed kind stayed away on two or more of the ranger's islands
+			result = [&"six_pack_rings", &"plastic_bag", &"foam_box", &"ghost_net"].any(func(k: StringName) -> bool:
+				return _memo.keys().filter(func(m: String) -> bool: return m.begins_with("gone/%s@" % k)).size() >= 2)
 		"kept_coming":  # litter kind `arg` came back after the ranger had cleared it, before its fix
 			result = _memo.keys().any(func(k: String) -> bool: return k.begins_with("back/%s@" % arg))
 		"no_trees":  # island `arg` has no trees at all
@@ -418,6 +421,8 @@ func _morning() -> void:
 		return
 	var at := String(here.id)
 	for kind in [&"six_pack_rings", &"plastic_bag", &"foam_box", &"ghost_net"]:
+		if Fleet.stopped(kind) and int(_memo.get("other/" + at, -9)) >= GameClock.day - 1:
+			_memo["gone/%s@%s" % [kind, at]] = GameClock.day  # (other litter drifted in, none of it new)
 		if Fleet.stopped(kind) and _memo.has("back/%s@%s" % [kind, at]) and int(_memo.get("other/" + at, -9)) >= GameClock.day - 1:
 			var key := "after/%s@%s" % [kind, at]
 			_memo[key] = int(_memo.get(key, 0)) + 1

@@ -10,13 +10,13 @@ node = 7
 order = 2
 question = "What is my part in all this?"
 activate = PackedStringArray("stopped:six_pack_rings", "stopped:foam_box", "stopped:microfibres")
-evidence = PackedStringArray("prevent | clue:s4b_prevent | Stopping litter where it started did what cleaning up couldn't.", "choices | clue:s5g_choices | What I do changes what happens.")
-answer = PackedStringArray("1: prevent", "1: choices")
-statements = PackedStringArray("I'm part of this ocean too. What I choose can help it come back.")
+evidence = PackedStringArray("prevent | clue:s4b_prevent | Stopping litter where it started did what cleaning up couldn't.", "choices | clue:s5g_choices | What I do changes what happens.", "wishes | wishes>=3 | People's own wishes came true because of what I did.")
+answer = PackedStringArray("1: prevent", "1: choices", "1: wishes")
+statements = PackedStringArray("I'm part of this ocean too: what I did made people's own wishes come true. What I choose can help it come back.")
 leads_to = PackedStringArray("final_who")
 guarantee = &"L"
 picture = ExtResource("2_pic")
 section = &"people"
-links = PackedStringArray("better_ways")
+links = PackedStringArray("better_ways", "animals", "places")
 title = "My part?"
 short = "I'm part of it"

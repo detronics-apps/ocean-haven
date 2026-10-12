@@ -254,7 +254,9 @@ func strike(event: EventData) -> int:
 				ecosystem.oil_spill(event.oil_patches)
 	if event.visibility_days > 0.0:
 		_murky[event.region] = GameClock.now() + event.visibility_days
-	if event.seeds_tree:  # the storm washed a seed ashore: a young tree comes up somewhere new
+	# The storm washed a seed ashore: a young tree comes up, only on an island with no trees yet
+	# (the owner: never other islands' trees mixed in; the event's own tree grows there).
+	if event.seeds_tree and Clues._trees_on(event.region) == 0:
 		var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % event.region)
 		var cell: Vector2i = Travellers.call("_seed_spot", event.seeds_tree, region)
 		var build := get_tree().get_first_node_in_group("build_mode")

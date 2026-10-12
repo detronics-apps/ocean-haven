@@ -266,6 +266,10 @@ func _initialize() -> void:
 			box.next()
 	_expect(not box.visible and not paused, "tapped through: it closes and the game goes on")
 
+	people._heard["tom/want/done"] = true
+	people._heard["kai/want/done"] = true
+	people._heard["imani/want/done"] = true
+	_expect(people.check("wishes>=3", null), "three people's own wishes came true (the Clue Board's My part)")
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

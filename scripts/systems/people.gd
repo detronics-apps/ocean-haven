@@ -777,6 +777,8 @@ func _number(name: String, person: PersonData) -> float:
 			return get_tree().get_nodes_in_group("buildings").filter(func(b: Building) -> bool:
 				return b.data.id == arg and b.too_busy() != null and Regions.nearest(b.global_position) == region).size()
 		"species": return Journal.photographed_species()
+		"wishes":  # people whose own wish came true and who have said so
+			return _heard.keys().filter(func(k: String) -> bool: return k.ends_with("/want/done")).size()
 		"missing_moments": return Journal.moments_total() - Journal.moments_caught()
 		"picked": return Inventory.picked.get(arg, 0)
 		"young":  # young ones of species `arg` on their island now (born, not grown yet)
@@ -790,6 +792,8 @@ func _number(name: String, person: PersonData) -> float:
 
 
 func _region(person: PersonData) -> RegionData:
+	if person == null:  # (conditions about the whole game: met, wishes...)
+		return null
 	return DataFiles.res("res://data/regions/%s.tres" % person.region)
 
 

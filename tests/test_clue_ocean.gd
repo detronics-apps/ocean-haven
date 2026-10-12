@@ -43,8 +43,12 @@ func _initialize() -> void:
 	var sprout: Node = travellers.spread_seeds(load("res://data/animals/red_footed_booby.tres"))
 	_expect(sprout != null, "(a palm sprouts while the boobies are there)")
 	clues.check()
+	_expect(not clues.is_answered(&"s6s_reef") and root.get_node("Fleet").has_flag(&"sprouted_tropical_reef"), "a palm came up: Leilani will say why it matters")
+	var people := root.get_node("People")
+	people._heard["leilani/booby_trees"] = true  # (she told the ranger: boobies nest in trees)
+	clues.check()
 	var reef_said: String = clues.statement(clues.card(&"s6s_reef"))
-	_expect(clues.is_answered(&"s6s_reef") and reef_said.contains("After boobies") and not reef_said.contains("brought"),
+	_expect(clues.is_answered(&"s6s_reef") and reef_said.contains("After boobies") and reef_said.contains("hold their nests") and not reef_said.contains("brought"),
 		"S6.S says what was seen, in order, never that the birds brought it: %s" % reef_said)
 	travellers._told["bottlenose_dolphin/mangrove_coast"] = true
 	clues.check()

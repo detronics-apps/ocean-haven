@@ -12,12 +12,12 @@ order = 1
 island = &"mangrove_coast"
 question = "Why are Rosa's nets empty?"
 activate = PackedStringArray("met:rosa")
-evidence = PackedStringArray("cut | found:mangrove_coast & pools_linked_max:0 & animals:juvenile_snapper<=2@mangrove_coast | The nursery pools were cut off from the sea, and only a few young fish lived here.", "linked | pools_linked:1 | Water flowed into a nursery pool again.", "fish | pools_linked:1 & animals:juvenile_snapper>=4@mangrove_coast | There were more young fish.")
-answer = PackedStringArray("1: cut", "1: linked", "1: fish")
-statements = PackedStringArray("The nursery pools were cut off from the sea, and only a few young fish lived here. After water flowed into the pools again, there were more young fish.")
+evidence = PackedStringArray("cut | found:mangrove_coast & pools_linked_max:0 & animals:juvenile_snapper<=2@mangrove_coast | The nursery pools were cut off from the sea, and only a few young fish lived here.", "linked | pools_linked:1 | Water flowed into a nursery pool again.", "fish | pools_linked:1 & animals:juvenile_snapper>=4@mangrove_coast | There were more young fish.", "reef | visited:juvenile_snapper | Young snappers from the mangrove pools turned up on the Reef.")
+answer = PackedStringArray("1: cut", "1: linked", "1: fish", "1: reef")
+statements = PackedStringArray("The nursery pools were cut off from the sea, and only a few young fish lived here. After water flowed into the pools again, there were more young fish, and young snappers from the pools turned up on the Reef.")
 guarantee = &"L"
 section = &"land_water"
-links = PackedStringArray("people", "animals")
+links = PackedStringArray("people", "animals", "places")
 picture = ExtResource("2_pic")
 title = "Why empty nets?"
 short = "Open water, young fish"
