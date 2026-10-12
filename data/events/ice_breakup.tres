@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EventData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/event_data.gd" id="1_evt"]
+[ext_resource type="Resource" path="res://data/buildings/polar_willow.tres" id="seed_tree"]
 
 [resource]
 script = ExtResource("1_evt")
@@ -21,3 +22,5 @@ litter_floating = 8
 repair_wood = 1
 ice_breakup = 0.35
 weather = &"blizzard"
+seeds_tree = ExtResource("seed_tree")
+seeds_news = "The storm's wind blew fluffy willow seeds over the rocks, {name}. A little polar willow has come up: our first tree, only a few centimetres tall!"

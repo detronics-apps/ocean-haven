@@ -24,3 +24,4 @@ kelp_damage = 0.4
 kelp_damaged_share = 0.5
 weather = &"hurricane"
 seeds_tree = ExtResource("seed_tree")
+seeds_news = "The hurricane washed a coconut ashore, {name}, and a little palm has come up: the Reef's first tree! Coconuts float, and storms carry them to new shores."

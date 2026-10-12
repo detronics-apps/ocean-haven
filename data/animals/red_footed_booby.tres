@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_standing.svg" id="rest_3043"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_floating.svg" id="floa_8091"]
-[ext_resource type="Resource" path="res://data/buildings/palm_tree.tres" id="seed_palm"]
+[ext_resource type="Resource" path="res://data/buildings/pisonia_tree.tres" id="seed_palm"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_baby.svg" id="young_0"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_young.svg" id="young_1"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby_baby_flying.svg" id="ybaby_flying"]
@@ -83,7 +83,7 @@ travel_news = "Boobies were fishing off the reef this morning! Red-footed boobie
 seeds_tree = ExtResource("seed_palm")
 seeds_from = &"home_island"
 seeds_to = &"tropical_reef"
-seeds_news = "Have you seen? A little palm has come up on the island, the first tree we've ever had here! It came up while the boobies from the {from} were visiting. I wonder how it got here?"
+seeds_news = "Have you seen? A little Pisonia tree has come up, the first tree we've ever had here! Its seeds are sticky: they must have caught on the feathers of the boobies visiting from the {from}."
 grow_days = 4.0
 young_sprites = Array[Texture2D]([ExtResource("young_0"), ExtResource("young_1")])
 young_flying_sprites = Array[Texture2D]([ExtResource("ybaby_flying"), ExtResource("yyoung_flying")])

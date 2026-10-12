@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/polar_willow.svg" id="1_tree"]
+[ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="2_tree"]
+[ext_resource type="Resource" path="res://data/plants/polar_willow.tres" id="4_tree"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/polar_willow_sapling.svg" id="stage_0"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/polar_willow_young.svg" id="stage_1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tree"]
+radius = 2.0
+
+[node name="PolarWillow" type="StaticBody2D" groups=["plants"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_tree")
+plant = ExtResource("4_tree")
+stage_textures = Array[Texture2D]([ExtResource("stage_0"), ExtResource("stage_1")])
+cuttable = false
+
+[node name="Trunk" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tree")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tree")
+offset = Vector2(0, -28)

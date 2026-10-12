@@ -599,8 +599,9 @@ preparation either way; S7.Me needs three people's own wishes come true.
 
 "Who created all of this?" is pinned over the globe's top-right corner, tilted, with a red pin
 (no string to it). The tree note says plainly when a hurricane brought the Reef's palm (a coconut
-washed ashore: coconuts float, storms carry them to new shores); the birds' route still never
-claims the birds carried the seed.
+washed ashore: coconuts float, storms carry them to new shores), and that the boobies brought the
+Pisonia (its sticky seeds catch on seabirds' feathers: true, so now said); the Polar note says the
+ice storm's wind blew in polar willow seeds.
 
 **Card ids:** o1_turtles, o2_net_tag · s2k_kelp, s2m_pools, s2g_balance · s4a_sources, s4b_prevent,
 s4c_nets, s4d_fibres · s5g_choices · s6t_travel, s6g_ocean, s6s_reef, s6s_polar · s7me_part, s7s_storms ·

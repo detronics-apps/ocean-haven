@@ -57,5 +57,8 @@ extends Resource
 ## Ice breakups: the share of one floe's old ice that breaks away (it freezes back next freeze).
 @export var ice_breakup := 0.0
 ## A seed it washes ashore: a young tree of this kind comes up on a free spot of its island, only
-## while that island has no trees at all (null = none). Only the Reef's hurricane has one: a palm.
+## while that island has no trees at all (null = none): the Reef's hurricane a palm (coconuts
+## float), the Polar ice storm a polar willow (its fluffy seeds blow in on the wind).
 @export var seeds_tree: BuildingData
+## What the island's people say when it comes up ("{name}" = the ranger).
+@export var seeds_news: String

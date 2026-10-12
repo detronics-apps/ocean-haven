@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/pisonia_tree.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"pisonia"
+display_name = "Pisonia Tree"
+picture = ExtResource("2_plant")
+habitat = "Small tropical islands (the Tropical Reef)"
+fact = "Pisonia seeds are covered in sticky hooks. They cling to seabirds' feathers, and that's how the tree spreads from island to island."
+role = "Comes with the visiting boobies; boobies nest in its branches. Gives wood and saplings."

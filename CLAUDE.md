@@ -718,12 +718,17 @@ People.OBSERVATION_TIMES (3) a game, least-said first (saved "observed"). Bram k
 the little islet off the Deep Sea hook's base; the hook's inside (the canyon) is rock, with sand
 only in a line up from the base and round the east tip.
 
-Seeds that travel (AnimalData seeds_tree / seeds_from / seeds_to / seeds_max 6 / seeds_chance;
-Travellers.spread_seeds every morning, wherever the ranger is; away from the ranger a visit that would have come counts): once the Starting Island is
-thriving (70 %), red-footed boobies visit the Reef (they travel now: home_island -> tropical_reef)
-and little palms sprout there, the Reef's first trees; terns back from the healthy Deep Sea bring
-shore pines to the Arctic rocks. The first sprout is news. Arctic trees carry snow
-(PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the tree's own pixels turn white,
+Trees on the treeless islands (the owner: only to islands with no trees, only a kind that grows
+there, and the Clue Board says plainly how each came): red-footed boobies visiting the Reef (once
+the Starting Island is thriving, 70 %) bring the Pisonia tree (AnimalData seeds_tree / seeds_from /
+seeds_to / seeds_max 6 / seeds_chance; Travellers.spread_seeds every morning, wherever the ranger is):
+its sticky seeds catch on seabirds' feathers, and boobies nest in it; once one has come up, Pisonia
+saplings can be planted there (needs_flag "sprouted_tropical_reef"). A storm brings a tree only to an
+island with none (EventData.seeds_tree / seeds_news): the Reef's hurricane a palm (a coconut washed
+ashore), the Polar ice storm a polar willow (fluffy seeds on the wind; a few centimetres tall, too
+small to cut: PalmTree.cuttable false, never in the Make menu: BuildingData.in_make_menu). The terns
+no longer bring pines. The first sprout is news. Arctic plants carry snow
+(PolarEcosystem.snow_cover, assets/effects/snow/: the tops of the plant's own pixels turn white,
 building up in the freeze, deepest when frozen, gone by open water).
 
 When you first arrived (Observatory): see "The Observatory's layout" (start pictures; the

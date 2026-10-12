@@ -75,6 +75,8 @@ extends Resource
 @export var one_per_island := false
 ## Only on this island (region id; "" = any): each island's signature facility is its own.
 @export var only_on: StringName
+## false: it only ever grows by itself (the polar willow, blown in by a storm): not in the Make menu.
+@export var in_make_menu := true
 ## Only once the island's objective is done (RegionData.goals; the Exploration Ship).
 @export var needs_objective := false
 ## Boats: at most this many on an island (its own rowboat included). Building another is always

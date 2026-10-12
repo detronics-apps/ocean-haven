@@ -479,8 +479,9 @@ func storm_rescue() -> void:
 	_memo["storm_rescue"] = GameClock.day
 
 
-func storm_seed() -> void:
+func storm_seed(region_id: StringName = &"") -> void:
 	_memo["storm_seed"] = GameClock.day
+	_memo["storm_seed/" + String(region_id)] = GameClock.day
 
 
 func storm_water() -> void:

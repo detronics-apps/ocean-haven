@@ -262,9 +262,8 @@ func strike(event: EventData) -> int:
 		var build := get_tree().get_first_node_in_group("build_mode")
 		if build and cell != Vector2i(-99999, -99999):
 			build.add_building(event.seeds_tree, cell)
-			People.add_news(event.region, "The storm washed a seed ashore, {name}. A little %s has come up where there wasn't one." \
-				% event.seeds_tree.display_name.to_lower())
-			get_tree().call_group("clue_watchers", "storm_seed")
+			People.add_news(event.region, event.seeds_news)
+			get_tree().call_group("clue_watchers", "storm_seed", event.region)
 			Fleet.mark(StringName("sprouted_" + String(event.region)))
 	Fleet.mark(&"storm_struck")
 	struck.emit(event, damaged)  # (no note: the island's people say what happened)

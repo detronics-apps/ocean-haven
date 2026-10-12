@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_b"]
+[ext_resource type="PackedScene" path="res://scenes/world/pisonia_tree.tscn" id="2_s"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/pisonia_tree.svg" id="3_t"]
+
+[resource]
+script = ExtResource("1_b")
+short_name = "Pisonia"
+id = &"pisonia_tree"
+display_name = "Pisonia Tree"
+description = "Plant a Pisonia sapling on sand or grass. It grows a stage a day; a full-grown tree gives 2-3 wood and 1-2 saplings."
+summary = "Grows into a Pisonia tree for wood, saplings and nesting boobies."
+order = 6
+texture = ExtResource("3_t")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("sand", "grass")
+spawns = ExtResource("2_s")
+draw_texture = false
+fact = "Pisonia seeds are sticky: they catch on seabirds' feathers, and that's how the tree reaches new islands."
+cost_items = Dictionary[StringName, int]({&"pisonia_sapling": 1})
+category = &"land"
+only_on = &"tropical_reef"
+needs_flag = &"sprouted_tropical_reef"
+movable = false
+build_verb = "Plant"
+storm_proof = true

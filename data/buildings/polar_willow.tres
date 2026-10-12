@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_b"]
+[ext_resource type="PackedScene" path="res://scenes/world/polar_willow.tscn" id="2_s"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/polar_willow.svg" id="3_t"]
+
+[resource]
+script = ExtResource("1_b")
+short_name = "Willow"
+id = &"polar_willow"
+display_name = "Polar Willow"
+description = "A tree only a few centimetres tall, flat on the rock. It came by itself, on the wind."
+summary = "Grows by itself: its seeds blow in on the wind."
+order = 6
+texture = ExtResource("3_t")
+size = Vector2i(1, 1)
+terrain = PackedStringArray("rock")
+spawns = ExtResource("2_s")
+draw_texture = false
+fact = "Polar willows hide under the snow in winter and grow again when it melts."
+category = &"land"
+only_on = &"arctic_ocean"
+in_make_menu = false
+movable = false
+storm_proof = true

@@ -48,8 +48,8 @@ func _initialize() -> void:
 	people._heard["leilani/booby_trees"] = true  # (she told the ranger: boobies nest in trees)
 	clues.check()
 	var reef_said: String = clues.statement(clues.card(&"s6s_reef"))
-	_expect(clues.is_answered(&"s6s_reef") and reef_said.contains("After boobies") and reef_said.contains("hold their nests") and not reef_said.contains("brought"),
-		"S6.S says what was seen, in order, never that the birds brought it: %s" % reef_said)
+	_expect(clues.is_answered(&"s6s_reef") and reef_said.contains("Pisonia seeds are sticky") and reef_said.contains("hold their nests"),
+		"S6.S: the boobies brought sticky Pisonia seeds (true for Pisonia): %s" % reef_said)
 	travellers._told["bottlenose_dolphin/mangrove_coast"] = true
 	clues.check()
 	var travel_said: String = clues.statement(clues.card(&"s6t_travel"))

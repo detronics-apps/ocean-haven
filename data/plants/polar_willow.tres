@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlantData" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/plant_data.gd" id="1_plant"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/polar_willow.svg" id="2_plant"]
+
+[resource]
+script = ExtResource("1_plant")
+id = &"polar_willow"
+display_name = "Polar Willow"
+picture = ExtResource("2_plant")
+habitat = "Arctic rock and tundra (the Polar Ocean)"
+fact = "The polar willow is a tree only a few centimetres tall. It grows flat to the ground, hides under the snow in winter, and its fluffy seeds blow far on the wind."
+role = "Blown in by a storm's wind; too small to cut, it just grows."

@@ -30,6 +30,8 @@ var _nest: Sprite2D
 ## Its own pictures while it grows: [sapling, young] (drawn on the grown tree's canvas, trunk
 ## base in the same place). Empty: the grown picture, drawn smaller.
 @export var stage_textures: Array[Texture2D] = []
+## false: too small to cut (the polar willow): no buttons, it just grows.
+@export var cuttable := true
 ## What it is, for the Journal's Plants tab (found the first time the ranger comes close).
 @export var plant: PlantData
 const SPOT_RANGE := 90.0
@@ -93,7 +95,7 @@ func move_nest() -> void:
 ## What the ranger can do with it right now, for the action bar: [{label, do}].
 func actions() -> Array:
 	var ranger := ControlledBody.active(get_tree())
-	if not ranger is Player or ranger.global_position.distance_to(global_position) > CUT_RANGE:
+	if not cuttable or not ranger is Player or ranger.global_position.distance_to(global_position) > CUT_RANGE:
 		return []
 	if stage() == SMALL:
 		return [{"label": "Dig up", "do": cut_down}]

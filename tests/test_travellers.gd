@@ -67,9 +67,9 @@ func _initialize() -> void:
 	travellers.restore(saved)
 	_expect(travellers.reach(dolphin) >= 2, "how far they've spread is saved")
 
-	# --- Seeds: boobies from the Starting Island bring palms to the Reef; terns pines to the Arctic ---
+	# --- Seeds: boobies from the Starting Island bring sticky Pisonia seeds to the Reef ---
 	var booby: Resource = load("res://data/animals/red_footed_booby.tres")
-	var palm: Resource = load("res://data/buildings/palm_tree.tres")
+	var palm: Resource = load("res://data/buildings/pisonia_tree.tres")
 	var reef: Resource = region.call("tropical_reef")
 	travellers.seeds_from_health = 1.1  # (the Starting Island isn't healthy yet)
 	var booby_visitor: Node2D = travellers.visit(booby, reef)
@@ -79,11 +79,11 @@ func _initialize() -> void:
 	var sprout: Node = travellers.spread_seeds(booby)
 	_expect(before == 0 and sprout != null and regions.nearest(sprout.global_position) == reef
 		and load("res://scripts/world/terrain.gd").at(self, sprout.global_position) in ["sand", "grass"]
-		and sprout.find_child("PalmTree", true, false).stage() == 0,
-		"a booby on the Reef: a little palm sprouts there, the island's first tree")
+		and sprout.find_children("*", "PalmTree", true, false)[0].stage() == 0,
+		"a booby on the Reef: a little Pisonia sprouts there, the island's first tree")
 	for i in 20:
 		travellers.spread_seeds(booby)
-	_expect(travellers.sprouted(palm, reef) == booby.seeds_max, "up to %d palms (%d)" % [booby.seeds_max, travellers.sprouted(palm, reef)])
+	_expect(travellers.sprouted(palm, reef) == booby.seeds_max, "up to %d Pisonias (%d)" % [booby.seeds_max, travellers.sprouted(palm, reef)])
 	booby_visitor.free()
 	for tree in get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data == palm and b != sprout and regions.nearest(b.global_position) == reef):
 		tree.free()
@@ -94,13 +94,19 @@ func _initialize() -> void:
 		if unseen:
 			break
 	_expect(unseen != null and regions.nearest(unseen.global_position) == reef,
-		"seeds every morning wherever the ranger is: a palm comes up on the Reef while they're away")
+		"seeds every morning wherever the ranger is: a Pisonia comes up on the Reef while they're away")
 	var tern: Resource = load("res://data/animals/arctic_tern.tres")
-	var pine: Resource = load("res://data/buildings/shore_pine.tres")
+	_expect(tern.seeds_tree == null, "terns bring no trees (none would grow from them on Arctic rock)")
+	# The Polar Ocean's only tree comes on a storm's wind: a polar willow, while it has none.
+	var willow: Resource = load("res://data/buildings/polar_willow.tres")
 	var arctic: Resource = region.call("arctic_ocean")
-	var pine_sprout: Node = travellers.spread_seeds(tern)
-	_expect(pine_sprout != null and regions.nearest(pine_sprout.global_position) == arctic and pine_sprout.data == pine,
-		"terns back from the Deep Sea: a little pine sprouts among the Arctic rocks")
+	regions.discover(arctic)
+	root.get_node("RareEvents").strike(load("res://data/events/ice_breakup.tres"))
+	var willows: Array = get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data == willow and regions.nearest(b.global_position) == arctic)
+	_expect(willows.size() == 1 and load("res://scripts/world/terrain.gd").at(self, willows[0].global_position) == "rock",
+		"the ice storm's wind blows willow seeds in: a little polar willow among the rocks")
+	var pine_sprout: Node = willows[0] if not willows.is_empty() else null
+	_expect(pine_sprout and pine_sprout.find_children("*", "PalmTree", true, false)[0].actions().is_empty(), "too small to cut: no buttons")
 	travellers.seeds_from_health = 0.7
 
 	# --- Arctic trees: snow through the freeze, green again once the ice has melted ---
@@ -119,7 +125,7 @@ func _initialize() -> void:
 	var open_water: float = depth_at.call(0.9)
 	_expect(freezing > 0.0 and frozen > freezing and thawing < frozen and open_water == 0.0,
 		"snow builds up in the freeze (%.1f), deepest frozen (%.1f), melts in the thaw (%.1f), none in open water" % [freezing, frozen, thawing])
-	var reef_tree: Node = sprout.find_child("PalmTree", true, false)
+	var reef_tree: Node = sprout.find_children("*", "PalmTree", true, false)[0]
 	reef_tree._process(0.0)
 	_expect(reef_tree.get_node("Sprite2D").material == null, "no snow on the Reef")
 
