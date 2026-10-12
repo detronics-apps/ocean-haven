@@ -181,3 +181,4 @@ topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "Diving here is something else, {name}! {host} took me out to see the {island}'s waters."
+year_line = "A year! I used to dive for urchins to sell. Now I dive to count otters with you."

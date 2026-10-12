@@ -16,10 +16,13 @@ const CHOICES := {
 	"hat_colour": ["Hat colour", "gear_colours", ""],
 	"backpack": ["Backpack", "gear_colours", ""],
 	"boat": ["Boat", "boat_colours", ""],
+	"badge": ["Badge", "badges", "badge_names"],
 }
+## Choices only shown once earned (the badge: Ocean Day).
+const EARNED := {"badge": &"ocean_day"}
 const DEFAULT_LOOK := {
 	"skin": 1, "eyes": 0, "hair": 0, "hair_colour": 1, "shirt": 1, "trousers": 6,
-	"hat": 1, "hat_colour": 0, "backpack": 1, "boat": 0,
+	"hat": 1, "hat_colour": 0, "backpack": 1, "boat": 0, "badge": 0,
 }
 
 var options: AvatarOptions = DataFiles.res("res://data/avatar/avatar_options.tres")
@@ -64,7 +67,8 @@ func set_choice(key: String, index: int) -> void:
 
 func randomize_look() -> void:
 	for key in CHOICES:
-		look[key] = randi() % count(key)
+		if not EARNED.has(key):  # (an earned badge stays as it is)
+			look[key] = randi() % count(key)
 	look_changed.emit()
 
 

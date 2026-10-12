@@ -70,6 +70,54 @@ func _ready() -> void:
 	_listen.call_deferred()  # (Rescues is set up after People)
 
 
+## Ocean Day: a year after the ranger came (from the first day of year two), the first time
+## they're on the Starting Island (it waits for them: never only if they wake up there). One
+## person they've met from each other island comes over for the day, everyone has a one-year
+## line (PersonData.year_line, said once), every released rescue is out at once, and the
+## ranger gets an Ocean Day badge to wear (RangerProfile "badge"). Fleet flag "ocean_day".
+const OCEAN_DAY_ISLAND := &"home_island"
+var festival_day := -1
+var _festival_check := 0.0
+
+
+func _process(delta: float) -> void:
+	_festival_check -= delta
+	if _festival_check <= 0.0:
+		_festival_check = 2.0
+		ocean_day()
+
+
+func ocean_day() -> bool:
+	if Fleet.has_flag(&"ocean_day") or GameClock.day <= GameClock.YEAR_DAYS:
+		return false
+	var ranger := ControlledBody.active(get_tree())
+	if not ranger or Regions.nearest(ranger.global_position).id != OCEAN_DAY_ISLAND:
+		return false
+	var hosts := on(OCEAN_DAY_ISLAND)
+	if hosts.is_empty():
+		return false
+	Fleet.mark(&"ocean_day")
+	festival_day = GameClock.day
+	var guests: Array[PersonData] = []
+	var islands_in := {}
+	for someone: PersonData in all():
+		if someone.region != OCEAN_DAY_ISLAND and has_met(someone) and not islands_in.has(someone.region):
+			islands_in[someone.region] = true
+			guests.append(someone)
+	for i in guests.size():
+		visit_by(guests[i], hosts[i % hosts.size()], guests[i].year_line, i)
+	Rescues.check_visits(true)  # (every rescue out at once)
+	RangerProfile.set_choice("badge", 1)
+	get_tree().call_group("hud", "show_card", "One year as a ranger!",
+		"Ocean Day on the Starting Island: friends from every island have come to celebrate. You've earned the Ocean Day badge.")
+	return true
+
+
+## Whether today is Ocean Day (its one-year lines are said).
+func is_ocean_day() -> bool:
+	return festival_day == GameClock.day
+
+
 func _listen() -> void:
 	GameClock.new_day.connect(func(_day: int) -> void: visit())
 	Rescues.sighted.connect(func(r: RescueData, animal_name: String, region: RegionData) -> void:
@@ -98,11 +146,13 @@ func _reminders(person: PersonData) -> Array[String]:
 			lines.append(news.text)
 			_news.remove_at(i)
 			break
+	if not lines.is_empty():
+		return lines  # (one thing at a time, the owner: never news and tips piled up together)
 	var today := GameClock.day
 	if Funding.balance < LOW_FUNDING and int(_reminded.get("%s/funding" % person.id, -1)) != today:
 		_reminded["%s/funding" % person.id] = today
 		lines.append(funding_tip(person))
-	if Inventory.available(&"wood") < LOW_WOOD and Fleet.level() < WOOD_TIPS_UNTIL and int(_reminded.get("%s/wood" % person.id, -1)) != today:
+	elif Inventory.available(&"wood") < LOW_WOOD and Fleet.level() < WOOD_TIPS_UNTIL and int(_reminded.get("%s/wood" % person.id, -1)) != today:
 		_reminded["%s/wood" % person.id] = today
 		lines.append(wood_tip(person))
 	return lines
@@ -175,7 +225,7 @@ func visit() -> Node:
 
 
 ## `guest` visits `host` today (see visit()).
-func visit_by(guest: PersonData, host: PersonData) -> Node:
+func visit_by(guest: PersonData, host: PersonData, said := "", place := 0) -> Node:
 	var world := get_tree().get_first_node_in_group("ocean_world")
 	if not world:
 		return null
@@ -193,10 +243,11 @@ func visit_by(guest: PersonData, host: PersonData) -> Node:
 	for node: Node2D in get_tree().get_nodes_in_group("people"):
 		if node.get("data") == host:
 			data.spot = node.global_position
-	data.spot += Vector2(Terrain.TILE, 0)
+	data.spot += Vector2(Terrain.TILE * (1 + place / 2), Terrain.TILE * (place % 2))  # (side by side on a busy day)
 	var line := TalkTopic.new()
 	line.id = &"visit"
-	line.lines = PackedStringArray([guest.visit_line.replace("{island}", _region(host).display_name).replace("{host}", host.short_name)])
+	var text := said if said != "" else guest.visit_line
+	line.lines = PackedStringArray([text.replace("{island}", _region(host).display_name).replace("{host}", host.short_name)])
 	var topics: Array[TalkTopic] = [line]
 	data.topics = topics
 	_visit_heard = false
@@ -337,6 +388,9 @@ func talk(person: PersonData) -> Array[Dictionary]:
 	var said: Array[String] = []
 	if person.scared_line != "" and Fleet.has_flag(&"bear_at_camp"):
 		said.append(person.scared_line)
+	if is_ocean_day() and person.year_line != "" and person.role != VISITOR and not _heard.has("%s/year" % person.id):
+		_heard["%s/year" % person.id] = true
+		said.append(person.year_line)
 	var storm := storm_line(person)
 	if storm != "":
 		said.append(storm)
@@ -815,12 +869,14 @@ func _built(person: PersonData, id: StringName) -> int:
 
 func to_dict() -> Dictionary:
 	return {"met": _met.keys(), "given": _given.keys(), "thanked": _thanked.keys(), "heard": _heard.keys(),
-		"guesses": _guesses.duplicate(), "outcomes": _outcomes.keys(), "observed": _observed.duplicate()}
+		"guesses": _guesses.duplicate(), "outcomes": _outcomes.keys(), "observed": _observed.duplicate(),
+		"festival_day": festival_day}
 
 
 func restore(saved: Dictionary) -> void:
 	for into: Dictionary in [_met, _given, _thanked, _heard, _reveal, _last, _guesses, _outcomes, _observed, _observed_day]:
 		into.clear()
+	festival_day = int(saved.get("festival_day", -1))
 	var observed: Dictionary = saved.get("observed", {})
 	for key in observed:
 		_observed[String(key)] = int(observed[key])

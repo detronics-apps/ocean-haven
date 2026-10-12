@@ -248,3 +248,4 @@ topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3")])
 want = SubResource("Want")
 visit_line = "I had to see the {island} for myself, {name}. {host} and I have been comparing notebooks all morning."
+year_line = "One year, {name}! Mum's notebook has a new page now, and it's all yours."

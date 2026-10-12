@@ -177,3 +177,4 @@ topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "It's so warm here on the {island}, {name}! {host} has been very patient with all my questions."
+year_line = "A year, {name}. In an ice core a year is one thin layer. This one was worth it."

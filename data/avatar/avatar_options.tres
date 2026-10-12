@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/characters/player/ranger_hat.svg" id="5_44i07"]
 [ext_resource type="Texture2D" path="res://assets/characters/player/cap.svg" id="6_mbo7u"]
 [ext_resource type="Script" path="res://scripts/player/avatar_options.gd" id="7_56mki"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/badge_ocean_day.svg" id="badge_ocean"]
 
 [resource]
 script = ExtResource("7_56mki")
@@ -20,3 +21,5 @@ hats = Array[Texture2D]([null, ExtResource("5_44i07"), ExtResource("6_mbo7u")])
 hat_names = PackedStringArray("None", "Ranger hat", "Cap")
 gear_colours = Array[Color]([Color(0.7882353, 0.627451, 0.3882353, 1), Color(0.37254903, 0.56078434, 0.24313726, 1), Color(0.24705882, 0.43529412, 0.65882355, 1), Color(0.6901961, 0.2901961, 0.22745098, 1), Color(0.84705883, 0.6901961, 0.2509804, 1), Color(0.41568628, 0.43529412, 0.47058824, 1)])
 boat_colours = Array[Color]([Color(1, 1, 1, 1), Color(0.65882355, 0.8156863, 1, 1), Color(1, 0.72156864, 0.65882355, 1), Color(0.7529412, 0.9098039, 0.65882355, 1), Color(1, 0.9411765, 0.627451, 1), Color(0.8784314, 0.78431374, 1, 1)])
+badges = Array[Texture2D]([null, ExtResource("badge_ocean")])
+badge_names = PackedStringArray("None", "Ocean Day")

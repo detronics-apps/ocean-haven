@@ -15,5 +15,8 @@ extends Resource
 @export var hat_names: PackedStringArray
 ## Hats and backpacks.
 @export var gear_colours: Array[Color]
+## Badges on the shirt, earned in play (a null entry = none): the Ocean Day badge.
+@export var badges: Array[Texture2D]
+@export var badge_names: PackedStringArray
 ## Multiplied over the boat's wood, so keep them light.
 @export var boat_colours: Array[Color]

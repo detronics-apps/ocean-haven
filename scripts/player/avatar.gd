@@ -19,3 +19,12 @@ func apply() -> void:
 	$Hair.modulate = RangerProfile.pick("hair_colour")
 	$Hat.texture = RangerProfile.pick("hat")  # null = no hat
 	$Hat.modulate = RangerProfile.pick("hat_colour")
+	var badge := get_node_or_null("Badge") as Sprite2D
+	if not badge:  # (made here: earned later, so not in the scene)
+		badge = Sprite2D.new()
+		badge.name = "Badge"
+		badge.offset = Vector2(0, -16)
+		badge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		add_child(badge)
+		move_child(badge, $Backpack.get_index() + 1)
+	badge.texture = RangerProfile.pick("badge")

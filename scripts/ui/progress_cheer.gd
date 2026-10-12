@@ -143,6 +143,13 @@ func show_return(species: AnimalData, note: String, region: RegionData = null) -
 		_next_card()
 
 
+## A big moment (Ocean Day): a gold card, in the queue.
+func show_note(title: String, text: String) -> void:
+	_cards.append({"note_title": title, "note_text": text})
+	if not _card_tween or not _card_tween.is_running():
+		_next_card()
+
+
 ## Something new on the Clue Board: a note in the card queue.
 func show_clue(one: ClueData, what: StringName) -> void:
 	_cards.append({"clue": one, "what": what})
@@ -170,6 +177,9 @@ func _next_card() -> void:
 	var shown: Dictionary = _cards.pop_front()
 	if shown.has("clue"):
 		_clue_card(shown.clue, shown.what)
+		return
+	if shown.has("note_title"):
+		_note_card(shown.note_title, shown.note_text)
 		return
 	var species: AnimalData = shown.species
 	var first: bool = shown.first
@@ -222,6 +232,45 @@ func _next_card() -> void:
 	_card_tween.tween_property(_card, "modulate:a", 1.0, 0.3)
 	_card_tween.tween_callback(func() -> void: sparkle(_card.get_global_rect().get_center(), 22 if first else 10))
 	_card_tween.tween_interval(CARD_SECONDS + (1.5 if first else 0.0))
+	_card_tween.tween_property(_card, "modulate:a", 0.0, 0.5)
+	_card_tween.tween_callback(_next_card)
+
+
+## A gold card for a big moment: a title and a line, sparkles, a chime.
+func _note_card(title_text: String, line_text: String) -> void:
+	Sound.play(&"first_arrive", 0.0, 0.0)
+	_card = PanelContainer.new()
+	_card.name = "NoteCard"
+	_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.06, 0.16, 0.22, 0.94)
+	style.border_color = Color("ffd27a")
+	style.set_border_width_all(3)
+	style.set_corner_radius_all(10)
+	style.set_content_margin_all(14)
+	_card.add_theme_stylebox_override("panel", style)
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_card.add_child(column)
+	var title := Label.new()
+	title.text = title_text
+	title.add_theme_font_size_override("font_size", 24)
+	title.add_theme_color_override("font_color", Color("ffd27a"))
+	column.add_child(title)
+	var line := Label.new()
+	line.text = line_text
+	line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	line.custom_minimum_size.x = 380
+	line.add_theme_font_size_override("font_size", 16)
+	column.add_child(line)
+	add_child(_card)
+	_card.reset_size()
+	_card.position = Vector2((size.x - _card.size.x) / 2.0, 104.0)
+	_card.modulate.a = 0.0
+	_card_tween = _card.create_tween()
+	_card_tween.tween_property(_card, "modulate:a", 1.0, 0.3)
+	_card_tween.tween_callback(func() -> void: sparkle(_card.get_global_rect().get_center(), 30))
+	_card_tween.tween_interval(CARD_SECONDS + 2.0)
 	_card_tween.tween_property(_card, "modulate:a", 0.0, 0.5)
 	_card_tween.tween_callback(_next_card)
 

@@ -110,3 +110,4 @@ topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2"), SubResource("Obs_3"), SubResource("Obs_storm")])
 want = SubResource("Want")
 visit_line = "I came to see the weather on the {island}, {name}. {host} says it's always like this. Imagine!"
+year_line = "My notebook says: one year, mostly fair weather. Happy Ocean Day, {name}!"

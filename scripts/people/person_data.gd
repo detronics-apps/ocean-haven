@@ -54,6 +54,8 @@ extends Resource
 ## After the ending they sometimes visit another island (People.visit): what they say there.
 ## "{island}" is the island they're visiting, "{host}" who they came to see.
 @export_multiline var visit_line: String
+## What they say on Ocean Day, a year after the ranger came (People.ocean_day), once.
+@export_multiline var year_line: String
 ## Things they've noticed about the island's animals (one `lines` entry each, with `when`
 ## conditions): now and then, one is added after what they say (People.observation).
 @export var observations: Array[TalkTopic] = []

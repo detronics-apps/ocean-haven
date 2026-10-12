@@ -876,6 +876,15 @@ rather than its lines (Maya's station question once the ranger has been out in a
 The Clue Board never opens by itself over a talk or another page (it waits), and its pinned note
 has a "Got it" button.
 
+Ocean Day (People.ocean_day; the owner's pick for the one-year mark): from the first day of year
+two, the first time the ranger is on the Starting Island (it waits for them), one person they've
+met from each other island comes over for the day (People.visit_by, side by side), everyone says
+their PersonData.year_line once that day, every released rescue is out at once
+(Rescues.check_visits(true)), a gold card (HUD.show_card) says "One year as a ranger!", and the
+ranger wears the Ocean Day badge (RangerProfile "badge", shown in the creator only once earned:
+RangerProfile.EARNED). Fleet flag "ocean_day"; People "festival_day" saved.
+After a talk people add one thing at most: their island's news, else one tip (funding or wood).
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

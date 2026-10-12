@@ -108,3 +108,4 @@ topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1")])
 want = SubResource("Want")
 visit_line = "Hello from the {island}, {name}! {host} is showing me what lives here."
+year_line = "Happy Ocean Day! The reef sends its greetings, {name}. Well, the parrotfish do."

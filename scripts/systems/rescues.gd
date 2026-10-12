@@ -289,11 +289,11 @@ func intro() -> String:
 
 ## A morning: each released one is somewhere today (its shape decides how often it's about):
 ## its own island, one of the islands it travels to, or out at sea.
-func check_visits() -> void:
+func check_visits(reunion_now := false) -> void:
 	var ranger := ControlledBody.active(get_tree())
 	var here := String(Regions.nearest(ranger.global_position).id) if ranger else ""
 	# After the ending, now and then they're all out the same morning: a reunion.
-	var reunion := Fleet.has_flag(&"observatory_opened") and done.size() > 1 and randf() < REUNION_CHANCE
+	var reunion := reunion_now or (Fleet.has_flag(&"observatory_opened") and done.size() > 1 and randf() < REUNION_CHANCE)
 	if reunion and here != "":
 		People.add_news(StringName(here), "Every animal you rescued is out and about today, {name}. A reunion! Look for their tags.")
 	for id in done:

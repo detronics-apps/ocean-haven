@@ -108,7 +108,8 @@ func _build() -> void:
 	_grid.add_theme_constant_override("v_separation", 4)
 	scroll.add_child(_grid)
 	for key: String in RangerProfile.CHOICES:
-		_grid.add_child(_row(key))
+		if not RangerProfile.EARNED.has(key) or Fleet.has_flag(RangerProfile.EARNED[key]):
+			_grid.add_child(_row(key))
 	get_viewport().size_changed.connect(_fit)
 	_fit()
 

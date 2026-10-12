@@ -332,6 +332,11 @@ func animal_returned(species: AnimalData, note: String, region: RegionData = nul
 	_cheer.show_return(species, note, region)
 
 
+## A big moment (Ocean Day): a gold card with a title and a line, in the card queue.
+func show_card(title: String, text: String) -> void:
+	_cheer.show_note(title, text)
+
+
 ## Something new on the Clue Board (`what`: found / open / answered): a pinned paper note slides
 ## in with its picture, in the same queue as the animal cards.
 func clue_added(one: ClueData, what: StringName) -> void:
