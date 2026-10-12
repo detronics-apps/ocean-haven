@@ -15,7 +15,7 @@ lines = PackedStringArray("Welcome to the harbour, {name}! I'm Ines. I run the c
 script = ExtResource("2_t")
 id = &"ending"
 when = PackedStringArray("flag:observatory_opened")
-lines = PackedStringArray("Rafts of otters again, and drinks from kegs. Grandma would laugh.")
+lines = PackedStringArray("Rafts of otters again, and lemonade from big glass jugs. Grandma would laugh.")
 
 [sub_resource type="Resource" id="Topic_2"]
 script = ExtResource("2_t")
@@ -25,9 +25,9 @@ lines = PackedStringArray("Something's caught out there. Go gently: you can free
 
 [sub_resource type="Resource" id="Topic_3"]
 script = ExtResource("2_t")
-id = &"kegs"
+id = &"refill_jugs"
 when = PackedStringArray("asked:refill")
-lines = PackedStringArray("When I was young, drinks came in glass bottles in wooden crates, and the crates went back to be filled again.", "A refill bar works the same way: big kegs go back to be refilled, and the cups get washed. No cans, no rings.")
+lines = PackedStringArray("When I was young, drinks came in glass bottles in wooden crates, and the crates went back to be filled again.", "A lemonade refill station works the same way: big glass jugs go back to be refilled, and the cups get washed. No cans, no rings.")
 
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
@@ -88,7 +88,7 @@ id = &"want"
 when = PackedStringArray()
 lines = PackedStringArray("I cook for the whole harbour, and everything I buy comes wrapped in plastic.", "I'd love a kitchen where nothing gets thrown away.")
 outcome_when = PackedStringArray("stopped:six_pack_rings")
-outcome = "The drinks come in kegs now, {name}, and I fill people's own cups. My bin is half empty!"
+outcome = "The lemonade comes in big refill jugs now, {name}, and I fill people's own cups. My bin is half empty!"
 
 [resource]
 script = ExtResource("1_p")

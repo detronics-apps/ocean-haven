@@ -114,10 +114,10 @@ text = "Stop the plastic rings at their source"
 [sub_resource type="Resource" id="Topic_9"]
 script = ExtResource("2_t")
 id = &"refill"
-lines = PackedStringArray("Picking them up won't stop them coming. What could the cafe do instead?", "> No more cans? | Ask Ines!", "Ines has an idea, she told me. Talk to her: the Harbour Refill Bar is in your Make menu now.")
+lines = PackedStringArray("Picking them up won't stop them coming. What could the cafe do instead?", "> No more cans? | Ask Ines!", "Ines has an idea, she told me. Talk to her: the Lemonade Refill Station is in your Make menu now.")
 objective = SubResource("Goal_9")
-thanks = PackedStringArray("No new rings on the otters' rocks. Drinks from kegs that go back to be filled, and cups that get washed.", "I used to think the problem was out here in the water. Some of it starts on land.")
-reminder = PackedStringArray("The Harbour Refill Bar is in your Make menu. Ines knows how it works.")
+thanks = PackedStringArray("No new rings on the otters' rocks. Lemonade from jugs that go back to be filled, and cups that get washed.", "I used to think the problem was out here in the water. Some of it starts on land.")
+reminder = PackedStringArray("The Lemonade Refill Station is in your Make menu. Ines knows how it works.")
 
 [sub_resource type="Resource" id="Topic_10"]
 script = ExtResource("2_t")

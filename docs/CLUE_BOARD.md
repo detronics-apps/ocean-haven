@@ -257,7 +257,7 @@ animals", which the Journal already shows, and connected to nothing else on the 
   - **fibres are excluded** (they can't be picked up).
 - **Verified in the data:** each fix is `only_on` its source's island and `needs_flag` that
   source's trace:
-  - Refill Bar: Kelp Forest + `rings_traced`;
+  - Lemonade Refill Station (was the Refill Bar): Kelp Forest + `rings_traced`;
   - Weaving Workshop: Mangrove Coast + `bags_traced`;
   - Box Return Depot: Starting Island + `foam_traced`;
   - Net Return Point: Deep Sea + `gear_traced`.
@@ -276,7 +276,7 @@ animals", which the Journal already shows, and connected to nothing else on the 
 
 | X | source | fix |
 |---|---|---|
-| rings | the harbour cafe | "it serves drinks from kegs now" |
+| rings | the harbour cafe | "it pours lemonade from refill jugs now" |
 | bags | the fish market | "it sends fish home in woven baskets now" |
 | foam | the fishing boats | "they use boxes that come back now" |
 | nets | the fishing boats | "old nets go to the Net Return Point now, and new ones carry their boat's mark" |

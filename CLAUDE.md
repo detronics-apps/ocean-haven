@@ -527,7 +527,7 @@ story its objective-giver asks where one kind comes from (TalkTopic.when "picked
 (BuildingData.needs_flag) that stops it on every island (BuildingData.stops_litter;
 `Fleet.stopped(id)` / `stopped_by(id)`, ObjectiveGoal kind "stopped"; the LitterSpawner skips stopped kinds;
 the recycling centre's menu lists every kind: picked up, carried, stopped by what or still washing in).
-Finn: rings -> Trace the rings -> Harbour Refill Bar (Ines: kegs). Rosa: bags -> Trace the bags
+Finn: rings -> Trace the rings -> Lemonade Refill Station (Ines: lemonade from refill jugs; never kegs or a "bar": a kids' game). Rosa: bags -> Trace the bags
 -> Weaving Workshop (Samuel: nipa palm baskets). Maya: foam boxes -> Trace the foam boxes ->
 Box Return Depot (Tom: crates that go back). Kai: bottles (reusable bottles). Imani: fishing
 gear: bring up 3 pieces (who lost them? none is marked) -> Trace the lost gear (Outpost) ->
@@ -671,7 +671,7 @@ sanctuaries, restoration sites, the drill site, water gates, hydrophone buoys); 
 of their own buttons already says what they are (Missions, Recycle, Look in storage...:
 Building._says_what_it_is); Never for built items (docks, drawbridges, deep cameras, boats,
 trees, the tent); and its picture shows what it does (the Glassworks' furnace and bottles, the refill
-bar's kegs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
+refill station's lemonade jugs, baskets, crates, the filter drum, the net bin; animal signs on the visitor
 centres). Full-screen pages keep clear of a phone's home bar, corners and notch (SafeArea: the
 browser's safe-area insets, never less than a phone margin); activity level buttons wrap.
 Birds have four pictures (the standing one is their Journal and card picture: AnimalData.icon /
