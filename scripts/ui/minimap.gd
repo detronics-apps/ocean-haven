@@ -133,9 +133,10 @@ func _draw_storm(middle: Vector2, region: RegionData) -> void:
 	for i in puffs:
 		var angle := TAU * i / puffs + time * 0.05
 		var wobble := sin(i * 2.3 + time * 0.8) * 0.5 + 0.5
-		var depth := 4.0 + 14.0 * near * (0.7 + 0.3 * wobble)
+		var depth := 8.0 + 18.0 * near * (0.7 + 0.3 * wobble)
 		var at := middle + Vector2.from_angle(angle) * (RADIUS - depth * 0.5)
-		draw_circle(at, depth * 0.6 + 2.0, Color(colour, 0.55 + 0.35 * near))
+		draw_circle(at, depth * 0.6 + 3.0, Color(colour.darkened(0.35), 0.9))  # (a dark edge: it stands out on the sea)
+		draw_circle(at, depth * 0.6 + 1.5, Color(colour.lightened(0.15), 0.75 + 0.25 * near))
 
 
 ## The ranger's home on the island they're on: the building they sleep in (tent or house).

@@ -26,7 +26,7 @@ static func nearness(region_id: StringName) -> float:
 	var days := RareEvents.days_until(region_id)
 	if days < 0 or days > 2:
 		return 0.0
-	return [1.0, 0.7, 0.4][days]
+	return [1.0, 0.85, 0.6][days]  # (two days ahead already plain to see)
 
 
 func _process(delta: float) -> void:

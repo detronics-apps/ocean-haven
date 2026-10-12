@@ -50,8 +50,8 @@ func _initialize() -> void:
 	_expect(dock.actions().filter(func(a: Dictionary) -> bool: return a.label.begins_with("Secure")).is_empty(), "docks are storm-proof")
 
 	var clouds: GDScript = load("res://scripts/ui/storm_clouds.gd")
-	_expect(clouds.nearness(&"home_island") > 0.0 and clouds.nearness(&"home_island") < clouds.nearness(&"kelp_forest") + 0.5,
-		"clouds gather beyond the island's waters, thin two days ahead")
+	_expect(clouds.nearness(&"home_island") >= 0.5 and clouds.nearness(&"home_island") < 1.0,
+		"clouds gather beyond the island's waters, already plain to see two days ahead")
 	var people := root.get_node("People")
 	var maya: Resource = load("res://data/people/maya.tres")
 	_expect(people.nervous(maya) and people.storm_line(maya) == maya.storm_worry, "Maya is nervous: a storm is coming")

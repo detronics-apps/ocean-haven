@@ -120,11 +120,6 @@ func _window(event: EventData) -> Vector2i:
 	return Vector2i(event.min_gap_days, event.max_gap_days)
 
 
-## Whether `event` may be warned for `day`: the ranger is on its island.
-func _can_strike(event: EventData, _day: int) -> bool:
-	return Regions.ranger_on(get_tree(), DataFiles.res("res://data/regions/%s.tres" % event.region))
-
-
 static func all() -> Array[EventData]:
 	var list: Array[EventData] = []
 	for event: EventData in DataFiles.load_all("res://data/events"):
@@ -134,13 +129,14 @@ static func all() -> Array[EventData]:
 
 func _on_new_day(day: int) -> void:
 	for event: EventData in all():
-		# Only warned for the island the ranger is on; once warned it comes on its day whether
-		# they're there or not (_due_here: the ranger sees it, its end, or only the aftermath).
+		# Warned for every island the ranger has been to, wherever they woke up (the owner: nothing
+		# may depend on waking up on that island); it comes on its day whether they're there or
+		# not (_due_here: the ranger sees it, its end, or only the aftermath when they get there).
 		if _coming.has(event.id) and _too_soon(event, _coming[event.id]):
 			_coming.erase(event.id)  # (warned before the island's timer started: called off)
 		elif _coming.has(event.id):
 			pass
-		elif Regions.ranger_on(get_tree(), DataFiles.res("res://data/regions/%s.tres" % event.region)) \
+		elif _first_on.has(event.region) \
 				and Regions.is_discovered(DataFiles.res("res://data/regions/%s.tres" % event.region)) \
 				and (event.needs_building == &"" or IslandHealth.built(get_tree(), event.needs_building)):
 			var since: int = day - maxi(_last_day.get(event.id, 0), _arrived_day(event.region))
@@ -150,7 +146,7 @@ func _on_new_day(day: int) -> void:
 				maxi(window.y - since, event.warning_days))
 			var gap: int = since + lead
 			# Evenly spread over the window (certain once it's overdue).
-			if gap >= window.x and not _too_soon(event, day + lead) and _can_strike(event, day + lead) \
+			if gap >= window.x and not _too_soon(event, day + lead) \
 					and randf() < 1.0 / maxf(window.y - gap + 1, 1.0):
 				warn(event, lead)
 

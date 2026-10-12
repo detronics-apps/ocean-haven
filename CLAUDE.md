@@ -340,7 +340,7 @@ boat-shy animals when under 65 % of the island's water is free of them; 3 Dolphi
 Areas; 10 turtles for full health; mission icons (MissionData.icon); Journal Plants tab
 (data/plants/). (The Journal's Ocean tab was removed: the Global Ocean Observatory shows the whole ocean.)
 
-Balance tweaks: islands the ranger isn't on are paused (no storms, tangling, patrol injuries or
+Balance tweaks: islands the ranger isn't on are paused (no tangling, patrol injuries or
 ecosystem change; a little litter on return; `Regions.ranger_on`); one recycling centre per
 island; tangled seabirds wait on their nest; mission cards count runs per island; sea otters carry
 floating litter near them ashore (AnimalData.carries_litter_ashore). Rare events: a random 30–60 days apart
@@ -775,7 +775,7 @@ the flamingo hatch from a cracked egg (RescueData.egg_damaged) with a wound (fli
 every rescue has a reason it needs care; a wound can always be patched.
 
 Storms (the owner's design; RareEvents, docs/MASTER_PLAN.md "Rare events"): warned 2 days
-ahead, only while the ranger is on the island (EventData.warning_days); the event's clouds
+ahead for every island the ranger has been to, wherever they wake up (EventData.warning_days; nothing may depend on waking up on that island); the event's clouds
 gather beyond its rowboat waters (StormClouds, StormClouds.nearness: thin and further out 2 days
 ahead, thick at the edge the day before) and round the minimap's rim; its people get a red
 "!" (PersonData.storm_worry). On its day, STRIKE_AFTER 10 s after the ranger is on the island,

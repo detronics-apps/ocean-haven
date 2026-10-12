@@ -41,7 +41,8 @@ func _initialize() -> void:
 	var swell: Resource = load("res://data/events/underwater_storm.tres")
 	events.restore({"first_on": {"kelp_forest": -100, "home_island": -100}})
 	events.call("_on_new_day", 999)  # long overdue: it would be certain on the island
-	_expect(not events.is_coming_to(&"kelp_forest"), "no storm starts on an island the ranger isn't on")
+	_expect(events.is_coming_to(&"kelp_forest"), "a storm is warned for an island the ranger has been to, wherever they woke up")
+	events._coming.clear()
 	events.warn(swell)
 	for bed: Node2D in ecosystem.beds():
 		bed.storm_hit = false
