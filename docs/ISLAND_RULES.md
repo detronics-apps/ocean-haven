@@ -336,6 +336,10 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   while it's hungry), so players see neglect matters, but health never goes below 20 %. Calm
   and health are separate: medicine and food mend health, only comfort calms; it won't eat
   until it's calm (80 %). A hatchling starts healthy and needs no plasters.
+- **True to scale.** A tile is about 2 m: people are about one tile tall (two tiles made them
+  4 m), a rowboat 2.5 m; a boat that dwarfs its ranger makes them look like a baby.
+- **No control hints in the world.** No "E / tap boat" labels over things; how to play is
+  explained once, in the Avatar Builder's Controls tab.
 
 ## 10. Code habits that avoided bugs
 

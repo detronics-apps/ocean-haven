@@ -892,6 +892,28 @@ ranger wears the Ocean Day badge (RangerProfile "badge", shown in the creator on
 RangerProfile.EARNED). Fleet flag "ocean_day"; People "festival_day" saved.
 After a talk people add one thing at most: their island's news, else one tip (funding or wood).
 
+Characters (the owner's character sheets): the ranger and all 12 people are one layered `Avatar`
+(scripts/player/avatar.gd; avatar.tscn is just the root): parts drawn by
+`tools/make_avatar_parts.py` into assets/characters/avatar/ (grey, shaded, outlined, tinted by
+modulate; shoes, glasses, badge and face in colour), each a strip of four 32x36 views (front,
+side facing right, side mid-step, back; hair, tops and jackets 8: hair's back layer, the sleeves
+on the near arm). About one tile tall (a tile is about 2 m; the owner: two tiles made them 4 m
+tall), laid out on the sheet's measured ratios: the face about two thirds the width of the body,
+the chin narrowing in steps, big low eyes (2 x 4) with a white highlight down their left side, the
+arms outlined apart from the body, boots as wide as the legs, a short stride. Only the front is
+chosen; the side and back views come from the same choices (Avatar.set_view: the ranger turns as
+they walk, with a stride picture sideways; long hair and the backpack go over the body when
+turned, never over the face; from the side the near arm, `arm.png`, and its sleeves are drawn
+over the clothes). Parts (AvatarOptions): 9 hair styles, 5 headwear, 4 tops, a vest or jacket,
+trousers or shorts, boots or sandals, 3 glasses, backpack, badge. People wear the same parts
+(PersonData top / jacket / bottoms / shoes / glasses, PersonData.outfit). The Avatar Builder (the
+owner's layout): the ranger in a wooden frame with their name, tabs Body / Hair / Headwear /
+Outfit / Accessories of picture tiles (the part on the ranger) and colour swatches, a Controls tab
+(how to play on a phone, a keyboard, a controller: the game shows no control hints of its own,
+e.g. no "E / tap boat" label on the boat), and along the bottom Surprise me!, Back (undo, close)
+and Confirm (no people as presets: the owner took them out). The rowboat is 2.5 m (40 px), low
+and flat; in it the ranger sits up to the chest (Avatar.sit: only down to the waist).
+
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),
 or both. Design each new species' role before adding it.

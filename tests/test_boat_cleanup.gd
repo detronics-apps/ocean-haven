@@ -3,7 +3,7 @@ extends SceneTree
 ## Run: godot --headless --path . --script res://tests/test_boat_cleanup.gd
 
 var _world: Node
-var _player: Player
+var _player  # untyped: Player uses the Avatar, which uses autoloads
 var _boat  # untyped: Boat uses autoloads
 var _frames := 0
 var _step := 0

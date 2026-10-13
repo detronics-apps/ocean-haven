@@ -4,8 +4,6 @@ extends Node2D
 ## the building their work moved to. The ranger talks to them with the action button; a "!"
 ## above them means they've something new to say (People.has_news).
 
-const AVATAR := "res://scenes/player/avatar.tscn"
-const OPTIONS := "res://data/avatar/avatar_options.tres"
 ## How close the ranger (on foot or in a boat) must be to talk.
 const TALK_RANGE := 60.0
 ## How far to look for a free spot if something has been built where they stand.
@@ -42,7 +40,7 @@ func _ready() -> void:
 	_news.add_theme_color_override("font_color", Color("f6d36b"))
 	_news.add_theme_color_override("font_outline_color", Color.BLACK)
 	_news.scale = Vector2(0.5, 0.5)
-	_news.position = Vector2(-4, -54)
+	_news.position = Vector2(-4, -50)
 	_news.z_index = 100
 	add_child(_news)
 	_settle()
@@ -61,20 +59,9 @@ func _process(delta: float) -> void:
 ## Their layered look, from the avatar parts (no ranger profile: their own colours). Also
 ## the Observatory's "Who you have met".
 static func look_of(data: PersonData) -> Node2D:
-	var look: Node2D = DataFiles.res(AVATAR).instantiate()
-	look.set_script(null)
-	var options: AvatarOptions = DataFiles.res(OPTIONS)
-	look.get_node("Skin").modulate = data.skin
-	look.get_node("Shirt").modulate = data.shirt
-	look.get_node("Trousers").modulate = data.trousers
-	look.get_node("Backpack").visible = false
-	look.get_node("Eyes").modulate = Color("3a2a1f")
-	var hair: Sprite2D = look.get_node("Hair")
-	hair.texture = options.hair_styles[clampi(data.hair, 0, options.hair_styles.size() - 1)]
-	hair.modulate = data.hair_colour
-	var hat: Sprite2D = look.get_node("Hat")
-	hat.texture = options.hats[data.hat] if data.hat >= 0 and data.hat < options.hats.size() else null
-	hat.modulate = data.hat_colour
+	var look := Avatar.new()
+	look.name = "Look"
+	look.person = data
 	return look
 
 

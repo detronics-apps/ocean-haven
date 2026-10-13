@@ -173,3 +173,4 @@ observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs
 want = SubResource("Want")
 visit_line = "I wanted to see how things are done on the {island}, {name}. {host} has some clever ideas."
 year_line = "A year of fixing things with you, {name}. The best machine I ever saw is a healthy reef."
+top = 0

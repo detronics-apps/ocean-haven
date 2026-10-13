@@ -34,9 +34,16 @@ extends Resource
 @export var hair_colour := Color("2b1d14")
 @export var shirt := Color("3f7fbf")
 @export var trousers := Color("4b4e5a")
-## Hat picture from the avatar options (-1 = none).
-@export var hat := -1
+## Hat picture from the avatar options (0 = none).
+@export var hat := 0
 @export var hat_colour := Color("d9c27a")
+## The avatar parts they wear (indices into data/avatar/avatar_options.tres, like the ranger's).
+@export var top := 0
+@export var jacket := 0
+@export var jacket_colour := Color("2b3d66")
+@export var bottoms := 0
+@export var shoes := 0
+@export var glasses := 0
 
 @export_group("Talk")
 ## Said first while a polar bear is at camp (rubbish drew it in): they're nervous ("!" in red).
@@ -59,3 +66,19 @@ extends Resource
 ## Things they've noticed about the island's animals (one `lines` entry each, with `when`
 ## conditions): now and then, one is added after what they say (People.observation).
 @export var observations: Array[TalkTopic] = []
+
+
+## Their parts and colours, for Avatar.dress (as RangerProfile.outfit, with their own colours).
+func outfit() -> Dictionary:
+	var options: AvatarOptions = DataFiles.res("res://data/avatar/avatar_options.tres")
+	var part := func(list: Array, index: int) -> Texture2D:
+		return list[clampi(index, 0, list.size() - 1)]
+	return {
+		"skin": skin, "eyes": Color("3a2a1f"), "hair": part.call(options.hair_styles, hair),
+		"hair_colour": hair_colour, "hat": part.call(options.hats, hat), "hat_colour": hat_colour,
+		"top": part.call(options.tops, top), "shirt": shirt,
+		"jacket": part.call(options.jackets, jacket), "jacket_colour": jacket_colour,
+		"bottoms": part.call(options.bottoms, bottoms), "trousers": trousers,
+		"shoes": part.call(options.shoes, shoes), "glasses": part.call(options.glasses, glasses),
+		"pack": null, "backpack": Color.WHITE, "badge": null,
+	}

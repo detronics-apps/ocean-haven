@@ -114,3 +114,4 @@ observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs
 want = SubResource("Want")
 visit_line = "I came to taste the cooking on the {island}, {name}. {host} has given me three new recipes already."
 year_line = "Happy Ocean Day, {name}! I brought fish cakes, wrapped in leaves, not plastic."
+top = 1

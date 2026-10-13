@@ -6,8 +6,8 @@ extends ControlledBody
 
 @export var board_range := 64.0
 ## How close another boat must be to take it in tow, and how far behind it follows.
-@export var tow_reach := 56.0
-@export var tow_gap := 30.0
+@export var tow_reach := 64.0
+@export var tow_gap := 46.0
 
 ## The boat this one is towing (null = none).
 var towing: Boat
@@ -17,7 +17,6 @@ var _driver: Node2D
 var _warned_far := false
 
 @onready var _camera: Camera2D = $Camera2D
-@onready var _hint: Label = $Hint
 
 
 func _ready() -> void:
@@ -46,7 +45,7 @@ func _apply_colour() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	var tapped_boat := is_tap(event) and get_global_mouse_position().distance_to(global_position) < 20.0
+	var tapped_boat := is_tap(event) and get_global_mouse_position().distance_to(global_position) < 24.0  # (the 2.5 m hull)
 	if (tapped_boat or event.is_action_pressed("interact")) and _toggle():
 		get_viewport().set_input_as_handled()
 		return
@@ -73,15 +72,6 @@ func _physics_process(delta: float) -> void:
 		var behind := towing.global_position - global_position
 		if behind.length() > tow_gap:
 			towing.global_position = global_position + behind.normalized() * tow_gap
-
-
-func _process(_delta: float) -> void:
-	if controlled:
-		_hint.text = "E / tap boat: go ashore"
-		_hint.visible = _shore_spot() != null
-	else:
-		_hint.text = "E / tap boat: board"
-		_hint.visible = _player_in_range()
 
 
 ## What the ranger can do with the boat right now, for the action bar: [{label, do}].
@@ -146,7 +136,9 @@ func _board(check_range := true) -> bool:
 		Fleet.mark(&"boat_used")  # (people stop asking as if the ranger had never been out in one)
 	# Show the ranger (with their current look) sitting in the boat, behind the hull.
 	_driver = _player.get_node("Look").duplicate()
-	_driver.position = Vector2(-2, 2)
+	_driver.position = Vector2(-4, -3)  # (sitting on the seat, waist at the gunwale)
+	(_driver as Avatar).set_view(Avatar.View.FRONT)
+	(_driver as Avatar).sit()
 	_look.add_child(_driver)
 	_look.move_child(_driver, 0)
 	controlled = true
