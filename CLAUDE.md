@@ -703,6 +703,14 @@ labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).
+Ground art (the owner's terrain sheet, docs/terrain_sheet.jpg): drawn by
+`tools/make_terrain_tiles.py` at 64x64 per tile (the sheet's lines are half a game pixel), 8
+versions of each ground with the sheet's colours, marks and contrast (measured against it), but
+fewer waves on shallow water and a rare yellow or orange flower on grass (the owner: no white,
+it read as static), no repeating pattern, every mark inside its own tile. TerrainEdges lays them as a "GroundArt" tile layer at
+half size just above Ground (a version per cell, half mirrored; mipmapped) and hides Ground's own
+tiles (Ground.self_modulate), which keep the terrain, walking and saves; terrain_tiles.png (each
+ground's first version at 32 px) is Ground's texture and gives the rounded edges their colours.
 
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area

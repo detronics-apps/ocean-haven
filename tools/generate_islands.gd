@@ -11,7 +11,7 @@ extends SceneTree
 const TILESET := "res://assets/tilesets/placeholder_tileset.tres"
 const WORLD := "res://scenes/world/ocean_world.tscn"
 const INFO := "res://build/islands.json"
-## Tile atlas columns (see assets/tilesets/placeholder_tiles.svg).
+## Tile atlas columns (see assets/tilesets/terrain_tiles.png, drawn by tools/make_terrain_tiles.py).
 ## Ground: sand, grass, rock, ice, mud. Water: shallow, mid, and deep (the open ocean: no tile).
 ## Coral, kelp and mangroves will be plants on top, not ground.
 enum { SHALLOW, SAND, GRASS, ROCK, ICE, MUD, MID }

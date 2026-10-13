@@ -1,0 +1,230 @@
+"""Draws the ground as pixel art matched to the owner's terrain sheet (docs/terrain_sheet.jpg):
+64x64 pictures per 32x32 tile (the sheet's fine lines are half a game pixel wide), shown on the
+same grid by TerrainEdges' art layer at half size. Each ground has the sheet's colours, as many
+marks and as much contrast as the sheet's tile (measured: how much of it is lighter or darker
+than its base, and by how much), and VARIANTS versions made up differently (picked per cell,
+some mirrored) so there's no repeating pattern; every mark keeps inside its own tile, so any
+version sits beside any other without a seam.
+
+- shallow water: wave strokes, a light line with a darker one under it, a few dark dashes;
+- sand: grains, soft blotches, light specks, a band of grains, now and then pink shells;
+- grass: tufts of thin upright blades, dark and light, yellow and orange flowers (no white);
+- rock: long cracks with a light edge and a branch, pale flat patches, pebble clusters;
+- ice: long branching cracks, white with a pale blue shadow, or pale blue;
+- mud: pebbles (a pale highlight, a dark rim), rings where puddles were, pale specks;
+- mid water: long gentle waves, a light line with a mid-blue one under it, short dashes.
+
+Writes assets/tilesets/terrain_art.png (a row per ground, in the tileset's order: shallow, sand,
+grass, rock, ice, mud, mid water; a column per version) and assets/tilesets/terrain_tiles.png
+(the 32x32 tiles of the Ground layer itself, which only the game's logic, the minimap and the
+rounded edges' colours use: each ground's first version at half size). Deep water is no tile.
+Re-run after changing a ground:  python tools/make_terrain_tiles.py
+"""
+import math
+import os
+import random
+from PIL import Image
+
+HERE = os.path.dirname(__file__)
+ART = os.path.join(HERE, '..', 'assets', 'tilesets', 'terrain_art.png')
+TILES = os.path.join(HERE, '..', 'assets', 'tilesets', 'terrain_tiles.png')
+S = 64  # (pixels per tile in the art: a game pixel is 2 of them)
+VARIANTS = 8
+MARGIN = 2  # (marks keep this far in from the tile's edges)
+
+
+def rgb(h):
+    return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
+
+
+class Tile:
+    def __init__(self, base, rnd, speckle):
+        self.im = Image.new('RGB', (S, S), rgb(base))
+        for _ in range(S * S // 20):  # (a soft speckle all over, as on the sheet)
+            self.dot(rnd.randrange(S), rnd.randrange(S), rgb(rnd.choice(speckle)))
+
+    def dot(self, x, y, colour):
+        if 0 <= x < S and 0 <= y < S:
+            self.im.putpixel((int(x), int(y)), rgb(colour) if isinstance(colour, str) else colour)
+
+    def line(self, points, colour, dx=0, dy=0):
+        for (x0, y0), (x1, y1) in zip(points, points[1:]):
+            steps = max(abs(x1 - x0), abs(y1 - y0), 1)
+            for i in range(steps + 1):
+                self.dot(round(x0 + (x1 - x0) * i / steps) + dx, round(y0 + (y1 - y0) * i / steps) + dy, colour)
+
+    def box(self, x, y, w, h, colour):
+        for dx in range(w):
+            for dy in range(h):
+                self.dot(x + dx, y + dy, colour)
+
+
+def places(rnd, count, w=0, h=0):
+    """`count` places for marks w x h big, spread over the tile (a jittered grid), inside it."""
+    side = max(1, math.ceil(math.sqrt(count)))
+    span = S - 2 * MARGIN
+    cells = [(cx, cy) for cx in range(side) for cy in range(side)]
+    rnd.shuffle(cells)
+    out = []
+    for cx, cy in cells[:count]:
+        x = MARGIN + int((cx + rnd.random()) * span / side)
+        y = MARGIN + int((cy + rnd.random()) * span / side)
+        out.append((min(x, S - MARGIN - 1 - w), min(max(y, MARGIN + h), S - MARGIN - 1)))
+    return out
+
+
+def wave(t, rnd, x, y, length, light, dark, rise, under=(1, 2), tilt=0.0):
+    phase = rnd.random() * math.pi
+    pts = [(x + i, y - round(math.sin(phase + i / length * math.pi * 1.4) * rise + i * tilt)) for i in range(length)]
+    t.line(pts[2:-1], dark, *under)
+    t.line(pts, light)
+
+
+def shallow(rnd, v):
+    t = Tile('#578990', rnd, ['#5d9096', '#51848b'])
+    for x, y in places(rnd, rnd.randint(4, 7), 14, 3):  # (the owner: fewer waves)
+        if rnd.random() < 0.6:
+            wave(t, rnd, x, y + 4, rnd.randint(9, 15), '#9fd0d2', '#3a7580', rnd.choice((0.8, 1.0, 1.4)), (1, 1),
+                 rnd.choice((0.0, 0.2, 0.3, -0.2)))
+        else:
+            n = rnd.randint(6, 11)
+            t.line([(x, y), (x + n // 2, y + rnd.choice((0, 1))), (x + n, y)], '#3a7580')
+    return t
+
+
+def mid_water(rnd, v):
+    t = Tile('#3c5f72', rnd, ['#42677b', '#37596b'])
+    for x, y in places(rnd, rnd.randint(4, 5), 30, 4):
+        wave(t, rnd, x, y, rnd.randint(22, 32), '#76a8bf', '#5a8aa2', 2.0, (1, 1))
+        wave(t, random.Random(x * 31 + y), x + 2, y + 2, rnd.randint(12, 20), '#5a8aa2', '#4f7d95', 1.5, (1, 1))
+    for x, y in places(rnd, rnd.randint(3, 5), 8, 1):
+        t.line([(x, y), (x + rnd.randint(4, 8), y)], rnd.choice(['#6a9cb3', '#5a879e']))
+    return t
+
+
+def sand(rnd, v):
+    t = Tile('#e5d19e', rnd, ['#dcc893', '#ecd9a8'])
+    for x, y in places(rnd, rnd.randint(14, 18), 4, 4):  # (soft blotches)
+        n = rnd.choice((3, 4))
+        t.box(x, y - n + 1, n, n, rnd.choice(['#d6c28d', '#ecdbab', '#dac793']))
+    for x, y in places(rnd, rnd.randint(110, 140)):
+        c = rnd.choice(['#c4ab79', '#cbb382', '#bea472'])
+        t.dot(x, y, c)
+        if rnd.random() < 0.3:
+            t.dot(x + 1, y, c)
+    for x, y in places(rnd, rnd.randint(8, 12)):
+        t.dot(x, y, '#fdf3d8')
+    if v % 2 == 0:  # (a band of grains running across)
+        x0, y0, n = rnd.randint(6, 20), rnd.randint(40, 56), rnd.randint(16, 26)
+        for i in range(n):
+            if rnd.random() < 0.6:
+                t.dot(x0 + i + rnd.randint(-1, 1), y0 - i * 0.7 + rnd.randint(-1, 1), '#c1a774')
+    if v in (3, 6):  # (pink shells)
+        x, y = places(rnd, 1, 10, 6)[0]
+        for ox, oy in ((0, 0), (5, 3), (2, 6))[:rnd.randint(2, 3)]:
+            t.box(x + ox, y - 6 + oy, 3, 3, '#c79a9b')
+            t.dot(x + ox + 1, y - 6 + oy + 1, '#f2dedc')
+            t.dot(x + ox + 2, y - 6 + oy + 2, '#a77c80')
+    return t
+
+
+def grass(rnd, v):
+    t = Tile('#7f9652', rnd, ['#76904b', '#879d57'])
+    for x, y in places(rnd, rnd.randint(18, 24), 8, 6):  # (tufts of thin blades)
+        c = '#5e7637' if rnd.random() < 0.82 else '#a5b968'
+        for b in range(rnd.randint(2, 4)):
+            h = rnd.randint(3, 6)
+            lean = rnd.choice((-1, 0, 0, 1))
+            t.line([(x + b * 2, y), (x + b * 2 + lean, y - h)], c)
+    for x, y in places(rnd, rnd.choice((0, 0, 0, 1, 1)), 2, 2):  # (a rare flower: the owner, too many)
+        c = rnd.choice(['#f2d23a'] * 6 + ['#e8962c'])  # (no white: it read as static)
+        t.box(x, y - 1, 2, 2, c)
+    return t
+
+
+def crack(t, rnd, x, y, length, colour, edge=None, step=(1, 1), dy=0, thick=False, branch=True):
+    """A long thin crack wandering along `step`, with a branch; `edge` = a light pixel beside it."""
+    pts = [(x, y)]
+    for _ in range(length):
+        nx = x + (step[0] if rnd.random() < 0.7 else 0)
+        ny = y + (step[1] if rnd.random() < 0.8 else 0)
+        if not (MARGIN <= nx < S - MARGIN and MARGIN <= ny < S - MARGIN):
+            break
+        x, y = nx, ny
+        pts.append((x, y))
+    if edge:
+        t.line(pts[::2], edge, 1, 0)
+    t.line(pts, colour, 0, dy)
+    if thick:  # (twice as wide along its middle)
+        t.line(pts[len(pts) // 4: 3 * len(pts) // 4], colour, 1, dy)
+    if branch and len(pts) > 6:
+        bx, by = pts[rnd.randint(len(pts) // 3, 2 * len(pts) // 3)]
+        n = rnd.randint(4, 9)
+        end = (min(max(bx - step[0] * n, MARGIN), S - MARGIN - 1), min(max(by + n // 2, MARGIN), S - MARGIN - 1))
+        t.line([(bx, by), end], colour, 0, dy)
+
+
+def rock(rnd, v):
+    t = Tile('#8a8074', rnd, ['#80766b', '#938a7e'])
+    for x, y in places(rnd, rnd.randint(8, 11), 8, 3):  # (pale flat patches)
+        t.box(x, y - 2, rnd.randint(3, 8), rnd.randint(2, 3), rnd.choice(['#9f9588', '#a59b8e']))
+    for x, y in places(rnd, rnd.randint(6, 8), 0, 0):
+        step = rnd.choice(((1, 1), (-1, 1), (1, 1)))
+        crack(t, rnd, x, y, rnd.randint(16, 30), '#574e45', '#aaa093', step, thick=True, branch=rnd.random() < 0.4)
+    for x, y in places(rnd, rnd.randint(2, 4), 6, 4):  # (pebble clusters)
+        for dx, dy in rnd.sample(((0, 0), (3, 0), (1, 2), (4, 2), (0, 4), (5, 4)), 3):
+            t.box(x + dx, y - 4 + dy, 2, 1, '#c2b7a5')
+            t.dot(x + dx, y - 3 + dy, '#5e554c')
+    return t
+
+
+def ice(rnd, v):
+    t = Tile('#e5eef3', rnd, ['#dfe8ef', '#edf3f7'])
+    for i in range(rnd.randint(2, 3)):
+        # (from near an edge, inwards and down, never all meeting in the middle)
+        x = rnd.choice((rnd.randint(MARGIN, 14), rnd.randint(S - 15, S - MARGIN - 1), rnd.randint(16, S - 17)))
+        y = rnd.randint(MARGIN, 20) if i == 0 else rnd.randint(20, 44)
+        step = (1, 1) if x < S // 2 else (-1, 1)
+        n = rnd.randint(22, 40)
+        if rnd.random() < 0.7:
+            state = rnd.getstate()
+            crack(t, rnd, x, y, n, '#b8cad9', step=step, dy=1)  # (its pale blue shadow)
+            rnd.setstate(state)
+            crack(t, rnd, x, y, n, '#ffffff', step=step)
+        else:
+            crack(t, rnd, x, y, n, '#b8cad9', step=step)
+    return t
+
+
+def mud(rnd, v):
+    t = Tile('#78593a', rnd, ['#71533a', '#7e5f40'])
+    for x, y in places(rnd, rnd.randint(5, 8), 4, 3):  # (pebbles: a pale top, a dark rim under)
+        w = rnd.randint(2, 4)
+        t.box(x, y - 2, w, 2, '#b8a07e')
+        t.box(x, y, w, 1, '#4e3824')
+        t.dot(x + w, y - 1, '#4e3824')
+        t.dot(x, y - 2, '#e2d2b2')
+    for x, y in places(rnd, rnd.randint(1, 2), 12, 9):  # (rings where puddles were)
+        w, h = rnd.randint(10, 14), rnd.randint(7, 10)
+        for i in range(48):
+            a = i / 48 * math.tau
+            px, py = x + w / 2 + math.cos(a) * w / 2, y - h / 2 + math.sin(a) * h / 2
+            t.dot(round(px), round(py), '#a88b66' if math.sin(a) < 0.3 else '#5c4229')
+    for x, y in places(rnd, rnd.randint(8, 12)):
+        t.dot(x, y, '#9a8065')
+    return t
+
+
+if __name__ == '__main__':
+    grounds = [shallow, sand, grass, rock, ice, mud, mid_water]
+    art = Image.new('RGB', (S * VARIANTS, S * len(grounds)))
+    tiles = Image.new('RGB', (32 * len(grounds), 32))
+    for row, draw in enumerate(grounds):
+        for v in range(VARIANTS):
+            picture = draw(random.Random(1000 * row + v), v).im
+            art.paste(picture, (S * v, S * row))
+            if v == 0:
+                tiles.paste(picture.resize((32, 32), Image.BOX), (32 * row, 0))
+    art.save(ART)
+    tiles.save(TILES)
+    print('ground art written to', os.path.normpath(ART), 'and', os.path.normpath(TILES))

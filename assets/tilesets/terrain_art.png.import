@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt20tm3ov7lu8"
-path="res://.godot/imported/placeholder_tiles.svg-51b972b5fc49a69bf846623df26f1006.ctex"
+uid="uid://dqtmysnfc3dxa"
+path="res://.godot/imported/terrain_art.png-d58d0c4ad9cc4939d4d7067776a8bd77.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/placeholder_tiles.svg"
-dest_files=["res://.godot/imported/placeholder_tiles.svg-51b972b5fc49a69bf846623df26f1006.ctex"]
+source_file="res://assets/tilesets/terrain_art.png"
+dest_files=["res://.godot/imported/terrain_art.png-d58d0c4ad9cc4939d4d7067776a8bd77.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

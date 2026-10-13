@@ -16,6 +16,11 @@ extends Node2D
 ## Worked out once when the island loads (and after loading a save), and again only around
 ## cells that change (every gameplay tile change goes through SaveGame.record_tile, which calls
 ## cell_changed). Nothing is calculated per frame.
+##
+## It also lays the ground's pictures: a second tile layer ("GroundArt", just above Ground, at
+## half size) with the 64x64 art of tools/make_terrain_tiles.py, several versions of each ground
+## picked per cell (some mirrored), so there's no repeating pattern. Ground itself is hidden: it
+## keeps the terrain, walking and saves.
 
 const HALF := 16.0
 const ARC_STEPS := 6
@@ -33,6 +38,12 @@ var _terrain := {}
 var _pieces := {}
 var _colours := {}
 
+const ART := preload("res://assets/tilesets/terrain_art.png")
+const ART_SIZE := 64
+const ART_VARIANTS := 8
+static var _art_set: TileSet
+var _art: TileMapLayer
+
 
 func _ready() -> void:
 	_ground = get_parent().get_node_or_null("Ground")
@@ -40,15 +51,58 @@ func _ready() -> void:
 		return
 	position = _ground.position
 	z_index = _ground.z_index
+	_ground.self_modulate.a = 0.0  # (its plain tiles hidden: the art layer shows the ground)
+	_art = TileMapLayer.new()
+	_art.name = "GroundArt"
+	_art.tile_set = _art_tiles()
+	_art.position = _ground.position
+	_art.scale = Vector2.ONE * float(_ground.tile_set.tile_size.x) / ART_SIZE
+	_art.z_index = _ground.z_index
+	_art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	_put_art_in.call_deferred()
 	_read_colours()
 	rebuild()
+
+
+func _put_art_in() -> void:
+	get_parent().add_child(_art)
+	get_parent().move_child(_art, _ground.get_index() + 1)
+
+
+## The art's tile set, made once: a tile per picture, and a mirrored one of each.
+static func _art_tiles() -> TileSet:
+	if _art_set:
+		return _art_set
+	var tiles := TileSet.new()
+	tiles.tile_size = Vector2i(ART_SIZE, ART_SIZE)
+	var source := TileSetAtlasSource.new()
+	source.texture = ART
+	source.texture_region_size = Vector2i(ART_SIZE, ART_SIZE)
+	tiles.add_source(source, 0)
+	for row in ART.get_height() / ART_SIZE:
+		for v in ART_VARIANTS:
+			var at := Vector2i(v, row)
+			source.create_tile(at)
+			source.get_tile_data(at, source.create_alternative_tile(at)).flip_h = true
+	_art_set = tiles
+	return tiles
+
+
+## The cell's picture: its ground's row, a version (and mirrored or not) picked from the cell.
+func _paint(cell: Vector2i) -> void:
+	var ground := _ground.get_cell_atlas_coords(cell)
+	if ground.x < 0:
+		_art.erase_cell(cell)
+		return
+	var pick := absi(hash(cell))
+	_art.set_cell(cell, 0, Vector2i(pick % ART_VARIANTS, ground.x), (pick / ART_VARIANTS) % 2)
 
 
 func _enter_tree() -> void:
 	add_to_group("terrain_edges")
 
 
-## The colour of each terrain, from the middle of its tile in the tileset's picture.
+## The colour of each terrain: its tile's average (the tiles are textured: grains, tufts, cracks).
 func _read_colours() -> void:
 	var source := _ground.tile_set.get_source(0) as TileSetAtlasSource
 	var image := source.texture.get_image() if source and source.texture else null
@@ -57,7 +111,11 @@ func _read_colours() -> void:
 		if _colours.has(kind) or not image:
 			continue
 		var region := source.get_tile_texture_region(_ground.get_cell_atlas_coords(cell))
-		_colours[kind] = image.get_pixelv(region.position + region.size / 2)
+		var sum := Color(0, 0, 0, 0)
+		for y in region.size.y:
+			for x in region.size.x:
+				sum += image.get_pixel(region.position.x + x, region.position.y + y)
+		_colours[kind] = sum / float(region.size.x * region.size.y)
 
 
 ## A cell's terrain ("sea" = open ocean: no tile).
@@ -71,8 +129,10 @@ func rebuild() -> void:
 	_terrain.clear()
 	_pieces.clear()
 	var corners := {}
+	_art.clear()
 	for cell in _ground.get_used_cells():
 		_terrain[cell] = terrain_at(cell)
+		_paint(cell)
 		for d in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 			corners[cell + d] = true
 	for corner: Vector2i in corners:
@@ -86,6 +146,7 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 	if ground != _ground:
 		return
 	_terrain[cell] = terrain_at(cell)
+	_paint(cell)
 	for d in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 		_shape_corner(cell + d)
 	queue_redraw()
@@ -160,6 +221,7 @@ func pieces_at(corner: Vector2i) -> Array:
 func _process(_delta: float) -> void:
 	if _ground and modulate != _ground.modulate:
 		modulate = _ground.modulate  # the island's health tint, as on the ground
+		_art.modulate = _ground.modulate
 
 
 func _draw() -> void:
