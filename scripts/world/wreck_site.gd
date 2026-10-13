@@ -6,7 +6,7 @@ extends Node2D
 ## recovered (marks "sonar_recovered"). Its pieces are named, so collected ones stay gone.
 
 const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
-const WRECK_TEXTURE := preload("res://assets/effects/wreck/wreck.svg")
+const WRECK_TEXTURE := preload("res://assets/effects/wreck/wreck.png")
 
 ## Litter caught around the wreck (one piece each).
 @export var pieces: Array[ItemData] = []

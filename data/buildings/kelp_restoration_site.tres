@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3]
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_krs"]
-[ext_resource type="Texture2D" path="res://assets/buildings/kelp_restoration_site/kelp_restoration_site.svg" id="2_krs"]
+[ext_resource type="Texture2D" path="res://assets/buildings/kelp_restoration_site/kelp_restoration_site.png" id="2_krs"]
 
 [resource]
 script = ExtResource("1_krs")

@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player/boat.gd" id="1_webh6"]
-[ext_resource type="Texture2D" path="res://assets/boats/rowboat.svg" id="2_km2v0"]
+[ext_resource type="Texture2D" path="res://assets/boats/rowboat.png" id="2_km2v0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5utrm"]
 radius = 6.0

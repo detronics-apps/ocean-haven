@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/people/person_data.gd" id="1_p"]
 [ext_resource type="Script" path="res://scripts/people/talk_topic.gd" id="2_t"]
 [ext_resource type="Script" path="res://scripts/systems/objective_goal.gd" id="3_g"]
-[ext_resource type="Texture2D" path="res://assets/buildings/people/hut.svg" id="4_place"]
+[ext_resource type="Texture2D" path="res://assets/buildings/people/hut.png" id="4_place"]
 
 [sub_resource type="Resource" id="Topic_trees"]
 script = ExtResource("2_t")

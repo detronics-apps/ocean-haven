@@ -9,7 +9,7 @@ extends ActivityScreen
 ## "nothing here"). Find everything. The story play finds the wreck; after that it's for fun
 ## and personal bests.
 
-const WRECK := preload("res://assets/effects/wreck/wreck.svg")
+const WRECK := preload("res://assets/effects/wreck/wreck.png")
 const LITTER := ["res://data/items/ghost_net.tres", "res://data/items/plastic_bottle.tres", "res://data/items/fishing_line.tres"]
 const SEA := Color("1d5e86")
 const SEA_DEEP := Color("174c6e")

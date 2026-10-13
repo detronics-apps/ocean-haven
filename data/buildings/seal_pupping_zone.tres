@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3]
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
-[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone.svg" id="2_t"]
-[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_2.svg" id="3_t"]
-[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_3.svg" id="4_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone.png" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_2.png" id="3_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/polar/seal_pupping_zone_3.png" id="4_t"]
 
 [resource]
 script = ExtResource("1_s")

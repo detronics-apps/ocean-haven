@@ -703,6 +703,11 @@ labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).
+Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta): cut by
+`tools/cut_building_sheet.py` into a PNG per building, beside each old picture's path, fitted into
+the box the old art filled (tools/building_sheet_targets.json: the owner, their original sizes).
+Everything outside each building's dark outline goes (specks, the pink fringe, grey fill between
+pillars), labels are dropped; the water gate (closed) and drawbridge (open) pictures aren't on it yet.
 Ground art (the owner's terrain sheet, docs/terrain_sheet.jpg): drawn by
 `tools/make_terrain_tiles.py` at 64x64 per tile (the sheet's lines are half a game pixel), 8
 versions of each ground with the sheet's colours, marks and contrast (measured against it), but
