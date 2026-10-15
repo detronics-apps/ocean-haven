@@ -47,7 +47,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	z_index = -1  # under boats, animals and the ranger; over the sea floor
+	z_index = -3  # under boats, swimming animals and the ranger; over the sea floor
 
 
 func urchin_count() -> int:

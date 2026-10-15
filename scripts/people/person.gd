@@ -33,6 +33,7 @@ func _ready() -> void:
 		_place.z_index = -1
 		add_child(_place)
 	add_child(look_of(data))
+	Shadow.under(self, null, 22.0, Vector2(0, -2))  # (round the boots: lower, they seemed to float)
 	_news = Label.new()
 	_news.text = "!"
 	_news.add_theme_font_size_override("font_size", 28)

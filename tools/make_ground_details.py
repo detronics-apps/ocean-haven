@@ -11,6 +11,7 @@ Rows (columns = versions, or the frames of an animation):
  5 waves rolling up the sand and sliding back (8 frames; the water is above the tile: turned
    for other sides)
  6 waves smashing against rock (8 frames; the same)
+ (a 9th, empty column: the pause before the next wave, its length picked per spot in the game)
 Re-run after changing a detail:  python tools/make_ground_details.py
 """
 import math
@@ -20,7 +21,7 @@ from PIL import Image
 
 OUT = os.path.join(os.path.dirname(__file__), '..', 'assets', 'tilesets', 'ground_details.png')
 S = 64
-COLS, ROWS = 8, 7
+COLS, ROWS = 9, 7
 WAVE_FRAMES = 8
 
 
@@ -232,7 +233,7 @@ if __name__ == '__main__':
     sheet = Image.new('RGBA', (S * COLS, S * ROWS), (0, 0, 0, 0))
     rows = [grass, sand, mud, rock, ice]
     for r, draw in enumerate(rows):
-        for v in range(COLS):
+        for v in range(8):
             for (x, y), col in draw(v, random.Random(100 * r + v)).px.items():
                 sheet.putpixel((v * S + x, r * S + y), col)
     for f in range(WAVE_FRAMES):

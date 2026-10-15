@@ -2,44 +2,44 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="1" y="3" width="8" height="6" fill="#777373"/>
-  <rect x="2" y="4" width="6" height="4" fill="#7a717b"/>
-  <rect x="5" y="1" width="4" height="4" fill="#777373"/>
-  <rect x="7" y="2" width="1" height="1" fill="#141429"/>
-  <rect x="8" y="3" width="1" height="1" fill="#27273e"/>
-  <rect x="9" y="3" width="2" height="1" fill="#2b3049"/>
-  <rect x="3" y="9" width="2" height="1" fill="#414358"/>
-  <rect x="6" y="9" width="2" height="1" fill="#414358"/>
+  <rect x="1" y="3" width="8" height="6" fill="#39373c"/>
+  <rect x="2" y="4" width="6" height="4" fill="#3b3640"/>
+  <rect x="5" y="1" width="4" height="4" fill="#39373c"/>
+  <rect x="7" y="2" width="1" height="1" fill="#0a0a19"/>
+  <rect x="8" y="3" width="1" height="1" fill="#131323"/>
+  <rect x="9" y="3" width="2" height="1" fill="#151728"/>
+  <rect x="3" y="9" width="2" height="1" fill="#1f2030"/>
+  <rect x="6" y="9" width="2" height="1" fill="#1f2030"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="1" y="3" width="8" height="6" fill="#777373"/>
-  <rect x="2" y="4" width="6" height="4" fill="#7a717b"/>
-  <rect x="5" y="1" width="4" height="4" fill="#777373"/>
-  <rect x="7" y="2" width="1" height="1" fill="#141429"/>
-  <rect x="8" y="3" width="1" height="1" fill="#27273e"/>
-  <rect x="9" y="3" width="2" height="1" fill="#2b3049"/>
-  <rect x="3" y="9" width="2" height="1" fill="#414358"/>
-  <rect x="6" y="9" width="2" height="1" fill="#414358"/>
+  <rect x="1" y="3" width="8" height="6" fill="#39373c"/>
+  <rect x="2" y="4" width="6" height="4" fill="#3b3640"/>
+  <rect x="5" y="1" width="4" height="4" fill="#39373c"/>
+  <rect x="7" y="2" width="1" height="1" fill="#0a0a19"/>
+  <rect x="8" y="3" width="1" height="1" fill="#131323"/>
+  <rect x="9" y="3" width="2" height="1" fill="#151728"/>
+  <rect x="3" y="9" width="2" height="1" fill="#1f2030"/>
+  <rect x="6" y="9" width="2" height="1" fill="#1f2030"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="1" y="3" width="8" height="6" fill="#777373"/>
-  <rect x="2" y="4" width="6" height="4" fill="#7a717b"/>
-  <rect x="5" y="1" width="4" height="4" fill="#777373"/>
-  <rect x="7" y="2" width="1" height="1" fill="#141429"/>
-  <rect x="8" y="3" width="1" height="1" fill="#27273e"/>
-  <rect x="9" y="3" width="2" height="1" fill="#2b3049"/>
-  <rect x="3" y="9" width="2" height="1" fill="#414358"/>
-  <rect x="6" y="9" width="2" height="1" fill="#414358"/>
+  <rect x="1" y="3" width="8" height="6" fill="#39373c"/>
+  <rect x="2" y="4" width="6" height="4" fill="#3b3640"/>
+  <rect x="5" y="1" width="4" height="4" fill="#39373c"/>
+  <rect x="7" y="2" width="1" height="1" fill="#0a0a19"/>
+  <rect x="8" y="3" width="1" height="1" fill="#131323"/>
+  <rect x="9" y="3" width="2" height="1" fill="#151728"/>
+  <rect x="3" y="9" width="2" height="1" fill="#1f2030"/>
+  <rect x="6" y="9" width="2" height="1" fill="#1f2030"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="1" y="3" width="8" height="6" fill="#777373"/>
-  <rect x="2" y="4" width="6" height="4" fill="#7a717b"/>
-  <rect x="5" y="1" width="4" height="4" fill="#777373"/>
-  <rect x="7" y="2" width="1" height="1" fill="#141429"/>
-  <rect x="8" y="3" width="1" height="1" fill="#27273e"/>
-  <rect x="9" y="3" width="2" height="1" fill="#2b3049"/>
-  <rect x="3" y="9" width="2" height="1" fill="#414358"/>
-  <rect x="6" y="9" width="2" height="1" fill="#414358"/>
+  <rect x="1" y="3" width="8" height="6" fill="#39373c"/>
+  <rect x="2" y="4" width="6" height="4" fill="#3b3640"/>
+  <rect x="5" y="1" width="4" height="4" fill="#39373c"/>
+  <rect x="7" y="2" width="1" height="1" fill="#0a0a19"/>
+  <rect x="8" y="3" width="1" height="1" fill="#131323"/>
+  <rect x="9" y="3" width="2" height="1" fill="#151728"/>
+  <rect x="3" y="9" width="2" height="1" fill="#1f2030"/>
+  <rect x="6" y="9" width="2" height="1" fill="#1f2030"/>
 </g></g>
   <g id="art" data-size="11 10" data-box="0 0 11 10">
   <!-- Red-footed booby chick, side view: a ball of white fluffy down, dark face and bill -->

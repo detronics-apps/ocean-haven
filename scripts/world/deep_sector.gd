@@ -43,7 +43,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	z_index = -1
+	z_index = -3
 
 
 func known() -> bool:

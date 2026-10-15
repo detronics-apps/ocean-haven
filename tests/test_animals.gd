@@ -193,6 +193,12 @@ func _initialize() -> void:
 	_expect(roamer.data.roams and furthest > roamer.home_radius, "a dolphin roams beyond its home area (%.0f px)" % furthest)
 	_expect(not crabs[0].data.roams, "crabs keep to their beach")
 
+	# Swimming animals go under decks and jetties (decks: -1); on land they're up with the rest.
+	for i in 20:
+		await physics_frame
+	_expect(roamer.z_index < -1, "a swimming dolphin is drawn under the decks (%d)" % roamer.z_index)
+	_expect(crabs[0].z_index == 0, "a crab on the beach is not")
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

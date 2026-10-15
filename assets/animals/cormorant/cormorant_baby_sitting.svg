@@ -2,40 +2,40 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#231d25"/>
-  <rect x="10" y="2" width="3" height="1" fill="#231d25"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#231d25"/>
-  <rect x="0" y="4" width="7" height="3" fill="#231d25"/><rect x="1" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="11" y="4" width="7" height="3" fill="#231d25"/><rect x="12" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="7" y="12" width="1" height="3" fill="#231d25"/><rect x="10" y="12" width="1" height="3" fill="#231d25"/>
+  <rect x="7" y="1" width="3" height="3" fill="#110e17"/>
+  <rect x="10" y="2" width="3" height="1" fill="#110e17"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#110e17"/>
+  <rect x="0" y="4" width="7" height="3" fill="#110e17"/><rect x="1" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="11" y="4" width="7" height="3" fill="#110e17"/><rect x="12" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="7" y="12" width="1" height="3" fill="#110e17"/><rect x="10" y="12" width="1" height="3" fill="#110e17"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#231d25"/>
-  <rect x="10" y="2" width="3" height="1" fill="#231d25"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#231d25"/>
-  <rect x="0" y="4" width="7" height="3" fill="#231d25"/><rect x="1" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="11" y="4" width="7" height="3" fill="#231d25"/><rect x="12" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="7" y="12" width="1" height="3" fill="#231d25"/><rect x="10" y="12" width="1" height="3" fill="#231d25"/>
+  <rect x="7" y="1" width="3" height="3" fill="#110e17"/>
+  <rect x="10" y="2" width="3" height="1" fill="#110e17"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#110e17"/>
+  <rect x="0" y="4" width="7" height="3" fill="#110e17"/><rect x="1" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="11" y="4" width="7" height="3" fill="#110e17"/><rect x="12" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="7" y="12" width="1" height="3" fill="#110e17"/><rect x="10" y="12" width="1" height="3" fill="#110e17"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#231d25"/>
-  <rect x="10" y="2" width="3" height="1" fill="#231d25"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#231d25"/>
-  <rect x="0" y="4" width="7" height="3" fill="#231d25"/><rect x="1" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="11" y="4" width="7" height="3" fill="#231d25"/><rect x="12" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="7" y="12" width="1" height="3" fill="#231d25"/><rect x="10" y="12" width="1" height="3" fill="#231d25"/>
+  <rect x="7" y="1" width="3" height="3" fill="#110e17"/>
+  <rect x="10" y="2" width="3" height="1" fill="#110e17"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#110e17"/>
+  <rect x="0" y="4" width="7" height="3" fill="#110e17"/><rect x="1" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="11" y="4" width="7" height="3" fill="#110e17"/><rect x="12" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="7" y="12" width="1" height="3" fill="#110e17"/><rect x="10" y="12" width="1" height="3" fill="#110e17"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#231d25"/>
-  <rect x="10" y="2" width="3" height="1" fill="#231d25"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#231d25"/>
-  <rect x="0" y="4" width="7" height="3" fill="#231d25"/><rect x="1" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="11" y="4" width="7" height="3" fill="#231d25"/><rect x="12" y="7" width="5" height="2" fill="#231d25"/>
-  <rect x="7" y="12" width="1" height="3" fill="#231d25"/><rect x="10" y="12" width="1" height="3" fill="#231d25"/>
+  <rect x="7" y="1" width="3" height="3" fill="#110e17"/>
+  <rect x="10" y="2" width="3" height="1" fill="#110e17"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#110e17"/>
+  <rect x="0" y="4" width="7" height="3" fill="#110e17"/><rect x="1" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="11" y="4" width="7" height="3" fill="#110e17"/><rect x="12" y="7" width="5" height="2" fill="#110e17"/>
+  <rect x="7" y="12" width="1" height="3" fill="#110e17"/><rect x="10" y="12" width="1" height="3" fill="#110e17"/>
 </g></g>
   <g id="art" data-size="18 16" data-box="0 0 18 16">
   

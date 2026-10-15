@@ -41,7 +41,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	z_index = -1
+	z_index = -3
 	_health = Label.new()
 	_health.name = "Health"
 	_health.add_theme_font_size_override("font_size", 22)
@@ -136,7 +136,7 @@ func set_down() -> void:
 	if not _reef().spot_free(global_position, self):
 		return
 	carried = false
-	z_index = -1
+	z_index = -3
 	get_tree().call_group("ecosystems", "settle_now")
 
 
@@ -154,7 +154,7 @@ func _process(delta: float) -> void:
 		global_position = ranger.global_position + Vector2(0, 28)  # towed just behind the boat
 	else:
 		carried = false  # (left the boat: it settles where it is)
-		z_index = -1
+		z_index = -3
 
 
 func _explain_spot() -> void:

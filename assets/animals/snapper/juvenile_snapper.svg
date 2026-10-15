@@ -2,32 +2,32 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
-  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
-  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
-  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
-  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="2" width="2" height="4" fill="#231d21"/>
+  <rect x="2" y="1" width="9" height="6" fill="#292629"/>
+  <rect x="3" y="2" width="7" height="3" fill="#302c2f"/>
+  <rect x="11" y="2" width="2" height="4" fill="#292629"/>
+  <rect x="9" y="2" width="1" height="3" fill="#1a1317"/><rect x="11" y="3" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
-  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
-  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
-  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
-  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="2" width="2" height="4" fill="#231d21"/>
+  <rect x="2" y="1" width="9" height="6" fill="#292629"/>
+  <rect x="3" y="2" width="7" height="3" fill="#302c2f"/>
+  <rect x="11" y="2" width="2" height="4" fill="#292629"/>
+  <rect x="9" y="2" width="1" height="3" fill="#1a1317"/><rect x="11" y="3" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
-  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
-  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
-  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
-  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="2" width="2" height="4" fill="#231d21"/>
+  <rect x="2" y="1" width="9" height="6" fill="#292629"/>
+  <rect x="3" y="2" width="7" height="3" fill="#302c2f"/>
+  <rect x="11" y="2" width="2" height="4" fill="#292629"/>
+  <rect x="9" y="2" width="1" height="3" fill="#1a1317"/><rect x="11" y="3" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="0" y="2" width="2" height="4" fill="#493d3a"/>
-  <rect x="2" y="1" width="9" height="6" fill="#564f4b"/>
-  <rect x="3" y="2" width="7" height="3" fill="#635c58"/>
-  <rect x="11" y="2" width="2" height="4" fill="#564f4b"/>
-  <rect x="9" y="2" width="1" height="3" fill="#352825"/><rect x="11" y="3" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="2" width="2" height="4" fill="#231d21"/>
+  <rect x="2" y="1" width="9" height="6" fill="#292629"/>
+  <rect x="3" y="2" width="7" height="3" fill="#302c2f"/>
+  <rect x="11" y="2" width="2" height="4" fill="#292629"/>
+  <rect x="9" y="2" width="1" height="3" fill="#1a1317"/><rect x="11" y="3" width="1" height="1" fill="#0e0b12"/>
 </g></g>
   <g id="art" data-size="14 8" data-box="0 0 14 8">
   <!-- Placeholder young mangrove (grey) snapper: small silver-grey fish with a dark eye stripe -->

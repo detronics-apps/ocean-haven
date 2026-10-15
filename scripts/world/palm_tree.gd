@@ -45,6 +45,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	Shadow.under(self, $Sprite2D).share = 0.45  # (round the trunk)
 	_nest = Sprite2D.new()
 	_nest.name = "Nest"
 	_nest.texture = NEST_TEXTURE

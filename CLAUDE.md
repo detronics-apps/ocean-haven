@@ -729,10 +729,12 @@ it read as static), no repeating pattern, every mark inside its own tile. Terrai
 half size just above Ground (a version per cell, half mirrored; mipmapped) and hides Ground's own
 tiles (Ground.self_modulate), which keep the terrain, walking and saves; terrain_tiles.png (each
 ground's first version at 32 px) is Ground's texture and gives the rounded edges their colours.
-Shallow and mid water tiles have only a very faint speckle (the moving SeaWaves, one every 60 px,
-play over all water); the open ocean gets the same faint speckle (SeaWaves' deep_water.png, drawn
-under the islands and fixed to the world). Between two kinds of water there's no line and no
-rounding: their colours fade into each other over 10 px each side (TerrainEdges._fades). Ground details
+Water cells get no art tile: all of an island's water is one small picture (TerrainEdges'
+WaterBlend, 4 pixels a cell, linear filtering) under the ground, so every two waters fade into
+each other over a few pixels, round corners too (no line, no rounding between waters); SeaWaves'
+faint speckle (deep_water.png, fixed to the world) and its moving waves (one every 60 px) play
+over all water. The open ocean is darker than mid water (default_clear_color) and takes the health
+tint of the island in view, as that island's water does (DayNight). Ground details
 (decoration only, `tools/make_ground_details.py`, a "GroundDetails" tile layer over the rounded
 edges, picked per cell by TerrainEdges and redone round any changed tile): grass patches inside 3 x 3
 grass, shells and a starfish on sand, bird tracks / boot prints / clumps on mud, small stones on
@@ -740,9 +742,24 @@ rock, little rocks on ice where 3 in a row are the same ground, one snowman on a
 ice cell with ice all round it that its hash picks), and animated tiles (random start times) of
 waves running up the sand and sliding back (8 frames: a curve from the water's edge, full only at
 its peak, gone well before the tile's sides where the coast's corners curve away) and spray on
-half the rocky shores, turned to face the water. A thin dark line runs where two terrains meet
+half the rocky shores, turned to face the water, each spot then pausing for one of
+TerrainEdges.WAVE_PAUSES (0.2-5.5 s, a tile source each) so the shore never comes in and goes out
+in step. A dark line (60 %, as strong as the buildings' outlines) runs where two terrains meet
 (TerrainEdges._lines, following the rounded corners' arcs; never round every tile: the owner's
-pick). Mud, ice and rock carry fewer, softer marks than the sheet (the owner: too prominent).
+pick); where four different terrains meet there's no rounding (it made a dark star). Mud, ice and
+rock carry fewer, softer marks than the sheet (the owner: too prominent); grass gets tufts on
+45 % of the cells inside 3 x 3 grass.
+Where two land tiles touch only at a corner (water in the other two: drawn joined up), the ranger
+can walk across: IslandGround (every island's Ground) cuts the two water tiles' collision back at
+that corner and Terrain.walkable lets the ranger stand there (TerrainEdges tells it where).
+The owner's option A, so the new building and tree art sits in the world: soft shadows
+(`Shadow`) under buildings on land (not decks, markers or things on the water), trees, the
+ranger, people and animals on land (not while swimming or flying); near-black outlines on animals
+(tools/outline_sprites.py: darker for assets/animals) and on the avatar's parts (LINE 40).
+Layers (z_index, back to front): the water's colours -6, the sea speckle -5, ground and ground art
+-4, waves and things in the water (kelp beds, reef patches, dark areas, the wreck) -3, swimming
+animals -2 (Animal.SWIMMING_Z, checked a few times a second), decks, jetties and markings on land
+-1, everything else 0 (y-sorted): animals swim under decks and the drawbridge (the owner).
 
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area

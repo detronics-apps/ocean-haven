@@ -2,40 +2,40 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="0" y="4" width="4" height="2" fill="#351d16"/>
-  <rect x="3" y="3" width="10" height="5" fill="#3e241a"/>
-  <rect x="4" y="4" width="8" height="3" fill="#44281c"/>
-  <rect x="12" y="3" width="5" height="5" fill="#5d5048"/>
-  <rect x="14" y="4" width="1" height="1" fill="#1b1923"/>
-  <rect x="14" y="6" width="1" height="1" fill="#1b1923"/>
-  <rect x="17" y="5" width="2" height="1" fill="#28191a"/>
+  <rect x="0" y="4" width="4" height="2" fill="#1a0e10"/>
+  <rect x="3" y="3" width="10" height="5" fill="#1e1112"/>
+  <rect x="4" y="4" width="8" height="3" fill="#211313"/>
+  <rect x="12" y="3" width="5" height="5" fill="#2c2728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#0d0c16"/>
+  <rect x="14" y="6" width="1" height="1" fill="#0d0c16"/>
+  <rect x="17" y="5" width="2" height="1" fill="#130c12"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="0" y="4" width="4" height="2" fill="#351d16"/>
-  <rect x="3" y="3" width="10" height="5" fill="#3e241a"/>
-  <rect x="4" y="4" width="8" height="3" fill="#44281c"/>
-  <rect x="12" y="3" width="5" height="5" fill="#5d5048"/>
-  <rect x="14" y="4" width="1" height="1" fill="#1b1923"/>
-  <rect x="14" y="6" width="1" height="1" fill="#1b1923"/>
-  <rect x="17" y="5" width="2" height="1" fill="#28191a"/>
+  <rect x="0" y="4" width="4" height="2" fill="#1a0e10"/>
+  <rect x="3" y="3" width="10" height="5" fill="#1e1112"/>
+  <rect x="4" y="4" width="8" height="3" fill="#211313"/>
+  <rect x="12" y="3" width="5" height="5" fill="#2c2728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#0d0c16"/>
+  <rect x="14" y="6" width="1" height="1" fill="#0d0c16"/>
+  <rect x="17" y="5" width="2" height="1" fill="#130c12"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="0" y="4" width="4" height="2" fill="#351d16"/>
-  <rect x="3" y="3" width="10" height="5" fill="#3e241a"/>
-  <rect x="4" y="4" width="8" height="3" fill="#44281c"/>
-  <rect x="12" y="3" width="5" height="5" fill="#5d5048"/>
-  <rect x="14" y="4" width="1" height="1" fill="#1b1923"/>
-  <rect x="14" y="6" width="1" height="1" fill="#1b1923"/>
-  <rect x="17" y="5" width="2" height="1" fill="#28191a"/>
+  <rect x="0" y="4" width="4" height="2" fill="#1a0e10"/>
+  <rect x="3" y="3" width="10" height="5" fill="#1e1112"/>
+  <rect x="4" y="4" width="8" height="3" fill="#211313"/>
+  <rect x="12" y="3" width="5" height="5" fill="#2c2728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#0d0c16"/>
+  <rect x="14" y="6" width="1" height="1" fill="#0d0c16"/>
+  <rect x="17" y="5" width="2" height="1" fill="#130c12"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="0" y="4" width="4" height="2" fill="#351d16"/>
-  <rect x="3" y="3" width="10" height="5" fill="#3e241a"/>
-  <rect x="4" y="4" width="8" height="3" fill="#44281c"/>
-  <rect x="12" y="3" width="5" height="5" fill="#5d5048"/>
-  <rect x="14" y="4" width="1" height="1" fill="#1b1923"/>
-  <rect x="14" y="6" width="1" height="1" fill="#1b1923"/>
-  <rect x="17" y="5" width="2" height="1" fill="#28191a"/>
+  <rect x="0" y="4" width="4" height="2" fill="#1a0e10"/>
+  <rect x="3" y="3" width="10" height="5" fill="#1e1112"/>
+  <rect x="4" y="4" width="8" height="3" fill="#211313"/>
+  <rect x="12" y="3" width="5" height="5" fill="#2c2728"/>
+  <rect x="14" y="4" width="1" height="1" fill="#0d0c16"/>
+  <rect x="14" y="6" width="1" height="1" fill="#0d0c16"/>
+  <rect x="17" y="5" width="2" height="1" fill="#130c12"/>
 </g></g>
   <g id="art" data-size="20 11" data-box="0 0 20 11">
   <!-- Young sea otter, belly-down: brown, paler head, short tail -->

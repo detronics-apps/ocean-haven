@@ -2,44 +2,44 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
-  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
-  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
-  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
-  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+  <rect x="0" y="2" width="3" height="2" fill="#30281a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#332b1d"/>
+  <rect x="4" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="7" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="10" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="11" y="2" width="5" height="2" fill="#312c20"/>
+  <rect x="12" y="1" width="1" height="1" fill="#38331b"/>
+  <rect x="12" y="1" width="1" height="1" fill="#101012"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
-  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
-  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
-  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
-  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+  <rect x="0" y="2" width="3" height="2" fill="#30281a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#332b1d"/>
+  <rect x="4" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="7" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="10" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="11" y="2" width="5" height="2" fill="#312c20"/>
+  <rect x="12" y="1" width="1" height="1" fill="#38331b"/>
+  <rect x="12" y="1" width="1" height="1" fill="#101012"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
-  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
-  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
-  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
-  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+  <rect x="0" y="2" width="3" height="2" fill="#30281a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#332b1d"/>
+  <rect x="4" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="7" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="10" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="11" y="2" width="5" height="2" fill="#312c20"/>
+  <rect x="12" y="1" width="1" height="1" fill="#38331b"/>
+  <rect x="12" y="1" width="1" height="1" fill="#101012"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="0" y="2" width="3" height="2" fill="#63542a"/>
-  <rect x="3" y="1" width="8" height="4" fill="#6a5b31"/>
-  <rect x="4" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="7" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="10" y="1" width="1" height="4" fill="#21211a"/>
-  <rect x="11" y="2" width="5" height="2" fill="#675c37"/>
-  <rect x="12" y="1" width="1" height="1" fill="#746a2e"/>
-  <rect x="12" y="1" width="1" height="1" fill="#21211a"/>
+  <rect x="0" y="2" width="3" height="2" fill="#30281a"/>
+  <rect x="3" y="1" width="8" height="4" fill="#332b1d"/>
+  <rect x="4" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="7" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="10" y="1" width="1" height="4" fill="#101012"/>
+  <rect x="11" y="2" width="5" height="2" fill="#312c20"/>
+  <rect x="12" y="1" width="1" height="1" fill="#38331b"/>
+  <rect x="12" y="1" width="1" height="1" fill="#101012"/>
 </g></g>
   <g id="art" data-size="16 6" data-box="0 0 16 6">
   <!-- American crocodile hatchling: yellow-tan with black bands, narrow snout -->

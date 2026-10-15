@@ -2,48 +2,48 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#2d364a"/>
-  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#4c5368"/>
-  <polygon points="38,22 42,14 46,22" fill="#262f44"/>
-  <polygon points="20,37 26,37 24,44" fill="#262f44"/><polygon points="40,36 44,36 44,41" fill="#262f44"/>
-  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#256d41"/>
-  <rect x="12" y="26" width="2" height="2" fill="#0b281d"/><rect x="11" y="25" width="1" height="1" fill="#7a717b"/>
-  <g fill="#20273c"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
-  <rect x="7" y="31" width="6" height="1" fill="#20273c"/>
-  <g fill="#343c51"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
+  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#161a29"/>
+  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#242837"/>
+  <polygon points="38,22 42,14 46,22" fill="#121726"/>
+  <polygon points="20,37 26,37 24,44" fill="#121726"/><polygon points="40,36 44,36 44,41" fill="#121726"/>
+  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#123424"/>
+  <rect x="12" y="26" width="2" height="2" fill="#051313"/><rect x="11" y="25" width="1" height="1" fill="#3b3640"/>
+  <g fill="#0f1322"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
+  <rect x="7" y="31" width="6" height="1" fill="#0f1322"/>
+  <g fill="#191d2c"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
 </g><g transform="translate(1 0)">
   
-  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#2d364a"/>
-  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#4c5368"/>
-  <polygon points="38,22 42,14 46,22" fill="#262f44"/>
-  <polygon points="20,37 26,37 24,44" fill="#262f44"/><polygon points="40,36 44,36 44,41" fill="#262f44"/>
-  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#256d41"/>
-  <rect x="12" y="26" width="2" height="2" fill="#0b281d"/><rect x="11" y="25" width="1" height="1" fill="#7a717b"/>
-  <g fill="#20273c"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
-  <rect x="7" y="31" width="6" height="1" fill="#20273c"/>
-  <g fill="#343c51"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
+  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#161a29"/>
+  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#242837"/>
+  <polygon points="38,22 42,14 46,22" fill="#121726"/>
+  <polygon points="20,37 26,37 24,44" fill="#121726"/><polygon points="40,36 44,36 44,41" fill="#121726"/>
+  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#123424"/>
+  <rect x="12" y="26" width="2" height="2" fill="#051313"/><rect x="11" y="25" width="1" height="1" fill="#3b3640"/>
+  <g fill="#0f1322"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
+  <rect x="7" y="31" width="6" height="1" fill="#0f1322"/>
+  <g fill="#191d2c"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
 </g><g transform="translate(0 -1)">
   
-  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#2d364a"/>
-  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#4c5368"/>
-  <polygon points="38,22 42,14 46,22" fill="#262f44"/>
-  <polygon points="20,37 26,37 24,44" fill="#262f44"/><polygon points="40,36 44,36 44,41" fill="#262f44"/>
-  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#256d41"/>
-  <rect x="12" y="26" width="2" height="2" fill="#0b281d"/><rect x="11" y="25" width="1" height="1" fill="#7a717b"/>
-  <g fill="#20273c"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
-  <rect x="7" y="31" width="6" height="1" fill="#20273c"/>
-  <g fill="#343c51"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
+  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#161a29"/>
+  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#242837"/>
+  <polygon points="38,22 42,14 46,22" fill="#121726"/>
+  <polygon points="20,37 26,37 24,44" fill="#121726"/><polygon points="40,36 44,36 44,41" fill="#121726"/>
+  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#123424"/>
+  <rect x="12" y="26" width="2" height="2" fill="#051313"/><rect x="11" y="25" width="1" height="1" fill="#3b3640"/>
+  <g fill="#0f1322"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
+  <rect x="7" y="31" width="6" height="1" fill="#0f1322"/>
+  <g fill="#191d2c"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
 </g><g transform="translate(0 1)">
   
-  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#2d364a"/>
-  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#4c5368"/>
-  <polygon points="38,22 42,14 46,22" fill="#262f44"/>
-  <polygon points="20,37 26,37 24,44" fill="#262f44"/><polygon points="40,36 44,36 44,41" fill="#262f44"/>
-  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#256d41"/>
-  <rect x="12" y="26" width="2" height="2" fill="#0b281d"/><rect x="11" y="25" width="1" height="1" fill="#7a717b"/>
-  <g fill="#20273c"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
-  <rect x="7" y="31" width="6" height="1" fill="#20273c"/>
-  <g fill="#343c51"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
+  <polygon points="6,30 14,22 44,22 52,26 60,18 62,20 58,30 62,40 58,42 52,34 44,38 14,38" fill="#161a29"/>
+  <polygon points="10,32 14,36 44,36 50,33 14,33" fill="#242837"/>
+  <polygon points="38,22 42,14 46,22" fill="#121726"/>
+  <polygon points="20,37 26,37 24,44" fill="#121726"/><polygon points="40,36 44,36 44,41" fill="#121726"/>
+  <ellipse cx="13" cy="27" rx="3.5" ry="3" fill="#123424"/>
+  <rect x="12" y="26" width="2" height="2" fill="#051313"/><rect x="11" y="25" width="1" height="1" fill="#3b3640"/>
+  <g fill="#0f1322"><rect x="19" y="26" width="1" height="7"/><rect x="21" y="26" width="1" height="7"/><rect x="23" y="26" width="1" height="7"/><rect x="25" y="26" width="1" height="7"/><rect x="27" y="26" width="1" height="7"/><rect x="29" y="26" width="1" height="7"/></g>
+  <rect x="7" y="31" width="6" height="1" fill="#0f1322"/>
+  <g fill="#191d2c"><rect x="32" y="25" width="2" height="1"/><rect x="36" y="27" width="2" height="1"/><rect x="40" y="25" width="1" height="1"/></g>
 </g></g>
   <g id="art" data-size="64 64" data-box="0 0 64 64">
   <!-- placeholder: a newborn bluntnose sixgill shark side on, facing left: broad blunt head, big glowing green eyes, six gill slits, one back fin set far back, a long upper tail, pale belly -->

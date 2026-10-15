@@ -2,44 +2,44 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="0" y="9" width="9" height="1" fill="#6d2b40"/>
-  <rect x="9" y="7" width="10" height="5" fill="#75233b"/>
-  <rect x="10" y="1" width="8" height="6" fill="#7a334a"/><rect x="10" y="0" width="4" height="2" fill="#211e29"/>
-  <rect x="11" y="12" width="7" height="3" fill="#7a334a"/><rect x="11" y="15" width="3" height="2" fill="#211e29"/>
-  <rect x="19" y="8" width="10" height="2" fill="#75233b"/>
-  <rect x="29" y="7" width="4" height="3" fill="#75233b"/>
-  <rect x="31" y="7" width="1" height="1" fill="#1c1719"/>
-  <rect x="33" y="8" width="2" height="2" fill="#746b6c"/><rect x="34" y="10" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="9" width="9" height="1" fill="#341524"/>
+  <rect x="9" y="7" width="10" height="5" fill="#381122"/>
+  <rect x="10" y="1" width="8" height="6" fill="#3b1829"/><rect x="10" y="0" width="4" height="2" fill="#100f19"/>
+  <rect x="11" y="12" width="7" height="3" fill="#3b1829"/><rect x="11" y="15" width="3" height="2" fill="#100f19"/>
+  <rect x="19" y="8" width="10" height="2" fill="#381122"/>
+  <rect x="29" y="7" width="4" height="3" fill="#381122"/>
+  <rect x="31" y="7" width="1" height="1" fill="#0e0b12"/>
+  <rect x="33" y="8" width="2" height="2" fill="#383339"/><rect x="34" y="10" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="0" y="9" width="9" height="1" fill="#6d2b40"/>
-  <rect x="9" y="7" width="10" height="5" fill="#75233b"/>
-  <rect x="10" y="1" width="8" height="6" fill="#7a334a"/><rect x="10" y="0" width="4" height="2" fill="#211e29"/>
-  <rect x="11" y="12" width="7" height="3" fill="#7a334a"/><rect x="11" y="15" width="3" height="2" fill="#211e29"/>
-  <rect x="19" y="8" width="10" height="2" fill="#75233b"/>
-  <rect x="29" y="7" width="4" height="3" fill="#75233b"/>
-  <rect x="31" y="7" width="1" height="1" fill="#1c1719"/>
-  <rect x="33" y="8" width="2" height="2" fill="#746b6c"/><rect x="34" y="10" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="9" width="9" height="1" fill="#341524"/>
+  <rect x="9" y="7" width="10" height="5" fill="#381122"/>
+  <rect x="10" y="1" width="8" height="6" fill="#3b1829"/><rect x="10" y="0" width="4" height="2" fill="#100f19"/>
+  <rect x="11" y="12" width="7" height="3" fill="#3b1829"/><rect x="11" y="15" width="3" height="2" fill="#100f19"/>
+  <rect x="19" y="8" width="10" height="2" fill="#381122"/>
+  <rect x="29" y="7" width="4" height="3" fill="#381122"/>
+  <rect x="31" y="7" width="1" height="1" fill="#0e0b12"/>
+  <rect x="33" y="8" width="2" height="2" fill="#383339"/><rect x="34" y="10" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="0" y="9" width="9" height="1" fill="#6d2b40"/>
-  <rect x="9" y="7" width="10" height="5" fill="#75233b"/>
-  <rect x="10" y="1" width="8" height="6" fill="#7a334a"/><rect x="10" y="0" width="4" height="2" fill="#211e29"/>
-  <rect x="11" y="12" width="7" height="3" fill="#7a334a"/><rect x="11" y="15" width="3" height="2" fill="#211e29"/>
-  <rect x="19" y="8" width="10" height="2" fill="#75233b"/>
-  <rect x="29" y="7" width="4" height="3" fill="#75233b"/>
-  <rect x="31" y="7" width="1" height="1" fill="#1c1719"/>
-  <rect x="33" y="8" width="2" height="2" fill="#746b6c"/><rect x="34" y="10" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="9" width="9" height="1" fill="#341524"/>
+  <rect x="9" y="7" width="10" height="5" fill="#381122"/>
+  <rect x="10" y="1" width="8" height="6" fill="#3b1829"/><rect x="10" y="0" width="4" height="2" fill="#100f19"/>
+  <rect x="11" y="12" width="7" height="3" fill="#3b1829"/><rect x="11" y="15" width="3" height="2" fill="#100f19"/>
+  <rect x="19" y="8" width="10" height="2" fill="#381122"/>
+  <rect x="29" y="7" width="4" height="3" fill="#381122"/>
+  <rect x="31" y="7" width="1" height="1" fill="#0e0b12"/>
+  <rect x="33" y="8" width="2" height="2" fill="#383339"/><rect x="34" y="10" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="0" y="9" width="9" height="1" fill="#6d2b40"/>
-  <rect x="9" y="7" width="10" height="5" fill="#75233b"/>
-  <rect x="10" y="1" width="8" height="6" fill="#7a334a"/><rect x="10" y="0" width="4" height="2" fill="#211e29"/>
-  <rect x="11" y="12" width="7" height="3" fill="#7a334a"/><rect x="11" y="15" width="3" height="2" fill="#211e29"/>
-  <rect x="19" y="8" width="10" height="2" fill="#75233b"/>
-  <rect x="29" y="7" width="4" height="3" fill="#75233b"/>
-  <rect x="31" y="7" width="1" height="1" fill="#1c1719"/>
-  <rect x="33" y="8" width="2" height="2" fill="#746b6c"/><rect x="34" y="10" width="1" height="1" fill="#1c1719"/>
+  <rect x="0" y="9" width="9" height="1" fill="#341524"/>
+  <rect x="9" y="7" width="10" height="5" fill="#381122"/>
+  <rect x="10" y="1" width="8" height="6" fill="#3b1829"/><rect x="10" y="0" width="4" height="2" fill="#100f19"/>
+  <rect x="11" y="12" width="7" height="3" fill="#3b1829"/><rect x="11" y="15" width="3" height="2" fill="#100f19"/>
+  <rect x="19" y="8" width="10" height="2" fill="#381122"/>
+  <rect x="29" y="7" width="4" height="3" fill="#381122"/>
+  <rect x="31" y="7" width="1" height="1" fill="#0e0b12"/>
+  <rect x="33" y="8" width="2" height="2" fill="#383339"/><rect x="34" y="10" width="1" height="1" fill="#0e0b12"/>
 </g></g>
   <g id="art" data-size="36 18" data-box="0 0 36 18">
   <!-- Placeholder American flamingo flying (faces right): neck stretched forward, legs trailing behind, wings up with black flight feathers -->

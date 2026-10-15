@@ -2,36 +2,36 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <polygon points="0,8 4,4 4,12" fill="#491318"/>
-  <rect x="4" y="4" width="16" height="8" fill="#5a171a"/>
-  <rect x="6" y="5" width="12" height="2" fill="#632627"/>
-  <rect x="20" y="5" width="4" height="6" fill="#561619"/>
-  <rect x="21" y="6" width="2" height="2" fill="#74746c"/><rect x="22" y="7" width="1" height="1" fill="#16151f"/>
-  <g fill="#511518"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
+  <polygon points="0,8 4,4 4,12" fill="#230911"/>
+  <rect x="4" y="4" width="16" height="8" fill="#2b0b12"/>
+  <rect x="6" y="5" width="12" height="2" fill="#301218"/>
+  <rect x="20" y="5" width="4" height="6" fill="#290b11"/>
+  <rect x="21" y="6" width="2" height="2" fill="#383839"/><rect x="22" y="7" width="1" height="1" fill="#0b0a14"/>
+  <g fill="#270a11"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
 </g><g transform="translate(1 0)">
   
-  <polygon points="0,8 4,4 4,12" fill="#491318"/>
-  <rect x="4" y="4" width="16" height="8" fill="#5a171a"/>
-  <rect x="6" y="5" width="12" height="2" fill="#632627"/>
-  <rect x="20" y="5" width="4" height="6" fill="#561619"/>
-  <rect x="21" y="6" width="2" height="2" fill="#74746c"/><rect x="22" y="7" width="1" height="1" fill="#16151f"/>
-  <g fill="#511518"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
+  <polygon points="0,8 4,4 4,12" fill="#230911"/>
+  <rect x="4" y="4" width="16" height="8" fill="#2b0b12"/>
+  <rect x="6" y="5" width="12" height="2" fill="#301218"/>
+  <rect x="20" y="5" width="4" height="6" fill="#290b11"/>
+  <rect x="21" y="6" width="2" height="2" fill="#383839"/><rect x="22" y="7" width="1" height="1" fill="#0b0a14"/>
+  <g fill="#270a11"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
 </g><g transform="translate(0 -1)">
   
-  <polygon points="0,8 4,4 4,12" fill="#491318"/>
-  <rect x="4" y="4" width="16" height="8" fill="#5a171a"/>
-  <rect x="6" y="5" width="12" height="2" fill="#632627"/>
-  <rect x="20" y="5" width="4" height="6" fill="#561619"/>
-  <rect x="21" y="6" width="2" height="2" fill="#74746c"/><rect x="22" y="7" width="1" height="1" fill="#16151f"/>
-  <g fill="#511518"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
+  <polygon points="0,8 4,4 4,12" fill="#230911"/>
+  <rect x="4" y="4" width="16" height="8" fill="#2b0b12"/>
+  <rect x="6" y="5" width="12" height="2" fill="#301218"/>
+  <rect x="20" y="5" width="4" height="6" fill="#290b11"/>
+  <rect x="21" y="6" width="2" height="2" fill="#383839"/><rect x="22" y="7" width="1" height="1" fill="#0b0a14"/>
+  <g fill="#270a11"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
 </g><g transform="translate(0 1)">
   
-  <polygon points="0,8 4,4 4,12" fill="#491318"/>
-  <rect x="4" y="4" width="16" height="8" fill="#5a171a"/>
-  <rect x="6" y="5" width="12" height="2" fill="#632627"/>
-  <rect x="20" y="5" width="4" height="6" fill="#561619"/>
-  <rect x="21" y="6" width="2" height="2" fill="#74746c"/><rect x="22" y="7" width="1" height="1" fill="#16151f"/>
-  <g fill="#511518"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
+  <polygon points="0,8 4,4 4,12" fill="#230911"/>
+  <rect x="4" y="4" width="16" height="8" fill="#2b0b12"/>
+  <rect x="6" y="5" width="12" height="2" fill="#301218"/>
+  <rect x="20" y="5" width="4" height="6" fill="#290b11"/>
+  <rect x="21" y="6" width="2" height="2" fill="#383839"/><rect x="22" y="7" width="1" height="1" fill="#0b0a14"/>
+  <g fill="#270a11"><rect x="24" y="5" width="18" height="1"/><rect x="24" y="7" width="14" height="1"/><rect x="24" y="9" width="16" height="1"/><rect x="24" y="11" width="19" height="1"/><rect x="24" y="3" width="12" height="1"/><rect x="24" y="13" width="13" height="1"/></g>
 </g></g>
   <g id="art" data-size="44 16" data-box="0 0 44 16">
   <!-- placeholder: giant squid (mantle on the left, long arms trailing to the right, big eye) -->

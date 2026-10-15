@@ -20,9 +20,9 @@ var _speckle: Node2D
 
 
 func _ready() -> void:
-	z_index = -1  # just above every island's Ground (-2)
+	z_index = -3  # just above every island's Ground (-4), under swimming animals (-2)
 	_speckle = Node2D.new()
-	_speckle.z_index = -3  # (under the islands' ground)
+	_speckle.z_index = -5  # (under the islands' ground)
 	_speckle.z_as_relative = false
 	_speckle.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	_speckle.draw.connect(_draw_speckle)

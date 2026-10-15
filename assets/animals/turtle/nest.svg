@@ -2,32 +2,32 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#605341"/>
-  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#6a604e"/>
-  <rect x="8" y="7" width="3" height="3" fill="#77716c"/>
-  <rect x="12" y="6" width="3" height="3" fill="#77716c"/>
-  <rect x="15" y="8" width="2" height="2" fill="#746e64"/>
+  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#2e2825"/>
+  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#332e2b"/>
+  <rect x="8" y="7" width="3" height="3" fill="#393639"/>
+  <rect x="12" y="6" width="3" height="3" fill="#393639"/>
+  <rect x="15" y="8" width="2" height="2" fill="#373535"/>
 </g><g transform="translate(1 0)">
   
-  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#605341"/>
-  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#6a604e"/>
-  <rect x="8" y="7" width="3" height="3" fill="#77716c"/>
-  <rect x="12" y="6" width="3" height="3" fill="#77716c"/>
-  <rect x="15" y="8" width="2" height="2" fill="#746e64"/>
+  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#2e2825"/>
+  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#332e2b"/>
+  <rect x="8" y="7" width="3" height="3" fill="#393639"/>
+  <rect x="12" y="6" width="3" height="3" fill="#393639"/>
+  <rect x="15" y="8" width="2" height="2" fill="#373535"/>
 </g><g transform="translate(0 -1)">
   
-  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#605341"/>
-  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#6a604e"/>
-  <rect x="8" y="7" width="3" height="3" fill="#77716c"/>
-  <rect x="12" y="6" width="3" height="3" fill="#77716c"/>
-  <rect x="15" y="8" width="2" height="2" fill="#746e64"/>
+  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#2e2825"/>
+  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#332e2b"/>
+  <rect x="8" y="7" width="3" height="3" fill="#393639"/>
+  <rect x="12" y="6" width="3" height="3" fill="#393639"/>
+  <rect x="15" y="8" width="2" height="2" fill="#373535"/>
 </g><g transform="translate(0 1)">
   
-  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#605341"/>
-  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#6a604e"/>
-  <rect x="8" y="7" width="3" height="3" fill="#77716c"/>
-  <rect x="12" y="6" width="3" height="3" fill="#77716c"/>
-  <rect x="15" y="8" width="2" height="2" fill="#746e64"/>
+  <ellipse cx="12" cy="10" rx="11" ry="5" fill="#2e2825"/>
+  <ellipse cx="12" cy="9" rx="8" ry="3" fill="#332e2b"/>
+  <rect x="8" y="7" width="3" height="3" fill="#393639"/>
+  <rect x="12" y="6" width="3" height="3" fill="#393639"/>
+  <rect x="15" y="8" width="2" height="2" fill="#373535"/>
 </g></g>
   <g id="art" data-size="24 16" data-box="0 0 24 16">
   <!-- Placeholder turtle nest: sand mound with a few eggs showing -->

@@ -79,6 +79,9 @@ func _ready() -> void:
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
 	_show_tier()
+	# (a shadow under real buildings on land; none for decks, markers or things on the water)
+	if not data.deck and data.explains != 2 and not ("water" in data.terrain or "" in data.terrain):
+		Shadow.under(self, _sprite)
 	_damage_icon = Sprite2D.new()
 	_damage_icon.name = "DamageIcon"
 	_damage_icon.texture = DAMAGE_ICON
@@ -91,7 +94,7 @@ func _ready() -> void:
 		_show_fleet_level()
 		Fleet.upgraded.connect(_show_fleet_level.unbind(2))
 	if data.deck:
-		z_index = -1  # a floor: under the ranger, boats and animals (the ground is -2)
+		z_index = -1  # a floor: under the ranger and boats, over swimming animals (-2: the owner)
 	if data.spawns:
 		add_child(data.spawns.instantiate())
 	if data.makes and data.makes_per_morning > 0:

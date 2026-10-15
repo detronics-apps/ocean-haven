@@ -2,72 +2,72 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#361d15"/>
-  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#43261a"/>
-  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#4a2c20"/>
-  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#361d15"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#361d15"/>
-  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#361d15"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#361d15"/>
-  <circle cx="32" cy="22" r="14" fill="#43261a"/>
-  <circle cx="19" cy="12" r="4" fill="#361d15"/><circle cx="45" cy="12" r="4" fill="#361d15"/>
-  <circle cx="19" cy="12" r="2" fill="#291612"/><circle cx="45" cy="12" r="2" fill="#291612"/>
-  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#6a5b4e"/>
-  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#716358"/>
-  <circle cx="26" cy="22" r="2.5" fill="#1a1822"/><circle cx="38" cy="22" r="2.5" fill="#1a1822"/>
-  <rect x="25" y="21" width="1" height="1" fill="#7a717b"/><rect x="37" y="21" width="1" height="1" fill="#7a717b"/>
-  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#211415"/>
-  <rect x="31" y="30" width="2" height="2" fill="#361d15"/>
-  <g fill="#766f6b"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
+  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#201212"/>
+  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#241515"/>
+  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#1a0e0f"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#1a0e0f"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#1a0e0f"/>
+  <circle cx="32" cy="22" r="14" fill="#201212"/>
+  <circle cx="19" cy="12" r="4" fill="#1a0e0f"/><circle cx="45" cy="12" r="4" fill="#1a0e0f"/>
+  <circle cx="19" cy="12" r="2" fill="#140b0e"/><circle cx="45" cy="12" r="2" fill="#140b0e"/>
+  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#332b2b"/>
+  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#363030"/>
+  <circle cx="26" cy="22" r="2.5" fill="#0d0c16"/><circle cx="38" cy="22" r="2.5" fill="#0d0c16"/>
+  <rect x="25" y="21" width="1" height="1" fill="#3b3640"/><rect x="37" y="21" width="1" height="1" fill="#3b3640"/>
+  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#100a0f"/>
+  <rect x="31" y="30" width="2" height="2" fill="#1a0e0f"/>
+  <g fill="#383539"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
 </g><g transform="translate(1 0)">
   
-  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#361d15"/>
-  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#43261a"/>
-  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#4a2c20"/>
-  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#361d15"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#361d15"/>
-  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#361d15"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#361d15"/>
-  <circle cx="32" cy="22" r="14" fill="#43261a"/>
-  <circle cx="19" cy="12" r="4" fill="#361d15"/><circle cx="45" cy="12" r="4" fill="#361d15"/>
-  <circle cx="19" cy="12" r="2" fill="#291612"/><circle cx="45" cy="12" r="2" fill="#291612"/>
-  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#6a5b4e"/>
-  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#716358"/>
-  <circle cx="26" cy="22" r="2.5" fill="#1a1822"/><circle cx="38" cy="22" r="2.5" fill="#1a1822"/>
-  <rect x="25" y="21" width="1" height="1" fill="#7a717b"/><rect x="37" y="21" width="1" height="1" fill="#7a717b"/>
-  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#211415"/>
-  <rect x="31" y="30" width="2" height="2" fill="#361d15"/>
-  <g fill="#766f6b"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
+  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#201212"/>
+  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#241515"/>
+  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#1a0e0f"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#1a0e0f"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#1a0e0f"/>
+  <circle cx="32" cy="22" r="14" fill="#201212"/>
+  <circle cx="19" cy="12" r="4" fill="#1a0e0f"/><circle cx="45" cy="12" r="4" fill="#1a0e0f"/>
+  <circle cx="19" cy="12" r="2" fill="#140b0e"/><circle cx="45" cy="12" r="2" fill="#140b0e"/>
+  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#332b2b"/>
+  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#363030"/>
+  <circle cx="26" cy="22" r="2.5" fill="#0d0c16"/><circle cx="38" cy="22" r="2.5" fill="#0d0c16"/>
+  <rect x="25" y="21" width="1" height="1" fill="#3b3640"/><rect x="37" y="21" width="1" height="1" fill="#3b3640"/>
+  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#100a0f"/>
+  <rect x="31" y="30" width="2" height="2" fill="#1a0e0f"/>
+  <g fill="#383539"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
 </g><g transform="translate(0 -1)">
   
-  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#361d15"/>
-  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#43261a"/>
-  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#4a2c20"/>
-  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#361d15"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#361d15"/>
-  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#361d15"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#361d15"/>
-  <circle cx="32" cy="22" r="14" fill="#43261a"/>
-  <circle cx="19" cy="12" r="4" fill="#361d15"/><circle cx="45" cy="12" r="4" fill="#361d15"/>
-  <circle cx="19" cy="12" r="2" fill="#291612"/><circle cx="45" cy="12" r="2" fill="#291612"/>
-  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#6a5b4e"/>
-  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#716358"/>
-  <circle cx="26" cy="22" r="2.5" fill="#1a1822"/><circle cx="38" cy="22" r="2.5" fill="#1a1822"/>
-  <rect x="25" y="21" width="1" height="1" fill="#7a717b"/><rect x="37" y="21" width="1" height="1" fill="#7a717b"/>
-  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#211415"/>
-  <rect x="31" y="30" width="2" height="2" fill="#361d15"/>
-  <g fill="#766f6b"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
+  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#201212"/>
+  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#241515"/>
+  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#1a0e0f"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#1a0e0f"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#1a0e0f"/>
+  <circle cx="32" cy="22" r="14" fill="#201212"/>
+  <circle cx="19" cy="12" r="4" fill="#1a0e0f"/><circle cx="45" cy="12" r="4" fill="#1a0e0f"/>
+  <circle cx="19" cy="12" r="2" fill="#140b0e"/><circle cx="45" cy="12" r="2" fill="#140b0e"/>
+  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#332b2b"/>
+  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#363030"/>
+  <circle cx="26" cy="22" r="2.5" fill="#0d0c16"/><circle cx="38" cy="22" r="2.5" fill="#0d0c16"/>
+  <rect x="25" y="21" width="1" height="1" fill="#3b3640"/><rect x="37" y="21" width="1" height="1" fill="#3b3640"/>
+  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#100a0f"/>
+  <rect x="31" y="30" width="2" height="2" fill="#1a0e0f"/>
+  <g fill="#383539"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
 </g><g transform="translate(0 1)">
   
-  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#361d15"/>
-  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#43261a"/>
-  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#4a2c20"/>
-  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#361d15"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#361d15"/>
-  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#361d15"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#361d15"/>
-  <circle cx="32" cy="22" r="14" fill="#43261a"/>
-  <circle cx="19" cy="12" r="4" fill="#361d15"/><circle cx="45" cy="12" r="4" fill="#361d15"/>
-  <circle cx="19" cy="12" r="2" fill="#291612"/><circle cx="45" cy="12" r="2" fill="#291612"/>
-  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#6a5b4e"/>
-  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#716358"/>
-  <circle cx="26" cy="22" r="2.5" fill="#1a1822"/><circle cx="38" cy="22" r="2.5" fill="#1a1822"/>
-  <rect x="25" y="21" width="1" height="1" fill="#7a717b"/><rect x="37" y="21" width="1" height="1" fill="#7a717b"/>
-  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#211415"/>
-  <rect x="31" y="30" width="2" height="2" fill="#361d15"/>
-  <g fill="#766f6b"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
+  <ellipse cx="50" cy="56" rx="10" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="32" cy="44" rx="17" ry="16" fill="#201212"/>
+  <ellipse cx="32" cy="48" rx="11" ry="10" fill="#241515"/>
+  <ellipse cx="22" cy="58" rx="6" ry="4" fill="#1a0e0f"/><ellipse cx="42" cy="58" rx="6" ry="4" fill="#1a0e0f"/>
+  <ellipse cx="25" cy="42" rx="4" ry="5" fill="#1a0e0f"/><ellipse cx="39" cy="42" rx="4" ry="5" fill="#1a0e0f"/>
+  <circle cx="32" cy="22" r="14" fill="#201212"/>
+  <circle cx="19" cy="12" r="4" fill="#1a0e0f"/><circle cx="45" cy="12" r="4" fill="#1a0e0f"/>
+  <circle cx="19" cy="12" r="2" fill="#140b0e"/><circle cx="45" cy="12" r="2" fill="#140b0e"/>
+  <ellipse cx="32" cy="25" rx="11" ry="9" fill="#332b2b"/>
+  <ellipse cx="32" cy="18" rx="7" ry="4" fill="#363030"/>
+  <circle cx="26" cy="22" r="2.5" fill="#0d0c16"/><circle cx="38" cy="22" r="2.5" fill="#0d0c16"/>
+  <rect x="25" y="21" width="1" height="1" fill="#3b3640"/><rect x="37" y="21" width="1" height="1" fill="#3b3640"/>
+  <ellipse cx="32" cy="28" rx="3" ry="2" fill="#100a0f"/>
+  <rect x="31" y="30" width="2" height="2" fill="#1a0e0f"/>
+  <g fill="#383539"><rect x="16" y="29" width="8" height="1"/><rect x="16" y="32" width="8" height="1"/><rect x="40" y="29" width="8" height="1"/><rect x="40" y="32" width="8" height="1"/></g>
 </g></g>
   <g id="art" data-size="64 64" data-box="0 0 64 64">
   <!-- placeholder: a fluffy sea otter pup from the front, sitting: round brown body, pale grizzled face, small round ears, whiskers, little paws, a flat tail -->

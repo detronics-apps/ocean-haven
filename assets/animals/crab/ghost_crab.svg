@@ -2,60 +2,60 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <g fill="#59402a">
+  <g fill="#2b1f1a">
     <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
     <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
   </g>
-  <rect x="3" y="5" width="12" height="7" fill="#644b30"/>
-  <rect x="4" y="6" width="10" height="5" fill="#6d5941"/>
-  <rect x="2" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="13" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="6" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="11" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="6" y="2" width="1" height="1" fill="#1c1719"/>
-  <rect x="11" y="2" width="1" height="1" fill="#1c1719"/>
+  <rect x="3" y="5" width="12" height="7" fill="#30241c"/>
+  <rect x="4" y="6" width="10" height="5" fill="#342b24"/>
+  <rect x="2" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="13" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="6" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="11" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="6" y="2" width="1" height="1" fill="#0e0b12"/>
+  <rect x="11" y="2" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(1 0)">
   
-  <g fill="#59402a">
+  <g fill="#2b1f1a">
     <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
     <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
   </g>
-  <rect x="3" y="5" width="12" height="7" fill="#644b30"/>
-  <rect x="4" y="6" width="10" height="5" fill="#6d5941"/>
-  <rect x="2" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="13" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="6" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="11" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="6" y="2" width="1" height="1" fill="#1c1719"/>
-  <rect x="11" y="2" width="1" height="1" fill="#1c1719"/>
+  <rect x="3" y="5" width="12" height="7" fill="#30241c"/>
+  <rect x="4" y="6" width="10" height="5" fill="#342b24"/>
+  <rect x="2" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="13" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="6" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="11" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="6" y="2" width="1" height="1" fill="#0e0b12"/>
+  <rect x="11" y="2" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 -1)">
   
-  <g fill="#59402a">
+  <g fill="#2b1f1a">
     <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
     <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
   </g>
-  <rect x="3" y="5" width="12" height="7" fill="#644b30"/>
-  <rect x="4" y="6" width="10" height="5" fill="#6d5941"/>
-  <rect x="2" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="13" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="6" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="11" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="6" y="2" width="1" height="1" fill="#1c1719"/>
-  <rect x="11" y="2" width="1" height="1" fill="#1c1719"/>
+  <rect x="3" y="5" width="12" height="7" fill="#30241c"/>
+  <rect x="4" y="6" width="10" height="5" fill="#342b24"/>
+  <rect x="2" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="13" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="6" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="11" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="6" y="2" width="1" height="1" fill="#0e0b12"/>
+  <rect x="11" y="2" width="1" height="1" fill="#0e0b12"/>
 </g><g transform="translate(0 1)">
   
-  <g fill="#59402a">
+  <g fill="#2b1f1a">
     <rect x="1" y="6" width="2" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="1" y="10" width="2" height="1"/>
     <rect x="15" y="6" width="2" height="1"/><rect x="15" y="8" width="3" height="1"/><rect x="15" y="10" width="2" height="1"/>
   </g>
-  <rect x="3" y="5" width="12" height="7" fill="#644b30"/>
-  <rect x="4" y="6" width="10" height="5" fill="#6d5941"/>
-  <rect x="2" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="13" y="2" width="3" height="3" fill="#644b30"/>
-  <rect x="6" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="11" y="3" width="1" height="2" fill="#49331d"/>
-  <rect x="6" y="2" width="1" height="1" fill="#1c1719"/>
-  <rect x="11" y="2" width="1" height="1" fill="#1c1719"/>
+  <rect x="3" y="5" width="12" height="7" fill="#30241c"/>
+  <rect x="4" y="6" width="10" height="5" fill="#342b24"/>
+  <rect x="2" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="13" y="2" width="3" height="3" fill="#30241c"/>
+  <rect x="6" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="11" y="3" width="1" height="2" fill="#231913"/>
+  <rect x="6" y="2" width="1" height="1" fill="#0e0b12"/>
+  <rect x="11" y="2" width="1" height="1" fill="#0e0b12"/>
 </g></g>
   <g id="art" data-size="18 14" data-box="0 0 18 14">
   <!-- Placeholder ghost crab, top-down: sandy shell, claws, stalk eyes, legs -->

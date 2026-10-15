@@ -27,7 +27,7 @@ W, H = 32, 36
 FRONT, SIDE, STEP, BACK = range(4)
 VIEWS = (FRONT, SIDE, STEP, BACK)
 # Grey levels of a tinted part.
-LIGHT, BASE, SHADE, DEEP, LINE = 255, 222, 178, 140, 74
+LIGHT, BASE, SHADE, DEEP, LINE = 255, 222, 178, 140, 40  # (a near-black line, like the owner's buildings)
 
 
 def rows(spec):

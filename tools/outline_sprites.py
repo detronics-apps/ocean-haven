@@ -24,23 +24,24 @@ OFFSETS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 NAMED = {"white": "#ffffff", "black": "#000000"}
 
 
-def darker(hex_colour: str) -> str:
+def darker(hex_colour: str, deep: bool = False) -> str:
     h = NAMED.get(hex_colour.lower(), hex_colour).lstrip("#")
     if len(h) == 3:
         h = "".join(c * 2 for c in h)
     r, g, b = (int(h[i:i + 2], 16) / 255.0 for i in (0, 2, 4))
     hue, sat, val = colorsys.rgb_to_hsv(r, g, b)
-    # Darker and a touch cooler: outlines of pale things stay soft, never pure black.
-    r, g, b = colorsys.hsv_to_rgb(hue, min(1.0, sat * 1.15 + 0.08), val * 0.42 + 0.06)
+    # Darker and a touch cooler: outlines of pale things stay soft, never pure black. Animals'
+    # are near-black (deep), like the owner's building and tree art (the owner's option A).
+    r, g, b = colorsys.hsv_to_rgb(hue, min(1.0, sat * 1.15 + 0.08), val * (0.2 if deep else 0.42) + (0.03 if deep else 0.06))
     b = min(1.0, b + 0.04)
     return "#%02x%02x%02x" % (round(r * 255), round(g * 255), round(b * 255))
 
 
-def outline_copy(art: str) -> str:
+def outline_copy(art: str, deep: bool = False) -> str:
     art = re.sub(r"<!--.*?-->", "", art, flags=re.S)
     # No outline for half-see-through shapes (a self-closing tag with an opacity below 1).
     art = re.sub(r'<[a-z]+\b[^>]*(?:fill-)?opacity="0?\.\d+"[^>]*/>', "", art)
-    return re.sub(r'(fill|stroke)="(#[0-9a-fA-F]{3,6}|white|black)"', lambda m: f'{m.group(1)}="{darker(m.group(2))}"', art)
+    return re.sub(r'(fill|stroke)="(#[0-9a-fA-F]{3,6}|white|black)"', lambda m: f'{m.group(1)}="{darker(m.group(2), deep)}"', art)
 
 
 def process(path: str) -> bool:
@@ -67,7 +68,7 @@ def process(path: str) -> bool:
     new_box = f"{bx - px:g} {by - py:g} {bw + 2 * px:g} {bh + 2 * py:g}"
     new_tag = re.sub(r'viewBox="[^"]+"', f'viewBox="{new_box}"', new_tag) if 'viewBox="' in new_tag \
         else new_tag.replace("<svg", f'<svg viewBox="{new_box}"', 1)
-    line = outline_copy(art)
+    line = outline_copy(art, "animals" in os.path.normpath(path).split(os.sep))
     rings = "".join(f'<g transform="translate({dx * px:g} {dy * py:g})">{line}</g>' for dx, dy in OFFSETS)
     out = (f'{new_tag}\n  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->\n'
            f'  <g id="outline">{rings}</g>\n'

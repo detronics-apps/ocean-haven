@@ -39,7 +39,7 @@ var _pieces := {}
 ## The thin dark line between two terrains near each corner point (the owner's pick: lines
 ## between terrains, never round every tile): straight along the edges, round the rounded corners.
 var _lines := {}
-const LINE := Color(0, 0, 0, 0.28)
+const LINE := Color(0, 0, 0, 0.6)  # (as strong as the buildings' outlines: the owner's option A)
 ## Between two kinds of water there's no line and no rounding: the water's colours are one
 ## smooth picture under the ground art (WaterBlend: WATER_RES pixels a cell, drawn with linear
 ## filtering), so neighbouring waters fade into each other over a few pixels, round corners as
@@ -66,9 +66,12 @@ var _art: TileMapLayer
 ## icy island, waves rolling up the sand and spray on rocky shores (animated tiles).
 const DETAILS := preload("res://assets/tilesets/ground_details.png")
 const DETAIL_ROWS := {"grass": 0, "sand": 1, "mud": 2, "rock": 3, "ice": 4}
-const DETAIL_CHANCE := {"grass": 0.18, "sand": 0.12, "mud": 0.04, "rock": 0.15, "ice": 0.06}  # (mud: tracks now and then, the owner)
+const DETAIL_CHANCE := {"grass": 0.45, "sand": 0.12, "mud": 0.04, "rock": 0.15, "ice": 0.06}  # (mud: tracks now and then, the owner)
 const WAVES_ROW := 5
 const SPRAY_ROW := 6
+## The pause after each wave, one picked per spot (a tile source each), so waves don't come in
+## and go out in step all along the shore (the owner: random pauses before the next one breaks).
+const WAVE_PAUSES := [0.2, 0.9, 1.8, 2.8, 4.0, 5.5]
 const SNOWMAN := Vector2i(3, 4)
 const NO_CELL := Vector2i(-99999, -99999)
 ## Water above, below, left, right of a shore cell -> the turned version of its wave tile.
@@ -124,31 +127,35 @@ static func _detail_tiles() -> TileSet:
 		return _details_set
 	var tiles := TileSet.new()
 	tiles.tile_size = Vector2i(ART_SIZE, ART_SIZE)
-	var source := TileSetAtlasSource.new()
-	source.texture = DETAILS
-	source.texture_region_size = Vector2i(ART_SIZE, ART_SIZE)
-	tiles.add_source(source, 0)
-	for row in DETAIL_ROWS.size():
-		for v in 4:
-			var at := Vector2i(v, row)
+	for pause_index in WAVE_PAUSES.size():
+		var source := TileSetAtlasSource.new()
+		source.texture = DETAILS
+		source.texture_region_size = Vector2i(ART_SIZE, ART_SIZE)
+		tiles.add_source(source, pause_index)
+		if pause_index == 0:
+			for row in DETAIL_ROWS.size():
+				for v in 4:
+					var at := Vector2i(v, row)
+					source.create_tile(at)
+					source.get_tile_data(at, source.create_alternative_tile(at)).flip_h = true
+		for row in [WAVES_ROW, SPRAY_ROW]:
+			var at := Vector2i(0, row)
 			source.create_tile(at)
-			source.get_tile_data(at, source.create_alternative_tile(at)).flip_h = true
-	for row in [WAVES_ROW, SPRAY_ROW]:
-		var at := Vector2i(0, row)
-		source.create_tile(at)
-		# (8 frames: the waves run up and slide back; the spray rolls in, smashes and fizzes away)
-		source.set_tile_animation_columns(at, 8)
-		source.set_tile_animation_frames_count(at, 8)
-		source.set_tile_animation_mode(at, TileSetAtlasSource.TILE_ANIMATION_MODE_RANDOM_START_TIMES)
-		for f in 8:
-			source.set_tile_animation_frame_duration(at, f, 0.3 if row == WAVES_ROW else (0.12 if f in [2, 3] else 0.22))
-		var below := source.get_tile_data(at, source.create_alternative_tile(at))
-		below.flip_v = true
-		var left := source.get_tile_data(at, source.create_alternative_tile(at))
-		left.transpose = true
-		var right := source.get_tile_data(at, source.create_alternative_tile(at))
-		right.transpose = true
-		right.flip_h = true
+			# (8 frames: the waves run up and slide back; the spray rolls in, smashes and fizzes
+			# away; then the empty 9th for the pause)
+			source.set_tile_animation_columns(at, 9)
+			source.set_tile_animation_frames_count(at, 9)
+			source.set_tile_animation_mode(at, TileSetAtlasSource.TILE_ANIMATION_MODE_RANDOM_START_TIMES)
+			for f in 8:
+				source.set_tile_animation_frame_duration(at, f, 0.3 if row == WAVES_ROW else (0.12 if f in [2, 3] else 0.22))
+			source.set_tile_animation_frame_duration(at, 8, WAVE_PAUSES[pause_index])
+			var below := source.get_tile_data(at, source.create_alternative_tile(at))
+			below.flip_v = true
+			var left := source.get_tile_data(at, source.create_alternative_tile(at))
+			left.transpose = true
+			var right := source.get_tile_data(at, source.create_alternative_tile(at))
+			right.transpose = true
+			right.flip_h = true
 	_details_set = tiles
 	return tiles
 
@@ -160,7 +167,7 @@ func _decorate(cell: Vector2i) -> void:
 	if kind == "sand" or (kind == "rock" and pick % 2 == 0):
 		for side: Vector2i in SIDES:
 			if terrain_at(cell + side) in ["water", "", "sea"]:
-				_details.set_cell(cell, 0, Vector2i(0, WAVES_ROW if kind == "sand" else SPRAY_ROW), SIDES[side])
+				_details.set_cell(cell, (pick / 3) % WAVE_PAUSES.size(), Vector2i(0, WAVES_ROW if kind == "sand" else SPRAY_ROW), SIDES[side])
 				return
 	if cell == _snowman:
 		_details.set_cell(cell, 0, SNOWMAN)

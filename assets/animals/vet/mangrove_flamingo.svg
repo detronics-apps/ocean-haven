@@ -2,64 +2,64 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="26" y="48" width="3" height="12" fill="#644455"/><rect x="35" y="48" width="3" height="12" fill="#644455"/>
-  <rect x="23" y="59" width="8" height="3" fill="#5d3b4c"/><rect x="33" y="59" width="8" height="3" fill="#5d3b4c"/>
-  <rect x="26" y="52" width="3" height="2" fill="#5d3b4c"/><rect x="35" y="52" width="3" height="2" fill="#5d3b4c"/>
-  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#54586b"/>
-  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#5e6274"/>
-  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#494e60"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#494e60"/>
-  <rect x="29" y="22" width="6" height="8" fill="#54586b"/>
-  <circle cx="32" cy="17" r="10" fill="#585d6f"/>
-  <circle cx="26" cy="12" r="2" fill="#616576"/><circle cx="38" cy="11" r="2" fill="#616576"/><circle cx="32" cy="8" r="2" fill="#616576"/>
-  <circle cx="28" cy="15" r="2.5" fill="#1a1822"/><circle cx="36" cy="15" r="2.5" fill="#1a1822"/>
-  <rect x="27" y="14" width="1" height="1" fill="#7a717b"/><rect x="35" y="14" width="1" height="1" fill="#7a717b"/>
-  <polygon points="29,19 35,19 34,26 30,26" fill="#35313b"/>
-  <polygon points="30,24 34,24 33,27 31,27" fill="#211e29"/>
+  <rect x="26" y="48" width="3" height="12" fill="#30212e"/><rect x="35" y="48" width="3" height="12" fill="#30212e"/>
+  <rect x="23" y="59" width="8" height="3" fill="#2c1c2a"/><rect x="33" y="59" width="8" height="3" fill="#2c1c2a"/>
+  <rect x="26" y="52" width="3" height="2" fill="#2c1c2a"/><rect x="35" y="52" width="3" height="2" fill="#2c1c2a"/>
+  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#282a39"/>
+  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#2d2f3d"/>
+  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#232633"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#232633"/>
+  <rect x="29" y="22" width="6" height="8" fill="#282a39"/>
+  <circle cx="32" cy="17" r="10" fill="#2a2d3b"/>
+  <circle cx="26" cy="12" r="2" fill="#2e313e"/><circle cx="38" cy="11" r="2" fill="#2e313e"/><circle cx="32" cy="8" r="2" fill="#2e313e"/>
+  <circle cx="28" cy="15" r="2.5" fill="#0d0c16"/><circle cx="36" cy="15" r="2.5" fill="#0d0c16"/>
+  <rect x="27" y="14" width="1" height="1" fill="#3b3640"/><rect x="35" y="14" width="1" height="1" fill="#3b3640"/>
+  <polygon points="29,19 35,19 34,26 30,26" fill="#1a1822"/>
+  <polygon points="30,24 34,24 33,27 31,27" fill="#100f19"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="26" y="48" width="3" height="12" fill="#644455"/><rect x="35" y="48" width="3" height="12" fill="#644455"/>
-  <rect x="23" y="59" width="8" height="3" fill="#5d3b4c"/><rect x="33" y="59" width="8" height="3" fill="#5d3b4c"/>
-  <rect x="26" y="52" width="3" height="2" fill="#5d3b4c"/><rect x="35" y="52" width="3" height="2" fill="#5d3b4c"/>
-  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#54586b"/>
-  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#5e6274"/>
-  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#494e60"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#494e60"/>
-  <rect x="29" y="22" width="6" height="8" fill="#54586b"/>
-  <circle cx="32" cy="17" r="10" fill="#585d6f"/>
-  <circle cx="26" cy="12" r="2" fill="#616576"/><circle cx="38" cy="11" r="2" fill="#616576"/><circle cx="32" cy="8" r="2" fill="#616576"/>
-  <circle cx="28" cy="15" r="2.5" fill="#1a1822"/><circle cx="36" cy="15" r="2.5" fill="#1a1822"/>
-  <rect x="27" y="14" width="1" height="1" fill="#7a717b"/><rect x="35" y="14" width="1" height="1" fill="#7a717b"/>
-  <polygon points="29,19 35,19 34,26 30,26" fill="#35313b"/>
-  <polygon points="30,24 34,24 33,27 31,27" fill="#211e29"/>
+  <rect x="26" y="48" width="3" height="12" fill="#30212e"/><rect x="35" y="48" width="3" height="12" fill="#30212e"/>
+  <rect x="23" y="59" width="8" height="3" fill="#2c1c2a"/><rect x="33" y="59" width="8" height="3" fill="#2c1c2a"/>
+  <rect x="26" y="52" width="3" height="2" fill="#2c1c2a"/><rect x="35" y="52" width="3" height="2" fill="#2c1c2a"/>
+  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#282a39"/>
+  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#2d2f3d"/>
+  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#232633"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#232633"/>
+  <rect x="29" y="22" width="6" height="8" fill="#282a39"/>
+  <circle cx="32" cy="17" r="10" fill="#2a2d3b"/>
+  <circle cx="26" cy="12" r="2" fill="#2e313e"/><circle cx="38" cy="11" r="2" fill="#2e313e"/><circle cx="32" cy="8" r="2" fill="#2e313e"/>
+  <circle cx="28" cy="15" r="2.5" fill="#0d0c16"/><circle cx="36" cy="15" r="2.5" fill="#0d0c16"/>
+  <rect x="27" y="14" width="1" height="1" fill="#3b3640"/><rect x="35" y="14" width="1" height="1" fill="#3b3640"/>
+  <polygon points="29,19 35,19 34,26 30,26" fill="#1a1822"/>
+  <polygon points="30,24 34,24 33,27 31,27" fill="#100f19"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="26" y="48" width="3" height="12" fill="#644455"/><rect x="35" y="48" width="3" height="12" fill="#644455"/>
-  <rect x="23" y="59" width="8" height="3" fill="#5d3b4c"/><rect x="33" y="59" width="8" height="3" fill="#5d3b4c"/>
-  <rect x="26" y="52" width="3" height="2" fill="#5d3b4c"/><rect x="35" y="52" width="3" height="2" fill="#5d3b4c"/>
-  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#54586b"/>
-  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#5e6274"/>
-  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#494e60"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#494e60"/>
-  <rect x="29" y="22" width="6" height="8" fill="#54586b"/>
-  <circle cx="32" cy="17" r="10" fill="#585d6f"/>
-  <circle cx="26" cy="12" r="2" fill="#616576"/><circle cx="38" cy="11" r="2" fill="#616576"/><circle cx="32" cy="8" r="2" fill="#616576"/>
-  <circle cx="28" cy="15" r="2.5" fill="#1a1822"/><circle cx="36" cy="15" r="2.5" fill="#1a1822"/>
-  <rect x="27" y="14" width="1" height="1" fill="#7a717b"/><rect x="35" y="14" width="1" height="1" fill="#7a717b"/>
-  <polygon points="29,19 35,19 34,26 30,26" fill="#35313b"/>
-  <polygon points="30,24 34,24 33,27 31,27" fill="#211e29"/>
+  <rect x="26" y="48" width="3" height="12" fill="#30212e"/><rect x="35" y="48" width="3" height="12" fill="#30212e"/>
+  <rect x="23" y="59" width="8" height="3" fill="#2c1c2a"/><rect x="33" y="59" width="8" height="3" fill="#2c1c2a"/>
+  <rect x="26" y="52" width="3" height="2" fill="#2c1c2a"/><rect x="35" y="52" width="3" height="2" fill="#2c1c2a"/>
+  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#282a39"/>
+  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#2d2f3d"/>
+  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#232633"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#232633"/>
+  <rect x="29" y="22" width="6" height="8" fill="#282a39"/>
+  <circle cx="32" cy="17" r="10" fill="#2a2d3b"/>
+  <circle cx="26" cy="12" r="2" fill="#2e313e"/><circle cx="38" cy="11" r="2" fill="#2e313e"/><circle cx="32" cy="8" r="2" fill="#2e313e"/>
+  <circle cx="28" cy="15" r="2.5" fill="#0d0c16"/><circle cx="36" cy="15" r="2.5" fill="#0d0c16"/>
+  <rect x="27" y="14" width="1" height="1" fill="#3b3640"/><rect x="35" y="14" width="1" height="1" fill="#3b3640"/>
+  <polygon points="29,19 35,19 34,26 30,26" fill="#1a1822"/>
+  <polygon points="30,24 34,24 33,27 31,27" fill="#100f19"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="26" y="48" width="3" height="12" fill="#644455"/><rect x="35" y="48" width="3" height="12" fill="#644455"/>
-  <rect x="23" y="59" width="8" height="3" fill="#5d3b4c"/><rect x="33" y="59" width="8" height="3" fill="#5d3b4c"/>
-  <rect x="26" y="52" width="3" height="2" fill="#5d3b4c"/><rect x="35" y="52" width="3" height="2" fill="#5d3b4c"/>
-  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#54586b"/>
-  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#5e6274"/>
-  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#494e60"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#494e60"/>
-  <rect x="29" y="22" width="6" height="8" fill="#54586b"/>
-  <circle cx="32" cy="17" r="10" fill="#585d6f"/>
-  <circle cx="26" cy="12" r="2" fill="#616576"/><circle cx="38" cy="11" r="2" fill="#616576"/><circle cx="32" cy="8" r="2" fill="#616576"/>
-  <circle cx="28" cy="15" r="2.5" fill="#1a1822"/><circle cx="36" cy="15" r="2.5" fill="#1a1822"/>
-  <rect x="27" y="14" width="1" height="1" fill="#7a717b"/><rect x="35" y="14" width="1" height="1" fill="#7a717b"/>
-  <polygon points="29,19 35,19 34,26 30,26" fill="#35313b"/>
-  <polygon points="30,24 34,24 33,27 31,27" fill="#211e29"/>
+  <rect x="26" y="48" width="3" height="12" fill="#30212e"/><rect x="35" y="48" width="3" height="12" fill="#30212e"/>
+  <rect x="23" y="59" width="8" height="3" fill="#2c1c2a"/><rect x="33" y="59" width="8" height="3" fill="#2c1c2a"/>
+  <rect x="26" y="52" width="3" height="2" fill="#2c1c2a"/><rect x="35" y="52" width="3" height="2" fill="#2c1c2a"/>
+  <ellipse cx="32" cy="38" rx="16" ry="13" fill="#282a39"/>
+  <ellipse cx="32" cy="41" rx="11" ry="9" fill="#2d2f3d"/>
+  <ellipse cx="17" cy="38" rx="5" ry="8" fill="#232633"/><ellipse cx="47" cy="38" rx="5" ry="8" fill="#232633"/>
+  <rect x="29" y="22" width="6" height="8" fill="#282a39"/>
+  <circle cx="32" cy="17" r="10" fill="#2a2d3b"/>
+  <circle cx="26" cy="12" r="2" fill="#2e313e"/><circle cx="38" cy="11" r="2" fill="#2e313e"/><circle cx="32" cy="8" r="2" fill="#2e313e"/>
+  <circle cx="28" cy="15" r="2.5" fill="#0d0c16"/><circle cx="36" cy="15" r="2.5" fill="#0d0c16"/>
+  <rect x="27" y="14" width="1" height="1" fill="#3b3640"/><rect x="35" y="14" width="1" height="1" fill="#3b3640"/>
+  <polygon points="29,19 35,19 34,26 30,26" fill="#1a1822"/>
+  <polygon points="30,24 34,24 33,27 31,27" fill="#100f19"/>
 </g></g>
   <g id="art" data-size="64 64" data-box="0 0 64 64">
   <!-- placeholder: a fluffy grey flamingo chick from the front: round downy body, small wings, short straight dark beak (it curves later), long pinkish-grey legs -->

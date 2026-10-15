@@ -2,40 +2,40 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#171728"/>
-  <rect x="10" y="2" width="3" height="1" fill="#2e2e33"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#171728"/>
-  <rect x="0" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="1" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="11" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="12" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="7" y="12" width="1" height="3" fill="#28242f"/><rect x="10" y="12" width="1" height="3" fill="#28242f"/>
+  <rect x="7" y="1" width="3" height="3" fill="#0b0b19"/>
+  <rect x="10" y="2" width="3" height="1" fill="#16161e"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#0b0b19"/>
+  <rect x="0" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="1" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="11" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="12" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="7" y="12" width="1" height="3" fill="#13121c"/><rect x="10" y="12" width="1" height="3" fill="#13121c"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#171728"/>
-  <rect x="10" y="2" width="3" height="1" fill="#2e2e33"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#171728"/>
-  <rect x="0" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="1" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="11" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="12" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="7" y="12" width="1" height="3" fill="#28242f"/><rect x="10" y="12" width="1" height="3" fill="#28242f"/>
+  <rect x="7" y="1" width="3" height="3" fill="#0b0b19"/>
+  <rect x="10" y="2" width="3" height="1" fill="#16161e"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#0b0b19"/>
+  <rect x="0" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="1" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="11" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="12" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="7" y="12" width="1" height="3" fill="#13121c"/><rect x="10" y="12" width="1" height="3" fill="#13121c"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#171728"/>
-  <rect x="10" y="2" width="3" height="1" fill="#2e2e33"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#171728"/>
-  <rect x="0" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="1" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="11" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="12" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="7" y="12" width="1" height="3" fill="#28242f"/><rect x="10" y="12" width="1" height="3" fill="#28242f"/>
+  <rect x="7" y="1" width="3" height="3" fill="#0b0b19"/>
+  <rect x="10" y="2" width="3" height="1" fill="#16161e"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#0b0b19"/>
+  <rect x="0" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="1" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="11" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="12" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="7" y="12" width="1" height="3" fill="#13121c"/><rect x="10" y="12" width="1" height="3" fill="#13121c"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="7" y="1" width="3" height="3" fill="#171728"/>
-  <rect x="10" y="2" width="3" height="1" fill="#2e2e33"/>
-  <rect x="9" y="3" width="1" height="1" fill="#713c11"/>
-  <rect x="7" y="4" width="4" height="8" fill="#171728"/>
-  <rect x="0" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="1" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="11" y="4" width="7" height="3" fill="#1c1c2d"/><rect x="12" y="7" width="5" height="2" fill="#1c1c2d"/>
-  <rect x="7" y="12" width="1" height="3" fill="#28242f"/><rect x="10" y="12" width="1" height="3" fill="#28242f"/>
+  <rect x="7" y="1" width="3" height="3" fill="#0b0b19"/>
+  <rect x="10" y="2" width="3" height="1" fill="#16161e"/>
+  <rect x="9" y="3" width="1" height="1" fill="#361d0d"/>
+  <rect x="7" y="4" width="4" height="8" fill="#0b0b19"/>
+  <rect x="0" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="1" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="11" y="4" width="7" height="3" fill="#0e0e1b"/><rect x="12" y="7" width="5" height="2" fill="#0e0e1b"/>
+  <rect x="7" y="12" width="1" height="3" fill="#13121c"/><rect x="10" y="12" width="1" height="3" fill="#13121c"/>
 </g></g>
   <g id="art" data-size="18 16" data-box="0 0 18 16">
   <!-- Placeholder cormorant standing with its wings spread out to dry (side view, facing right). Feet at the bottom middle. -->

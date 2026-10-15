@@ -17,6 +17,9 @@ var _step := 0.0
 var walking := false
 
 
+func _ready() -> void:
+	Shadow.under(self, null, 22.0, Vector2(0, -2))  # (round the boots: lower, they seemed to float)
+
 ## Only ever on land or a deck: can't step off the end of a jetty into the sea.
 func _physics_process(delta: float) -> void:
 	var before := global_position

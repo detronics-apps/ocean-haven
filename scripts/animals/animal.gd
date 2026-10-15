@@ -47,6 +47,10 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 ## Hidden (not seen, nothing to do with it) until this People condition holds: the first turtle
 ## waits for "met:tom", so it's found after Tom tells the ranger the turtles are gone.
 @export var shows_after := ""
+## In the water an animal is drawn under decks and jetties (it swims underneath them: the owner).
+const SWIMMING_Z := -2
+var _layer_left := 0.0
+var _shadow: Shadow
 var _show_check := 0.0
 ## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
 @export var young := false
@@ -145,6 +149,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_sprite.texture = data.sprite
+	if not data.flies:
+		_shadow = Shadow.under(self, _sprite)
+		_shadow.share = 0.75
 	_tangle.visible = tangled
 	if tangle_item:
 		_tangle.texture = tangle_item.icon  # whatever it's caught in: line, net, bag...
@@ -403,6 +410,12 @@ func _breathe(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_layer_left -= delta
+	if _layer_left <= 0.0 and not data.flies:  # (a few times a second)
+		_layer_left = 0.25
+		z_index = SWIMMING_Z if Terrain.at(get_tree(), global_position) in ["water", ""] else 0
+		if _shadow:
+			_shadow.self_modulate.a = 1.0 if z_index == 0 else 0.0  # (no shadow while swimming)
 	if _due:
 		_check_birth(delta)
 	if _state == State.CRAWL or _state == State.LAY:

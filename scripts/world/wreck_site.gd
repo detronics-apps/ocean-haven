@@ -29,7 +29,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_sprite = Sprite2D.new()
 	_sprite.texture = WRECK_TEXTURE
-	_sprite.z_index = -1  # under the water's surface things
+	_sprite.z_index = -3  # under the water's surface things
 	add_child(_sprite)
 	for i in pieces.size():
 		var piece: Debris = DEBRIS_SCENE.instantiate()
