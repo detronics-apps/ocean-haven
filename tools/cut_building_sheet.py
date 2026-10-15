@@ -20,11 +20,15 @@ pictures, at the sizes they had in the game (the owner: their original sizes).
 The plants sheet (docs/plants_sheet.webp, tools/plant_sheet_targets.json: trees by stage, the
 willow, kelp, coral, seagrass) is cut the same way with `trees`: dark magenta shadows under the
 trees count as background (the game draws its own), pale fill is kept (the Pisonia's pale trunk),
-and rows go by the pictures' bottoms (trees of every height stand on one line).
+and rows go by the pictures' bottoms (trees of every height stand on one line). The trees (every
+picture in assets/environment/vegetation) are then flattened like the characters (flat_tones:
+2 flat tones per colour family, hard edges, one near-black outline: the owner liked them flat;
+the buildings stay as drawn).
 
 Re-run after a sheet changes:  python tools/cut_building_sheet.py      (buildings)
                                python tools/cut_building_sheet.py trees
 """
+import colorsys
 import json
 import os
 import sys
@@ -269,6 +273,63 @@ def fit(piece, target):
     return outline(out) if TREES else out
 
 
+def _hls(c):
+    return colorsys.rgb_to_hls(c[0] / 255, c[1] / 255, c[2] / 255)
+
+
+def _family(c):
+    """A pixel's colour family: a hue sector (dark or light half), or a band of grey."""
+    h, l, s = _hls(c)
+    if s < 0.1 or l < 0.1 or l > 0.95:
+        return ('grey', min(3, int(l * 4)))
+    return ('hue', int(((h * 360 + 15) % 360) // 30), 0 if l < 0.45 else 1)
+
+
+def flat_tones(im, tones=2):
+    """Flat like the characters: each colour family cut to `tones` flat tones (the lightest keeps
+    its shine), lone stray pixels taking their neighbours' colour, one near-black outline."""
+    im = im.convert('RGBA')
+    w, h = im.size
+    p = im.load()
+    groups = {}
+    for y in range(h):
+        for x in range(w):
+            if p[x, y][3] >= 128:
+                groups.setdefault(_family(p[x, y]), []).append(p[x, y][:3])
+    bands = {}
+    for key, cols in groups.items():
+        cols.sort(key=lambda c: _hls(c)[1])
+        n = len(cols)
+        bands[key] = []
+        for t in range(tones):
+            part = cols[t * n // tones:max(t * n // tones + 1, (t + 1) * n // tones)]
+            bands[key].append((_hls(part[-1])[1], part[int(len(part) * (0.75 if t == tones - 1 else 0.5))]))
+    out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    o = out.load()
+    for y in range(h):
+        for x in range(w):
+            if p[x, y][3] >= 128:
+                l = _hls(p[x, y])[1]
+                band = bands[_family(p[x, y])]
+                o[x, y] = next((c for top, c in band if l <= top), band[-1][1]) + (255,)
+    for y in range(1, h - 1):
+        for x in range(1, w - 1):
+            c = o[x, y]
+            ns = [o[x + 1, y], o[x - 1, y], o[x, y + 1], o[x, y - 1]]
+            if c[3] and all(n != c for n in ns) and all(n[3] for n in ns):
+                o[x, y] = max(set(ns), key=ns.count)
+    line = {}
+    for y in range(h):
+        for x in range(w):
+            if o[x, y][3] and any(not (0 <= x + dx < w and 0 <= y + dy < h) or not o[x + dx, y + dy][3]
+                                  for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                r, g, b, _ = o[x, y]
+                line[(x, y)] = (int(r * 0.22), int(g * 0.22), int(b * 0.22), 255)
+    for xy, c in line.items():
+        o[xy] = c
+    return out
+
+
 def outline(im):
     """A crisp 1-px dark line round the picture (the trees' own line is lost in the cut and the
     shrinking): a near-black shade of the colour it borders, as on the owner's sheet."""
@@ -299,6 +360,8 @@ if __name__ == '__main__':
         if target is None:  # (the ranger, for scale only)
             continue
         out = fit(cut(im, box, target.get('see_through', False)), target)
+        if TREES and '/vegetation/' in target['texture']:
+            out = flat_tones(out)
         path = os.path.join(ROOT, target['texture'].replace('res://', '').rsplit('.', 1)[0] + '.png')
         out.save(path)
         if 'front_from' in target:  # (a boat's near side, drawn over whoever sits in it)

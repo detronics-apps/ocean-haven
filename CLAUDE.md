@@ -721,6 +721,13 @@ Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta
 the box the old art filled (tools/building_sheet_targets.json: the owner, their original sizes).
 Everything outside each building's dark outline goes (specks, the pink fringe, grey fill between
 pillars), labels are dropped; the water gate (closed) and drawbridge (open) pictures aren't on it yet.
+Turtle protection areas: their label dropped (loose bits below a picture go) and the grey fill
+inside see-through (target "see_through"), so the sand shows. Docks and the drawbridge keep the
+game's own plank art (the sheet's were framed squares that didn't join into a jetty: targets null).
+The trees (`cut_building_sheet.py trees`, every picture in assets/environment/vegetation) are made
+flat like the characters (flat_tones: 2 flat tones per colour family, hard edges, one near-black
+outline: the owner liked them); the buildings stay as drawn (an automatic flattening made them
+look run down: the owner preferred the originals).
 Ground art (the owner's terrain sheet, docs/terrain_sheet.jpg): drawn by
 `tools/make_terrain_tiles.py` at 64x64 per tile (the sheet's lines are half a game pixel), 8
 versions of each ground with the sheet's colours, marks and contrast (measured against it), but
