@@ -6,13 +6,12 @@ than its base, and by how much), and VARIANTS versions made up differently (pick
 some mirrored) so there's no repeating pattern; every mark keeps inside its own tile, so any
 version sits beside any other without a seam.
 
-- shallow water: wave strokes, a light line with a darker one under it, a few dark dashes;
+- shallow and mid water: plain (the owner: the moving white waves already play over all water);
 - sand: grains, soft blotches, light specks, a band of grains, now and then pink shells;
 - grass: tufts of thin upright blades, dark and light, yellow and orange flowers (no white);
 - rock: long cracks with a light edge and a branch, pale flat patches, pebble clusters;
 - ice: long branching cracks, white with a pale blue shadow, or pale blue;
 - mud: pebbles (a pale highlight, a dark rim), rings where puddles were, pale specks;
-- mid water: long gentle waves, a light line with a mid-blue one under it, short dashes.
 
 Writes assets/tilesets/terrain_art.png (a row per ground, in the tileset's order: shallow, sand,
 grass, rock, ice, mud, mid water; a column per version) and assets/tilesets/terrain_tiles.png
@@ -40,7 +39,7 @@ def rgb(h):
 class Tile:
     def __init__(self, base, rnd, speckle):
         self.im = Image.new('RGB', (S, S), rgb(base))
-        for _ in range(S * S // 20):  # (a soft speckle all over, as on the sheet)
+        for _ in range(S * S // 20 if speckle else 0):  # (a soft speckle all over, as on the sheet)
             self.dot(rnd.randrange(S), rnd.randrange(S), rgb(rnd.choice(speckle)))
 
     def dot(self, x, y, colour):
@@ -81,25 +80,12 @@ def wave(t, rnd, x, y, length, light, dark, rise, under=(1, 2), tilt=0.0):
 
 
 def shallow(rnd, v):
-    t = Tile('#578990', rnd, ['#5d9096', '#51848b'])
-    for x, y in places(rnd, rnd.randint(4, 7), 14, 3):  # (the owner: fewer waves)
-        if rnd.random() < 0.6:
-            wave(t, rnd, x, y + 4, rnd.randint(9, 15), '#9fd0d2', '#3a7580', rnd.choice((0.8, 1.0, 1.4)), (1, 1),
-                 rnd.choice((0.0, 0.2, 0.3, -0.2)))
-        else:
-            n = rnd.randint(6, 11)
-            t.line([(x, y), (x + n // 2, y + rnd.choice((0, 1))), (x + n, y)], '#3a7580')
-    return t
+    """Plain: the moving white waves (SeaWaves) play over all the water (the owner)."""
+    return Tile('#578990', rnd, [])
 
 
 def mid_water(rnd, v):
-    t = Tile('#3c5f72', rnd, ['#42677b', '#37596b'])
-    for x, y in places(rnd, rnd.randint(4, 5), 30, 4):
-        wave(t, rnd, x, y, rnd.randint(22, 32), '#76a8bf', '#5a8aa2', 2.0, (1, 1))
-        wave(t, random.Random(x * 31 + y), x + 2, y + 2, rnd.randint(12, 20), '#5a8aa2', '#4f7d95', 1.5, (1, 1))
-    for x, y in places(rnd, rnd.randint(3, 5), 8, 1):
-        t.line([(x, y), (x + rnd.randint(4, 8), y)], rnd.choice(['#6a9cb3', '#5a879e']))
-    return t
+    return Tile('#3c5f72', rnd, [])
 
 
 def sand(rnd, v):

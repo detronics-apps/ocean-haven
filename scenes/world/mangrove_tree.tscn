@@ -1,11 +1,11 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree.svg" id="1_mtree"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree.png" id="1_mtree"]
 [ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="2_mtree"]
 [ext_resource type="Resource" path="res://data/items/mangrove_propagule.tres" id="3_mtree"]
 [ext_resource type="Resource" path="res://data/plants/red_mangrove.tres" id="4_mtree"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_sapling.svg" id="stage_0"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_young.svg" id="stage_1"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_sapling.png" id="stage_0"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/mangrove_tree_young.png" id="stage_1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mtree"]
 radius = 5.0

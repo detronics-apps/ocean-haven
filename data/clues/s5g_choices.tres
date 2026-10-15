@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="ClueData" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
-[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.svg" id="15_ev"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.svg" id="14_ev"]
+[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.png" id="15_ev"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.png" id="14_ev"]
 [ext_resource type="Texture2D" path="res://assets/items/plastic_bag.svg" id="13_ev"]
-[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/environment/coral/reef_patch.png" id="12_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/snapper/juvenile_snapper.svg" id="11_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="10_ev"]
 

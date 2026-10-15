@@ -15,21 +15,32 @@ pictures, at the sizes they had in the game (the owner: their original sizes).
    (targets: "size" of the whole picture, "art" = that box), standing on the box's bottom, and
    saved as a PNG beside the old picture's path (.svg -> .png).
 
-Re-run after the sheet changes:  python tools/cut_building_sheet.py
+The plants sheet (docs/plants_sheet.webp, tools/plant_sheet_targets.json: trees by stage, the
+willow, kelp, coral, seagrass) is cut the same way with `trees`: dark magenta shadows under the
+trees count as background (the game draws its own), pale fill is kept (the Pisonia's pale trunk),
+and rows go by the pictures' bottoms (trees of every height stand on one line).
+
+Re-run after a sheet changes:  python tools/cut_building_sheet.py      (buildings)
+                               python tools/cut_building_sheet.py trees
 """
 import json
 import os
+import sys
 from PIL import Image, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, '..')
-SHEET = os.path.join(ROOT, 'docs', 'buildings_sheet.webp')
-TARGETS = os.path.join(HERE, 'building_sheet_targets.json')
+TREES = len(sys.argv) > 1 and sys.argv[1] == 'trees'
+SHEET = os.path.join(ROOT, 'docs', 'plants_sheet.webp' if TREES else 'buildings_sheet.webp')
+TARGETS = os.path.join(HERE, 'plant_sheet_targets.json' if TREES else 'building_sheet_targets.json')
 
 
 def is_bg(p):
     r, g, b = p[:3]
-    return r > 150 and b > 150 and g < r - 70 and g < b - 70  # (magenta, and pink blended with it)
+    if r > 150 and b > 150 and g < r - 70 and g < b - 70:  # (magenta, and pink blended with it)
+        return True
+    # (the trees' shadows: dark magenta)
+    return TREES and r > 90 and b > 90 and g < 0.3 * min(r, b) and abs(r - b) < 0.35 * max(r, b)
 
 
 def lum(p):
@@ -65,26 +76,62 @@ def pictures(im):
             box = (min(xs), min(ys), max(xs) + 1, max(ys) + 1)
             bh = box[3] - box[1]
             text = sum(1 for p in pts if purple(px[p])) / len(pts)
-            if len(pts) >= 40 and bh > 12 and not (bh <= 22 and text > 0.15):
-                boxes.append(box)
-    merged = True  # (a picture's loose bits, a flag or a sign, join it)
+            dark = sum(1 for p in pts if lum(px[p]) < 90) / len(pts)
+            label = (bh <= 14 and dark > 0.5) if TREES else (bh <= 22 and text > 0.15)  # (trees: dark letters)
+            if len(pts) >= 4 and not label:
+                boxes.append([box, len(pts)])
+    gap = 8 if TREES else 1  # (a picture's loose bits join it: a flag, a sign, a willow's dots)
+    merged = True
     while merged:
         merged = False
         for i in range(len(boxes)):
             for j in range(i + 1, len(boxes)):
-                a, b = boxes[i], boxes[j]
-                if a[0] - 1 <= b[2] and b[0] - 1 <= a[2] and a[1] - 1 <= b[3] and b[1] - 1 <= a[3]:
-                    boxes[i] = (min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3]))
+                (a, na), (b, nb) = boxes[i], boxes[j]
+                if a[0] - gap <= b[2] and b[0] - gap <= a[2] and a[1] - gap <= b[3] and b[1] - gap <= a[3]:
+                    boxes[i] = [(min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])), na + nb]
                     del boxes[j]
                     merged = True
                     break
             if merged:
                 break
-    boxes.sort(key=lambda b: (b[1] // 120, b[0]))  # (rows of the sheet, then left to right)
+    boxes = [b for b, n in boxes if n >= (20 if TREES else 40) and b[3] - b[1] > (8 if TREES else 12)]
+    if TREES:  # (rows by where the pictures stand, then left to right)
+        boxes.sort(key=lambda b: (b[3] // (h // 2 + 1), b[0]))
+    else:
+        boxes.sort(key=lambda b: (b[1] // 120, b[0]))  # (rows of the sheet, then left to right)
     return boxes
 
 
+def tree_cut(im, box):
+    """Trees' outlines don't close (leaves), so: only the magenta and the shadows go, then the
+    pink-tinted pixels (the compression's blend with the magenta) are peeled off the edges."""
+    W, H = im.size
+    piece = im.crop((max(0, box[0] - 2), max(0, box[1] - 2), min(W, box[2] + 2), min(H, box[3] + 2))).convert('RGBA')
+    p = piece.load()
+    w, h = piece.size
+    for y in range(h):
+        for x in range(w):
+            r, g, b = p[x, y][:3]
+            # (also strong magenta anywhere: the gaps between roots and branches; coral pinks keep)
+            if is_bg(p[x, y]) or (r > 60 and b > 50 and g < 0.45 * min(r, b) and abs(r - b) < 0.5 * max(r, b)):
+                p[x, y] = (0, 0, 0, 0)
+    for _ in range(3):
+        peel = []
+        for y in range(h):
+            for x in range(w):
+                q = p[x, y]
+                if q[3] and q[0] - q[1] > 25 and q[2] - q[1] > 15 and any(
+                        not (0 <= x + dx < w and 0 <= y + dy < h) or p[x + dx, y + dy][3] == 0
+                        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                    peel.append((x, y))
+        for x, y in peel:
+            p[x, y] = (0, 0, 0, 0)
+    return piece.crop(piece.getbbox())
+
+
 def cut(im, box):
+    if TREES:
+        return tree_cut(im, box)
     x0, y0, x1, y1 = box[0] - 2, box[1] - 2, box[2] + 2, box[3] + 2
     crop = im.crop((x0, y0, x1, y1))
     w, h = crop.size
@@ -109,7 +156,7 @@ def cut(im, box):
 
     def plain(q):
         return lum(q) > 95 and (max(q) - min(q)) < 0.22 * max(q)
-    grow = [(x, y) for y in range(h) for x in range(w) if outside[y][x]]
+    grow = [] if TREES else [(x, y) for y in range(h) for x in range(w) if outside[y][x]]
     while grow:
         x, y = grow.pop()
         for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
@@ -163,7 +210,27 @@ def fit(piece, target):
     small.putalpha(alpha)
     out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
     out.alpha_composite(small, ((x0 + x1 - nw) // 2, y1 - nh))
-    return out
+    return outline(out) if TREES else out
+
+
+def outline(im):
+    """A crisp 1-px dark line round the picture (the trees' own line is lost in the cut and the
+    shrinking): a near-black shade of the colour it borders, as on the owner's sheet."""
+    p = im.load()
+    w, h = im.size
+    line = {}
+    for y in range(h):
+        for x in range(w):
+            if p[x, y][3]:
+                continue
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                if 0 <= x + dx < w and 0 <= y + dy < h and p[x + dx, y + dy][3]:
+                    r, g, b = p[x + dx, y + dy][:3]
+                    line[(x, y)] = (int(r * 0.25), int(g * 0.25), int(b * 0.25), 255)
+                    break
+    for xy, c in line.items():
+        p[xy] = c
+    return im
 
 
 if __name__ == '__main__':

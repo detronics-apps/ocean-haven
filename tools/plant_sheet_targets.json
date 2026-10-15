@@ -1,0 +1,298 @@
+[
+ null,
+ {
+  "name": "PalmTree sapling",
+  "texture": "res://assets/environment/vegetation/palm_tree_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   12,
+   46,
+   30,
+   63
+  ]
+ },
+ {
+  "name": "PalmTree young",
+  "texture": "res://assets/environment/vegetation/palm_tree_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   8,
+   30,
+   35,
+   63
+  ]
+ },
+ {
+  "name": "PalmTree grown",
+  "texture": "res://assets/environment/vegetation/palm_tree.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   2,
+   2,
+   40,
+   64
+  ]
+ },
+ {
+  "name": "Sitka Spruce sapling",
+  "texture": "res://assets/environment/vegetation/coastal_tree_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   15,
+   44,
+   27,
+   63
+  ]
+ },
+ {
+  "name": "Sitka Spruce young",
+  "texture": "res://assets/environment/vegetation/coastal_tree_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   9,
+   25,
+   33,
+   63
+  ]
+ },
+ {
+  "name": "Sitka Spruce grown",
+  "texture": "res://assets/environment/vegetation/coastal_tree.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   4,
+   2,
+   38,
+   64
+  ]
+ },
+ {
+  "name": "Red Mangrove sapling",
+  "texture": "res://assets/environment/vegetation/mangrove_tree_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   12,
+   46,
+   30,
+   63
+  ]
+ },
+ {
+  "name": "Red Mangrove young",
+  "texture": "res://assets/environment/vegetation/mangrove_tree_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   10,
+   31,
+   32,
+   63
+  ]
+ },
+ {
+  "name": "Red Mangrove grown",
+  "texture": "res://assets/environment/vegetation/mangrove_tree.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   3,
+   10,
+   39,
+   64
+  ]
+ },
+ {
+  "name": "Shore Pine sapling",
+  "texture": "res://assets/environment/vegetation/shore_pine_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   15,
+   48,
+   27,
+   63
+  ]
+ },
+ {
+  "name": "Shore Pine young",
+  "texture": "res://assets/environment/vegetation/shore_pine_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   9,
+   31,
+   34,
+   63
+  ]
+ },
+ {
+  "name": "Shore Pine grown",
+  "texture": "res://assets/environment/vegetation/shore_pine.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   4,
+   8,
+   41,
+   64
+  ]
+ },
+ {
+  "name": "Pisonia Tree sapling",
+  "texture": "res://assets/environment/vegetation/pisonia_tree_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   13,
+   48,
+   29,
+   63
+  ]
+ },
+ {
+  "name": "Pisonia Tree young",
+  "texture": "res://assets/environment/vegetation/pisonia_tree_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   11,
+   26,
+   31,
+   63
+  ]
+ },
+ {
+  "name": "Pisonia Tree grown",
+  "texture": "res://assets/environment/vegetation/pisonia_tree.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   3,
+   6,
+   39,
+   64
+  ]
+ },
+ null,
+ {
+  "name": "Polar Willow sapling",
+  "texture": "res://assets/environment/vegetation/polar_willow_sapling.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   17,
+   57,
+   25,
+   62
+  ]
+ },
+ {
+  "name": "Polar Willow young",
+  "texture": "res://assets/environment/vegetation/polar_willow_young.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   13,
+   55,
+   29,
+   62
+  ]
+ },
+ {
+  "name": "Polar Willow grown",
+  "texture": "res://assets/environment/vegetation/polar_willow.svg",
+  "size": [
+   42,
+   66
+  ],
+  "art": [
+   6,
+   49,
+   36,
+   62
+  ]
+ },
+ {
+  "name": "Giant Kelp",
+  "texture": "res://assets/items/shed_kelp.svg",
+  "size": [
+   18,
+   18
+  ],
+  "art": [
+   1,
+   8,
+   17,
+   14
+  ]
+ },
+ {
+  "name": "Reef-building Coral",
+  "texture": "res://assets/environment/coral/reef_patch.svg",
+  "size": [
+   42,
+   34
+  ],
+  "art": [
+   3,
+   6,
+   39,
+   31
+  ]
+ },
+ {
+  "name": "Turtle Grass (seagrass)",
+  "texture": "res://assets/environment/coral/seagrass.svg",
+  "size": [
+   34,
+   34
+  ],
+  "art": [
+   7,
+   6,
+   27,
+   28
+  ]
+ }
+]

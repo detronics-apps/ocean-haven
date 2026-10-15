@@ -1,9 +1,9 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.svg" id="1_5dbwd"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree.png" id="1_5dbwd"]
 [ext_resource type="Script" path="res://scripts/world/palm_tree.gd" id="1_lyslg"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree_sapling.svg" id="stage_0"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree_young.svg" id="stage_1"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree_sapling.png" id="stage_0"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/palm_tree_young.png" id="stage_1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lyslg"]
 radius = 5.0

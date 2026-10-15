@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_dvrnw"]
 [ext_resource type="PackedScene" path="res://scenes/world/shore_pine.tscn" id="2_kh4ij"]
-[ext_resource type="Texture2D" path="res://assets/environment/vegetation/shore_pine.svg" id="3_islgd"]
+[ext_resource type="Texture2D" path="res://assets/environment/vegetation/shore_pine.png" id="3_islgd"]
 
 [resource]
 script = ExtResource("1_dvrnw")

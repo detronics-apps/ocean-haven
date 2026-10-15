@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player/patrol_boat.gd" id="1_ora4j"]
-[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.svg" id="2_y7trn"]
+[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.png" id="2_y7trn"]
 
 [node name="PatrolBoat" type="Node2D" unique_id=576313202]
 script = ExtResource("1_ora4j")
