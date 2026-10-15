@@ -164,18 +164,23 @@ def ice(v, rnd):
 
 
 def wave_frame(f):
-    """Foam rolling down onto the sand from the water above, then soaking away."""
+    """Foam rolling down onto the sand from the water above, then soaking away: a curve that
+    starts and ends at the water's edge (the owner: no dead stop at the tile's sides), fading
+    out towards its ends."""
     c = Cell()
-    reach = [3, 9, 14, 12][f]
+    reach = [4, 10, 15, 13][f]
     alpha = [255, 255, 200, 110][f]
-    for x in range(S):
-        edge = reach + round(math.sin(x / 6.0 + f) * 1.5)
+    for x in range(2, S - 2):
+        u = (x - 2) / (S - 5)  # (0 .. 1 across)
+        bulge = math.sin(math.pi * u)  # (0 at both ends, 1 in the middle)
+        edge = round(reach * bulge + math.sin(x / 5.0 + f) * 0.8 * bulge)
+        fade = min(1.0, bulge * 2.2)  # (the ends fade out)
         for y in range(0, edge):  # (wet sand behind the foam)
-            c.dot(x, y, (150, 128, 90, 70))
+            c.dot(x, y, (150, 128, 90, int(70 * fade)))
         for y in range(edge, edge + (2 if f < 3 else 1)):
-            c.dot(x, y, (250, 252, 255, alpha))
+            c.dot(x, y, (250, 252, 255, int(alpha * fade)))
         if f in (1, 2) and x % 9 in (0, 1):
-            c.dot(x, edge + 2, (250, 252, 255, alpha // 2))
+            c.dot(x, edge + 2, (250, 252, 255, int(alpha * fade) // 2))
     return c
 
 
@@ -185,14 +190,16 @@ def splash_frame(f):
     rnd = random.Random(7)
     drops = [(rnd.randint(2, 61), rnd.random()) for _ in range(26)]
     for x, k in drops:
-        h = [2, 9, 6, 3][f] * (0.4 + k)
+        fade = min(1.0, math.sin(math.pi * x / (S - 1)) * 2.2)  # (fading out at the tile's sides)
+        h = [2, 9, 6, 3][f] * (0.4 + k) * fade
         y = int(h)
-        a = [230, 255, 200, 110][f]
+        a = int([230, 255, 200, 110][f] * fade)
         c.dot(x, y, (250, 252, 255, a))
         if f in (1, 2):
             c.dot(x, y + 1, (250, 252, 255, a // 2))
-    for x in range(S):  # (the foam line along the edge)
-        c.dot(x, 0, (250, 252, 255, [200, 255, 180, 90][f]))
+    for x in range(S):  # (the foam line along the edge, fading at both ends)
+        fade = min(1.0, math.sin(math.pi * x / (S - 1)) * 2.2)
+        c.dot(x, 0, (250, 252, 255, int([200, 255, 180, 90][f] * fade)))
     return c
 
 
