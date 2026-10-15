@@ -7,6 +7,10 @@ extends Sprite2D
 
 ## How wide it is next to what casts it (trees: only round the trunk).
 var share := 0.9
+## At most this tall, its middle this far above the picture's bottom: it stays under the thing
+## (a wide, deep one stuck out below and made it look like floating: the owner).
+const TALL := 9.0
+const TUCK := 4.0
 var of: Sprite2D
 var _fitted: Texture2D
 var _fitted_scale := Vector2.ZERO
@@ -37,13 +41,13 @@ func _process(_delta: float) -> void:
 		visible = of.texture != null
 		if of.texture:
 			var r := of.get_rect()
-			var base := of.position + Vector2(r.position.x + r.size.x / 2.0, r.end.y - 2.0) * of.scale
-			_size(r.size.x * of.scale.x * share, base)
+			var base := of.position + Vector2(r.position.x + r.size.x / 2.0, r.end.y) * of.scale
+			_size(r.size.x * of.scale.x * share, base - Vector2(0, TUCK))
 
 
 func _size(width: float, at: Vector2) -> void:
 	position = at
-	scale = Vector2(width, maxf(5.0, width * 0.3)) / 64.0
+	scale = Vector2(width, clampf(width * 0.3, 5.0, TALL)) / 64.0
 
 
 static func _texture() -> GradientTexture2D:
