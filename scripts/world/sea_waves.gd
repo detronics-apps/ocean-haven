@@ -7,18 +7,44 @@ extends Node2D
 ## are drawn.
 
 ## Space between crests, how long one takes to rise and fade, and how far it drifts.
-@export var spacing := 88.0
+@export var spacing := 60.0  # (the owner: more of them)
 @export var period := Vector2(3.5, 6.5)
 @export var drift := 10.0
 @export var colour := Color(0.85, 0.95, 1.0, 0.22)
 
 
+## A very faint speckle over the open ocean (tools/make_terrain_tiles.py), drawn under the
+## islands and fixed to the world, so even the deep water isn't flat (the owner).
+const DEEP := preload("res://assets/tilesets/deep_water.png")
+var _speckle: Node2D
+
+
 func _ready() -> void:
 	z_index = -1  # just above every island's Ground (-2)
+	_speckle = Node2D.new()
+	_speckle.z_index = -3  # (under the islands' ground)
+	_speckle.z_as_relative = false
+	_speckle.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	_speckle.draw.connect(_draw_speckle)
+	add_child(_speckle)
 
 
 func _process(_delta: float) -> void:
 	queue_redraw()
+	_speckle.queue_redraw()
+
+
+## The speckle over the view, at half size (a pixel is half a game pixel, like the ground art),
+## its tiles on fixed world spots.
+func _draw_speckle() -> void:
+	var camera := get_viewport().get_camera_2d()
+	if not camera:
+		return
+	var half := get_viewport_rect().size / camera.zoom / 2.0
+	var view := Rect2(camera.get_screen_center_position() - half, half * 2.0).grow(64.0)
+	var from := (view.position / 32.0).floor() * 32.0
+	_speckle.draw_set_transform(Vector2.ZERO, 0.0, Vector2(0.5, 0.5))
+	_speckle.draw_texture_rect(DEEP, Rect2(from * 2.0, (view.end - from) * 2.0), true)
 
 
 func _draw() -> void:

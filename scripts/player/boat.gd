@@ -148,7 +148,7 @@ func _board(check_range := true) -> bool:
 	# Show the ranger (with their current look) sitting in the boat: over its inside, behind
 	# its near side.
 	_driver = _player.get_node("Look").duplicate()
-	_driver.position = Vector2(-3, 2)  # (sitting on the seat, waist below the near side's top)
+	_driver.position = Vector2(-3, 1)  # (sitting on the seat, waist just behind the rim)
 	(_driver as Avatar).set_view(Avatar.View.FRONT)
 	(_driver as Avatar).sit()
 	_look.add_child(_driver)

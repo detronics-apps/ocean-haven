@@ -729,7 +729,10 @@ it read as static), no repeating pattern, every mark inside its own tile. Terrai
 half size just above Ground (a version per cell, half mirrored; mipmapped) and hides Ground's own
 tiles (Ground.self_modulate), which keep the terrain, walking and saves; terrain_tiles.png (each
 ground's first version at 32 px) is Ground's texture and gives the rounded edges their colours.
-Shallow and mid water tiles are plain (the moving SeaWaves play over all water). Ground details
+Shallow and mid water tiles have only a very faint speckle (the moving SeaWaves, one every 60 px,
+play over all water); the open ocean gets the same faint speckle (SeaWaves' deep_water.png, drawn
+under the islands and fixed to the world). Between two kinds of water there's no line and no
+rounding: their colours fade into each other over 10 px each side (TerrainEdges._fades). Ground details
 (decoration only, `tools/make_ground_details.py`, a "GroundDetails" tile layer over the rounded
 edges, picked per cell by TerrainEdges and redone round any changed tile): grass patches inside 3 x 3
 grass, shells and a starfish on sand, bird tracks / boot prints / clumps on mud, small stones on
@@ -949,9 +952,11 @@ Outfit / Accessories of picture tiles (the part on the ranger) and colour swatch
 (how to play on a phone, a keyboard, a controller: the game shows no control hints of its own,
 e.g. no "E / tap boat" label on the boat), and along the bottom Surprise me!, Back (undo, close)
 and Confirm (no people as presets: the owner took them out). The rowboat is 2 m (32 px: at 2.5 m
-it got stuck in one-tile channels and the drawbridge), the owner's picture, split in two
-(cut_building_sheet "front_from": rowboat_front.png, Boat.hull_front): the ranger sits over its
-inside (seen from above) and behind its near side (Avatar.sit: only down to the waist). The
+it got stuck in one-tile channels and the drawbridge), drawn by `tools/make_rowboat.py` at the
+ranger's own 3/4 angle (mostly its planked side, a thin strip of inside: the sheet's was seen from
+too high, the owner), in two halves (rowboat_front.png from the near rim down, Boat.hull_front):
+the ranger sits behind the near side, waist just behind the rim (Avatar.sit: only down to the
+waist). The sheet's rowboat is skipped (its target is null). The
 patrol boat is 2.5 m.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help

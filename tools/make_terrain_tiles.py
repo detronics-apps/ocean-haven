@@ -6,7 +6,7 @@ than its base, and by how much), and VARIANTS versions made up differently (pick
 some mirrored) so there's no repeating pattern; every mark keeps inside its own tile, so any
 version sits beside any other without a seam.
 
-- shallow and mid water: plain (the owner: the moving white waves already play over all water);
+- shallow and mid water: a very faint speckle only (the moving white waves play over all water);
 - sand: grains, soft blotches, light specks, a band of grains, now and then pink shells;
 - grass: tufts of thin upright blades, dark and light, yellow and orange flowers (no white);
 - rock: long cracks with a light edge and a branch, pale flat patches, pebble clusters;
@@ -27,6 +27,7 @@ from PIL import Image
 HERE = os.path.dirname(__file__)
 ART = os.path.join(HERE, '..', 'assets', 'tilesets', 'terrain_art.png')
 TILES = os.path.join(HERE, '..', 'assets', 'tilesets', 'terrain_tiles.png')
+DEEP = os.path.join(HERE, '..', 'assets', 'tilesets', 'deep_water.png')
 S = 64  # (pixels per tile in the art: a game pixel is 2 of them)
 VARIANTS = 8
 MARGIN = 2  # (marks keep this far in from the tile's edges)
@@ -80,12 +81,13 @@ def wave(t, rnd, x, y, length, light, dark, rise, under=(1, 2), tilt=0.0):
 
 
 def shallow(rnd, v):
-    """Plain: the moving white waves (SeaWaves) play over all the water (the owner)."""
-    return Tile('#578990', rnd, [])
+    """No marks (the moving white waves, SeaWaves, play over all the water), only a very faint
+    speckle so it isn't flat (the owner)."""
+    return Tile('#578990', rnd, ['#5b8d94', '#54868d'])
 
 
 def mid_water(rnd, v):
-    return Tile('#3c5f72', rnd, [])
+    return Tile('#3c5f72', rnd, ['#3f6276', '#3a5c6f'])
 
 
 def sand(rnd, v):
@@ -213,4 +215,11 @@ if __name__ == '__main__':
                 tiles.paste(picture.resize((32, 32), Image.BOX), (32 * row, 0))
     art.save(ART)
     tiles.save(TILES)
+    # The deep ocean has no tile: a faint speckle laid over it (SeaWaves), the owner's very subtle
+    # texture on every water.
+    deep = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+    rnd = random.Random(77)
+    for _ in range(S * S // 20):
+        deep.putpixel((rnd.randrange(S), rnd.randrange(S)), rnd.choice([(255, 255, 255, 12), (0, 0, 0, 16)]))
+    deep.save(DEEP)
     print('ground art written to', os.path.normpath(ART), 'and', os.path.normpath(TILES))

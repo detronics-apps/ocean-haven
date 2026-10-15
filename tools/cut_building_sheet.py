@@ -199,6 +199,18 @@ def trim_label(piece):
     return piece
 
 
+def rim(front):
+    """The near side's top edge as the boat's rim (the owner): a dark line along every column of
+    the near side, nothing else."""
+    p = front.load()
+    w, h = front.size
+    for x in range(w):
+        for y in range(h):
+            if p[x, y][3] > 100:
+                p[x, y] = (59, 36, 22, 255)
+                break
+
+
 def fit(piece, target):
     """The picture at the old one's size: as big as fits in its art box, standing on its bottom."""
     w, h = target['size']
@@ -248,5 +260,6 @@ if __name__ == '__main__':
         if 'front_from' in target:  # (a boat's near side, drawn over whoever sits in it)
             front = out.copy()
             front.paste((0, 0, 0, 0), (0, 0, front.size[0], target['front_from']))
+            rim(front)
             front.save(path[:-4] + '_front.png')
         print('%-40s -> %s' % (target['name'], os.path.relpath(path, ROOT)))

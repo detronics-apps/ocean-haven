@@ -40,6 +40,11 @@ var _pieces := {}
 ## between terrains, never round every tile): straight along the edges, round the rounded corners.
 var _lines := {}
 const LINE := Color(0, 0, 0, 0.28)
+## Between two kinds of water there's no line and no rounding: the colours fade into each other
+## over FADE px on each side (the owner: it's all water).
+const WATER := ["water", "", "sea"]
+const FADE := 10.0
+var _fades := {}
 var _colours := {}
 
 const ART := preload("res://assets/tilesets/terrain_art.png")
@@ -276,6 +281,7 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 func _shape_corner(corner: Vector2i) -> void:
 	_pieces.erase(corner)
 	_lines.erase(corner)
+	_fades.erase(corner)
 	# The 4 cells around the point, and for each the direction from its centre to the point.
 	var around := [[corner + Vector2i(-1, -1), Vector2(1, 1)], [corner + Vector2i(0, -1), Vector2(-1, 1)],
 		[corner + Vector2i(-1, 0), Vector2(1, -1)], [corner, Vector2(-1, -1)]]
@@ -299,8 +305,8 @@ func _shape_corner(corner: Vector2i) -> void:
 				continue
 		elif beside_x != beside_y:
 			fill = across if across in [beside_x, beside_y] else (beside_x if PRIORITY.get(beside_x, 0) >= PRIORITY.get(beside_y, 0) else beside_y)
-		if fill == "sea" or not _colours.has(fill):
-			continue
+		if fill == "sea" or not _colours.has(fill) or (mine in WATER and fill in WATER):
+			continue  # (open ocean, or water beside water: that fades instead)
 		if not _pieces.has(corner):
 			_pieces[corner] = []
 		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill], towards])
@@ -327,11 +333,45 @@ func _line_corner(corner: Vector2i) -> void:
 		halves[Vector2.UP if towards.y > 0 else Vector2.DOWN][1] = radius
 		halves[Vector2.LEFT if towards.x > 0 else Vector2.RIGHT][1] = radius
 		lines.append(shape.slice(1))  # (the arc)
+	# (each half-edge's two sides: [the one on its left / top, the one on its right / bottom])
+	var sides := {Vector2.UP: [tl, tr], Vector2.DOWN: [bl, br], Vector2.LEFT: [tl, bl], Vector2.RIGHT: [tr, br]}
+	var fades: Array = []
 	for dir: Vector2 in halves:
-		if halves[dir][0]:
+		if not halves[dir][0]:
+			continue
+		var a: String = sides[dir][0]
+		var b: String = sides[dir][1]
+		if a in WATER and b in WATER:
+			fades.append_array(_fade(point, dir, a, b))
+		else:
 			lines.append(PackedVector2Array([point + dir * halves[dir][1], point + dir * HALF]))
 	if not lines.is_empty():
 		_lines[corner] = lines
+	if not fades.is_empty():
+		_fades[corner] = fades
+
+
+## Two strips along the half-edge from `point` towards `dir`: each side gets the other side's
+## water colour at the edge, fading out FADE px into it, so the two blend across the edge.
+func _fade(point: Vector2, dir: Vector2, first: String, second: String) -> Array:
+	var across := Vector2(dir.y, dir.x).abs()  # (from the first side to the second)
+	var end := point + dir * HALF
+	var out: Array = []
+	for pair in [[first, second, -1.0], [second, first, 1.0]]:
+		var into: Vector2 = across * FADE * pair[2]  # (into this side)
+		var other := _water_colour(pair[1])
+		other.a = 0.5
+		var clear := other
+		clear.a = 0.0
+		out.append([PackedVector2Array([point, end, end + into, point + into]),
+			PackedColorArray([other, other, clear, clear])])
+	return out
+
+
+func _water_colour(kind: String) -> Color:
+	if kind == "sea":
+		return ProjectSettings.get_setting("rendering/environment/defaults/default_clear_color")
+	return _colours.get(kind, Color(0.3, 0.5, 0.55))
 
 
 ## The polygon filling `cell`'s corner towards `towards` outside a rounded corner of radius
@@ -377,6 +417,9 @@ func _draw() -> void:
 	for corner: Vector2i in _pieces:
 		for piece: Array in _pieces[corner]:
 			draw_colored_polygon(piece[0], piece[1])
+	for corner: Vector2i in _fades:
+		for strip: Array in _fades[corner]:
+			draw_polygon(strip[0], strip[1])
 	for corner: Vector2i in _lines:  # (over the rounded corners, so their arcs show whole)
 		for line: PackedVector2Array in _lines[corner]:
 			draw_polyline(line, LINE, 1.0)

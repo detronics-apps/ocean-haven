@@ -210,21 +210,7 @@
    64
   ]
  },
- {
-  "name": "Rowboat",
-  "texture": "res://assets/boats/rowboat.svg",
-  "size": [
-   36,
-   20
-  ],
-  "art": [
-   2,
-   3,
-   34,
-   18
-  ],
-  "front_from": 13
- },
+ null,
  {
   "name": "Shovel",
   "texture": "res://assets/items/sand.svg",
