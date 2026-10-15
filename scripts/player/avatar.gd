@@ -95,7 +95,7 @@ func set_view(new_view: View) -> void:
 
 ## Sitting (in a boat): only down to the waist, the waist at the node's position.
 func sit() -> void:
-	const WAIST := 27.0
+	const WAIST := 30.0  # (a little below the waist: hidden behind the boat's near side)
 	for sprite: Sprite2D in get_children():
 		if sprite.texture:
 			sprite.region_enabled = true

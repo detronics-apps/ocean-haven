@@ -939,23 +939,24 @@ modulate; shoes, glasses, badge and face in colour), each a strip of four 32x36 
 side facing right, side mid-step, back; hair, tops and jackets 8: hair's back layer, the sleeves
 on the near arm). About one tile tall (a tile is about 2 m; the owner: two tiles made them 4 m
 tall), laid out on the sheet's measured ratios: the face about two thirds the width of the body,
-the chin narrowing in steps, big low eyes (2 x 4) with a white highlight down their left side, the
-arms outlined apart from the body, boots as wide as the legs, a short stride. Only the front is
+the chin narrowing in steps, a one-pixel neck above the collar (make_avatar_parts.lowered: the head a row shorter above the eyes, the body a row lower; the owner), big low eyes (2 x 3) with a white highlight down their left side, the
+arms joined to the body by rounded shoulders and a soft seam lower down (the hands on the arm layer, over the trousers), boots as wide as the legs, a short stride. Only the front is
 chosen; the side and back views come from the same choices (Avatar.set_view: the ranger turns as
 they walk, with a stride picture sideways; long hair and the backpack go over the body when
 turned, never over the face; from the side the near arm, `arm.png`, and its sleeves are drawn
-over the clothes). Parts (AvatarOptions): 9 hair styles, 5 headwear, 4 tops, a vest or jacket,
-trousers or shorts, boots or sandals, 3 glasses, backpack, badge. People wear the same parts
+over the clothes). Parts (AvatarOptions): 12 hair styles (bald, fade and army cut too: the scalp is drawn with the skin under every crown; short sides fade out see-through), 5 headwear, 4 tops, a vest or jacket,
+trousers or shorts, boots or sandals, 3 glasses (round ones as wide as tall), backpack, badge. People wear the same parts
 (PersonData top / jacket / bottoms / shoes / glasses, PersonData.outfit). The Avatar Builder (the
 owner's layout): the ranger in a wooden frame with their name, tabs Body / Hair / Headwear /
 Outfit / Accessories of picture tiles (the part on the ranger) and colour swatches, a Controls tab
 (how to play on a phone, a keyboard, a controller: the game shows no control hints of its own,
 e.g. no "E / tap boat" label on the boat), and along the bottom Surprise me!, Back (undo, close)
 and Confirm (no people as presets: the owner took them out). The rowboat is 2 m (32 px: at 2.5 m
-it got stuck in one-tile channels and the drawbridge), drawn by `tools/make_rowboat.py` at the
-ranger's own 3/4 angle (mostly its planked side, a thin strip of inside: the sheet's was seen from
-too high, the owner), in two halves (rowboat_front.png from the near rim down, Boat.hull_front):
-the ranger sits behind the near side, waist just behind the rim (Avatar.sit: only down to the
+it got stuck in one-tile channels and the drawbridge): the owner's picture
+(docs/rowboat_sheet.jpg) cut by `tools/cut_rowboat.py` at its own detail (56 x 19) and drawn 32 px long
+(Boat.hull_scale), in two halves (rowboat_front.png from the rim's inner edge down, following
+the curved nose, Boat.hull_front):
+the ranger sits behind the near side, waist just behind the rim (Avatar.sit: down to just below the
 waist). The sheet's rowboat is skipped (its target is null). The
 patrol boat is 2.5 m.
 

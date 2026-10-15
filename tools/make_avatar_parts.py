@@ -1,7 +1,7 @@
 """Draws every avatar part (the ranger's and the people's) as pixel art, laid out on the owner's
 character sheets (measured in the sheet's own pixel blocks) at about one tile tall (a tile is
 about 2 m): the face about two thirds as wide as the body with its arms, a chin that narrows in
-steps, big low eyes (2 x 4) with a white highlight down their left side, and the hair making up
+steps, big low eyes (2 x 3) with a white highlight down their left side, and the hair making up
 the top of the head.
 
 Each part is a strip of 32x36 frames, feet on the bottom rows: front, side (facing right), side
@@ -10,6 +10,11 @@ body (long hair, ponytails, big curls); tops and jackets 8 too: 4-7 the sleeve o
 the side views, drawn over that arm (arm.png), which is drawn over the body. Tinted parts are drawn in grey (shaded, with an outline)
 and coloured in the game by the player's choice (Sprite2D.modulate), so the outline is always a
 darker shade of the part's own colour. Shoes, glasses, the badge and the face are drawn in colour.
+
+The shapes below are written in the first layout's rows; `lowered` turns them into the final
+ones (the owner): the head one row shorter above the eyes (rows 0-6 down one, merging into row
+7) and everything from the shoulders down (rows 18-28) one lower, merging into row 29 so the
+feet stay put, which leaves row 18 for a one-pixel neck.
 
 Only the front is ever chosen in the creator: the side and back views follow from the same
 choices. Re-run after changing a shape:  python tools/make_avatar_parts.py
@@ -39,8 +44,30 @@ def box(x0, y0, x1, y1):
     return rows([(y0, y1, [(x0, x1)])])
 
 
+# (the neck between the chin and the collar: no clothes' outline is drawn over it)
+NECK_SHOWS = {(x, 18) for x in range(14, 18)}
+
+
+def drop(y):
+    """A row of the first layout in the final one (see the top)."""
+    return y + 1 if y <= 6 or 18 <= y <= 28 else y
+
+
+def lowered(cells):
+    """A mask {(x, y)} or pixels {(x, y): v} moved to the final rows. Rows that merge keep the
+    row that didn't move; a mask running across rows 17-18 also fills the new row 18 (no gap)."""
+    if isinstance(cells, dict):
+        out = {(x, drop(y)): v for (x, y), v in cells.items() if drop(y) != y}
+        out.update({p: v for p, v in cells.items() if drop(p[1]) == p[1]})
+        return out
+    out = {(x, drop(y)) for x, y in cells}
+    out |= {(x, 18) for x, y in cells if y == 17 and (x, 18) in cells}
+    return out
+
+
 def shaded(mask, details=None):
     """Grey pixels: lit on the top-left edges, shaded on the bottom-right, an outline round it."""
+    mask, details = lowered(mask), lowered(details or {})
     px = {}
     for x, y in mask:
         if (x + 1, y) not in mask or (x, y + 1) not in mask:
@@ -54,12 +81,13 @@ def shaded(mask, details=None):
             px[p] = v
     for x, y in mask:
         for n in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
-            if n not in mask and 0 <= n[0] < W and 0 <= n[1] < H:
+            if n not in mask and n not in NECK_SHOWS and 0 <= n[0] < W and 0 <= n[1] < H:
                 px[n] = LINE
     return {p: (v, v, v, 255) for p, v in px.items()}
 
 
 def coloured(mask, base, shade, line):
+    mask = lowered(mask)
     px = {}
     for x, y in mask:
         px[(x, y)] = shade if (x + 1, y) not in mask or (x, y + 1) not in mask else base
@@ -97,44 +125,69 @@ def jag(mask, every=3):
 FACE_FRONT = rows([(8, 8, [(12, 19)]), (9, 15, [(11, 20)]), (16, 16, [(12, 19)]), (17, 17, [(13, 18)])])
 FACE_SIDE = rows([(8, 8, [(12, 19)]), (9, 15, [(11, 21)]), (16, 16, [(12, 20)]), (17, 17, [(14, 19)]),
                   (13, 13, [(22, 22)])])  # (a nose)
+# The top of the head, under the hair (it shows with the bald style and under short cuts); every
+# style's crown covers it.
+SCALP_FRONT = rows([(4, 4, [(13, 18)]), (5, 5, [(12, 19)]), (6, 8, [(11, 20)])])
+# (from the side: as wide as the face, rounded at the back, the forehead in line with the face)
+SCALP_SIDE = rows([(4, 4, [(13, 18)]), (5, 5, [(12, 20)]), (6, 8, [(11, 21)])])
+NECK = box(14, 17, 17, 18)  # (one pixel showing between the chin and the collar)
 # (the arms are drawn on their own, so their outline shows them apart from the body)
 TORSO_FRONT = rows([(18, 18, [(12, 19)]), (19, 26, [(11, 20)])])
-ARMS_FRONT = rows([(19, 26, [(8, 10), (21, 23)])])
+# (a row below the shoulders, which round off into their outside: the owner)
+# (the shoulders round off into them: their top row is narrower)
+SHOULDERS = [(19, 19, [(9, 10), (21, 22)])]
+ARMS_FRONT = rows(SHOULDERS + [(20, 27, [(8, 10), (21, 23)])])
 LEGS_FRONT = rows([(27, 32, [(11, 14), (17, 20)])])
 TORSO_SIDE = rows([(18, 18, [(12, 19)]), (19, 26, [(11, 20)])])
-ARM_SIDE = box(14, 19, 16, 26)
-ARM_STEP = box(16, 19, 18, 25)
+ARM_SIDE = box(14, 20, 16, 27)
+ARM_STEP = box(16, 20, 18, 26)
 LEGS_SIDE = rows([(27, 31, [(14, 17)]), (32, 32, [(14, 18)])])
 LEGS_STEP = rows([(27, 29, [(12, 14), (16, 18)]), (30, 32, [(11, 13), (17, 19)])])
 ARMS = {FRONT: ARMS_FRONT, SIDE: ARM_SIDE, STEP: ARM_STEP, BACK: ARMS_FRONT}
 
 
-def body(view):
-    if view in (FRONT, BACK):
-        px = shaded(TORSO_FRONT | LEGS_FRONT)
-        px.update(shaded(ARMS_FRONT))
-        px.update(shaded(FACE_FRONT))
-    else:
-        px = shaded(TORSO_SIDE | (LEGS_SIDE if view == SIDE else LEGS_STEP))
-        px.update(shaded(FACE_SIDE))
+def seamed(px):
+    """The arms' inner outline (against the body, front and back) as a soft seam, not a dark
+    line, so they look part of the body (the owner's sheet)."""
+    for (x, y), c in px.items():
+        if 20 <= y <= 22 and (x in (11, 20) and c[0] == LINE or x in (10, 21) and c[0] in (SHADE, LIGHT) and y > 20):
+            px[(x, y)] = (BASE, BASE, BASE, 255)  # (the top of the arm is part of the body: no seam)
+        elif x in (11, 20) and 23 <= y <= 28 and c[0] == LINE:
+            px[(x, y)] = (DEEP, DEEP, DEEP, 255)
     return px
 
 
+def body(view):
+    if view in (FRONT, BACK):
+        px = shaded(TORSO_FRONT | LEGS_FRONT)
+        px.update(seamed(shaded(ARMS_FRONT)))
+        px.update(shaded(FACE_FRONT | SCALP_FRONT | NECK))
+    else:
+        px = shaded(TORSO_SIDE | (LEGS_SIDE if view == SIDE else LEGS_STEP))
+        px.update(shaded(FACE_SIDE | SCALP_SIDE | NECK))
+    return px
+
+
+# (front and back: the hands, on the arm layer so the trousers never cover them)
+HANDS = rows([(26, 27, [(8, 10), (21, 23)])])
+
+
 def near_arm(view):
-    """The arm nearest the viewer in the side views (skin), its own layer over the clothes."""
-    return shaded(ARMS[view]) if view in (SIDE, STEP) else {}
+    """The arm nearest the viewer in the side views (skin), its own layer over the clothes; from
+    the front and back, the hands."""
+    return shaded(ARMS[view]) if view in (SIDE, STEP) else shaded(HANDS)
 
 
 def sleeve(view, to):
     """A sleeve on the near arm, down to row `to` (frames 4-7 of a top or jacket)."""
     if view not in (SIDE, STEP) or to < 19:
         return {}
-    return shaded({(x, y) for x, y in ARMS[view] if y <= to})
+    return shaded({(x, y) for x, y in ARMS[view] if y <= to + 1})  # (the arms start a row lower)
 
 
 MOUTH = (150, 78, 70, 255)
 WHITE = (255, 255, 255, 255)
-EYE_TOP, EYE_BOTTOM = 11, 14
+EYE_TOP, EYE_BOTTOM = 11, 13
 EYES_FRONT = (12, 18)  # (left columns of the two eyes, each 2 wide)
 EYE_SIDE = 18
 
@@ -194,15 +247,49 @@ def braid(x0, y0, y1):
     return mask, {(x, y): SHADE for x, y in mask if (x - x0 + y) % 3 == 0}
 
 
+def faded(cells):
+    """Short hair thinning out over the skin: {(x, y): alpha}, drawn see-through (tinted too)."""
+    return {p: (DEEP, DEEP, DEEP, a) for p, a in lowered(cells).items()}
+
+
+def fade_sides(x_cols, y0, y1):
+    """Columns of hair fading out row by row from y0 down to y1."""
+    return {(x, y): int(210 - 150 * (y - y0) / max(1, y1 - y0)) for x in x_cols for y in range(y0, y1 + 1)}
+
+
 def hair_style(name):
     """Eight frames: front-layer views, then back-layer views."""
     front, back = [], []
     for view in VIEWS:
-        f, b, fd, bd = set(), set(), {}, {}
+        f, b, fd, bd, see = set(), set(), {}, {}, {}
         side = view in (SIDE, STEP)
         crown = CROWN_SIDE if side else CROWN_BACK if view == BACK else CROWN_FRONT
         if name == 'short':
             f = crown
+        elif name == 'bald':
+            pass  # (the scalp, drawn with the skin)
+        elif name == 'fade':  # (full on top, the sides faded short)
+            if side:
+                f = rows([(3, 3, [(12, 18)]), (4, 4, [(11, 20)]), (5, 6, [(11, 21)])])
+                see = fade_sides((11, 12), 7, 12)
+            elif view == BACK:
+                f = rows([(3, 3, [(12, 19)]), (4, 4, [(11, 20)]), (5, 7, [(10, 21)])])
+                see = fade_sides(range(11, 21), 8, 15)
+            else:
+                f = rows([(3, 3, [(12, 19)]), (4, 4, [(11, 20)]), (5, 6, [(10, 21)])])
+                see = fade_sides((11, 20), 7, 11)
+            fd = strands(f)
+        elif name == 'army':  # (a short buzz cut, close to the head)
+            if side:
+                f = rows([(4, 4, [(13, 18)]), (5, 5, [(12, 20)]), (6, 6, [(11, 21)])])
+                see = fade_sides((11, 12), 7, 11)
+            elif view == BACK:
+                f = rows([(4, 4, [(13, 18)]), (5, 11, [(11, 20)])])
+                see = fade_sides(range(11, 21), 12, 15)
+            else:
+                f = rows([(4, 4, [(13, 18)]), (5, 6, [(11, 20)])])
+                see = fade_sides((11, 20), 7, 9)
+            fd = {(x, y): SHADE for x, y in f if (x + y) % 2 == 0}
         elif name == 'cropped':
             f = rows([(3, 3, [(11, 19)]), (4, 4, [(10, 20)]), (5, 6, [(9, 21)]), (7, 12, [(9, 11)])]) if side else \
                 rows([(3, 3, [(11, 20)]), (4, 14, [(9, 22)]), (15, 15, [(10, 21)])]) if view == BACK else \
@@ -260,7 +347,9 @@ def hair_style(name):
             else:
                 f = BIG_ROUND
             fd, bd = curl_dots(f), curl_dots(b)
-        front.append(shaded(f, fd) if f else {})
+        px = shaded(f, fd) if f else {}
+        px.update({p: c for p, c in faded(see).items() if p not in px})
+        front.append(px)
         back.append(shaded(b, bd) if b else {})
     save('hair_' + name, front + back)
 
@@ -315,8 +404,8 @@ def top(name):
                 m = rows([(18, 18, [(13, 13), (18, 18)]), (19, 26, [(12, 19)])])
             else:
                 m = TORSO_FRONT
-                sleeves = shaded(rows([(19, sleeve_to, [(8, 10), (21, 23)])]),
-                                 {(x, 24): SHADE for x in (8, 9, 10, 21, 22, 23)} if name == 'jumper' else None)
+                sleeves = seamed(shaded(rows(SHOULDERS + [(20, sleeve_to + 1, [(8, 10), (21, 23)])]),
+                                 {(x, 25): SHADE for x in (8, 9, 10, 21, 22, 23)} if name == 'jumper' else None))
             if name == 'jumper':
                 d = {(x, y): SHADE for x in range(11, 21) for y in (25, 26) if x % 2 == 0}
             if view == FRONT and name == 'shirt':
@@ -347,7 +436,7 @@ def jacket(name):
         else:  # (a zip jacket with long sleeves)
             if view in (FRONT, BACK):
                 m = TORSO_FRONT
-                sleeves = shaded(rows([(19, 24, [(8, 10), (21, 23)])]))
+                sleeves = seamed(shaded(rows(SHOULDERS + [(20, 25, [(8, 10), (21, 23)])])))
                 if view == FRONT:
                     d = {(x, y): DEEP for x in (15, 16) for y in range(19, 27)}
                     d.update({(x, 18): LIGHT for x in (12, 13, 18, 19)})
@@ -416,14 +505,15 @@ def glasses(name):
         if view == BACK:
             frames.append(px)
             continue
+        wide = 4 if name == 'round' else 3  # (round ones as wide as they're tall)
         if view in (SIDE, STEP):
             lenses = [EYE_SIDE - 1]
             px.update({(x, EYE_TOP + 1): GLASS_FRAME for x in range(12, EYE_SIDE - 1)})
         else:
-            lenses = [EYES_FRONT[0] - 1, EYES_FRONT[1] - 1]
+            lenses = [EYES_FRONT[0] - 1 - (wide - 3), EYES_FRONT[1] - 1]
             px.update({(x, EYE_TOP + 1): GLASS_FRAME for x in range(EYES_FRONT[0] + 3, EYES_FRONT[1] - 1)})
         for x0 in lenses:
-            x1, y0, y1 = x0 + 3, EYE_TOP - 1, EYE_BOTTOM + 1
+            x1, y0, y1 = x0 + wide, EYE_TOP - 1, EYE_BOTTOM + 1
             for x in range(x0, x1 + 1):
                 for y in range(y0, y1 + 1):
                     edge = x in (x0, x1) or y in (y0, y1)
@@ -475,10 +565,10 @@ def badge():
         cx = 12 if view == FRONT else 17
         disc = box(cx, 21, cx + 3, 24) - {(cx, 21), (cx + 3, 21), (cx, 24), (cx + 3, 24)}
         px = coloured(disc, *GOLD)
-        px[(cx + 1, 22)] = RIBBON  # (the ocean, in the middle)
+        px[(cx + 1, drop(22))] = RIBBON  # (the ocean, in the middle)
         for y in (19, 20):  # (the ribbon above it)
-            px[(cx + 1, y)] = RIBBON
-            px[(cx + 2, y)] = RIBBON
+            px[(cx + 1, drop(y))] = RIBBON
+            px[(cx + 2, drop(y))] = RIBBON
         frames.append(px)
     save('badge_ocean_day', frames)
 
@@ -489,7 +579,8 @@ if __name__ == '__main__':
     save('arm', [near_arm(v) for v in VIEWS])
     save('face', [face(v) for v in VIEWS])
     save('eyes', [eyes(v) for v in VIEWS])
-    for style in ('short', 'long', 'ponytail', 'curly', 'big_curls', 'wavy', 'side_ponytail', 'braid', 'cropped'):
+    for style in ('short', 'long', 'ponytail', 'curly', 'big_curls', 'wavy', 'side_ponytail', 'braid', 'cropped',
+                  'bald', 'fade', 'army'):
         hair_style(style)
     for name in ('ranger_hat', 'cap', 'bucket_hat', 'sun_hat', 'safari_cap'):
         hat(name)

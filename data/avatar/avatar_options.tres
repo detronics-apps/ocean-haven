@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_side_ponytail.png" id="hair_side_ponytail"]
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_braid.png" id="hair_braid"]
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_cropped.png" id="hair_cropped"]
+[ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_bald.png" id="hair_bald"]
+[ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_fade.png" id="hair_fade"]
+[ext_resource type="Texture2D" path="res://assets/characters/avatar/hair_army.png" id="hair_army"]
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/ranger_hat.png" id="ranger_hat"]
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/cap.png" id="cap"]
 [ext_resource type="Texture2D" path="res://assets/characters/avatar/bucket_hat.png" id="bucket_hat"]
@@ -35,8 +38,8 @@
 script = ExtResource("script")
 skin_tones = Array[Color]([Color(0.99215686, 0.8784314, 0.78431374, 1), Color(0.9411765, 0.7647059, 0.60784316, 1), Color(0.8509804, 0.627451, 0.4, 1), Color(0.6901961, 0.47058824, 0.2509804, 1), Color(0.5411765, 0.3529412, 0.20392157, 1), Color(0.36862746, 0.22745098, 0.13333334, 1)])
 eye_colours = Array[Color]([Color(0.3529412, 0.22745098, 0.14117648, 1), Color(0.16470589, 0.16470589, 0.16470589, 1), Color(0.22745098, 0.43529412, 0.6901961, 1), Color(0.24705882, 0.5411765, 0.2901961, 1), Color(0.5411765, 0.41568628, 0.16470589, 1), Color(0.41568628, 0.44705883, 0.5019608, 1)])
-hair_styles = Array[Texture2D]([ExtResource("hair_short"), ExtResource("hair_long"), ExtResource("hair_ponytail"), ExtResource("hair_curly"), ExtResource("hair_big_curls"), ExtResource("hair_wavy"), ExtResource("hair_side_ponytail"), ExtResource("hair_braid"), ExtResource("hair_cropped")])
-hair_style_names = PackedStringArray("Short", "Long", "Ponytail", "Curly", "Big curls", "Wavy", "Side ponytail", "Braid", "Cropped")
+hair_styles = Array[Texture2D]([ExtResource("hair_short"), ExtResource("hair_long"), ExtResource("hair_ponytail"), ExtResource("hair_curly"), ExtResource("hair_big_curls"), ExtResource("hair_wavy"), ExtResource("hair_side_ponytail"), ExtResource("hair_braid"), ExtResource("hair_cropped"), ExtResource("hair_bald"), ExtResource("hair_fade"), ExtResource("hair_army")])
+hair_style_names = PackedStringArray("Short", "Long", "Ponytail", "Curly", "Big curls", "Wavy", "Side ponytail", "Braid", "Cropped", "Bald", "Fade", "Army cut")
 hair_colours = Array[Color]([Color(0.16470589, 0.13725491, 0.1254902, 1), Color(0.3529412, 0.22745098, 0.14117648, 1), Color(0.5411765, 0.3529412, 0.20392157, 1), Color(0.627451, 0.27450982, 0.16470589, 1), Color(0.8784314, 0.7529412, 0.4392157, 1), Color(0.72156864, 0.72156864, 0.72156864, 1), Color(0.9098039, 0.6039216, 0.72156864, 1), Color(0.47843137, 0.627451, 0.9098039, 1)])
 outfit_colours = Array[Color]([Color(0.95686275, 0.94509804, 0.9019608, 1), Color(0.18431373, 0.2901961, 0.47843137, 1), Color(0.24705882, 0.49803922, 0.7490196, 1), Color(0.30980393, 0.5411765, 0.2901961, 1), Color(0.8784314, 0.47843137, 0.41568628, 1), Color(0.9098039, 0.7529412, 0.3137255, 1), Color(0.72156864, 0.627451, 0.47058824, 1), Color(0.47843137, 0.49803922, 0.53333336, 1), Color(0.16470589, 0.16470589, 0.1882353, 1), Color(0.16, 0.5, 0.5, 1), Color(0.88, 0.45, 0.18, 1), Color(0.8, 0.25, 0.25, 1), Color(0.36, 0.4, 0.24, 1), Color(0.58, 0.74, 0.9, 1), Color(0.45, 0.3, 0.2, 1), Color(0.93, 0.89, 0.78, 1), Color(0.14, 0.18, 0.27, 1)])
 hats = Array[Texture2D]([null, ExtResource("ranger_hat"), ExtResource("cap"), ExtResource("bucket_hat"), ExtResource("sun_hat"), ExtResource("safari_cap")])
