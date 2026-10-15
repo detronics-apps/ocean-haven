@@ -1,33 +1,7 @@
 [
  null,
- {
-  "name": "Dock",
-  "texture": "res://assets/buildings/dock_plank.svg",
-  "size": [
-   32,
-   32
-  ],
-  "art": [
-   0,
-   0,
-   32,
-   32
-  ]
- },
- {
-  "name": "Drawbridge",
-  "texture": "res://assets/buildings/drawbridge_closed.svg",
-  "size": [
-   32,
-   32
-  ],
-  "art": [
-   0,
-   0,
-   32,
-   32
-  ]
- },
+ null,
+ null,
  {
   "name": "Exploration Ship (level 1)",
   "texture": "res://assets/boats/expedition_boat.svg",
@@ -489,7 +463,8 @@
    3,
    61,
    64
-  ]
+  ],
+  "see_through": true
  },
  {
   "name": "Turtle Protection Area (level 2)",
@@ -503,7 +478,8 @@
    3,
    61,
    64
-  ]
+  ],
+  "see_through": true
  },
  {
   "name": "Turtle Protection Area (level 3)",
@@ -517,7 +493,8 @@
    3,
    61,
    64
-  ]
+  ],
+  "see_through": true
  },
  {
   "name": "Kelp Discovery Centre",

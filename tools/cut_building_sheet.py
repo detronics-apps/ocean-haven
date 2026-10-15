@@ -11,6 +11,8 @@ pictures, at the sizes they had in the game (the owner: their original sizes).
    jetty), then the last ring just outside the line. White or coloured specks outside the black
    line go with it; inside stays solid. A picture whose outline doesn't close (the dock) only
    loses its magenta.
+   Loose bits lying wholly below the picture (a label under it) go too; with "see_through" the
+   plain grey fill inside it goes as well (the turtle areas: the sand shows through).
 4. Each picture is fitted, keeping its shape, into the box the old picture's art filled
    (targets: "size" of the whole picture, "art" = that box), standing on the box's bottom, and
    saved as a PNG beside the old picture's path (.svg -> .png).
@@ -129,7 +131,7 @@ def tree_cut(im, box):
     return piece.crop(piece.getbbox())
 
 
-def cut(im, box):
+def cut(im, box, see_through=False):
     if TREES:
         return tree_cut(im, box)
     x0, y0, x1, y1 = box[0] - 2, box[1] - 2, box[2] + 2, box[3] + 2
@@ -180,7 +182,49 @@ def cut(im, box):
             for x in range(w):
                 if is_bg(c[x, y]):
                     p[x, y] = (0, 0, 0, 0)
-    return trim_label(piece.crop(piece.getbbox()))
+    if see_through:
+        for y in range(h):
+            for x in range(w):
+                q = p[x, y]
+                if q[3] and lum(q) > 140 and max(q[:3]) - min(q[:3]) < 0.13 * max(q[:3]):
+                    p[x, y] = (0, 0, 0, 0)
+        for _ in range(3):  # (then the greyish specks left at its edges)
+            peel = [(x, y) for y in range(h) for x in range(w) if p[x, y][3] and lum(p[x, y]) > 110
+                    and max(p[x, y][:3]) - min(p[x, y][:3]) < 0.2 * max(p[x, y][:3])
+                    and any(0 <= x + dx < w and 0 <= y + dy < h and p[x + dx, y + dy][3] == 0
+                            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))]
+            for xy in peel:
+                p[xy] = (0, 0, 0, 0)
+    return drop_below(trim_label(piece.crop(piece.getbbox())))
+
+
+def drop_below(piece):
+    """Loose bits wholly below the biggest part (a label under the picture) go."""
+    a = piece.getchannel('A').load()
+    w, h = piece.size
+    seen, parts = set(), []
+    for y in range(h):
+        for x in range(w):
+            if a[x, y] and (x, y) not in seen:
+                stack, pts = [(x, y)], []
+                seen.add((x, y))
+                while stack:
+                    cx, cy = stack.pop()
+                    pts.append((cx, cy))
+                    for nx in (cx - 1, cx, cx + 1):
+                        for ny in (cy - 1, cy, cy + 1):
+                            if 0 <= nx < w and 0 <= ny < h and a[nx, ny] and (nx, ny) not in seen:
+                                seen.add((nx, ny))
+                                stack.append((nx, ny))
+                parts.append(pts)
+    main = max(parts, key=len)
+    bottom = max(y for _, y in main)
+    p = piece.load()
+    for pts in parts:
+        if min(y for _, y in pts) > bottom - 2 and pts is not main:
+            for xy in pts:
+                p[xy] = (0, 0, 0, 0)
+    return piece.crop(piece.getbbox())
 
 
 def trim_label(piece):
@@ -254,7 +298,7 @@ if __name__ == '__main__':
     for box, target in zip(boxes, targets):
         if target is None:  # (the ranger, for scale only)
             continue
-        out = fit(cut(im, box), target)
+        out = fit(cut(im, box, target.get('see_through', False)), target)
         path = os.path.join(ROOT, target['texture'].replace('res://', '').rsplit('.', 1)[0] + '.png')
         out.save(path)
         if 'front_from' in target:  # (a boat's near side, drawn over whoever sits in it)
