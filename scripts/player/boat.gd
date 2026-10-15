@@ -8,6 +8,8 @@ extends ControlledBody
 ## The hull's near side (seen from the side, at the bottom of the picture), drawn over the ranger
 ## sitting in the boat; the rest of the hull (its inside, seen from above) is under them.
 @export var hull_front: Texture2D
+## The hull's pictures are drawn at this size (the owner's 56-px rowboat drawn 32 px long: 2 m).
+@export var hull_scale := 32.0 / 56.0  # (2 m)
 ## How close another boat must be to take it in tow, and how far behind it follows.
 @export var tow_reach := 56.0
 @export var tow_gap := 36.0
@@ -26,10 +28,12 @@ func _ready() -> void:
 	add_to_group("boat")
 	add_to_group("interactables")
 	_player = get_tree().get_first_node_in_group("player")
+	$Look/Hull.scale = Vector2.ONE * hull_scale
 	if hull_front:
 		var front := Sprite2D.new()
 		front.name = "HullFront"
 		front.texture = hull_front
+		front.scale = Vector2.ONE * hull_scale
 		$Look.add_child(front)
 		$Look.move_child(front, $Look/Hull.get_index() + 1)
 	RangerProfile.look_changed.connect(_apply_colour)
@@ -148,7 +152,7 @@ func _board(check_range := true) -> bool:
 	# Show the ranger (with their current look) sitting in the boat: over its inside, behind
 	# its near side.
 	_driver = _player.get_node("Look").duplicate()
-	_driver.position = Vector2(-3, 1)  # (sitting on the seat, waist just behind the rim)
+	_driver.position = Vector2(-4, -1)  # (sitting on the seat, waist just behind the rim)
 	(_driver as Avatar).set_view(Avatar.View.FRONT)
 	(_driver as Avatar).sit()
 	_look.add_child(_driver)
