@@ -5,10 +5,12 @@
 [ext_resource type="AudioStream" path="res://audio/music/bell.wav" id="3"]
 [ext_resource type="AudioStream" path="res://audio/music/pad.wav" id="4"]
 [ext_resource type="AudioStream" path="res://audio/music/bass.wav" id="5"]
-[ext_resource type="AudioStream" path="res://audio/ambient/wind.wav" id="6"]
-[ext_resource type="AudioStream" path="res://audio/ambient/tern.wav" id="7"]
-[ext_resource type="AudioStream" path="res://audio/ambient/creak.wav" id="8"]
-[ext_resource type="AudioStream" path="res://audio/ambient/gull.wav" id="9"]
+[ext_resource type="AudioStream" path="res://audio/ambient/polar_wind.wav" id="amb_polar_wind"]
+[ext_resource type="AudioStream" path="res://audio/ambient/polar_bear.wav" id="amb_polar_bear"]
+[ext_resource type="AudioStream" path="res://audio/ambient/seal.wav" id="amb_seal"]
+[ext_resource type="AudioStream" path="res://audio/ambient/tern.wav" id="amb_tern"]
+[ext_resource type="AudioStream" path="res://audio/ambient/skua.wav" id="amb_skua"]
+[ext_resource type="AudioStream" path="res://audio/ambient/creak.wav" id="amb_creak"]
 
 [resource]
 script = ExtResource("1")
@@ -21,7 +23,7 @@ tempo = 60.0
 root = 4
 scale = PackedInt32Array(0, 2, 4, 7, 9)
 chords = PackedInt32Array(0, -3, 5, -5)
-ambient = ExtResource("6")
-ambient_volume_db = -9.0
-calls = Array[AudioStream]([ExtResource("7"), ExtResource("8"), ExtResource("9")])
-calls_per_minute = 3.0
+ambient = ExtResource("amb_polar_wind")
+ambient_volume_db = -5.0
+calls = Array[AudioStream]([ExtResource("amb_polar_bear"), ExtResource("amb_seal"), ExtResource("amb_tern"), ExtResource("amb_skua"), ExtResource("amb_creak")])
+calls_per_minute = 3.5

@@ -5,10 +5,10 @@
 [ext_resource type="AudioStream" path="res://audio/music/bell.wav" id="3"]
 [ext_resource type="AudioStream" path="res://audio/music/pad.wav" id="4"]
 [ext_resource type="AudioStream" path="res://audio/music/bass.wav" id="5"]
-[ext_resource type="AudioStream" path="res://audio/ambient/waves.wav" id="6"]
-[ext_resource type="AudioStream" path="res://audio/ambient/gull.wav" id="7"]
-[ext_resource type="AudioStream" path="res://audio/ambient/chirp.wav" id="8"]
-[ext_resource type="AudioStream" path="res://audio/ambient/dolphin.wav" id="9"]
+[ext_resource type="AudioStream" path="res://audio/ambient/surf.wav" id="amb_surf"]
+[ext_resource type="AudioStream" path="res://audio/ambient/booby.wav" id="amb_booby"]
+[ext_resource type="AudioStream" path="res://audio/ambient/dolphin.wav" id="amb_dolphin"]
+[ext_resource type="AudioStream" path="res://audio/ambient/crab.wav" id="amb_crab"]
 
 [resource]
 script = ExtResource("1")
@@ -21,7 +21,7 @@ tempo = 76.0
 root = 0
 scale = PackedInt32Array(0, 2, 4, 7, 9)
 chords = PackedInt32Array(0, -3, 5, 0)
-ambient = ExtResource("6")
-ambient_volume_db = -9.0
-calls = Array[AudioStream]([ExtResource("7"), ExtResource("8"), ExtResource("9")])
+ambient = ExtResource("amb_surf")
+ambient_volume_db = -6.0
+calls = Array[AudioStream]([ExtResource("amb_booby"), ExtResource("amb_dolphin"), ExtResource("amb_crab")])
 calls_per_minute = 4.0

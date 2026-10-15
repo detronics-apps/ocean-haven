@@ -6,8 +6,8 @@ extends ControlledBody
 
 @export var board_range := 64.0
 ## How close another boat must be to take it in tow, and how far behind it follows.
-@export var tow_reach := 64.0
-@export var tow_gap := 46.0
+@export var tow_reach := 56.0
+@export var tow_gap := 36.0
 
 ## The boat this one is towing (null = none).
 var towing: Boat
@@ -45,7 +45,7 @@ func _apply_colour() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	var tapped_boat := is_tap(event) and get_global_mouse_position().distance_to(global_position) < 24.0  # (the 2.5 m hull)
+	var tapped_boat := is_tap(event) and get_global_mouse_position().distance_to(global_position) < 20.0  # (the 2 m hull)
 	if (tapped_boat or event.is_action_pressed("interact")) and _toggle():
 		get_viewport().set_input_as_handled()
 		return
@@ -136,7 +136,7 @@ func _board(check_range := true) -> bool:
 		Fleet.mark(&"boat_used")  # (people stop asking as if the ranger had never been out in one)
 	# Show the ranger (with their current look) sitting in the boat, behind the hull.
 	_driver = _player.get_node("Look").duplicate()
-	_driver.position = Vector2(-4, -3)  # (sitting on the seat, waist at the gunwale)
+	_driver.position = Vector2(-3, -1)  # (sitting on the seat, waist at the gunwale)
 	(_driver as Avatar).set_view(Avatar.View.FRONT)
 	(_driver as Avatar).sit()
 	_look.add_child(_driver)

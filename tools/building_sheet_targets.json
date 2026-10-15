@@ -214,13 +214,13 @@
   "name": "Rowboat",
   "texture": "res://assets/boats/rowboat.svg",
   "size": [
-   44,
-   24
+   36,
+   20
   ],
   "art": [
    2,
-   7,
-   43,
+   3,
+   34,
    18
   ]
  },

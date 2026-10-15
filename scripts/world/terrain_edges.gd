@@ -44,6 +44,22 @@ const ART_VARIANTS := 8
 static var _art_set: TileSet
 var _art: TileMapLayer
 
+## Decorations (tools/make_ground_details.py), only for looks: grass patches inside 3 x 3 grass,
+## shells / tracks / stones / little rocks where 3 in a row are the same ground, one snowman on an
+## icy island, waves rolling up the sand and spray on rocky shores (animated tiles).
+const DETAILS := preload("res://assets/tilesets/ground_details.png")
+const DETAIL_ROWS := {"grass": 0, "sand": 1, "mud": 2, "rock": 3, "ice": 4}
+const DETAIL_CHANCE := {"grass": 0.18, "sand": 0.12, "mud": 0.12, "rock": 0.15, "ice": 0.06}
+const WAVES_ROW := 5
+const SPRAY_ROW := 6
+const SNOWMAN := Vector2i(3, 4)
+const NO_CELL := Vector2i(-99999, -99999)
+## Water above, below, left, right of a shore cell -> the turned version of its wave tile.
+const SIDES := {Vector2i(0, -1): 0, Vector2i(0, 1): 1, Vector2i(-1, 0): 2, Vector2i(1, 0): 3}
+static var _details_set: TileSet
+var _details: TileMapLayer
+var _snowman := NO_CELL
+
 
 func _ready() -> void:
 	_ground = get_parent().get_node_or_null("Ground")
@@ -59,6 +75,12 @@ func _ready() -> void:
 	_art.scale = Vector2.ONE * float(_ground.tile_set.tile_size.x) / ART_SIZE
 	_art.z_index = _ground.z_index
 	_art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	_details = TileMapLayer.new()
+	_details.name = "GroundDetails"
+	_details.tile_set = _detail_tiles()
+	_details.scale = _art.scale
+	_details.z_index = _ground.z_index
+	_details.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 	_put_art_in.call_deferred()
 	_read_colours()
 	rebuild()
@@ -67,6 +89,91 @@ func _ready() -> void:
 func _put_art_in() -> void:
 	get_parent().add_child(_art)
 	get_parent().move_child(_art, _ground.get_index() + 1)
+	get_parent().add_child(_details)  # (over the rounded corners)
+	get_parent().move_child(_details, get_index() + 1)
+	_details.position = position
+
+
+## The details' tile set, made once: each picture and a mirrored one; the waves and the spray
+## animate (each tile starting at its own moment) and are turned to face the water.
+static func _detail_tiles() -> TileSet:
+	if _details_set:
+		return _details_set
+	var tiles := TileSet.new()
+	tiles.tile_size = Vector2i(ART_SIZE, ART_SIZE)
+	var source := TileSetAtlasSource.new()
+	source.texture = DETAILS
+	source.texture_region_size = Vector2i(ART_SIZE, ART_SIZE)
+	tiles.add_source(source, 0)
+	for row in DETAIL_ROWS.size():
+		for v in 4:
+			var at := Vector2i(v, row)
+			source.create_tile(at)
+			source.get_tile_data(at, source.create_alternative_tile(at)).flip_h = true
+	for row in [WAVES_ROW, SPRAY_ROW]:
+		var at := Vector2i(0, row)
+		source.create_tile(at)
+		source.set_tile_animation_columns(at, 4)
+		source.set_tile_animation_frames_count(at, 4)
+		source.set_tile_animation_mode(at, TileSetAtlasSource.TILE_ANIMATION_MODE_RANDOM_START_TIMES)
+		for f in 4:
+			source.set_tile_animation_frame_duration(at, f, 0.45 if row == WAVES_ROW else 0.3)
+		var below := source.get_tile_data(at, source.create_alternative_tile(at))
+		below.flip_v = true
+		var left := source.get_tile_data(at, source.create_alternative_tile(at))
+		left.transpose = true
+		var right := source.get_tile_data(at, source.create_alternative_tile(at))
+		right.transpose = true
+		right.flip_h = true
+	_details_set = tiles
+	return tiles
+
+
+## The cell's decoration, if any (picked from the cell, so it stays put).
+func _decorate(cell: Vector2i) -> void:
+	var kind := terrain_at(cell)
+	var pick := absi(hash(cell + Vector2i(7, 13)))
+	if kind == "sand" or (kind == "rock" and pick % 2 == 0):
+		for side: Vector2i in SIDES:
+			if terrain_at(cell + side) in ["water", "", "sea"]:
+				_details.set_cell(cell, 0, Vector2i(0, WAVES_ROW if kind == "sand" else SPRAY_ROW), SIDES[side])
+				return
+	if cell == _snowman:
+		_details.set_cell(cell, 0, SNOWMAN)
+		return
+	if DETAIL_ROWS.has(kind) and _fits(cell, kind) and pick % 1000 < int(DETAIL_CHANCE[kind] * 1000):
+		var versions := 3 if kind == "ice" else 4  # (the ice's 4th is the snowman)
+		_details.set_cell(cell, 0, Vector2i((pick / 1000) % versions, DETAIL_ROWS[kind]), (pick / 7) % 2)
+		return
+	_details.erase_cell(cell)
+
+
+## Grass: all 8 around it grass too; the rest: the same ground on both sides, across or down.
+func _fits(cell: Vector2i, kind: String) -> bool:
+	if kind == "grass":
+		for dx in [-1, 0, 1]:
+			for dy in [-1, 0, 1]:
+				if terrain_at(cell + Vector2i(dx, dy)) != kind:
+					return false
+		return true
+	return (terrain_at(cell + Vector2i(-1, 0)) == kind and terrain_at(cell + Vector2i(1, 0)) == kind) 		or (terrain_at(cell + Vector2i(0, -1)) == kind and terrain_at(cell + Vector2i(0, 1)) == kind)
+
+
+## One snowman on an icy island: the ice cell with ice all round it that its hash picks.
+func _place_snowman() -> void:
+	_snowman = NO_CELL
+	var best := -1
+	for cell: Vector2i in _terrain:
+		if _terrain[cell] != "ice":
+			continue
+		var all_ice := true
+		for dx in [-1, 0, 1]:
+			for dy in [-1, 0, 1]:
+				all_ice = all_ice and _terrain.get(cell + Vector2i(dx, dy), "") == "ice"
+		var h := absi(hash(cell + Vector2i(3, 5)))
+		if all_ice and (best < 0 or h < best):
+			best = h
+			_snowman = cell
 
 
 ## The art's tile set, made once: a tile per picture, and a mirrored one of each.
@@ -137,6 +244,10 @@ func rebuild() -> void:
 			corners[cell + d] = true
 	for corner: Vector2i in corners:
 		_shape_corner(corner)
+	_details.clear()
+	_place_snowman()
+	for cell: Vector2i in _terrain:
+		_decorate(cell)
 	queue_redraw()
 
 
@@ -149,6 +260,9 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 	_paint(cell)
 	for d in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 		_shape_corner(cell + d)
+	for dx in [-1, 0, 1]:  # (its own decoration and its neighbours': their rules look at it)
+		for dy in [-1, 0, 1]:
+			_decorate(cell + Vector2i(dx, dy))
 	queue_redraw()
 
 
@@ -222,6 +336,7 @@ func _process(_delta: float) -> void:
 	if _ground and modulate != _ground.modulate:
 		modulate = _ground.modulate  # the island's health tint, as on the ground
 		_art.modulate = _ground.modulate
+		_details.modulate = _ground.modulate
 
 
 func _draw() -> void:

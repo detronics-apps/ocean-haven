@@ -655,7 +655,11 @@ Sound (`Sound` autoload, scripts/systems/sound_system.gd): placeholder sounds ma
 notes in audio/music/; loops have edit/loop_mode=2 in their .import). Each island's music is
 data (data/music/, MusicData: instruments, key, tempo, chords, ambient loop, animal calls) and
 is made up as it plays: a damaged island only hums a low pad; bass, the tune, bells and calls
-join in as its health rises. Buses Music / Ambient / Sounds (in default_bus_layout.tres: buses added at runtime are silent
+join in as its health rises. Each island sounds like itself (the owner), the tune the same everywhere:
+Starting Island breaking surf, boobies, dolphins, crabs; Kelp Forest swell, otters, cormorants;
+Mangrove Coast lagoon and insects, flamingos, a crocodile, frogs; Reef distant surf and snapping-shrimp
+crackle, parrotfish crunching coral, seahorse clicks; Deep Sea the deep hum, sperm-whale codas and song;
+Polar Ocean loud white-noise wind, polar bear huffs and growls, seals, terns, skuas, ice creaks. Buses Music / Ambient / Sounds (in default_bus_layout.tres: buses added at runtime are silent
 on the web); the page plays like a music app (navigator.audioSession, iPhone silent switch); the speaker button in the menu bar
 (SoundButton) mutes everything or sets the music and sound volume (saved: "sound"). Every
 button clicks (Sound connects to each BaseButton; meta "silent" opts out); `Sound.play(&"id")`
@@ -716,6 +720,13 @@ it read as static), no repeating pattern, every mark inside its own tile. Terrai
 half size just above Ground (a version per cell, half mirrored; mipmapped) and hides Ground's own
 tiles (Ground.self_modulate), which keep the terrain, walking and saves; terrain_tiles.png (each
 ground's first version at 32 px) is Ground's texture and gives the rounded edges their colours.
+Shallow and mid water tiles are plain (the moving SeaWaves play over all water). Ground details
+(decoration only, `tools/make_ground_details.py`, a "GroundDetails" tile layer over the rounded
+edges, picked per cell by TerrainEdges and redone round any changed tile): grass patches inside 3 x 3
+grass, shells and a starfish on sand, bird tracks / boot prints / clumps on mud, small stones on
+rock, little rocks on ice where 3 in a row are the same ground, one snowman on an icy island (the
+ice cell with ice all round it that its hash picks), and animated tiles (random start times) of
+waves rolling up the sand and spray on half the rocky shores, turned to face the water.
 
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area
@@ -924,8 +935,9 @@ owner's layout): the ranger in a wooden frame with their name, tabs Body / Hair 
 Outfit / Accessories of picture tiles (the part on the ranger) and colour swatches, a Controls tab
 (how to play on a phone, a keyboard, a controller: the game shows no control hints of its own,
 e.g. no "E / tap boat" label on the boat), and along the bottom Surprise me!, Back (undo, close)
-and Confirm (no people as presets: the owner took them out). The rowboat is 2.5 m (40 px), low
-and flat; in it the ranger sits up to the chest (Avatar.sit: only down to the waist).
+and Confirm (no people as presets: the owner took them out). The rowboat is 2 m (32 px: at 2.5 m
+it got stuck in one-tile channels and the drawbridge), the owner's picture; in it the ranger sits
+up to the chest (Avatar.sit: only down to the waist). The patrol boat is 2.5 m.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

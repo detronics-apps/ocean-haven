@@ -5,9 +5,10 @@
 [ext_resource type="AudioStream" path="res://audio/music/celesta.wav" id="3"]
 [ext_resource type="AudioStream" path="res://audio/music/pad.wav" id="4"]
 [ext_resource type="AudioStream" path="res://audio/music/bass.wav" id="5"]
-[ext_resource type="AudioStream" path="res://audio/ambient/deep.wav" id="6"]
-[ext_resource type="AudioStream" path="res://audio/ambient/whale.wav" id="7"]
-[ext_resource type="AudioStream" path="res://audio/ambient/dolphin.wav" id="8"]
+[ext_resource type="AudioStream" path="res://audio/ambient/deep.wav" id="amb_deep"]
+[ext_resource type="AudioStream" path="res://audio/ambient/sperm_whale.wav" id="amb_sperm_whale"]
+[ext_resource type="AudioStream" path="res://audio/ambient/whale.wav" id="amb_whale"]
+[ext_resource type="AudioStream" path="res://audio/ambient/dolphin.wav" id="amb_dolphin"]
 
 [resource]
 script = ExtResource("1")
@@ -20,7 +21,7 @@ tempo = 54.0
 root = -2
 scale = PackedInt32Array(0, 2, 3, 7, 10)
 chords = PackedInt32Array(0, -4, -2, 0)
-ambient = ExtResource("6")
+ambient = ExtResource("amb_deep")
 ambient_volume_db = -7.0
-calls = Array[AudioStream]([ExtResource("7"), ExtResource("8")])
-calls_per_minute = 2.0
+calls = Array[AudioStream]([ExtResource("amb_sperm_whale"), ExtResource("amb_whale"), ExtResource("amb_dolphin")])
+calls_per_minute = 2.5

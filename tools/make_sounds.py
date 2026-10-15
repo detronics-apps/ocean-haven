@@ -254,6 +254,84 @@ def ambient() -> None:
     frog = mix(*[(k * 0.22, shape(tone(420, 0.14, ((1.0, 1.0), (2.0, 0.5), (3.0, 0.4)), decay=6, attack=0.01), lambda t: 0.5 + 0.5 * math.sin(TAU * 60 * t))) for k in range(2)])
     write("ambient", "frog", frog, peak=0.3)
     write("ambient", "fish", mix((0, tone(500, 0.14, ((1.0, 1.0),), decay=25, glide=1.0)), (0.02, shape(lowpass(noise(0.3), 2500), lambda t: 0.4 * math.exp(-14 * t)))), peak=0.3)
+    island_sounds()
+
+
+def island_sounds() -> None:
+    """Each island's own background and its animals' calls (the owner: the music matches the
+    island, its animals heard in it; the tune itself stays the same everywhere)."""
+    def crash(seconds: float) -> list[float]:
+        """One wave breaking on the beach: a roar that softens, then the hiss running back."""
+        roar = shape(lowpass(noise(seconds), lambda t: 600 + 2400 * math.exp(-2.5 * t)),
+                     lambda t: min(1.0, t / 0.18) * math.exp(-1.6 * t))
+        back = shape(bandpass(noise(seconds), 2000, 6000), lambda t: 0.25 * math.sin(math.pi * min(1.0, t / seconds)) ** 2)
+        return [a + b for a, b in zip(roar, back)]
+
+    def surf(seconds: float) -> list[float]:
+        rumble = [s * 0.5 for s in lowpass(noise(seconds), 300)]
+        return mix((0, rumble), (0.6, crash(3.6)), (4.4, crash(3.6)))[:n(seconds)]
+    write("ambient", "surf", loop(surf, 8.0), peak=0.55)
+
+    def polar_wind(seconds: float) -> list[float]:
+        gust = lambda t: 0.55 + 0.3 * math.sin(TAU * t / 8.0) ** 2 + 0.15 * math.sin(TAU * t / 2.0 + 1.0)
+        white = bandpass(noise(seconds), lambda t: 300 + 200 * gust(t), lambda t: 3000 + 2500 * gust(t))
+        howl = bandpass(noise(seconds), lambda t: 350 + 120 * gust(t), lambda t: 520 + 160 * gust(t))
+        return shape([w + 2.5 * h for w, h in zip(white, howl)], gust)
+    write("ambient", "polar_wind", loop(polar_wind, 8.0), peak=0.5)
+
+    def reef(seconds: float) -> list[float]:
+        far = [s * 0.35 for s in lowpass(noise(seconds), lambda t: 500 + 200 * math.sin(TAU * t / 8.0) ** 2)]
+        crackle = [0.0] * n(seconds)  # (snapping shrimp: a fine crackle all over a living reef)
+        for _ in range(int(seconds * 45)):
+            o = random.randrange(len(crackle) - 40)
+            for i in range(30):
+                crackle[o + i] += random.uniform(-1, 1) * math.exp(-i / 4) * 0.5
+        return [a + b for a, b in zip(far, bandpass(crackle, 2000, 9000))]
+    write("ambient", "reef", loop(reef, 8.0), peak=0.4)
+
+    def mangrove(seconds: float) -> list[float]:
+        lap = shape(bandpass(noise(seconds), 300, 1600), lambda t: 0.5 + 0.5 * math.sin(TAU * t / 2.0) ** 4)
+        insects = [0.12 * math.sin(TAU * 4200 * i / RATE) * (0.5 + 0.5 * math.sin(TAU * 22 * i / RATE)) * (0.6 + 0.4 * math.sin(TAU * i / RATE / 4.0)) for i in range(n(seconds))]
+        return [a + b for a, b in zip(lap, insects)]
+    write("ambient", "mangrove", loop(mangrove, 8.0), peak=0.4)
+
+    def honk(freq: float, seconds: float, rasp: float = 0.3) -> list[float]:
+        voice = tone(freq, seconds, ((1.0, 1.0), (3.0, 0.5), (5.0, 0.3), (7.0, 0.15)), decay=3, attack=0.02, glide=-0.15)
+        grit = shape(bandpass(noise(seconds), freq, freq * 6), lambda t: rasp * math.exp(-5 * t))
+        return [a + b for a, b in zip(voice, grit)]
+
+    def clicks(count: int, gap: float, low: float = 1500, high: float = 6000) -> list[float]:
+        out = silence(count * gap + 0.05)
+        for k in range(count):
+            o = n(k * gap)
+            for i in range(80):
+                out[o + i] += random.uniform(-1, 1) * math.exp(-i / 10)
+        return bandpass(out, low, high)
+
+    # Starting Island: red-footed boobies (rough "rah" calls), ghost crabs (clicks).
+    write("ambient", "booby", mix(*[(k * 0.3, honk(380, 0.22, 0.5)) for k in range(3)]), peak=0.35)
+    write("ambient", "crab", clicks(5, 0.07, 2500, 8000), peak=0.25)
+    # Kelp Forest: sea otters (squeals), cormorants (low croaks).
+    write("ambient", "otter", mix(*[(k * 0.35, tone(2100, 0.25, ((1.0, 1.0), (2.0, 0.3)), decay=3, attack=0.03, vibrato=0.02, glide=0.3)) for k in range(2)]), peak=0.3)
+    croak = shape(tone(140, 0.45, ((1.0, 1.0), (2.0, 0.6), (3.0, 0.4)), decay=2, attack=0.03), lambda t: 0.5 + 0.5 * math.sin(TAU * 38 * t))
+    write("ambient", "cormorant", mix((0, croak), (0.6, croak)), peak=0.35)
+    # Mangrove Coast: flamingos (nasal honks), a crocodile's low bellow.
+    write("ambient", "flamingo", mix(*[(k * 0.24, honk(640, 0.16, 0.2)) for k in range(3)]), peak=0.3)
+    bellow = shape(lowpass(noise(1.4), 180), lambda t: math.sin(math.pi * t / 1.4) * (0.6 + 0.4 * math.sin(TAU * 24 * t)))
+    write("ambient", "crocodile", [a + b for a, b in zip(bellow, lowpass(tone(70, 1.4, ((1.0, 1.0), (2.0, 0.5)), decay=0.5, attack=0.2), 300))], peak=0.4)
+    # Tropical Reef: parrotfish crunching coral, seahorses clicking as they feed.
+    bite = shape(bandpass(noise(0.08), 1500, 5000), lambda t: math.exp(-40 * t))
+    write("ambient", "parrotfish", mix((0, bite), (0.16, bite), (0.3, bite)), peak=0.35)
+    write("ambient", "seahorse", clicks(2, 0.09, 3000, 9000), peak=0.25)
+    # Deep Sea: sperm whales talk in codas of clicks.
+    write("ambient", "sperm_whale", clicks(5, 0.16, 800, 4000), peak=0.35)
+    # Polar Ocean: a polar bear's huffs and growl, a ringed seal's yelps, an Arctic skua.
+    huff = shape(lowpass(noise(0.35), 900), lambda t: math.sin(math.pi * t / 0.35) ** 2)
+    growl = shape(lowpass(noise(1.0), 350), lambda t: math.sin(math.pi * t / 1.0) * (0.55 + 0.45 * math.sin(TAU * 30 * t)))
+    write("ambient", "polar_bear", mix((0, huff), (0.45, huff), (1.0, growl)), peak=0.45)
+    yelp = tone(620, 0.3, ((1.0, 1.0), (2.0, 0.4), (3.0, 0.2)), decay=3, attack=0.02, glide=-0.45)
+    write("ambient", "seal", mix((0, yelp), (0.4, yelp)), peak=0.3)
+    write("ambient", "skua", mix(*[(k * 0.12, tone(1600, 0.07, ((1.0, 1.0), (2.0, 0.6)), decay=15, attack=0.003)) for k in range(4)]), peak=0.3)
 
 
 if __name__ == "__main__":

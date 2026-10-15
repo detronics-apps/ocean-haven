@@ -5,7 +5,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5utrm"]
 radius = 6.0
-height = 38.0
+height = 28.0
 
 [node name="Boat" type="CharacterBody2D" unique_id=235501150]
 collision_layer = 8
