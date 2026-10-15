@@ -1,11 +1,11 @@
 class_name VoyageMap
 extends OverlayScreen
-## The Map: every region of the ocean. You can sail to any island you've discovered
-## (the voyage fades out and in, and brings the ranger and their rowboat ashore there).
-## Undiscovered islands are shown but can't be chosen: they're found by exploring
-## warmer or colder with the Exploration Ship (see ExploreMenu). The Map answers just two
-## questions: discovered? (greyed out if not) and has an Exploration Ship? (a compass). The
-## islands are listed coldest first (the Polar Ocean at the top, the Tropical Reef at the bottom).
+## The Map: the islands you've discovered. You can sail to any of them (the voyage fades out
+## and in, and brings the ranger and their rowboat ashore there). Undiscovered islands aren't on
+## it at all, not even how many there are (the owner: each one is a surprise when the
+## Exploration Ship finds it: see ExploreMenu). Each island shows whether it has an Exploration
+## Ship (a compass). They're listed coldest first (the Polar Ocean at the top, the Tropical Reef
+## at the bottom).
 ## Everything else (levels, upgrades) belongs in the ship's own screen.
 
 const COMPASS := preload("res://assets/ui/compass.svg")
@@ -21,7 +21,6 @@ func _ready() -> void:
 
 
 func _fill() -> void:
-	Fleet.mark(&"map_opened")  # (the Clue Board: the hook-shaped island is seen on the Map)
 	if ObservatoryScreen.is_open_to_ranger():  # the whole ocean, once the fleet has all six
 		var observatory := BuildMode._big_button("Global Ocean Observatory", Color("2a78a8"))
 		observatory.name = "Observatory"
@@ -31,18 +30,15 @@ func _fill() -> void:
 		_content.add_child(observatory)
 	var here := Regions.nearest(_ranger_position())
 	for region: RegionData in Regions.coldest_first():
-		var known := Regions.is_discovered(region)
-		var lines: Array[String] = [region.display_name, region.description if known else region.theme]
+		if not Regions.is_discovered(region):
+			continue  # (not on the Map until found)
+		var lines: Array[String] = [region.display_name, region.description]
 		if region == here:
 			lines.append("You are here.")
 		elif region.in_development:
 			lines.append("Still under development.")
-		elif not known:
-			lines.append("Not discovered yet.")
 		var entry := card(region.map_icon, lines)
 		entry.name = "Entry_" + region.id
-		if not known:
-			entry.modulate = Color(0.55, 0.58, 0.62, 0.8)  # greyed out
 		if Regions.exploration_ready(get_tree(), region):
 			var compass := TextureRect.new()
 			compass.name = "Compass"
@@ -52,7 +48,7 @@ func _fill() -> void:
 			compass.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			compass.tooltip_text = "Has an Exploration Ship"
 			entry.get_child(0).add_child(compass)
-		if known and region != here and not region.in_development:
+		if region != here and not region.in_development:
 			var sail := Button.new()
 			sail.name = "Sail"
 			sail.text = "Set sail"

@@ -1,6 +1,6 @@
 extends SceneTree
-## Voyages: the rowboat can't leave its island's coastal waters. The Map lists every
-## region but only sails to discovered ones; islands are discovered by exploring
+## Voyages: the rowboat can't leave its island's coastal waters. The Map lists only the
+## discovered islands and sails to them; islands are discovered by exploring
 ## warmer or colder with the Exploration Ship, which finds the next undiscovered
 ## island that way (Colder: Kelp Forest, Deep Sea, Polar Ocean. Warmer: Mangrove
 ## Coast, Tropical Reef) and brings you ashore. An island is Exploration Ready once it has
@@ -48,7 +48,8 @@ func _initialize() -> void:
 	# --- At the start, the Map can't take you anywhere new ---
 	var map: Node = world.get_node("VoyageMap")
 	map.open()
-	_expect(_entry(map, "kelp_forest").contains("Not discovered yet"), "undiscovered islands are shown, but locked")
+	_expect(map.find_child("Entry_kelp_forest", true, false) == null and map.find_child("Entry_deep_sea", true, false) == null,
+		"undiscovered islands aren't on the Map at all")
 	_expect(map.find_children("Sail", "Button", true, false).is_empty(), "nothing to sail to yet")
 	_expect(map.find_children("Explore*", "Button", true, false).is_empty(), "exploring isn't on the Map")
 	map.close()
@@ -180,7 +181,7 @@ func _initialize() -> void:
 	# --- The Map sails to discovered islands (no ship needed), not to undiscovered ones ---
 	map.open()
 	_expect(map.find_child("Entry_kelp_forest", true, false).find_child("Sail", true, false) != null, "sail back to the Kelp Forest")
-	_expect(map.find_child("Entry_arctic_ocean", true, false).find_child("Sail", true, false) == null, "not to the undiscovered Polar Ocean")
+	_expect(map.find_child("Entry_arctic_ocean", true, false) == null, "the undiscovered Polar Ocean isn't on the Map")
 	map.close()
 	regions.discover(region.call("arctic_ocean"))  # (e.g. an older save)
 	region.call("arctic_ocean").in_development = true  # (pretend it's unfinished)
@@ -190,7 +191,7 @@ func _initialize() -> void:
 	region.call("arctic_ocean").in_development = false
 	var order: Array = map.get("_content").get_children().filter(func(c: Node) -> bool: return String(c.name).begins_with("Entry_")).map(
 		func(c: Node) -> String: return String(c.name).trim_prefix("Entry_"))
-	_expect(order == ["arctic_ocean", "deep_sea", "kelp_forest", "home_island", "mangrove_coast", "tropical_reef"],
+	_expect(order == ["arctic_ocean", "kelp_forest", "home_island", "mangrove_coast", "tropical_reef"],  # (the Deep Sea not found yet)
 		"the Map lists the islands coldest first, the Tropical Reef at the bottom (%s)" % [order])
 	map.find_child("Entry_home_island", true, false).find_child("Sail", true, false).pressed.emit()
 	for i in 240:

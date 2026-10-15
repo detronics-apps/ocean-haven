@@ -66,10 +66,10 @@ func _initialize() -> void:
 	journal_screen.open_clues("again?")
 	_expect(not journal_screen.visible, "after opening by itself twice, the Clue Board never opens by itself again")
 
-	# The Map shows the hook-shaped island: now there's a question.
-	fleet.mark(&"map_opened")
+	# A second island found: now there's a question (the Map never shows islands not yet found).
+	regions.discover(load("res://data/regions/kelp_forest.tres"))
 	clues.check()
-	_expect(clues.is_open(&"o2_net_tag") and not clues.is_answered(&"o2_net_tag"), "the Map raises the question")
+	_expect(clues.is_open(&"o2_net_tag") and not clues.is_answered(&"o2_net_tag"), "a second island raises the question")
 	var bram: Resource = load("res://data/people/bram.tres")
 	var bram_said := _said(people.talk(bram)) + " " + _said(people.talk(bram))
 	_expect(bram_said.contains("Hook's mark"), "Bram knows the mark")

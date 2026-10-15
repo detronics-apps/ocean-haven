@@ -102,12 +102,11 @@ Notation: `A + B` = both groups; `2 of [...]`; `…_k` = the same k throughout (
 - Clue: 🆕`net_tag_found` when the first turtle is freed (new games: its net is a ghost net with a
   worn tag, a hook-shaped mark and "…EEP" (the Deep Sea); old saves: "Tom kept the tag from your first turtle's
   net").
-- Question *Where is the hook-shaped place?* activates on: 🔭 the Map open with the hook-shaped
-  Deep Sea greyed out · any second island found. (Since `8909dbe` the Map button only appears
-  once an Exploration Ship is built, so this comes with the first exploration, not earlier.)
+- Question *Where is the hook-shaped place?* activates on: any second island found. (The Map
+  no longer shows islands not yet found, not even greyed out: the owner wants each one a
+  surprise; so the hook can't be seen on it early, and `hook_seen` is gone.)
 - Evidence:
   - `tag`: `net_tag_found` (the clue itself)
-  - `hook_seen`: the hook seen on the Map (O)
   - `at_hook`: `found:deep_sea`
   - `bram_tag`: Bram's 🆕 `tag` topic, written to match his existing want ("My old crew lost
     nets out here, years ago, and we never went back for them"): "That's the Hook's mark, my old
