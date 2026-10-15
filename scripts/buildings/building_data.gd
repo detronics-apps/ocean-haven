@@ -49,6 +49,9 @@ extends Resource
 @export var tier_textures: Array[Texture2D] = []
 ## What each upgrade costs.
 @export var upgrade_funding := 0
+## Each one already built (on any island) adds this to the next one's funding: Exploration
+## Ships cost more the further the fleet has gone (the owner).
+@export var cost_rises_by := 0
 ## Litter each upgrade uses (recycling centres).
 @export var upgrade_litter := 0
 @export var upgrade_items: Dictionary[StringName, int] = {}
@@ -183,12 +186,30 @@ extends Resource
 
 ## "Needs 20 funding + 5 recycled litter + 2 wood." for menus and hints.
 func cost_text() -> String:
-	var text := describe_cost(cost_funding, cost_litter, cost_items)
+	var text := describe_cost(funding_cost(), cost_litter, cost_items)
 	return text + (" Upkeep: %d funding a day." % upkeep if upkeep > 0 else "")
 
 
-func upgrade_cost_text() -> String:
-	return describe_cost(upgrade_funding, upgrade_litter, upgrade_items)
+func upgrade_cost_text(tier := 1) -> String:
+	return describe_cost(upgrade_funding_at(tier), upgrade_litter, upgrade_items)
+
+
+## The funding the next one costs (cost_rises_by for each already built).
+func funding_cost() -> int:
+	if cost_rises_by <= 0:
+		return cost_funding
+	var built := 0
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree:
+		for building: Node in tree.get_nodes_in_group("buildings"):
+			if building.get("data") and building.data.id == id and not building.is_queued_for_deletion():
+				built += 1
+	return cost_funding + cost_rises_by * built
+
+
+## Upgrading costs more each level (the owner): from tier 1 upgrade_funding, from tier 2 twice it.
+func upgrade_funding_at(tier: int) -> int:
+	return upgrade_funding * tier
 
 
 static func describe_cost(funding: int, litter: int, items: Dictionary) -> String:

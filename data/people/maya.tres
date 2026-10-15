@@ -38,9 +38,9 @@ text = "Photograph an animal"
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")
 id = &"photos"
-lines = PackedStringArray("Here, take my old camera. Could you photograph the animals for me? Walk up slowly, so they stay calm.", "And go and see Tom at the lighthouse. He's watched this beach for fifty years.")
+lines = PackedStringArray("Here, take my old camera. Could you photograph the animals for me? Walk up slowly, so they stay calm.", "And this is from the fundraiser back home that sent you here: 200 funding to get you started.", "And go and see Tom at the lighthouse. He's watched this beach for fifty years.")
 instead_when = PackedStringArray("met:tom")
-instead = PackedStringArray("Here, take my old camera. Could you photograph the animals for me? Walk up slowly, so they stay calm.")
+instead = PackedStringArray("Here, take my old camera. Could you photograph the animals for me? Walk up slowly, so they stay calm.", "And this is from the fundraiser back home that sent you here: 200 funding to get you started.")
 objective = SubResource("Goal_4")
 marks = &"camera"
 thanks = PackedStringArray("Look at this, {name}! Every animal here does something for this island, even the little ones.", "Now I want to know what changed for them.")

@@ -638,6 +638,15 @@ day (Funding.PHOTO_RESEARCH), and the first replay of each ranger activity each 
 research grant (ActivityData.daily_grant 30, never more for a better score; Activities.research_grant,
 saved "granted"). A day-by-day model of a full playthrough (all six islands, real costs) found
 funding held every island up: about 68 game days (~11 h) with these numbers.
+Funding balance (the owner: 5 days to the rescue station lost players; too much with nothing to
+buy at the end): Maya hands over a 200 founding grant with her camera, from the fundraiser that
+sent the ranger to the island (Funding.FOUNDING_GRANT, on Fleet.marked "camera"); the first photo
+of each species pays 50 (FIRST_PHOTO), later ones the daily 20; no clean-up grants. Visitor income
+levels off on each island: its busiest funding facility pays in full, the next 75 %, the next
+56 %... (Funding.LEVEL_OFF). Costs rise along the chain: Marine Search & Rescue Station 300, Kelp
+and Mangrove signature buildings 500, Reef and Deep Sea 650, Polar 800; each Exploration Ship
+400 plus 160 for every one already built (BuildingData.cost_rises_by: 400 to 1,200); upgrades cost
+more each level (upgrade_funding_at: the 2nd twice the 1st; the Make menu lists both).
 
 Playable islands: all six. An unfinished island would be `RegionData.in_development`: Explore
 says the fleet is ready (or what it still needs) and that the island is still under

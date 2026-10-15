@@ -48,8 +48,8 @@ func _initialize() -> void:
 	var lines: Array = people.talk(maya)
 	var texts: Array = lines.map(func(l: Dictionary) -> String: return l.text)
 	_expect(texts[0].contains("I'm Maya, a researcher") and texts.any(func(t: String) -> bool: return t.contains("take my old camera"))
-		and texts.any(func(t: String) -> bool: return t.contains("go and see Tom")) and texts.size() == 3,
-		"Maya's first talk is short: hello, her camera, then off to Tom (%s)" % [texts])
+		and texts.any(func(t: String) -> bool: return t.contains("go and see Tom")) and texts.any(func(t: String) -> bool: return t.contains("fundraiser")) and texts.size() == 4,
+		"Maya's first talk is short: hello, her camera and the grant, then off to Tom (%s)" % [texts])
 	_expect(texts[0].contains("Sam, the new ranger"), "she calls the ranger by their name (%s)" % texts[0])
 	_expect(root.get_node("Fleet").has_flag(&"camera"), "she gave the ranger her camera")
 	_expect(not hud.objective_text().begins_with("Goal:"), "the objective doesn't show while she's still talking")

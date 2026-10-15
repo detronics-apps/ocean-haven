@@ -475,11 +475,11 @@ func _upgraded(base: int) -> int:
 func upgrade() -> void:
 	if tier >= data.max_tier:
 		return
-	if not BuildMode.has_enough(data.upgrade_funding, data.upgrade_litter, data.upgrade_items):
+	if not BuildMode.has_enough(data.upgrade_funding_at(tier), data.upgrade_litter, data.upgrade_items):
 		get_tree().call_group("hud", "show_toast", "To upgrade your %s: %s" % [
-			data.display_name, data.upgrade_cost_text()])
+			data.display_name, data.upgrade_cost_text(tier)])
 		return
-	BuildMode.pay(data.upgrade_funding, data.upgrade_litter, data.upgrade_items)
+	BuildMode.pay(data.upgrade_funding_at(tier), data.upgrade_litter, data.upgrade_items)
 	tier += 1
 	var better := "pays %d funding per piece" % recycle_value()
 	if not data.range_per_tier.is_empty():

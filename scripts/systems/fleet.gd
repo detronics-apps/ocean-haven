@@ -7,6 +7,8 @@ extends Node
 
 signal objective_completed(region: RegionData, discovery: DiscoveryData)
 signal upgraded(discovery: DiscoveryData, level: int)
+## A flag set for the first time (Funding: Maya's camera brings the founding grant).
+signal marked(flag: StringName)
 
 ## Region ids whose objective is done, and discovery ids found / installed.
 var _completed := {}
@@ -131,6 +133,7 @@ func mark(flag: StringName) -> void:
 	if _flags.has(flag):
 		return
 	_flags[flag] = true
+	marked.emit(flag)
 	if flag in [GLASS_MADE, CLEAN_WATER_MADE] and reusable_bottles():
 		get_tree().call_group("hud", "show_toast", "Reusable glass bottles unlocked!\nGlass from the reef's sand and clean water from the clams: BlueHaven's facilities no longer use plastic drinking bottles, so no new ones drift in on any island.")
 	check()

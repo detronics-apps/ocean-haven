@@ -89,7 +89,10 @@ func _entry(data: BuildingData) -> Control:
 	# Only the name, what it does (one short line) and what it costs.
 	var lines: Array[String] = [data.display_name, data.summary if data.summary != "" else data.description, status]
 	if data.max_tier > 1 and not data.locked:  # (what an upgrade costs: the building's button just says Upgrade)
-		lines.append("Each upgrade: " + data.upgrade_cost_text().trim_prefix("Needs "))
+		var steps: Array[String] = []
+		for tier in range(1, data.max_tier):
+			steps.append(data.upgrade_cost_text(tier).trim_prefix("Needs ").trim_suffix("."))
+		lines.append("Upgrades: " + ", then ".join(steps) + ".")
 	var entry := card(data.texture, lines, data.locked)
 	entry.name = "Entry_" + data.id
 	if FACILITY_COLOURS.has(data.facility):

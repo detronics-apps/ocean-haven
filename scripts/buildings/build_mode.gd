@@ -240,7 +240,7 @@ func has_requirement(data: BuildingData) -> bool:
 
 
 func can_afford(data: BuildingData) -> bool:
-	return has_enough(data.cost_funding, data.cost_litter, data.cost_items)
+	return has_enough(data.funding_cost(), data.cost_litter, data.cost_items)
 
 
 ## Whether the ranger has this much funding, litter and items (carried or stored).
@@ -284,7 +284,7 @@ func place() -> bool:
 	if not _free:
 		if not can_afford(_data):
 			return false
-		pay(_data.cost_funding, _data.cost_litter, _data.cost_items)
+		pay(_data.funding_cost(), _data.cost_litter, _data.cost_items)
 	for old: Building in get_tree().get_nodes_in_group("buildings"):
 		# (only on this island: a house here doesn't take down a tent on another island)
 		if old.data.id == _data.replaces and Regions.nearest(old.global_position) == Regions.nearest(Terrain.centre_of(_cell)):
