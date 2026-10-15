@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/player/boat.gd" id="1_webh6"]
 [ext_resource type="Texture2D" path="res://assets/boats/rowboat.png" id="2_km2v0"]
+[ext_resource type="Texture2D" path="res://assets/boats/rowboat_front.png" id="3_front"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5utrm"]
 radius = 6.0
@@ -12,6 +13,7 @@ collision_layer = 8
 collision_mask = 4
 motion_mode = 1
 script = ExtResource("1_webh6")
+hull_front = ExtResource("3_front")
 speed = 160.0
 controlled = false
 

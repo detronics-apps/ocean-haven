@@ -8,8 +8,9 @@ Rows (columns = versions, or the frames of an animation):
  2 mud:    bird tracks, boot prints, two mud clumps
  3 rock:   small stones
  4 ice:    two little dark rocks, a pebble, the snowman (one per icy island)
- 5 waves rolling up the sand (4 frames; the water is above the tile: turned for other sides)
- 6 waves breaking against rock (4 frames; the same)
+ 5 waves rolling up the sand and sliding back (8 frames; the water is above the tile: turned
+   for other sides)
+ 6 waves smashing against rock (8 frames; the same)
 Re-run after changing a detail:  python tools/make_ground_details.py
 """
 import math
@@ -19,7 +20,8 @@ from PIL import Image
 
 OUT = os.path.join(os.path.dirname(__file__), '..', 'assets', 'tilesets', 'ground_details.png')
 S = 64
-COLS, ROWS = 4, 7
+COLS, ROWS = 8, 7
+WAVE_FRAMES = 8
 
 
 def rgb(h):
@@ -164,42 +166,65 @@ def ice(v, rnd):
 
 
 def wave_frame(f):
-    """Foam rolling down onto the sand from the water above, then soaking away: a curve that
-    starts and ends at the water's edge (the owner: no dead stop at the tile's sides), fading
-    out towards its ends."""
+    """A wave running up onto the sand from the water above and sliding back (the owner): a curve
+    that starts and ends at the water's edge, fully there only at its peak in the middle and
+    fading away towards both sides; the wet sand it leaves fades as it pulls back."""
     c = Cell()
-    reach = [4, 10, 15, 13][f]
-    alpha = [255, 255, 200, 110][f]
+    reach = [2, 6, 10, 14, 15, 13, 9, 5][f]
+    alpha = [150, 220, 255, 255, 230, 190, 150, 110][f]
     for x in range(2, S - 2):
         u = (x - 2) / (S - 5)  # (0 .. 1 across)
         bulge = math.sin(math.pi * u)  # (0 at both ends, 1 in the middle)
         edge = round(reach * bulge + math.sin(x / 5.0 + f) * 0.8 * bulge)
-        fade = min(1.0, bulge * 2.2)  # (the ends fade out)
+        # (full only at the peak, gone by the sides: nothing within 12 px of them, where the
+        # coast's rounded corners curve away, then easing in; the owner)
+        ramp = min(1.0, max(0.0, (min(x, S - 1 - x) - 12) / 18.0))
+        fade = bulge ** 1.5 * ramp
         for y in range(0, edge):  # (wet sand behind the foam)
             c.dot(x, y, (150, 128, 90, int(70 * fade)))
-        for y in range(edge, edge + (2 if f < 3 else 1)):
+        for y in range(edge, edge + (2 if f < 5 else 1)):
             c.dot(x, y, (250, 252, 255, int(alpha * fade)))
-        if f in (1, 2) and x % 9 in (0, 1):
+        if f in (2, 3, 4) and x % 9 in (0, 1):
             c.dot(x, edge + 2, (250, 252, 255, int(alpha * fade) // 2))
     return c
 
 
+def side_fade(x):
+    """1 in the middle of the tile, nothing within 12 px of its sides (where the coast's rounded
+    corners curve away), easing in between (shared by the waves and the spray)."""
+    ramp = min(1.0, max(0.0, (min(x, S - 1 - x) - 12) / 18.0))
+    return math.sin(math.pi * x / (S - 1)) ** 1.5 * ramp
+
+
 def splash_frame(f):
-    """A wave breaking on the rock's edge (the water above): spray thrown up, falling back."""
+    """A wave smashing against the rock at one point (the water above; the owner: at points, not
+    along the whole edge): a burst of foam where it hits, spray thrown up and out over the rock in
+    a fan, then the drops falling back and fizzing away. Nothing near the tile's sides."""
     c = Cell()
+    hit = 26  # (where it hits: a little off the middle, so turned tiles hit at different points)
     rnd = random.Random(7)
-    drops = [(rnd.randint(2, 61), rnd.random()) for _ in range(26)]
-    for x, k in drops:
-        fade = min(1.0, math.sin(math.pi * x / (S - 1)) * 2.2)  # (fading out at the tile's sides)
-        h = [2, 9, 6, 3][f] * (0.4 + k) * fade
-        y = int(h)
-        a = int([230, 255, 200, 110][f] * fade)
-        c.dot(x, y, (250, 252, 255, a))
-        if f in (1, 2):
-            c.dot(x, y + 1, (250, 252, 255, a // 2))
-    for x in range(S):  # (the foam line along the edge, fading at both ends)
-        fade = min(1.0, math.sin(math.pi * x / (S - 1)) * 2.2)
-        c.dot(x, 0, (250, 252, 255, int([200, 255, 180, 90][f] * fade)))
+    burst = [1, 3, 5, 4, 3, 2, 1, 0][f]
+    band_alpha = [150, 230, 255, 240, 190, 140, 90, 0][f]
+    for x in range(hit - 10, hit + 11):
+        near = 1.0 - abs(x - hit) / 11.0
+        for y in range(round(burst * near) + (1 if burst else 0)):
+            c.dot(x, y, (250, 252, 255, int(band_alpha * near)))
+    # (spray: drops thrown out in a fan from the hit, up over the rock, and falling back)
+    drops = [(rnd.uniform(-1.0, 1.0), rnd.uniform(0.4, 1.0)) for _ in range(34)]
+    travel = [0, 0, 6, 11, 14, 15, 15, 15][f]
+    fall = [0, 0, 0, 0, 2, 4, 6, 8][f]
+    alpha = [0, 0, 255, 255, 220, 160, 100, 50][f]
+    for spread, power in drops:
+        if alpha == 0:
+            continue
+        x = hit + spread * travel * 1.1
+        y = travel * power * (1.0 - abs(spread) * 0.5) - fall * power * 0.5
+        if y < 0:
+            continue
+        a = int(alpha * (1.0 - abs(spread) * 0.4))
+        c.dot(round(x), round(y), (250, 252, 255, a))
+        if f in (2, 3) and power > 0.7:
+            c.dot(round(x - spread), round(y) - 1, (250, 252, 255, a // 2))  # (a streak as it flies)
     return c
 
 
@@ -210,9 +235,10 @@ if __name__ == '__main__':
         for v in range(COLS):
             for (x, y), col in draw(v, random.Random(100 * r + v)).px.items():
                 sheet.putpixel((v * S + x, r * S + y), col)
-    for f in range(4):
+    for f in range(WAVE_FRAMES):
         for (x, y), col in wave_frame(f).px.items():
             sheet.putpixel((f * S + x, 5 * S + y), col)
+    for f in range(WAVE_FRAMES):
         for (x, y), col in splash_frame(f).px.items():
             sheet.putpixel((f * S + x, 6 * S + y), col)
     sheet.save(OUT)

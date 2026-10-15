@@ -5,6 +5,9 @@ extends ControlledBody
 ## can also take another boat in tow (it follows behind) and let it go somewhere else.
 
 @export var board_range := 64.0
+## The hull's near side (seen from the side, at the bottom of the picture), drawn over the ranger
+## sitting in the boat; the rest of the hull (its inside, seen from above) is under them.
+@export var hull_front: Texture2D
 ## How close another boat must be to take it in tow, and how far behind it follows.
 @export var tow_reach := 56.0
 @export var tow_gap := 36.0
@@ -23,6 +26,12 @@ func _ready() -> void:
 	add_to_group("boat")
 	add_to_group("interactables")
 	_player = get_tree().get_first_node_in_group("player")
+	if hull_front:
+		var front := Sprite2D.new()
+		front.name = "HullFront"
+		front.texture = hull_front
+		$Look.add_child(front)
+		$Look.move_child(front, $Look/Hull.get_index() + 1)
 	RangerProfile.look_changed.connect(_apply_colour)
 	_apply_colour()
 
@@ -42,6 +51,8 @@ func retire() -> void:
 
 func _apply_colour() -> void:
 	$Look/Hull.modulate = RangerProfile.pick("boat")
+	if has_node("Look/HullFront"):
+		$Look/HullFront.modulate = $Look/Hull.modulate
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -134,13 +145,14 @@ func _board(check_range := true) -> bool:
 	_player.set_aboard(true)
 	if check_range and not Fleet.has_flag(&"boat_used"):
 		Fleet.mark(&"boat_used")  # (people stop asking as if the ranger had never been out in one)
-	# Show the ranger (with their current look) sitting in the boat, behind the hull.
+	# Show the ranger (with their current look) sitting in the boat: over its inside, behind
+	# its near side.
 	_driver = _player.get_node("Look").duplicate()
-	_driver.position = Vector2(-3, -1)  # (sitting on the seat, waist at the gunwale)
+	_driver.position = Vector2(-3, 2)  # (sitting on the seat, waist below the near side's top)
 	(_driver as Avatar).set_view(Avatar.View.FRONT)
 	(_driver as Avatar).sit()
 	_look.add_child(_driver)
-	_look.move_child(_driver, 0)
+	_look.move_child(_driver, $Look/Hull.get_index() + 1)
 	controlled = true
 	ControlledBody.switch_camera(_camera)
 	if check_range:

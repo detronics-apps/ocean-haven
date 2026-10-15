@@ -735,7 +735,11 @@ edges, picked per cell by TerrainEdges and redone round any changed tile): grass
 grass, shells and a starfish on sand, bird tracks / boot prints / clumps on mud, small stones on
 rock, little rocks on ice where 3 in a row are the same ground, one snowman on an icy island (the
 ice cell with ice all round it that its hash picks), and animated tiles (random start times) of
-waves rolling up the sand and spray on half the rocky shores, turned to face the water.
+waves running up the sand and sliding back (8 frames: a curve from the water's edge, full only at
+its peak, gone well before the tile's sides where the coast's corners curve away) and spray on
+half the rocky shores, turned to face the water. A thin dark line runs where two terrains meet
+(TerrainEdges._lines, following the rounded corners' arcs; never round every tile: the owner's
+pick). Mud, ice and rock carry fewer, softer marks than the sheet (the owner: too prominent).
 
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area
@@ -945,8 +949,10 @@ Outfit / Accessories of picture tiles (the part on the ranger) and colour swatch
 (how to play on a phone, a keyboard, a controller: the game shows no control hints of its own,
 e.g. no "E / tap boat" label on the boat), and along the bottom Surprise me!, Back (undo, close)
 and Confirm (no people as presets: the owner took them out). The rowboat is 2 m (32 px: at 2.5 m
-it got stuck in one-tile channels and the drawbridge), the owner's picture; in it the ranger sits
-up to the chest (Avatar.sit: only down to the waist). The patrol boat is 2.5 m.
+it got stuck in one-tile channels and the drawbridge), the owner's picture, split in two
+(cut_building_sheet "front_from": rowboat_front.png, Boat.hull_front): the ranger sits over its
+inside (seen from above) and behind its near side (Avatar.sit: only down to the waist). The
+patrol boat is 2.5 m.
 
 **Every animal matters.** No background animals: each species either needs the ranger's help
 (tangled, trapped, injured…), gives something that helps other animals (finds litter, digs it up…),

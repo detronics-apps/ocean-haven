@@ -245,4 +245,8 @@ if __name__ == '__main__':
         out = fit(cut(im, box), target)
         path = os.path.join(ROOT, target['texture'].replace('res://', '').rsplit('.', 1)[0] + '.png')
         out.save(path)
+        if 'front_from' in target:  # (a boat's near side, drawn over whoever sits in it)
+            front = out.copy()
+            front.paste((0, 0, 0, 0), (0, 0, front.size[0], target['front_from']))
+            front.save(path[:-4] + '_front.png')
         print('%-40s -> %s' % (target['name'], os.path.relpath(path, ROOT)))

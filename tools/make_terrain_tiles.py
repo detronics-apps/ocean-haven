@@ -152,52 +152,52 @@ def crack(t, rnd, x, y, length, colour, edge=None, step=(1, 1), dy=0, thick=Fals
 
 def rock(rnd, v):
     t = Tile('#8a8074', rnd, ['#80766b', '#938a7e'])
-    for x, y in places(rnd, rnd.randint(8, 11), 8, 3):  # (pale flat patches)
-        t.box(x, y - 2, rnd.randint(3, 8), rnd.randint(2, 3), rnd.choice(['#9f9588', '#a59b8e']))
-    for x, y in places(rnd, rnd.randint(6, 8), 0, 0):
+    for x, y in places(rnd, rnd.randint(3, 5), 8, 3):  # (pale flat patches)
+        t.box(x, y - 2, rnd.randint(3, 7), rnd.randint(2, 3), rnd.choice(['#958b7e', '#9a9083']))
+    for x, y in places(rnd, rnd.randint(2, 3), 0, 0):  # (a few thin cracks, softer than the sheet)
         step = rnd.choice(((1, 1), (-1, 1), (1, 1)))
-        crack(t, rnd, x, y, rnd.randint(16, 30), '#574e45', '#aaa093', step, thick=True, branch=rnd.random() < 0.4)
-    for x, y in places(rnd, rnd.randint(2, 4), 6, 4):  # (pebble clusters)
+        crack(t, rnd, x, y, rnd.randint(12, 24), '#6e655b', '#998f82', step, branch=rnd.random() < 0.3)
+    for x, y in places(rnd, rnd.randint(0, 2), 6, 4):  # (pebble clusters)
         for dx, dy in rnd.sample(((0, 0), (3, 0), (1, 2), (4, 2), (0, 4), (5, 4)), 3):
-            t.box(x + dx, y - 4 + dy, 2, 1, '#c2b7a5')
-            t.dot(x + dx, y - 3 + dy, '#5e554c')
+            t.box(x + dx, y - 4 + dy, 2, 1, '#aaa092')
+            t.dot(x + dx, y - 3 + dy, '#6e655b')
     return t
 
 
 def ice(rnd, v):
     t = Tile('#e5eef3', rnd, ['#dfe8ef', '#edf3f7'])
-    for i in range(rnd.randint(2, 3)):
+    for i in range(rnd.randint(1, 2)):
         # (from near an edge, inwards and down, never all meeting in the middle)
         x = rnd.choice((rnd.randint(MARGIN, 14), rnd.randint(S - 15, S - MARGIN - 1), rnd.randint(16, S - 17)))
         y = rnd.randint(MARGIN, 20) if i == 0 else rnd.randint(20, 44)
         step = (1, 1) if x < S // 2 else (-1, 1)
-        n = rnd.randint(22, 40)
+        n = rnd.randint(16, 30)
         if rnd.random() < 0.7:
             state = rnd.getstate()
-            crack(t, rnd, x, y, n, '#b8cad9', step=step, dy=1)  # (its pale blue shadow)
+            crack(t, rnd, x, y, n, '#d2dee7', step=step, dy=1)  # (its pale blue shadow)
             rnd.setstate(state)
-            crack(t, rnd, x, y, n, '#ffffff', step=step)
+            crack(t, rnd, x, y, n, '#f6f9fb', step=step)
         else:
-            crack(t, rnd, x, y, n, '#b8cad9', step=step)
+            crack(t, rnd, x, y, n, '#cfdbe5', step=step)
     return t
 
 
 def mud(rnd, v):
     t = Tile('#78593a', rnd, ['#71533a', '#7e5f40'])
-    for x, y in places(rnd, rnd.randint(5, 8), 4, 3):  # (pebbles: a pale top, a dark rim under)
-        w = rnd.randint(2, 4)
-        t.box(x, y - 2, w, 2, '#b8a07e')
-        t.box(x, y, w, 1, '#4e3824')
-        t.dot(x + w, y - 1, '#4e3824')
-        t.dot(x, y - 2, '#e2d2b2')
-    for x, y in places(rnd, rnd.randint(1, 2), 12, 9):  # (rings where puddles were)
+    for x, y in places(rnd, rnd.randint(2, 4), 4, 3):  # (pebbles: a pale top, a dark rim under)
+        w = rnd.randint(2, 3)
+        t.box(x, y - 2, w, 2, '#957a5a')
+        t.box(x, y, w, 1, '#62482f')
+        t.dot(x + w, y - 1, '#62482f')
+        t.dot(x, y - 2, '#a98e6c')
+    for x, y in places(rnd, 1 if v % 3 == 0 else 0, 12, 9):  # (now and then a ring where a puddle was)
         w, h = rnd.randint(10, 14), rnd.randint(7, 10)
         for i in range(48):
             a = i / 48 * math.tau
             px, py = x + w / 2 + math.cos(a) * w / 2, y - h / 2 + math.sin(a) * h / 2
-            t.dot(round(px), round(py), '#a88b66' if math.sin(a) < 0.3 else '#5c4229')
-    for x, y in places(rnd, rnd.randint(8, 12)):
-        t.dot(x, y, '#9a8065')
+            t.dot(round(px), round(py), '#8e7252' if math.sin(a) < 0.3 else '#674b31')
+    for x, y in places(rnd, rnd.randint(4, 6)):
+        t.dot(x, y, '#8a6f52')
     return t
 
 

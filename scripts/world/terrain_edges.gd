@@ -36,6 +36,10 @@ var _ground: TileMapLayer
 ## Terrain of every cell last time it was looked at, and the pieces to draw per corner point.
 var _terrain := {}
 var _pieces := {}
+## The thin dark line between two terrains near each corner point (the owner's pick: lines
+## between terrains, never round every tile): straight along the edges, round the rounded corners.
+var _lines := {}
+const LINE := Color(0, 0, 0, 0.28)
 var _colours := {}
 
 const ART := preload("res://assets/tilesets/terrain_art.png")
@@ -49,7 +53,7 @@ var _art: TileMapLayer
 ## icy island, waves rolling up the sand and spray on rocky shores (animated tiles).
 const DETAILS := preload("res://assets/tilesets/ground_details.png")
 const DETAIL_ROWS := {"grass": 0, "sand": 1, "mud": 2, "rock": 3, "ice": 4}
-const DETAIL_CHANCE := {"grass": 0.18, "sand": 0.12, "mud": 0.12, "rock": 0.15, "ice": 0.06}
+const DETAIL_CHANCE := {"grass": 0.18, "sand": 0.12, "mud": 0.04, "rock": 0.15, "ice": 0.06}  # (mud: tracks now and then, the owner)
 const WAVES_ROW := 5
 const SPRAY_ROW := 6
 const SNOWMAN := Vector2i(3, 4)
@@ -113,11 +117,12 @@ static func _detail_tiles() -> TileSet:
 	for row in [WAVES_ROW, SPRAY_ROW]:
 		var at := Vector2i(0, row)
 		source.create_tile(at)
-		source.set_tile_animation_columns(at, 4)
-		source.set_tile_animation_frames_count(at, 4)
+		# (8 frames: the waves run up and slide back; the spray rolls in, smashes and fizzes away)
+		source.set_tile_animation_columns(at, 8)
+		source.set_tile_animation_frames_count(at, 8)
 		source.set_tile_animation_mode(at, TileSetAtlasSource.TILE_ANIMATION_MODE_RANDOM_START_TIMES)
-		for f in 4:
-			source.set_tile_animation_frame_duration(at, f, 0.45 if row == WAVES_ROW else 0.3)
+		for f in 8:
+			source.set_tile_animation_frame_duration(at, f, 0.3 if row == WAVES_ROW else (0.12 if f in [2, 3] else 0.22))
 		var below := source.get_tile_data(at, source.create_alternative_tile(at))
 		below.flip_v = true
 		var left := source.get_tile_data(at, source.create_alternative_tile(at))
@@ -270,6 +275,7 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 ## 4 cells around it gets a rounded quarter, and stores the shape to draw.
 func _shape_corner(corner: Vector2i) -> void:
 	_pieces.erase(corner)
+	_lines.erase(corner)
 	# The 4 cells around the point, and for each the direction from its centre to the point.
 	var around := [[corner + Vector2i(-1, -1), Vector2(1, 1)], [corner + Vector2i(0, -1), Vector2(-1, 1)],
 		[corner + Vector2i(-1, 0), Vector2(1, -1)], [corner, Vector2(-1, -1)]]
@@ -297,7 +303,35 @@ func _shape_corner(corner: Vector2i) -> void:
 			continue
 		if not _pieces.has(corner):
 			_pieces[corner] = []
-		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill]])
+		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill], towards])
+	_line_corner(corner)
+
+
+## The boundary lines round corner point `corner`: each of the 4 half-edges that meet there is a
+## line where the cells on its two sides differ, shortened where a rounded corner takes over,
+## whose arc is drawn instead.
+func _line_corner(corner: Vector2i) -> void:
+	var point := _ground.map_to_local(corner) - Vector2(HALF, HALF)
+	var tl := terrain_at(corner + Vector2i(-1, -1))
+	var tr := terrain_at(corner + Vector2i(0, -1))
+	var bl := terrain_at(corner + Vector2i(-1, 0))
+	var br := terrain_at(corner)
+	# half-edge direction -> [the cells on its two sides differ, how much of it a rounding takes]
+	var halves := {Vector2.UP: [tl != tr, 0.0], Vector2.DOWN: [bl != br, 0.0],
+		Vector2.LEFT: [tl != bl, 0.0], Vector2.RIGHT: [tr != br, 0.0]}
+	var lines: Array[PackedVector2Array] = []
+	for piece: Array in _pieces.get(corner, []):
+		var towards: Vector2 = piece[2]
+		var shape: PackedVector2Array = piece[0]
+		var radius := (shape[1] - point).length()
+		halves[Vector2.UP if towards.y > 0 else Vector2.DOWN][1] = radius
+		halves[Vector2.LEFT if towards.x > 0 else Vector2.RIGHT][1] = radius
+		lines.append(shape.slice(1))  # (the arc)
+	for dir: Vector2 in halves:
+		if halves[dir][0]:
+			lines.append(PackedVector2Array([point + dir * halves[dir][1], point + dir * HALF]))
+	if not lines.is_empty():
+		_lines[corner] = lines
 
 
 ## The polygon filling `cell`'s corner towards `towards` outside a rounded corner of radius
@@ -343,3 +377,6 @@ func _draw() -> void:
 	for corner: Vector2i in _pieces:
 		for piece: Array in _pieces[corner]:
 			draw_colored_polygon(piece[0], piece[1])
+	for corner: Vector2i in _lines:  # (over the rounded corners, so their arcs show whole)
+		for line: PackedVector2Array in _lines[corner]:
+			draw_polyline(line, LINE, 1.0)
