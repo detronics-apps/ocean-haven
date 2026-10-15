@@ -16,9 +16,12 @@ static func at(tree: SceneTree, point: Vector2) -> String:
 ## Whether the ranger can stand at `point`: land, or a deck built over the water.
 static func walkable(tree: SceneTree, point: Vector2) -> bool:
 	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
-		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
+		var cell := ground.local_to_map(ground.to_local(point))
+		var tile := ground.get_cell_tile_data(cell)
 		if tile:
-			return tile.get_custom_data("walkable")
+			# (or across the corner where two land cells touch: IslandGround.passes)
+			return tile.get_custom_data("walkable") or (ground is IslandGround
+				and (ground as IslandGround).in_pass(cell, ground.to_local(point)))
 	return false
 
 

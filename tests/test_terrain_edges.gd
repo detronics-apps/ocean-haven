@@ -66,6 +66,41 @@ func _initialize() -> void:
 	if three != Vector2i.MAX:
 		_expect(edges.pieces_at(three + Vector2i(1, 1)).size() >= 1, "three terrains meeting: rounded too")
 
+	# Two sand cells touching only at a corner, water in the other two (drawn joined up): the
+	# ranger can walk across from one to the other.
+	var water_cells := [sand_cell + Vector2i(1, 0), sand_cell + Vector2i(0, 1)]
+	var atlases := []
+	for c: Vector2i in water_cells:
+		atlases.append(ground.get_cell_atlas_coords(c))
+		ground.set_cell(c, 0, Vector2i(0, 0))
+		save.record_tile(ground, c, Vector2i(0, 0))
+	await process_frame
+	await physics_frame
+	await physics_frame
+	var corner_point := ground.to_global(ground.map_to_local(sand_cell) + Vector2(16, 16))
+	var terrain: GDScript = load("res://scripts/world/terrain.gd")
+	_expect(terrain.walkable(self, corner_point + Vector2(3, -3)), "standing in the corner between the two land cells")
+	_expect(not terrain.walkable(self, corner_point + Vector2(8, -8)), "but not further into the water")
+	var walker := CharacterBody2D.new()
+	walker.collision_mask = 1
+	var feet := CollisionShape2D.new()
+	feet.shape = CircleShape2D.new()
+	(feet.shape as CircleShape2D).radius = 5.0
+	walker.add_child(feet)
+	world.add_child(walker)
+	var crossed := func() -> bool:
+		walker.global_position = ground.to_global(ground.map_to_local(sand_cell))
+		await physics_frame
+		for i in 21:
+			walker.move_and_collide(Vector2(1.5, 1.5))
+			await physics_frame
+		return walker.global_position.distance_to(ground.to_global(ground.map_to_local(sand_cell + Vector2i(1, 1)))) < 4.0
+	_expect(await crossed.call(), "a walker crosses diagonally to the other land cell")
+	walker.queue_free()
+	for i in water_cells.size():
+		ground.set_cell(water_cells[i], 0, atlases[i])
+		save.record_tile(ground, water_cells[i], atlases[i])
+
 	if not _failed:
 		print("PASS")
 	quit(1 if _failed else 0)

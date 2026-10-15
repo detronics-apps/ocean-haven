@@ -40,12 +40,20 @@ var _pieces := {}
 ## between terrains, never round every tile): straight along the edges, round the rounded corners.
 var _lines := {}
 const LINE := Color(0, 0, 0, 0.28)
-## Between two kinds of water there's no line and no rounding: the colours fade into each other
-## over FADE px on each side (the owner: it's all water).
+## Between two kinds of water there's no line and no rounding: the water's colours are one
+## smooth picture under the ground art (WaterBlend: WATER_RES pixels a cell, drawn with linear
+## filtering), so neighbouring waters fade into each other over a few pixels, round corners as
+## well as along edges (the owner: it's all water; a subtle, narrow fade). Water cells get no art
+## tile of their own; SeaWaves' faint speckle shows on them.
 const WATER := ["water", "", "sea"]
-const FADE := 10.0
-var _fades := {}
+const WATER_RES := 4
+var _blend: Sprite2D
+var _blend_image: Image
+var _blend_rect := Rect2i()
 var _colours := {}
+## Corner point -> [[water cell, towards]] where the ranger can walk across between two land
+## cells touching at the corner (IslandGround.passes).
+var _passes := {}
 
 const ART := preload("res://assets/tilesets/terrain_art.png")
 const ART_SIZE := 64
@@ -90,6 +98,12 @@ func _ready() -> void:
 	_details.scale = _art.scale
 	_details.z_index = _ground.z_index
 	_details.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	_blend = Sprite2D.new()
+	_blend.name = "WaterBlend"
+	_blend.centered = false
+	_blend.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_blend.z_index = -2  # (under the ground and SeaWaves' speckle)
+	add_child(_blend)
 	_put_art_in.call_deferred()
 	_read_colours()
 	rebuild()
@@ -208,8 +222,8 @@ static func _art_tiles() -> TileSet:
 ## The cell's picture: its ground's row, a version (and mirrored or not) picked from the cell.
 func _paint(cell: Vector2i) -> void:
 	var ground := _ground.get_cell_atlas_coords(cell)
-	if ground.x < 0:
-		_art.erase_cell(cell)
+	if ground.x < 0 or terrain_at(cell) in WATER:
+		_art.erase_cell(cell)  # (water: the smooth WaterBlend underneath shows)
 		return
 	var pick := absi(hash(cell))
 	_art.set_cell(cell, 0, Vector2i(pick % ART_VARIANTS, ground.x), (pick / ART_VARIANTS) % 2)
@@ -254,6 +268,8 @@ func rebuild() -> void:
 			corners[cell + d] = true
 	for corner: Vector2i in corners:
 		_shape_corner(corner)
+	_push_passes()
+	_paint_water()
 	_details.clear()
 	_place_snowman()
 	for cell: Vector2i in _terrain:
@@ -270,6 +286,14 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 	_paint(cell)
 	for d in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
 		_shape_corner(cell + d)
+	_push_passes()
+	if _blend_rect.grow(-1).has_point(cell):
+		for dx in [-1, 0, 1]:  # (the cell, and land beside it, which takes its water's colour)
+			for dy in [-1, 0, 1]:
+				_water_pixel(cell + Vector2i(dx, dy))
+		(_blend.texture as ImageTexture).update(_blend_image)
+	else:
+		_paint_water()
 	for dx in [-1, 0, 1]:  # (its own decoration and its neighbours': their rules look at it)
 		for dy in [-1, 0, 1]:
 			_decorate(cell + Vector2i(dx, dy))
@@ -281,10 +305,16 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 func _shape_corner(corner: Vector2i) -> void:
 	_pieces.erase(corner)
 	_lines.erase(corner)
-	_fades.erase(corner)
+	_passes.erase(corner)
 	# The 4 cells around the point, and for each the direction from its centre to the point.
 	var around := [[corner + Vector2i(-1, -1), Vector2(1, 1)], [corner + Vector2i(0, -1), Vector2(-1, 1)],
 		[corner + Vector2i(-1, 0), Vector2(1, -1)], [corner, Vector2(-1, -1)]]
+	var kinds := {}
+	for entry: Array in around:
+		kinds[terrain_at(entry[0])] = true
+	if kinds.size() == 4:
+		_line_corner(corner)  # (four different terrains: straight edges; rounding all four made a dark star)
+		return
 	for entry: Array in around:
 		var cell: Vector2i = entry[0]
 		var towards: Vector2 = entry[1]
@@ -303,6 +333,10 @@ func _shape_corner(corner: Vector2i) -> void:
 			# joined up and only the lower rounds.
 			if beside_x != beside_y or PRIORITY.get(mine, 0) > PRIORITY.get(fill, 0):
 				continue
+			if mine in WATER and fill not in WATER:  # (land joined across water: walk across)
+				if not _passes.has(corner):
+					_passes[corner] = []
+				_passes[corner].append([cell, towards])
 		elif beside_x != beside_y:
 			fill = across if across in [beside_x, beside_y] else (beside_x if PRIORITY.get(beside_x, 0) >= PRIORITY.get(beside_y, 0) else beside_y)
 		if fill == "sea" or not _colours.has(fill) or (mine in WATER and fill in WATER):
@@ -311,6 +345,20 @@ func _shape_corner(corner: Vector2i) -> void:
 			_pieces[corner] = []
 		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill], towards])
 	_line_corner(corner)
+
+
+## Tells the ground where the ranger can walk across a corner.
+func _push_passes() -> void:
+	if not _ground is IslandGround:
+		return
+	var passes := {}
+	for corner: Vector2i in _passes:
+		for entry: Array in _passes[corner]:
+			if not passes.has(entry[0]):
+				passes[entry[0]] = []
+			passes[entry[0]].append(entry[1])  # (towards that corner, from the cell's centre)
+	(_ground as IslandGround).passes = passes
+	_ground.notify_runtime_tile_data_update()
 
 
 ## The boundary lines round corner point `corner`: each of the 4 half-edges that meet there is a
@@ -335,37 +383,46 @@ func _line_corner(corner: Vector2i) -> void:
 		lines.append(shape.slice(1))  # (the arc)
 	# (each half-edge's two sides: [the one on its left / top, the one on its right / bottom])
 	var sides := {Vector2.UP: [tl, tr], Vector2.DOWN: [bl, br], Vector2.LEFT: [tl, bl], Vector2.RIGHT: [tr, br]}
-	var fades: Array = []
 	for dir: Vector2 in halves:
 		if not halves[dir][0]:
 			continue
-		var a: String = sides[dir][0]
-		var b: String = sides[dir][1]
-		if a in WATER and b in WATER:
-			fades.append_array(_fade(point, dir, a, b))
-		else:
-			lines.append(PackedVector2Array([point + dir * halves[dir][1], point + dir * HALF]))
+		if sides[dir][0] in WATER and sides[dir][1] in WATER:
+			continue  # (water beside water: the WaterBlend fades them)
+		lines.append(PackedVector2Array([point + dir * halves[dir][1], point + dir * HALF]))
 	if not lines.is_empty():
 		_lines[corner] = lines
-	if not fades.is_empty():
-		_fades[corner] = fades
 
 
-## Two strips along the half-edge from `point` towards `dir`: each side gets the other side's
-## water colour at the edge, fading out FADE px into it, so the two blend across the edge.
-func _fade(point: Vector2, dir: Vector2, first: String, second: String) -> Array:
-	var across := Vector2(dir.y, dir.x).abs()  # (from the first side to the second)
-	var end := point + dir * HALF
-	var out: Array = []
-	for pair in [[first, second, -1.0], [second, first, 1.0]]:
-		var into: Vector2 = across * FADE * pair[2]  # (into this side)
-		var other := _water_colour(pair[1])
-		other.a = 0.5
-		var clear := other
-		clear.a = 0.0
-		out.append([PackedVector2Array([point, end, end + into, point + into]),
-			PackedColorArray([other, other, clear, clear])])
-	return out
+## The whole island's water as one small picture (WATER_RES pixels a cell, a margin of open
+## ocean round it), smoothed when drawn, so every two waters fade into each other.
+func _paint_water() -> void:
+	_blend_rect = _ground.get_used_rect().grow(2)
+	_blend_image = Image.create(_blend_rect.size.x * WATER_RES, _blend_rect.size.y * WATER_RES, false, Image.FORMAT_RGBA8)
+	_blend_image.fill(_water_colour("sea"))
+	for cell in _ground.get_used_cells():
+		_water_pixel(cell)
+	_blend.texture = ImageTexture.create_from_image(_blend_image)
+	_blend.position = _ground.map_to_local(_blend_rect.position) - Vector2(HALF, HALF)
+	_blend.scale = Vector2.ONE * float(_ground.tile_set.tile_size.x) / WATER_RES
+
+
+## One cell's colour in the WaterBlend: its water; land takes the water beside it (so the
+## smoothing never pulls a land colour into the sea; the land's art covers it anyway).
+func _water_pixel(cell: Vector2i) -> void:
+	var kind := terrain_at(cell)
+	var colour := _water_colour(kind) if kind in WATER else Color.TRANSPARENT
+	if kind not in WATER:
+		var sum := Color(0, 0, 0, 0)
+		var n := 0
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var beside := terrain_at(cell + d)
+			if beside in WATER:
+				sum += _water_colour(beside)
+				n += 1
+		colour = sum / float(n) if n > 0 else _water_colour("water")
+		colour.a = 1.0
+	var at := (cell - _blend_rect.position) * WATER_RES
+	_blend_image.fill_rect(Rect2i(at, Vector2i(WATER_RES, WATER_RES)), colour)
 
 
 func _water_colour(kind: String) -> Color:
@@ -417,9 +474,6 @@ func _draw() -> void:
 	for corner: Vector2i in _pieces:
 		for piece: Array in _pieces[corner]:
 			draw_colored_polygon(piece[0], piece[1])
-	for corner: Vector2i in _fades:
-		for strip: Array in _fades[corner]:
-			draw_polygon(strip[0], strip[1])
 	for corner: Vector2i in _lines:  # (over the rounded corners, so their arcs show whole)
 		for line: PackedVector2Array in _lines[corner]:
 			draw_polyline(line, LINE, 1.0)

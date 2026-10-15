@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl5l5xnj8apcd"
-path="res://.godot/imported/dock_plank.png-76ded420fb1fb31ee299c8566cabb280.ctex"
+uid="uid://ds704bdnj3iqk"
+path="res://.godot/imported/drawbridge_closed.svg-59f6d9d96e7c54267a19d81755a48c62.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buildings/dock_plank.png"
-dest_files=["res://.godot/imported/dock_plank.png-76ded420fb1fb31ee299c8566cabb280.ctex"]
+source_file="res://assets/buildings/drawbridge_closed.svg"
+dest_files=["res://.godot/imported/drawbridge_closed.svg-59f6d9d96e7c54267a19d81755a48c62.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
