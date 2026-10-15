@@ -724,6 +724,34 @@ pillars), labels are dropped; the water gate (closed) and drawbridge (open) pict
 Turtle protection areas: their label dropped (loose bits below a picture go) and the grey fill
 inside see-through (target "see_through"), so the sand shows. Docks and the drawbridge keep the
 game's own plank art (the sheet's were framed squares that didn't join into a jetty: targets null).
+The owner's building pictures carry twice the game's pixels (the owner: nothing squeezed out of
+them; like the ground art and the rowboat) and the game draws them at half size:
+BuildingData.picture_scale 0.5 (also the Make menu's ghost), PersonData / ActivityData.place_scale,
+WreckSite.PICTURE_SCALE, PatrolBoat.hull_scale, AnimalData.picture_scale (the polar bear); the
+sand item and the trees stay at the game's own pixels. Any magenta left blended into a picture's
+outline becomes the near-black line (cut_building_sheet.no_magenta). The recycling centre is drawn
+about the Ranger House's size.
+The owner's reworked pictures (docs/rework/*.jpg: on a pale green grid, labels, soft shadows) are
+cut by `tools/cut_owner_pictures.py` (background, grid, shadows and labels out, also between
+pillars; colours snapped to each picture's own palette; their boxes in tools/rework_targets.json,
+null in the sheet's targets): the Eco-Lodge, Waterworks Station, water gate (open; the closed one
+is it with planks where the water was), the three Ranger Houses, the Deep-Ocean Outpost and
+Discovery Centre, the Polar Research Centre and Station, the four polar bears, and the patrol boat
+(docs/patrol_boat_sheet.png). The Make menu shows the patrol boat, not its buoy
+(BuildingData.menu_texture).
+Docks and the drawbridge are drawn by `tools/make_deck.py` (64 px a tile, the water gate's wood):
+four boards a tile, staggered joints, nails; 16 pictures each (BuildingData.joined_texture, bit 1
+north, 2 east, 4 south, 8 west) so decks side by side make one solid deck, with a near-black edge
+only where they meet water and, with no deck to the south, the deck's front and pilings
+(Building._show_joined / rejoin_decks, group "decks", redone when one is laid, moved, taken away or a
+drawbridge goes up or down; a raised drawbridge doesn't join). The raised drawbridge: its deck
+standing up on the hinge, the water between its posts.
+The flamingo's mud-mound nest is a pixel picture (tools/make_flamingo_nest.py, twice the pixels:
+the mud's colours, a hollow on top with the egg) with a soft shadow. The mangroves' reddish roots
+are recoloured to the mud's hue (cut_building_sheet.mud_roots). Young flamingos show the water
+level too (the wading rows scaled to their size); they sit only on land, mud or the nest, never in
+the water; the chick has its own chubby sitting picture (make_young_birds.OWN_BABY_SITTING) and
+no flying one (it can't fly yet: it walks, in its standing picture).
 The trees (`cut_building_sheet.py trees`, every picture in assets/environment/vegetation) are made
 flat like the characters (flat_tones: 2 flat tones per colour family, hard edges, one near-black
 outline: the owner liked them); the buildings stay as drawn (an automatic flattening made them

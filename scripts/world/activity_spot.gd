@@ -27,6 +27,7 @@ func _ready() -> void:
 		_place.texture = activity.place
 		_place.centered = false
 		_place.position = activity.place_offset
+		_place.scale = Vector2.ONE * activity.place_scale
 		_place.z_index = -1
 		add_child(_place)
 	_news = Label.new()
@@ -76,7 +77,7 @@ func blocker_name() -> String:
 func cells() -> Array[Vector2i]:
 	var list: Array[Vector2i] = [Terrain.cell_of(global_position)]
 	if _place:
-		var size := _place.texture.get_size()
+		var size := _place.texture.get_size() * _place.scale
 		for x in range(int(_place.global_position.x + 4.0), int(_place.global_position.x + size.x - 3.0), Terrain.TILE / 2):
 			var cell := Terrain.cell_of(Vector2(x, _place.global_position.y + size.y * 0.5))
 			if cell not in list:

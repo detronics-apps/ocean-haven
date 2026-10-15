@@ -149,6 +149,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_sprite.texture = data.sprite
+	_sprite.scale = Vector2.ONE * data.picture_scale
 	if not data.flies:
 		_shadow = Shadow.under(self, _sprite)
 		_shadow.share = 0.75
@@ -165,7 +166,7 @@ func _ready() -> void:
 	_land_mask = collision_mask
 	_fly_left = randf_range(0.0, data.fly_seconds.y)
 	if young:
-		_sprite.scale = Vector2.ONE if _own_young_picture() else Vector2(0.5, 0.5)
+		_sprite.scale = Vector2.ONE * data.picture_scale * (1.0 if _own_young_picture() else 0.5)
 		if _own_young_picture():
 			_sprite.texture = data.young_sprites[stage()]
 	if data.shows_water_level:  # the water (or mud) round its legs: how deep it's standing
@@ -328,7 +329,7 @@ func _own_young_picture() -> bool:
 ## while crawling to the sea).
 func _grow() -> void:
 	var age := clampf((GameClock.now() - born_at) / data.grow_days, 0.0, 1.0)
-	_sprite.scale = Vector2.ONE if _own_young_picture() else Vector2.ONE * lerpf(0.5, 0.85, age)
+	_sprite.scale = Vector2.ONE * data.picture_scale * (1.0 if _own_young_picture() else lerpf(0.5, 0.85, age))
 	if _own_young_picture():
 		_pose()
 	if age >= 1.0 and _state != State.CRAWL:
@@ -735,7 +736,9 @@ static var _tile_colours := {}
 
 
 ## Wading (flamingos): only the pixels of its legs that are in the water take the water's
-## colour, still showing the feet; in mud the feet are hidden in mud; on dry land, nothing.
+## colour, still showing the feet; in mud the feet are hidden in mud; on dry land, nothing. The
+## young ones show it too (the owner), the rows scaled to their smaller pictures; never while
+## flying or sitting on the nest.
 func _update_wading() -> void:
 	var wading := _sprite.material as ShaderMaterial
 	if not wading:
@@ -743,7 +746,8 @@ func _update_wading() -> void:
 	var rows := 0
 	var colour := Color.WHITE
 	var tex := _sprite.texture
-	if tex and (tex == data.sprite or tex == data.resting_sprite):
+	if tex and not perched and tex != data.flying_sprite and tex != data.perched_sprite \
+			and (tex in data.young_sprites or not tex in data.young_flying_sprites):
 		var feet_row := _feet_row(tex)
 		var feet := _sprite.to_global(Vector2(0.0, feet_row + 1.0 - tex.get_height() / 2.0) + _sprite.offset)
 		for ground: TileMapLayer in get_tree().get_nodes_in_group("ground"):
@@ -757,6 +761,9 @@ func _update_wading() -> void:
 				rows = WADE_ROWS.get(depth if depth != "" else "right", 3)
 			elif kind == "mud":
 				rows = MUD_ROWS
+			if rows > 0 and data.sprite and tex != data.sprite and tex != data.resting_sprite:
+				# (a young one: as deep for its size)
+				rows = maxi(1, roundi(rows * float(tex.get_height()) / data.sprite.get_height()))
 			if rows > 0:
 				colour = _tile_colour(ground, cell) * ground.modulate
 			wading.set_shader_parameter("see_through", kind == "water")
@@ -1200,6 +1207,10 @@ func in_habitat(point: Vector2) -> bool:
 	return Terrain.at(get_tree(), point) in data.habitat_terrain
 
 
+func _in_water() -> bool:
+	return Terrain.at(get_tree(), global_position) in ["water", ""]
+
+
 func _lives_on_land() -> bool:
 	return not data.habitat_terrain.has("")
 
@@ -1211,18 +1222,19 @@ func _pose() -> void:
 		var stage_picture: Texture2D = data.young_sprites[stage()]
 		var landed := _state == State.REST and not circling
 		var flying := (data.flies and not landed) or (_state == State.FLEE and data.flying_sprite != null)
-		var drawn_from_grown := false  # (the flying and sitting ones are the grown bird's size: shown smaller)
 		if flying and data.young_flying_sprites.size() > stage():
 			stage_picture = data.young_flying_sprites[stage()]
-			drawn_from_grown = true
-		elif data.young_sitting_sprites.size() > stage() and (perched or (landed and stage() == 0)
-				or (_state == State.REST and not data.flies and data.perched_sprite != null and _sit_on_mound())):
-			stage_picture = data.young_sitting_sprites[stage()]  # (a baby sits whenever it's down)
-			drawn_from_grown = true
-		_sprite.scale = Vector2.ONE * ((0.55 if stage() == 0 else 0.75) if drawn_from_grown else 1.0)
+		elif data.young_sitting_sprites.size() > stage() and (perched or (not _in_water() and ((landed and stage() == 0)
+				or (_state == State.REST and not data.flies and data.perched_sprite != null and _sit_on_mound())))):
+			stage_picture = data.young_sitting_sprites[stage()]  # (a baby sits whenever it's down, but not in the water)
+		# (flying and sitting pictures made from the grown bird's are its size: shown smaller)
+		var drawn_from_grown := stage_picture.get_height() > data.young_sprites[stage()].get_height() * 1.3
+		_sprite.scale = Vector2.ONE * data.picture_scale * ((0.55 if stage() == 0 else 0.75) if drawn_from_grown else 1.0)
 		if _sprite.texture != stage_picture:
 			_sprite.texture = stage_picture
 			_sprite.rotation = 0.0
+		if data.shows_water_level:
+			_update_wading.call_deferred()  # (the young show the water level too)
 		return
 	if data.shows_water_level:
 		_update_wading.call_deferred()  # (after this pose's picture is set)

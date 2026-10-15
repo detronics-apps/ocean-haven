@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0mojiwrlrako"
-path="res://.godot/imported/polar_bear_baby.svg-ffde3aa04036c9c61a7ede6ef10ee2fc.ctex"
+uid="uid://cxulk5xob8rql"
+path="res://.godot/imported/polar_bear_baby.png-b0816bc5fe6973db70f336e90fe66cb0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/animals/polar_bear/polar_bear_baby.svg"
-dest_files=["res://.godot/imported/polar_bear_baby.svg-ffde3aa04036c9c61a7ede6ef10ee2fc.ctex"]
+source_file="res://assets/animals/polar_bear/polar_bear_baby.png"
+dest_files=["res://.godot/imported/polar_bear_baby.png-b0816bc5fe6973db70f336e90fe66cb0.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

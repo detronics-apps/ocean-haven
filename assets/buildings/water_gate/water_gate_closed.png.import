@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6wvmd7qg73c2"
-path="res://.godot/imported/water_gate_closed.svg-bed097f7c64d2241649cf28fce6cfe4e.ctex"
+uid="uid://btbw2r8ubgnp5"
+path="res://.godot/imported/water_gate_closed.png-23f808a31ec78f464ff420eb78cbc751.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buildings/water_gate/water_gate_closed.svg"
-dest_files=["res://.godot/imported/water_gate_closed.svg-bed097f7c64d2241649cf28fce6cfe4e.ctex"]
+source_file="res://assets/buildings/water_gate/water_gate_closed.png"
+dest_files=["res://.godot/imported/water_gate_closed.png-23f808a31ec78f464ff420eb78cbc751.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

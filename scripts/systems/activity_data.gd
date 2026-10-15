@@ -38,6 +38,9 @@ extends Resource
 @export var region: StringName
 @export var place: Texture2D
 @export var place_offset := Vector2(-48, -8)
+## The owner's pictures carry more pixels than the game's grid (twice as many: the owner, so
+## nothing is squeezed out of them); drawn at this scale they take their usual space.
+@export var place_scale := 0.5
 ## What the place is ("old jetty"), and what it says before it's open ("An old jetty...").
 @export var place_name: String
 @export var closed_note: String

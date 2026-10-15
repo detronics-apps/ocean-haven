@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ucqluxpeo530"
-path="res://.godot/imported/dock_plank.svg-20eaedd910d28bdf62163f1a78918478.ctex"
+uid="uid://chl1huc4c8yow"
+path="res://.godot/imported/polar_bear_young.png-8a08213f7e3cc5ad7f6bd59efd842823.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buildings/dock_plank.svg"
-dest_files=["res://.godot/imported/dock_plank.svg-20eaedd910d28bdf62163f1a78918478.ctex"]
+source_file="res://assets/animals/polar_bear/polar_bear_young.png"
+dest_files=["res://.godot/imported/polar_bear_young.png-8a08213f7e3cc5ad7f6bd59efd842823.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

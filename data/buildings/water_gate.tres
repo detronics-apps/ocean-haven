@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_s"]
 [ext_resource type="Texture2D" path="res://assets/buildings/water_gate/water_gate_open.png" id="2_t"]
-[ext_resource type="Texture2D" path="res://assets/buildings/water_gate/water_gate_closed.svg" id="3_t"]
+[ext_resource type="Texture2D" path="res://assets/buildings/water_gate/water_gate_closed.png" id="3_t"]
 
 [resource]
 script = ExtResource("1_s")
@@ -14,6 +14,7 @@ description = "A wooden gate across a channel. Open, it lets fish through and fl
 summary = "Opens or closes a channel to set the water level."
 order = 1
 texture = ExtResource("2_t")
+picture_scale = 0.5
 closed_texture = ExtResource("3_t")
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water")

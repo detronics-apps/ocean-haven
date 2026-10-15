@@ -10,6 +10,7 @@ short_name = "Coral Site"
 explains = 2
 id = &"coral_restoration_site"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"tropical_reef"
 display_name = "Coral Restoration Site"
 description = "An underwater coral nursery: it grows 1 coral fragment a morning (more per level). Take them out by boat and plant them on reef that needs it. Coral grows back best where the water is clean and parrotfish keep the algae down."

@@ -13,12 +13,15 @@ var _check := 0.0
 var _working := true
 
 @onready var _hull: Sprite2D = $Hull
+## The owner's boat picture carries twice the game's pixels (tools/cut_owner_pictures.py).
+@export var hull_scale := 0.5
 
 
 # ponytail: starts at its buoy rather than sailing out from the dock — that needs
 # route-finding around islands, which isn't worth it yet.
 func _ready() -> void:
 	add_to_group("busy_boats")  # shy animals (dolphins) keep away from its waters
+	_hull.scale = Vector2.ONE * hull_scale
 	_target = _pick_spot()
 
 

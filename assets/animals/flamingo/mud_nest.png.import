@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg2ojdvdx86cj"
-path="res://.godot/imported/polar_bear.svg-4e3fc31fa9fbb5dbfa503ed1c7f43d30.ctex"
+uid="uid://csyn7smpvgb7a"
+path="res://.godot/imported/mud_nest.png-f14e7f1eb948e9b2327aacbfdab687ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/animals/polar_bear/polar_bear.svg"
-dest_files=["res://.godot/imported/polar_bear.svg-4e3fc31fa9fbb5dbfa503ed1c7f43d30.ctex"]
+source_file="res://assets/animals/flamingo/mud_nest.png"
+dest_files=["res://.godot/imported/mud_nest.png-f14e7f1eb948e9b2327aacbfdab687ed.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

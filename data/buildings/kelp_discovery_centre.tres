@@ -13,6 +13,7 @@ description = "Visitors learn about kelp forests, otters and food webs, and watc
 summary = "Visitors learn about kelp: funding each morning."
 order = 4
 texture = ExtResource("2_kdc")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 144
 cost_items = Dictionary[StringName, int]({&"wood": 3})

@@ -27,6 +27,9 @@ extends Resource
 ## Their place (a camp, a lighthouse), drawn behind them.
 @export var place: Texture2D
 @export var place_offset := Vector2(-18, -8)
+## The owner's pictures carry more pixels than the game's grid (twice as many: the owner, so
+## nothing is squeezed out of them); drawn at this scale they take their usual space.
+@export var place_scale := 0.5
 
 @export_group("Look")
 @export var skin := Color("c68a5e")

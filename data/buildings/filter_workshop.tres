@@ -13,6 +13,7 @@ description = "Kai's workshop makes filters for washing machines that catch plas
 summary = "Washing-machine filters: microfibres stopped before the sea."
 order = 8
 texture = ExtResource("2_t")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 160
 cost_items = Dictionary[StringName, int]({&"wood": 3})

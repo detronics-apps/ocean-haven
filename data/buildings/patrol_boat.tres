@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="1_h2gec"]
 [ext_resource type="PackedScene" path="res://scenes/player/patrol_boat.tscn" id="2_1sabf"]
 [ext_resource type="Texture2D" path="res://assets/buildings/patrol_buoy.png" id="3_1iptj"]
+[ext_resource type="Texture2D" path="res://assets/boats/patrol_boat.png" id="4_boat"]
 
 [resource]
 script = ExtResource("1_h2gec")
@@ -13,6 +14,8 @@ description = "Place a buoy in the sea: a patrol boat sets out from your dock an
 summary = "A boat that collects litter in an area."
 order = 4
 texture = ExtResource("3_1iptj")
+picture_scale = 0.5
+menu_texture = ExtResource("4_boat")
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 115

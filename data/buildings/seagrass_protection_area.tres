@@ -9,6 +9,7 @@ short_name = "Seagrass Area"
 explains = 2
 id = &"seagrass_protection_area"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"tropical_reef"
 display_name = "Seahorse & Seagrass Protection Area"
 description = "A marked, boat-free patch of shallow water where seagrass can grow back and seahorses can live. Seahorses settle once the seagrass has grown."

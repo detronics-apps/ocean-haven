@@ -13,6 +13,7 @@ description = "Marks a quiet stretch of water where crocodiles can rest. Boats k
 summary = "Quiet water where crocodiles rest. No boats."
 order = 3
 texture = ExtResource("2_t")
+picture_scale = 0.5
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 95

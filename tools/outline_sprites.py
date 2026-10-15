@@ -19,7 +19,7 @@ import sys
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 FOLDERS = ["assets/animals", "assets/buildings", "assets/boats", "assets/items", "assets/environment", "assets/effects"]
 ## Pieces laid edge to edge (an outline would show a seam between them).
-SKIP = ["dock_plank.svg", "drawbridge_closed.svg", "drawbridge_open.svg"]
+SKIP: list = []  # (the dock and drawbridge are the owner's pictures now: tools/cut_owner_pictures.py)
 OFFSETS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 NAMED = {"white": "#ffffff", "black": "#000000"}
 

@@ -9,6 +9,7 @@ short_name = "Shark Zone"
 explains = 2
 id = &"shark_protection_zone"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"tropical_reef"
 display_name = "Shark Protection Zone"
 description = "Quiet water for reef sharks: no boats, fishing or diving. Each zone gives a shark a home, but takes water away from your boats and divers."

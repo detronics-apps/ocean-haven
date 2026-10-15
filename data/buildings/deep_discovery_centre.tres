@@ -9,6 +9,7 @@ short_name = "Centre"
 explains = 1
 id = &"deep_discovery_centre"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"deep_sea"
 display_name = "Deep-Sea Discovery Centre"
 description = "Visitors watch the submarine's live feed and learn about the deep. More sperm whales and a healthier deep, more visitors and funding."

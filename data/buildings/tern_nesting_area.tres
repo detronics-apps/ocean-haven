@@ -9,6 +9,7 @@ short_name = "Tern Area"
 explains = 2
 id = &"tern_nesting_area"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"arctic_ocean"
 display_name = "Tern Nesting Area"
 description = "Quiet rock where Arctic terns lay their eggs in the thaw, when they come back from the far south. Levels give room for more terns."

@@ -13,6 +13,7 @@ description = "A protected patch of soft mud where mangrove crabs can dig their 
 summary = "Soft mud where mangrove crabs dig burrows."
 order = 2
 texture = ExtResource("2_t")
+picture_scale = 0.5
 size = Vector2i(1, 1)
 terrain = PackedStringArray("mud")
 cost_funding = 75

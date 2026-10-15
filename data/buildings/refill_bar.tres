@@ -13,6 +13,7 @@ description = "Ines pours lemonade and juice from big glass jugs that go back to
 summary = "Lemonade from refillable jugs: no new plastic rings anywhere."
 order = 8
 texture = ExtResource("2_t")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 120
 cost_items = Dictionary[StringName, int]({&"wood": 3})

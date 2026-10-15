@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="AnimalData" format=3]
 
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_s"]
-[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear.svg" id="2_t"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear.png" id="2_t"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
-[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_resting.svg" id="rest_1411"]
-[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_baby.svg" id="young_0"]
-[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_young.svg" id="young_1"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_resting.png" id="rest_1411"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_baby.png" id="young_0"]
+[ext_resource type="Texture2D" path="res://assets/animals/polar_bear/polar_bear_young.png" id="young_1"]
 
 [sub_resource type="Resource" id="Moment_0"]
 script = ExtResource("pm_script")
@@ -45,6 +45,7 @@ resting_sprite = ExtResource("rest_1411")
 id = &"polar_bear"
 display_name = "Polar Bear"
 sprite = ExtResource("2_t")
+picture_scale = 0.5
 habitat = "Arctic sea ice, coasts and islands"
 diet = "Mostly seals, hunted from the sea ice"
 role = "Stays with a Quiet Den Area and a frozen path between the floes."

@@ -59,6 +59,8 @@ extends Node2D
 @export var flats_per_flamingo := 10
 @export var flamingo_max := 4
 
+## The mud-mound nest (tools/make_flamingo_nest.py: twice the pixels, drawn at half size).
+const NEST_PICTURE := preload("res://assets/animals/flamingo/mud_nest.png")
 const CRAB := preload("res://data/animals/mangrove_crab.tres")
 const FISH := preload("res://data/animals/juvenile_snapper.tres")
 const FLAMINGO := preload("res://data/animals/american_flamingo.tres")
@@ -66,7 +68,6 @@ const CROCODILE := preload("res://data/animals/american_crocodile.tres")
 const MUD_TILE := Vector2i(5, 0)
 const LAND := ["sand", "grass", "mud", "rock"]
 const NEIGHBOURS := [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
-const MOUND := Color(0.45, 0.32, 0.22)
 
 var _ground: TileMapLayer
 ## The inland pools (as the island was made): lists of ground cells, and a marker at each.
@@ -683,12 +684,10 @@ func _draw() -> void:
 			var post: Vector2 = at + across * 14.0 * side
 			draw_rect(Rect2(post - Vector2(2, 5), Vector2(4, 7)), Color(0.48, 0.34, 0.2, 0.85))
 			draw_rect(Rect2(post - Vector2(2, 5), Vector2(4, 2)), Color(0.66, 0.5, 0.3, 0.85))
-	for spot in _nests_at:
+	for spot in _nests_at:  # (the owner's style: a pixel picture at twice the pixels, a soft shadow)
 		var at := to_local(spot)
-		draw_circle(at + Vector2(0, 2), 7.0, Color(0, 0, 0, 0.18))
-		draw_circle(at, 6.0, MOUND)
-		draw_circle(at + Vector2(0, -1), 3.0, MOUND.darkened(0.35))
-		draw_circle(at + Vector2(0, -1), 1.6, Color(0.96, 0.94, 0.86))  # the egg
+		draw_texture_rect(Shadow._texture(), Rect2(at + Vector2(-8, 1), Vector2(16, 6)), false)
+		draw_texture_rect(NEST_PICTURE, Rect2(at - Vector2(7, 8), NEST_PICTURE.get_size() / 2.0), false)
 	for cell: Vector2i in _silt:
 		var silt: float = _silt[cell]
 		if silt > 0.2:

@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_open.svg" id="1_88l0l"]
+[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_open.png" id="1_88l0l"]
 [ext_resource type="Script" path="res://scripts/buildings/building_data.gd" id="2_8l4ks"]
-[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_closed.svg" id="3_4cw1c"]
+[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_closed.png" id="3_4cw1c"]
+[ext_resource type="Texture2D" path="res://assets/buildings/drawbridge_joined.png" id="4_joined"]
 
 [resource]
 script = ExtResource("2_8l4ks")
@@ -12,6 +13,8 @@ description = "A jetty piece you can walk across that swings up when your boat c
 summary = "A jetty piece that lifts to let boats through."
 order = 4
 texture = ExtResource("3_4cw1c")
+picture_scale = 0.5
+joined_texture = ExtResource("4_joined")
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 49

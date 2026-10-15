@@ -9,6 +9,7 @@ script = ExtResource("1_s")
 short_name = "Camera"
 id = &"deep_camera"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 closed_texture = ExtResource("3_t")
 only_on = &"deep_sea"
 display_name = "Deep Camera"

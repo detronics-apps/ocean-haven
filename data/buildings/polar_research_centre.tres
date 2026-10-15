@@ -9,6 +9,7 @@ short_name = "Centre"
 explains = 1
 id = &"polar_research_centre"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"arctic_ocean"
 display_name = "Polar Research Centre"
 description = "Visitors learn about the ice, the seals and the research. More seals and a healthier island, more visitors and funding."

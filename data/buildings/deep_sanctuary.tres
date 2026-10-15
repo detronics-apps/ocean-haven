@@ -9,6 +9,7 @@ short_name = "Sanctuary"
 explains = 2
 id = &"deep_sanctuary"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"deep_sea"
 display_name = "Deep-Sea Sanctuary"
 description = "Marks a mapped area of the deep as a sanctuary: no fishing, so no more lost gear sinks there, and one more of the animals living there can settle. Place it in an area you've already mapped."

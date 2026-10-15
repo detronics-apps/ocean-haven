@@ -78,6 +78,10 @@ func _ready() -> void:
 		built_day = GameClock.day
 	move_to(cell)
 	_sprite.texture = data.texture if data.draw_texture else null
+	_sprite.scale = Vector2.ONE * data.picture_scale
+	if data.deck:
+		add_to_group("decks")
+		rejoin_decks(get_tree())
 	_show_tier()
 	# (a shadow under real buildings on land; none for decks, markers or things on the water)
 	if not data.deck and data.explains != 2 and not ("water" in data.terrain or "" in data.terrain):
@@ -123,11 +127,46 @@ func move_to(new_cell: Vector2i) -> void:
 		boat().position = Vector2.ZERO  # moved with its mooring
 	if data.deck:
 		_lay_deck()
+		if is_inside_tree() and is_in_group("decks"):
+			rejoin_decks(get_tree())
 
 
 func _exit_tree() -> void:
 	if data.deck:
 		_lift_deck()
+		remove_from_group("decks")
+		rejoin_decks(get_tree())
+
+
+## Every deck shows the picture for the way it meets the others (after any is laid, moved, taken
+## away, or a drawbridge goes up or down).
+static func rejoin_decks(tree: SceneTree) -> void:
+	tree.call_group_flags(SceneTree.GROUP_CALL_DEFERRED, "decks", "_show_joined")
+
+
+const JOIN_SIDES := {Vector2i(0, -1): 1, Vector2i(1, 0): 2, Vector2i(0, 1): 4, Vector2i(-1, 0): 8}
+
+
+func _show_joined() -> void:
+	if not data.joined_texture or is_open or not data.draw_texture:
+		_sprite.region_enabled = false
+		return
+	var mask := 0
+	for side: Vector2i in JOIN_SIDES:
+		if _deck_at(cell + side):
+			mask |= JOIN_SIDES[side]
+	var frame := data.joined_texture.get_height()
+	_sprite.texture = data.joined_texture
+	_sprite.region_enabled = true
+	_sprite.region_rect = Rect2(mask * frame, 0, frame, frame)
+
+
+## A deck (not a raised drawbridge) covers `at`.
+func _deck_at(at: Vector2i) -> bool:
+	for other: Building in get_tree().get_nodes_in_group("decks"):
+		if other != self and other.visible and not other.is_open and other.rect().has_point(at):
+			return true
+	return false
 
 
 ## Turns the water under its footprint into walkable deck (adding a tile out at sea).
@@ -376,7 +415,9 @@ func _update_drawbridge() -> void:
 		_lift_deck()  # water again: boats sail through
 	else:
 		_lay_deck()
+	_sprite.region_enabled = false
 	_sprite.texture = data.open_texture if is_open else data.texture
+	rejoin_decks(get_tree())  # (its own picture, and its neighbours' edges facing it)
 
 
 ## Gives every spare `accepts` item (carried and stored) to its project, for a grant.

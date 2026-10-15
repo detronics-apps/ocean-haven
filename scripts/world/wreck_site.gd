@@ -7,6 +7,8 @@ extends Node2D
 
 const DEBRIS_SCENE := preload("res://scenes/world/debris.tscn")
 const WRECK_TEXTURE := preload("res://assets/effects/wreck/wreck.png")
+## The owner's wreck picture carries twice the game's pixels (tools/cut_building_sheet.py).
+const PICTURE_SCALE := 0.5
 
 ## Litter caught around the wreck (one piece each).
 @export var pieces: Array[ItemData] = []
@@ -29,6 +31,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_sprite = Sprite2D.new()
 	_sprite.texture = WRECK_TEXTURE
+	_sprite.scale = Vector2.ONE * PICTURE_SCALE
 	_sprite.z_index = -3  # under the water's surface things
 	add_child(_sprite)
 	for i in pieces.size():

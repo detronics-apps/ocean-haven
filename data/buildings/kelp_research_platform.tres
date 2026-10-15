@@ -13,6 +13,7 @@ description = "The Kelp Forest's special building: divers and a small submersibl
 summary = "Missions to study and restore the kelp."
 order = 0
 texture = ExtResource("2_krp")
+picture_scale = 0.5
 size = Vector2i(3, 2)
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 500

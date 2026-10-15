@@ -22,6 +22,15 @@ extends Resource
 @export var category: StringName = &"buildings"
 ## Null for buildings that aren't drawn yet ("coming later").
 @export var texture: Texture2D
+## The Make menu's picture when it isn't `texture` (the patrol boat: the boat, not its buoy).
+@export var menu_texture: Texture2D
+## The owner's pictures carry more pixels than the game's grid (twice as many: the owner, so
+## nothing is squeezed out of them); drawn at this scale they take their usual space.
+@export var picture_scale := 1.0
+## Decks: 16 square pictures in a row, one for each way it meets other decks (bit 1 a deck to the
+## north, 2 east, 4 south, 8 west), so docks laid side by side make one solid deck, with edges
+## only where they meet the water (tools/make_deck.py). `texture` stays the one on its own.
+@export var joined_texture: Texture2D
 ## Footprint in 32x32 tiles.
 @export var size := Vector2i(2, 2)
 ## Ground types every footprint tile must be (tile custom data "terrain").

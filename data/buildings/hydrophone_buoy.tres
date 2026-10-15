@@ -9,6 +9,7 @@ short_name = "Buoy"
 explains = 2
 id = &"hydrophone_buoy"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"deep_sea"
 display_name = "Hydrophone Buoy"
 description = "An underwater microphone that listens to the deep. Quiet and slow: it adds a little knowledge every day, more for each sperm whale on the island (their clicks map the water round them). Levels listen further."

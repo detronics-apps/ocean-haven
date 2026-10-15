@@ -15,6 +15,7 @@ description = "A fenced, quiet spot on the beach where sea turtles can nest safe
 summary = "Quiet beach where turtles nest: funding each morning."
 order = 1
 texture = ExtResource("2_5jcrs")
+picture_scale = 0.5
 terrain = PackedStringArray("sand")
 visitors = 20
 visitors_per_animal = 10

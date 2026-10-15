@@ -9,6 +9,7 @@ short_name = "Den Area"
 explains = 2
 id = &"quiet_den_area"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"arctic_ocean"
 display_name = "Quiet Den Area"
 description = "Quiet rock where a polar bear can rest between hunts: boats keep out of the water round it. A bear stays if, in the freeze, the ice joins its rock to the seals."

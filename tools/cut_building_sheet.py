@@ -15,7 +15,10 @@ pictures, at the sizes they had in the game (the owner: their original sizes).
    plain grey fill inside it goes as well (the turtle areas: the sand shows through).
 4. Each picture is fitted, keeping its shape, into the box the old picture's art filled
    (targets: "size" of the whole picture, "art" = that box), standing on the box's bottom, and
-   saved as a PNG beside the old picture's path (.svg -> .png).
+   saved as a PNG beside the old picture's path (.svg -> .png). Buildings keep twice the game's
+   pixels (DENSITY: the owner, nothing squeezed out of them; the game draws them at half size:
+   BuildingData.picture_scale, PersonData / ActivityData.place_scale, WreckSite); a target with
+   "density": 1 (the sand item) and the trees stay at the game's own.
 
 The plants sheet (docs/plants_sheet.webp, tools/plant_sheet_targets.json: trees by stage, the
 willow, kelp, coral, seagrass) is cut the same way with `trees`: dark magenta shadows under the
@@ -23,7 +26,8 @@ trees count as background (the game draws its own), pale fill is kept (the Pison
 and rows go by the pictures' bottoms (trees of every height stand on one line). The trees (every
 picture in assets/environment/vegetation) are then flattened like the characters (flat_tones:
 2 flat tones per colour family, hard edges, one near-black outline: the owner liked them flat;
-the buildings stay as drawn).
+the buildings stay as drawn). The mangroves' reddish roots are recoloured to the mud's hue
+(mud_roots).
 
 Re-run after a sheet changes:  python tools/cut_building_sheet.py      (buildings)
                                python tools/cut_building_sheet.py trees
@@ -199,7 +203,20 @@ def cut(im, box, see_through=False):
                             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))]
             for xy in peel:
                 p[xy] = (0, 0, 0, 0)
-    return drop_below(trim_label(piece.crop(piece.getbbox())))
+    return no_magenta(drop_below(trim_label(piece.crop(piece.getbbox()))))
+
+
+def no_magenta(piece):
+    """What's left of the magenta (blended into the dark line round the picture) becomes that
+    line: near-black (the owner: magenta specks on the sand pile). Pinks with little blue (coral,
+    a flamingo's pink) stay."""
+    p = piece.load()
+    for y in range(piece.size[1]):
+        for x in range(piece.size[0]):
+            r, g, b, a = p[x, y]
+            if a and r > 50 and b > 45 and g < 0.7 * min(r, b) and abs(r - b) < 0.45 * max(r, b):  # (darker ones too: shrinking brightens them)
+                p[x, y] = (int(r * 0.22), int(g * 0.22), int(b * 0.22), a)
+    return piece
 
 
 def drop_below(piece):
@@ -259,10 +276,15 @@ def rim(front):
                 break
 
 
+DENSITY = 2
+
+
 def fit(piece, target):
-    """The picture at the old one's size: as big as fits in its art box, standing on its bottom."""
-    w, h = target['size']
-    x0, y0, x1, y1 = target['art']
+    """The picture at the old one's size (times its density): as big as fits in its art box,
+    standing on its bottom."""
+    d = 1 if TREES else target.get('density', DENSITY)
+    w, h = (v * d for v in target['size'])
+    x0, y0, x1, y1 = (v * d for v in target['art'])
     scale = min((x1 - x0) / piece.size[0], (y1 - y0) / piece.size[1])
     nw, nh = max(1, round(piece.size[0] * scale)), max(1, round(piece.size[1] * scale))
     small = piece.resize((nw, nh), Image.LANCZOS)
@@ -330,6 +352,25 @@ def flat_tones(im, tones=2):
     return out
 
 
+MUD_HUE = 28 / 360  # (the mud tiles' hue: tools/make_terrain_tiles.py)
+
+
+def mud_roots(im):
+    """The mangroves' reddish roots and trunk recoloured a grey-brown of the mud's own hue, a little
+    darker than the mud, keeping their light and shade (the owner: too red beside the mud)."""
+    p = im.load()
+    for y in range(im.size[1]):
+        for x in range(im.size[0]):
+            r, g, b, a = p[x, y]
+            if not a:
+                continue
+            h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+            if s > 0.12 and (h > 300 / 360 or h < 22 / 360):
+                nr, ng, nb = colorsys.hls_to_rgb(MUD_HUE, l * 0.88, min(s, 0.3))
+                p[x, y] = (round(nr * 255), round(ng * 255), round(nb * 255), a)
+    return im
+
+
 def outline(im):
     """A crisp 1-px dark line round the picture (the trees' own line is lost in the cut and the
     shrinking): a near-black shade of the colour it borders, as on the owner's sheet."""
@@ -362,6 +403,8 @@ if __name__ == '__main__':
         out = fit(cut(im, box, target.get('see_through', False)), target)
         if TREES and '/vegetation/' in target['texture']:
             out = flat_tones(out)
+            if 'mangrove' in target['texture']:
+                out = mud_roots(out)
         path = os.path.join(ROOT, target['texture'].replace('res://', '').rsplit('.', 1)[0] + '.png')
         out.save(path)
         if 'front_from' in target:  # (a boat's near side, drawn over whoever sits in it)

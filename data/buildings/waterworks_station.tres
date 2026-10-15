@@ -13,6 +13,7 @@ description = "The Mangrove Coast's special building: it studies how water flows
 summary = "Missions to study and manage the water."
 order = 0
 texture = ExtResource("2_t")
+picture_scale = 0.5
 size = Vector2i(3, 2)
 terrain = PackedStringArray("sand", "grass", "mud")
 cost_funding = 500

@@ -13,6 +13,7 @@ description = "A shady deck on the shore where visitors watch the dolphins from 
 summary = "Visitors watch dolphins: funding each morning."
 order = 2
 texture = ExtResource("2_dva")
+picture_scale = 0.5
 terrain = PackedStringArray("sand")
 cost_funding = 75
 cost_items = Dictionary[StringName, int]({&"wood": 2})

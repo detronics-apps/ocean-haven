@@ -100,48 +100,9 @@
    29
   ]
  },
- {
-  "name": "Ranger House (level 1)",
-  "texture": "res://assets/buildings/house.svg",
-  "size": [
-   50,
-   50
-  ],
-  "art": [
-   3,
-   6,
-   47,
-   48
-  ]
- },
- {
-  "name": "Ranger House (level 2)",
-  "texture": "res://assets/buildings/house_2.svg",
-  "size": [
-   50,
-   50
-  ],
-  "art": [
-   0,
-   6,
-   47,
-   48
-  ]
- },
- {
-  "name": "Ranger House (level 3)",
-  "texture": "res://assets/buildings/house_3.svg",
-  "size": [
-   50,
-   50
-  ],
-  "art": [
-   0,
-   0,
-   50,
-   48
-  ]
- },
+ null,
+ null,
+ null,
  {
   "name": "Recycling Centre (level 1)",
   "texture": "res://assets/buildings/recycling_centre.svg",
@@ -150,9 +111,9 @@
    66
   ],
   "art": [
-   2,
-   8,
-   64,
+   7,
+   18,
+   59,
    64
   ]
  },
@@ -164,9 +125,9 @@
    66
   ],
   "art": [
-   2,
-   8,
-   66,
+   7,
+   18,
+   59,
    64
   ]
  },
@@ -178,9 +139,9 @@
    66
   ],
   "art": [
-   2,
-   8,
-   66,
+   7,
+   18,
+   59,
    64
   ]
  },
@@ -197,7 +158,8 @@
    6,
    16,
    16
-  ]
+  ],
+  "density": 1
  },
  {
   "name": "Tent",
@@ -227,34 +189,8 @@
    40
   ]
  },
- {
-  "name": "Polar Research Centre",
-  "texture": "res://assets/buildings/polar/polar_research_centre.svg",
-  "size": [
-   66,
-   50
-  ],
-  "art": [
-   2,
-   0,
-   64,
-   46
-  ]
- },
- {
-  "name": "Polar Research Station",
-  "texture": "res://assets/buildings/polar/polar_research_station.svg",
-  "size": [
-   66,
-   58
-  ],
-  "art": [
-   4,
-   2,
-   62,
-   56
-  ]
- },
+ null,
+ null,
  {
   "name": "Quiet Den Area",
   "texture": "res://assets/buildings/polar/quiet_den_area.svg",
@@ -339,34 +275,8 @@
    31
   ]
  },
- {
-  "name": "Deep-Ocean Outpost",
-  "texture": "res://assets/buildings/deep/deep_ocean_outpost.svg",
-  "size": [
-   66,
-   66
-  ],
-  "art": [
-   4,
-   4,
-   62,
-   62
-  ]
- },
- {
-  "name": "Deep-Sea Discovery Centre",
-  "texture": "res://assets/buildings/deep/deep_discovery_centre.svg",
-  "size": [
-   66,
-   50
-  ],
-  "art": [
-   2,
-   0,
-   64,
-   46
-  ]
- },
+ null,
+ null,
  {
   "name": "Deep-Sea Sanctuary",
   "texture": "res://assets/buildings/deep/deep_sanctuary.svg",
@@ -594,48 +504,9 @@
    30
   ]
  },
- {
-  "name": "Mangrove Eco-Lodge",
-  "texture": "res://assets/buildings/eco_lodge/eco_lodge.svg",
-  "size": [
-   66,
-   50
-  ],
-  "art": [
-   0,
-   0,
-   66,
-   48
-  ]
- },
- {
-  "name": "Mangrove Waterworks Station",
-  "texture": "res://assets/buildings/waterworks_station/waterworks_station.svg",
-  "size": [
-   98,
-   66
-  ],
-  "art": [
-   2,
-   14,
-   96,
-   64
-  ]
- },
- {
-  "name": "Water Gate",
-  "texture": "res://assets/buildings/water_gate/water_gate_open.svg",
-  "size": [
-   34,
-   34
-  ],
-  "art": [
-   3,
-   4,
-   31,
-   32
-  ]
- },
+ null,
+ null,
+ null,
  {
   "name": "Weaving Workshop",
   "texture": "res://assets/buildings/source/weaving_workshop.svg",

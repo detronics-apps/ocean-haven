@@ -13,6 +13,7 @@ description = "Visitors walk the boardwalks and watch the flamingos. More flamin
 summary = "Visitors watch flamingos: funding each morning."
 order = 4
 texture = ExtResource("2_t")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 144
 cost_items = Dictionary[StringName, int]({&"wood": 3})

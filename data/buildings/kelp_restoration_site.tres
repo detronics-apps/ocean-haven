@@ -13,6 +13,7 @@ description = "Young kelp grown on ropes under a marker buoy restores 3 of the i
 summary = "Restores the most damaged kelp beds."
 order = 3
 texture = ExtResource("2_krs")
+picture_scale = 0.5
 size = Vector2i(1, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 59

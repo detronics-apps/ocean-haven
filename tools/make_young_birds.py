@@ -87,6 +87,22 @@ def distance(a: str, b: str) -> float:
     return sum((x - y) ** 2 for x, y in zip(rgb(a), rgb(b))) ** 0.5
 
 
+## Babies with a shape of their own (the owner: a flamingo chick is tiny and fat, not a thin grown
+## bird): sitting drawn from its own standing picture, legs tucked under; no flying picture (a
+## chick can't fly yet: the data uses its standing one).
+OWN_BABY_SITTING = {
+    "american_flamingo": ("10", "9", "0 0 10 9", """
+  <!-- American flamingo chick, sitting: grey-white fluffy down, legs tucked under -->
+  <rect x="1" y="4" width="7" height="4" fill="#d6d4d0"/>
+  <rect x="2" y="5" width="5" height="2" fill="#e6e4e0"/>
+  <rect x="5" y="1" width="4" height="4" fill="#d6d4d0"/>
+  <rect x="7" y="2" width="1" height="1" fill="#1e1a14"/>
+  <rect x="9" y="2" width="1" height="2" fill="#3a3434"/>
+  <rect x="2" y="8" width="5" height="1" fill="#c88a8a"/>
+"""),
+}
+
+
 def write(path: str, w: str, h: str, box: str, art: str) -> None:
     open(path, "w").write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="{box}" '
                           f'shape-rendering="crispEdges">{art}</svg>\n')
@@ -100,6 +116,11 @@ if __name__ == "__main__":
         for stage in ["baby", "young"]:
             palette = colours(art_of(os.path.join(ROOT, folder, f"{name}_{stage}.svg"))[3])
             for pose, source in [("flying", flying), ("sitting", sitting)]:
+                if stage == "baby" and name in OWN_BABY_SITTING:
+                    if pose == "sitting":
+                        write(os.path.join(ROOT, folder, f"{name}_baby_sitting.svg"), *OWN_BABY_SITTING[name])
+                        made += 1
+                    continue
                 w, h, box, art = art_of(os.path.join(ROOT, folder, source))
                 write(os.path.join(ROOT, folder, f"{name}_{stage}_{pose}.svg"), w, h, box, recolour(art, own, palette))
                 made += 1

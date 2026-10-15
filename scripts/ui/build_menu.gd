@@ -93,7 +93,7 @@ func _entry(data: BuildingData) -> Control:
 		for tier in range(1, data.max_tier):
 			steps.append(data.upgrade_cost_text(tier).trim_prefix("Needs ").trim_suffix("."))
 		lines.append("Upgrades: " + ", then ".join(steps) + ".")
-	var entry := card(data.texture, lines, data.locked)
+	var entry := card(data.menu_texture if data.menu_texture else data.texture, lines, data.locked)
 	entry.name = "Entry_" + data.id
 	if FACILITY_COLOURS.has(data.facility):
 		var line: Label = entry.get_child(0).get_child(1).get_child(1)

@@ -8,6 +8,9 @@ extends Resource
 @export var short_name := ""
 ## Top-down sprite, facing right (rotated to the swim direction).
 @export var sprite: Texture2D
+## The owner's pictures carry more pixels than the game's grid (twice as many: the owner, so
+## nothing is squeezed out of them); drawn at this scale they take their usual space.
+@export var picture_scale := 1.0
 ## The picture for the Journal and cards ("" = `sprite`): flying birds use their standing side
 ## view, which looks more like the bird than its top view in flight.
 @export var icon: Texture2D

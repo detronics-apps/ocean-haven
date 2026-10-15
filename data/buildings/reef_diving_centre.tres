@@ -9,6 +9,7 @@ short_name = "Dive Centre"
 explains = 1
 id = &"reef_diving_centre"
 texture = ExtResource("2_t")
+picture_scale = 0.5
 only_on = &"tropical_reef"
 display_name = "Reef Diving Centre"
 description = "Visitors snorkel and dive to see the reef and its parrotfish. More parrotfish and a healthier reef, more visitors and funding."

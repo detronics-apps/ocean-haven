@@ -13,6 +13,7 @@ description = "Local weavers make strong market baskets from nipa palm leaves, w
 summary = "Woven baskets instead of plastic bags: no new bags anywhere."
 order = 8
 texture = ExtResource("2_t")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass", "mud")
 cost_funding = 120
 cost_items = Dictionary[StringName, int]({&"wood": 3})

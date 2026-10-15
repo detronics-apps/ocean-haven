@@ -13,6 +13,7 @@ description = "The Starting Island's special building. Spend funding to send out
 summary = "Missions to rescue animals and search the coast."
 order = 0
 texture = ExtResource("2_mrs")
+picture_scale = 0.5
 size = Vector2i(3, 2)
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 300

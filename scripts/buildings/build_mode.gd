@@ -52,6 +52,7 @@ func start(data: BuildingData, free := false) -> void:
 	_free = free
 	_follow_ranger = true
 	_ghost.texture = data.texture
+	_ghost.scale = Vector2.ONE * data.picture_scale
 	_cancel.visible = not free
 	_show(true)
 

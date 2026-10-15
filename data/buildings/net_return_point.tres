@@ -13,6 +13,7 @@ description = "Fishers bring their worn-out nets and line here to be recycled, a
 summary = "Old nets recycled, new ones marked: no new lost gear anywhere."
 order = 8
 texture = ExtResource("2_t")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass", "rock")
 cost_funding = 120
 cost_items = Dictionary[StringName, int]({&"wood": 3})

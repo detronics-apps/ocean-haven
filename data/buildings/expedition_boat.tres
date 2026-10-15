@@ -17,6 +17,7 @@ description = "Makes this island Exploration Ready. Can be built once the island
 summary = "Explores to find new islands."
 order = 5
 texture = ExtResource("2_br52n")
+picture_scale = 0.5
 size = Vector2i(2, 1)
 terrain = PackedStringArray("water", "")
 cost_funding = 400

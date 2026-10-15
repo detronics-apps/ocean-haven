@@ -29,7 +29,8 @@ func _ready() -> void:
 		_place.texture = data.place
 		_place.centered = false
 		_place.top_level = true  # stays at their spot when they move to their building
-		_place.global_position = data.spot + data.place_offset - Vector2(0, data.place.get_height())
+		_place.scale = Vector2.ONE * data.place_scale
+		_place.global_position = data.spot + data.place_offset - Vector2(0, data.place.get_height() * data.place_scale)
 		_place.z_index = -1
 		add_child(_place)
 	add_child(look_of(data))
@@ -115,7 +116,7 @@ func blocker_name() -> String:
 func cells() -> Array[Vector2i]:
 	var list: Array[Vector2i] = [Terrain.cell_of(global_position)]
 	if _place and _place.visible:  # the tiles along the bottom of their place
-		var size := _place.texture.get_size()
+		var size := _place.texture.get_size() * _place.scale
 		for x in range(int(_place.global_position.x + 4.0), int(_place.global_position.x + size.x - 3.0), Terrain.TILE / 2):
 			var cell := Terrain.cell_of(Vector2(x, _place.global_position.y + size.y - 4.0))
 			if cell not in list:

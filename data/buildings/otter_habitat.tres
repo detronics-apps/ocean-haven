@@ -13,6 +13,7 @@ description = "A quiet, protected stretch of shore where sea otters can rest, fe
 summary = "A quiet shore where sea otters can live."
 order = 2
 texture = ExtResource("2_ohab")
+picture_scale = 0.5
 terrain = PackedStringArray("sand", "grass")
 cost_funding = 95
 cost_items = Dictionary[StringName, int]({&"wood": 2})
