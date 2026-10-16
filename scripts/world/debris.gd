@@ -80,6 +80,8 @@ func _on_body_entered(body: Node2D) -> void:
 ## Picks it up into the inventory. `announce` = false for quiet automatic
 ## collection (patrol boats), so there's no note for every piece.
 func collect(announce := true) -> void:
+	if item.counts_as != &"" or item.ranger_cleans:
+		Sound.play(&"pickup")  # (the inventory's own sound doesn't reach these: resin, shed kelp, oil...)
 	if item.counts_as != &"":
 		Fleet.add_count(item.counts_as)
 		get_tree().call_group("hud", "show_toast", item.pickup_note % Fleet.count_of(item.counts_as)

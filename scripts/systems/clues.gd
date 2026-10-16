@@ -100,6 +100,8 @@ func _check_card(one: ClueData, quiet: bool) -> void:
 
 
 func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
+	if what in [&"found", &"open"] and not _seen.has(one.id):
+		unseen_changed.emit()  # (even a quiet one, found as a save loads: the dot shows it)
 	if quiet:
 		return
 	changed.emit(one, what)
@@ -107,8 +109,6 @@ func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
 		Fleet.mark(StringName("board_opened_" + String(one.id)))
 		get_tree().create_timer(1.2, false).timeout.connect(func() -> void:
 			get_tree().call_group("journal_screen", "open_clues", one.opens_board))
-	if what in [&"found", &"open"] and not _seen.has(one.id):
-		unseen_changed.emit()
 	if what in [&"found", &"open", &"answered"]:  # a pinned note slides in (never a popup; evidence: none)
 		get_tree().call_group("hud", "clue_added", one, what)
 

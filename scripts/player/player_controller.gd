@@ -26,6 +26,8 @@ var walking := false
 var _ground_level := -1
 var _hop := 1.0
 var _hop_up := true
+## The walking bob, kept apart from the hop (a hop added to it as it settled stacked up: too high)
+var _bob := 0.0
 
 
 func _ready() -> void:
@@ -44,9 +46,11 @@ func _physics_process(delta: float) -> void:
 		_hop_up = level > _ground_level
 	_ground_level = level
 	_animate_walk(moved, delta)
+	var lift := 0.0
 	if _hop < 1.0:
 		_hop = minf(_hop + delta / (hop_time if _hop_up else drop_time), 1.0)
-		_look.position.y -= sin(_hop * PI) * (hop_height if _hop_up else drop_height)
+		lift = sin(_hop * PI) * (hop_height if _hop_up else drop_height)
+	_look.position.y = _bob - lift
 	if moved.length() > 0.5:
 		if absf(moved.x) >= absf(moved.y):
 			facing = Vector2i.RIGHT if moved.x > 0.0 else Vector2i.LEFT
@@ -63,7 +67,7 @@ func _animate_walk(moved: Vector2, delta: float) -> void:
 		_step += delta * steps_per_second * TAU / 2.0
 		if absf(moved.x) > 0.3:
 			_look.scale.x = -1.0 if moved.x < 0.0 else 1.0
-		_look.position.y = -absf(sin(_step)) * step_bob
+		_bob = -absf(sin(_step)) * step_bob
 		_look.rotation = sin(_step) * step_sway
 		if _avatar.view == Avatar.View.SIDE or _avatar.view == Avatar.View.STEP:
 			var stride := Avatar.View.STEP if sin(_step) > 0.0 else Avatar.View.SIDE  # (a stride, then together)
@@ -73,7 +77,7 @@ func _animate_walk(moved: Vector2, delta: float) -> void:
 			_boots.position = _boots_at + Vector2(roundf(sin(_step) * 1.5), 0)
 	else:
 		_step = 0.0
-		_look.position.y = move_toward(_look.position.y, 0.0, delta * 20.0)
+		_bob = move_toward(_bob, 0.0, delta * 20.0)
 		_look.rotation = move_toward(_look.rotation, 0.0, delta * 2.0)
 		_boots.position = _boots_at
 		if _avatar.view == Avatar.View.STEP:

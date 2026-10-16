@@ -164,8 +164,8 @@ func _initialize() -> void:
 							todo.append(n)
 					else:
 						lowest_round = mini(lowest_round, e.level_at(n))
-			pits += 1 if lowest_round > e.level_at(c) else 0
-		_expect(pits == 0 and wet == 0, "%s: no land lower than all the ground round it, water at 0" % island)
+			pits += 1 if lowest_round > e.level_at(c) and kind != "mud" else 0  # (mud lies low on purpose: sunken)
+		_expect(pits == 0 and wet == 0, "%s: no land but mud lower than all the ground round it, water at 0" % island)
 	# A tile change: an outcrop of rock in the middle of the grass stands above it, then goes.
 	var meadow := Vector2i.MAX
 	for c in ground.get_used_cells():
@@ -204,6 +204,12 @@ func _initialize() -> void:
 	ranger.global_position = ground.to_global(ground.map_to_local(bank))
 	await physics_frame
 	_expect(float(ranger.get("_hop")) < 1.0, "a hop up onto the grass")
+	var highest := 0.0  # (standing still mid-hop: it used to stack up, too high, and float down)
+	for i in 40:
+		await physics_frame
+		highest = minf(highest, (ranger.get_node("Look") as Node2D).position.y)
+	_expect(highest >= -(float(ranger.get("hop_height")) + float(ranger.get("step_bob")) + 0.01), "never higher than one hop (%.1f)" % highest)
+	_expect(is_zero_approx((ranger.get_node("Look") as Node2D).position.y), "and back down on the ground")
 	# Boats keep out from under a cliff's face (the land's physics layer, as the rowboat's).
 	var boat := CharacterBody2D.new()
 	boat.collision_mask = 4

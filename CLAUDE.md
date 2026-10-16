@@ -707,7 +707,9 @@ the Arctic), sperm whales (from the Deep Sea; everywhere) and green turtles (fro
 Island to the Mangrove Coast and the Reef; young snappers from the Mangrove Coast's pools to the
 Reef) spread one island further along the chain every
 DAYS_PER_STEP (8) days once they live at home, so the whale reaches the Reef last; a morning
-visitor comes for the day to the ranger's island (visiting), and the first time on an island its
+visitor comes for the day to the ranger's island (visiting) only while both islands are above 70 %, its
+chance rising with the less healthy of the two to AnimalData.travel_chance at 100 % (Travellers.chance;
+the owner: a booby on a 16 % Reef was wrong; seed-bringing visits too), and the first time on an island its
 people mention it (People.add_news). Rescued companions visit more often. A green turtle on the
 Reef grazes the seagrass: one more seahorse per grown Protection Area (ReefEcosystem.turtle_grazing).
 Rubbish near camp on the Polar Ocean (2+ litter within 200 px of the tent / house / research

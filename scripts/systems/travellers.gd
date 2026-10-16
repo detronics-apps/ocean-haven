@@ -9,6 +9,17 @@ extends Node
 
 ## Days for a species to spread one island further.
 const DAYS_PER_STEP := 8
+## Animals only travel between healthy islands (the owner): none while either its home or the
+## island it would visit is below this; from there the chance rises with the less healthy of
+## the two, to AnimalData.travel_chance when both are at 100 %.
+var travel_from := 0.7
+
+
+## Today's chance of `species` travelling from its home to `region`.
+func chance(species: AnimalData, region: RegionData) -> float:
+	var home: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.travel_home)
+	var health := minf(IslandHealth.of(get_tree(), home), IslandHealth.of(get_tree(), region))
+	return species.travel_chance * clampf((health - travel_from) / (1.0 - travel_from), 0.0, 1.0)
 
 ## Species id -> the day it started spreading from home.
 var _since := {}
@@ -60,7 +71,7 @@ func morning() -> void:
 		var home: RegionData = DataFiles.res("res://data/regions/%s.tres" % species.travel_home)
 		if not _since.has(species.id) and Regions.is_discovered(home) and _residents(species, home) > 0:
 			_since[species.id] = GameClock.day
-		if here.id != species.travel_home and can_reach(species, here) and randf() < species.travel_chance:
+		if here.id != species.travel_home and can_reach(species, here) and randf() < chance(species, here):
 			visit(species, here)
 	# Seeds every morning, wherever the ranger is (the trees are waiting when they get there).
 	for species: AnimalData in DataFiles.load_all("res://data/animals"):
@@ -106,7 +117,7 @@ func spread_seeds(species: AnimalData, here: RegionData = null) -> Building:
 	var there := get_tree().get_nodes_in_group("animals").any(func(a: Node) -> bool:
 		return a.data == species and not a.leaving and Regions.nearest(a.global_position) == to)
 	if not there and here and here != to and String(to.id) in species.travels_to and can_reach(species, to):
-		there = randf() < species.travel_chance  # (they visited where the ranger couldn't see)
+		there = randf() < chance(species, to)  # (they visited where the ranger couldn't see)
 	if not there or sprouted(species.seeds_tree, to) >= species.seeds_max:
 		return null
 	var cell := _seed_spot(species.seeds_tree, to)

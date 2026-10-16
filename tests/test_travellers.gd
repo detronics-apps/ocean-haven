@@ -88,6 +88,8 @@ func _initialize() -> void:
 	for tree in get_nodes_in_group("buildings").filter(func(b: Node) -> bool: return b.data == palm and b != sprout and regions.nearest(b.global_position) == reef):
 		tree.free()
 	travellers.get("_since")[booby.id] = clock.day - 100  # (they've spread as far as the Reef)
+	_expect(travellers.chance(booby, reef) == 0.0, "no visits to or from an island below 70 %")
+	travellers.travel_from = -10.0  # (as if both islands were thriving)
 	var unseen: Node = null
 	for i in 40:  # (the ranger on the Starting Island: no booby to be seen on the Reef)
 		unseen = travellers.spread_seeds(booby, region.call("home_island"))
@@ -108,6 +110,7 @@ func _initialize() -> void:
 	var pine_sprout: Node = willows[0] if not willows.is_empty() else null
 	_expect(pine_sprout and pine_sprout.find_children("*", "PalmTree", true, false)[0].actions().is_empty(), "too small to cut: no buttons")
 	travellers.seeds_from_health = 0.7
+	travellers.travel_from = 0.7
 
 	# --- Arctic trees: snow through the freeze, green again once the ice has melted ---
 	var polar: Node = null

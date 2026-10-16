@@ -94,6 +94,9 @@ var _snowman := NO_CELL
 ## whatever it's on). So an island goes up from its beach and back down on the far side, and
 ## nothing on land is ever lower than all the ground round it; water is always 0. In game pixels:
 ## STEPS[the patch][the ground it stands on] (anything not listed: 0).
+## Mud always lies at its own low level, even inside grass: sunken, so the grass's bank shows
+## (the owner: mud level with the grass didn't read as mud).
+const SUNKEN := ["mud"]
 const STEPS := {
 	"mud": {"water": 2, "sand": 2},
 	"grass": {"water": 5, "sand": 5, "mud": 3, "rock": 4, "ice": 3},
@@ -630,7 +633,7 @@ func _work_out_heights() -> void:
 					if level.has(other) and (on == -2 or borders[id][other] > borders[id][on]
 							or (borders[id][other] == borders[id][on] and level[other] > level[on])):
 						on = other
-			level[id] = level[on] + _step(kinds[id], "water" if on == -1 else kinds[on])
+			level[id] = _step(kinds[id], "water") if kinds[id] in SUNKEN else level[on] + _step(kinds[id], "water" if on == -1 else kinds[on])
 		outside = ring
 	for cell: Vector2i in region:
 		var id: int = region[cell]
@@ -764,9 +767,9 @@ func _lips_of(cell: Vector2i) -> void:
 		var b := a + dir * 2.0 * HALF
 		var a_corner := cell + Vector2i(maxi(side.x, 0), 0)
 		var b_corner := a_corner + (Vector2i(1, 0) if side.y != 0 else Vector2i(0, 1))
-		if _rounded(a_corner, cell):
+		if _pieces.has(a_corner):  # (any rounding there: the lip never squares off a curve)
 			a += dir * RADIUS
-		if _rounded(b_corner, cell):
+		if _pieces.has(b_corner):
 			b -= dir * RADIUS
 		_lips[colour].append_array([a - Vector2(side), b - Vector2(side)])
 

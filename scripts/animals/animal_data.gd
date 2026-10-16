@@ -185,7 +185,8 @@ func picture() -> Texture2D:
 @export_group("Travel")
 ## Visits other islands (Travellers): from its home island, spreading one island further along the
 ## chain every Travellers.DAYS_PER_STEP days, only to these islands (where it really lives), on
-## a morning with this chance; the first time on an island, its people say they saw it
+## a morning with this chance when both islands are fully healthy (none below 70 %, rising from
+## there: Travellers.chance); the first time on an island, its people say they saw it
 ## (`travel_news`, "{from}" = its home island).
 @export var travel_home: StringName
 @export var travels_to: PackedStringArray = []
