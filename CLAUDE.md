@@ -93,6 +93,12 @@ addons/                  third-party Godot plugins only
   world's island check works each island's health out once for the tint and the arrivals, and the
   Clue Board checks half a beat after it. Measure with a late-game world (every island full of
   animals, litter and 6 patrol boats, the ranger running) before and after.
+  Battery (the owner's iPhone got hot and ran flat in 10 minutes): phones (mobile / web_android /
+  web_ios) run at 30 frames and 30 physics steps a second (ocean_world PHONE_FPS) and draw at 2
+  pixels a point, not 3 (the Web Pages head_include caps window.devicePixelRatio at 2 before the
+  engine sizes its canvas; touches and SafeArea work in points); every island's plain Ground tiles
+  are on a drawing layer the screen leaves out (TerrainEdges.UNDRAWN_BIT), not hidden: a hidden
+  tile layer drops its runtime collision (IslandGround's corner passes and boat bands).
 
 ## Workflow
 

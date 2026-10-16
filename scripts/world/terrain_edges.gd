@@ -97,6 +97,9 @@ var _snowman := NO_CELL
 ## Mud always lies at its own low level, even inside grass: sunken, so the grass's bank shows
 ## (the owner: mud level with the grass didn't read as mud).
 const SUNKEN := ["mud"]
+## The drawing layer the screen leaves out (every island's plain Ground tiles go on it).
+const UNDRAWN_BIT := 19
+const UNDRAWN_LAYER := 1 << UNDRAWN_BIT
 const STEPS := {
 	"mud": {"water": 2, "sand": 2},
 	"grass": {"water": 5, "sand": 5, "mud": 3, "rock": 4, "ice": 3},
@@ -139,7 +142,12 @@ func _ready() -> void:
 		return
 	position = _ground.position
 	z_index = _ground.z_index
-	_ground.self_modulate.a = 0.0  # (its plain tiles hidden: the art layer shows the ground)
+	# Its plain tiles not drawn at all (the art layer shows the ground; see-through, they were still
+	# drawn every frame, a whole layer, on a phone): on a layer the screen doesn't draw. Not hidden:
+	# a hidden tile layer drops its runtime collision (IslandGround's corner passes and bands).
+	_ground.self_modulate.a = 0.0
+	_ground.visibility_layer = UNDRAWN_LAYER
+	get_viewport().set_canvas_cull_mask_bit(UNDRAWN_BIT, false)
 	_art = TileMapLayer.new()
 	_art.name = "GroundArt"
 	_art.tile_set = _art_tiles()

@@ -4,6 +4,10 @@ extends Node2D
 const TENT_PATH := "res://data/buildings/tent.tres"
 ## Phones and tablets shrink the PC-sized layout a lot; scale everything back up there.
 const TOUCH_SCALE := 1.5
+## Frames drawn and physics steps a second on a phone, not 60: half the work for its chip (the
+## owner's iPhone got hot and ran flat in 10 minutes of play). It also draws at 2 pixels a point,
+## not 3 (export_presets.cfg's head_include).
+const PHONE_FPS := 30
 
 
 ## How often island colours follow their health, and new animals check whether they can
@@ -38,6 +42,8 @@ func _ready() -> void:
 	Rescues.place_all()  # the rescue companions the ranger released, wherever they are today
 	if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
 		get_window().content_scale_factor = TOUCH_SCALE
+		Engine.max_fps = PHONE_FPS
+		Engine.physics_ticks_per_second = PHONE_FPS
 	if OS.has_feature("web") and not OS.is_userfs_persistent():
 		# e.g. a phone browser blocking storage for a game embedded in another site.
 		$HUD.show_warning("This browser won't keep your progress here. Open the game in its own tab or try another browser to save.")
