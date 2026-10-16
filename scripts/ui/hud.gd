@@ -83,6 +83,7 @@ func _ready() -> void:
 	GameClock.new_day.connect(_on_new_day)
 	%BuildButton.pressed.connect(get_tree().call_group.bind("build_menu", "open"))
 	%JournalButton.pressed.connect(get_tree().call_group.bind("journal_screen", "open"))
+	ClueMap.notice_dot(%JournalButton)  # (new cards on the Clue Board not seen yet)
 	%LookButton.pressed.connect(get_tree().call_group.bind("avatar_creator", "open"))
 	var map_button := Button.new()  # the voyage map, next to Journal
 	map_button.name = "MapButton"

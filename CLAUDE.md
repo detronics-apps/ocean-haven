@@ -795,6 +795,8 @@ Layers (z_index, back to front): the water's colours -6, the sea speckle -5, gro
 -4, waves and things in the water (kelp beds, reef patches, dark areas, the wreck) -3, swimming
 animals -2 (Animal.SWIMMING_Z, checked a few times a second), decks, jetties and markings on land
 -1, everything else 0 (y-sorted): animals swim under decks and the drawbridge (the owner).
+A boat left in the water lies at -1 too (Boat._layer): the ranger stepping out, and everyone on
+land, are always in front of it (the owner); with the ranger aboard it's at 0.
 
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area
@@ -971,6 +973,10 @@ see Tom" (skipped if Tom was met first). The first turtle stays hidden until Tom
 if the ranger hadn't done something: a topic says TalkTopic.instead (when instead_when holds)
 rather than its lines (Maya's station question once the ranger has been out in a boat: Fleet flag
 "boat_used"; Tom's hello once a turtle area is built); questions already done are skipped.
+New cards on the Clue Board show a red dot with their number on the HUD's Journal button and
+the Journal's Clues tab (ClueMap.notice_dot; Clues.unseen / mark_seen, saved "_seen"; older
+saves: what's on the board counts as seen), cleared once the board is opened; a card turning
+blue or getting evidence isn't new (the owner).
 The Clue Board never opens by itself over a talk or another page (it waits), and its pinned note
 is only as tall as its words (sized a frame after it's added: wrapped text) with a "Got it" button;
 a tap anywhere on the board puts it away too.

@@ -18,6 +18,42 @@ extends Control
 ## pins and joined with red string (cream: a question, blue: answered, tan: a field note, ochre:
 ## the final question).
 
+
+## A small red dot on `button`'s top-right corner with how many new cards are on the board (the
+## owner), shown until the board is looked at (the HUD's Journal button, the Journal's Clues tab).
+static func notice_dot(button: Control) -> Control:
+	var dot := Panel.new()
+	dot.name = "NewDot"
+	var round := StyleBoxFlat.new()
+	round.bg_color = Color("e2483d")
+	round.border_color = Color("fff4e6")
+	round.set_border_width_all(2)
+	round.set_corner_radius_all(11)
+	dot.add_theme_stylebox_override("panel", round)
+	dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dot.size = Vector2(22, 22)
+	dot.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	dot.position = Vector2(-14, -7)
+	var count := Label.new()
+	count.name = "Count"
+	count.set_anchors_preset(Control.PRESET_FULL_RECT)
+	count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	count.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	count.add_theme_font_size_override("font_size", 13)
+	count.add_theme_color_override("font_color", Color.WHITE)
+	count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dot.add_child(count)
+	button.add_child(dot)
+	var show := func() -> void:
+		if is_instance_valid(dot):
+			var n := Clues.unseen()
+			dot.visible = n > 0
+			count.text = str(n) if n < 10 else "9+"
+	show.call()
+	Clues.unseen_changed.connect(show)
+	return dot
+
+
 ## The sections, clockwise round the globe from the top (ClueData.section: their ids).
 const SECTIONS := [&"animals", &"plants", &"places", &"trash", &"storms", &"better_ways", &"people",
 	&"land_water"]

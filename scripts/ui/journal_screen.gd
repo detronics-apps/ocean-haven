@@ -42,6 +42,8 @@ func _ready() -> void:
 		button.pressed.connect(show_tab.bind(id))
 		tabs.add_child(button)
 		_tab_buttons[id] = button
+		if id == CLUES:
+			ClueMap.notice_dot(button)
 	_found_toggle = CheckButton.new()
 	_found_toggle.name = "OnlyFound"
 	_found_toggle.text = "Only what I've found"
@@ -124,6 +126,7 @@ func _fill() -> void:
 				_content.add_child(_plant_entry(plant))
 		return
 	if tab == CLUES:
+		Clues.mark_seen()  # (looked at: the dot goes)
 		var board := ClueMap.new()
 		board.name = "ClueMap"
 		board.custom_minimum_size = Vector2(0, maxf(320.0, get_viewport().get_visible_rect().size.y - 240.0))

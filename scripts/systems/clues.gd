@@ -7,11 +7,16 @@ extends Node
 ## Nothing ever goes back, and nothing here changes the game: the ending never reads the board.
 
 signal changed(card: ClueData, what: StringName)  # what: &"found", &"open", &"evidence", &"answered"
+## A new card came onto the board, or the board was looked at (unseen()).
+signal unseen_changed
 
 const CHECK_SECONDS := 2.0
 
 ## Card id -> {found: day, open: day, ev: [evidence ids, in the order seen], done: day, text}.
 var _state := {}
+## Cards the player has seen on the board (a new card shows a dot on the Journal until then: the
+## owner; a card turning blue or getting evidence isn't new). Saved.
+var _seen := {}
 var _timer := 0.0
 ## After loading, the first check catches up without a note for every card (an old save fills in).
 var _quiet_next := false
@@ -102,6 +107,8 @@ func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
 		Fleet.mark(StringName("board_opened_" + String(one.id)))
 		get_tree().create_timer(1.2, false).timeout.connect(func() -> void:
 			get_tree().call_group("journal_screen", "open_clues", one.opens_board))
+	if what in [&"found", &"open"] and not _seen.has(one.id):
+		unseen_changed.emit()
 	if what in [&"found", &"open", &"answered"]:  # a pinned note slides in (never a popup; evidence: none)
 		get_tree().call_group("hud", "clue_added", one, what)
 
@@ -602,11 +609,27 @@ func statement(one: ClueData) -> String:
 	return String(_state.get(one.id, {}).get("text", ""))
 
 
+## How many cards on the board the player hasn't looked at yet.
+func unseen() -> int:
+	return cards().filter(func(one: ClueData) -> bool: return is_visible(one.id) and not _seen.has(one.id)).size()
+
+
+## The board has been looked at: every card on it is seen.
+func mark_seen() -> void:
+	if unseen() == 0:
+		return
+	for one in cards():
+		if is_visible(one.id):
+			_seen[one.id] = true
+	unseen_changed.emit()
+
+
 # --- Saving ---
 
 func to_dict() -> Dictionary:
 	var saved := _state.duplicate(true)
 	saved["_memo"] = _memo.duplicate(true)
+	saved["_seen"] = _seen.keys().map(func(id: StringName) -> String: return String(id))
 	return saved
 
 
@@ -614,7 +637,16 @@ func restore(saved: Dictionary) -> void:
 	_state.clear()
 	_memo = (saved.get("_memo", {}) as Dictionary).duplicate(true)
 	_quiet_next = true
+	_seen.clear()
 	for id in saved:
-		if id == "_memo":
+		if id == "_memo" or id == "_seen":
 			continue
 		_state[StringName(id)] = (saved[id] as Dictionary).duplicate(true)
+	if saved.has("_seen"):
+		for id in saved["_seen"]:
+			_seen[StringName(id)] = true
+	else:  # (an older save: what's already on its board counts as seen)
+		for id in _state:
+			if is_visible(id):
+				_seen[id] = true
+	unseen_changed.emit()

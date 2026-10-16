@@ -128,7 +128,9 @@ func _initialize() -> void:
 	root.get_node("Activities").restore({"done": ["echo_dive"], "bests": {"echo_dive": {"0": 21.5}}})
 	root.get_node("Activities").reached(echo, 1, 1234.0)
 	var clues := root.get_node("Clues")
-	clues.restore({"o1_turtles": {"open": 2, "ev": ["caught"]}, "s4a_sources": {"open": 3, "ev": ["rings", "foam"], "done": 4, "text": "Litter doesn't come from nowhere."}})
+	clues.restore({"o1_turtles": {"open": 2, "ev": ["caught"]}, "s4a_sources": {"open": 3, "ev": ["rings", "foam"], "done": 4, "text": "Litter doesn't come from nowhere."},
+		"_seen": ["o1_turtles"]})
+	_expect(clues.unseen() == 1, "one card on the Clue Board not looked at yet: the Journal shows a dot")
 	var picked_before: Dictionary = _inventory.picked.duplicate()
 	_expect(_save.save_to(world, PATH), "saved")
 	load("res://scripts/player/controlled_body.gd").water_until = -1.0
@@ -159,6 +161,11 @@ func _initialize() -> void:
 	_expect(profile.look["hair"] == 3 and profile.created, "avatar look restored")
 	_expect(clues.is_open(&"o1_turtles") and clues.is_answered(&"s4a_sources") and not clues.is_answered(&"o1_turtles")
 		and clues.statement(clues.card(&"s4a_sources")) == "Litter doesn't come from nowhere.", "Clue Board restored (open, answered, its statement)")
+	_expect(clues.unseen() == 1, "which cards were looked at is kept")
+	clues.mark_seen()
+	_expect(clues.unseen() == 0, "looking at the board clears the dot")
+	clues.restore({"o1_turtles": {"open": 2}})
+	_expect(clues.unseen() == 0, "an older save: what's already on the board counts as seen")
 	_expect(root.get_node("Funding").balance == 77, "funding restored")
 	_expect(world.get_node("StarterIsland/Palm3").is_queued_for_deletion(), "a cut-down tree stays cut down")
 	_expect(clock.day == 4 and absf(clock.time_of_day - 0.8) < 0.01, "day and time restored")

@@ -28,6 +28,7 @@ func _ready() -> void:
 	add_to_group("boat")
 	add_to_group("interactables")
 	_player = get_tree().get_first_node_in_group("player")
+	_layer()
 	$Look/Hull.scale = Vector2.ONE * hull_scale
 	if hull_front:
 		var front := Sprite2D.new()
@@ -158,6 +159,7 @@ func _board(check_range := true) -> bool:
 	_look.add_child(_driver)
 	_look.move_child(_driver, $Look/Hull.get_index() + 1)
 	controlled = true
+	_layer()
 	ControlledBody.switch_camera(_camera)
 	if check_range:
 		Sound.play(&"splash", -4.0)
@@ -181,8 +183,15 @@ func restore_ashore() -> void:
 	let_go()
 	stop()
 	controlled = false
+	_layer()
 	_driver.queue_free()
 	_player.set_aboard(false)
+
+
+## Left in the water, a boat lies with the decks (-1): the ranger stepping out, and everyone on
+## land, are always in front of it (the owner); with the ranger aboard, with everything else (0).
+func _layer() -> void:
+	z_index = 0 if controlled else -1
 
 
 ## With several boats in reach, the ranger boards the nearest one.
