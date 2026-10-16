@@ -17,7 +17,8 @@ var _state := {}
 ## Cards the player has seen on the board (a new card shows a dot on the Journal until then: the
 ## owner; a card turning blue or getting evidence isn't new). Saved.
 var _seen := {}
-var _timer := 0.0
+## (half a beat off the world's island check, also every 2 s: never both in one frame)
+var _timer := CHECK_SECONDS / 2.0
 ## After loading, the first check catches up without a note for every card (an old save fills in).
 var _quiet_next := false
 ## Island id -> a stand-in PersonData, so People.check's island conditions can be used.
@@ -40,7 +41,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_timer += delta
 	if _timer >= CHECK_SECONDS:
-		_timer = 0.0
+		_timer = fmod(_timer, CHECK_SECONDS)  # (keeping its beat)
 		check(_quiet_next)
 		_quiet_next = false
 
@@ -64,16 +65,21 @@ func card(id: StringName) -> ClueData:
 ## Moves every card on as far as the game now allows. `quiet`: no "changed" signals (loading).
 func check(quiet := false) -> void:
 	_watch()
-	# Twice, so a card answered this check can open the cards that wait for it ("clue:id").
+	# Twice, so a card answered this check can open the cards that wait for it ("clue:id"); the
+	# second time only if the first changed something (it's every couple of seconds).
 	for _pass in 2:
+		var changed := false
 		for one in cards():
-			_check_card(one, quiet)
+			changed = _check_card(one, quiet) or changed
+		if not changed:
+			return
 
 
-func _check_card(one: ClueData, quiet: bool) -> void:
+## Whether anything about the card changed.
+func _check_card(one: ClueData, quiet: bool) -> bool:
 	var s: Dictionary = _state.get(one.id, {})
 	if s.has("done"):
-		return
+		return false
 	var day := GameClock.day
 	var was := s.duplicate(true)
 	if not s.has("found") and not one.discover.is_empty() and _any(one.discover, one):
@@ -97,6 +103,8 @@ func _check_card(one: ClueData, quiet: bool) -> void:
 		_tell(one, &"answered", quiet)
 	if s != was:
 		_state[one.id] = s
+		return true
+	return false
 
 
 func _tell(one: ClueData, what: StringName, quiet: bool) -> void:
@@ -327,9 +335,11 @@ func _here() -> RegionData:
 func _litter_on(region: RegionData, kind: StringName = &"") -> int:
 	var count := 0
 	for debris: Node2D in get_tree().get_nodes_in_group("debris"):
-		if debris.is_queued_for_deletion() or not debris.item.is_litter or Regions.nearest(debris.global_position) != region:
+		# (in reach first: one distance, and most litter is on other islands)
+		if not Regions.in_reach(region, debris.global_position) or debris.is_queued_for_deletion() \
+				or not debris.item.is_litter or Regions.nearest(debris.global_position) != region:
 			continue
-		if Regions.in_reach(region, debris.global_position) and (kind == &"" or FIXABLE.get(debris.item.id, &"") == kind):
+		if kind == &"" or FIXABLE.get(debris.item.id, &"") == kind:
 			count += 1
 	return count
 

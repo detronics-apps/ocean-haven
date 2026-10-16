@@ -157,7 +157,8 @@ func _process(_delta: float) -> void:
 	var now := GameClock.now()
 	if _last_tick < 0.0:
 		_last_tick = now
-	if _last_seen >= 0.0 and now > _last_seen and not Regions.ranger_on(get_tree(), region()):
+	var here := Regions.ranger_on(get_tree(), region())
+	if _last_seen >= 0.0 and now > _last_seen and not here:
 		_last_tick += now - _last_seen  # paused while the ranger is away
 	_last_seen = now
 	var ticks := 0
@@ -167,8 +168,9 @@ func _process(_delta: float) -> void:
 		ticks += 1
 	if now - _last_tick >= tick_days:
 		_last_tick = now
-	_check_gear()
-	_spot_plants()
+	if here:  # (looking out for the ranger close by: only while they're on the island)
+		_check_gear()
+		_spot_plants()
 
 
 ## Close to a patch the coral goes in the Journal; close to a Protection Area, the seagrass.

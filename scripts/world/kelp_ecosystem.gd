@@ -135,12 +135,14 @@ func _process(_delta: float) -> void:
 		return
 	if not _seeded:
 		_seed()
-	_spot_urchins()
+	var here := Regions.ranger_on(get_tree(), region())
+	if here:  # (only while the ranger is on the island)
+		_spot_urchins()
 	var now := GameClock.now()
 	if _last_tick < 0.0:
 		_last_tick = now
 	# Paused while the ranger is on another island (Regions.ranger_on).
-	if _last_seen >= 0.0 and now > _last_seen and not Regions.ranger_on(get_tree(), region()):
+	if _last_seen >= 0.0 and now > _last_seen and not here:
 		_last_tick += now - _last_seen
 	_last_seen = now
 	# Catch up on time that passed (sleeping), but not forever.

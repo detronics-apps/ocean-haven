@@ -6,7 +6,8 @@ const TILE := 32
 
 
 static func at(tree: SceneTree, point: Vector2) -> String:
-	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+	var ground := island_ground(tree, point)
+	if ground:
 		var tile := ground.get_cell_tile_data(ground.local_to_map(ground.to_local(point)))
 		if tile:
 			return tile.get_custom_data("terrain")
@@ -15,7 +16,8 @@ static func at(tree: SceneTree, point: Vector2) -> String:
 
 ## Whether the ranger can stand at `point`: land, or a deck built over the water.
 static func walkable(tree: SceneTree, point: Vector2) -> bool:
-	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+	var ground := island_ground(tree, point)
+	if ground:
 		var cell := ground.local_to_map(ground.to_local(point))
 		var tile := ground.get_cell_tile_data(cell)
 		if tile:
@@ -25,11 +27,44 @@ static func walkable(tree: SceneTree, point: Vector2) -> bool:
 	return false
 
 
+## The ground of the island nearest `point` (islands lie far apart, so it's the only one that can
+## have a tile there). Called all the time (every animal's every step, every wave crest), so the
+## grounds and their middles are kept, not looked up each time (the phone: much faster).
+static func island_ground(tree: SceneTree, point: Vector2) -> TileMapLayer:
+	if _grounds.size() != tree.get_node_count_in_group("ground"):
+		_keep_grounds(tree)
+	var best := -1
+	var best_d := INF
+	for i in _grounds.size():
+		var d := _middles[i].distance_squared_to(point)
+		if d < best_d:
+			best_d = d
+			best = i
+	if best < 0:
+		return null
+	if not is_instance_valid(_grounds[best]):  # (a world taken down and made again: look again)
+		_keep_grounds(tree)
+		return island_ground(tree, point) if not _grounds.is_empty() else null
+	return _grounds[best]
+
+
+static func _keep_grounds(tree: SceneTree) -> void:
+	_grounds.clear()
+	_middles.clear()
+	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
+		_grounds.append(ground)
+		_middles.append(ground.to_global(ground.map_to_local(ground.get_used_rect().get_center())))
+
+
+static var _grounds: Array[TileMapLayer] = []
+static var _middles := PackedVector2Array()
+
+
 ## The island ground layer covering `point`, or close to it (for building out over the sea).
 static func ground_near(tree: SceneTree, point: Vector2) -> TileMapLayer:
-	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
-		if ground.get_used_rect().grow(6).has_point(ground.local_to_map(ground.to_local(point))):
-			return ground
+	var ground := island_ground(tree, point)
+	if ground and ground.get_used_rect().grow(6).has_point(ground.local_to_map(ground.to_local(point))):
+		return ground
 	return null
 
 

@@ -30,11 +30,41 @@ static func coldest_first() -> Array[RegionData]:
 
 
 static func nearest(point: Vector2) -> RegionData:
-	var best: RegionData = null
-	for region: RegionData in all():
-		if not best or region.center.distance_to(point) < best.center.distance_to(point):
-			best = region
-	return best
+	var list := all()
+	if _centres.size() != list.size():  # (called all the time: the centres kept, compared squared)
+		_keep_centres(list)
+	if _in_a_line and is_finite(point.x):  # (the islands lie in a line across: the one whose middle is nearest across)
+		return _across[_cuts.bsearch(point.x)]
+	var best := 0
+	var best_d := INF
+	for i in _centres.size():
+		var d := _centres[i].distance_squared_to(point)
+		if d < best_d:
+			best_d = d
+			best = i
+	return list[best]
+
+
+## The islands' middles, and (when they all lie in a line across, as they do) the islands from
+## west to east with the halfway points between them: nearest() was a big part of the island
+## health checks, which count every animal and piece of litter.
+static func _keep_centres(list: Array) -> void:
+	_centres.clear()
+	for region: RegionData in list:
+		_centres.append(region.center)
+	_across = list.duplicate()
+	_across.sort_custom(func(a: RegionData, b: RegionData) -> bool: return a.center.x < b.center.x)
+	_cuts.clear()
+	_in_a_line = not _across.is_empty()
+	for i in range(1, _across.size()):
+		_in_a_line = _in_a_line and _across[i].center.y == _across[0].center.y and _across[i].center.x > _across[i - 1].center.x
+		_cuts.append((_across[i - 1].center.x + _across[i].center.x) / 2.0)
+
+
+static var _centres := PackedVector2Array()
+static var _across: Array = []
+static var _cuts := PackedFloat64Array()
+static var _in_a_line := false
 
 
 ## Whether `point` is within `region`'s rowboat waters (less `margin`), so the ranger can reach it.

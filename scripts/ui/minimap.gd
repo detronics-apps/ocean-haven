@@ -15,13 +15,11 @@ const BOAT_COLOUR := Color("8a5a36")
 
 
 ## The islands' ground as one small picture, a pixel a tile (drawn round the ranger, cut to a
-## circle by CIRCLE): building it from every tile each frame cost several ms. Rebuilt when a
-## tile changes (SaveGame.tile_changed) and now and then (loading).
+## circle by CIRCLE): building it from every tile each frame cost several ms. Rebuilt only when a
+## tile changes (SaveGame.tile_changed, loading too): rebuilding it every 10 s was a hitch on a phone.
 var _land: ImageTexture
 var _land_origin := Vector2i.ZERO
 var _land_dirty := true
-var _land_age := 0.0
-const REBUILD_EVERY := 10.0
 const CIRCLE := preload("res://assets/effects/minimap/circle.gdshader")
 
 
@@ -62,11 +60,7 @@ func _build_land() -> void:
 		_land = ImageTexture.create_from_image(image)
 
 
-func _process(delta: float) -> void:
-	_land_age += delta
-	if _land_age >= REBUILD_EVERY:
-		_land_age = 0.0
-		_land_dirty = true
+func _process(_delta: float) -> void:
 	queue_redraw()
 
 

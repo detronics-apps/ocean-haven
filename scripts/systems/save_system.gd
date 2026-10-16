@@ -418,6 +418,7 @@ func load_from(world: Node, path: String) -> bool:
 			var atlas: Array = _tile_edits[ground_path][key]
 			ground.set_cell(Vector2i(int(xy[0]), int(xy[1])), 0, Vector2i(int(atlas[0]), int(atlas[1])))
 	get_tree().call_group("terrain_edges", "rebuild")  # the changed tiles' rounded corners
+	tile_changed.emit()  # (the minimap and the wave crests redo theirs)
 	Inventory.restore(state.get("inventory", {}), state.get("stored", {}))
 	Inventory.litter_collected = int(state.get("litter_collected", 0))
 	Inventory.picked.clear()

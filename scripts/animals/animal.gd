@@ -50,6 +50,11 @@ const BANDAGE := preload("res://assets/effects/injured/bandage.svg")
 ## In the water an animal is drawn under decks and jetties (it swims underneath them: the owner).
 const SWIMMING_Z := -2
 var _layer_left := 0.0
+## In the water (as last looked, a few times a second with its layer): for the sway and the dip.
+var _wet := true
+## Where it last looked whether its habitat goes on ahead, and the target it had then.
+var _edge_from := Vector2.INF
+var _edge_target := Vector2.INF
 var _shadow: Shadow
 var _show_check := 0.0
 ## A hatchling: smaller, and doesn't nest. Grows up after data.grow_days.
@@ -418,7 +423,8 @@ func _physics_process(delta: float) -> void:
 	_layer_left -= delta
 	if _layer_left <= 0.0 and not data.flies:  # (a few times a second)
 		_layer_left = 0.25
-		z_index = SWIMMING_Z if Terrain.at(get_tree(), global_position) in ["water", ""] else 0
+		_wet = Terrain.at(get_tree(), global_position) in ["water", ""]
+		z_index = SWIMMING_Z if _wet else 0
 		if _shadow:
 			_shadow.self_modulate.a = 1.0 if z_index == 0 else 0.0  # (no shadow while swimming)
 	if _due:
@@ -474,9 +480,15 @@ func _physics_process(delta: float) -> void:
 		_rest(randf_range(data.rest_min, data.rest_max))
 		return
 	velocity = to_target.normalized() * speed
-	if not data.flies and in_habitat(global_position) and not in_habitat(global_position + velocity.normalized() * 10.0):
-		_rest(data.rest_min)  # its habitat ends here: never step out of it (then flicker back)
-		return
+	# Its habitat ends here: never step out of it (then flicker back). Looked at every 3 px it
+	# moves (10 px ahead, so it's never missed), not every frame (the phone: a full island).
+	if not data.flies and (_target != _edge_target or global_position.distance_squared_to(_edge_from) >= 9.0):
+		_edge_from = global_position
+		_edge_target = _target
+		if in_habitat(global_position) and not in_habitat(global_position + velocity.normalized() * 10.0):
+			_edge_from = Vector2.INF  # (look again next time)
+			_rest(data.rest_min)
+			return
 	move_and_slide()
 	_face(velocity)
 	# Blocked by land (e.g. fled towards the beach): rest, then pick somewhere else.
@@ -1329,7 +1341,7 @@ func _face(motion: Vector2) -> void:
 	if data.land_sprite:
 		_sprite.flip_h = false
 	if data.faces_movement:
-		var sway := sin(_clock() * 2.4 + _motion_phase) * 0.09 if data.sways and _in_water() else 0.0
+		var sway := sin(_clock() * 2.4 + _motion_phase) * 0.09 if data.sways and _wet else 0.0
 		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle() + sway, 0.1)
 	elif motion.x != 0.0:
 		_sprite.flip_h = motion.x < 0.0
@@ -1513,7 +1525,7 @@ func _clock() -> float:
 ## A swimmer's dip now and then: a little under the surface, fainter and bluer, then up again.
 func _dip() -> void:
 	var under := 0.0
-	if _in_water():
+	if _wet:
 		var cycle := fposmod(_clock() + _motion_phase * 2.0, 8.0)
 		under = clampf(minf(cycle - 4.0, 7.0 - cycle), 0.0, 1.0) if cycle > 4.0 else 0.0
 	_sprite.self_modulate = Color(1.0 - 0.35 * under, 1.0 - 0.15 * under, 1.0, 1.0 - 0.45 * under)

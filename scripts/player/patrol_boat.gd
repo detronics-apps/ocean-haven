@@ -11,6 +11,9 @@ extends Node2D
 var _target := Vector2.ZERO
 var _check := 0.0
 var _working := true
+## The litter it's heading for, and when it next looks for the nearest.
+var _litter: Debris
+var _look := 0.0
 
 @onready var _hull: Sprite2D = $Hull
 ## The owner's boat picture carries twice the game's pixels (tools/cut_owner_pictures.py).
@@ -43,12 +46,16 @@ func _process(delta: float) -> void:
 		if reach != radius:
 			radius = reach
 			queue_redraw()
-	var litter := _nearest_litter()
-	if litter:
-		_target = to_local(litter.global_position)
+	_look -= delta
+	if _look <= 0.0 or (_litter and (_litter.is_queued_for_deletion() or not _litter.floating)):
+		_look = 0.25  # (a few times a second: it went through all the world's litter every frame)
+		_litter = _nearest_litter()
+	if _litter:
+		_target = to_local(_litter.global_position)
 		if _hull.position.distance_to(_target) < 10.0:
-			litter.collect(false)
-			get_tree().call_group("hud", "patrol_collected", litter.item)
+			_litter.collect(false)
+			get_tree().call_group("hud", "patrol_collected", _litter.item)
+			_litter = null
 			_target = _pick_spot()
 	elif _hull.position.distance_to(_target) < 4.0:
 		_target = _pick_spot()

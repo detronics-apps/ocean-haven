@@ -63,7 +63,7 @@ func actions() -> Array:
 ## What it says while it's closed (the line above the buttons).
 func info_line() -> String:
 	var ranger := ControlledBody.active(get_tree())
-	if Activities.is_open(activity) or not ranger or ranger.global_position.distance_to(global_position) > RANGE:
+	if not ranger or ranger.global_position.distance_to(global_position) > RANGE or Activities.is_open(activity):
 		return ""
 	return activity.closed_note.get_slice("\n", 0).get_slice(". ", 0).left(70)
 

@@ -15,12 +15,13 @@ static var _arrived := {}
 
 
 ## Brings in every animal whose island (and ocean) is now healthy enough. Returns them.
-static func check(world: Node) -> Array[Node2D]:
+## `health_of`: each region's health, if already worked out (the world's island check).
+static func check(world: Node, health_of := {}) -> Array[Node2D]:
 	var tree := world.get_tree()
 	var came: Array[Node2D] = []
-	var health_of := {}  # (worked out once each: it counts every animal and piece of litter)
-	for region: RegionData in Regions.all():
-		health_of[region] = IslandHealth.of(tree, region)
+	for region: RegionData in Regions.all():  # (worked out once each: it counts every animal and piece of litter)
+		if not health_of.has(region):
+			health_of[region] = IslandHealth.of(tree, region)
 	var healthy := Regions.all().filter(func(r: RegionData) -> bool: return health_of[r] >= HEALTHY)
 	for region: RegionData in Regions.all():
 		var health: float = health_of[region]
@@ -87,10 +88,12 @@ static func birds_for_trees(trees: int, now: int) -> int:
 ## Full-grown trees on `region`'s island (seabirds nest in them); `planted`: only those the
 ## ranger planted.
 static func grown_trees(tree: SceneTree, region: RegionData, planted := false) -> int:
-	return tree.get_nodes_in_group("plants").filter(func(p: Node2D) -> bool:
-		return (not p.is_queued_for_deletion() and p.has_method("stage") and p.stage() == 2
-			and (not planted or p.get_parent() is Building)
-			and Regions.nearest(p.global_position) == region)).size()
+	var trees := 0
+	for p: Node2D in tree.get_nodes_in_group("plants"):
+		if Regions.nearest(p.global_position) == region and (not planted or p.get_parent() is Building) \
+				and not p.is_queued_for_deletion() and p.has_method("stage") and p.stage() == 2:
+			trees += 1
+	return trees
 
 
 static func arrived_names() -> Array:

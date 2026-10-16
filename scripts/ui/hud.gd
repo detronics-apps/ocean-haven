@@ -394,13 +394,13 @@ func nearest_animal_info() -> String:
 	# Things close by that have something to say but nothing to press (`info_line`): the line
 	# above the buttons, never a button that only shows a note.
 	for thing: Node in get_tree().get_nodes_in_group("interactables"):
-		if thing.has_method("info_line"):
+		if thing.process_mode != PROCESS_MODE_DISABLED and thing.has_method("info_line"):  # (not asleep: IslandSleep)
 			var line: String = thing.info_line()
 			if line != "":
 				return line
 	var best: Node2D = null
 	for animal: Node2D in get_tree().get_nodes_in_group("animals"):
-		if animal.get("info") and (not best or animal.global_position.distance_to(ranger.global_position)
+		if animal.process_mode != PROCESS_MODE_DISABLED and animal.get("info") and (not best or animal.global_position.distance_to(ranger.global_position)
 				< best.global_position.distance_to(ranger.global_position)):
 			best = animal
 	return best.info if best else ""
@@ -412,6 +412,8 @@ func nearby_actions() -> Array:
 	var others := []
 	var seen := {}
 	for thing: Node in get_tree().get_nodes_in_group("interactables"):
+		if thing.process_mode == PROCESS_MODE_DISABLED:
+			continue  # (asleep, on an island the ranger isn't on: IslandSleep)
 		for action: Dictionary in thing.actions():
 			if seen.has(action.label):
 				continue
@@ -438,13 +440,30 @@ func _update_action_bar() -> void:
 		button.custom_minimum_size = Vector2(150, 52)
 		button.add_theme_font_size_override("font_size", 18)
 		button.pressed.connect(action.do)
+		button.pressed.connect(func() -> void: _actions_left = 0.0)  # (what's on offer now, next frame)
 		_action_bar.add_child(button)
 	# Only a dead zone while there are buttons (the animal note alone doesn't block taps).
 	_action_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE if actions.is_empty() else Control.MOUSE_FILTER_STOP
 
 
+## The action buttons and the line above them are worked out ten times a second (asking every
+## interactable every frame was the HUD's biggest cost on a phone), and at once after a button or
+## a jump.
+const ACTIONS_EVERY := 0.1
+var _actions_left := 0.0
+var _actions_from := Vector2.INF
+
+
 func _process(delta: float) -> void:
-	_update_action_bar()
+	var ranger := ControlledBody.active(get_tree())
+	var at := ranger.global_position if ranger else Vector2.ZERO
+	_actions_left -= delta
+	if _actions_left <= 0.0 or at.distance_to(_actions_from) > 32.0:
+		_actions_left = ACTIONS_EVERY
+		_actions_from = at
+		_update_action_bar()
+		_info.text = nearest_animal_info()
+		_info.visible = _info.text != ""
 	_place_toast()
 	_event_note.text = RareEvents.warning_text()
 	_event_note.visible = _event_note.text != ""
@@ -454,8 +473,6 @@ func _process(delta: float) -> void:
 		_check_unlocks()
 		_objective.text = objective_text()
 		_objective.visible = _objective.text != ""
-	_info.text = nearest_animal_info()
-	_info.visible = _info.text != ""
 	_clock.text = "%s · %s    Funding: %d" % [GameClock.calendar(), GameClock.period(), Funding.balance]
 
 

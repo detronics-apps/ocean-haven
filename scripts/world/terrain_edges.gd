@@ -807,11 +807,12 @@ static func height_at(tree: SceneTree, point: Vector2) -> int:
 
 ## Whether a point in the water is just under a face (SeaWaves draws no crest there).
 static func covers(tree: SceneTree, point: Vector2) -> bool:
-	for edges: TerrainEdges in tree.get_nodes_in_group("terrain_edges"):
-		if edges._hangs.is_empty():
-			continue
-		var local := edges.to_local(point)
-		var cell := edges._ground.local_to_map(local)
-		if edges._hangs.has(cell) and local.y - (edges._ground.map_to_local(cell).y - HALF) <= edges._hangs[cell] + 3.0:
-			return true
-	return false
+	var ground := Terrain.island_ground(tree, point)  # (only the nearest island: called per step)
+	if not ground is IslandGround:
+		return false
+	var bands: Dictionary = (ground as IslandGround).bands  # (the water strips under the faces)
+	if bands.is_empty():
+		return false
+	var local := ground.to_local(point)
+	var cell := ground.local_to_map(local)
+	return bands.has(cell) and local.y - (ground.map_to_local(cell).y - HALF) <= bands[cell] + 3.0

@@ -143,6 +143,9 @@ func _initialize() -> void:
 	var land_at := ground.to_global(ground.map_to_local(shore_cell))
 	for debris: Node in get_nodes_in_group("debris"):
 		debris.free()  # only this bottle about
+	# (the ranger on the Kelp Forest, out of the otter's way: islands the ranger isn't on sleep)
+	world.get_node("Player").global_position = kelp_region.center + Vector2(0, -1500)
+	await process_frame
 	carrier.global_position = land_at + Vector2(out) * 32.0 * 2.5
 	var bottle: Node2D = world.get_node("KelpLitter").spawn_at(load("res://data/items/plastic_bottle.tres"),
 		land_at + Vector2(out) * 32.0 * 3.5, true)

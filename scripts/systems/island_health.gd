@@ -99,11 +99,16 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor, pro
 			var eco := ecosystem(tree, region)
 			return roundi(eco.eco_count(factor.target, projected)) if eco else 0
 		&"clean":
-			return tree.get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+			# (plain loops, the quick checks first: every animal and piece of litter, for every
+			# island, every couple of seconds)
+			var litter := 0
+			for d: Node2D in tree.get_nodes_in_group("debris"):
 				# Only litter the rowboat can reach counts (drifting litter further out doesn't).
-				return (not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region
-					and Regions.in_reach(region, d.global_position)
-					and (d.item.id == factor.target if factor.target != &"" else d.item.is_litter))).size()
+				if Regions.in_reach(region, d.global_position) and not d.is_queued_for_deletion() \
+						and (d.item.id == factor.target if factor.target != &"" else d.item.is_litter) \
+						and Regions.nearest(d.global_position) == region:
+					litter += 1
+			return litter
 		&"help":
 			return Journal.helped_count(factor.target)
 		&"kelp":  # the kelp's condition, in percent
@@ -113,11 +118,14 @@ static func count(tree: SceneTree, region: RegionData, factor: HealthFactor, pro
 			var eco := ecosystem(tree, region)
 			return eco.urchin_total() if eco else 0
 		&"animals":
-			return tree.get_nodes_in_group("animals").filter(func(a: Node2D) -> bool:
+			var animals := 0
+			for a: Node2D in tree.get_nodes_in_group("animals"):
 				# Healthy residents only: hurt or caught ones count again once helped, and a
 				# visiting dolphin (dolphin tracking) is only passing through.
-				return (a.data.id == factor.target and not a.leaving and not a.injured and not a.tangled
-					and not a.visiting and Regions.nearest(a.global_position) == region)).size()
+				if a.data.id == factor.target and not a.leaving and not a.injured and not a.tangled \
+						and not a.visiting and Regions.nearest(a.global_position) == region:
+					animals += 1
+			return animals
 	return 0
 
 
@@ -153,9 +161,10 @@ static func heading(tree: SceneTree, region: RegionData) -> float:
 	return of(tree, region)
 
 
-## Colours every island's ground by its health.
-static func tint(tree: SceneTree) -> void:
+## Colours every island's ground by its health (`health_of`: region -> health, if already worked out).
+static func tint(tree: SceneTree, health_of := {}) -> void:
 	for ground: TileMapLayer in tree.get_nodes_in_group("ground"):
 		var middle := ground.to_global(ground.map_to_local(ground.get_used_rect().get_center()))
-		var health := of(tree, Regions.nearest(middle))
+		var region := Regions.nearest(middle)
+		var health: float = health_of[region] if health_of.has(region) else of(tree, region)
 		ground.modulate = Color.WHITE if health < 0.0 else DAMAGED_TINT.lerp(Color.WHITE, health)

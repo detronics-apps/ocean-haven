@@ -24,6 +24,9 @@ func _ready() -> void:
 			var spot := ActivitySpot.new()
 			spot.activity = activity
 			add_child(spot)
+	var sleep := IslandSleep.new()  # (islands the ranger isn't on stop their per-frame work)
+	sleep.name = "IslandSleep"
+	add_child(sleep)
 	var tint := Timer.new()
 	tint.wait_time = tint_interval
 	tint.autostart = true
@@ -93,10 +96,14 @@ func place_tagged(rescue: RescueData, record: Dictionary) -> Node2D:
 	return animal
 
 
-## Island colours follow their health; animals arrive as islands recover.
+## Island colours follow their health; animals arrive as islands recover (each island's health
+## worked out once for both).
 func _check_islands() -> void:
-	IslandHealth.tint(get_tree())
-	Arrivals.check(self)
+	var health := {}
+	for region: RegionData in Regions.all():
+		health[region] = IslandHealth.of(get_tree(), region)
+	IslandHealth.tint(get_tree(), health)
+	Arrivals.check(self, health)
 
 
 func _has_home() -> bool:

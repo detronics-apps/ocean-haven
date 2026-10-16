@@ -79,8 +79,20 @@ addons/                  third-party Godot plugins only
   `DataFiles.res(path)` (loaded once, kept) or `preload`; `DataFiles.load_all` is cached too.
   `load()` and folder listings go to the disk / the web pack on every call, and made every frame
   lag. Per-frame code (`_process`, `_physics_process`, `_draw`) never loops over every tile or
-  does a flood fill: cache it (the minimap's land picture, rebuilt on SaveGame.tile_changed; the
-  Mangrove's `connected()`), and work that can wait runs a few times a second.
+  does a flood fill: cache it (the minimap's land picture, rebuilt only on SaveGame.tile_changed,
+  which loading emits too; the Mangrove's `connected()`; SeaWaves' crests, worked out once per
+  cell), and work that can wait runs a few times a second (patrol boats look for litter 4 times a
+  second, the HUD's action buttons and info line 10 times, at once after a button or a jump).
+  Islands the ranger isn't on sleep (`IslandSleep`, a world child: their animals, litter,
+  buildings, people, trees, kelp beds, reef patches and dark areas get PROCESS_MODE_DISABLED,
+  their old mode given back on arrival; the HUD skips disabled things; ecosystems keep running,
+  they pause themselves). Lookups asked all the time are kept: `Terrain.island_ground` (at /
+  walkable / covers), `Regions.nearest` (the islands lie in a line across: a binary search on the
+  halfway points), `ControlledBody.active`. Checks over every animal or piece of litter
+  (IslandHealth.count, Arrivals.grown_trees) are plain loops with the quick test first; the
+  world's island check works each island's health out once for the tint and the arrivals, and the
+  Clue Board checks half a beat after it. Measure with a late-game world (every island full of
+  animals, litter and 6 patrol boats, the ranger running) before and after.
 
 ## Workflow
 

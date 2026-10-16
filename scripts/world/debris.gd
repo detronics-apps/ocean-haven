@@ -47,6 +47,9 @@ func _ready() -> void:
 		create_tween().tween_property(self, "modulate:a", 1.0, 1.5)  # drifts into view
 
 
+var _region: RegionData
+
+
 func _process(delta: float) -> void:
 	_time += delta
 	_sprite.position.y = roundf(sin(_time * 2.0) * 1.5)
@@ -60,7 +63,9 @@ func _process(delta: float) -> void:
 
 
 func _drift(delta: float) -> void:
-	var region := Regions.nearest(global_position)
+	if not _region:  # (the island it's drifting to: looked up once)
+		_region = Regions.nearest(global_position)
+	var region := _region
 	_drift_check -= delta
 	if _drift_check <= 0.0:
 		_drift_check = 1.0

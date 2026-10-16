@@ -62,10 +62,17 @@ var _holding := false
 
 ## The body the player is steering right now (the ranger or the boat), or null.
 static func active(tree: SceneTree) -> ControlledBody:
+	# (asked all the time, by every animal every frame: the last answer while it still holds)
+	if _active and _active.controlled and _active.is_inside_tree() and _active.get_tree() == tree:
+		return _active
 	for body: ControlledBody in tree.get_nodes_in_group("controllable"):
 		if body.controlled:
+			_active = body
 			return body
 	return null
+
+
+static var _active: ControlledBody
 
 
 func _enter_tree() -> void:
