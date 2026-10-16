@@ -2,39 +2,19 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="2" y="5" width="12" height="8" fill="#767673"/>
-  <rect x="2" y="5" width="12" height="2" fill="#7a717b"/>
-  <rect x="3" y="8" width="10" height="4" fill="#6e6e6a"/>
-  <rect x="11" y="4" width="3" height="2" fill="#767673"/>
-  <rect x="1" y="13" width="2" height="1" fill="#767673"/><rect x="5" y="14" width="1" height="1" fill="#767673"/>
+  <rect x="2" y="5" width="12" height="8" fill="#37373b"/><rect x="2" y="5" width="12" height="2" fill="#3b3640"/><rect x="3" y="8" width="10" height="4" fill="#343436"/><rect x="12" y="7" width="2" height="6" fill="#313134"/><rect x="2" y="12" width="12" height="1" fill="#303033"/><rect x="11" y="4" width="3" height="2" fill="#38383d"/><rect x="1" y="13" width="2" height="1" fill="#37373b"/><rect x="5" y="14" width="1" height="1" fill="#37373b"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="2" y="5" width="12" height="8" fill="#767673"/>
-  <rect x="2" y="5" width="12" height="2" fill="#7a717b"/>
-  <rect x="3" y="8" width="10" height="4" fill="#6e6e6a"/>
-  <rect x="11" y="4" width="3" height="2" fill="#767673"/>
-  <rect x="1" y="13" width="2" height="1" fill="#767673"/><rect x="5" y="14" width="1" height="1" fill="#767673"/>
+  <rect x="2" y="5" width="12" height="8" fill="#37373b"/><rect x="2" y="5" width="12" height="2" fill="#3b3640"/><rect x="3" y="8" width="10" height="4" fill="#343436"/><rect x="12" y="7" width="2" height="6" fill="#313134"/><rect x="2" y="12" width="12" height="1" fill="#303033"/><rect x="11" y="4" width="3" height="2" fill="#38383d"/><rect x="1" y="13" width="2" height="1" fill="#37373b"/><rect x="5" y="14" width="1" height="1" fill="#37373b"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="2" y="5" width="12" height="8" fill="#767673"/>
-  <rect x="2" y="5" width="12" height="2" fill="#7a717b"/>
-  <rect x="3" y="8" width="10" height="4" fill="#6e6e6a"/>
-  <rect x="11" y="4" width="3" height="2" fill="#767673"/>
-  <rect x="1" y="13" width="2" height="1" fill="#767673"/><rect x="5" y="14" width="1" height="1" fill="#767673"/>
+  <rect x="2" y="5" width="12" height="8" fill="#37373b"/><rect x="2" y="5" width="12" height="2" fill="#3b3640"/><rect x="3" y="8" width="10" height="4" fill="#343436"/><rect x="12" y="7" width="2" height="6" fill="#313134"/><rect x="2" y="12" width="12" height="1" fill="#303033"/><rect x="11" y="4" width="3" height="2" fill="#38383d"/><rect x="1" y="13" width="2" height="1" fill="#37373b"/><rect x="5" y="14" width="1" height="1" fill="#37373b"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="2" y="5" width="12" height="8" fill="#767673"/>
-  <rect x="2" y="5" width="12" height="2" fill="#7a717b"/>
-  <rect x="3" y="8" width="10" height="4" fill="#6e6e6a"/>
-  <rect x="11" y="4" width="3" height="2" fill="#767673"/>
-  <rect x="1" y="13" width="2" height="1" fill="#767673"/><rect x="5" y="14" width="1" height="1" fill="#767673"/>
+  <rect x="2" y="5" width="12" height="8" fill="#37373b"/><rect x="2" y="5" width="12" height="2" fill="#3b3640"/><rect x="3" y="8" width="10" height="4" fill="#343436"/><rect x="12" y="7" width="2" height="6" fill="#313134"/><rect x="2" y="12" width="12" height="1" fill="#303033"/><rect x="11" y="4" width="3" height="2" fill="#38383d"/><rect x="1" y="13" width="2" height="1" fill="#37373b"/><rect x="5" y="14" width="1" height="1" fill="#37373b"/>
 </g></g>
   <g id="art" data-size="16 16" data-box="0 0 16 16">
-  <!-- Placeholder: a broken white foam fish box -->
-  <rect x="2" y="5" width="12" height="8" fill="#f4f4ee"/>
-  <rect x="2" y="5" width="12" height="2" fill="#ffffff"/>
-  <rect x="3" y="8" width="10" height="4" fill="#e2e2d8"/>
-  <rect x="11" y="4" width="3" height="2" fill="#f4f4ee"/>
-  <rect x="1" y="13" width="2" height="1" fill="#f4f4ee"/><rect x="5" y="14" width="1" height="1" fill="#f4f4ee"/>
+  <!-- a broken white foam fish box -->
+  <rect x="2" y="5" width="12" height="8" fill="#ecece4"/><rect x="2" y="5" width="12" height="2" fill="#ffffff"/><rect x="3" y="8" width="10" height="4" fill="#dcdcd0"/><rect x="12" y="7" width="2" height="6" fill="#cfcfc2"/><rect x="2" y="12" width="12" height="1" fill="#c9c9bc"/><rect x="11" y="4" width="3" height="2" fill="#f4f4ee"/><rect x="1" y="13" width="2" height="1" fill="#ecece4"/><rect x="5" y="14" width="1" height="1" fill="#ecece4"/>
 </g>
 </svg>

@@ -285,6 +285,12 @@ def fit(piece, target):
     d = 1 if TREES else target.get('density', DENSITY)
     w, h = (v * d for v in target['size'])
     x0, y0, x1, y1 = (v * d for v in target['art'])
+    if not TREES:
+        # (as the owner's reworked pictures: averaged, outlines kept whole, then snapped to the
+        # picture's own colours, so its shading stays and nothing blurs in between; a smooth
+        # resize left the first sheet's buildings soft beside them)
+        from cut_owner_pictures import shrink
+        return shrink(piece, (w, h), (x0, y0, x1, y1))
     scale = min((x1 - x0) / piece.size[0], (y1 - y0) / piece.size[1])
     nw, nh = max(1, round(piece.size[0] * scale)), max(1, round(piece.size[1] * scale))
     small = piece.resize((nw, nh), Image.LANCZOS)

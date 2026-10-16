@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="AnimalData" format=3]
 
 [ext_resource type="Script" path="res://scripts/animals/animal_data.gd" id="1_2r22d"]
-[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="2_t780o"]
+[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.png" id="2_t780o"]
 
 [ext_resource type="Script" path="res://scripts/animals/photo_moment.gd" id="pm_script"]
 

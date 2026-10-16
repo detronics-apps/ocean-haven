@@ -61,15 +61,45 @@ def recolour(art: str, own: list, palette: list) -> str:
     """The grown bird's body colours (`own`) become the young one's (`palette`); the rest stays."""
     if not own or not palette:
         return art
+    if len(palette) < len(own):
+        # (a young one of fewer colours, like a sooty cormorant chick: its other tones are its
+        # main colour made lighter or darker as the grown bird's are, so it keeps its shading)
+        main = rgb(palette[0])
+        base = max(lightness(own[0]), 0.05)
+        for c in own[len(palette):]:
+            f = lightness(c) / base
+            f = f if abs(f - 1.0) >= 0.18 else (1.25 if f >= 1.0 else 0.8)
+            palette.append("#%02x%02x%02x" % tuple(max(0, min(255, round(v * f + (12 if f > 1 else 0)))) for v in main))
     mapping = {}
     for i, c in enumerate(own):
         j = round(i * (len(palette) - 1) / max(len(own) - 1, 1))
         mapping[c] = palette[j]
 
-    def swap(colour: str) -> str:  # (the nearest body colour, if it's close: drawings vary a shade)
+    def target(colour: str):  # (the nearest body colour's, if it's close: drawings vary a shade)
         near = min(own, key=lambda c: distance(c, colour))
-        return mapping[near] if distance(near, colour) < CLOSE else colour
-    return re.sub(r'fill="(#[0-9a-fA-F]{3,6})"', lambda m: f'fill="{swap(m.group(1).lower())}"', art)
+        return mapping[near] if distance(near, colour) < CLOSE else None
+    # The drawing's own shading is kept: of the colours that become one young colour, the most
+    # used becomes it, and the others are made as much lighter or darker as they are (the owner:
+    # a sooty cormorant chick flying was one flat tone).
+    used = {}
+    for c in re.findall(r'fill="(#[0-9a-fA-F]{3,6})"', art):
+        used[c.lower()] = used.get(c.lower(), 0) + 1
+    groups = {}
+    for c in used:
+        t = target(c)
+        if t:
+            groups.setdefault(t, []).append(c)
+    final = {}
+    for t, members in groups.items():
+        main = max(members, key=lambda c: used[c])
+        for c in members:
+            f = lightness(c) / max(lightness(main), 0.05)
+            if c == main:
+                final[c] = t
+            else:
+                f = f if abs(f - 1.0) >= 0.12 else (1.12 if f > 1.0 else 0.88)
+                final[c] = "#%02x%02x%02x" % tuple(max(0, min(255, round(v * f + (14 if f > 1 else 0)))) for v in rgb(t))
+    return re.sub(r'fill="(#[0-9a-fA-F]{3,6})"', lambda m: f'fill="{final.get(m.group(1).lower(), m.group(1))}"', art)
 
 
 ## How near two colours must be (0..441, straight-line RGB) to count as the same body colour.

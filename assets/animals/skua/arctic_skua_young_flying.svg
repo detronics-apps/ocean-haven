@@ -5,72 +5,72 @@
   
   <polygon points="17,10 16,6 13,3 9,1 5,0 7,3 9,6 9,10" fill="#1e1619"/>
   <polygon points="17,14 16,18 13,21 9,23 5,24 7,21 9,18 9,14" fill="#1e1619"/>
-  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#1e1619"/>
-  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#1e1619"/>
+  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#261d1f"/>
+  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#261d1f"/>
   <rect x="9" y="3" width="2" height="1" fill="#353133"/><rect x="10" y="4" width="1" height="1" fill="#353133"/>
   <rect x="9" y="20" width="2" height="1" fill="#353133"/><rect x="10" y="19" width="1" height="1" fill="#353133"/>
-  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1e1619"/>
-  <rect x="10" y="11" width="7" height="2" fill="#1e1619"/>
-  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#0e0e1b"/>
+  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1a1317"/>
+  <rect x="10" y="11" width="7" height="2" fill="#231b1d"/>
+  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#131321"/>
   <rect x="0" y="11" width="1" height="1" fill="#0e0e1b"/><rect x="0" y="12" width="1" height="1" fill="#0e0e1b"/>
-  <rect x="18" y="10" width="4" height="4" fill="#1e1619"/>
+  <rect x="18" y="10" width="4" height="4" fill="#1a1317"/>
   <rect x="19" y="10" width="3" height="2" fill="#0e0e1b"/>
   <rect x="20" y="12" width="2" height="1" fill="#2c2726"/>
-  <rect x="22" y="11" width="2" height="2" fill="#0e0e1b"/><rect x="24" y="12" width="1" height="1" fill="#0e0e1b"/>
+  <rect x="22" y="11" width="2" height="2" fill="#12121f"/><rect x="24" y="12" width="1" height="1" fill="#12121f"/>
   </g>
 </g><g transform="translate(1 0)">
   <g id="art">
   
   <polygon points="17,10 16,6 13,3 9,1 5,0 7,3 9,6 9,10" fill="#1e1619"/>
   <polygon points="17,14 16,18 13,21 9,23 5,24 7,21 9,18 9,14" fill="#1e1619"/>
-  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#1e1619"/>
-  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#1e1619"/>
+  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#261d1f"/>
+  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#261d1f"/>
   <rect x="9" y="3" width="2" height="1" fill="#353133"/><rect x="10" y="4" width="1" height="1" fill="#353133"/>
   <rect x="9" y="20" width="2" height="1" fill="#353133"/><rect x="10" y="19" width="1" height="1" fill="#353133"/>
-  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1e1619"/>
-  <rect x="10" y="11" width="7" height="2" fill="#1e1619"/>
-  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#0e0e1b"/>
+  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1a1317"/>
+  <rect x="10" y="11" width="7" height="2" fill="#231b1d"/>
+  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#131321"/>
   <rect x="0" y="11" width="1" height="1" fill="#0e0e1b"/><rect x="0" y="12" width="1" height="1" fill="#0e0e1b"/>
-  <rect x="18" y="10" width="4" height="4" fill="#1e1619"/>
+  <rect x="18" y="10" width="4" height="4" fill="#1a1317"/>
   <rect x="19" y="10" width="3" height="2" fill="#0e0e1b"/>
   <rect x="20" y="12" width="2" height="1" fill="#2c2726"/>
-  <rect x="22" y="11" width="2" height="2" fill="#0e0e1b"/><rect x="24" y="12" width="1" height="1" fill="#0e0e1b"/>
+  <rect x="22" y="11" width="2" height="2" fill="#12121f"/><rect x="24" y="12" width="1" height="1" fill="#12121f"/>
   </g>
 </g><g transform="translate(0 -1)">
   <g id="art">
   
   <polygon points="17,10 16,6 13,3 9,1 5,0 7,3 9,6 9,10" fill="#1e1619"/>
   <polygon points="17,14 16,18 13,21 9,23 5,24 7,21 9,18 9,14" fill="#1e1619"/>
-  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#1e1619"/>
-  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#1e1619"/>
+  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#261d1f"/>
+  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#261d1f"/>
   <rect x="9" y="3" width="2" height="1" fill="#353133"/><rect x="10" y="4" width="1" height="1" fill="#353133"/>
   <rect x="9" y="20" width="2" height="1" fill="#353133"/><rect x="10" y="19" width="1" height="1" fill="#353133"/>
-  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1e1619"/>
-  <rect x="10" y="11" width="7" height="2" fill="#1e1619"/>
-  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#0e0e1b"/>
+  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1a1317"/>
+  <rect x="10" y="11" width="7" height="2" fill="#231b1d"/>
+  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#131321"/>
   <rect x="0" y="11" width="1" height="1" fill="#0e0e1b"/><rect x="0" y="12" width="1" height="1" fill="#0e0e1b"/>
-  <rect x="18" y="10" width="4" height="4" fill="#1e1619"/>
+  <rect x="18" y="10" width="4" height="4" fill="#1a1317"/>
   <rect x="19" y="10" width="3" height="2" fill="#0e0e1b"/>
   <rect x="20" y="12" width="2" height="1" fill="#2c2726"/>
-  <rect x="22" y="11" width="2" height="2" fill="#0e0e1b"/><rect x="24" y="12" width="1" height="1" fill="#0e0e1b"/>
+  <rect x="22" y="11" width="2" height="2" fill="#12121f"/><rect x="24" y="12" width="1" height="1" fill="#12121f"/>
   </g>
 </g><g transform="translate(0 1)">
   <g id="art">
   
   <polygon points="17,10 16,6 13,3 9,1 5,0 7,3 9,6 9,10" fill="#1e1619"/>
   <polygon points="17,14 16,18 13,21 9,23 5,24 7,21 9,18 9,14" fill="#1e1619"/>
-  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#1e1619"/>
-  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#1e1619"/>
+  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#261d1f"/>
+  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#261d1f"/>
   <rect x="9" y="3" width="2" height="1" fill="#353133"/><rect x="10" y="4" width="1" height="1" fill="#353133"/>
   <rect x="9" y="20" width="2" height="1" fill="#353133"/><rect x="10" y="19" width="1" height="1" fill="#353133"/>
-  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1e1619"/>
-  <rect x="10" y="11" width="7" height="2" fill="#1e1619"/>
-  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#0e0e1b"/>
+  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#1a1317"/>
+  <rect x="10" y="11" width="7" height="2" fill="#231b1d"/>
+  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#131321"/>
   <rect x="0" y="11" width="1" height="1" fill="#0e0e1b"/><rect x="0" y="12" width="1" height="1" fill="#0e0e1b"/>
-  <rect x="18" y="10" width="4" height="4" fill="#1e1619"/>
+  <rect x="18" y="10" width="4" height="4" fill="#1a1317"/>
   <rect x="19" y="10" width="3" height="2" fill="#0e0e1b"/>
   <rect x="20" y="12" width="2" height="1" fill="#2c2726"/>
-  <rect x="22" y="11" width="2" height="2" fill="#0e0e1b"/><rect x="24" y="12" width="1" height="1" fill="#0e0e1b"/>
+  <rect x="22" y="11" width="2" height="2" fill="#12121f"/><rect x="24" y="12" width="1" height="1" fill="#12121f"/>
   </g>
 </g></g>
   <g id="art" data-size="26 24" data-box="0 0 26 24">
@@ -78,18 +78,18 @@
   
   <polygon points="17,10 16,6 13,3 9,1 5,0 7,3 9,6 9,10" fill="#6e5a46"/>
   <polygon points="17,14 16,18 13,21 9,23 5,24 7,21 9,18 9,14" fill="#6e5a46"/>
-  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#6e5a46"/>
-  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#6e5a46"/>
+  <polygon points="16,9 15,6 12,4 13,7 13,9" fill="#997f66"/>
+  <polygon points="16,15 15,18 12,20 13,17 13,15" fill="#997f66"/>
   <rect x="9" y="3" width="2" height="1" fill="#e2d8c4"/><rect x="10" y="4" width="1" height="1" fill="#e2d8c4"/>
   <rect x="9" y="20" width="2" height="1" fill="#e2d8c4"/><rect x="10" y="19" width="1" height="1" fill="#e2d8c4"/>
-  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#6e5a46"/>
-  <rect x="10" y="11" width="7" height="2" fill="#6e5a46"/>
-  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#2a2a2e"/>
+  <polygon points="6,10 16,9 19,10 19,14 16,15 6,14" fill="#5a4a3a"/>
+  <rect x="10" y="11" width="7" height="2" fill="#8a745d"/>
+  <polygon points="6,10 3,11 1,11 1,13 3,13 6,14" fill="#47474c"/>
   <rect x="0" y="11" width="1" height="1" fill="#2a2a2e"/><rect x="0" y="12" width="1" height="1" fill="#2a2a2e"/>
-  <rect x="18" y="10" width="4" height="4" fill="#6e5a46"/>
+  <rect x="18" y="10" width="4" height="4" fill="#5a4a3a"/>
   <rect x="19" y="10" width="3" height="2" fill="#2a2a2e"/>
   <rect x="20" y="12" width="2" height="1" fill="#b8a888"/>
-  <rect x="22" y="11" width="2" height="2" fill="#2a2a2e"/><rect x="24" y="12" width="1" height="1" fill="#2a2a2e"/>
+  <rect x="22" y="11" width="2" height="2" fill="#3e3e42"/><rect x="24" y="12" width="1" height="1" fill="#3e3e42"/>
   </g>
 </g>
 </svg>

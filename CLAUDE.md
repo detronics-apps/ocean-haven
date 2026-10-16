@@ -41,6 +41,13 @@ missions that lead to action…) and add to it whenever the user corrects someth
 - Placeholder sprites get a 1-px outline in a darker shade of each shape's own colour:
   draw the SVG, then run `python3 tools/outline_sprites.py` (safe to re-run; it keeps the
   drawing in `<g id="art">`; pieces laid edge to edge, like dock planks, are skipped).
+  Animals and items get a near-black one. Then run `tools/harden_sprites.gd` (godot --headless
+  --script): an SVG with sloping edges (polygons) is drawn soft by Godot, so it writes a crisp PNG
+  beside it (every pixel solid, the drawing's own colours) and points data, scenes and scripts at
+  the PNG; the vet room's pictures are left out. Litter and other items have a lit (top-left) and
+  a shaded (bottom-right) tone. The buildings sheet is cut like the owner's reworked pictures
+  (cut_owner_pictures.shrink: averaged, outlines kept, snapped to the picture's own colours plus
+  its bright accents), never smoothly resized.
 
 ## Project layout
 

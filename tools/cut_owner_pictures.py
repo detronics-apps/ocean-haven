@@ -141,6 +141,14 @@ def shrink(piece, size, art):
     pal_img.putdata([src[q][:3] for q in solid])
     pal = pal_img.quantize(40, method=Image.Quantize.MEDIANCUT).getpalette()[:40 * 3]
     palette = [tuple(pal[i:i + 3]) for i in range(0, len(pal), 3)]
+    # (and its bright accents, however small: a lighthouse's lamp, a buoy's light; picked by
+    # area alone they were merged into their surroundings)
+    bright = [src[q][:3] for q in solid if max(src[q][:3]) > 150 and max(src[q][:3]) - min(src[q][:3]) > 90]
+    if len(bright) >= 8:
+        acc_img = Image.new('RGB', (len(bright), 1))
+        acc_img.putdata(bright)
+        acc = acc_img.quantize(24, method=Image.Quantize.MAXCOVERAGE).getpalette()[:24 * 3]
+        palette += [tuple(acc[i:i + 3]) for i in range(0, len(acc), 3)]
     small = Image.new('RGBA', (nw, nh), (0, 0, 0, 0))
     s = small.load()
     for y in range(nh):
@@ -154,6 +162,10 @@ def shrink(piece, size, art):
             # The darkest quarter wins where an outline runs through (lines stay unbroken).
             dark = [c for c in full if lum(c) < 70]
             pick = dark if len(dark) * 4 >= len(full) else full
+            # (and a bright accent where one shines through: a lamp stays yellow)
+            shine = [c for c in full if max(c[:3]) > 170 and max(c[:3]) - min(c[:3]) > 70]
+            if pick is full and len(shine) * 3 >= len(full):
+                pick = shine
             avg = tuple(sum(c[i] for c in pick) // len(pick) for i in range(3))
             near = min(palette, key=lambda q: (q[0] - avg[0]) ** 2 * 2 + (q[1] - avg[1]) ** 2 * 4 + (q[2] - avg[2]) ** 2 * 3)
             s[x, y] = near + (255,)

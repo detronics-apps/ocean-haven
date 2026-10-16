@@ -2,40 +2,40 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="5" y="12" width="6" height="2" fill="#432c1d"/>
-  <rect x="7" y="7" width="2" height="5" fill="#49331d"/>
-  <rect x="3" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="9" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="2" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="12" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="6" y="3" width="4" height="3" fill="#345d29"/>
+  <rect x="5" y="12" width="6" height="2" fill="#201513"/>
+  <rect x="7" y="7" width="2" height="5" fill="#231913"/>
+  <rect x="3" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="9" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="2" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="12" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="6" y="3" width="4" height="3" fill="#192c19"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="5" y="12" width="6" height="2" fill="#432c1d"/>
-  <rect x="7" y="7" width="2" height="5" fill="#49331d"/>
-  <rect x="3" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="9" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="2" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="12" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="6" y="3" width="4" height="3" fill="#345d29"/>
+  <rect x="5" y="12" width="6" height="2" fill="#201513"/>
+  <rect x="7" y="7" width="2" height="5" fill="#231913"/>
+  <rect x="3" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="9" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="2" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="12" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="6" y="3" width="4" height="3" fill="#192c19"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="5" y="12" width="6" height="2" fill="#432c1d"/>
-  <rect x="7" y="7" width="2" height="5" fill="#49331d"/>
-  <rect x="3" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="9" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="2" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="12" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="6" y="3" width="4" height="3" fill="#345d29"/>
+  <rect x="5" y="12" width="6" height="2" fill="#201513"/>
+  <rect x="7" y="7" width="2" height="5" fill="#231913"/>
+  <rect x="3" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="9" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="2" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="12" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="6" y="3" width="4" height="3" fill="#192c19"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="5" y="12" width="6" height="2" fill="#432c1d"/>
-  <rect x="7" y="7" width="2" height="5" fill="#49331d"/>
-  <rect x="3" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="9" y="4" width="4" height="2" fill="#285021"/>
-  <rect x="2" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="12" y="6" width="2" height="1" fill="#21491d"/>
-  <rect x="6" y="3" width="4" height="3" fill="#345d29"/>
+  <rect x="5" y="12" width="6" height="2" fill="#201513"/>
+  <rect x="7" y="7" width="2" height="5" fill="#231913"/>
+  <rect x="3" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="9" y="4" width="4" height="2" fill="#132615"/>
+  <rect x="2" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="12" y="6" width="2" height="1" fill="#102313"/>
+  <rect x="6" y="3" width="4" height="3" fill="#192c19"/>
 </g></g>
   <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- A young palm sapling with a clump of soil -->

@@ -2,16 +2,16 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="7" y="8" width="2" height="6" fill="#6a2338"/><rect x="4" y="5" width="2" height="5" fill="#74323c"/><rect x="10" y="4" width="2" height="6" fill="#74323c"/><rect x="5" y="9" width="6" height="2" fill="#6a2338"/><rect x="3" y="13" width="10" height="2" fill="#565657"/>
+  <rect x="7" y="8" width="2" height="6" fill="#331120"/><rect x="4" y="5" width="2" height="5" fill="#381822"/><rect x="10" y="4" width="2" height="6" fill="#381822"/><rect x="5" y="9" width="6" height="2" fill="#331120"/><rect x="3" y="13" width="10" height="2" fill="#29292f"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="7" y="8" width="2" height="6" fill="#6a2338"/><rect x="4" y="5" width="2" height="5" fill="#74323c"/><rect x="10" y="4" width="2" height="6" fill="#74323c"/><rect x="5" y="9" width="6" height="2" fill="#6a2338"/><rect x="3" y="13" width="10" height="2" fill="#565657"/>
+  <rect x="7" y="8" width="2" height="6" fill="#331120"/><rect x="4" y="5" width="2" height="5" fill="#381822"/><rect x="10" y="4" width="2" height="6" fill="#381822"/><rect x="5" y="9" width="6" height="2" fill="#331120"/><rect x="3" y="13" width="10" height="2" fill="#29292f"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="7" y="8" width="2" height="6" fill="#6a2338"/><rect x="4" y="5" width="2" height="5" fill="#74323c"/><rect x="10" y="4" width="2" height="6" fill="#74323c"/><rect x="5" y="9" width="6" height="2" fill="#6a2338"/><rect x="3" y="13" width="10" height="2" fill="#565657"/>
+  <rect x="7" y="8" width="2" height="6" fill="#331120"/><rect x="4" y="5" width="2" height="5" fill="#381822"/><rect x="10" y="4" width="2" height="6" fill="#381822"/><rect x="5" y="9" width="6" height="2" fill="#331120"/><rect x="3" y="13" width="10" height="2" fill="#29292f"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="7" y="8" width="2" height="6" fill="#6a2338"/><rect x="4" y="5" width="2" height="5" fill="#74323c"/><rect x="10" y="4" width="2" height="6" fill="#74323c"/><rect x="5" y="9" width="6" height="2" fill="#6a2338"/><rect x="3" y="13" width="10" height="2" fill="#565657"/>
+  <rect x="7" y="8" width="2" height="6" fill="#331120"/><rect x="4" y="5" width="2" height="5" fill="#381822"/><rect x="10" y="4" width="2" height="6" fill="#381822"/><rect x="5" y="9" width="6" height="2" fill="#331120"/><rect x="3" y="13" width="10" height="2" fill="#29292f"/>
 </g></g>
   <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- coral fragment (placeholder) -->

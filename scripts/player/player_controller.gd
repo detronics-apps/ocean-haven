@@ -17,11 +17,15 @@ var _step := 0.0
 var walking := false
 ## A little hop going up or down a step of the ground (TerrainEdges heights) at least
 ## `hop_from` px tall: how high and how long. Looks only: speed and paths don't change.
+## Going down it's a quick little drop (the owner: a full hop down floated too long).
 @export var hop_from := 5
 @export var hop_height := 4.0
 @export var hop_time := 0.25
+@export var drop_height := 2.0
+@export var drop_time := 0.14
 var _ground_level := -1
 var _hop := 1.0
+var _hop_up := true
 
 
 func _ready() -> void:
@@ -37,11 +41,12 @@ func _physics_process(delta: float) -> void:
 	var level := TerrainEdges.height_at(get_tree(), global_position)
 	if _ground_level >= 0 and absi(level - _ground_level) >= hop_from:
 		_hop = 0.0
+		_hop_up = level > _ground_level
 	_ground_level = level
 	_animate_walk(moved, delta)
 	if _hop < 1.0:
-		_hop = minf(_hop + delta / hop_time, 1.0)
-		_look.position.y -= sin(_hop * PI) * hop_height
+		_hop = minf(_hop + delta / (hop_time if _hop_up else drop_time), 1.0)
+		_look.position.y -= sin(_hop * PI) * (hop_height if _hop_up else drop_height)
 	if moved.length() > 0.5:
 		if absf(moved.x) >= absf(moved.y):
 			facing = Vector2i.RIGHT if moved.x > 0.0 else Vector2i.LEFT

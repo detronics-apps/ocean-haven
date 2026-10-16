@@ -2,39 +2,19 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
-  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
-  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+  <rect x="3" y="2" width="3" height="3" fill="#2d303d"/><rect x="10" y="2" width="3" height="3" fill="#282c39"/><rect x="3" y="5" width="10" height="9" fill="#2a2e3b"/><rect x="4" y="5" width="8" height="8" fill="#333742"/><rect x="4" y="5" width="3" height="3" fill="#3b3640"/><rect x="10" y="6" width="2" height="7" fill="#2d313e"/><rect x="4" y="11" width="8" height="2" fill="#2d313e"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
-  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
-  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+  <rect x="3" y="2" width="3" height="3" fill="#2d303d"/><rect x="10" y="2" width="3" height="3" fill="#282c39"/><rect x="3" y="5" width="10" height="9" fill="#2a2e3b"/><rect x="4" y="5" width="8" height="8" fill="#333742"/><rect x="4" y="5" width="3" height="3" fill="#3b3640"/><rect x="10" y="6" width="2" height="7" fill="#2d313e"/><rect x="4" y="11" width="8" height="2" fill="#2d313e"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
-  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
-  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+  <rect x="3" y="2" width="3" height="3" fill="#2d303d"/><rect x="10" y="2" width="3" height="3" fill="#282c39"/><rect x="3" y="5" width="10" height="9" fill="#2a2e3b"/><rect x="4" y="5" width="8" height="8" fill="#333742"/><rect x="4" y="5" width="3" height="3" fill="#3b3640"/><rect x="10" y="6" width="2" height="7" fill="#2d313e"/><rect x="4" y="11" width="8" height="2" fill="#2d313e"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="3" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="10" y="2" width="3" height="3" fill="#5f5761"/>
-  <rect x="3" y="5" width="10" height="9" fill="#5f5761"/>
-  <rect x="4" y="5" width="8" height="8" fill="#756c76"/>
-  <rect x="4" y="11" width="8" height="2" fill="#69616b"/>
+  <rect x="3" y="2" width="3" height="3" fill="#2d303d"/><rect x="10" y="2" width="3" height="3" fill="#282c39"/><rect x="3" y="5" width="10" height="9" fill="#2a2e3b"/><rect x="4" y="5" width="8" height="8" fill="#333742"/><rect x="4" y="5" width="3" height="3" fill="#3b3640"/><rect x="10" y="6" width="2" height="7" fill="#2d313e"/><rect x="4" y="11" width="8" height="2" fill="#2d313e"/>
 </g></g>
   <g id="art" data-size="16 16" data-box="0 0 16 16">
-  <!-- Placeholder: plastic bag -->
-  <rect x="3" y="2" width="3" height="3" fill="#bdbdbd"/>
-  <rect x="10" y="2" width="3" height="3" fill="#bdbdbd"/>
-  <rect x="3" y="5" width="10" height="9" fill="#bdbdbd"/>
-  <rect x="4" y="5" width="8" height="8" fill="#f2f2f2"/>
-  <rect x="4" y="11" width="8" height="2" fill="#d6d6d6"/>
+  <!-- plastic bag -->
+  <rect x="3" y="2" width="3" height="3" fill="#cfd3d6"/><rect x="10" y="2" width="3" height="3" fill="#b9bec2"/><rect x="3" y="5" width="10" height="9" fill="#c4c9cd"/><rect x="4" y="5" width="8" height="8" fill="#eef1f2"/><rect x="4" y="5" width="3" height="3" fill="#ffffff"/><rect x="10" y="6" width="2" height="7" fill="#d3d8db"/><rect x="4" y="11" width="8" height="2" fill="#d3d8db"/>
 </g>
 </svg>

@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/systems/clue_data.gd" id="1_clue"]
 [ext_resource type="Texture2D" path="res://assets/animals/seabird/red_footed_booby.svg" id="14_ev"]
-[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.svg" id="13_ev"]
-[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.svg" id="12_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/whale/sperm_whale.png" id="13_ev"]
+[ext_resource type="Texture2D" path="res://assets/animals/tern/arctic_tern.png" id="12_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/flamingo/american_flamingo.svg" id="11_ev"]
 [ext_resource type="Texture2D" path="res://assets/animals/turtle/green_turtle.svg" id="10_ev"]
-[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.svg" id="2_pic"]
+[ext_resource type="Texture2D" path="res://assets/animals/dolphin/dolphin.png" id="2_pic"]
 
 [resource]
 script = ExtResource("1_clue")

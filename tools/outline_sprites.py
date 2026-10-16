@@ -68,7 +68,8 @@ def process(path: str) -> bool:
     new_box = f"{bx - px:g} {by - py:g} {bw + 2 * px:g} {bh + 2 * py:g}"
     new_tag = re.sub(r'viewBox="[^"]+"', f'viewBox="{new_box}"', new_tag) if 'viewBox="' in new_tag \
         else new_tag.replace("<svg", f'<svg viewBox="{new_box}"', 1)
-    line = outline_copy(art, "animals" in os.path.normpath(path).split(os.sep))
+    parts = os.path.normpath(path).split(os.sep)
+    line = outline_copy(art, "animals" in parts or "items" in parts)  # (near-black, like the owner's art)
     rings = "".join(f'<g transform="translate({dx * px:g} {dy * py:g})">{line}</g>' for dx, dy in OFFSETS)
     out = (f'{new_tag}\n  <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->\n'
            f'  <g id="outline">{rings}</g>\n'

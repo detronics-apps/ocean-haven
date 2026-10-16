@@ -2,28 +2,28 @@
   <!-- outline: made by tools/outline_sprites.py from the drawing in "art" -->
   <g id="outline"><g transform="translate(-1 0)">
   
-  <rect x="7" y="1" width="2" height="2" fill="#3c2518"/>
-  <rect x="6" y="3" width="4" height="2" fill="#1f4b26"/>
-  <rect x="7" y="5" width="2" height="8" fill="#30501a"/>
-  <rect x="7" y="13" width="2" height="2" fill="#49331d"/>
+  <rect x="7" y="1" width="2" height="2" fill="#1d1211"/>
+  <rect x="6" y="3" width="4" height="2" fill="#0f2417"/>
+  <rect x="7" y="5" width="2" height="8" fill="#172612"/>
+  <rect x="7" y="13" width="2" height="2" fill="#231913"/>
 </g><g transform="translate(1 0)">
   
-  <rect x="7" y="1" width="2" height="2" fill="#3c2518"/>
-  <rect x="6" y="3" width="4" height="2" fill="#1f4b26"/>
-  <rect x="7" y="5" width="2" height="8" fill="#30501a"/>
-  <rect x="7" y="13" width="2" height="2" fill="#49331d"/>
+  <rect x="7" y="1" width="2" height="2" fill="#1d1211"/>
+  <rect x="6" y="3" width="4" height="2" fill="#0f2417"/>
+  <rect x="7" y="5" width="2" height="8" fill="#172612"/>
+  <rect x="7" y="13" width="2" height="2" fill="#231913"/>
 </g><g transform="translate(0 -1)">
   
-  <rect x="7" y="1" width="2" height="2" fill="#3c2518"/>
-  <rect x="6" y="3" width="4" height="2" fill="#1f4b26"/>
-  <rect x="7" y="5" width="2" height="8" fill="#30501a"/>
-  <rect x="7" y="13" width="2" height="2" fill="#49331d"/>
+  <rect x="7" y="1" width="2" height="2" fill="#1d1211"/>
+  <rect x="6" y="3" width="4" height="2" fill="#0f2417"/>
+  <rect x="7" y="5" width="2" height="8" fill="#172612"/>
+  <rect x="7" y="13" width="2" height="2" fill="#231913"/>
 </g><g transform="translate(0 1)">
   
-  <rect x="7" y="1" width="2" height="2" fill="#3c2518"/>
-  <rect x="6" y="3" width="4" height="2" fill="#1f4b26"/>
-  <rect x="7" y="5" width="2" height="8" fill="#30501a"/>
-  <rect x="7" y="13" width="2" height="2" fill="#49331d"/>
+  <rect x="7" y="1" width="2" height="2" fill="#1d1211"/>
+  <rect x="6" y="3" width="4" height="2" fill="#0f2417"/>
+  <rect x="7" y="5" width="2" height="8" fill="#172612"/>
+  <rect x="7" y="13" width="2" height="2" fill="#231913"/>
 </g></g>
   <g id="art" data-size="16 16" data-box="0 0 16 16">
   <!-- A mangrove propagule: a long green seedling that grows while still on the tree, then drops into the mud. -->

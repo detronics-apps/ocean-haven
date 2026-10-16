@@ -131,7 +131,7 @@ func _start_board(config: Vector3i) -> void:
 	for sight: Dictionary in SIGHTS:
 		if sight.has("animal") and not _textures.has(sight.animal):
 			_textures[sight.animal] = (DataFiles.res("res://data/animals/%s.tres" % sight.animal) as AnimalData).sprite
-	_cargo = DataFiles.res("res://assets/items/lost_cargo_module.svg")
+	_cargo = DataFiles.res("res://assets/items/lost_cargo_module.png")
 	_gear_textures = [DataFiles.res("res://assets/items/ghost_net.svg"), DataFiles.res("res://assets/items/fishing_line.svg")]
 	_make_walls()
 	_gear.clear()
