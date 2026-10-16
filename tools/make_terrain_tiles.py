@@ -205,7 +205,110 @@ def mud(rnd, v):
     return t
 
 
+FACES = os.path.join(HERE, '..', 'assets', 'tilesets', 'terrain_faces.png')
+FACE_H = 32  # (a face up to 16 game pixels tall; TerrainEdges.MAX_FACE)
+
+
+def shade(c, f):
+    return tuple(max(0, min(255, int(v * f))) for v in c)
+
+
+def rock_face(rnd):
+    """Two courses of stones (each lit on its left, shaded on its right, dark joints), a lit top
+    edge and a dark wet foot (the picture's last 6 rows: TerrainEdges.FOOT)."""
+    base = rgb('#8a8074')
+    im = Image.new('RGB', (S, FACE_H))
+    px = im.load()
+    for top, bottom, widths, offset in ((0, 16, [14, 18, 12, 20], 0), (16, FACE_H, [16, 14, 18, 16], 8)):
+        start = -offset
+        for w in widths + widths[:1]:
+            for X in range(start, start + w):
+                cx = X - start
+                f = 0.5 if cx >= w - 2 else 0.72 if cx >= w - 6 else 1.02 if cx < 2 else 0.86
+                for y in range(top, bottom):
+                    g = 0.5 if (y == 16 or y == 17) and cx < w - 2 else f
+                    if y < 4:
+                        g = 1.2  # (the top edge, catching the light)
+                    elif y >= FACE_H - 6:
+                        g = 0.5 if cx >= w - 2 else 0.6
+                    elif g == 0.86 and rnd.random() < 0.06:
+                        g = rnd.choice((0.78, 0.94))  # (a little grain on the stone)
+                    px[X % S, y] = shade(base, g)
+            start += w
+    return im
+
+
+def grass_face(rnd):
+    """An earth bank under the grass: the grass's edge (blades hanging over here and there),
+    earth with specks, small stones and roots, darker and damp at the foot."""
+    grass, earth = rgb('#7f9652'), shade(rgb('#78593a'), 1.12)
+    im = Image.new('RGB', (S, FACE_H), earth)
+    px = im.load()
+    for x in range(S):
+        lip = 4 + (rnd.choice((1, 2, 3)) if rnd.random() < 0.3 else 0)
+        for y in range(FACE_H):
+            if y < lip:
+                px[x, y] = shade(grass, 0.86 if y < 2 else 0.72)
+            elif y >= FACE_H - 4:
+                px[x, y] = shade(earth, 0.66)
+            elif rnd.random() < 0.1:
+                px[x, y] = shade(earth, 0.82)
+    for _ in range(4):  # (small stones in the bank)
+        x, y = rnd.randrange(2, S - 6), rnd.randrange(9, FACE_H - 8)
+        for dx in range(4):
+            for dy in range(3):
+                px[x + dx, y + dy] = rgb('#9a8f80') if dy < 2 else rgb('#6b6156')
+    for _ in range(3):  # (roots)
+        x, y = rnd.randrange(S), rnd.randrange(6, FACE_H - 10)
+        for k in range(rnd.randint(3, 6)):
+            px[(x + k) % S, y + k // 2] = shade(earth, 0.6)
+    return im
+
+
+def ice_face(rnd):
+    """The edge of a floe: white on top, pale blue with facets, the ice under the water deeper
+    blue at the foot."""
+    im = Image.new('RGB', (S, FACE_H), (204, 230, 241))
+    px = im.load()
+    x = rnd.randrange(4, 10)
+    while x < S - 2:
+        for y in range(2, FACE_H - 4):
+            px[x, y] = (168, 208, 226)
+            px[x + 1, y] = (226, 243, 250)
+        x += rnd.randrange(14, 22)
+    for x in range(S):
+        for y in range(2):
+            px[x, y] = (246, 251, 253)
+        for y in range(FACE_H - 4, FACE_H):
+            px[x, y] = (118, 176, 201)
+    return im
+
+
+def bank_face(base, rnd):
+    """A low bank of mud or sand: its top edge, then darker."""
+    im = Image.new('RGB', (S, FACE_H))
+    px = im.load()
+    for x in range(S):
+        for y in range(FACE_H):
+            f = 0.86 if y < 2 else 0.64
+            px[x, y] = shade(base, f * (0.9 if rnd.random() < 0.08 else 1.0))
+    return im
+
+
+def faces():
+    """The faces where a higher ground stands above the one south of it (TerrainEdges), a row
+    each in TerrainEdges.FACE_ROWS' order: rock, grass, ice, mud, sand; one tile wide and
+    tileable, so faces side by side join up."""
+    out = Image.new('RGB', (S, FACE_H * 5))
+    for row, im in enumerate([rock_face(random.Random(501)), grass_face(random.Random(502)),
+                              ice_face(random.Random(503)), bank_face(rgb('#78593a'), random.Random(504)),
+                              bank_face(shade(rgb('#e5d19e'), 0.95), random.Random(505))]):
+        out.paste(im, (0, FACE_H * row))
+    out.save(FACES)
+
+
 if __name__ == '__main__':
+    faces()
     grounds = [shallow, sand, grass, rock, ice, mud, mid_water]
     art = Image.new('RGB', (S * VARIANTS, S * len(grounds)))
     tiles = Image.new('RGB', (32 * len(grounds), 32))

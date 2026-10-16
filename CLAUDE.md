@@ -716,6 +716,17 @@ labels (Plant coral, Split, Move, Put down, Let go, Give N x (+N)).
 Rounded terrain edges: a visual-only `TerrainEdges` overlay after `Ground` in every island scene
 (`docs/TERRAIN_EDGES.md`); every runtime tile change must go through `SaveGame.record_tile` so
 its corners update (loading rebuilds them).
+Height edges (the owner's pick: the line and the height together; looks only, walking unchanged):
+the sea is 0, a ground touching it stands its own step above it (sand 0, mud 2, grass 5, ice 6,
+rock 12 px) and any other patch stands on top of the ground it shares most border with, of those
+further out or bigger beside it (on a tie the higher; TerrainEdges.STEPS: grass on
+rock 4, rock on grass 5, sand on anything 0...), so islands go up from the beach and back down,
+the Deep Sea's grass is on top of its rock (never holes), and no land is a pit. Faces show only
+on the south side ("TerrainFaces" layer, assets/tilesets/terrain_faces.png from
+tools/make_terrain_tiles.py), hanging into the lower ground and following its edge's rounded
+corners and inside curves, with the line along their foot and ends, foam in the water, a lip
+(light north and west, dark east) where the ground drops away unseen; SeaWaves skips the water
+under a face (TerrainEdges.covers). Heights are redone once a frame after tiles change.
 Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta): cut by
 `tools/cut_building_sheet.py` into a PNG per building, beside each old picture's path, fitted into
 the box the old art filled (tools/building_sheet_targets.json: the owner, their original sizes).

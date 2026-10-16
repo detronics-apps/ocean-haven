@@ -75,8 +75,8 @@ func _crest(cell: Vector2i, time: float) -> void:
 		return
 	var at := (Vector2(cell) + Vector2(r1, r2) * 0.8) * spacing + Vector2(drift * phase, 0)
 	at = at.round()
-	if not Terrain.at(get_tree(), at) in ["", "water"]:
-		return  # only on the water
+	if not Terrain.at(get_tree(), at) in ["", "water"] or TerrainEdges.covers(get_tree(), at):
+		return  # only on the water (and not just under a cliff's face)
 	var width := roundi(lerpf(6.0, 12.0, r2))
 	var tint := Color(colour, colour.a * alpha)
 	# A small pixel-art crest: a line with its ends a pixel lower.

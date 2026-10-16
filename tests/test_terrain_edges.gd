@@ -100,6 +100,99 @@ func _initialize() -> void:
 	for i in water_cells.size():
 		ground.set_cell(water_cells[i], 0, atlases[i])
 		save.record_tile(ground, water_cells[i], atlases[i])
+	await process_frame
+
+	# Heights (looks only): the sea is 0, a ground touching it stands its own step above it, a
+	# patch inside another ground stands on top of it; so beaches are flat with the sea, grass
+	# stands above the beach, the Deep Sea's grass above its rock, and no land is ever a pit.
+	var beach := Vector2i.MAX
+	var bank := Vector2i.MAX  # (a grass cell with sand just south of it)
+	for c in ground.get_used_cells():
+		if edges.terrain_at(c) == "sand" and edges.terrain_at(c + Vector2i(0, 1)) in ["water", "", "sea"]:
+			beach = c
+		if edges.terrain_at(c) == "grass" and edges.terrain_at(c + Vector2i(0, 1)) == "sand":
+			bank = c
+	_expect(beach != Vector2i.MAX and edges.level_at(beach) == 0, "a beach is level with the sea")
+	_expect(bank != Vector2i.MAX and edges.level_at(bank) == 5, "the grass stands 5 px above the beach")
+	_expect(edges.get("_hangs").get(bank + Vector2i(0, 1), 0) == 5, "with its face hanging over the sand south of it")
+	var hook: Node2D = world.get_node("HookIsland/TerrainEdges")
+	var hook_ground: TileMapLayer = world.get_node("HookIsland/Ground")
+	var cliff := Vector2i.MAX  # (rock rising straight from the sea)
+	for c in hook_ground.get_used_cells():
+		if hook.terrain_at(c) == "rock" and hook.terrain_at(c + Vector2i(0, 1)) in ["water", ""]:
+			cliff = c
+	var sea_rock: int = hook.level_at(cliff)
+	var holes := 0
+	var beside_rock := 0
+	var outcrops := 0
+	for c in hook_ground.get_used_cells():
+		if hook.terrain_at(c) != "grass":
+			continue
+		for side in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if hook.terrain_at(c + side) == "rock":
+				if hook.level_at(c + side) == sea_rock:
+					beside_rock += 1
+					holes += 1 if hook.level_at(c) <= sea_rock else 0
+				else:
+					outcrops += 1 if hook.level_at(c + side) > hook.level_at(c) else 0
+	_expect(sea_rock > 0 and beside_rock > 0 and holes == 0, "the Deep Sea's grass stands on top of its rock, never a hole in it (%d / %d)" % [holes, beside_rock])
+	_expect(outcrops > 0, "and the rock outcrops on the grass stand above the grass")
+	for island in ["StarterIsland", "KelpIsland", "MangroveIsland", "ReefIsland", "HookIsland", "PolarIsland"]:
+		var e: Node2D = world.get_node("%s/TerrainEdges" % island)
+		var g: TileMapLayer = world.get_node("%s/Ground" % island)
+		var pits := 0
+		var wet := 0
+		var seen := {}
+		for c in g.get_used_cells():
+			var kind: String = e.terrain_at(c)
+			if kind in ["water", "", "sea"]:
+				wet += 1 if e.level_at(c) != 0 else 0
+				continue
+			if seen.has(c):
+				continue
+			# (the region: this ground's cells side by side; is any ground round it as low or lower?)
+			var todo: Array[Vector2i] = [c]
+			seen[c] = true
+			var lowest_round := 999
+			while not todo.is_empty():
+				var at: Vector2i = todo.pop_back()
+				for side in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+					var n: Vector2i = at + side
+					if e.terrain_at(n) == kind:
+						if not seen.has(n):
+							seen[n] = true
+							todo.append(n)
+					else:
+						lowest_round = mini(lowest_round, e.level_at(n))
+			pits += 1 if lowest_round > e.level_at(c) else 0
+		_expect(pits == 0 and wet == 0, "%s: no land lower than all the ground round it, water at 0" % island)
+	# A tile change: an outcrop of rock in the middle of the grass stands above it, then goes.
+	var meadow := Vector2i.MAX
+	for c in ground.get_used_cells():
+		var all_grass := true
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				all_grass = all_grass and edges.terrain_at(c + Vector2i(dx, dy)) == "grass"
+		if all_grass:
+			meadow = c
+			break
+	var grass_atlas := ground.get_cell_atlas_coords(meadow)
+	var rock_atlas := Vector2i(3, 0)
+	ground.set_cell(meadow, 0, rock_atlas)
+	save.record_tile(ground, meadow, rock_atlas)
+	await process_frame
+	await process_frame
+	_expect(edges.level_at(meadow) == edges.level_at(meadow + Vector2i(0, 1)) + 5, "a rock laid in the meadow stands 5 px above the grass")
+	_expect(edges.get("_hangs").get(meadow + Vector2i(0, 1), 0) == 5, "with its face over the grass south of it")
+	ground.set_cell(meadow, 0, grass_atlas)
+	save.record_tile(ground, meadow, grass_atlas)
+	await process_frame
+	await process_frame
+	_expect(not edges.get("_hangs").has(meadow + Vector2i(0, 1)), "taken away: the face goes too")
+	# The sea's moving waves leave the water just under a cliff's face alone.
+	var under := hook_ground.to_global(hook_ground.map_to_local(cliff + Vector2i(0, 1)))
+	_expect(hook.covers(self, under + Vector2(0, -12)), "no wave crest on a cliff's face")
+	_expect(not hook.covers(self, under + Vector2(0, 8)), "but still out in the water below it")
 
 	if not _failed:
 		print("PASS")

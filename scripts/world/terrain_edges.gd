@@ -21,6 +21,13 @@ extends Node2D
 ## half size) with the 64x64 art of tools/make_terrain_tiles.py, several versions of each ground
 ## picked per cell (some mirrored), so there's no repeating pattern. Ground itself is hidden: it
 ## keeps the terrain, walking and saves.
+##
+## And the grounds' heights (STEPS), drawn as in a 3/4 view on its own layer ("TerrainFaces",
+## over the ground's details): where a higher ground has a lower one south of it, the higher
+## one's face hangs below the line between them, following that edge's own shape (its rounded
+## corners, the curve of an inside corner), with the line along its foot and ends too; where the
+## ground drops away behind or beside a raised ground, only its edge shows (a lip). Looks only:
+## walking, building and saves don't change.
 
 const HALF := 16.0
 const ARC_STEPS := 6
@@ -80,6 +87,48 @@ static var _details_set: TileSet
 var _details: TileMapLayer
 var _snowman := NO_CELL
 
+## Heights (the owner's pick: the line between two grounds, and the faces where one stands above
+## the next): the sea is 0; a ground touching the sea stands its own step above it, and a patch
+## inside another ground stands on top of that one, a step higher (grass inside rock is above the
+## rock, never a hole in it; a rock outcrop on grass is above the grass; sand lies level with
+## whatever it's on). So an island goes up from its beach and back down on the far side, and
+## nothing on land is ever lower than all the ground round it; water is always 0. In game pixels:
+## STEPS[the patch][the ground it stands on] (anything not listed: 0).
+const STEPS := {
+	"mud": {"water": 2, "sand": 2},
+	"grass": {"water": 5, "sand": 5, "mud": 3, "rock": 4, "ice": 3},
+	"ice": {"water": 6},
+	"rock": {"water": 12, "sand": 6, "grass": 5, "mud": 5, "ice": 6},
+}
+## The tallest face drawn, and their pictures (tools/make_terrain_tiles.py: a row per ground,
+## a tile wide and MAX_FACE tall, at twice the pixels): a face's top comes from its picture's top
+## and its last FOOT pixels from the picture's foot (the wet base, the ice under the water).
+const MAX_FACE := 16
+const FACES := preload("res://assets/tilesets/terrain_faces.png")
+const FACE_ROWS := {"rock": 0, "grass": 1, "ice": 2, "mud": 3, "sand": 4}
+const FOOT := {"rock": 3, "grass": 2, "ice": 2}
+## Where the ground drops away behind or beside a raised ground, its edge catches the light on
+## the north and west and is shaded on the east (the light comes from the top left).
+const LIPS := {Vector2i(0, -1): Color(1, 1, 1, 0.16), Vector2i(-1, 0): Color(1, 1, 1, 0.09), Vector2i(1, 0): Color(0, 0, 0, 0.14)}
+## Foam where a face stands in the water, a row per alpha; on land a soft shadow at the foot of
+## a step at least STEP_SHADOW tall.
+const FOAM := {"rock": [0.45, 0.18], "grass": [0.45], "ice": [0.3]}
+const STEP_SHADOW := 5
+var _levels := {}
+var _faces: Node2D
+var _face_points := PackedVector2Array()
+var _face_colours := PackedColorArray()
+var _face_uvs := PackedVector2Array()
+var _face_indices := PackedInt32Array()
+## Line segments: the faces' feet and ends (LINE), foam by alpha, lips by colour, shadows.
+var _face_lines := PackedVector2Array()
+var _foam := {}
+var _lips := {}
+var _shadows := PackedVector2Array()
+## Cell -> how far the face above it hangs down into it (SeaWaves draws no crest there).
+var _hangs := {}
+var _heights_due := false
+
 
 func _ready() -> void:
 	_ground = get_parent().get_node_or_null("Ground")
@@ -107,6 +156,11 @@ func _ready() -> void:
 	_blend.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_blend.z_index = -2  # (under the ground and SeaWaves' speckle)
 	add_child(_blend)
+	_faces = Node2D.new()
+	_faces.name = "TerrainFaces"
+	_faces.z_index = _ground.z_index
+	_faces.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	_faces.draw.connect(_draw_faces)
 	_put_art_in.call_deferred()
 	_read_colours()
 	rebuild()
@@ -118,6 +172,9 @@ func _put_art_in() -> void:
 	get_parent().add_child(_details)  # (over the rounded corners)
 	get_parent().move_child(_details, get_index() + 1)
 	_details.position = position
+	get_parent().add_child(_faces)  # (over the details: shells and waves stay under a face)
+	get_parent().move_child(_faces, _details.get_index() + 1)
+	_faces.position = position
 
 
 ## The details' tile set, made once: each picture and a mirrored one; the waves and the spray
@@ -281,11 +338,15 @@ func rebuild() -> void:
 	_place_snowman()
 	for cell: Vector2i in _terrain:
 		_decorate(cell)
+	_work_out_heights()
+	_build_faces()
 	queue_redraw()
 
 
 ## A tile changed (SaveGame.record_tile tells every TerrainEdges): only the 4 corners of that
-## cell are worked out again, which covers every neighbour whose look it can change.
+## cell are worked out again, which covers every neighbour whose look it can change. Heights can
+## change anywhere on the island (a channel dug through, ice melting), so they're worked out
+## again once at the end of the frame, however many tiles changed in it.
 func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 	if ground != _ground:
 		return
@@ -304,7 +365,16 @@ func cell_changed(ground: TileMapLayer, cell: Vector2i) -> void:
 	for dx in [-1, 0, 1]:  # (its own decoration and its neighbours': their rules look at it)
 		for dy in [-1, 0, 1]:
 			_decorate(cell + Vector2i(dx, dy))
+	if not _heights_due:
+		_heights_due = true
+		_redo_heights.call_deferred()
 	queue_redraw()
+
+
+func _redo_heights() -> void:
+	_heights_due = false
+	_work_out_heights()
+	_build_faces()
 
 
 ## The corner point `corner` is the top-left corner of cell `corner`. Decides whether one of the
@@ -350,7 +420,7 @@ func _shape_corner(corner: Vector2i) -> void:
 			continue  # (open ocean, or water beside water: that fades instead)
 		if not _pieces.has(corner):
 			_pieces[corner] = []
-		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill], towards])
+		_pieces[corner].append([_quarter(cell, towards, style(mine, fill)), _colours[fill], towards, cell, fill])
 	_line_corner(corner)
 
 
@@ -475,6 +545,7 @@ func _process(_delta: float) -> void:
 		modulate = _ground.modulate  # the island's health tint, as on the ground
 		_art.modulate = _ground.modulate
 		_details.modulate = _ground.modulate
+		_faces.modulate = _ground.modulate
 
 
 func _draw() -> void:
@@ -484,3 +555,235 @@ func _draw() -> void:
 	for corner: Vector2i in _lines:  # (over the rounded corners, so their arcs show whole)
 		for line: PackedVector2Array in _lines[corner]:
 			draw_polyline(line, LINE, 1.0)
+
+
+## A cell's height in game pixels (STEPS; water and the open ocean are 0).
+func level_at(cell: Vector2i) -> int:
+	return _levels.get(cell, 0)
+
+
+static func _step(kind: String, on: String) -> int:
+	return STEPS.get(kind, {}).get(on, 0)
+
+
+## Every land cell's height: the island's grounds as regions (cells of one ground side by side),
+## worked out from the sea inwards a ring at a time. A region touching the sea stands on the
+## sea; any other stands on the region it shares the most border with of those already worked
+## out (outside it, or a bigger one beside it: so a rock between the beach and a grass plateau
+## stands on the plateau, not sunk below it), on a tie the higher one.
+func _work_out_heights() -> void:
+	_levels.clear()
+	var region := {}
+	var kinds: Array[String] = []
+	var sizes: Array[int] = []
+	for cell: Vector2i in _terrain:
+		var kind: String = _terrain[cell]
+		if region.has(cell) or kind in WATER:
+			continue
+		var id := kinds.size()
+		kinds.append(kind)
+		sizes.append(0)
+		region[cell] = id
+		var todo: Array[Vector2i] = [cell]
+		while not todo.is_empty():
+			var at: Vector2i = todo.pop_back()
+			sizes[id] += 1
+			for side: Vector2i in SIDES:
+				if not region.has(at + side) and _terrain.get(at + side, "sea") == kind:
+					region[at + side] = id
+					todo.append(at + side)
+	var borders: Array[Dictionary] = []  # (region -> other region (-1: the water) -> border length)
+	for id in kinds.size():
+		borders.append({})
+	for cell: Vector2i in region:
+		var id: int = region[cell]
+		for side: Vector2i in SIDES:
+			var other: int = region.get(cell + side, -1)
+			if other != id:
+				borders[id][other] = borders[id].get(other, 0) + 1
+	var level := {-1: 0}
+	var outside: Array[int] = [-1]
+	while not outside.is_empty():
+		var ring: Array[int] = []  # (the regions just inside the last ring, biggest first)
+		for id in kinds.size():
+			if level.has(id):
+				continue
+			for other: int in outside:
+				if borders[id].has(other):
+					ring.append(id)
+					break
+		ring.sort_custom(func(a: int, b: int) -> bool: return sizes[a] > sizes[b])
+		for id: int in ring:
+			var on := -1
+			if not borders[id].has(-1):
+				on = -2
+				for other: int in borders[id]:
+					if level.has(other) and (on == -2 or borders[id][other] > borders[id][on]
+							or (borders[id][other] == borders[id][on] and level[other] > level[on])):
+						on = other
+			level[id] = level[on] + _step(kinds[id], "water" if on == -1 else kinds[on])
+		outside = ring
+	for cell: Vector2i in region:
+		var id: int = region[cell]
+		_levels[cell] = level.get(id, _step(kinds[id], "water"))
+
+
+## Every face, line, foam, lip and shadow, from the heights (only when they change).
+func _build_faces() -> void:
+	_face_points = PackedVector2Array()
+	_face_colours = PackedColorArray()
+	_face_uvs = PackedVector2Array()
+	_face_indices = PackedInt32Array()
+	_face_lines = PackedVector2Array()
+	_foam.clear()
+	_lips.clear()
+	_shadows = PackedVector2Array()
+	_hangs.clear()
+	var heights := {}  # (cell -> its face's height)
+	for cell: Vector2i in _levels:
+		var h := mini(level_at(cell) - level_at(cell + Vector2i(0, 1)), MAX_FACE)
+		if h > 0:
+			heights[cell] = h
+	for cell: Vector2i in heights:
+		_face_of(cell, heights)
+	for cell: Vector2i in _levels:
+		_lips_of(cell)
+	if _faces:
+		_faces.queue_redraw()
+
+
+## The face below `cell`: its outline along the cell's bottom, left to right, rounding its own
+## rounded corners or following the curve of an inside corner in the ground below, else
+## straight to the cell's corners; that outline hangs down as the face, with the line along its
+## foot and its ends (where no face beside it covers them), and foam if it stands in the water.
+func _face_of(cell: Vector2i, heights: Dictionary) -> void:
+	var h: int = heights[cell]
+	var kind: String = _terrain[cell]
+	var below := cell + Vector2i(0, 1)
+	var left := _ground.map_to_local(cell).x - HALF
+	var bottom := _ground.map_to_local(cell).y + HALF
+	var outline := PackedVector2Array()
+	var left_arc := _end_arc(below, cell, below, kind, false)
+	outline.append_array(left_arc if not left_arc.is_empty() else PackedVector2Array([Vector2(left, bottom)]))
+	var right_arc := _end_arc(below + Vector2i(1, 0), cell, below, kind, true)
+	outline.append_array(right_arc if not right_arc.is_empty() else PackedVector2Array([Vector2(left + 2.0 * HALF, bottom)]))
+	var foot: int = mini(FOOT.get(kind, 0), floori(h / 2.0))
+	var row: int = FACE_ROWS.get(kind, FACE_ROWS["sand"])
+	var top := 0.5  # (the face starts just under the line, which stays whole)
+	_ribbon(outline, left, top, float(h - foot), row, 0.0)
+	if foot > 0:
+		_ribbon(outline, left, top + h - foot, float(foot), row, float(MAX_FACE - foot))
+	for i in outline.size() - 1:
+		_face_lines.append_array([outline[i] + Vector2(0, top + h), outline[i + 1] + Vector2(0, top + h)])
+	for end: int in [0, 1]:
+		var p: Vector2 = outline[0] if end == 0 else outline[outline.size() - 1]
+		var covered := 0
+		if (left_arc if end == 0 else right_arc).is_empty():  # (straight: a face beside may hide some of it)
+			var beside := cell + Vector2i(-1 if end == 0 else 1, 0)
+			if heights.has(beside) and _end_arc(below + Vector2i(end, 0), beside, beside + Vector2i(0, 1), _terrain[beside], end == 0).is_empty():
+				covered = heights[beside]
+		if covered < h:
+			_face_lines.append_array([p + Vector2(0, top + covered), p + Vector2(0, top + h)])
+	if _terrain.get(below, "sea") in WATER:
+		var rows: Array = FOAM.get(kind, [])
+		for k in rows.size():
+			if not _foam.has(rows[k]):
+				_foam[rows[k]] = PackedVector2Array()
+			for i in outline.size() - 1:
+				_foam[rows[k]].append_array([outline[i] + Vector2(0, top + h + 1.0 + k), outline[i + 1] + Vector2(0, top + h + 1.0 + k)])
+	elif h >= STEP_SHADOW:
+		for i in outline.size() - 1:
+			_shadows.append_array([outline[i] + Vector2(0, top + h + 1.0), outline[i + 1] + Vector2(0, top + h + 1.0)])
+	_hangs[below] = maxi(_hangs.get(below, 0), h)
+
+
+## Where the face below `cell` ends at corner point `corner`: the arc of the cell's own rounded
+## corner there, or of the inside corner in `below` rounding in with this ground, left to right
+## (empty: a straight end).
+func _end_arc(corner: Vector2i, cell: Vector2i, below: Vector2i, kind: String, right: bool) -> PackedVector2Array:
+	for own: bool in [true, false]:
+		for piece: Array in _pieces.get(corner, []):
+			if piece[3] == (cell if own else below) and (own or piece[4] == kind):
+				var arc: PackedVector2Array = (piece[0] as PackedVector2Array).slice(1)
+				if right:
+					arc.reverse()  # (the arcs run from the side to the edge; this end runs to the side)
+				return arc
+	return PackedVector2Array()
+
+
+## One band of a face: the outline moved down `from` pixels and `tall` more, from its picture's
+## row at `picture_y`; lit where the edge turns west, shaded where it turns east.
+func _ribbon(outline: PackedVector2Array, left: float, from: float, tall: float, row: int, picture_y: float) -> void:
+	if tall <= 0.0:
+		return
+	var first := _face_points.size()
+	var rows := float(FACE_ROWS.size() * MAX_FACE)
+	for i in outline.size():
+		var along := (outline[mini(i + 1, outline.size() - 1)] - outline[maxi(i - 1, 0)]).normalized()
+		var light := 1.0 + 0.18 * along.y  # (going down to the right: facing south-west, lit)
+		var p := outline[i]
+		var u := (p.x - left) / (2.0 * HALF)
+		_face_points.append_array([p + Vector2(0, from), p + Vector2(0, from + tall)])
+		_face_colours.append_array([Color(light, light, light), Color(light, light, light)])
+		_face_uvs.append_array([Vector2(u, (row * MAX_FACE + picture_y) / rows), Vector2(u, (row * MAX_FACE + picture_y + tall) / rows)])
+	for i in outline.size() - 1:
+		var a := first + i * 2
+		_face_indices.append_array([a, a + 2, a + 1, a + 1, a + 2, a + 3])
+
+
+## The lips of a raised cell: along each side where the ground beside it is lower (north, west,
+## east; the south has the face), a pixel in from the line, not round its rounded corners.
+func _lips_of(cell: Vector2i) -> void:
+	var mine := level_at(cell)
+	var centre := _ground.map_to_local(cell)
+	for side: Vector2i in LIPS:
+		if level_at(cell + side) >= mine:
+			continue
+		var colour: Color = LIPS[side]
+		if not _lips.has(colour):
+			_lips[colour] = PackedVector2Array()
+		# (the side's first corner point, the other one along it, and the corner points' cells)
+		var a := centre + Vector2(HALF if side.x > 0 else -HALF, -HALF)
+		var dir := Vector2(1, 0) if side.y != 0 else Vector2(0, 1)
+		var b := a + dir * 2.0 * HALF
+		var a_corner := cell + Vector2i(maxi(side.x, 0), 0)
+		var b_corner := a_corner + (Vector2i(1, 0) if side.y != 0 else Vector2i(0, 1))
+		if _rounded(a_corner, cell):
+			a += dir * RADIUS
+		if _rounded(b_corner, cell):
+			b -= dir * RADIUS
+		_lips[colour].append_array([a - Vector2(side), b - Vector2(side)])
+
+
+## Whether `cell`'s own corner at corner point `corner` is rounded.
+func _rounded(corner: Vector2i, cell: Vector2i) -> bool:
+	for piece: Array in _pieces.get(corner, []):
+		if piece[3] == cell:
+			return true
+	return false
+
+
+func _draw_faces() -> void:
+	if not _face_indices.is_empty():
+		RenderingServer.canvas_item_add_triangle_array(_faces.get_canvas_item(), _face_indices, _face_points,
+			_face_colours, _face_uvs, PackedInt32Array(), PackedFloat32Array(), FACES.get_rid())
+	for alpha: float in _foam:
+		_faces.draw_multiline(_foam[alpha], Color(1, 1, 1, alpha), 1.0)
+	if not _shadows.is_empty():
+		_faces.draw_multiline(_shadows, Color(0, 0, 0, 0.08), 1.0)
+	for colour: Color in _lips:
+		_faces.draw_multiline(_lips[colour], colour, 1.0)
+	if not _face_lines.is_empty():
+		_faces.draw_multiline(_face_lines, LINE, 1.0)
+
+
+## Whether a point in the water is just under a face (SeaWaves draws no crest there).
+static func covers(tree: SceneTree, point: Vector2) -> bool:
+	for edges: TerrainEdges in tree.get_nodes_in_group("terrain_edges"):
+		if edges._hangs.is_empty():
+			continue
+		var local := edges.to_local(point)
+		var cell := edges._ground.local_to_map(local)
+		if edges._hangs.has(cell) and local.y - (edges._ground.map_to_local(cell).y - HALF) <= edges._hangs[cell] + 3.0:
+			return true
+	return false

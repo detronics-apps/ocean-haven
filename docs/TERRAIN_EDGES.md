@@ -68,3 +68,43 @@ Keep it simple: no new terrain architecture, no Marching Squares, no procedural 
   real art they'd become small corner and edge pictures from a tileset.
 
 **Status:** built (scripts/world/terrain_edges.gd, a TerrainEdges node after Ground in every island scene; tests/test_terrain_edges.gd). Tile changes notify it through SaveGame.record_tile; loading a save rebuilds it. Corners are rounded with a radius of 8 px (a quarter of a tile): the first version used the full half tile, which made blobs and pointed gaps where three terrains met.
+
+## Heights (the owner's pick: line + height)
+
+Where one ground stands above the next, a 3/4 view shows the higher one's face. Looks only, like
+the rounded corners: walking, building, collisions and saves are unchanged.
+
+- **One height per region, from how the grounds sit inside each other.** The sea (every water
+  kind) is 0. A region of ground (its cells side by side) touching the sea stands its own step
+  above it: sand 0 (a beach slopes into the water: the waves show it), mud 2, grass 5, ice 6,
+  rock 12 px. Any other region stands on top of the one it shares the most border with among
+  those already worked out (outside it, or a bigger one beside it; on a tie the higher), a step
+  higher (the owner: anything lower than the ground in front of it looks like a hole, so a rock
+  between the beach and a grass plateau stands on the plateau): grass on rock 4, on mud 3, on sand 5; rock on grass 5, on
+  sand 6, on ice 6; mud on sand 2; sand on anything 0 (`TerrainEdges.STEPS`).
+  - So an island goes up from its beach and back down on the far side (water > sand > grass >
+    sand > water), the Deep Sea's grass stands on top of its rock (the owner: per-ground heights
+    made the grass look like holes in the rock), rock outcrops stand on the grass, and no land is
+    ever lower than all the ground round it. Water inside land (pools) is 0.
+  - Worked out when the island loads and once at the end of a frame in which tiles changed
+    (a channel dug through or ice melting can change heights far away).
+- **Faces only on the south side** (the side the 3/4 view shows), as tall as the step (at most
+  16 px), hanging below the line between the two grounds into the lower one. Each face follows
+  its edge's own shape: round the cell's own rounded corner (tapering away), down the curve of an
+  inside corner rounding in from the ground below, else straight to the next cell's face; so
+  stepped coasts, the joined diagonals and four-ground corners all come out whole (the owner's
+  corner cases, checked on a test patch of all 15).
+- **The line stays** along every edge (the owner liked line + height best), and runs along each
+  face's foot and its ends where no face beside it covers them; foam where a face stands in the
+  water; a soft shadow at the foot of a step of 5 px or more on land.
+- **Lips:** where the ground drops away behind or beside a raised ground (unseen in a 3/4 view),
+  its edge catches the light on the north and west and is shaded on the east (light from the top
+  left), a pixel in from the line.
+- **Pictures:** `assets/tilesets/terrain_faces.png` (tools/make_terrain_tiles.py, twice the
+  pixels like the ground art, a tile wide and tileable, a row per ground: two courses of stones,
+  an earth bank under the grass's edge, a floe's edge with the ice under the water at its foot,
+  low banks of mud and sand). A face's top comes from its picture's top, its last pixels from the
+  picture's foot.
+- **Layers:** the faces are their own layer ("TerrainFaces", after GroundDetails, at the ground's
+  z), so shells, waves on the sand and spray stay under a face; SeaWaves' moving crests skip the
+  water just under one (`TerrainEdges.covers`); swimming animals, decks and boats are in front.
