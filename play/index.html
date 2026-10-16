@@ -93,6 +93,15 @@ body {
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <link rel="manifest" href="index.manifest.json">
+<script>
+// A phone draws the game at 2 pixels a point, not its full 3: over half the pixels to fill each
+// frame gone, for a cooler phone and a longer battery (the owner's iPhone ran flat in 10 minutes).
+// (Before the engine starts: it sizes its canvas from this. Touches and SafeArea are in points.)
+(function () {
+	if ((window.devicePixelRatio || 1) > 2 && /iPhone|iPad|iPod|Android/.test(navigator.userAgent))
+		Object.defineProperty(window, 'devicePixelRatio', { get: function () { return 2; }, configurable: true });
+})();
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
@@ -248,7 +257,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":3869964,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":3870412,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
