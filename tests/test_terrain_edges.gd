@@ -193,6 +193,17 @@ func _initialize() -> void:
 	var under := hook_ground.to_global(hook_ground.map_to_local(cliff + Vector2i(0, 1)))
 	_expect(hook.covers(self, under + Vector2(0, -12)), "no wave crest on a cliff's face")
 	_expect(not hook.covers(self, under + Vector2(0, 8)), "but still out in the water below it")
+	# The ranger hops a little going up the grass bank from the beach; not walking on the flat.
+	var ranger: Node2D = world.get_node("Player")
+	ranger.global_position = ground.to_global(ground.map_to_local(bank + Vector2i(0, 1)))
+	for i in 30:  # (getting there was a hop down: let it land)
+		await physics_frame
+	ranger.global_position += Vector2(8, 0)  # (along the beach)
+	await physics_frame
+	_expect(float(ranger.get("_hop")) >= 1.0, "no hop on the flat beach")
+	ranger.global_position = ground.to_global(ground.map_to_local(bank))
+	await physics_frame
+	_expect(float(ranger.get("_hop")) < 1.0, "a hop up onto the grass")
 	# Boats keep out from under a cliff's face (the land's physics layer, as the rowboat's).
 	var boat := CharacterBody2D.new()
 	boat.collision_mask = 4

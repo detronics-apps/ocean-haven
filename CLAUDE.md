@@ -729,7 +729,8 @@ corners and inside curves, with the line along their foot and ends, foam in the 
 under a face (TerrainEdges.covers). Heights are redone once a frame after tiles change.
 Boats keep out of the water strip under a face (IslandGround.bands: a collision band on the
 land's physics layer, which only boats use), swimmers too (Animal.in_habitat) and floating
-litter moves out in front (Debris); the ranger walks over steps freely; decks lie over a face,
+litter moves out in front (Debris); the ranger walks over steps freely, with a little hop (4 px, a
+quarter second: Player.hop_*) over any step of 5 px or more (TerrainEdges.height_at); decks lie over a face,
 level with the land.
 Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta): cut by
 `tools/cut_building_sheet.py` into a PNG per building, beside each old picture's path, fitted into

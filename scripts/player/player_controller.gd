@@ -15,6 +15,13 @@ var facing := Vector2i.DOWN
 @export var step_sway := 0.06
 var _step := 0.0
 var walking := false
+## A little hop going up or down a step of the ground (TerrainEdges heights) at least
+## `hop_from` px tall: how high and how long. Looks only: speed and paths don't change.
+@export var hop_from := 5
+@export var hop_height := 4.0
+@export var hop_time := 0.25
+var _ground_level := -1
+var _hop := 1.0
 
 
 func _ready() -> void:
@@ -27,7 +34,14 @@ func _physics_process(delta: float) -> void:
 	if not Terrain.walkable(get_tree(), global_position):
 		global_position = before
 	var moved := global_position - before
+	var level := TerrainEdges.height_at(get_tree(), global_position)
+	if _ground_level >= 0 and absi(level - _ground_level) >= hop_from:
+		_hop = 0.0
+	_ground_level = level
 	_animate_walk(moved, delta)
+	if _hop < 1.0:
+		_hop = minf(_hop + delta / hop_time, 1.0)
+		_look.position.y -= sin(_hop * PI) * hop_height
 	if moved.length() > 0.5:
 		if absf(moved.x) >= absf(moved.y):
 			facing = Vector2i.RIGHT if moved.x > 0.0 else Vector2i.LEFT
@@ -63,6 +77,7 @@ func _animate_walk(moved: Vector2, delta: float) -> void:
 
 func set_aboard(aboard: bool) -> void:
 	stop()
+	_ground_level = -1  # (no hop for stepping ashore)
 	controlled = not aboard
 	visible = not aboard
 	process_mode = PROCESS_MODE_DISABLED if aboard else PROCESS_MODE_INHERIT

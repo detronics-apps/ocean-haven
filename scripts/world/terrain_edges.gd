@@ -784,6 +784,15 @@ func _draw_faces() -> void:
 		_faces.draw_multiline(_face_lines, LINE, 1.0)
 
 
+## The ground's height at a point in the world (0 off every island).
+static func height_at(tree: SceneTree, point: Vector2) -> int:
+	for edges: TerrainEdges in tree.get_nodes_in_group("terrain_edges"):
+		var cell := edges._ground.local_to_map(edges.to_local(point))
+		if edges._terrain.has(cell):
+			return edges.level_at(cell)
+	return 0
+
+
 ## Whether a point in the water is just under a face (SeaWaves draws no crest there).
 static func covers(tree: SceneTree, point: Vector2) -> bool:
 	for edges: TerrainEdges in tree.get_nodes_in_group("terrain_edges"):
