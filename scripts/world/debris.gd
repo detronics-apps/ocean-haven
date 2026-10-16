@@ -14,6 +14,7 @@ extends Area2D
 var _time := randf() * TAU
 var _drifting := true
 var _drift_check := randf()
+var _face_check := randf()
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -49,6 +50,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_time += delta
 	_sprite.position.y = roundf(sin(_time * 2.0) * 1.5)
+	_face_check -= delta
+	if _face_check <= 0.0:  # (a piece just under a cliff's face goes out in front of it)
+		_face_check = 1.0
+		if TerrainEdges.covers(get_tree(), global_position):
+			global_position.y += 8.0
 	if spawned and _drifting:
 		_drift(delta)
 

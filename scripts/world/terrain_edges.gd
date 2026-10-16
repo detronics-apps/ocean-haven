@@ -650,6 +650,13 @@ func _build_faces() -> void:
 		_lips_of(cell)
 	if _faces:
 		_faces.queue_redraw()
+	if _ground is IslandGround:  # (boats keep out from under the faces: IslandGround.bands)
+		var bands := {}
+		for cell: Vector2i in _hangs:
+			if _terrain.get(cell, "sea") in ["water", ""]:
+				bands[cell] = _hangs[cell]
+		(_ground as IslandGround).bands = bands
+		_ground.notify_runtime_tile_data_update()
 
 
 ## The face below `cell`: its outline along the cell's bottom, left to right, rounding its own

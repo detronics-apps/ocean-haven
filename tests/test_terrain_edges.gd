@@ -193,6 +193,21 @@ func _initialize() -> void:
 	var under := hook_ground.to_global(hook_ground.map_to_local(cliff + Vector2i(0, 1)))
 	_expect(hook.covers(self, under + Vector2(0, -12)), "no wave crest on a cliff's face")
 	_expect(not hook.covers(self, under + Vector2(0, 8)), "but still out in the water below it")
+	# Boats keep out from under a cliff's face (the land's physics layer, as the rowboat's).
+	var boat := CharacterBody2D.new()
+	boat.collision_mask = 4
+	var hull := CollisionShape2D.new()
+	hull.shape = CircleShape2D.new()
+	(hull.shape as CircleShape2D).radius = 4.0
+	boat.add_child(hull)
+	world.add_child(boat)
+	boat.global_position = under + Vector2(0, 10)
+	await physics_frame
+	for i in 20:
+		boat.move_and_collide(Vector2(0, -1.5))
+		await physics_frame
+	_expect(boat.global_position.y >= under.y + 2.0, "a boat sailing up to a cliff stops in front of its face (%.1f)" % (boat.global_position.y - under.y))
+	boat.queue_free()
 
 	if not _failed:
 		print("PASS")

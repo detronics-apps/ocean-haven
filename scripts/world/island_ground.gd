@@ -8,6 +8,11 @@ extends TileMapLayer
 const CUT := 10.0
 ## Water cell -> the corners it's cut back at (each the direction from its centre to the corner).
 var passes := {}
+## Water cell -> how far down from its top the face of the higher ground north of it hangs
+## (TerrainEdges): boats keep out of that strip (and its foam), so a boat is always in front of
+## a cliff, never up on its face. Only boats: their collision is the land's physics layer.
+var bands := {}
+const BAND_FOAM := 3.0
 
 
 ## Whether `point` (local) is in a cut-back corner of a water cell.
@@ -20,11 +25,16 @@ func in_pass(cell: Vector2i, point: Vector2) -> bool:
 
 
 func _use_tile_data_runtime_update(coords: Vector2i) -> bool:
-	return passes.has(coords)
+	return passes.has(coords) or bands.has(coords)
 
 
 func _tile_data_runtime_update(coords: Vector2i, tile_data: TileData) -> void:
-	if tile_data.get_collision_polygons_count(0) == 0:
+	if bands.has(coords):
+		var down := minf(float(bands[coords]) + BAND_FOAM, 32.0) - 16.0
+		var index := tile_data.get_collision_polygons_count(1)
+		tile_data.add_collision_polygon(1)
+		tile_data.set_collision_polygon_points(1, index, PackedVector2Array([Vector2(-16, -16), Vector2(16, -16), Vector2(16, down), Vector2(-16, down)]))
+	if not passes.has(coords) or tile_data.get_collision_polygons_count(0) == 0:
 		return
 	var square := [Vector2(-16, -16), Vector2(16, -16), Vector2(16, 16), Vector2(-16, 16)]
 	var shape := PackedVector2Array()

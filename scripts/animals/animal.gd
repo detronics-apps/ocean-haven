@@ -1204,7 +1204,10 @@ func _flee_spot(danger: Vector2) -> Vector2:
 
 
 func in_habitat(point: Vector2) -> bool:
-	return Terrain.at(get_tree(), point) in data.habitat_terrain
+	var ground := Terrain.at(get_tree(), point)
+	if ground in ["water", ""] and TerrainEdges.covers(get_tree(), point):
+		return false  # (just under a cliff's face: swimmers stay out in front of it)
+	return ground in data.habitat_terrain
 
 
 func _in_water() -> bool:

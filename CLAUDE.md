@@ -727,6 +727,10 @@ tools/make_terrain_tiles.py), hanging into the lower ground and following its ed
 corners and inside curves, with the line along their foot and ends, foam in the water, a lip
 (light north and west, dark east) where the ground drops away unseen; SeaWaves skips the water
 under a face (TerrainEdges.covers). Heights are redone once a frame after tiles change.
+Boats keep out of the water strip under a face (IslandGround.bands: a collision band on the
+land's physics layer, which only boats use), swimmers too (Animal.in_habitat) and floating
+litter moves out in front (Debris); the ranger walks over steps freely; decks lie over a face,
+level with the land.
 Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta): cut by
 `tools/cut_building_sheet.py` into a PNG per building, beside each old picture's path, fitted into
 the box the old art filled (tools/building_sheet_targets.json: the owner, their original sizes).
