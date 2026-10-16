@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1792152955|21537401';
+const CACHE_VERSION = '1792158477|24017455';
 /** @type {string} */
 const CACHE_PREFIX = 'BlueHaven-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
