@@ -73,6 +73,17 @@
     background: rgba(79, 209, 197, 0.12); border: 1px solid rgba(79, 209, 197, 0.35);
   }
   details.card summary { cursor: pointer; font-weight: 700; }
+  .link-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 10px 0 4px; }
+  .link-row code {
+    flex: 1 1 220px; padding: 10px 12px; border-radius: 10px; font-size: 0.95rem; word-break: break-all;
+    background: rgba(0, 0, 0, 0.25); border: 1px solid var(--line); color: var(--sand);
+  }
+  .copy {
+    padding: 10px 18px; border: 0; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer;
+    background: var(--turquoise); color: #06343a; box-shadow: 0 4px 0 #2a9c92;
+  }
+  .copy:active { transform: translateY(2px); box-shadow: 0 2px 0 #2a9c92; }
+  .copied { margin: 6px 0 0; color: var(--turquoise); font-size: 0.92rem; }
   footer { margin-top: 40px; color: var(--muted); font-size: 0.9rem; text-align: center; }
 </style>
 </head>
@@ -107,10 +118,18 @@
 
   <h2>Keep your progress on a phone</h2>
   <p>The game saves by itself. To make sure your phone keeps it, add BlueHaven to your home screen and always open it from there:</p>
+  <div class="card">
+    <p>Add the <strong>game itself</strong> to your home screen, not this page: its link ends in <strong>/play/</strong>.</p>
+    <div class="link-row">
+      <code id="play-link">play/</code>
+      <button class="copy" id="copy-link" type="button">Copy link</button>
+    </div>
+    <p class="copied" id="copied" hidden>Copied! Paste it into your browser's address bar, open it, then add it to your home screen as below.</p>
+  </div>
   <details class="card" open>
     <summary>iPhone or iPad</summary>
     <ol>
-      <li>Open <strong>Play BlueHaven</strong> in Safari.</li>
+      <li>In Safari, tap <strong>Play BlueHaven</strong> (or paste the copied link). Check the address ends in <strong>/play/</strong>.</li>
       <li>Tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>.</li>
       <li>Open BlueHaven from its new icon.</li>
     </ol>
@@ -118,7 +137,7 @@
   <details class="card">
     <summary>Android</summary>
     <ol>
-      <li>Open <strong>Play BlueHaven</strong> in Chrome.</li>
+      <li>In Chrome, tap <strong>Play BlueHaven</strong> (or paste the copied link). Check the address ends in <strong>/play/</strong>.</li>
       <li>Tap the <strong>&#8942;</strong> menu, then <strong>Install app</strong> (or <strong>Add to Home screen</strong>).</li>
       <li>Open BlueHaven from its new icon.</li>
     </ol>
@@ -127,5 +146,31 @@
 
   <footer>BlueHaven is a game in progress. Turn your phone sideways to play.</footer>
 </main>
+<script>
+  // The game's own link (this page's address with play/ on the end), and a button to copy it.
+  (function () {
+    var link = new URL('play/', location.href).href;
+    document.getElementById('play-link').textContent = link;
+    document.getElementById('copy-link').addEventListener('click', function () {
+      var done = function () { document.getElementById('copied').hidden = false; };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(link).then(done, fallback);
+      } else {
+        fallback();
+      }
+      function fallback() {  // (older browsers: copy from a hidden text box)
+        var box = document.createElement('textarea');
+        box.value = link;
+        box.setAttribute('readonly', '');
+        box.style.position = 'fixed';
+        box.style.opacity = '0';
+        document.body.appendChild(box);
+        box.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(box);
+      }
+    });
+  })();
+</script>
 </body>
 </html>

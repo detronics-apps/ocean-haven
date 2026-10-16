@@ -7,6 +7,12 @@
       "runtimeArgs": ["tools/serve_web.py"],
       "port": 8443,
       "url": "https://localhost:8443"
+    },
+    {
+      "name": "home-page",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "web"],
+      "port": 8765
     }
   ]
 }
