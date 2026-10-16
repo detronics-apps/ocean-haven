@@ -223,10 +223,17 @@ static func _detail_tiles() -> TileSet:
 func _decorate(cell: Vector2i) -> void:
 	var kind := terrain_at(cell)
 	var pick := absi(hash(cell + Vector2i(7, 13)))
-	if kind == "sand" or (kind == "rock" and pick % 2 == 0):
+	if kind == "sand":
 		for side: Vector2i in SIDES:
 			if terrain_at(cell + side) in ["water", "", "sea"]:
-				_details.set_cell(cell, (pick / 3) % WAVE_PAUSES.size(), Vector2i(0, WAVES_ROW if kind == "sand" else SPRAY_ROW), SIDES[side])
+				_details.set_cell(cell, (pick / 3) % WAVE_PAUSES.size(), Vector2i(0, WAVES_ROW), SIDES[side])
+				return
+	if kind in ["water", ""]:  # (spray off half the rocky shores, over the water: the owner)
+		for side: Vector2i in SIDES:
+			var rock := cell + side
+			var rock_pick := absi(hash(rock + Vector2i(7, 13)))
+			if terrain_at(rock) == "rock" and rock_pick % 2 == 0:
+				_details.set_cell(cell, (rock_pick / 3) % WAVE_PAUSES.size(), Vector2i(0, SPRAY_ROW), SIDES[side])
 				return
 	if cell == _snowman:
 		_details.set_cell(cell, 0, SNOWMAN)

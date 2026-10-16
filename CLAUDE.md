@@ -806,7 +806,7 @@ waves running up the sand and sliding back (8 frames: a curve from the water's e
 its peak, gone well before the tile's sides where the coast's corners curve away) and spray on
 half the rocky shores, turned to face the water, each spot then pausing for one of
 TerrainEdges.WAVE_PAUSES (0.2-5.5 s, a tile source each) so the shore never comes in and goes out
-in step. A dark line (60 %, as strong as the buildings' outlines) runs where two terrains meet
+in step (the spray is drawn on the water beside the rock, breaking over the water: the owner). A dark line (60 %, as strong as the buildings' outlines) runs where two terrains meet
 (TerrainEdges._lines, following the rounded corners' arcs; never round every tile: the owner's
 pick); where four different terrains meet there's no rounding (it made a dark star). Mud, ice and
 rock carry fewer, softer marks than the sheet (the owner: too prominent); plain grass a few
