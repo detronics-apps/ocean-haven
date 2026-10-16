@@ -133,6 +133,12 @@ id = &"clams_filter"
 when = PackedStringArray("built:water_treatment_facility")
 lines = PackedStringArray("Giant clams filter the seawater all day long. That's why the water round the treatment facility is so clear.")
 
+[sub_resource type="Resource" id="Obs_water"]
+script = ExtResource("2_t")
+id = &"water_speed"
+when = PackedStringArray("flag:clean_water_made")
+lines = PackedStringArray("Take some clean water home and store it at your tent or house, {name}. With a drink in you, you'll get about faster.")
+
 [sub_resource type="Resource" id="Obs_2"]
 script = ExtResource("2_t")
 id = &"split_coral"
@@ -169,7 +175,7 @@ shirt = Color(0.95, 0.8, 0.3, 1)
 trousers = Color(0.25, 0.35, 0.45, 1)
 place = ExtResource("4_place")
 topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8"), SubResource("Topic_9"), SubResource("Topic_10"), SubResource("Topic_11")])
-observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
+observations = Array[ExtResource("2_t")]([SubResource("Obs_water"), SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "I wanted to see how things are done on the {island}, {name}. {host} has some clever ideas."
 year_line = "A year of fixing things with you, {name}. The best machine I ever saw is a healthy reef."

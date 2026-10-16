@@ -120,23 +120,16 @@ func _draw() -> void:
 	draw_circle(middle, 2.5, Color.WHITE)
 
 
-## A storm gathering (StormClouds): its clouds round the map's rim, thicker and further in
-## the nearer it is.
+## A storm gathering (StormClouds): the map's rim pulses red, faster and stronger the nearer it
+## is (the owner: the cloud puffs round the rim looked odd).
 func _draw_storm(middle: Vector2, region: RegionData) -> void:
 	var event := RareEvents.coming_to(region.id)
 	var near := StormClouds.nearness(region.id)
 	if not event or near <= 0.0:
 		return
-	var colour := StormWeather.cloud_colour(event.weather)
 	var time := Time.get_ticks_msec() / 1000.0
-	var puffs := 28
-	for i in puffs:
-		var angle := TAU * i / puffs + time * 0.05
-		var wobble := sin(i * 2.3 + time * 0.8) * 0.5 + 0.5
-		var depth := 8.0 + 18.0 * near * (0.7 + 0.3 * wobble)
-		var at := middle + Vector2.from_angle(angle) * (RADIUS - depth * 0.5)
-		draw_circle(at, depth * 0.6 + 3.0, Color(colour.darkened(0.35), 0.9))  # (a dark edge: it stands out on the sea)
-		draw_circle(at, depth * 0.6 + 1.5, Color(colour.lightened(0.15), 0.75 + 0.25 * near))
+	var pulse := 0.5 + 0.5 * sin(time * lerpf(2.5, 6.0, near))
+	draw_arc(middle, RADIUS - 3.0, 0.0, TAU, 64, Color(0.9, 0.18, 0.15, lerpf(0.35, 0.95, near) * (0.35 + 0.65 * pulse)), 5.0 + 2.0 * near, true)
 
 
 ## The ranger's home on the island they're on: the building they sleep in (tent or house).

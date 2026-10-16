@@ -869,8 +869,14 @@ stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_s
 crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
 polar bears); dolphins, whales and sharks just grow. Young birds also fly and sit in their own colours
 (AnimalData.young_flying_sprites / young_sitting_sprites, [baby, young], drawn by
-`tools/make_young_birds.py` from the grown bird's pictures, shown at 55 % / 75 %): a baby sits
-whenever it's down, an older one on the nest. Trees show sapling and young pictures
+`tools/make_young_birds.py` from the grown bird's pictures, keeping their shading, shown at 55 % /
+75 %): a baby sits whenever it's down, an older one on the nest, and on the water the young of
+birds that float sit (never stand) on it. Moving like the real thing (looks only, the owner's
+pick): flying birds beat their wings for about a second, then glide (Animal._flap: wing frames
+made once from the flying picture, wings drawn shorter and back out, the body staying put);
+turtles sway as they swim and now and then dip a little under (AnimalData.sways). People's
+places have a soft shadow. Clean water: the first time it's carried a note says to store it at
+home (it makes you faster; Fleet flag "water_hint"), and Kai says it too. Trees show sapling and young pictures
 (PalmTree.stage_textures). Turtles: while their protection areas have room any grown turtle
 nests again once her own last nest has hatched (Nest.mother), several at once; a nest hatches
 2-4 (AnimalData.hatchlings / hatchlings_max), those with room stay, the rest swim off. Breeding
@@ -920,7 +926,7 @@ every rescue has a reason it needs care; a wound can always be patched.
 Storms (the owner's design; RareEvents, docs/MASTER_PLAN.md "Rare events"): warned 2 days
 ahead for every island the ranger has been to, wherever they wake up (EventData.warning_days; nothing may depend on waking up on that island); the event's clouds
 gather beyond its rowboat waters (StormClouds, StormClouds.nearness: thin and further out 2 days
-ahead, thick at the edge the day before) and round the minimap's rim; its people get a red
+ahead, thick at the edge the day before) and the minimap's rim pulses red, faster the nearer it is; its people get a red
 "!" (PersonData.storm_worry). On its day, STRIKE_AFTER 10 s after the ranger is on the island,
 StormWeather passes over for 10 s (the game runs; clear 1.5 tiles round the ranger, fading into
 the storm over 4 more: assets/effects/storm/storm_fog.gdshader; the six looks:

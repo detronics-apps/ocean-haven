@@ -34,6 +34,9 @@ extends Resource
 @export var habitat_terrain: PackedStringArray = ["", "water"]
 ## Swimmers turn to face where they're going; crabs scuttle sideways (just flip).
 @export var faces_movement := true
+## Swims with a sway as its flippers stroke, and now and then dips a little under the surface
+## (fainter and bluer), then up again (turtles; the owner liked it).
+@export var sways := false
 ## Walkers' other pictures (optional): standing still, and flying off when startled.
 @export var resting_sprite: Texture2D
 ## Animals of land and water (seals): the picture on land or ice (side view, never turned),

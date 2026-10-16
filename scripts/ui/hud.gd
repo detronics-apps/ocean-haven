@@ -545,6 +545,10 @@ func _on_donations_waiting(building: Building, amount: int) -> void:
 
 
 func _on_item_added(item: ItemData, _count: int) -> void:
+	if item.id == &"clean_water" and not Fleet.has_flag(&"water_hint"):  # (the first time: what it's for)
+		Fleet.mark(&"water_hint")
+		show_toast("Store clean water at home: it makes you faster", true)
+		return
 	show_toast("%s collected" % item.display_name)
 
 

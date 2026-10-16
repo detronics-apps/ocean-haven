@@ -33,6 +33,10 @@ func _ready() -> void:
 		_place.global_position = data.spot + data.place_offset - Vector2(0, data.place.get_height() * data.place_scale)
 		_place.z_index = -1
 		add_child(_place)
+		# (a soft shadow at its foot, as under every building: in the place's own pixels)
+		var size := data.place.get_size()
+		var shadow := Shadow.under(_place, null, size.x * 0.9, Vector2(size.x / 2.0, size.y - Shadow.TUCK / data.place_scale))
+		shadow.scale.y = clampf(size.x * data.place_scale * 0.27, 5.0, Shadow.TALL) / 64.0 / data.place_scale
 	add_child(look_of(data))
 	Shadow.under(self, null, 22.0, Vector2(0, -2))  # (round the boots: lower, they seemed to float)
 	_news = Label.new()

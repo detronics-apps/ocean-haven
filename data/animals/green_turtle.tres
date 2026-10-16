@@ -39,6 +39,7 @@ roams = true
 travel_home = &"home_island"
 travels_to = PackedStringArray("mangrove_coast", "tropical_reef")
 travel_chance = 0.7
+sways = true
 travel_news = "A green turtle was grazing the seagrass this morning. I think it swam here from the {from}."
 id = &"green_turtle"
 display_name = "Green Sea Turtle"

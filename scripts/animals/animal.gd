@@ -309,6 +309,10 @@ func _process(delta: float) -> void:
 		return
 	if data.dives:
 		_breathe(delta)
+	if data.sways:
+		_dip()
+	if data.flies:
+		_flap()
 	if young and not leaving and data.grow_days > 0.0 and born_at >= 0.0:
 		_grow()
 
@@ -1227,6 +1231,8 @@ func _pose() -> void:
 		var flying := (data.flies and not landed) or (_state == State.FLEE and data.flying_sprite != null)
 		if flying and data.young_flying_sprites.size() > stage():
 			stage_picture = data.young_flying_sprites[stage()]
+		elif landed and data.floating_sprite and _in_water() and data.young_sitting_sprites.size() > stage():
+			stage_picture = data.young_sitting_sprites[stage()]  # (floating on the sea, never standing on it)
 		elif data.young_sitting_sprites.size() > stage() and (perched or (not _in_water() and ((landed and stage() == 0)
 				or (_state == State.REST and not data.flies and data.perched_sprite != null and _sit_on_mound())))):
 			stage_picture = data.young_sitting_sprites[stage()]  # (a baby sits whenever it's down, but not in the water)
@@ -1323,7 +1329,8 @@ func _face(motion: Vector2) -> void:
 	if data.land_sprite:
 		_sprite.flip_h = false
 	if data.faces_movement:
-		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle(), 0.1)
+		var sway := sin(_clock() * 2.4 + _motion_phase) * 0.09 if data.sways and _in_water() else 0.0
+		_sprite.rotation = lerp_angle(_sprite.rotation, motion.angle() + sway, 0.1)
 	elif motion.x != 0.0:
 		_sprite.flip_h = motion.x < 0.0
 
@@ -1488,3 +1495,79 @@ func _settle_in_water() -> void:
 		# Live in the water by the protection area it belongs to (it may be another beach).
 		_home = Terrain.nearest(get_tree(), home_area.global_position, ["water", ""]) if home_area else global_position
 	_rest(data.rest_min)
+
+
+# --- Moving like the real thing (looks only) ---
+
+var _motion_phase := randf() * TAU
+## The wing-beat picture drawn over a flying bird (its own picture hidden meanwhile).
+var _flapper: Sprite2D
+## Flying picture -> it with the wings full, shorter and short (made once, shared).
+static var _wing_frames := {}
+
+
+func _clock() -> float:
+	return Time.get_ticks_msec() / 1000.0
+
+
+## A swimmer's dip now and then: a little under the surface, fainter and bluer, then up again.
+func _dip() -> void:
+	var under := 0.0
+	if _in_water():
+		var cycle := fposmod(_clock() + _motion_phase * 2.0, 8.0)
+		under = clampf(minf(cycle - 4.0, 7.0 - cycle), 0.0, 1.0) if cycle > 4.0 else 0.0
+	_sprite.self_modulate = Color(1.0 - 0.35 * under, 1.0 - 0.15 * under, 1.0, 1.0 - 0.45 * under)
+
+
+## A flying bird beats its wings (about a second of beats, then a glide): its flying picture with
+## the wings drawn shorter and back out, the body staying put.
+func _flap() -> void:
+	var flying_picture := _sprite.texture == data.sprite or (young and _sprite.texture in data.young_flying_sprites)
+	var beating := flying_picture and _state != State.REST and fposmod(_clock() + _motion_phase, 2.5) < 1.2
+	if not beating:
+		if _flapper and _flapper.visible:
+			_flapper.visible = false
+			_sprite.self_modulate.a = 1.0
+		return
+	if not _flapper:
+		_flapper = Sprite2D.new()
+		_flapper.name = "Wings"
+		_sprite.add_child(_flapper)
+	var frames: Array = _wings_of(_sprite.texture)
+	_flapper.texture = frames[[0, 1, 2, 1][int(_clock() * 12.0) % 4]]
+	_flapper.centered = _sprite.centered
+	_flapper.offset = _sprite.offset
+	_flapper.flip_h = _sprite.flip_h
+	_flapper.visible = true
+	_sprite.self_modulate.a = 0.0
+
+
+static func _wings_of(picture: Texture2D) -> Array:
+	if _wing_frames.has(picture):
+		return _wing_frames[picture]
+	var full := picture.get_image()
+	if full.is_compressed():
+		full.decompress()
+	full.convert(Image.FORMAT_RGBA8)
+	var w := full.get_width()
+	var h := full.get_height()
+	var mid := (h - 1) / 2.0
+	var reach := 0.0
+	for y in h:
+		for x in w:
+			if full.get_pixel(x, y).a > 0.5:
+				reach = maxf(reach, absf(y - mid))
+	var frames: Array = [picture]
+	for keep in [0.62, 0.34]:  # (from above, wings swept up or down look shorter)
+		var img := full.duplicate() as Image
+		var limit := maxf(reach * keep, 2.5)
+		for y in h:
+			for x in w:
+				var d := absf(y - mid)
+				if d > limit:
+					img.set_pixel(x, y, Color(0, 0, 0, 0))
+				elif d > limit - 1.0 and img.get_pixel(x, y).a > 0.5:
+					img.set_pixel(x, y, Color(0.08, 0.08, 0.1))  # (the cut wingtip closed in the outline's dark)
+		frames.append(ImageTexture.create_from_image(img))
+	_wing_frames[picture] = frames
+	return frames
