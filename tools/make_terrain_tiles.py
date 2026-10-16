@@ -117,11 +117,13 @@ def sand(rnd, v):
 
 
 def grass(rnd, v):
-    t = Tile('#7f9652', rnd, ['#76904b', '#879d57'])
-    for x, y in places(rnd, rnd.randint(18, 24), 8, 6):  # (tufts of thin blades)
-        c = '#5e7637' if rnd.random() < 0.82 else '#a5b968'
+    # (softer than the sheet: fewer tufts at less contrast, so the grass patches on top stand out;
+    # the owner: halfway between the sheet's and a faded one)
+    t = Tile('#7f9652', rnd, ['#78914c', '#859b55'])
+    for x, y in places(rnd, rnd.randint(13, 18), 8, 6):  # (tufts of thin blades)
+        c = '#667e3d' if rnd.random() < 0.82 else '#9bb062'
         for b in range(rnd.randint(2, 4)):
-            h = rnd.randint(3, 6)
+            h = rnd.randint(3, 5)
             lean = rnd.choice((-1, 0, 0, 1))
             t.line([(x + b * 2, y), (x + b * 2 + lean, y - h)], c)
     for x, y in places(rnd, rnd.choice((0, 0, 0, 1, 1)), 2, 2):  # (a rare flower: the owner, too many)

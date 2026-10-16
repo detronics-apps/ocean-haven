@@ -782,8 +782,10 @@ TerrainEdges.WAVE_PAUSES (0.2-5.5 s, a tile source each) so the shore never come
 in step. A dark line (60 %, as strong as the buildings' outlines) runs where two terrains meet
 (TerrainEdges._lines, following the rounded corners' arcs; never round every tile: the owner's
 pick); where four different terrains meet there's no rounding (it made a dark star). Mud, ice and
-rock carry fewer, softer marks than the sheet (the owner: too prominent); grass gets tufts on
-45 % of the cells inside 3 x 3 grass.
+rock carry fewer, softer marks than the sheet (the owner: too prominent); plain grass a few
+fewer, softer blades too, so its patches show (the owner: halfway between the sheet and a faded
+look); the patches (on 45 % of the cells inside 3 x 3 grass) have blades a game pixel wide, lit
+on the left, on a slightly darker bit of ground.
 Where two land tiles touch only at a corner (water in the other two: drawn joined up), the ranger
 can walk across: IslandGround (every island's Ground) cuts the two water tiles' collision back at
 that corner and Terrain.walkable lets the ranger stand there (TerrainEdges tells it where).

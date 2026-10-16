@@ -56,14 +56,19 @@ class Cell:
 
 def grass(v, rnd):
     c = Cell()
-    for _ in range(2 + v % 2):  # (a clump of blades, darker at the root)
-        x0, y0 = rnd.randint(14, 46), rnd.randint(24, 52)
-        for b in range(rnd.randint(4, 7)):
-            h = rnd.randint(5, 10)
+    clumps = [(rnd.randint(14, 40), rnd.randint(26, 52)) for _ in range(2 + v % 2)]
+    for x0, y0 in clumps:  # (a slightly darker patch of ground under each clump)
+        c.disc(x0 + 7, y0 + 1, rnd.randint(6, 8), 2, '#758d4a')
+    for x0, y0 in clumps:  # (blades a game pixel wide, lit on the left, darker at the root)
+        for b in range(rnd.randint(4, 6)):
+            h = rnd.randint(6, 11)
             lean = rnd.choice((-2, -1, 0, 1, 2))
             for k in range(h):
-                col = '#4d6a2c' if k < 2 else ('#6f9440' if k < h - 2 else '#9cbd5e')
-                c.dot(x0 + b * 2 + round(lean * k / h), y0 - k, col)
+                lit, shade = (('#46622a', '#3e5825') if k < 2 else
+                              ('#678f3a', '#5a7f33') if k < h - 3 else ('#a8c864', '#93b552'))
+                x = x0 + b * 3 + round(lean * k / h)
+                c.dot(x, y0 - k, lit)
+                c.dot(x + 1, y0 - k, shade)
     if v == 3:  # (with a little yellow flower)
         c.dot(30, 26, '#f2d23a'); c.dot(31, 26, '#f2d23a'); c.dot(30, 27, '#c9a227')
     return c
