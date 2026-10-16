@@ -487,7 +487,10 @@ Phase 3: ranger activities (data/activities/, ActivityData; `Activities` autoloa
 personal bests per level, saved; ActivityScreen base: start page, timer, levels, finish).
 Sonar Sweep (Grid; SonarSweep): opens at the Marine Search & Rescue Station once Maya asks about
 the wreck (or it's found); the story play finds the wreck (reward_group "wreck_sites" /
-"reveal"); replays are for fun only (5 levels, pings +1 s, wrong marks +5 s, best times).
+"reveal"); replays are for fun only (5 levels, pings +1 s, best times). Minesweeper (the owner):
+ping all the clear water to finish, marked or not; pinging a hidden thing runs the boat over it
+(3 hearts; none left: back for a repair, another go); Mark puts a free buoy on a square (tap
+again to take it away; a buoyed square isn't pinged); the first ping is always open water.
 Phase 4: rescue companions (data/rescues/, RescueData; `Rescues` autoload, saved): one young
 animal at a time, one per island, found once RescueData.offer_when holds (Starting Island:
 a young green turtle once the rescue station is built). The ranger names it at the station

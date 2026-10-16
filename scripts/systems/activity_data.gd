@@ -44,6 +44,5 @@ extends Resource
 ## What the place is ("old jetty"), and what it says before it's open ("An old jetty...").
 @export var place_name: String
 @export var closed_note: String
-## Seconds added to the time for each ping, and for marking a wrong tile.
+## Seconds added to the time for each ping (Sonar Sweep).
 @export var ping_seconds := 1.0
-@export var miss_seconds := 5.0

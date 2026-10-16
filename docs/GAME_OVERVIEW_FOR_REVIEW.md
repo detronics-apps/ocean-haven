@@ -434,7 +434,7 @@ discover the turtles → a simple cleanup. Sonar Sweep comes later.
 
 | Island | Activity (introduced by) | Framework | Like | First story play gives | Permanent location | Replay |
 |---|---|---|---|---|---|---|
-| Starting | **Sonar Sweep** (Maya) | Grid | Minesweeper without bombs | **Locates the wreck** (instead of the survey's chance) | Survey point on the station's jetty | Bigger grids, more pieces; best time |
+| Starting | **Sonar Sweep** (Maya) | Grid | Minesweeper: ping all the clear water; a hidden thing pinged costs a heart (3); buoys mark them | **Locates the wreck** (instead of the survey's chance) | Survey point on the station's jetty | Bigger grids, more pieces; best time |
 | Kelp | **Otter Dive** (Finn) | Mover | Mario-style swim levels | **The urchin survey**: shows where grazing is too heavy | The old jetty / dive spot | Currents, deeper levels; best time |
 | Mangrove | **Channel Flow** (Rosa or Samuel) | Grid | Flow Free / Pipe Mania | **The channel layout**: marks which silted channels to dig | Waterworks control table | Bigger networks; best time |
 | Reef | **Glass Sort** (Kai) | Sort | Water Sort Puzzle | **The first batch of glass**: opens glass-making | The Glassworks' sorting bench | More colours and jars; fewest moves / best time |

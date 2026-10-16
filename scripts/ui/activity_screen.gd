@@ -121,7 +121,7 @@ func _complete() -> void:
 	var story := not Activities.story_done(activity)
 	var record := Activities.finish(activity, level, seconds if not story or _story_sets_time() else INF)
 	_clear_buttons()
-	var lines: Array[String] = ["Done in %.1f s!" % seconds]
+	var lines: Array[String] = [_finish_line()]
 	if record and not story:
 		lines.append("NEW PERSONAL BEST!")
 	elif not story:
@@ -182,6 +182,11 @@ func _grant_line() -> String:
 		return "Today's research grant is in: come back tomorrow for another."
 	var paid := Activities.research_grant(activity)
 	return "Research grant: +%d funding for your results (once a day)." % paid if paid > 0 else ""
+
+
+## The first line once it's done.
+func _finish_line() -> String:
+	return "Done in %.1f s!" % seconds
 
 
 ## Whether the story play's time counts as the level's best (Otter Dive's story collects

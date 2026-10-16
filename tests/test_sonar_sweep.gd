@@ -1,7 +1,8 @@
 extends SceneTree
 ## Sonar Sweep, the first ranger activity: Maya introduces it with the wreck question; it's
 ## played at the Marine Search & Rescue Station. Pings show how many hidden things are around
-## (each adds a second; a wrong mark a few); the story play finds the wreck; after that it's for
+## (each adds a second); pinging one costs a heart, Mark puts a free buoy on a square, and pinging
+## all the clear water finishes it; the story play finds the wreck; after that it's for
 ## fun: levels and personal bests, nothing else. Bests and the story are saved.
 ## Run: godot --headless --path . --script res://tests/test_sonar_sweep.gd --quit-after 300000
 
@@ -37,27 +38,32 @@ func _initialize() -> void:
 	_expect(people.check("asked:wreck", maya), "Maya has asked about the wreck")
 	_expect("Sonar Sweep" in labels.call(), "now the station offers a Sonar Sweep (%s)" % [labels.call()])
 
-	# --- The story play: find everything, the wreck is found ---
+	# --- The story play: ping all the clear water, the wreck is found ---
 	var screen: Node = world.get_parent().find_child("SonarSweep", true, false)
 	station.actions().filter(func(a: Dictionary) -> bool: return a.label == "Sonar Sweep")[0].do.call()
 	_expect(screen.visible and paused, "the sweep opens and the game waits")
-	screen.get_node_or_null(".")
 	screen.call("_begin")
+	_expect(screen.hidden_cells().size() == 3 and screen.hearts() == 3, "level 1: 3 things hidden off the coast, 3 hearts")
+	screen.tap(Vector2i(2, 2))
 	var things: Array = screen.hidden_cells()
-	_expect(things.size() == 3, "level 1: 3 things hidden off the coast")
-	var empty := Vector2i(-1, -1)
-	for x in 6:
-		for y in 5:
-			if not Vector2i(x, y) in things and screen.around(Vector2i(x, y)) > 0 and empty == Vector2i(-1, -1):
-				empty = Vector2i(x, y)
-	screen.tap(empty)
+	_expect(not Vector2i(2, 2) in things and screen.around(Vector2i(2, 2)) == 0, "the first ping is always clear water, with open sea round it")
 	_expect(is_equal_approx(screen.seconds, 1.0) or screen.seconds > 1.0, "a ping adds a second")
 	screen.set_marking(true)
 	var before: float = screen.seconds
-	for cell: Vector2i in things:
-		screen.tap(cell)
-	_expect(screen.seconds - before < 1.0, "marking the right squares costs nothing")
-	_expect(fleet.has_flag(&"wreck_found"), "the story sweep finds the wreck")
+	screen.tap(things[0])
+	_expect(things[0] in screen.marked() and screen.seconds - before < 0.5 and screen.hearts() == 3,
+		"Mark puts a buoy where something's hidden, for nothing")
+	screen.set_marking(false)
+	screen.tap(things[0])
+	_expect(screen.hearts() == 3, "a square with a buoy isn't pinged")
+	screen.tap(things[1])
+	_expect(screen.hearts() == 2, "pinging a hidden thing: the boat runs over it, a heart gone")
+	for x in 6:
+		for y in 5:
+			if not Vector2i(x, y) in things:
+				screen.tap(Vector2i(x, y))
+	_expect(screen.clear_left() == 0 and fleet.has_flag(&"wreck_found"),
+		"all the clear water pinged (one thing marked, one not): done, the wreck is found")
 	_expect(activities.story_done(sweep_data) and activities.best(sweep_data, 0) < INF, "the story play is done, with a time")
 	screen.close_screen()
 	_expect(not paused, "closed: the game goes on")
@@ -68,8 +74,11 @@ func _initialize() -> void:
 	_expect(screen.get("_buttons").get_child_count() >= 1 and screen.get("_buttons").has_node("Level1"), "now it opens the levels")
 	_expect(activities.open_levels(sweep_data) == 2, "level 2 is open after level 1")
 	screen.call("_show_start", 0, "")
+	screen.tap(Vector2i(0, 0))
 	for cell: Vector2i in screen.hidden_cells():
-		screen.tap(cell)  # pinging a hidden thing finds it too
+		screen.tap(cell)
+	_expect(screen.hearts() == 0 and screen.get("_buttons").has_node("Again"),
+		"three hidden things pinged: the boat goes back for a repair, and it's another go")
 	_expect(fleet.to_dict().flags == flags_before, "replays give no progress")
 	var record: bool = activities.finish(sweep_data, 0, 0.5)
 	_expect(record and is_equal_approx(activities.best(sweep_data, 0), 0.5), "a faster time: a new personal best")
