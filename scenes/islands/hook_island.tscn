@@ -22,7 +22,7 @@ script = ExtResource("9_edges")
 script = ExtResource("11_deep")
 
 [node name="Tree1" parent="." instance=ExtResource("10_pine")]
-position = Vector2(336, -80)
+position = Vector2(432, -112)
 
 [node name="Tree2" parent="." instance=ExtResource("10_pine")]
 position = Vector2(-240, -144)

@@ -82,6 +82,7 @@ order = 3
 direction = &"warmer"
 theme = "The land and ocean connection"
 center = Vector2(10240, 0)
+water_tint = Color(1.03, 1, 0.86, 1)
 waters_radius = 1035.0
 arrival = Vector2(9712, 80)
 boat_mooring = Vector2(9680, 80)

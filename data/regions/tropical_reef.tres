@@ -73,6 +73,7 @@ order = 4
 direction = &"warmer"
 theme = "Ecosystem complexity and restoration"
 center = Vector2(20480, 0)
+water_tint = Color(0.93, 1.1, 1.1, 1)
 waters_radius = 1062.0
 arrival = Vector2(19920, 16)
 boat_mooring = Vector2(19888, 16)

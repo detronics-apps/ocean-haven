@@ -25,6 +25,10 @@ extends Resource
 @export var camp_litter := 0
 ## How far from the middle a rowboat can go (its coastal waters).
 @export var waters_radius := 1100.0
+## A tint on the island's water and the open ocean round it, so each sea looks like its real
+## one (the owner: barely, but noticed going from the Mangrove Coast to the Reef): the
+## Mangrove Coast's a touch greener and muddier, the Reef's a touch lighter and more turquoise.
+@export var water_tint := Color.WHITE
 ## Where the ranger steps ashore after sailing here.
 @export var arrival := Vector2.ZERO
 ## Where the rowboat is moored on arrival.

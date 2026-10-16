@@ -156,6 +156,8 @@ func _ready() -> void:
 	_blend.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_blend.z_index = -2  # (under the ground and SeaWaves' speckle)
 	add_child(_blend)
+	var middle := _ground.to_global(_ground.map_to_local(_ground.get_used_rect().get_center()))
+	_blend.self_modulate = Regions.nearest(middle).water_tint  # (each sea its own colour)
 	_faces = Node2D.new()
 	_faces.name = "TerrainFaces"
 	_faces.z_index = _ground.z_index

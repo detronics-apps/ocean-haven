@@ -19,7 +19,27 @@ func _process(_delta: float) -> void:
 	var ground := _ground_in_view()
 	if ground:
 		sea *= ground.modulate
+	sea *= _water_tint()
 	RenderingServer.set_default_clear_color(sea)
+
+
+## The open ocean's tint where the view is: the two nearest islands' water tints, blended by how
+## near each is, so sailing from one to the next it changes gradually (RegionData.water_tint).
+func _water_tint() -> Color:
+	var camera := get_viewport().get_camera_2d()
+	if not camera:
+		return Color.WHITE
+	var at := camera.get_screen_center_position()
+	var near: Array = Regions.all().duplicate()
+	near.sort_custom(func(a: RegionData, b: RegionData) -> bool: return at.distance_squared_to(a.center) < at.distance_squared_to(b.center))
+	if near.size() < 2:
+		return (near[0] as RegionData).water_tint if near.size() == 1 else Color.WHITE
+	var a: RegionData = near[0]
+	var b: RegionData = near[1]
+	# (out of an island's own coastal waters only, so close in the ocean matches its water)
+	var d1 := maxf(at.distance_to(a.center) - a.waters_radius, 0.0)
+	var d2 := maxf(at.distance_to(b.center) - b.waters_radius, 0.0)
+	return a.water_tint.lerp(b.water_tint, d1 / maxf(d1 + d2, 1.0))
 
 
 ## The island ground nearest the middle of the view.

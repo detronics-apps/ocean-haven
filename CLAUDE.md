@@ -792,7 +792,11 @@ WaterBlend, 4 pixels a cell, linear filtering) under the ground, so every two wa
 each other over a few pixels, round corners too (no line, no rounding between waters); SeaWaves'
 faint speckle (deep_water.png, fixed to the world) and its moving waves (one every 60 px) play
 over all water. The open ocean is darker than mid water (default_clear_color) and takes the health
-tint of the island in view, as that island's water does (DayNight). Ground details
+tint of the island in view, as that island's water does (DayNight). Each island's sea has its
+own tint too (RegionData.water_tint, on its WaterBlend and the open ocean, blended between the
+two nearest islands outside their coastal waters): the Mangrove Coast a touch greener and
+muddier, the Reef a touch lighter and more turquoise (the owner: barely, but noticed between
+those two). Ground details
 (decoration only, `tools/make_ground_details.py`, a "GroundDetails" tile layer over the rounded
 edges, picked per cell by TerrainEdges and redone round any changed tile): grass patches inside 3 x 3
 grass, shells and a starfish on sand, bird tracks / boot prints / clumps on mud, small stones on
