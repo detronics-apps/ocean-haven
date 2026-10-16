@@ -93,13 +93,14 @@ func _input(event: InputEvent) -> void:
 		_holding = false  # let go: keep walking to where the finger last was
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not controlled:
 		return
 	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if _holding and dir == Vector2.ZERO:
 		_target = get_global_mouse_position()
 		_has_target = true
+	var pace := speed * (WATER_SPEED if water_level(get_tree()) > 0.0 else 1.0)
 	if dir != Vector2.ZERO:
 		_has_target = false
 	elif _has_target:
@@ -108,8 +109,11 @@ func _physics_process(_delta: float) -> void:
 			_has_target = false
 		else:
 			dir = to_target.normalized()
+			# The last step lands on the spot, never past it: a phone takes 30 steps a second, and
+			# a step longer than the spot's 2 px went past it and back again, shaking (the owner).
+			pace = minf(pace, to_target.length() / delta) if delta > 0.0 else pace
 
-	velocity = dir * speed * (WATER_SPEED if water_level(get_tree()) > 0.0 else 1.0)
+	velocity = dir * pace
 	move_and_slide()
 
 	# Tapped somewhere unreachable: stop instead of pushing against the shore forever.
