@@ -149,6 +149,18 @@ static func next_from(from: RegionData, direction: StringName) -> RegionData:
 	return line[at + step] if at + step >= 0 and at + step < line.size() else null
 
 
+## The island an Exploration Ship on `from` finds going `direction`: the next one along the line
+## not found yet, sailing on past found islands that have a ship of their own (the owner: colder
+## from the Reef, past the Mangrove Coast and home, finds the Kelp Forest). Each step out still
+## needs a ship on the island before it: a found island without one is where the way stops (it's
+## returned, found). Null = no more islands that way.
+static func frontier(tree: SceneTree, from: RegionData, direction: StringName) -> RegionData:
+	var next := next_from(from, direction)
+	while next and is_discovered(next) and exploration_ready(tree, next):
+		next = next_from(next, direction)
+	return next
+
+
 ## Has an Exploration Ship established on its island (so you can explore on from there).
 static func exploration_ready(tree: SceneTree, region: RegionData) -> bool:
 	for building: Building in tree.get_nodes_in_group("buildings"):

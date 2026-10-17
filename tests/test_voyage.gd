@@ -111,6 +111,8 @@ func _initialize() -> void:
 	_expect(regions.is_discovered(kelp), "the Kelp Forest is discovered for good")
 	_expect(_ships().size() == 1 and not regions.exploration_ready(self, kelp) and regions.exploration_ready(self, region.call("home_island")),
 		"discovering gives no ship: the Kelp Forest isn't Exploration Ready yet")
+	_expect(regions.frontier(self, region.call("home_island"), &"colder") == kelp,
+		"a found island without a ship of its own stops the way: from home, colder is still the Kelp Forest")
 	map.open()
 	_expect(map.find_child("Entry_home_island", true, false).find_child("Compass", true, false) != null
 		and map.find_child("Entry_kelp_forest", true, false).find_child("Compass", true, false) == null,
@@ -145,18 +147,17 @@ func _initialize() -> void:
 	explore.open()
 	_expect(not explore.find_child("ExploreColder", true, false).disabled and explore.next_island(&"colder") == region.call("deep_sea"),
 		"with Kelp Fibre installed the Deep Sea can be explored")
-	_expect(explore.find_child("ExploreWarmer", true, false).disabled and _texts(explore).contains("found it already"),
-		"warmer from the Kelp Forest is home: already found")
+	_expect(not explore.find_child("ExploreWarmer", true, false).disabled and explore.next_island(&"warmer") == region.call("mangrove_coast"),
+		"warmer from the Kelp Forest sails past home (it has a ship) to the Mangrove Coast")
 	explore.close()
-	# A ship only finds the island next to its own: from home, colder is the Kelp Forest (found),
-	# so the Deep Sea can't be reached from there; warmer is the Mangrove Coast.
+	# A ship sails on past found islands that have their own ship: from home, past the Kelp Forest
+	# (it has one now), colder is the Deep Sea; warmer is the Mangrove Coast.
 	player.global_position = home_ship.global_position + Vector2(0, -40)
 	explore.open()
-	_expect(explore.find_child("ExploreColder", true, false).disabled and explore.next_island(&"warmer") == region.call("mangrove_coast"),
-		"from home: the Kelp Forest is already found (no skipping on to the Deep Sea); warmer is the Mangrove Coast")
+	_expect(not explore.find_child("ExploreColder", true, false).disabled and explore.next_island(&"colder") == region.call("deep_sea")
+		and explore.next_island(&"warmer") == region.call("mangrove_coast"),
+		"from home, past the Kelp Forest and its ship, colder is the Deep Sea; warmer the Mangrove Coast")
 	explore.close()
-	explore.explore(&"colder")
-	_expect(not regions.is_discovered(region.call("deep_sea")), "exploring colder from home doesn't skip ahead to the Deep Sea")
 	# One more island than the fleet's level: at Level 2 with 2 islands found, a 3rd is fine.
 	_expect(regions.can_find_more(), "Level 2 with 2 islands found: a 3rd can be found")
 	explore.explore(&"warmer")
@@ -177,6 +178,15 @@ func _initialize() -> void:
 	for i in 240:
 		await process_frame
 	_expect(regions.is_discovered(region.call("tropical_reef")), "the Tropical Reef is found")
+	# The owner: colder from the Reef. Without a ship on the Mangrove Coast the way stops there;
+	# with one, it sails on past the Mangrove Coast, home and the Kelp Forest (ships on all three).
+	var reef: Resource = region.call("tropical_reef")
+	_expect(regions.frontier(self, reef, &"colder") == region.call("mangrove_coast"),
+		"from the Reef, colder stops at the Mangrove Coast while it has no ship")
+	var mangrove: Resource = region.call("mangrove_coast")
+	build_mode.add_building(ship, Vector2i((mangrove.boat_mooring / 32.0).floor()) + Vector2i(-2, 1))
+	_expect(regions.exploration_ready(self, mangrove) and regions.frontier(self, reef, &"colder") == region.call("deep_sea"),
+		"with a ship there too, colder from the Reef finds the next island not found yet (the Deep Sea)")
 
 	# --- The Map sails to discovered islands (no ship needed), not to undiscovered ones ---
 	map.open()

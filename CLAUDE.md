@@ -253,10 +253,12 @@ caring for animals". Build in this order, placeholder art:
     rock, ice, mud. Water: shallow, mid, deep (open ocean, no tile).** Coral, kelp and mangroves will
     be plants on top, never ground tiles.
 24. ✅ Exploration (docs/GAME_DESIGN.md "World map"): the Exploration Ship (id expedition_boat)
-    offers Explore warmer / colder → the island next to the ship's own island that way
-    (`Regions.next_from`: the islands lie in a line Polar, Deep Sea, Kelp, Starting, Mangrove, Reef;
-    RegionData.direction + order), which is then discovered for good (saved) and reachable from the
-    Map. To go further you need a ship on that island (no skipping ahead from one ship). And the fleet
+    offers Explore warmer / colder → the next island that way not found yet, sailing on past found
+    islands that have their own ship (`Regions.frontier`, along `Regions.next_from`: the islands lie
+    in a line Polar, Deep Sea, Kelp, Starting, Mangrove, Reef; RegionData.direction + order; the
+    owner: colder from the Reef must work), which is then discovered for good (saved) and reachable
+    from the Map. To go further you need a ship on that island: a found island without one stops the
+    way (no skipping ahead). And the fleet
     finds only one more island than its level (`Regions.can_find_more`: Level 1 finds the 2nd island,
     Level 2 the 3rd...), so every island found is helped before the next. The Map only shows and sails to discovered islands, listed coldest at the top to warmest at the bottom (`Regions.coldest_first`); undiscovered ones aren't on it at all, not even how many there are (the owner: each is a surprise); a 🧭 marks islands
     with an Exploration Ship. One ship per island (built by the player; `one_per_island`).

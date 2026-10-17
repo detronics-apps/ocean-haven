@@ -184,7 +184,8 @@ Every island is its own game with its own lesson:
   - an Exploration Ship can only be built once its island's objective is done;
   - each discovery, installed at any ship, upgrades the whole fleet (fleet level = discoveries
     installed);
-  - a ship only finds the island *next to its own*;
+  - a ship finds the next island that way not found yet, sailing on past found islands that have
+    their own ship (a found island without one stops the way);
   - the fleet finds only one more island than its level (level 1 finds the 2nd island, level 2
     the 3rd…), so there's never more than one island that hasn't been helped yet.
 - **Islands you're not on are paused:** no storms, no animals getting caught, no ecosystem change.

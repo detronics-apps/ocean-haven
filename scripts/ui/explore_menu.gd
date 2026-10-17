@@ -2,10 +2,10 @@ class_name ExploreMenu
 extends OverlayScreen
 ## The Exploration Ship's screen (only opened from the ship itself, never from the Map):
 ## the fleet's equipment (install island discoveries to upgrade every ship), and explore
-## warmer or colder. Each finds the island next to the ship's own island that way
-## (Regions.next_from), once the fleet has the upgrade it needs (RegionData.requires); it's then
-## discovered for good (the Map can sail there from then on). To explore on beyond it,
-## establish an Exploration Ship on it.
+## warmer or colder. Each finds the next island that way not found yet, past found islands with
+## a ship of their own (Regions.frontier), once the fleet has the upgrade it needs
+## (RegionData.requires); it's then discovered for good (the Map can sail there from then on).
+## To explore on beyond it, establish an Exploration Ship on it.
 
 
 func _enter_tree() -> void:
@@ -99,10 +99,10 @@ func install(discovery: DiscoveryData) -> void:
 		get_tree().call_group("hud", "show_toast", "All six discoveries! Every Exploration Ship is an Ocean Research Vessel now, and the Map opens the Global Ocean Observatory: the whole ocean at once.")
 
 
-## The island next to the ranger's (where this ship is) in `direction`.
+## The island this ship (on the ranger's island) finds in `direction` (Regions.frontier).
 func next_island(direction: StringName) -> RegionData:
 	var ranger := ControlledBody.active(get_tree())
-	return Regions.next_from(Regions.nearest(ranger.global_position if ranger else Vector2.ZERO), direction)
+	return Regions.frontier(get_tree(), Regions.nearest(ranger.global_position if ranger else Vector2.ZERO), direction)
 
 
 ## Discovers the island next to this one in `direction` and sails there.

@@ -187,8 +187,10 @@ foundations the mechanics sit on, not the mechanics themselves.
   materials back.
 - **The Build menu only lists what can be built on the island the ranger is on** (`only_on`).
   Buildings for other islands don't appear, not even greyed out.
-- **Exploring goes one island at a time:** a ship only finds the island next to its own, so
-  every step out needs that island's objective done and its own Exploration Ship.
+- **Exploring goes one island at a time:** a ship finds the next island that way not found yet,
+  sailing on past found islands that have their own ship (so any ship can explore colder or
+  warmer: the owner, colder from the Reef), but every step out needs that island's objective done
+  and its own Exploration Ship: a found island without one stops the way.
   The fleet also finds only one more island than its level (Level 1: the 2nd island, Level 2:
   the 3rd...), so there's never more than one island that hasn't been helped yet.
 - **Nothing moves on its own:** every island has its own rowboat; boats stay where the ranger
@@ -321,6 +323,13 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   thing each visit.
 - **People stand on land.** Someone whose station is out at sea works from a shore place
   (Imani's Dive Control), never in the water.
+- **A person's place stands on one ground** (the owner, Kai's tent and the Kelp Forest's huts):
+  where it stands (the lower half of its picture) is all grass, all sand, all ice..., never across
+  the sand and grass (or grass and mud) and never over the water; off the beach where the island
+  has grass to stand on (rock with grass on top, as on the Deep Sea's hook, is fine).
+- **Not everyone waits where the ranger lands:** the objective-giver is near the landing, the
+  hint-giver somewhere to be found by looking round the island (Samuel, Kai, Ines). The Polar
+  Ocean's two share one camp by the landing on purpose: rubbish there brings the bear.
 - **Dense islands need room.** Where land is scarce (the Polar Ocean's rock) buildings may go on
   ice, and the ice under a building never melts.
 - **Noise depends on where.** A disturbance near where the animals live counts fully; moved
