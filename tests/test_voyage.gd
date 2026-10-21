@@ -181,6 +181,9 @@ func _initialize() -> void:
 	# The owner: colder from the Reef. Without a ship on the Mangrove Coast the way stops there;
 	# with one, it sails on past the Mangrove Coast, home and the Kelp Forest (ships on all three).
 	var reef: Resource = region.call("tropical_reef")
+	var people := root.get_node("People")
+	_expect(root.get_node("Inventory").available(&"wood") >= 3 or str(people.goal_text(&"tropical_reef")).begins_with("Short of wood"),
+		"no trees on the Reef and no wood: the goal line says to fetch some from another island (%s)" % people.goal_text(&"tropical_reef"))
 	_expect(regions.frontier(self, reef, &"colder") == region.call("mangrove_coast"),
 		"from the Reef, colder stops at the Mangrove Coast while it has no ship")
 	var mangrove: Resource = region.call("mangrove_coast")

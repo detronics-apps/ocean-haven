@@ -148,6 +148,11 @@ func _reminders(person: PersonData) -> Array[String]:
 			break
 	if not lines.is_empty():
 		return lines  # (one thing at a time, the owner: never news and tips piled up together)
+	if person.region != &"home_island" and not _heard.has("%s/travel" % person.id):
+		_heard["%s/travel" % person.id] = true  # (the owner: say plainly they can sail back)
+		return ["Remember, you can sail back to any island you've found, any time: tap Map. If you run short of wood here, fetch some from an island with trees and store it in a Ranger House."
+			if Arrivals.grown_trees(get_tree(), _region(person)) == 0
+			else "Remember, you can sail back to any island you've found, any time: tap Map."]
 	var today := GameClock.day
 	if Funding.balance < LOW_FUNDING and int(_reminded.get("%s/funding" % person.id, -1)) != today:
 		_reminded["%s/funding" % person.id] = today
@@ -704,6 +709,11 @@ func _fill(line: String, person: PersonData) -> String:
 ## The HUD goal line on island `region_id` ("" = nothing to say): who to talk to, the
 ## objective they gave, or that it's done and they'd like to hear.
 func goal_text(region_id: StringName) -> String:
+	# No trees here and almost no wood: the next thing is to fetch some (the owner: players
+	# didn't know they could go back to another island for it).
+	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % region_id)
+	if region and Inventory.available(&"wood") < LOW_WOOD and Arrivals.grown_trees(get_tree(), region) == 0:
+		return "Short of wood: tap Map, sail to an island with trees, cut some and store it in a Ranger House"
 	for person: PersonData in on(region_id):
 		if person.role != &"objective":
 			continue

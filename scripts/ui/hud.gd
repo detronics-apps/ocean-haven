@@ -374,6 +374,10 @@ func voyage(region: RegionData, discovered := false) -> void:
 	tween.tween_property(_fade, "color:a", 0.0, 0.8)
 	tween.tween_callback(func() -> void: show_toast("%s %s" % [
 		"Discovered:" if discovered else "Arrived:", region.display_name]))
+	if discovered and not Fleet.has_flag(&"travel_told"):  # (the owner: players didn't know they could go back)
+		Fleet.mark(&"travel_told")
+		tween.tween_callback(func() -> void: show_card("You can go back any time",
+			"Tap Map to sail to any island you've found. Short of wood on an island with no trees? Fetch it from one with trees."))
 
 
 ## Fades to black, sleeps until morning, fades back in.
