@@ -888,7 +888,7 @@ limits); Births.bring turns that newcomer into a young one born beside a grown o
 (the parent goes to where it belongs first: Animal.expect; hidden until then: unborn; the card
 shows at the birth; a sleep catches up: Births.born_now), which follows it while growing up and
 then keeps its own spot. Fish, clams and squid drift in from the island's edge
-(AnimalData.drifts_in). Growth: grow_days 2 / 4 / 6 (grown on day 3, 5 or 7), two young
+(AnimalData.drifts_in). Growth: grow_days 2 / 4 / 6 (grown on day 3, 5 or 7; otters 2: the owner, the Kelp Forest took too long), two young
 stages (Animal.stage) with their own pictures for 12 species (AnimalData.young_sprites:
 crabs, terns, skuas, boobies, cormorants, flamingos, otters, seals, turtles, crocodiles,
 polar bears); dolphins, whales and sharks just grow. Young birds also fly and sit in their own colours

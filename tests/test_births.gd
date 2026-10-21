@@ -86,15 +86,15 @@ func _initialize() -> void:
 	chick.free()
 
 	# --- Growth groups: fast 3 days, medium 5, slow 7 ---
-	var groups := {2.0: ["ghost_crab", "mangrove_crab", "arctic_tern", "arctic_skua"],
-		4.0: ["red_footed_booby", "double_crested_cormorant", "american_flamingo", "sea_otter", "ringed_seal", "bottlenose_dolphin"],
+	var groups := {2.0: ["ghost_crab", "mangrove_crab", "arctic_tern", "arctic_skua", "sea_otter"],
+		4.0: ["red_footed_booby", "double_crested_cormorant", "american_flamingo", "ringed_seal", "bottlenose_dolphin"],
 		6.0: ["green_turtle", "american_crocodile", "polar_bear", "sperm_whale"]}
 	var wrong: Array = []
 	for days: float in groups:
 		for id: String in groups[days]:
 			if not is_equal_approx(load("res://data/animals/%s.tres" % id).grow_days, days):
 				wrong.append(id)
-	_expect(wrong.is_empty(), "grown on day 3 (crabs, terns, skuas), 5 (boobies, cormorants, flamingos, otters, seals, dolphins) or 7 (turtles, crocodiles, bears, whales) (%s)" % [wrong])
+	_expect(wrong.is_empty(), "grown on day 3 (crabs, terns, skuas, otters: the owner), 5 (boobies, cormorants, flamingos, seals, dolphins) or 7 (turtles, crocodiles, bears, whales) (%s)" % [wrong])
 
 	# --- Drifting in: fish come in from the island's edge ---
 	var fish_data: Resource = load("res://data/animals/parrotfish.tres")
