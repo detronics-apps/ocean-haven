@@ -147,8 +147,12 @@ func _initialize() -> void:
 	var said: String = people.call("_fill", "{advice:giant_squid}", bram)
 	_expect("Everything's ready" in said, "Bram's squid line says the next step ({advice:giant_squid}: %s)" % said)
 	_expect(bram.topics.any(func(t: Resource) -> bool: return t.id == &"squid" and t.every_time and "{advice:giant_squid}" in t.lines[0]), "Bram talks about the squid until it's photographed")
-	people.talk(bram)
+	_expect(not str(people.talk(bram)).contains("canyon inside the hook"), "the squid isn't Bram's thing until the island's story is done")
 	people.finish_talk()
+	fleet.complete(load("res://data/regions/deep_sea.tres"), false)
+	fleet.install(&"cargo_module")
+	_expect(eco.status_note().contains("Quiet water") and eco.status_note().contains("squid needs 70"),
+		"under the health bar: how quiet the deep is, and what the squid needs (%s)" % eco.status_note())
 	var every := true
 	for i in 3:  # (the owner: go back again and again for the next step)
 		every = every and str(people.talk(bram)).contains("canyon inside the hook. Everything")

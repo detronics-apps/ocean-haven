@@ -155,7 +155,7 @@ func _fill() -> void:
 		_content.add_child(card(region.map_icon, [region.display_name, region.description,
 			"Nothing to measure here yet: more is coming to this island soon."]))
 	var eco := IslandHealth.ecosystem(get_tree(), region)
-	if eco and eco.has_method("squid_hint") and not Journal.in_journal(&"giant_squid"):
+	if eco and eco.has_method("squid_hunt") and eco.squid_hunt():
 		var squid := card(null, ["Finding the giant squid", eco.squid_hint()])  # (Bram says it too)
 		squid.name = "SquidSteps"
 		_content.add_child(squid)

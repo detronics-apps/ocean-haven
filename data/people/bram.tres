@@ -50,7 +50,7 @@ lines = PackedStringArray("Old nets? We'd have brought ours in, if there'd been 
 [sub_resource type="Resource" id="Topic_squid"]
 script = ExtResource("2_t")
 id = &"squid"
-when = PackedStringArray("!journal:giant_squid")
+when = PackedStringArray("!journal:giant_squid", "installed:cargo_module", "here")
 lines = PackedStringArray("The giant squid hides in the canyon inside the hook. {advice:giant_squid}")
 every_time = true
 

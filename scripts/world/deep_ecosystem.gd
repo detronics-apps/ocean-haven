@@ -646,6 +646,21 @@ func _loudest() -> String:
 
 
 ## The next step towards seeing the giant squid, from where the ranger is now.
+## Under the health bar (HealthGauge): how quiet the deep is now (the owner: there was no way to
+## tell), and once the squid is the last step (the island's story done), what it needs.
+func status_note() -> String:
+	var note := "Quiet water: %d%%" % roundi(quiet() * 100.0)
+	if squid_hunt():
+		note += " (the giant squid needs %d%%)" % roundi(squid_quiet * 100.0)
+	return note
+
+
+## The giant squid is the island's last step: its story done (the Cargo Module fitted), the
+## squid not photographed yet (Bram and the Journal then give its steps).
+func squid_hunt() -> bool:
+	return Fleet.is_installed(&"cargo_module") and not Journal.in_journal(&"giant_squid")
+
+
 func squid_hint() -> String:
 	if _squid_found:
 		return "Your camera filmed a giant squid in the canyon inside the hook. Sail over the canyon in your boat to see it, and take its photo."
