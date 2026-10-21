@@ -775,7 +775,7 @@ Building art (the owner's buildings sheet, docs/buildings_sheet.webp, on magenta
 `tools/cut_building_sheet.py` into a PNG per building, beside each old picture's path, fitted into
 the box the old art filled (tools/building_sheet_targets.json: the owner, their original sizes).
 Everything outside each building's dark outline goes (specks, the pink fringe, grey fill between
-pillars), labels are dropped; the water gate (closed) and drawbridge (open) pictures aren't on it yet.
+pillars), labels are dropped; the water gate (closed) and drawbridge (open) pictures aren't on it yet; the baited Deep Camera is its camera with a bait canister on an arm (tools/make_baited_camera.py).
 Turtle protection areas: their label dropped (loose bits below a picture go) and the grey fill
 inside see-through (target "see_through"), so the sand shows. Docks and the drawbridge keep the
 game's own plank art (the sheet's were framed squares that didn't join into a jetty: targets null).
