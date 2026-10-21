@@ -57,6 +57,7 @@ short_name = "Tern"
 lays_eggs = true
 icon = ExtResource("4_stand")
 id = &"arctic_tern"
+island = &"arctic_ocean"
 display_name = "Arctic Tern"
 sprite = ExtResource("2_t")
 habitat = "Rocky Arctic shores in summer; the Antarctic in the southern summer"

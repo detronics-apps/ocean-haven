@@ -42,6 +42,7 @@ travel_chance = 0.7
 sways = true
 travel_news = "A green turtle was grazing the seagrass this morning. I think it swam here from the {from}."
 id = &"green_turtle"
+island = &"home_island"
 display_name = "Green Sea Turtle"
 sprite = ExtResource("2_5ypsb")
 habitat = "Tropical and subtropical oceans"

@@ -42,6 +42,7 @@ script = ExtResource("1_chj40")
 short_name = "Crab"
 lays_eggs = true
 id = &"ghost_crab"
+island = &"home_island"
 display_name = "Ghost Crab"
 sprite = ExtResource("2_btkom")
 habitat = "Sandy tropical beaches"

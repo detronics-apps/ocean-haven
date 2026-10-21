@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"polar_willow"
+island = &"arctic_ocean"
 display_name = "Polar Willow"
 picture = ExtResource("2_plant")
 habitat = "Arctic rock and tundra (the Polar Ocean)"

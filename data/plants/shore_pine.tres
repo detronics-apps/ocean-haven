@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"shore_pine"
+island = &"deep_sea"
 display_name = "Shore Pine"
 picture = ExtResource("2_plant")
 habitat = "Windy, rocky coasts (the Deep Sea)"

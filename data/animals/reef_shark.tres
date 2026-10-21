@@ -22,6 +22,7 @@ script = ExtResource("1_s")
 short_name = "Shark"
 roams = true
 id = &"reef_shark"
+island = &"tropical_reef"
 display_name = "Blacktip Reef Shark"
 sprite = ExtResource("2_t")
 habitat = "Shallow lagoons and reef edges"

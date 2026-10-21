@@ -37,6 +37,7 @@ script = ExtResource("1_s")
 short_name = "Seal"
 roams = true
 id = &"ringed_seal"
+island = &"arctic_ocean"
 display_name = "Ringed Seal"
 sprite = ExtResource("2_t")
 habitat = "Arctic sea ice and the water beneath it"

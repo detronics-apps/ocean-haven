@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"giant_kelp"
+island = &"kelp_forest"
 display_name = "Giant Kelp"
 picture = ExtResource("2_plant")
 habitat = "Cool, clear, shallow seas over rocky floors (the Kelp Forest)"

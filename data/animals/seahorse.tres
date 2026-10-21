@@ -21,6 +21,7 @@ when = PackedStringArray("night")
 script = ExtResource("1_s")
 faces_movement = false
 id = &"seahorse"
+island = &"tropical_reef"
 display_name = "Seahorse"
 sprite = ExtResource("2_t")
 habitat = "Seagrass beds in shallow water"

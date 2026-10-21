@@ -36,6 +36,7 @@ script = ExtResource("1_s")
 short_name = "Crocodile"
 lays_eggs = true
 id = &"american_crocodile"
+island = &"mangrove_coast"
 display_name = "American Crocodile"
 sprite = ExtResource("2_t")
 habitat = "Quiet mangrove channels and coastal lagoons"

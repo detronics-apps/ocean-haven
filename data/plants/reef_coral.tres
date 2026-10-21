@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"reef_coral"
+island = &"tropical_reef"
 display_name = "Reef-building Coral"
 picture = ExtResource("2_plant")
 habitat = "Warm, clear, shallow tropical water (the Tropical Reef)"

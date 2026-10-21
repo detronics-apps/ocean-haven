@@ -22,6 +22,7 @@ script = ExtResource("1_s")
 short_name = "Anglerfish"
 roams = true
 id = &"anglerfish"
+island = &"deep_sea"
 display_name = "Deep-sea Anglerfish"
 sprite = ExtResource("2_t")
 habitat = "The dark deep sea, where no sunlight reaches"

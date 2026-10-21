@@ -35,6 +35,7 @@ script = ExtResource("1_s")
 short_name = "Clam"
 faces_movement = false
 id = &"giant_clam"
+island = &"tropical_reef"
 display_name = "Giant Clam"
 sprite = ExtResource("2_t")
 habitat = "Shallow coral reefs"

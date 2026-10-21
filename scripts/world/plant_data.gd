@@ -4,6 +4,8 @@ extends Resource
 ## the ranger comes close to one. Adding a plant = adding a file.
 
 @export var id: StringName
+## The island it grows on (the Journal lists each island's plants together).
+@export var island: StringName
 @export var display_name: String
 @export var picture: Texture2D
 ## Where it grows, for the Journal.

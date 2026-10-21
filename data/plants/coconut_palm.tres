@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"coconut_palm"
+island = &"home_island"
 display_name = "Coconut Palm"
 picture = ExtResource("2_plant")
 habitat = "Warm sandy coasts (the Starting Island)"

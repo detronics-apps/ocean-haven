@@ -22,6 +22,7 @@ script = ExtResource("1_rock")
 short_name = "Rockfish"
 roams = true
 id = &"blue_rockfish"
+island = &"kelp_forest"
 display_name = "Blue Rockfish"
 sprite = ExtResource("2_rock")
 habitat = "Kelp forests and rocky reefs of cool coasts"

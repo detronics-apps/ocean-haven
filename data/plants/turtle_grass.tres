@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"turtle_grass"
+island = &"tropical_reef"
 display_name = "Turtle Grass (seagrass)"
 picture = ExtResource("2_plant")
 habitat = "Shallow sandy lagoons (the Tropical Reef)"

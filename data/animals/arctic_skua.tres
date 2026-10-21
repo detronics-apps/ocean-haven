@@ -53,6 +53,7 @@ perched_sprite = ExtResource("perc_8752")
 floating_sprite = ExtResource("floa_557")
 resting_sprite = ExtResource("rest_889")
 id = &"arctic_skua"
+island = &"arctic_ocean"
 display_name = "Arctic Skua"
 sprite = ExtResource("2_t")
 habitat = "Arctic coasts and open sea"

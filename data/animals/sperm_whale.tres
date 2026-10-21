@@ -45,6 +45,7 @@ travels_to = PackedStringArray("arctic_ocean", "kelp_forest", "home_island", "ma
 travel_chance = 0.6
 travel_news = "A blow on the horizon this morning, slanting forward: a sperm whale, a long way from the {from}!"
 id = &"sperm_whale"
+island = &"deep_sea"
 display_name = "Sperm Whale"
 sprite = ExtResource("2_t")
 habitat = "The deep open ocean, diving more than a kilometre down"

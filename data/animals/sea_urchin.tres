@@ -7,6 +7,7 @@
 script = ExtResource("1_urch")
 short_name = "Urchin"
 id = &"sea_urchin"
+island = &"kelp_forest"
 display_name = "Purple Sea Urchin"
 sprite = ExtResource("2_urch")
 habitat = "Rocky sea floors of cool kelp forests"

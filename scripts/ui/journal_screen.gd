@@ -116,13 +116,26 @@ func _fill() -> void:
 		if page:
 			_animal_page(page)
 			return
-		for animal: AnimalData in species:
-			if not only_found or Journal.in_journal(animal.id):
+		for region: RegionData in Regions.coldest_first():  # (each island's animals together: the owner)
+			var here := species.filter(func(a: AnimalData) -> bool: return a.island == region.id)
+			var shown := here.filter(func(a: AnimalData) -> bool: return not only_found or Journal.in_journal(a.id))
+			if shown.is_empty():
+				continue
+			var photographed := here.filter(func(a: AnimalData) -> bool: return Journal.in_journal(a.id)).size()
+			var spotted := here.filter(func(a: AnimalData) -> bool: return Journal.has(a.id) and not Journal.in_journal(a.id)).size()
+			_content.add_child(_island_heading(region, "%d of %d photographed%s" % [photographed, here.size(),
+				", %d spotted: take a photo" % spotted if spotted > 0 else ""]))
+			for animal: AnimalData in shown:
 				_content.add_child(_entry(animal))
 		return
 	if tab == PLANTS:
-		for plant: PlantData in DataFiles.load_all("res://data/plants"):
-			if not only_found or Journal.has_plant(plant.id):
+		var plants := DataFiles.load_all("res://data/plants")
+		for region: RegionData in Regions.coldest_first():
+			var shown := plants.filter(func(p: PlantData) -> bool: return p.island == region.id and (not only_found or Journal.has_plant(p.id)))
+			if shown.is_empty():
+				continue
+			_content.add_child(_island_heading(region, ""))
+			for plant: PlantData in shown:
 				_content.add_child(_plant_entry(plant))
 		return
 	if tab == CLUES:
@@ -151,6 +164,17 @@ func _fill() -> void:
 	if rescues:
 		_content.add_child(rescues)
 	_content.add_child(_backup_card())
+
+
+## An island's name over its animals or plants (one not found yet keeps its name a surprise).
+func _island_heading(region: RegionData, note: String) -> Control:
+	var heading := Label.new()
+	heading.name = "Island_" + String(region.id)
+	heading.text = (region.display_name if Regions.is_discovered(region) else "An island you haven't found yet") \
+		+ ("   (%s)" % note if note != "" else "")
+	heading.add_theme_font_size_override("font_size", 20)
+	heading.add_theme_color_override("font_color", Color("f2d58a"))
+	return heading
 
 
 ## Predict, then watch: the ranger's guesses here, and what really happened (no score).

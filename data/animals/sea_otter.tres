@@ -45,6 +45,7 @@ short_name = "Otter"
 roams = true
 resting_sprite = ExtResource("rest_1201")
 id = &"sea_otter"
+island = &"kelp_forest"
 display_name = "Sea Otter"
 sprite = ExtResource("spri_9759")
 habitat = "Cool coastal waters with kelp forests; they rest in the kelp canopy"

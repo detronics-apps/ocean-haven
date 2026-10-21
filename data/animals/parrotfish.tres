@@ -21,6 +21,7 @@ when = PackedStringArray("night")
 script = ExtResource("1_s")
 roams = true
 id = &"parrotfish"
+island = &"tropical_reef"
 display_name = "Parrotfish"
 sprite = ExtResource("2_t")
 habitat = "Coral reefs"

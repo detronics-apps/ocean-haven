@@ -52,6 +52,7 @@ icon = ExtResource("rest_5796")
 floating_sprite = ExtResource("floa_2326")
 resting_sprite = ExtResource("rest_5796")
 id = &"double_crested_cormorant"
+island = &"kelp_forest"
 display_name = "Double-crested Cormorant"
 sprite = ExtResource("2_corm")
 habitat = "Coasts and lakes; nests in trees and on rocky islands"

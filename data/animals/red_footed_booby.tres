@@ -53,6 +53,7 @@ icon = ExtResource("rest_3043")
 floating_sprite = ExtResource("floa_8091")
 resting_sprite = ExtResource("rest_3043")
 id = &"red_footed_booby"
+island = &"home_island"
 display_name = "Red-footed Booby"
 sprite = ExtResource("2_boo")
 habitat = "Tropical islands and open ocean; nests in trees and bushes"

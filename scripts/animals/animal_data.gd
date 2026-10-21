@@ -3,6 +3,8 @@ extends Resource
 ## One species. Each is a .tres file in data/animals/; adding an animal = adding a file.
 
 @export var id: StringName
+## The island it belongs to (the Journal lists each island's animals together).
+@export var island: StringName
 @export var display_name: String
 ## Its name on buttons, short ("Flamingo", "Station"); "" = display_name.
 @export var short_name := ""

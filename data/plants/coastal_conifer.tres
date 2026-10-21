@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"coastal_conifer"
+island = &"kelp_forest"
 display_name = "Sitka Spruce"
 picture = ExtResource("2_plant")
 habitat = "Cool, rainy coasts (the Kelp Forest)"

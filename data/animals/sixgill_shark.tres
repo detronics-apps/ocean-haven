@@ -22,6 +22,7 @@ script = ExtResource("1_s")
 short_name = "Sixgill"
 roams = true
 id = &"sixgill_shark"
+island = &"deep_sea"
 display_name = "Bluntnose Sixgill Shark"
 sprite = ExtResource("2_t")
 habitat = "Deep water along slopes and ledges, rising nearer the surface at night"

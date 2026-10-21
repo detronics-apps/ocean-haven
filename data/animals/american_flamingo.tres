@@ -50,6 +50,7 @@ lays_eggs = true
 shows_water_level = true
 perched_sprite = ExtResource("perc_99")
 id = &"american_flamingo"
+island = &"mangrove_coast"
 display_name = "American Flamingo"
 sprite = ExtResource("2_t")
 habitat = "Shallow, muddy flats and lagoons"

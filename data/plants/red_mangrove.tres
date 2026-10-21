@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"red_mangrove"
+island = &"mangrove_coast"
 display_name = "Red Mangrove"
 picture = ExtResource("2_plant")
 habitat = "Muddy tropical shores, where salt water meets fresh (the Mangrove Coast)"

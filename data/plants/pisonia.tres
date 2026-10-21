@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_plant")
 id = &"pisonia"
+island = &"tropical_reef"
 display_name = "Pisonia Tree"
 picture = ExtResource("2_plant")
 habitat = "Small tropical islands (the Tropical Reef)"
