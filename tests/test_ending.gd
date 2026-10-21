@@ -42,6 +42,14 @@ func _initialize() -> void:
 	_expect(screen.find_child("Learned", true, false) == null and not fleet.has_flag(&"observatory_opened"),
 		"no reflection while some litter still starts somewhere")
 	_expect(screen.find_child("DownloadPoster", true, false) == null, "no poster before the whole ocean is connected")
+	_expect(screen.find_child("TapHint", true, false) != null, "it says the islands can be tapped for how they looked")
+	screen.open_with_tour()
+	var tour: Node = screen.find_child("Tour", true, false)
+	_expect(tour != null and fleet.has_flag(&"observatory_toured"), "the first time it shows round, a step at a time")
+	for i in screen.TOUR.size():
+		tour.find_child("Next", true, false).pressed.emit()
+	await process_frame
+	_expect(screen.find_child("Tour", true, false) == null, "Next through the steps, then Done: the tour goes")
 	# --- Tap an island: the picture from when the ranger first arrived, to zoom into ---
 	var journal := root.get_node("Journal")
 	var start: Texture2D = journal.start_picture(&"home_island")

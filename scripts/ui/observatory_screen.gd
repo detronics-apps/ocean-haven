@@ -29,6 +29,11 @@ func _ready() -> void:
 	_panorama.tapped.connect(show_island)
 	_page.add_child(_panorama)
 	_page.move_child(_panorama, 1)
+	var tap_hint := _line("Tap an island to see how it looked when you first arrived.", 16, Color("f2d58a"))
+	tap_hint.name = "TapHint"  # (the owner: not everyone finds the pictures on their own)
+	tap_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_page.add_child(tap_hint)
+	_page.move_child(tap_hint, 2)
 	_credits = EndCredits.new()
 	_credits.name = "EndCredits"
 	_credits.finished.connect(func() -> void: get_tree().paused = visible)
@@ -55,6 +60,44 @@ func open() -> void:
 		if not Fleet.has_flag(&"credits_seen"):  # the first time: the screen goes black and the credits roll
 			Fleet.mark(&"credits_seen")
 			play_credits()
+
+
+## The first time (the last discovery just fitted: ExploreMenu.install), it opens by itself and
+## shows round, a step at a time (the owner: the ending fell apart without it).
+const TOUR := [
+	"This is the Global Ocean Observatory: every island you've found, as they lie, joined by the ways they now help each other. The number under each is its health.",
+	"Tap an island to see how it looked on the day you first arrived.",
+	"Below: the whole ocean's health, and sections that open when you tap them.",
+	"Open the Observatory any time from the Map.",
+]
+
+
+func open_with_tour() -> void:
+	open()
+	Fleet.mark(&"observatory_toured")
+	var panel := PanelContainer.new()
+	panel.name = "Tour"
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	panel.add_child(row)
+	var words := _line(TOUR[0], 18, Color("f2d58a"))
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(words)
+	var next := Button.new()
+	next.name = "Next"
+	next.text = "Next"
+	next.custom_minimum_size = Vector2(96, 48)
+	row.add_child(next)
+	var step := [0]
+	next.pressed.connect(func() -> void:
+		step[0] += 1
+		if step[0] >= TOUR.size():
+			panel.queue_free()
+			return
+		words.text = TOUR[step[0]]
+		next.text = "Done" if step[0] == TOUR.size() - 1 else "Next")
+	_page.add_child(panel)
+	_page.move_child(panel, 1)
 
 
 func close() -> void:

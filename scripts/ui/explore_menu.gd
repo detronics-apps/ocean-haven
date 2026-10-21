@@ -97,6 +97,9 @@ func install(discovery: DiscoveryData) -> void:
 		Fleet.level(), discovery.upgrade_name, discovery.capability])
 	if ObservatoryScreen.is_open_to_ranger():
 		get_tree().call_group("hud", "show_toast", "All six discoveries! Every Exploration Ship is an Ocean Research Vessel now, and the Map opens the Global Ocean Observatory: the whole ocean at once.")
+		if not Fleet.has_flag(&"observatory_toured"):  # (the first time it opens by itself, with a tour)
+			close.call_deferred()
+			get_tree().call_group.call_deferred("observatory", "open_with_tour")
 
 
 ## The island this ship (on the ranger's island) finds in `direction` (Regions.frontier).
