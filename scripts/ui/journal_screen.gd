@@ -168,6 +168,7 @@ func _fill() -> void:
 	var rescues := _rescues()
 	if rescues:
 		_content.add_child(rescues)
+	_content.add_child(_funding_card())
 	_content.add_child(_backup_card())
 
 
@@ -237,6 +238,19 @@ func _rescues() -> Control:
 
 
 ## Backing up progress as a save code (see SaveGame.export_code).
+## Every way to earn funding, plainly (the owner: new players didn't know them all).
+func _funding_card() -> Control:
+	var lines: Array[String] = ["Ways to earn funding",
+		"- Visitors: build viewing areas and visitor centres. Each morning visitors leave donations there (collect the coin). A healthier island brings more.",
+		"- Recycling: bring the litter you pick up to a recycling centre.",
+		"- Photos: a species' first photo pays 50, and 20 a day after that.",
+		"- Saplings: give spare ones to coastal replanting at a research station, 5 each.",
+		"- Ranger activities: the first replay each day pays a research grant."]
+	var card_node := card(null, lines)
+	card_node.name = "Funding"
+	return card_node
+
+
 func _backup_card() -> Control:
 	var panel := PanelContainer.new()
 	var box := VBoxContainer.new()

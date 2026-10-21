@@ -276,7 +276,16 @@ func funding_tip(person: PersonData) -> String:
 		text += " And upgrade your recycling centre: every piece of litter then pays more."
 	elif centres.is_empty():
 		text += " A recycling centre turns the litter you pick up into funding, too."
-	return text
+	return text + " " + FUNDING_WAYS[GameClock.day % FUNDING_WAYS.size()]  # (the other ways, one a day)
+
+
+## The ways to earn funding besides visitors and recycling (the owner: make them all explicit;
+## the Journal's island page lists every one).
+const FUNDING_WAYS := [
+	"New photos pay a research grant: 50 for each species' first, 20 a day after that.",
+	"Spare saplings can go to coastal replanting at a research station: 5 funding each.",
+	"Playing a ranger activity again pays a research grant once a day.",
+]
 
 
 ## Where to get wood on `person`'s island: cut grown trees (and replant, minding nests), or bring
