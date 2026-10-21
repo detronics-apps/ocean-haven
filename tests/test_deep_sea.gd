@@ -151,8 +151,8 @@ func _initialize() -> void:
 	people.finish_talk()
 	fleet.complete(load("res://data/regions/deep_sea.tres"), false)
 	fleet.install(&"cargo_module")
-	_expect(eco.status_note().contains("Quiet water") and eco.status_note().contains("squid needs 70"),
-		"under the health bar: how quiet the deep is, and what the squid needs (%s)" % eco.status_note())
+	_expect(eco.status_note().begins_with("Quiet water: ") and eco.status_note().length() < 20,
+		"under the health bar, short: how quiet the deep is (%s)" % eco.status_note())
 	var every := true
 	for i in 3:  # (the owner: go back again and again for the next step)
 		every = every and str(people.talk(bram)).contains("canyon inside the hook. Everything")
