@@ -442,7 +442,9 @@ quiet water for 2 days. Mapped areas show their habitat and lost gear (lost long
 items, counts_as "deep_gear"); a sixgill with a hook surfaces some early; 3 recovered = the
 evidence (`Fleet` flag "gear_recovered"; new deep gear sinks until nets are stopped). Deep-Sea
 Sanctuaries (+1 of the area's animals, no new gear), Deep-Sea Discovery Centre (watches whales),
-shore pines (`pine_sapling`). Oil Spill (EventData.oil_patches / needs_building): spreads each
+shore pines (`pine_sapling`). Oil Spill (EventData.oil_patches 16, all round the island, up to DeepEcosystem.MAX_OIL 24; the owner:
+devastating; oil on any island takes IslandHealth.OIL_EACH 5 % of its health a patch, down to
+OIL_FLOOR a quarter, back up as it's cleaned; needs_building): spreads each
 morning until the Outpost's "Contain" mission. Objective: 6 areas mapped at 70 % -> Cargo search
 -> tow the module in -> Cargo Module (the ships' cargo hold).
 

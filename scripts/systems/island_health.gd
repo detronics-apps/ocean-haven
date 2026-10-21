@@ -21,7 +21,21 @@ static func of(tree: SceneTree, region: RegionData, projected := {}) -> float:
 			continue
 		total += score(tree, region, factor, projected) * factor.weight
 		weights += factor.weight
-	return total / weights * scale if weights > 0.0 else -1.0
+	return total / weights * scale * oil_scale(tree, region) if weights > 0.0 else -1.0
+
+
+## Oil on an island's water hurts all of it (the owner: after a spill, 20-30 %, back up as it's
+## cleaned): each patch takes OIL_EACH off, down to OIL_FLOOR of its health at most.
+const OIL_EACH := 0.05
+const OIL_FLOOR := 0.25
+
+
+static func oil_scale(tree: SceneTree, region: RegionData) -> float:
+	var oil := 0
+	for d: Node2D in tree.get_nodes_in_group("debris"):
+		if d.item.id == &"oil_patch" and not d.is_queued_for_deletion() and Regions.nearest(d.global_position) == region:
+			oil += 1
+	return maxf(OIL_FLOOR, 1.0 - OIL_EACH * oil)
 
 
 ## The factors holding `region`'s health back, the one costing most first (each costs at

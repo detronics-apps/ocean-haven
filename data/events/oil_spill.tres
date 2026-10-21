@@ -17,6 +17,6 @@ aftermath = "Oil is coming up in the deep! Send a submarine dive to trace its so
 damage_chance = 0.0
 litter_washed = 0
 repair_wood = 1
-oil_patches = 4
+oil_patches = 16
 needs_building = &"deep_ocean_outpost"
 weather = &"oil"

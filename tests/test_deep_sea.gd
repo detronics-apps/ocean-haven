@@ -180,9 +180,11 @@ func _initialize() -> void:
 	var oil := func() -> int:
 		return get_nodes_in_group("debris").filter(func(d: Node) -> bool: return d.item.id == &"oil_patch" and not d.is_queued_for_deletion()).size()
 	var before: int = oil.call()
-	eco.oil_spill(4)
+	eco.oil_spill(load("res://data/events/oil_spill.tres").oil_patches)
 	var after_strike: int = oil.call()
-	_expect(after_strike >= before + 3 and eco.spill_active(), "the spill brings oil up (%d patches)" % (after_strike - before))
+	_expect(after_strike >= before + 12 and eco.spill_active() and sectors.filter(func(s: Node) -> bool: return s.oily).size() >= 6,
+		"the spill is devastating: oil all round the island (%d patches)" % (after_strike - before))
+	_expect(health.oil_scale(self, deep) <= 0.3, "and it takes the island's health down to under a third (x%.2f)" % health.oil_scale(self, deep))
 	eco._spread_oil()
 	_expect(oil.call() > after_strike, "it spreads each morning while it runs")
 	report = eco.run_mission(load("res://data/missions/contain_spill.tres"))

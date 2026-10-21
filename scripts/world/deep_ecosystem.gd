@@ -545,9 +545,10 @@ func oil_spill(patches: int) -> int:
 	var list := sectors()
 	_spill_source = randi() % list.size()
 	_spill_contained = false
-	list[_spill_source].oily = true
-	for i in patches:
-		_add_oil(list[_spill_source])
+	for i in patches:  # (all round the island, the owner: a spill is devastating, oil almost everywhere)
+		var sector := list[(_spill_source + i) % list.size()]
+		sector.oily = true
+		_add_oil(sector)
 	return 1
 
 
@@ -568,10 +569,14 @@ func _spread_oil() -> void:
 			_add_oil(sector)
 
 
+## Most oil lying round the island at once.
+const MAX_OIL := 24
+
+
 func _add_oil(sector: DeepSector) -> void:
 	var spawner := _spawner()
 	var lying := get_tree().get_nodes_in_group("debris").filter(func(d: Debris) -> bool: return d.item == OIL and Regions.nearest(d.global_position).id == region_id).size()
-	if spawner and lying < 14:
+	if spawner and lying < MAX_OIL:
 		spawner.spawn_at(OIL, _water_near(sector.global_position), true)
 
 

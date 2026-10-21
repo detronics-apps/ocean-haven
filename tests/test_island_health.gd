@@ -142,7 +142,7 @@ func _initialize() -> void:
 	# Oil on the water: only the ranger's own boat cleans it up, and it's never carried.
 	var clean: float = health.of(self, home)
 	var oil: Node = spawner.spawn_at(load("res://data/items/oil_patch.tres"), Vector2(-700, -300), true)
-	_expect(is_equal_approx(health.of(self, home), clean), "oil isn't part of island health")
+	_expect(is_equal_approx(health.of(self, home), clean * (1.0 - health.OIL_EACH)), "oil hurts the whole island: a patch takes 5 %% off (the owner)")
 	oil._on_body_entered(world.get_node("Player"))
 	var patrol := CharacterBody2D.new()
 	oil._on_body_entered(patrol)
