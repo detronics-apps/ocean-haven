@@ -881,7 +881,11 @@ no longer bring pines. The first sprout is news. Arctic plants carry snow
 building up in the freeze, deepest when frozen, gone by open water).
 
 When you first arrived (Observatory): see "The Observatory's layout" (start pictures; the
-old per-player screenshot is gone). No "now" picture.
+old per-player screenshot is gone). Then and now (the owner): "Now" takes the island as it is the
+first time it's pressed (Journal.take_now_picture: the live world in the start picture's frame,
+user://now/<id>.png, day saved "now_days"), then flips Then / Now; Retake takes a new one. The
+Observatory opens by itself, with a four-step tour, when the last discovery is fitted (flag
+"observatory_toured"); a line under its islands says they can be tapped.
 
 Births and growing up: the islands still decide when one more animal comes (same triggers and
 limits); Births.bring turns that newcomer into a young one born beside a grown one of its kind

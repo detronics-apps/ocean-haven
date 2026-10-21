@@ -27,7 +27,7 @@ func _initialize() -> void:
 	load("res://scripts/animals/arrivals.gd").restore(world, ["Dolphin1", "Dolphin3", "Crab2"])  # the pod and crabs of a recovered island
 	_inventory.add(load("res://data/items/plastic_bottle.tres"), 7)
 	_journal.discover(load("res://data/animals/green_turtle.tres"))
-	_journal.restore(_journal.ids(), _journal.details().merged({"arrived_days": [["kelp_forest", 7]]}, true))
+	_journal.restore(_journal.ids(), _journal.details().merged({"arrived_days": [["kelp_forest", 7]], "now_days": [["home_island", 9]]}, true))
 	var debris := world.get_node("Debris1")
 	_save.mark_collected(debris)
 	debris.free()
@@ -173,6 +173,7 @@ func _initialize() -> void:
 	_expect(_inventory.stored(&"wood") == 4, "stored wood restored (6 - 2 for the sanctuary)")
 	_expect(_journal.has(&"green_turtle"), "discovery restored")
 	_expect(_journal.arrived_day(load("res://data/regions/kelp_forest.tres")) == 7, "the day the ranger first got to an island")
+	_expect(_journal.now_day(load("res://data/regions/home_island.tres")) == 9, "the day an island's now picture was taken")
 	_expect(regions.is_discovered(kelp) and not regions.is_discovered(load("res://data/regions/deep_sea.tres")),
 		"discovered islands restored")
 	_expect(world.get_node("Debris1").is_queued_for_deletion(), "collected litter stays gone")

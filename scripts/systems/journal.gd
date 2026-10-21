@@ -88,15 +88,26 @@ func render_start_picture(region: RegionData) -> Dictionary:
 	if region.arrival_litter > 0:
 		_scatter_litter(extra, island.get_node("Ground") as TileMapLayer, region, region.arrival_litter)
 	island.get_parent().add_child(extra)
-	var shot := SubViewport.new()
-	shot.world_2d = get_viewport().world_2d
 	var start := region.arrival if region.arrival != Vector2.ZERO else region.center
 	# Framed round its land and where the ranger arrived.
 	var land_ground := island.get_node("Ground") as TileMapLayer
 	var used := land_ground.get_used_rect()
 	var frame := Rect2(land_ground.to_global(land_ground.map_to_local(used.position)), Vector2.ZERO)
 	frame = frame.expand(land_ground.to_global(land_ground.map_to_local(used.end))).expand(start).grow(96.0)
-	var zoom := minf(1.0, ISLAND_PHOTO_MAX / maxf(frame.size.x, frame.size.y))
+	var image: Image = await _photograph(frame, ISLAND_PHOTO_MAX)
+	extra.queue_free()
+	randomize()
+	if not image or image.is_empty():
+		return {}
+	return {"image": image, "frame": frame}
+
+
+## The world inside `frame` as it's drawn now, at most `largest` pixels a side (no HUD: its own
+## view of the same world).
+func _photograph(frame: Rect2, largest: int) -> Image:
+	var shot := SubViewport.new()
+	shot.world_2d = get_viewport().world_2d
+	var zoom := minf(1.0, largest / maxf(frame.size.x, frame.size.y))
 	shot.size = Vector2i(frame.size * zoom)
 	shot.render_target_update_mode = SubViewport.UPDATE_ONCE
 	shot.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
@@ -110,11 +121,47 @@ func render_start_picture(region: RegionData) -> Dictionary:
 	await RenderingServer.frame_post_draw
 	var image := shot.get_texture().get_image()
 	shot.queue_free()
-	extra.queue_free()
-	randomize()
+	return image
+
+
+## "Now" pictures (the owner): the island as it is, taken the first time the ranger asks in the
+## Observatory (and again with Retake), framed like its start picture so the two can be flipped
+## between; kept in the browser / on the device (NOW_PICTURES), the day it was taken saved.
+const NOW_PICTURES := "user://now/%s.png"
+const NOW_PHOTO_MAX := 1024
+var _now_days: Dictionary[StringName, int] = {}
+var _now_cache := {}
+
+
+func now_picture(region: RegionData) -> Texture2D:
+	if _now_cache.has(region.id):
+		return _now_cache[region.id]
+	if not _now_days.has(region.id) or not FileAccess.file_exists(NOW_PICTURES % region.id):
+		return null
+	var image := Image.load_from_file(NOW_PICTURES % region.id)
+	if not image:
+		return null
+	_now_cache[region.id] = ImageTexture.create_from_image(image)
+	return _now_cache[region.id]
+
+
+## The day the now picture was taken (-1: none yet).
+func now_day(region: RegionData) -> int:
+	return _now_days.get(region.id, -1)
+
+
+## Takes `region`'s now picture (null without a screen).
+func take_now_picture(region: RegionData) -> Texture2D:
+	if DisplayServer.get_name() == "headless" or region.start_frame.size.x <= 0.0:
+		return null
+	var image: Image = await _photograph(region.start_frame, NOW_PHOTO_MAX)
 	if not image or image.is_empty():
-		return {}
-	return {"image": image, "frame": frame}
+		return null
+	DirAccess.make_dir_recursive_absolute(NOW_PICTURES.get_base_dir())
+	image.save_png(NOW_PICTURES % region.id)
+	_now_days[region.id] = GameClock.day
+	_now_cache[region.id] = ImageTexture.create_from_image(image)
+	return _now_cache[region.id]
 
 
 ## `count` pieces of litter drawn on a first-visit picture: some on the beaches, the rest
@@ -336,7 +383,8 @@ func details() -> Dictionary:
 	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate(),
 		"nests": _nests.duplicate(), "hatched": _hatched.duplicate(), "gifts": _gifts.duplicate(),
 		"plants": _plants.keys(), "moments": _moments.keys(),
-		"arrived_days": _arrived.keys().map(func(id: StringName) -> Array: return [String(id), _arrived[id]])}
+		"arrived_days": _arrived.keys().map(func(id: StringName) -> Array: return [String(id), _arrived[id]]),
+		"now_days": _now_days.keys().map(func(id: StringName) -> Array: return [String(id), _now_days[id]])}
 
 
 ## Replaces discoveries from a save file (no "new discovery" notes).
@@ -364,6 +412,10 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	_arrived.clear()
 	for entry in saved_details.get("arrived_days", []):
 		_arrived[StringName(entry[0])] = int(entry[1])
+	_now_days.clear()
+	_now_cache.clear()
+	for entry in saved_details.get("now_days", []):
+		_now_days[StringName(entry[0])] = int(entry[1])
 	_plants.clear()
 	for id in saved_details.get("plants", []):
 		var plant_path := "res://data/plants/%s.tres" % id

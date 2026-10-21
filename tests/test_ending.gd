@@ -71,7 +71,7 @@ func _initialize() -> void:
 	var island_view: Node = screen.get_node_or_null("IslandView")
 	var picture: Control = island_view.find_child("Picture", true, false) if island_view else null
 	var home: Resource = load("res://data/regions/home_island.tres")
-	_expect(picture != null and picture.texture == start and island_view.find_child("Now", true, false) == null,
+	_expect(picture != null and picture.texture == start and island_view.find_child("Now", true, false) != null,
 		"tap the Starting Island: its start picture")
 	_expect(picture.ranger_at.is_equal_approx(home.arrival - home.start_frame.position)
 		and island_view.find_children("*", "Label", true, false).any(func(l: Label) -> bool: return l.text.contains("(day 1)")),

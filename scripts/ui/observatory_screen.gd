@@ -359,6 +359,47 @@ func show_island(region: RegionData) -> void:
 			button.add_theme_font_size_override("font_size", 24)
 			button.pressed.connect(picture.zoom_by.bind(step[1]))
 			header.add_child(button)
+	if photo:  # then and now (the owner): taken the first time it's asked for, Retake for a new one
+		var now_button := Button.new()
+		now_button.name = "Now"
+		now_button.text = "Now"
+		now_button.custom_minimum_size = Vector2(80, 48)
+		header.add_child(now_button)
+		var retake := Button.new()
+		retake.name = "Retake"
+		retake.text = "Retake"
+		retake.custom_minimum_size = Vector2(96, 48)
+		retake.visible = false
+		header.add_child(retake)
+		var then_title := title.text
+		var showing_now := [false]
+		var show := func(now: bool, texture: Texture2D) -> void:
+			showing_now[0] = now
+			picture.texture = texture
+			picture.show_ranger(not now)
+			now_button.text = "Then" if now else "Now"
+			title.text = "%s now (day %d)" % [region.display_name, Journal.now_day(region)] if now else then_title
+			retake.visible = now
+			picture.queue_redraw()
+		now_button.pressed.connect(func() -> void:
+			if showing_now[0]:
+				show.call(false, photo)
+				return
+			var now_picture: Texture2D = Journal.now_picture(region)
+			if not now_picture:
+				now_button.disabled = true
+				now_button.text = "..."
+				now_picture = await Journal.take_now_picture(region)
+				now_button.disabled = false
+				now_button.text = "Now"
+			if now_picture:
+				show.call(true, now_picture))
+		retake.pressed.connect(func() -> void:
+			retake.disabled = true
+			var fresh: Texture2D = await Journal.take_now_picture(region)
+			retake.disabled = false
+			if fresh:
+				show.call(true, fresh))
 	var back := Button.new()
 	back.name = "Back"
 	back.text = "< Back"
@@ -395,6 +436,11 @@ class IslandPicture extends Control:
 		if ranger_at != Vector2.INF:  # (the ranger's own look, as it is now)
 			_ranger = (DataFiles.res("res://scenes/player/avatar.tscn") as PackedScene).instantiate()
 			add_child(_ranger)
+
+	## The ranger stands on the start picture only (the now picture has them where they are).
+	func show_ranger(on: bool) -> void:
+		if _ranger:
+			_ranger.visible = on
 
 	func scale_now() -> float:
 		if not texture or size.x <= 0.0:
