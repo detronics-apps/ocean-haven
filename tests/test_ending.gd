@@ -19,7 +19,6 @@ func _initialize() -> void:
 	root.add_child(world)
 	for i in 3:
 		await process_frame
-	var clock_day_end := func() -> void: root.get_node("Journal").call("_first_day_ended")
 	var map: Node = world.get_node("VoyageMap")
 	map.open()
 	_expect(map.find_child("Observatory", true, false) == null, "no Observatory before the fleet has all six")
@@ -48,9 +47,6 @@ func _initialize() -> void:
 	var start: Texture2D = journal.start_picture(&"home_island")
 	_expect(start != null and load("res://data/regions/home_island.tres").start_frame.size.x == start.get_width(),
 		"every island has the same start picture for everyone (and the part of the world it shows)")
-	world.get_node("Player").global_position = Vector2(64, 96)
-	journal.restore(journal.ids(), journal.details())
-	clock_day_end.call()
 	var panorama: Control = screen.find_child("Panorama", true, false)
 	var home_index: int = panorama.regions.find(load("res://data/regions/home_island.tres"))
 	_expect(panorama.healths[home_index].ends_with("%"), "each island's health under it (%s)" % [panorama.healths])
@@ -69,8 +65,9 @@ func _initialize() -> void:
 	var home: Resource = load("res://data/regions/home_island.tres")
 	_expect(picture != null and picture.texture == start and island_view.find_child("Now", true, false) == null,
 		"tap the Starting Island: its start picture")
-	_expect(picture.ranger_at.is_equal_approx(Vector2(64, 96) - home.start_frame.position),
-		"with the ranger where their first day there ended (%s)" % picture.ranger_at)
+	_expect(picture.ranger_at.is_equal_approx(home.arrival - home.start_frame.position)
+		and island_view.find_children("*", "Label", true, false).any(func(l: Label) -> bool: return l.text.contains("(day 1)")),
+		"with the ranger where they landed, and the day they first got there (%s)" % picture.ranger_at)
 	await process_frame
 	var fit: float = picture.scale_now()
 	island_view.find_child("ZoomIn", true, false).pressed.emit()

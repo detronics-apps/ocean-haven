@@ -113,4 +113,5 @@ func explore(direction: StringName) -> void:
 		return
 	close()
 	Regions.discover(region)
+	Journal.note_arrival(region)
 	get_tree().call_group("hud", "voyage", region, true)

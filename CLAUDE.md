@@ -589,9 +589,10 @@ question ("observatory") is answered by opening it. Play goes on.
 The Observatory's layout (the owner's): fixed at the top, the six islands with the white
 routes joining them (Panorama) and each one's health under it (tap one: its start picture, the same for everyone:
 assets/ui/islands/<id>_start.png, rendered by tools/make_start_pictures.gd from a new game's
-world (the island as it was made, muted, its start litter, its few starting animals;
-RegionData.start_frame), with the ranger's avatar drawn at true size where their first day on
-that island ended (Journal.start_spot, saved "start_spots"); + / - and arrow buttons zoom and
+world with every island found, photographed itself (ground art, rounded and height edges, waves,
+its start litter, its few starting animals and its people; RegionData.start_frame), with the
+ranger's avatar drawn at true size where they land (the owner) and the day they first got there
+in the title (Journal.arrived_day, saved "arrived_days", noted by Explore); + / - and arrow buttons zoom and
 pan); below, scrolling, the whole ocean's health and sections that drop down one at a time (open_section): How the
 islands help each other (Panorama + links(): clean water, fish, terns, travelling dolphins /
 whales / turtles, seeds, seagrass grazing, mapping, cargo, each fix, fibres, rescues), and in

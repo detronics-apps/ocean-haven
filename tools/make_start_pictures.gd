@@ -1,6 +1,7 @@
 extends SceneTree
-## Renders every island's start picture (the island as it was made, muted, with its start
-## litter: the same for every player) to assets/ui/islands/<id>_start.png, and writes the part
+## Renders every island's start picture (a new game's world with every island found: the island
+## as it was made, muted, its start litter, its few starting animals and its people; the same for
+## every player) to assets/ui/islands/<id>_start.png, and writes the part
 ## of the world each shows into its region (RegionData.start_frame). Re-run after changing an
 ## island's shape. Needs a screen:
 ##   xvfb-run -a godot --path . --script res://tools/make_start_pictures.gd
@@ -8,10 +9,15 @@ extends SceneTree
 func _initialize() -> void:
 	await process_frame
 	var journal := root.get_node("Journal")
+	root.get_node("RangerProfile").created = true  # (no avatar creator over the world)
+	var regions: GDScript = load("res://scripts/world/regions.gd")
+	regions.restore(regions.all().map(func(r: Resource) -> String: return String(r.id)))
 	var world: Node = load("res://scenes/world/ocean_world.tscn").instantiate()
 	root.add_child(world)
-	for i in 5:
+	root.get_node("GameClock").time_of_day = 0.4  # (daylight)
+	for i in 30:  # (every island found: their ecosystems put in their few starting animals)
 		await process_frame
+	world.get_node("Player").visible = false  # (the Observatory draws the ranger itself)
 	for region: Resource in load("res://scripts/world/regions.gd").all():
 		var made: Dictionary = await journal.render_start_picture(region)
 		if made.is_empty():

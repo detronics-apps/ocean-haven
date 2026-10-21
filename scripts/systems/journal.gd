@@ -29,28 +29,27 @@ var _moments := {}
 var photos_dir := "user://photos"
 
 ## Each island as it was made, the same picture for everyone (assets/ui/islands/<id>_start.png,
-## rendered by tools/make_start_pictures.gd; RegionData.start_frame is the part of the world
-## it shows), with the ranger drawn where they were at the end of their first day there
-## (start_spot, saved). The Observatory shows it.
+## rendered by tools/make_start_pictures.gd from a new game's world; RegionData.start_frame is
+## the part of the world it shows), with the ranger drawn where they land (the owner) and the day
+## they first got there (arrived_day, saved). The Observatory shows it.
 const START_PICTURES := "res://assets/ui/islands/%s_start.png"
 ## Largest side of a start picture, in pixels (the world is drawn 1:1 below this).
 const ISLAND_PHOTO_MAX := 2048
-## Region id -> where the ranger was when their first day there ended.
-var _start_spots: Dictionary[StringName, Vector2] = {}
+## Region id -> the day the ranger first got there (found by exploring; the Starting Island: 1).
+var _arrived: Dictionary[StringName, int] = {}
 
 
-func _ready() -> void:
-	GameClock.new_day.connect(func(_day: int) -> void: _first_day_ended())
+## The ranger has found `region` (exploring): today is the day they got there.
+func note_arrival(region: RegionData) -> void:
+	if not _arrived.has(region.id):
+		_arrived[region.id] = GameClock.day
 
 
-## The day ended: on an island with no spot yet, this is where the ranger's first day ended.
-func _first_day_ended() -> void:
-	var ranger := ControlledBody.active(get_tree())
-	if not ranger:
-		return
-	var region := Regions.nearest(ranger.global_position)
-	if Regions.is_discovered(region) and not _start_spots.has(region.id):
-		_start_spots[region.id] = ranger.global_position
+## The day the ranger first got to `region` (-1: not known, from before it was kept).
+func arrived_day(region: RegionData) -> int:
+	if region.direction == &"":
+		return 1
+	return _arrived.get(region.id, -1)
 
 
 ## `region_id`'s start picture (null: not made yet).
@@ -59,11 +58,8 @@ func start_picture(region_id: StringName) -> Texture2D:
 	return DataFiles.res(path) as Texture2D if ResourceLoader.exists(path) else null
 
 
-## Where the ranger goes on `region`'s start picture: where their first day there ended (or,
-## from before that was kept, where they first arrived).
+## Where the ranger goes on `region`'s start picture: where they land there.
 func start_spot(region: RegionData) -> Vector2:
-	if _start_spots.has(region.id):
-		return _start_spots[region.id]
 	return region.arrival if region.arrival != Vector2.ZERO else region.center
 
 
@@ -83,32 +79,17 @@ func render_start_picture(region: RegionData) -> Dictionary:
 			break
 	if not island:
 		return {}
-	var copy: Node2D = (DataFiles.res(island.scene_file_path) as PackedScene).instantiate()
-	var ecosystem := copy.get_node_or_null("Ecosystem")
-	if ecosystem:
-		ecosystem.free()
-	_just_pictures(copy)
-	copy.position = island.global_position
-	var ground := copy.get_node_or_null("Ground") as TileMapLayer
-	if ground:
-		ground.modulate = IslandHealth.DAMAGED_TINT
-		# The litter there was when the ranger arrived: on the beaches and floating round it.
-		var litter := region.arrival_litter
-		if litter <= 0:
-			litter = int(island.get_parent().get("start_litter")) if island.get_parent().get("start_litter") != null else 50
-		_scatter_litter(copy, ground, region, litter)
-	# The few animals there were at the start (the tool renders a new game's world).
-	for animal: Node2D in get_tree().get_nodes_in_group("animals"):
-		if animal.visible and not animal.get("unborn") and Regions.nearest(animal.global_position) == region:
-			var sprite := animal.get_node_or_null("Sprite2D") as Sprite2D
-			if sprite:
-				var picture := sprite.duplicate() as Sprite2D
-				_just_pictures(picture)
-				picture.position = sprite.global_position - copy.position
-				picture.material = null
-				copy.add_child(picture)
+	# The world itself is photographed (a new game's, every island found: the tool), so the
+	# picture has everything the game draws: the ground art, rounded and height edges, waves, the
+	# island's few starting animals and its people (the owner: a stripped copy looked flat and empty).
+	# Islands first visited later get their arrival litter drawn in for the picture.
+	var extra := Node2D.new()
+	extra.position = island.global_position
+	if region.arrival_litter > 0:
+		_scatter_litter(extra, island.get_node("Ground") as TileMapLayer, region, region.arrival_litter)
+	island.get_parent().add_child(extra)
 	var shot := SubViewport.new()
-	shot.world_2d = World2D.new()  # its own world: nothing of the game's sees it
+	shot.world_2d = get_viewport().world_2d
 	var start := region.arrival if region.arrival != Vector2.ZERO else region.center
 	# Framed round its land and where the ranger arrived.
 	var land_ground := island.get_node("Ground") as TileMapLayer
@@ -119,7 +100,6 @@ func render_start_picture(region: RegionData) -> Dictionary:
 	shot.size = Vector2i(frame.size * zoom)
 	shot.render_target_update_mode = SubViewport.UPDATE_ONCE
 	shot.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
-	shot.add_child(copy)
 	var camera := Camera2D.new()
 	camera.position = frame.get_center()
 	camera.zoom = Vector2.ONE * zoom
@@ -130,6 +110,7 @@ func render_start_picture(region: RegionData) -> Dictionary:
 	await RenderingServer.frame_post_draw
 	var image := shot.get_texture().get_image()
 	shot.queue_free()
+	extra.queue_free()
 	randomize()
 	if not image or image.is_empty():
 		return {}
@@ -169,15 +150,6 @@ func _scatter_litter(copy: Node2D, ground: TileMapLayer, region: RegionData, cou
 		piece.position = spot - copy.position  # (a child of the island copy)
 		piece.rotation = randf_range(-0.6, 0.6)
 		copy.add_child(piece)
-
-
-## Only its pictures: no scripts, no groups (nothing in the game finds it).
-static func _just_pictures(node: Node) -> void:
-	for group in node.get_groups():
-		node.remove_from_group(group)
-	node.set_script(null)
-	for child in node.get_children():
-		_just_pictures(child)
 
 
 func discover(animal: AnimalData) -> void:
@@ -364,7 +336,7 @@ func details() -> Dictionary:
 	return {"observed": _observed.keys(), "photos": _photos.duplicate(), "helped": _helped.duplicate(),
 		"nests": _nests.duplicate(), "hatched": _hatched.duplicate(), "gifts": _gifts.duplicate(),
 		"plants": _plants.keys(), "moments": _moments.keys(),
-		"start_spots": _start_spots.keys().map(func(id: StringName) -> Array: return [String(id), _start_spots[id].x, _start_spots[id].y])}
+		"arrived_days": _arrived.keys().map(func(id: StringName) -> Array: return [String(id), _arrived[id]])}
 
 
 ## Replaces discoveries from a save file (no "new discovery" notes).
@@ -389,9 +361,9 @@ func restore(species_ids: Array, saved_details: Dictionary = {}) -> void:
 	_moments.clear()
 	for key in saved_details.get("moments", []):
 		_moments[String(key)] = true
-	_start_spots.clear()
-	for entry in saved_details.get("start_spots", []):
-		_start_spots[StringName(entry[0])] = Vector2(float(entry[1]), float(entry[2]))
+	_arrived.clear()
+	for entry in saved_details.get("arrived_days", []):
+		_arrived[StringName(entry[0])] = int(entry[1])
 	_plants.clear()
 	for id in saved_details.get("plants", []):
 		var plant_path := "res://data/plants/%s.tres" % id

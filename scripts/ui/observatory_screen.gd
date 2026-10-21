@@ -286,7 +286,8 @@ func show_island(region: RegionData) -> void:
 	header.add_theme_constant_override("separation", 10)
 	page.add_child(header)
 	var title := Label.new()
-	title.text = "%s, when you first arrived" % region.display_name
+	var day := Journal.arrived_day(region)
+	title.text = "%s, when you first arrived%s" % [region.display_name, " (day %d)" % day if day > 0 else ""]
 	title.add_theme_font_size_override("font_size", 24)
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -295,7 +296,7 @@ func show_island(region: RegionData) -> void:
 	var picture := IslandPicture.new()
 	picture.name = "Picture"
 	picture.texture = photo
-	if photo and region.start_frame.size.x > 0.0:  # the ranger, where their first day there ended
+	if photo and region.start_frame.size.x > 0.0:  # the ranger, where they landed
 		picture.ranger_at = (Journal.start_spot(region) - region.start_frame.position) * (photo.get_width() / region.start_frame.size.x)
 	picture.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if photo:
