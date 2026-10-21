@@ -495,7 +495,37 @@ func _ship_built() -> bool:
 	return false
 
 
+## The end of the story (the owner): every island's objective done, the fleet at its top level
+## and every kind of litter stopped at its source (ObservatoryScreen.final_chapter): the Clue
+## Board opens, the globe is placed, then "Who created all of this?", and a moment later the end
+## credits roll. Never over a talk or another page: it waits.
+const ENDING_PAUSE := 2.5
+
+
+func _ending() -> void:
+	var talk := get_tree().get_first_node_in_group("talk_box")
+	if (talk and talk.is_open()) or get_tree().paused:
+		return  # (tried again next second)
+	Fleet.mark(&"ending_started")
+	if Fleet.has_flag(&"credits_seen"):  # (an older save that had its credits: just the cards)
+		Fleet.mark(&"final_question")
+		Clues.check(true)
+		return
+	Fleet.mark(&"credits_seen")
+	get_tree().call_group("journal_screen", "open_clues", "", true)
+	await get_tree().create_timer(1.0).timeout
+	Clues.check()  # (the globe goes down)
+	await get_tree().create_timer(ENDING_PAUSE).timeout
+	Fleet.mark(&"final_question")
+	Clues.check()  # ("Who created all of this?")
+	await get_tree().create_timer(ENDING_PAUSE).timeout
+	get_tree().call_group("journal_screen", "close")
+	get_tree().call_group("observatory", "play_credits")
+
+
 func _check_unlocks() -> void:
+	if not Fleet.has_flag(&"ending_started") and ObservatoryScreen.final_chapter():
+		_ending()
 	_check_season_moment()
 	var minimap: Control = $Minimap
 	minimap.visible = Fleet.is_installed(MINIMAP_NEEDS)

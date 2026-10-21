@@ -604,7 +604,11 @@ detronics.co.za).
 The prize: the final chapter shows the ocean poster (assets/ui/poster/ocean_poster.jpg) with
 "Download your ocean poster" (`ObservatoryScreen.download_poster`: the browser's download on the
 web, the Pictures folder elsewhere); before it, "Still watching" says a poster waits there.
-The first time the final chapter opens, the screen goes black and the end credits roll
+The ending (the owner): the moment the final chapter is reached (every island's objective, the fleet at
+its top level, every source stopped: HUD._ending, Fleet flags "ending_started" / "final_question"), the
+Clue Board opens by itself, the globe is placed, then "Who created all of this?", and 2.5 s later the
+end credits roll; the goal line always names the next step, on another island too (People.goal_text:
+"Next: ..."). Otherwise the first time the final chapter opens, the screen goes black and the end credits roll
 (EndCredits: data/ending/final_word.tres, CreditsData; centred gold text rolling slowly up and
 away, stars; a tap doubles the speed, Close or the end returns; Fleet flag "credits_seen"); the
 Observatory's "End credits" button plays them again.

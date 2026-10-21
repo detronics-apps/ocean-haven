@@ -86,7 +86,8 @@ func _initialize() -> void:
 	_expect(screen.get_node_or_null("IslandView") == null and screen.visible, "Back: the Observatory again")
 	screen.close()
 
-	# --- Every source stopped: the final chapter ---
+	# --- Every source stopped: the final chapter (the Clue Board ending is tested in test_ending_sequence.gd) ---
+	fleet.mark(&"ending_started")
 	fleet.mark(&"fibres_traced")
 	var build: Node = world.get_node("BuildMode")
 	fleet.mark(&"gear_traced")

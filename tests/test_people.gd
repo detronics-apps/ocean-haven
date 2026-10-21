@@ -143,7 +143,7 @@ func _initialize() -> void:
 		"Maya greets the ranger for what's done, and asks for nothing that's behind them (%s)" % [texts])
 	people.finish_talk()
 	await create_timer(people.DELAY + 0.2).timeout
-	_expect(hud.objective_text() == "" and people.notebook().is_empty(), "no objective left on the Starting Island (%s)" % hud.objective_text())
+	_expect(not hud.objective_text().begins_with("Goal") and people.notebook().is_empty(), "no objective left on the Starting Island: the line says what's next elsewhere (%s)" % hud.objective_text())
 
 	# --- Every island has its people: someone to give objectives, someone to ask for advice ---
 	for region_id in [&"home_island", &"kelp_forest", &"mangrove_coast", &"tropical_reef", &"deep_sea", &"arctic_ocean"]:

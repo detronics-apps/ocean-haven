@@ -700,3 +700,8 @@ and what was seen, nothing said twice. The tag's picture is the hook island's bl
 (`tools/make_hook_logo.gd`). Maya's first question asks for photos of the animals (one photo).
 
 **Not built yet:** the optional List toggle (§1).
+
+**Ending order (the owner, later):** the globe now goes down on `flag:ending_started` and the
+final question opens on `flag:final_question`: the moment the final chapter is reached the Clue
+Board opens by itself, the globe is placed, then the question, and 2.5 s later the end credits
+roll (HUD._ending). The old flags stay as alternatives for older saves.

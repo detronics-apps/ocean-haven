@@ -714,6 +714,35 @@ func goal_text(region_id: StringName) -> String:
 	var region: RegionData = DataFiles.res("res://data/regions/%s.tres" % region_id)
 	if region and Inventory.available(&"wood") < LOW_WOOD and Arrivals.grown_trees(get_tree(), region) == 0:
 		return "Short of wood: tap Map, sail to an island with trees, cut some and store it in a Ranger House"
+	var here := _goal_on(region_id)
+	if here != "":
+		return here
+	# Nothing left here: the next step elsewhere (the owner: always say who to talk to next,
+	# especially near the end).
+	for other: RegionData in Regions.all():
+		if other.id == region_id or not Regions.is_discovered(other) or other.in_development:
+			continue
+		for person: PersonData in on(other.id):
+			if person.role != &"objective":
+				continue
+			if not has_met(person):
+				return "Next: meet %s on the %s (Map)" % [person.short_name, other.display_name]
+			if to_thank(person):
+				return "Next: go back to %s on the %s" % [person.short_name, other.display_name]
+			var question := current_question(person)
+			if question and not is_given(person, question):
+				return "Next: %s on the %s has a question for you" % [person.short_name, other.display_name]
+			if question:
+				return "Next, on the %s: %s" % [other.display_name, question.objective.text]
+	if Regions.can_find_more() and Regions.discovered_count() < Regions.all().size():
+		return "Next: find a new island with Explore at an Exploration Ship"
+	if ObservatoryScreen.is_open_to_ranger() and not ObservatoryScreen.final_chapter():
+		return "Next: keep picking up litter: the islands' people will ask where each kind comes from"
+	return ""
+
+
+## The goal line from `region_id`'s own objective-giver ("" = nothing for now).
+func _goal_on(region_id: StringName) -> String:
 	for person: PersonData in on(region_id):
 		if person.role != &"objective":
 			continue
