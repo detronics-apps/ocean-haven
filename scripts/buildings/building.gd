@@ -588,6 +588,43 @@ func _process(delta: float) -> void:
 	# Just the numbers above it (what to do is on the action buttons).
 	_hint.text = stats() if _ranger_in_range(use_range) else ""
 	_hint.visible = _hint.text != ""
+	_show_progress()
+
+
+## A bar under the stats for something that takes days (the ice core drill: the owner wanted to
+## see how far its 3 days had got): the island's ecosystem says how far (progress_of).
+func _show_progress() -> void:
+	var shown: Array = []
+	if _ranger_in_range(use_range):
+		var eco := IslandHealth.ecosystem(get_tree(), Regions.nearest(global_position))
+		if eco and eco.has_method("progress_of"):
+			shown = eco.progress_of(self)
+	if shown.is_empty():
+		if _bar:
+			_bar.visible = false
+		return
+	if not _bar:
+		_bar = ProgressBar.new()
+		_bar.show_percentage = false
+		_bar.custom_minimum_size = Vector2(56, 6)
+		_bar.size = Vector2(56, 6)
+		_bar.z_index = _hint.z_index
+		var back := StyleBoxFlat.new()
+		back.bg_color = Color(0.05, 0.08, 0.12, 0.85)
+		var fill := StyleBoxFlat.new()
+		fill.bg_color = Color("4fd1c5")
+		_bar.add_theme_stylebox_override("background", back)
+		_bar.add_theme_stylebox_override("fill", fill)
+		add_child(_bar)
+	_hint.text = (_hint.text + "\n" if _hint.text != "" else "") + String(shown[1])
+	_hint.visible = true
+	_bar.value = float(shown[0]) * 100.0
+	var shown_size := _hint.size * _hint.scale  # (the label is drawn at half size)
+	_bar.position = _hint.position + Vector2((shown_size.x - _bar.size.x) / 2.0, shown_size.y + 1.0)
+	_bar.visible = true
+
+
+var _bar: ProgressBar
 
 
 ## Short stats shown above it when the ranger is close ("" = nothing to show).

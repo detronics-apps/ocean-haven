@@ -550,6 +550,21 @@ func drill_progress() -> float:
 	return _drilled / drill_days
 
 
+## A drill site's progress for its bar (Building.progress, the owner: no way to see how far the 3
+## days had got): [0..1, a short note], or [] for any other building.
+func progress_of(building: Building) -> Array:
+	if building.data.id != &"ice_core_drill":
+		return []
+	if Fleet.has_flag(CORE_FLAG):
+		return [1.0, "Ice core drilled"]
+	var days := "%.1f of %d days" % [minf(_drilled, drill_days), roundi(drill_days)]
+	if not _on_ice(building):
+		return [0.0, "Not on old ice: move it"]
+	if not Fleet.has_flag(BALANCED_FLAG):
+		return [drill_progress(), "Waiting: island at 70 %% first (%s)" % days]
+	return [drill_progress(), "Drilling: " + days]
+
+
 func _objective() -> void:
 	if not Fleet.has_flag(BALANCED_FLAG) and IslandHealth.of(get_tree(), region()) >= balanced_at:
 		Fleet.mark(BALANCED_FLAG)

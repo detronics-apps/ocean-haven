@@ -166,7 +166,9 @@ func _initialize() -> void:
 	player.global_position = tent.global_position + Vector2(0, 40)
 	var spawner: Node = world.get_node("PolarLitter")
 	var bottle: Resource = load("res://data/items/plastic_bottle.tres")
-	for d in get_nodes_in_group("debris").filter(func(d: Node2D) -> bool: return d.global_position.distance_to(tent.global_position) < 260.0):
+	var camp: Array = eco._camp()  # (the tent and the people's places, apart now: the owner)
+	for d in get_nodes_in_group("debris").filter(func(d: Node2D) -> bool:
+			return camp.any(func(c: Vector2) -> bool: return d.global_position.distance_to(c) < 260.0)):
 		d.free()
 	eco.check_camp()
 	_expect(not fleet.has_flag(&"bear_at_camp"), "a clean camp: no bear")

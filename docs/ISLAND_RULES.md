@@ -327,9 +327,10 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   where it stands (the lower half of its picture) is all grass, all sand, all ice..., never across
   the sand and grass (or grass and mud) and never over the water; off the beach where the island
   has grass to stand on (rock with grass on top, as on the Deep Sea's hook, is fine).
-- **Not everyone waits where the ranger lands:** the objective-giver is near the landing, the
-  hint-giver somewhere to be found by looking round the island (Samuel, Kai, Ines). The Polar
-  Ocean's two share one camp by the landing on purpose: rubbish there brings the bear.
+- **People are found by exploring** (the owner: the reason there are two is to go and find
+  them): neither stands where the ranger lands (300 px or more from RegionData.arrival) and the
+  two stand well apart (400 px or more), each on one ground. On the Polar Ocean their places
+  are still the camp (PolarEcosystem._camp): rubbish near either brings the bear.
 - **Dense islands need room.** Where land is scarce (the Polar Ocean's rock) buildings may go on
   ice, and the ice under a building never melts.
 - **Noise depends on where.** A disturbance near where the animals live counts fully; moved
