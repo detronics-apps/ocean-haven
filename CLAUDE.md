@@ -410,7 +410,7 @@ draft 2). `ReefEcosystem` (island child "Ecosystem"): 10 `ReefPatch`es whose cor
 far as it's planted (coral fragments from Coral Restoration Sites, planted by hand from the boat)
 and as fast as clear water (litter, giant clams) and grazing parrotfish allow. Each animal has a
 job: parrotfish build the sea floor up (deep → mid → shallow → sand, max 3 a day / 40 ever) for
-the Glassworks; giant clams in a Marine Water Treatment Facility make Clean Water each morning
+the Glassworks; giant clams in a Marine Water Treatment Facility (the first three on the beds drawn in its basin, ReefEcosystem.CLAM_BEDS, the rest in the shallow water round it) make Clean Water each morning
 (BuildingData.makes / makes_per_morning); a reef shark circles hidden ghost gear until the ranger
 comes close; seahorses live in Seahorse & Seagrass Protection Areas once the seagrass has grown.
 The Glassworks is a capability, not an item: 3 sand once (BuildingData.makes_from / made_flag

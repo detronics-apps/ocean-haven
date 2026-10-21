@@ -54,6 +54,9 @@ const GEAR_FOUND_RANGE := 72.0
 
 const PARROTFISH := preload("res://data/animals/parrotfish.tres")
 const CLAM := preload("res://data/animals/giant_clam.tres")
+## The three clam beds drawn at the bottom of the Water Treatment Facility's basin (from its
+## centre, at the picture's half size).
+const CLAM_BEDS: Array[Vector2] = [Vector2(-19, 14), Vector2(0, 16), Vector2(15, 15)]
 const SHARK := preload("res://data/animals/reef_shark.tres")
 const SEAHORSE := preload("res://data/animals/seahorse.tres")
 const PATCH_SCRIPT := preload("res://scripts/world/reef_patch.gd")
@@ -381,7 +384,7 @@ func _house(species: AnimalData) -> void:
 		for home in _homes(species):
 			if home.room_for_animals() > 0:
 				animal.home_area = home
-				animal.restore_young(animal.global_position, Terrain.nearest(get_tree(), home.global_position, ["water", ""]))
+				animal.restore_young(animal.global_position, _clam_spot(home) if species == CLAM 					else Terrain.nearest(get_tree(), home.global_position, ["water", ""]))
 				break
 
 
@@ -400,8 +403,30 @@ func _follow(species: AnimalData, target: int) -> void:
 	if not Births.can_have(get_tree(), species, region()):
 		return  # its parents' last young are still too little (or one drifted in just now)
 	var homes := _homes(species)
+	if species == CLAM and not homes.is_empty():
+		var open: Array = homes.filter(func(h: Building) -> bool: return h.room_for_animals() > 0)
+		var home: Building = (open if open else homes).pick_random()
+		var clam := _spawn(species, _clam_spot(home))
+		clam.home_area = home
+		Births.bring(clam, region(), "It has come to the reef: %s" % _why(species))
+		return
 	var spot := _patch_water(patches().pick_random()) if homes.is_empty() else Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["water", ""])
 	Births.bring(_spawn(species, spot), region(), "It has come to the reef: %s" % _why(species))
+
+
+## Where a giant clam at `home` (a Water Treatment Facility) lives: the first free one of the
+## three beds drawn at the bottom of its basin, then spread out in the water round it.
+func _clam_spot(home: Building) -> Vector2:
+	var taken := living(CLAM).map(func(a: Animal) -> Vector2: return a._home)
+	for bed in CLAM_BEDS:
+		var spot: Vector2 = home.global_position + bed
+		if not taken.any(func(t: Vector2) -> bool: return t.distance_to(spot) < 4.0):
+			return spot
+	for attempt in 30:
+		var spot := home.global_position + Vector2.from_angle(randf() * TAU) * randf_range(40.0, 100.0)
+		if Terrain.at(get_tree(), spot) == "water" and not TerrainEdges.covers(get_tree(), spot) and not taken.any(func(t: Vector2) -> bool: return t.distance_to(spot) < 24.0):
+			return spot
+	return Terrain.nearest(get_tree(), home.global_position + Vector2(0, 60), ["water"])
 
 
 func _why(species: AnimalData) -> String:

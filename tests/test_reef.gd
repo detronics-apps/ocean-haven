@@ -133,6 +133,8 @@ func _initialize() -> void:
 	eco.settle()
 	_expect(eco.living(load("res://data/animals/giant_clam.tres")).all(func(c: Node) -> bool: return c.home_area == facility)
 		and eco.living(load("res://data/animals/giant_clam.tres")).size() == 2, "giant clams settle in its beds")
+	var beds: Array = eco.living(load("res://data/animals/giant_clam.tres")).map(func(c: Node) -> Vector2: return c._home - facility.global_position)
+	_expect(beds.has(eco.CLAM_BEDS[0]) and beds.has(eco.CLAM_BEDS[1]), "each on its own bed in the basin, not clumped: %s" % [beds])
 	clock.day += 1
 	clock.new_day.emit(clock.day)
 	_expect(facility.stock == 2 and fleet.has_flag(&"clean_water_made"), "each clam filters 1 clean water a morning")

@@ -424,9 +424,11 @@ func _physics_process(delta: float) -> void:
 	if _layer_left <= 0.0 and not data.flies:  # (a few times a second)
 		_layer_left = 0.25
 		_wet = Terrain.at(get_tree(), global_position) in ["water", ""]
-		z_index = SWIMMING_Z if _wet else 0
+		# (a clam in a facility's basin lies in front of it, on its bed)
+		var in_basin := is_instance_valid(home_area) and home_area is Building 			and global_position.distance_to(home_area.global_position) < 24.0
+		z_index = SWIMMING_Z if _wet and not in_basin else 0
 		if _shadow:
-			_shadow.self_modulate.a = 1.0 if z_index == 0 else 0.0  # (no shadow while swimming)
+			_shadow.self_modulate.a = 0.0 if _wet else 1.0  # (no shadow while swimming)
 	if _due:
 		_check_birth(delta)
 	if _state == State.CRAWL or _state == State.LAY:
