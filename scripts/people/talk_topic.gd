@@ -32,6 +32,9 @@ extends Resource
 @export var stuck: PackedStringArray = []
 ## Only ever told once (a story).
 @export var once := false
+## Said at the end of every talk while `when` holds, after what they had to say (Bram's next step
+## to see the giant squid: the owner wanted to go back again and again for it).
+@export var every_time := false
 ## A Fleet flag marked once it's been told or asked (e.g. "tracks_noticed": the ranger now sees
 ## tracks; "bags_asked": the research it needs is offered now).
 @export var marks: StringName

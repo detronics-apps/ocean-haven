@@ -413,6 +413,10 @@ func talk(person: PersonData) -> Array[Dictionary]:
 			var noticed := observation(person)
 			if noticed != "":
 				extra.append(noticed)
+	if not first:
+		for topic: TalkTopic in person.topics:
+			if topic.every_time and _holds(topic, person, first):
+				extra.append_array(spoken(topic, person))
 	if person.role == &"objective":
 		var done := to_thank(person)
 		if done:
@@ -605,7 +609,7 @@ func predictions(region_id: StringName) -> Array[Dictionary]:
 ## meeting them), skipping stories already told.
 func _chat(person: PersonData, first: bool, greeting: bool) -> TalkTopic:
 	for topic: TalkTopic in person.topics:
-		if topic.objective or topic.outcome != "" or (topic.once and _heard.has(_key(person, topic))):
+		if topic.objective or topic.outcome != "" or topic.every_time or (topic.once and _heard.has(_key(person, topic))):
 			continue
 		if ("first" in topic.when) != greeting:
 			continue

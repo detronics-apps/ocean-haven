@@ -154,6 +154,11 @@ func _fill() -> void:
 	if region.health.is_empty() and region.goals.is_empty():
 		_content.add_child(card(region.map_icon, [region.display_name, region.description,
 			"Nothing to measure here yet: more is coming to this island soon."]))
+	var eco := IslandHealth.ecosystem(get_tree(), region)
+	if eco and eco.has_method("squid_hint") and not Journal.in_journal(&"giant_squid"):
+		var squid := card(null, ["Finding the giant squid", eco.squid_hint()])  # (Bram says it too)
+		squid.name = "SquidSteps"
+		_content.add_child(squid)
 	var guesses := _predictions(region)
 	if guesses:
 		_content.add_child(guesses)

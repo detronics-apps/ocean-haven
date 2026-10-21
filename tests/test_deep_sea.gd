@@ -146,7 +146,14 @@ func _initialize() -> void:
 	var bram: Resource = load("res://data/people/bram.tres")
 	var said: String = people.call("_fill", "{advice:giant_squid}", bram)
 	_expect("Everything's ready" in said, "Bram's squid line says the next step ({advice:giant_squid}: %s)" % said)
-	_expect(bram.topics.any(func(t: Resource) -> bool: return t.id == &"squid" and "{advice:giant_squid}" in t.lines), "Bram talks about the squid until it's photographed")
+	_expect(bram.topics.any(func(t: Resource) -> bool: return t.id == &"squid" and t.every_time and "{advice:giant_squid}" in t.lines[0]), "Bram talks about the squid until it's photographed")
+	people.talk(bram)
+	people.finish_talk()
+	var every := true
+	for i in 3:  # (the owner: go back again and again for the next step)
+		every = every and str(people.talk(bram)).contains("canyon inside the hook. Everything")
+		people.finish_talk()
+	_expect(every, "every talk with Bram ends with the squid's next step")
 	for i in 9:
 		eco.tick(0.25)
 	_expect(eco.squid_found() and eco.living(load("res://data/animals/giant_squid.tres")).size() == 1, "after 2 quiet days the camera films a giant squid")
