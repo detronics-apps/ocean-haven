@@ -34,9 +34,10 @@ extends Node2D
 @export var max_shelter := 0.8
 @export var shelter_range := 80.0
 ## Each grown crab walks to the most silted channel tile within its roaming range (silt from
-## crab_work_from) and digs crab_clear_per_day of silt a day out of it, until it's clear; one
+## crab_work_from) and digs crab_clear_per_day of silt a day out of it (a whole tile a day: the
+## owner), until it's clear; once a channel has silted shut into mud only the shovel opens it; one
 ## crab a tile, so the island needs enough crabs near its channels (the owner).
-@export var crab_clear_per_day := 0.5
+@export var crab_clear_per_day := 1.0
 @export var crab_work_from := 0.2
 ## Beyond crabs_too_many on the island, each extra crab's burrows undercut the banks round the
 ## busiest Crab Habitat: bank_damage_per_day of silt into every channel tile within
