@@ -42,7 +42,7 @@ reminder = PackedStringArray("The Waterworks Station is in your Make menu. Then 
 script = ExtResource("3_g")
 kind = &"flag"
 target = &"mangrove_flowing"
-text = "Get the water flowing: link 4 nursery pools to the sea, island at 70 %"
+text = "Get the water flowing: link 3 nursery pools to the sea, island at 70 %"
 
 [sub_resource type="Resource" id="Topic_4"]
 script = ExtResource("2_t")

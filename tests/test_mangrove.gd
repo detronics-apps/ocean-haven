@@ -223,8 +223,7 @@ func _initialize() -> void:
 	# --- The objective: water flowing again, then resin from fallen branches ---
 	var goals: Array = mangrove.goals
 	_expect(goals.size() == 2 and goals[0].target == &"mangrove_flowing" and goals[1].target == &"mangrove_resin", "the objective: get the water flowing, then gather resin")
-	_expect(String(eco.status_note()).begins_with("Pools linked: "), "under the health bar: how many pools are linked (%s)" % eco.status_note())
-	_expect(String(eco.goal_progress(&"mangrove_flowing")).contains(" pools, "), "the goal line says how far along it is (%s)" % eco.goal_progress(&"mangrove_flowing"))
+	_expect(eco.pools_needed == 3 and String(eco.goal_progress(&"mangrove_flowing")) == "Pools %d/3" % eco.pools_connected(), "the goal line is just what is missing (%s)" % eco.goal_progress(&"mangrove_flowing"))
 	player.global_position = mangrove.arrival
 	eco.pools_needed = 0
 	eco.flowing_at = 0.0

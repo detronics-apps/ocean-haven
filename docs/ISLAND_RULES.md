@@ -354,7 +354,7 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 - **An objective shows how far along it is, and counts the moment it's done.** The owner had 5
   open gates and 76 % health on the Mangrove Coast and couldn't tell which pools counted, and the
   flag was only checked in the morning. Every part of a goal is visible: the goal line says
-  "now 2 / 4 pools, 76 %" and the line under the health bar counts it, so every gate opened,
+  just what is still missing, short enough for one line ("Pools 2/3"), so every gate opened,
   closed, built or taken away shows whether it went the right way. Never mark the counted things
   in the world (the owner: no markers on the pools). Check it every couple of seconds, never
   only on a new day.

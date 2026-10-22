@@ -821,7 +821,8 @@ func flood(amount: float) -> int:
 ## the island is healthy, fallen mangrove branches with resin turn up each morning.
 @export_group("Objective")
 @export var flowing_at := 0.7
-@export var pools_needed := 4
+## 3 of the 5 (the owner): some gates stay shut to hold water on the flats.
+@export var pools_needed := 3
 @export var flowing_flag := &"mangrove_flowing"
 @export var resin_count := &"mangrove_resin"
 @export var resin_needed := 5
@@ -841,17 +842,14 @@ func _check_flowing() -> bool:
 	return true
 
 
-## The goal line's progress for the objective (People.goal_text): what's done and what isn't.
+## The goal line for the objective (People.goal_text), only what's still missing, kept short
+## (the owner): "Pools 2/3", then "Island health 70 %".
 func goal_progress(target: StringName) -> String:
 	if target != flowing_flag:
 		return ""
-	return "now %d / %d pools, %d %%" % [mini(pools_connected(), pools_needed), pools_needed,
-		roundi(IslandHealth.of(get_tree(), region()) * 100.0)]
-
-
-## Under the health bar (HealthGauge): how many pools are linked and how the water level is.
-func status_note() -> String:
-	return "Pools linked: %d / %d · Water: %s" % [pools_connected(), _pools.size(), water_depth_word()]
+	if pools_connected() < pools_needed:
+		return "Pools %d/%d" % [pools_connected(), pools_needed]
+	return "Island health %d %%" % roundi(flowing_at * 100.0)
 
 
 func _objective() -> void:
