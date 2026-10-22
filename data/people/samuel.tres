@@ -35,6 +35,13 @@ id = &"silt"
 when = PackedStringArray("!flag:mangrove_flowing")
 lines = PackedStringArray("Water that stands still drops its mud. Keep it moving.", "Dig a channel with your shovel from the sea to a pool, and see how the water rushes in.")
 
+[sub_resource type="Resource" id="Topic_pools"]
+script = ExtResource("2_t")
+id = &"pools"
+when = PackedStringArray("asked:flowing", "!flag:mangrove_flowing", "here")
+lines = PackedStringArray("{advice:water}")
+every_time = true
+
 [sub_resource type="Resource" id="Topic_5"]
 script = ExtResource("2_t")
 id = &"trees"
@@ -116,7 +123,7 @@ hair_colour = Color(0.7, 0.7, 0.7, 1)
 shirt = Color(0.45, 0.55, 0.35, 1)
 trousers = Color(0.35, 0.28, 0.2, 1)
 place = ExtResource("4_place")
-topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Gates_1"), SubResource("Gates_0"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
+topics = Array[ExtResource("2_t")]([SubResource("Topic_0"), SubResource("Topic_1"), SubResource("Topic_2"), SubResource("Gates_1"), SubResource("Gates_0"), SubResource("Topic_3"), SubResource("Topic_4"), SubResource("Topic_pools"), SubResource("Topic_5"), SubResource("Topic_6"), SubResource("Topic_7"), SubResource("Topic_8")])
 observations = Array[ExtResource("2_t")]([SubResource("Obs_0"), SubResource("Obs_1"), SubResource("Obs_2")])
 want = SubResource("Want")
 visit_line = "I came to look at the boats on the {island}, {name}. {host} let me help mend one."

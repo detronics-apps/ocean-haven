@@ -627,12 +627,14 @@ func _mud_near(at: Vector2) -> Vector2:
 	return Terrain.nearest(get_tree(), at, ["mud"])
 
 
-## Crabs sharing a home spot (from older versions) move to their own bit of mud.
+## Crabs sharing a home spot (from older versions) move to their own bit of mud, and grown ones
+## roam the island over mud and grass (older saves kept them on one small mud patch).
 func _spread_crabs() -> void:
 	var homes: Array[Vector2] = []
 	for crab in living(CRAB):
 		if crab.young:
 			continue
+		crab.home_radius = maxf(crab.home_radius, CRAB.adult_home_radius)
 		var home := crab.home()
 		if homes.any(func(h: Vector2) -> bool: return h.distance_to(home) < 12.0):
 			home = _mud_near(home)
@@ -867,8 +869,8 @@ func _pool_way(i: int) -> String:
 	return WAYS[posmod(roundi(to.angle() / (TAU / 8.0)), 8)]
 
 
-## What Rosa says about the water (her reminder's "{advice:water}"): which pools are still cut
-## off, in words, or what's left once enough are linked.
+## What Samuel, the island's hint-giver, says about the water ("{advice:water}", every talk until
+## it flows): which pools are still cut off, in words, or what's left once enough are linked.
 func advice(factor: HealthFactor) -> String:
 	if factor == null or factor.target != &"water":
 		return ""

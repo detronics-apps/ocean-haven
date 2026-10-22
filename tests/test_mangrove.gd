@@ -42,6 +42,8 @@ func _initialize() -> void:
 	_expect(eco.pool_count() == 5 and eco.pools_connected() == 0, "5 nursery pools, all cut off by silt (%d linked)" % eco.pools_connected())
 	var crabs: Array = eco.living(load("res://data/animals/mangrove_crab.tres"))
 	_expect(crabs.size() == 1 and crabs[0].tangled, "a crab trapped in a plastic bag")
+	var grass_at: Vector2 = load("res://scripts/world/terrain.gd").nearest(self, crabs[0].global_position, ["grass"])
+	_expect(crabs[0].in_habitat(grass_at) and crabs[0].data.adult_home_radius >= 200.0, "crabs cross the grass between mud patches and roam the island")
 	_expect(eco.living(load("res://data/animals/juvenile_snapper.tres")).size() == 2
 		and eco.living(load("res://data/animals/american_flamingo.tres")).size() == 1
 		and eco.living(load("res://data/animals/american_crocodile.tres")).size() == 1, "2 young snappers, 1 flamingo, 1 crocodile")
@@ -196,8 +198,8 @@ func _initialize() -> void:
 	# --- The Waterworks Station's missions ---
 	var shown_before: bool = float(eco.get("_pools_shown_until")) > root.get_node("GameClock").now()
 	var water_factor: Resource = mangrove.health.filter(func(f: Resource) -> bool: return f.target == &"water")[0]
-	var rosa_says: String = eco.advice(water_factor)
-	_expect(rosa_says.contains("still cut off") and rosa_says.contains("to the "), "Rosa says which pools are still cut off (%s)" % rosa_says)
+	var samuel_says: String = eco.advice(water_factor)
+	_expect(samuel_says.contains("still cut off") and samuel_says.contains("to the "), "Samuel says which pools are still cut off (%s)" % samuel_says)
 	var result: Dictionary = eco.run_mission(load("res://data/missions/water_flow_survey.tres"))
 	_expect(not shown_before and float(eco.get("_pools_shown_until")) > root.get_node("GameClock").now(), "the pools are only marked after the survey, for a day")
 	_expect(result.found.size() >= 3 and result.detail.contains("cut off"), "the water flow survey marks the cut-off pools (%s)" % result.detail)
