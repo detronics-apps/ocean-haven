@@ -721,6 +721,18 @@ func _draw() -> void:
 		var at := to_local(spot)
 		draw_texture_rect(Shadow._texture(), Rect2(at + Vector2(-8, 1), Vector2(16, 6)), false)
 		draw_texture_rect(NEST_PICTURE, Rect2(at - Vector2(7, 8), NEST_PICTURE.get_size() / 2.0), false)
+	if GameClock.now() < _pools_shown_until:  # after the water flow survey, for a day
+		var reach := connected()
+		for i in _pools.size():
+			var at := to_local(_pool_marks[i].global_position)
+			if _pool_linked(i, reach):
+				draw_circle(at, 9.0, Color(0.55, 0.85, 1.0, 0.35))
+				draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.85, 0.97, 1.0, 0.95), 2.0)
+			else:
+				draw_circle(at, 9.0, Color(0.95, 0.85, 0.6, 0.5))
+				draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.42, 0.22, 0.1, 0.95), 2.0)
+				draw_line(at + Vector2(-5, -5), at + Vector2(5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
+				draw_line(at + Vector2(5, -5), at + Vector2(-5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
 	for cell: Vector2i in _silt:
 		var silt: float = _silt[cell]
 		if silt > 0.2:
@@ -842,6 +854,36 @@ func _check_flowing() -> bool:
 	return true
 
 
+## The water flow survey marks the 5 pools (linked: a blue ring; cut off: a brown cross) for
+## this long; never before it (the owner).
+const POOLS_SHOWN_DAYS := 1.0
+var _pools_shown_until := -1.0
+
+
+## Which way pool `i` lies from the island's middle: "north", "south-west"...
+func _pool_way(i: int) -> String:
+	var to := _pool_marks[i].global_position - region().center
+	const WAYS := ["east", "south-east", "south", "south-west", "west", "north-west", "north", "north-east"]
+	return WAYS[posmod(roundi(to.angle() / (TAU / 8.0)), 8)]
+
+
+## What Rosa says about the water (her reminder's "{advice:water}"): which pools are still cut
+## off, in words, or what's left once enough are linked.
+func advice(factor: HealthFactor) -> String:
+	if factor == null or factor.target != &"water":
+		return ""
+	if pools_connected() >= pools_needed:
+		return "That's %d pools joined to the sea! Now the island needs to be 70 %% healthy." % pools_connected() \
+			if not Fleet.has_flag(flowing_flag) else "The water's flowing through the pools."
+	var reach := connected()
+	var ways: Array[String] = []
+	for i in _pools.size():
+		if not _pool_linked(i, reach) and not _pool_way(i) in ways:
+			ways.append(_pool_way(i))
+	var listed := ", ".join(ways.slice(0, -1)) + " and " + ways[-1] if ways.size() > 1 else ways[0]
+	return "The pools to the %s are still cut off from the sea. The station's water survey marks them for a day." % listed
+
+
 ## The goal line for the objective (People.goal_text), only what's still missing, kept short
 ## (the owner): "Pools 2/3", then "Island health 70 %".
 func goal_progress(target: StringName) -> String:
@@ -885,6 +927,8 @@ func run_mission(mission: MissionData) -> Dictionary:
 	var reach := connected()
 	match mission.effect:
 		&"water_flow":
+			_pools_shown_until = GameClock.now() + POOLS_SHOWN_DAYS
+			queue_redraw()
 			var cut := []
 			for i in _pools.size():
 				if not _pool_linked(i, reach):
@@ -973,12 +1017,13 @@ func to_dict() -> Dictionary:
 	for cell: Vector2i in _silt:
 		silt["%d,%d" % [cell.x, cell.y]] = _silt[cell]
 	return {"last_tick": _last_tick, "seeded": _seeded, "silt": silt, "sediment_until": _sediment_until,
-		"flood_water_until": _flood_water_until}
+		"flood_water_until": _flood_water_until, "pools_shown_until": _pools_shown_until}
 
 
 func restore(saved: Dictionary) -> void:
 	_last_tick = float(saved.get("last_tick", -1.0))
 	_flood_water_until = float(saved.get("flood_water_until", -1.0))
+	_pools_shown_until = float(saved.get("pools_shown_until", -1.0))
 	_seeded = bool(saved.get("seeded", false))
 	_sediment_until = float(saved.get("sediment_until", -1.0))
 	_silt.clear()

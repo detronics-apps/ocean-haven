@@ -194,7 +194,12 @@ func _initialize() -> void:
 	_expect(planted and eco.fish_supported() > fish_before, "a mangrove beside a linked pool makes it a nursery: more young fish (%d -> %d)" % [fish_before, eco.fish_supported()])
 
 	# --- The Waterworks Station's missions ---
+	var shown_before: bool = float(eco.get("_pools_shown_until")) > root.get_node("GameClock").now()
+	var water_factor: Resource = mangrove.health.filter(func(f: Resource) -> bool: return f.target == &"water")[0]
+	var rosa_says: String = eco.advice(water_factor)
+	_expect(rosa_says.contains("still cut off") and rosa_says.contains("to the "), "Rosa says which pools are still cut off (%s)" % rosa_says)
 	var result: Dictionary = eco.run_mission(load("res://data/missions/water_flow_survey.tres"))
+	_expect(not shown_before and float(eco.get("_pools_shown_until")) > root.get_node("GameClock").now(), "the pools are only marked after the survey, for a day")
 	_expect(result.found.size() >= 3 and result.detail.contains("cut off"), "the water flow survey marks the cut-off pools (%s)" % result.detail)
 	result = eco.run_mission(load("res://data/missions/water_level_check.tres"))
 	_expect(result.detail.contains("too low") or result.detail.contains("no water gates"), "the water level check says what to change (%s)" % result.detail)

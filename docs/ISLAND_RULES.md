@@ -356,7 +356,8 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
   flag was only checked in the morning. Every part of a goal is visible: the goal line says
   just what is still missing, short enough for one line ("Pools 2/3"), so every gate opened,
   closed, built or taken away shows whether it went the right way. Never mark the counted things
-  in the world (the owner: no markers on the pools). Check it every couple of seconds, never
+  in the world from the start (the owner): the Mangrove pools are marked only after the water
+  flow survey, for a day, and Rosa says which are cut off. Check it every couple of seconds, never
   only on a new day.
 - **Animals of a kind spread out.** Newcomers get their own spot round their home (clams on the
   facility's beds then round it, crabs on the mud round their habitat), never all on the one
