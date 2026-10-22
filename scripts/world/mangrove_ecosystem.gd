@@ -721,17 +721,6 @@ func _draw() -> void:
 		var at := to_local(spot)
 		draw_texture_rect(Shadow._texture(), Rect2(at + Vector2(-8, 1), Vector2(16, 6)), false)
 		draw_texture_rect(NEST_PICTURE, Rect2(at - Vector2(7, 8), NEST_PICTURE.get_size() / 2.0), false)
-	var reach := connected()
-	for i in _pools.size():
-		var at := to_local(_pool_marks[i].global_position)
-		if _pool_linked(i, reach):
-			draw_circle(at, 9.0, Color(0.55, 0.85, 1.0, 0.35))
-			draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.85, 0.97, 1.0, 0.95), 2.0)
-		else:
-			draw_circle(at, 9.0, Color(0.95, 0.85, 0.6, 0.5))
-			draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.42, 0.22, 0.1, 0.95), 2.0)
-			draw_line(at + Vector2(-5, -5), at + Vector2(5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
-			draw_line(at + Vector2(5, -5), at + Vector2(-5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
 	for cell: Vector2i in _silt:
 		var silt: float = _silt[cell]
 		if silt > 0.2:

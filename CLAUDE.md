@@ -383,7 +383,7 @@ a few crabs, faster with too many), water level from open/closed gates (flamingo
 mud-mound nests when it's right), young snappers per nursery pool (linked + mangroves), Crab
 Habitats (runaway crabs), Crocodile Protection Zones (patrol boats keep out:
 BuildingData.keeps_boats_out), Eco-Lodge; Waterworks Station with 6 missions and a "How it
-works" card (BuildingData.guide); HealthFactor kind "eco" (the ecosystem scores it); each pool shows a blue ring when linked to the sea and a brown cross while cut off, the line under the health bar reads "Pools linked: N / 5 · Water: low|right|high" (status_note) and the goal line "now N / 4 pools, H %" (goal_progress, asked by People.goal_text); the flowing flag is checked every 2 s, not only in the morning; crabs get their own mud round their habitat (_mud_near; piled-up ones spread on settle); Flash Flood
+works" card (BuildingData.guide); HealthFactor kind "eco" (the ecosystem scores it); no markers on the pools (the owner), the line under the health bar reads "Pools linked: N / 5 · Water: low|right|high" (status_note) and the goal line "now N / 4 pools, H %" (goal_progress, asked by People.goal_text); the flowing flag is checked every 2 s, not only in the morning; crabs get their own mud round their habitat (_mud_near; piled-up ones spread on settle); Flash Flood
 (EventData.flood_silt); objective: water flowing (4 pools linked, 70 %) -> 5 resin -> Mangrove
 Resin. All building limits count per island.
 
