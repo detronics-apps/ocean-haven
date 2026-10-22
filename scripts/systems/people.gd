@@ -758,6 +758,10 @@ func _goal_on(region_id: StringName) -> String:
 		if Time.get_ticks_msec() < int(_reveal.get(_key(person, question), 0)):
 			continue
 		var goal := question.objective
+		var eco := IslandHealth.ecosystem(get_tree(), DataFiles.res("res://data/regions/%s.tres" % region_id))
+		var progress: String = eco.goal_progress(goal.target) if eco and eco.has_method("goal_progress") else ""
+		if progress != "":  # e.g. the Mangrove Coast: "now 2 / 4 pools, 76 %"
+			return "Goal: %s (%s)" % [goal.text, progress]
 		if goal.amount > 1:
 			return "Goal: %s: %d / %d" % [goal.text, mini(Fleet.progress(goal), goal.amount), goal.amount]
 		return "Goal: " + goal.text

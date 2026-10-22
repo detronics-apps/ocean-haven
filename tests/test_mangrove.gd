@@ -223,7 +223,15 @@ func _initialize() -> void:
 	# --- The objective: water flowing again, then resin from fallen branches ---
 	var goals: Array = mangrove.goals
 	_expect(goals.size() == 2 and goals[0].target == &"mangrove_flowing" and goals[1].target == &"mangrove_resin", "the objective: get the water flowing, then gather resin")
-	root.get_node("Fleet").mark(&"mangrove_flowing")
+	_expect(String(eco.status_note()).begins_with("Pools linked: "), "under the health bar: how many pools are linked (%s)" % eco.status_note())
+	_expect(String(eco.goal_progress(&"mangrove_flowing")).contains(" pools, "), "the goal line says how far along it is (%s)" % eco.goal_progress(&"mangrove_flowing"))
+	player.global_position = mangrove.arrival
+	eco.pools_needed = 0
+	eco.flowing_at = 0.0
+	eco.set("_flow_left", 0.0)
+	await process_frame
+	await process_frame
+	_expect(root.get_node("Fleet").has_flag(&"mangrove_flowing"), "the water counts as flowing as soon as it is, not only the next morning")
 	eco.call("_objective")
 	var resin := get_nodes_in_group("debris").filter(func(d: Node) -> bool: return d.item.id == &"resin_branch")
 	_expect(resin.size() >= 1, "fallen branches with resin turn up by the mangroves (%d)" % resin.size())

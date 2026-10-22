@@ -418,6 +418,9 @@ func _shelter(cell: Vector2i) -> float:
 	return minf(near * mangrove_shelter, max_shelter)
 
 
+var _flow_left := 2.0
+
+
 func _process(_delta: float) -> void:
 	if not Regions.is_discovered(region()):
 		_last_tick = -1.0
@@ -438,6 +441,11 @@ func _process(_delta: float) -> void:
 		ticks += 1
 	if now - _last_tick >= tick_days:
 		_last_tick = now
+	_flow_left -= _delta
+	if _flow_left <= 0.0:
+		_flow_left = 2.0
+		if Regions.ranger_on(get_tree(), region()):
+			_check_flowing()
 	if int(now * 40.0) != int(_last_draw * 40.0):
 		_last_draw = now
 		queue_redraw()
@@ -509,6 +517,7 @@ func settle() -> void:
 	_follow(FISH, fish_supported())
 	_follow(FLAMINGO, flamingos_supported())
 	_follow(CRAB, crabs_supported())
+	_spread_crabs()
 	_follow(CROCODILE, crocodiles_supported())
 	_nests_at = _nest_spots()
 	_find_gate_spots()  # digging and silting change the channels
@@ -607,6 +616,30 @@ func _level_word() -> String:
 	return "too low: close a gate" if level < level_low else ("too high: open a gate" if level > level_high else "right")
 
 
+## A spot on the mud round `at`, apart from the other crabs' homes (they used to pile up on
+## the one mud tile nearest their habitat).
+func _mud_near(at: Vector2) -> Vector2:
+	var taken := living(CRAB).map(func(a: Animal) -> Vector2: return a.home())
+	for attempt in 30:
+		var spot := at + Vector2.from_angle(randf() * TAU) * randf_range(20.0, 90.0)
+		if Terrain.at(get_tree(), spot) == "mud" and not taken.any(func(t: Vector2) -> bool: return t.distance_to(spot) < 20.0):
+			return spot
+	return Terrain.nearest(get_tree(), at, ["mud"])
+
+
+## Crabs sharing a home spot (from older versions) move to their own bit of mud.
+func _spread_crabs() -> void:
+	var homes: Array[Vector2] = []
+	for crab in living(CRAB):
+		if crab.young:
+			continue
+		var home := crab.home()
+		if homes.any(func(h: Vector2) -> bool: return h.distance_to(home) < 12.0):
+			home = _mud_near(home)
+			crab.set_home(home)
+		homes.append(home)
+
+
 ## Where a newcomer of `species` turns up.
 func _spot_for(species: AnimalData) -> Vector2:
 	var reach := connected()
@@ -624,7 +657,7 @@ func _spot_for(species: AnimalData) -> Vector2:
 			if species == CRAB:
 				var homes := _buildings(func(b: Building) -> bool: return b.data.hosts == CRAB.id)
 				if not homes.is_empty():
-					return Terrain.nearest(get_tree(), (homes.pick_random() as Building).global_position, ["mud"])
+					return _mud_near((homes.pick_random() as Building).global_position)
 			return _world(spots[randi() % spots.size()]) if not spots.is_empty() else region().center
 		CROCODILE:
 			var zones := _buildings(func(b: Building) -> bool: return b.data.hosts == CROCODILE.id)
@@ -688,6 +721,17 @@ func _draw() -> void:
 		var at := to_local(spot)
 		draw_texture_rect(Shadow._texture(), Rect2(at + Vector2(-8, 1), Vector2(16, 6)), false)
 		draw_texture_rect(NEST_PICTURE, Rect2(at - Vector2(7, 8), NEST_PICTURE.get_size() / 2.0), false)
+	var reach := connected()
+	for i in _pools.size():
+		var at := to_local(_pool_marks[i].global_position)
+		if _pool_linked(i, reach):
+			draw_circle(at, 9.0, Color(0.55, 0.85, 1.0, 0.35))
+			draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.85, 0.97, 1.0, 0.95), 2.0)
+		else:
+			draw_circle(at, 9.0, Color(0.95, 0.85, 0.6, 0.5))
+			draw_arc(at, 9.0, 0.0, TAU, 24, Color(0.42, 0.22, 0.1, 0.95), 2.0)
+			draw_line(at + Vector2(-5, -5), at + Vector2(5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
+			draw_line(at + Vector2(5, -5), at + Vector2(-5, 5), Color(0.42, 0.22, 0.1, 0.95), 2.0)
 	for cell: Vector2i in _silt:
 		var silt: float = _silt[cell]
 		if silt > 0.2:
@@ -796,14 +840,34 @@ func flood(amount: float) -> int:
 const RESIN := preload("res://data/items/resin_branch.tres")
 
 
+## Marks the water flowing once enough pools are linked and the island is healthy enough
+## (checked every couple of seconds while the ranger is here, and each morning).
+func _check_flowing() -> bool:
+	if Fleet.has_flag(flowing_flag):
+		return true
+	if pools_connected() < pools_needed or IslandHealth.of(get_tree(), region()) < flowing_at:
+		return false
+	Fleet.mark(flowing_flag)
+	get_tree().call_group("hud", "show_toast", "Water flowing through the mangroves", true)
+	return true
+
+
+## The goal line's progress for the objective (People.goal_text): what's done and what isn't.
+func goal_progress(target: StringName) -> String:
+	if target != flowing_flag:
+		return ""
+	return "now %d / %d pools, %d %%" % [mini(pools_connected(), pools_needed), pools_needed,
+		roundi(IslandHealth.of(get_tree(), region()) * 100.0)]
+
+
+## Under the health bar (HealthGauge): how many pools are linked and how the water level is.
+func status_note() -> String:
+	return "Pools linked: %d / %d · Water: %s" % [pools_connected(), _pools.size(), water_depth_word()]
+
+
 func _objective() -> void:
-	if not Fleet.has_flag(flowing_flag):
-		if pools_connected() >= pools_needed and IslandHealth.of(get_tree(), region()) >= flowing_at:
-			Fleet.mark(flowing_flag)
-			get_tree().call_group("hud", "show_toast",
-				"Water flowing through the mangroves")
-		else:
-			return
+	if not _check_flowing():
+		return
 	if Fleet.count_of(resin_count) >= resin_needed:
 		return
 	var lying := get_tree().get_nodes_in_group("debris").filter(func(d: Debris) -> bool: return d.item == RESIN).size()
