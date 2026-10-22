@@ -8,8 +8,10 @@ extends Node2D
 ##   a closed water gate blocks the way.
 ## - Silt settles in dug channels, slowly where water flows (connected to the sea) and fast
 ##   where it stands (cut off, behind a closed gate). Full-grown mangroves beside a channel
-##   and a few crabs slow it; too many crabs undercut the banks and speed it up. A silted
-##   channel tile turns back into mud (dig it out again: nothing is ever lost for good).
+##   slow it. Crabs walk to silted channel tiles near them and dig the silt out (seen: the crab
+##   on the bank, the dark patch fading); too many crabs undercut the banks round the busiest
+##   Crab Habitat. A silted channel tile turns back into mud (dig it out again: nothing is ever
+##   lost for good).
 ## - The water level on the flats comes from every gate together: closed gates hold water,
 ##   open ones let it drain. Flamingos feed and build mud-mound nests on the flats only
 ##   when the level is right.
@@ -31,12 +33,17 @@ extends Node2D
 @export var mangrove_shelter := 0.3
 @export var max_shelter := 0.8
 @export var shelter_range := 80.0
-## Each working crab slows silting by crab_help (up to crab_help_max crabs); beyond
-## crabs_too_many, each extra crab speeds it up by crab_harm (burrows undercut the banks).
-@export var crab_help := 0.06
-@export var crab_help_max := 6
-@export var crabs_too_many := 8
-@export var crab_harm := 0.8
+## Each grown crab walks to the most silted channel tile within its roaming range (silt from
+## crab_work_from) and digs crab_clear_per_day of silt a day out of it, until it's clear; one
+## crab a tile, so the island needs enough crabs near its channels (the owner).
+@export var crab_clear_per_day := 0.5
+@export var crab_work_from := 0.2
+## Beyond crabs_too_many on the island, each extra crab's burrows undercut the banks round the
+## busiest Crab Habitat: bank_damage_per_day of silt into every channel tile within
+## bank_damage_range of it (the owner: a balancing act).
+@export var crabs_too_many := 12
+@export var bank_damage_per_day := 0.3
+@export var bank_damage_range := 128.0
 
 @export_group("Water level")
 ## The flats' water level (0 dry .. 1 flooded): base_level, plus level_per_closed for every
@@ -403,10 +410,9 @@ func silt_of(cell: Vector2i) -> float:
 	return _silt.get(cell, 0.0)
 
 
-## How much slower (or faster) silt settles island-wide right now: crabs, sediment screens.
+## How much slower silt settles island-wide right now: sediment screens.
 func _silt_scale() -> float:
-	var crabs := working(CRAB).size()
-	var scale := 1.0 - crab_help * mini(crabs, crab_help_max) + crab_harm * maxi(crabs - crabs_too_many, 0)
+	var scale := 1.0
 	if _sediment_until > GameClock.now():
 		scale *= 0.25
 	return maxf(scale, 0.1)
@@ -419,6 +425,7 @@ func _shelter(cell: Vector2i) -> float:
 
 
 var _flow_left := 2.0
+var _steer_left := 0.25
 
 
 func _process(_delta: float) -> void:
@@ -446,6 +453,13 @@ func _process(_delta: float) -> void:
 		_flow_left = 2.0
 		if Regions.ranger_on(get_tree(), region()):
 			_check_flowing()
+			_crabs_work()
+		else:
+			_work_at = -1.0
+	_steer_left -= _delta
+	if _steer_left <= 0.0:
+		_steer_left = 0.25
+		_steer_crabs()
 	if int(now * 40.0) != int(_last_draw * 40.0):
 		_last_draw = now
 		queue_redraw()
@@ -464,7 +478,151 @@ func tick(days: float) -> void:
 		_silt[cell] = silt_of(cell) + _silt_rate(cell, reach, scale) * days
 		if _silt[cell] >= 1.0:
 			_silt_up(cell)
+	_bank_damage(days)
 	settle()
+
+
+## Too many crabs: their burrows undercut the banks round the busiest Crab Habitat, silting the
+## channels there.
+func _bank_damage(days: float) -> void:
+	var extra := working(CRAB).size() - crabs_too_many
+	if extra <= 0:
+		return
+	var busiest: Building = null
+	var most := 0
+	for home in _buildings(func(b: Building) -> bool: return b.data.hosts == CRAB.id):
+		var here := living(CRAB).filter(func(c: Animal) -> bool: return c.home_area == home).size()
+		if here > most:
+			busiest = home
+			most = here
+	if not busiest:
+		return
+	var cells := channels()
+	for spot in _gate_spots:
+		if not spot in cells:
+			cells.append(spot)
+	for cell in cells:
+		if _occupied(cell) or _world(cell).distance_to(busiest.global_position) > bank_damage_range:
+			continue
+		_silt[cell] = silt_of(cell) + bank_damage_per_day * extra * days
+		if _silt[cell] >= 1.0:
+			_silt_up(cell)
+
+
+## Crabs at work: crab -> the channel tile it's clearing, and where it lived before.
+var _jobs := {}
+## Crab -> the corners of its walk to the bank still ahead (crabs only walk in straight lines and
+## stop where their mud and grass end, so they're led along the land, corner by corner).
+var _paths := {}
+var _work_at := -1.0
+## How far (in tiles walked over mud and grass) a crab goes to dig a channel out.
+const CRAB_WALK_TILES := 10
+
+
+## Every couple of seconds while the ranger is here: crabs at their tile dig its silt out (a tile
+## clear: off roaming again, or on to the next); free crabs head for the most silted tile they
+## can walk to.
+func _crabs_work() -> void:
+	var now := GameClock.now()
+	var days := clampf(now - _work_at, 0.0, 0.5) if _work_at >= 0.0 else 0.0
+	_work_at = now
+	for crab: Animal in _jobs.keys():
+		var cell: Vector2i = _jobs[crab]
+		if not is_instance_valid(crab) or crab.leaving or crab.tangled or crab.injured or not _silt.has(cell) or not _is_water(cell):
+			_end_job(crab)
+			continue
+		if _paths.has(crab) or crab.global_position.distance_to(_work_spot(cell)) > 24.0:
+			continue  # still on its way
+		_silt[cell] = silt_of(cell) - crab_clear_per_day * days
+		if _silt[cell] <= 0.01:
+			_silt.erase(cell)
+			_end_job(crab)
+		queue_redraw()
+	var wanted := _silt.keys().filter(func(c: Vector2i) -> bool:
+		return silt_of(c) >= crab_work_from and _is_water(c) and _bank(c) != Vector2i.MAX and not c in _jobs.values())
+	if wanted.is_empty():
+		return
+	for crab in working(CRAB):
+		if crab.young or crab.leaving or _jobs.has(crab):
+			continue
+		var from := _cell(crab.global_position)
+		var came := _walkable_from(from)
+		var best := Vector2i.MAX
+		for cell: Vector2i in wanted:
+			if came.has(_bank(cell)) and (best == Vector2i.MAX or silt_of(cell) > silt_of(best)):
+				best = cell
+		if best == Vector2i.MAX:
+			continue
+		var corners: Array[Vector2] = []
+		var at := _bank(best)
+		while at != from:  # back along the walk, keeping only where it turns
+			var before: Vector2i = came[at]
+			if corners.is_empty() or came.get(before, before) - before != before - at:
+				corners.push_front(_world(before))
+			at = before
+		corners.append(_work_spot(best))
+		_jobs[crab] = best
+		_paths[crab] = corners
+		wanted.erase(best)
+		crab.home_radius = 4.0
+		crab.set_home(corners[0])
+
+
+## A few times a second: crabs on their way to a bank walk on to the next corner.
+func _steer_crabs() -> void:
+	for crab: Animal in _paths.keys():
+		if not is_instance_valid(crab) or not _jobs.has(crab):
+			_paths.erase(crab)
+			continue
+		var corners: Array = _paths[crab]
+		if crab.global_position.distance_to(corners[0]) > 6.0:
+			continue
+		corners.pop_front()
+		if corners.is_empty():
+			_paths.erase(crab)
+		else:
+			crab.set_home(corners[0])
+
+
+## Mud and grass a crab can walk to from `start`, within CRAB_WALK_TILES: cell -> the cell it
+## came from.
+func _walkable_from(start: Vector2i) -> Dictionary:
+	var came := {start: start}
+	var todo: Array[Vector2i] = [start]
+	var steps := {start: 0}
+	while not todo.is_empty():
+		var c: Vector2i = todo.pop_front()
+		if steps[c] >= CRAB_WALK_TILES:
+			continue
+		for d: Vector2i in NEIGHBOURS:
+			var n: Vector2i = c + d
+			if not came.has(n) and _terrain(n) in CRAB.habitat_terrain:
+				came[n] = c
+				steps[n] = steps[c] + 1
+				todo.append(n)
+	return came
+
+
+func _end_job(crab: Animal) -> void:
+	if is_instance_valid(crab):
+		crab.home_radius = CRAB.adult_home_radius
+		crab.set_home(crab.global_position)  # roams on from here
+	_jobs.erase(crab)
+	_paths.erase(crab)
+
+
+## The bank a crab digs channel tile `cell` from (mud or grass beside it), or Vector2i.MAX.
+func _bank(cell: Vector2i) -> Vector2i:
+	for d: Vector2i in NEIGHBOURS:
+		if _terrain(cell + d) in CRAB.habitat_terrain:
+			return cell + d
+	return Vector2i.MAX
+
+
+## Where a crab sits to dig channel tile `cell` out: on its bank, at the water's edge.
+func _work_spot(cell: Vector2i) -> Vector2:
+	var bank := _bank(cell)
+	return Vector2.INF if bank == Vector2i.MAX else _world(bank) - Vector2(bank - cell) * 10.0
 
 
 ## Silt a day settling in channel `cell`.
@@ -477,8 +635,9 @@ func _silting_within(days: float) -> Dictionary:
 	var reach := connected()
 	var scale := _silt_scale()
 	var soon := {}
+	var worked: Array = _jobs.values()
 	for cell in channels():
-		if not _occupied(cell) and silt_of(cell) + _silt_rate(cell, reach, scale) * days >= 1.0:
+		if not _occupied(cell) and not cell in worked and silt_of(cell) + _silt_rate(cell, reach, scale) * days >= 1.0:
 			soon[cell] = true
 	return soon
 
@@ -632,7 +791,7 @@ func _mud_near(at: Vector2) -> Vector2:
 func _spread_crabs() -> void:
 	var homes: Array[Vector2] = []
 	for crab in living(CRAB):
-		if crab.young:
+		if crab.young or _jobs.has(crab):
 			continue
 		crab.home_radius = maxf(crab.home_radius, CRAB.adult_home_radius)
 		var home := crab.home()
@@ -986,8 +1145,8 @@ func run_mission(mission: MissionData) -> Dictionary:
 		&"mangrove_wildlife":
 			var crabs := living(CRAB).size()
 			var lines := PackedStringArray()
-			lines.append("Crabs: %d%s." % [crabs, " (too many: their burrows are undercutting the banks and silting the channels faster; fewer Crab Habitats would help)" if crabs > crabs_too_many
-				else (" (their burrows slow the silting; a Crab Habitat gives more room)" if crabs < 4 else " (their burrows are slowing the silting)")])
+			lines.append("Crabs: %d%s." % [crabs, " (too many: their burrows are undercutting the banks round the busiest Crab Habitat and silting the channels there; fewer Crab Habitats would help)" if crabs > crabs_too_many
+				else " (each digs the silt out of the channels near it, one tile at a time; Crab Habitats near your channels give more room)"])
 			lines.append("Young snappers: %d, from %d nursery pool(s)." % [living(FISH).size(), nursery_pools(reach)])
 			lines.append("Flamingos: %d, with %d nest(s) (water level %s)." % [living(FLAMINGO).size(), nests(), _level_word()])
 			var zones := _buildings(func(b: Building) -> bool: return b.data.hosts == CROCODILE.id).size()

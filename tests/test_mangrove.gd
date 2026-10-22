@@ -218,6 +218,30 @@ func _initialize() -> void:
 	eco.settle()
 	_expect(eco.crocodiles_supported() == 1, "one crocodile per zone")
 
+	# --- Crabs walk to silted channel tiles near them and dig the silt out ---
+	var crab_kind: Resource = load("res://data/animals/mangrove_crab.tres")
+	var banked: Array = eco.channels().filter(func(c: Vector2i) -> bool: return eco._work_spot(c) != Vector2.INF)
+	_expect(not banked.is_empty(), "a dug channel has a bank a crab can stand on")
+	var silted: Vector2i = banked[0]
+	var digger_new: Node2D = eco._spawn(crab_kind, eco._work_spot(silted) + Vector2(0, 30))
+	digger_new.set_home(digger_new.global_position)
+	eco.set("_silt", {silted: 0.1})
+	eco._crabs_work()
+	_expect(eco.get("_jobs").is_empty(), "a little silt (under 20 %) isn't worth a crab's trip")
+	eco.set("_silt", {silted: 0.25})
+	eco._crabs_work()
+	var jobs: Dictionary = eco.get("_jobs")
+	_expect(jobs.size() == 1 and jobs.values()[0] == silted, "one crab heads for the silted tile, not every crab")
+	var digger: Node2D = jobs.keys()[0]
+	var walk: Array = eco.get("_paths").get(digger, [])
+	_expect((walk.is_empty() or walk.back().distance_to(eco._work_spot(silted)) < 1.0) and digger.home_radius < 10.0, "it walks over the land to the bank beside it and stays there")
+	digger.global_position = eco._work_spot(silted)
+	eco.get("_paths").erase(digger)
+	eco.set("_work_at", root.get_node("GameClock").now() - 0.5)
+	eco._crabs_work()
+	_expect(eco.silt_of(silted) == 0.0 and eco.get("_jobs").is_empty() and digger.home_radius >= 200.0, "it digs the silt out, then goes back to roaming")
+	eco.set("_silt", {})
+
 	# --- Flash flood: silt dumped in the channels, most where water stands ---
 	var events := root.get_node("RareEvents")
 	var flood_event: Resource = load("res://data/events/flash_flood.tres")
