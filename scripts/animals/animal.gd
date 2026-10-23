@@ -88,6 +88,8 @@ var _state := State.REST
 var _target: Vector2
 var _rest_left := 0.0
 var _flee_left := 0.0
+## Fleeing from the ranger (not a patrol boat): at the end it may move to another home.
+var _chased := false
 ## Seconds the ranger has stayed calm nearby, and has watched it while relaxed.
 var _calm := 0.0
 var _watched := 0.0
@@ -472,6 +474,9 @@ func _physics_process(delta: float) -> void:
 			speed *= 2.0
 			_flee_left -= delta
 			if _flee_left <= 0.0:
+				if _chased:
+					_chased = false
+					_rehome_after_chase()
 				_rest(data.rest_min)
 				return
 		State.CURIOUS:
@@ -688,6 +693,7 @@ func _react_to_ranger(delta: float) -> void:
 			_state = State.FLEE
 			_flee_left = FLEE_SECONDS
 			_target = _flee_spot(pos)
+			_chased = true
 	else:
 		_calm += delta
 
@@ -1388,12 +1394,43 @@ func _maybe_nest() -> void:
 	if not site:
 		return
 	last_nest_day = GameClock.day
-	if not home_area:
-		home_area = site  # she belongs to the area where she nests
+	home_area = site  # she belongs to the area where she nests
 	var beach_spot := site.global_position + Vector2(randf_range(-12.0, 12.0), randf_range(-8.0, 8.0))
 	# Swim to the water nearest the beach, then crawl up it to lay.
 	var shore := Terrain.nearest(get_tree(), beach_spot, ["water", ""])
 	_crawl_to(shore, false, func() -> void: _crawl_to(beach_spot, true, _lay))
+
+
+## Chased by the ranger nearer another building of its kind than its own: it moves in there,
+## but only if that one has at least as much room as the one it leaves (the owner: chasing only
+## evens them out: 4 and 4 can become 3 and 5, 1 and 0 can become 0 and 1; never into a full
+## one). The young stay with their parent.
+func _rehome_after_chase() -> void:
+	if young or parent or tangled or injured or leaving or home_building() == &"" \
+			or not is_instance_valid(home_area) or home_area.is_queued_for_deletion():
+		return
+	var mine: Building = home_area
+	var here := global_position
+	var best: Building = null
+	for other: Building in get_tree().get_nodes_in_group("buildings"):
+		if other != mine and other.data.id == mine.data.id and not other.is_queued_for_deletion() \
+				and other.global_position.distance_to(here) < mine.global_position.distance_to(here) \
+				and (not best or other.global_position.distance_to(here) < best.global_position.distance_to(here)):
+			best = other
+	if not best or best.room_for_animals() <= 0 or best.room_for_animals() < mine.room_for_animals():
+		return
+	home_area = best
+	for attempt in 20:  # a spot of its own by its new home
+		var spot := best.global_position + Vector2.from_angle(randf() * TAU) * randf_range(16.0, 60.0)
+		if in_habitat(spot):
+			_home = spot
+			return
+	_home = Terrain.nearest(get_tree(), best.global_position, Array(data.habitat_terrain))
+
+
+## Whether nesting area `site` has a place for it (its own area always does).
+func _room_at(site: Building) -> bool:
+	return site == home_area or site.room_for_animals() > 0
 
 
 ## The kind of building it belongs to: where it lives (otters), or else where it nests (turtles).
@@ -1416,11 +1453,15 @@ func link_to_nearest_area() -> void:
 	home_area = sites[0] if sites else null
 
 
+## The nearest nesting area she can use, the nearest with room for her first (the owner: she
+## nests at the closest one with an open space, wherever she roams).
 func _nest_site() -> Node2D:
-	var best: Node2D = null
+	var best: Building = null
 	for building: Building in get_tree().get_nodes_in_group("buildings"):
-		if building.data.id == data.nest_building and not building.too_busy() and not building.damaged and (not best
-				or building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
+		if building.data.id != data.nest_building or building.too_busy() or building.damaged:
+			continue
+		if not best or (_room_at(building) and not _room_at(best)) or (_room_at(building) == _room_at(best)
+				and building.global_position.distance_to(global_position) < best.global_position.distance_to(global_position)):
 			best = building
 	return best
 

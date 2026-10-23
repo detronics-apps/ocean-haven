@@ -39,7 +39,7 @@ func _initialize() -> void:
 	_expect(load("res://scripts/ui/observatory_screen.gd").final_chapter(), "every island helped, the fleet at its top, every source stopped")
 	var journal: Node = world.find_child("JournalScreen", true, false)
 	for i in 120:  # (the HUD looks every second)
-		await process_frame
+		await create_timer(0.05).timeout  # (by the clock: frames can run faster than a second)
 		if journal.visible:
 			break
 	_expect(fleet.has_flag(&"ending_started") and journal.visible and journal.get("tab") == journal.CLUES,

@@ -859,6 +859,13 @@ animals -2 (Animal.SWIMMING_Z, checked a few times a second), decks, jetties and
 A boat left in the water lies at -1 too (Boat._layer): the ranger stepping out, and everyone on
 land, are always in front of it (the owner); with the ranger aboard it's at 0.
 
+Chasing between homes (the owner): an animal that belongs to a building (crabs, otters,
+seahorses, crocodiles, sharks, seals, polar bears, terns, turtles; not clams: they don't move)
+fled from the ranger, on foot or by boat, and ending up nearer another building of its kind
+moves into it, only if that one has at least as much room as the one it leaves (4 and 4 can
+become 3 and 5, 1 and 0 can become 0 and 1; never into a full one; Animal._rehome_after_chase,
+no note); the young stay with their parent. Turtles nest at the nearest protection area with
+room for them (Animal._nest_site) and belong to where they nest, while roaming the whole island.
 A living island: most species roam all round their island's waters (AnimalData.roams /
 roam_share: turtles, dolphins, whales, sharks, fish, otters, seals, cod), not just round the area
 they belong to; crocodiles, polar bears, crabs and nesting birds keep to their places. After the

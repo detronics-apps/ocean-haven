@@ -312,6 +312,10 @@ Full design: `docs/GAME_OVERVIEW_FOR_REVIEW.md` sections 6–13.
 
 ## 9b. Learned from playing on the phone (owner's corrections)
 
+- **Chasing only evens homes out.** An animal chased nearer another building of its kind moves
+  in there only if that one has at least as much room as its own: the player can balance two
+  habitats, never empty one into another. The young follow their parent, never chased away.
+
 - **Never zero, and one means trouble.** Every species starts with at least one, and when
   there's only one it's not doing well and needs help (the Starting Island's lone booby is
   caught in fishing line). No species ever drops to none.
